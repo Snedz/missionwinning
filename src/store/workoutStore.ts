@@ -107,14 +107,16 @@ interface WorkoutState {
     reps: number,
     weight: number,
     rpe?: 'easy' | 'med' | 'hard',
-    isPr?: boolean
+    isPr?: boolean,
+    durationSeconds?: number
   ) => void;
   logSetAndAdvance: (
     exerciseIndex: number,
     setIndex: number,
     reps: number,
     weight: number,
-    isPr?: boolean
+    isPr?: boolean,
+    durationSeconds?: number
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR after log — never stamped by `logSet` (`.725`). */
@@ -129,6 +131,8 @@ interface WorkoutState {
     setIndex: number,
     tempo: import('@/types').SetTempo | undefined
   ) => void;
+  /** Hold / finish time after log — never stamped by `logSet` (`.994`). */
+  setSetDuration: (exerciseIndex: number, setIndex: number, durationSeconds: number | undefined) => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
   setSetSide: (exerciseIndex: number, setIndex: number, side: SetSide | undefined) => void;
   toggleSupersetWithNext: (exerciseIndex: number) => void;
@@ -413,7 +417,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         enqueueOpenSession(snapshotFromActive(get().activeWorkout));
       },
 
-      logSet: (exerciseIndex, setIndex, reps, weight, rpe, isPr) => {
+      logSet: (exerciseIndex, setIndex, reps, weight, rpe, isPr, durationSeconds) => {
         // Time-to-first-set is the one number that says whether the first 90
         // seconds works. Fire once, on the very first set this device ever logs.
         const before = get();
@@ -431,6 +435,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             sets.filter((x) => x.completed),
             s.workoutHistory
           );
+          const hold = Number(durationSeconds);
           sets[setIndex] = {
             ...sets[setIndex],
             reps,
@@ -440,6 +445,9 @@ export const useWorkoutStore = create<WorkoutState>()(
             kind: sets[setIndex].kind ?? 'normal',
             isPr: isPr || undefined,
             ...(lastTempo ? { tempo: lastTempo } : {}),
+            ...(Number.isFinite(hold) && hold > 0
+              ? { durationSeconds: Math.round(hold) }
+              : {}),
           };
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
@@ -492,8 +500,8 @@ export const useWorkoutStore = create<WorkoutState>()(
        * a home — `hasMixedOrMed` treats a missing rating as inconclusive and the
        * plan holds, which is the correct read of "no signal".
        */
-      logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) => {
-        get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
+      logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr, durationSeconds) => {
+        get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr, durationSeconds);
         const aw = get().activeWorkout;
         if (!aw) return null;
         const loggedSide = parseSetSide(aw.exercises[exerciseIndex]?.sets[setIndex]?.side);
@@ -520,6 +528,27 @@ export const useWorkoutStore = create<WorkoutState>()(
           const sets = [...ex.sets];
           if (sets[setIndex]) {
             sets[setIndex] = { ...sets[setIndex], rpe };
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      setSetDuration: (exerciseIndex, setIndex, durationSeconds) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const hold = Number(durationSeconds);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (!Number.isFinite(hold) || hold <= 0) delete next.durationSeconds;
+            else next.durationSeconds = Math.round(hold);
+            sets[setIndex] = next;
           }
           ex.sets = sets;
           exercises[exerciseIndex] = ex;

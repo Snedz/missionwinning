@@ -1,28 +1,30 @@
-# PLAN.md — This-movement history (`.993`)
+# PLAN.md — Set-row type (`.994`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the live-lift diary freeze.
+ship; this file is the open-row type freeze.
 **Lane:** Engineering-Web · Train logger · **Horizon:** 0
-**Label:** `2026.07-unified.993` (master is `.992` / `7bb7c464`
-Custom exercise). Title stays **This-movement history (.993)**.
-**Excellence-Override:** leftover per-lift diary on the open Train
-lift (not a chart product, not a Feed)
+**Label:** `2026.07-unified.994` (master is `.993` / `75350127`
+This-movement history). Title stays **Set-row type (.994)**.
+**Excellence-Override:** leftover set-row type on the open Train
+lift (not a cardio home, not a Track-bodyweight volume invent)
 
 ---
 
 ## 0. What this is
 
-Adjacency is last time on the row. Track trend (`.989`) is the week
-strip. Vs-last and the next-set cite already show last. Missing: tap
-the movement, see the prior sessions of that lift.
+Custom `.992` names a movement. Plus-load `.758` already prints
+`8 × BW` / `8 × BW + 20 kg` when equipment looks bodyweight.
+The **open set row still speaks kg × reps** for everyone —
+headers, dial, completed cells. Pull-ups get a fake load field
+they must skip. Planks get the same BW × reps row instead of
+time. Assisted is not a type.
 
-Strong grammar (do not copy UI or brand): Exercise Detail History
-tab is free; Charts are PRO. Hevy: performance history workout to
-workout in the library. Ours is their diary on the open lift —
-optional, guest, first set still ungated. Honesty `.971` still
-applies when the list is short.
+They type what they did: weight · bodyweight reps · duration ·
+assisted. Optional +kg vest. Empty / unknown stays the current
+weight×reps row. Guest. First set ungated. Honesty `.971`
+still applies. Diary stays free.
 
 `PRIVATE_MODE` stays on. Live www stays `.696`. Do not promote.
 
@@ -30,81 +32,88 @@ applies when the list is short.
 
 ## 1. Investigate (done — hypothesis holds)
 
-Checked on `origin/master` `.992` (`7bb7c464`).
+Checked on `origin/master` `.993` (`75350127251e7cb07aea355700fd4f3b224afe6d`).
 
 | Claim | Verified |
 |-------|----------|
-| Vs-last / next-set cite already shows last | **Yes.** `lastLiveSessionForExercise` is the one last-session reader. Prev is last-actuals on the row. `formatVsLastSetDeltas` / `resolveAfterCompleteCite` cite that last log. First-ever is honest empty (`HONEST_EMPTY` / `ACTIVE_TARGET_EMPTY_LINE`). |
-| Open lift name is tappable | **No.** `ActiveExerciseHeader` paints `exercise.name` as a `<span>`. Info opens the form guide. Overflow is More. There is no per-lift diary door. |
-| History page is a per-lift diary | **No.** `/history` first paint is the **session** list (whole workouts). Charts / 1RM / heatmap sit under Show all → Exercises. That is not tap-the-open-lift. |
-| Library already lists prior sessions | **No.** `LibraryDetailSheet` shows a session **count** plus a volume sparkline when `sessionCount > 0`. No date · sets list. Do not lift that spark onto Train. |
-| `countExerciseHistory` is leftover | It counts appearances (tombstones included). Last-live already skips tombstones / 0-rep / warmup-only. The new list must use the live reader, not the count. |
-| Honesty `.971` | `isThinHistory` is 1–2 **live sessions** (whole diary). Wednesday invents no next day. Week strip does not score a streak. Empty cite has no Start. This ship must not invent a third session, a slope, or an on-track line from one or two lifts. |
-| Custom `.992` | `resolveExercise` keeps a named leftover paint-able. History rows use that name. |
-| Today / door | Lean Today is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. Resume `.963`. `/private` is the tight `.957` lock. |
+| Custom `.992` names the movement | **Yes.** `upsertCustomExercise` / `resolveExercise`. `asExercise` has no type. A leftover custom stays paint-able. |
+| Open set row still speaks kg × reps | **Yes.** `SetLogTable` thead is always `weightLabel` + `Reps`. Dial is always weight + reps. `plusLoad` only prefixes `BW+` on the same kg input. |
+| Pull-ups / planks get a fake load or get skipped | **Yes.** `isPlusLoadExercise` is any `equipment` starting `bodyweight` **or** id containing `dip`. `plank`, `side-plank`, `wall-sit`, `hollow-hold`, `two-mile-run` are all plus-load. They speak `N × BW` / vest kg, not time. Custom unknown is **not** plus-load — it speaks raw kg × reps. |
+| `.993` put history chrome on Today | **No.** `HomeTodayLean` is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. `movementHistorySurface.test.ts` forbids the sheet on lean / `/private`. **Nothing to unmount first.** |
+| Volume already invents profile BW | **No.** `calculateVolume` is `reps * weight`. Plus-load `weight` is vest only. `loadBodyMetrics` is not on the logger path. **Keep that refuse.** Do not start reading Track / profile bodyweight. |
+| Track / duration field on `LoggedSet` | Session has `durationSeconds`. A **set** does not. Finish-time cues (`two-mile-run`, `sprint-drag-carry`) have nowhere honest to land. |
+| Today / door | One Start. Resume `.963`. `/private` is the tight `.957` lock. Honesty `.971` is Train session-count. |
 
-**Hypothesis (founder, non-binding):** vs-last / next-set cite
-already shows last; leftover is a per-movement list of prior
-sessions they tap from the open lift, not a chart product and not
-a Feed.
+**Hypothesis (founder, non-binding):** Custom names the
+movement; the open row still speaks kg × reps; pull-ups and
+planks then get a fake load or get skipped. Also verify `.993`
+did not put history on Today.
 
-**Verdict: keep.** The door is the open lift name. The list is
-theirs. Do not build a projected-max chart. Do not build a Feed.
+**Verdict: keep.** The leftover is the open row. Do not add a
+cardio home. Do not invent bodyweight from Track.
 
-### Custom / Track / Start this again — leaked onto Today?
+### `.993` / Today leak?
 
-**No. Nothing to unmount first.**
-
-`.992` customs stay on the Train picker. `.989` last-vs-this stays
-inside the week-strip cell. `.991` Start this again stays on the
-receipt / History (outline, not a red Start). Lean Today still one
-`dock="start"`. Keep that lock.
+**No. Nothing to unmount first.** History stays on the open
+lift name. Keep that lock in tests.
 
 ---
 
-## 2. Lock (tap the lift → their sessions)
+## 2. Lock (the open row honors the type)
 
-| Slot | Empty / short | Has sessions |
-|------|----------------|--------------|
-| Open lift name | Tappable. Sheet opens. Empty copy; invents nothing. One or two sessions list as-is — no slope, no streak, no third row. | Newest first. Each row is one of *their* finished sessions that logged this lift. |
-| Set row / Prev / vs-last / next-set cite | Unchanged. Last time stays on the row. | Unchanged. The sheet is the rest of the diary, not a second Prev. |
-| `/history` / Library / Today / `/private` | Unchanged. | Unchanged. Not a History rewrite. Not a Library shop. Today stays one Start. |
+| Type | Empty / unknown | Known |
+|------|-----------------|-------|
+| **weight** | Current kg × reps row. Custom `.992` with no type stays here. | Barbell / DB / machine / cable / unknown. Unchanged dial. |
+| **bodyweight** | — | Reps. Optional +kg vest (`weight` is vest, never profile BW). `0` vest = BW only. |
+| **duration** | — | Time (seconds → `m:ss`). No fake kg. Optional vest is **not** on this row. |
+| **assisted** | — | Assist kg + reps. Assist is not volume. |
 
 Closed rules:
 
-1. **Lives on the open Train lift.** Tap the movement name. Not a
-   new Today widget. Not a History first-paint rewrite. Not a
-   Library shop. Not on `/private`.
-2. **Their diary.** Only this device's completed logs for **this**
-   `exerciseId`. Newest first. Tombstones, 0-rep junk, and
-   warmup-only blocks are not sessions (same live rule as
-   `lastLiveSessionForExercise`).
-3. **Empty invents nothing.** No prior live session → empty copy,
-   no fake row, no invented date, no projected max. Do not seed
-   demo history.
-4. **Short list stays a notebook.** One or two sessions for this
-   lift list as themselves. No streak / on-track / consistency /
-   "you are behind". Honesty `.971` still scores Train only.
-5. **Working sets only on the row.** Warmup stays out of cites
-   (`.970` / `.985`). Show the loads they logged. Empty set
-   lines invent nothing.
-6. **Not a chart product.** No sparkline, no 1RM curve, no
-   projected-max theater. Charts-as-PRO is not our identity — if
-   a chart were shown it would stay free and unprojected; this
-   ship does not show one.
-7. **Not another human's number.** No leaderboard, no Pacer, no
-   "athletes like you".
-8. **Not a Feed.** No public URL, no likes, no permalink, no
-   share sheet. Session notes stay private (`.983`).
-9. **Optional. Guest. First set ungated.** Opening the sheet is
-   never required to Log set. No account. No premium. No
-   `UnlockButton` / `/bundle`.
-10. **Today still one Start** (Resume when live). The sheet
-    footer is Close, not Start. `/private` stays the tight
-    `.957` lock.
-11. **Custom names stay theirs.** Resolve via `resolveExercise`
-    (`.992`). Do not drop a leftover id.
-12. **Do not rewrite Android.** Web PWA only.
+1. **One home.** `resolveSetRowType` in `src/lib/workout/setRowType.ts`.
+   No second private copy in the table / store / history sheet.
+2. **Empty / unknown stays weight×reps.** Custom with no
+   equipment / no `logType` / leftover id → `weight`. Do not
+   guess "plank" from a typed name.
+3. **Optional `logType` on `Exercise` wins** when it is one of
+   the four. Else infer (closed, documented):
+   - **assisted** — id or name matches `/assisted/i`
+   - **duration** — id is `plank` / ends `-plank` / ends `-hold`
+     / is `wall-sit`, **or** cues match `/log finish time/i`
+   - **bodyweight** — current plus-load detect (`equipment`
+     bodyweight* or id contains `dip`) and not assisted/duration
+   - **weight** — everyone else
+   `mountain-climbers` / `inchworm` stay bodyweight (id is not
+   `*plank`). Peak-contraction cues that say "hold 2s" are not
+   duration (no id/cue rule).
+4. **They type reps or time.** Duration dial is one time field.
+   Persist `LoggedSet.durationSeconds` (seconds, integer > 0).
+   `reps` / `weight` stay 0 on a duration set so
+   `calculateVolume` stays 0 without a second volume formula
+   for that type. `hasUsableWorkingSet` accepts
+   `durationSeconds > 0` (or reps > 0) so a plank is diary
+   evidence.
+5. **Vest does not invent a bodyweight.** Bodyweight `weight` is
+   the extra they typed. Never `loadBodyMetrics`, never profile
+   kg, never "100% BW library". Volume for BW is `vest * reps`
+   (0 vest → 0 kg volume; `workingReps` still counts). Assisted
+   volume is 0 (help kg is not load). Duration volume is 0.
+6. **Guest. First set ungated.** Type never paywalls. No
+   account. Log set stays the one red. Opening type chrome is
+   never required.
+7. **Today still one Start** (Resume when live). Not a new
+   Today widget. Not a cardio tab. Not on `/private`.
+8. **Honesty `.971` still scores Train** — session count, not
+   a new type score. Short diary stays a notebook.
+9. **`.993` history speaks the type.** Prior plank rows show
+   time, not `45 × 0`. Prior pull-ups stay `8 × BW` / vest.
+   Empty invents nothing.
+10. **Do not rewrite Android.** Web PWA only.
+11. **Do not smash** plus-load formatters, custom `.992`,
+    Start this again `.991`, movement history `.993`, EMOM,
+    drop-set, warmup, notes, 1RM %, supersets, Learn, week
+    strip, Track, Move, cues, tags, RPE, Fuel, resume,
+    notebook, `/private`.
 
 ---
 
@@ -115,90 +124,109 @@ Closed rules:
 This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 Every later commit is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/workout/movementHistory.ts`
+### 3.2 Pure helper — `src/lib/workout/setRowType.ts`
 
-One module. Deterministic list. No premium / rewards / social /
-Health / speech / wearables. No store import. Reuse the live
-session rule already owned by `lastLiveSessionForExercise` (usable
-working set, not tombstone). Dates via `localDateKeyFromIso` —
-never `toISOString()` for a calendar day.
+One module. Deterministic. No premium / rewards / social /
+Health / speech / wearables / `bodyMetrics`. No store import.
 
 | Export | Rule |
 |--------|------|
-| `MovementHistorySet` | `{ reps, weight }` — working sets only (`kind !== 'warmup'`, `reps > 0`). |
-| `MovementHistoryRow` | `{ sessionId, completedAt, workoutName, dateKey, sets }` — `dateKey` is local calendar or `''` when the ISO is unusable (then the row still lists; the UI does not invent a weekday). |
-| `listMovementHistory(history, exerciseId)` | Newest-first (store order). Skip other lifts, tombstones, warmup-only, 0-rep-only. Blank `exerciseId` → `[]`. Empty history → `[]`. |
-| `isShortMovementHistory(rows)` | `rows.length <= 2` — notebook, not a dataset. UI must not paint a slope / streak from this. |
+| `SetRowType` | `'weight' \| 'bodyweight' \| 'duration' \| 'assisted'` |
+| `resolveSetRowType(ex)` | Explicit `logType` if valid; else infer (§2.3); null/custom/unknown → `weight` |
+| `isBodyweightSetRowType` | `=== 'bodyweight'` — plus-load vest row |
+| `setRowHasWork(set)` | warmup excluded; `reps > 0` **or** `durationSeconds > 0` |
+| `setRowVolume(set, type)` | weight/unknown: `reps * weight`; bodyweight: `reps * vest`; duration/assisted: `0` |
+| `formatSetRowLine(...)` | weight: existing `formatSetLoadLine`; bodyweight: same plus-load; duration: `formatDuration(seconds)`; assisted: `8 × −20 kg` |
+| `formatSetRowPrev(...)` | Compact prev cell for that type. Duration is `m:ss`. Empty invents nothing. |
+| `parseDurationSeconds(raw)` | Integer seconds, 1–86400. `m:ss` or plain seconds. Blank → 0. |
 
-Do not import this from `/private`, Coach plan engine, www, or
-Today lean. Do not compute Epley / projected max here.
+`isPlusLoadExercise` stays for vest detect; bodyweight type
+**is** plus-load. Duration/assisted must not take the vest
+prefix. One home: table / card / history sheet call
+`resolveSetRowType`, not a second `if (id === 'plank')`.
 
-### 3.3 Sheet — tap the name
+`hasUsableWorkingSet` reads `setRowHasWork` (or the same
+reps-or-duration rule) so `.993` / last-live do not drop a
+plank.
 
-`ActiveExerciseHeader`: the movement name is a button
-`data-testid="movement-history-open"` (min 44px). Info stays
-Info. More stays More. Log set stays on the table.
+### 3.3 Open row — `SetLogTable` + card
 
-`MovementHistorySheet` (`AdaptiveOverlay`,
-`data-testid="movement-history-sheet"`):
+`SetLogTable` takes `rowType`. Headers and the live dial
+follow the type. Completed cells use `formatSetRowLine`.
+`data-testid="set-log-table"` stays. Add
+`data-row-type={rowType}` so tests can see the type without
+scraping copy.
 
-- Title: exercise name (`resolveExercise`).
-- Eyebrow: History (i18n).
-- Empty: `t('activeMovementHistoryEmpty', { defaultValue: 'No prior sessions yet — log this one' })`.
-- Rows: date (from `dateKey` via existing locale format; skip the
-  date chip when `dateKey` is empty) · workout name · working
-  sets as `weight × reps` (tabular). `data-testid="movement-history-row"`.
-- Short list: no spark, no "on track", no third invented row.
-- Footer: Close only. Not Start. Not Start this again. Not Train
-  this (Library already has that door).
-- Hide / close never blocks Log set.
+| Type | Live columns |
+|------|----------------|
+| weight / unknown | kg · Reps · Log (current) |
+| bodyweight | optional +kg (vest, default 0) · Reps · Log |
+| duration | Time · Log (no kg, no reps) |
+| assisted | Assist kg · Reps · Log |
 
-Wire from `ActiveExerciseCard` / header. Stay on Train.
+Plates / 1RM % / warmup-batch stay on **weight** (and vest
+when they typed a working vest — do not invent a warmup from
+0). Duration/assisted hide plates and known-max %. EMOM /
+tags / RPE stay optional on every type.
+
+`ActiveExerciseCard` resolves type once and passes it.
+`plusLoad={rowType === 'bodyweight'}`. Prev labels use
+`formatSetRowPrev`.
+
+Log path: duration writes `durationSeconds` and logs
+`reps=0, weight=0`. Assisted writes assist as `weight`.
+Extend `logSet` / payload with optional `durationSeconds`
+without changing the existing reps/weight call sites.
+
+Finish volume: `finishPartialFromActive` sums
+`setRowVolume` per exercise type — not a silent
+`calculateVolume` that would treat assist kg as load.
 
 ### 3.4 Surfaces that do not change
 
 - Today lean stays date · pins · highlights · strip · Show all ·
-  one `JourneyHero` `dock="start"`. `.989` trend stays in the
-  strip cell. `.991` Start this again stays on receipt / History.
+  one `JourneyHero` `dock="start"`. `.993` history stays on
+  the lift name. `.989` trend stays in the strip cell.
 - `/private` stays the tight `.957` lock.
-- `/history` first paint stays the session list. Do not move
-  charts onto this sheet. Do not paywall History charts.
-- `LibraryDetailSheet` count + spark stays put. Do not add a
-  shame slope to Train. Do not rewrite Library this ship.
+- `/move` stays the quiet walk diary. Not a second Today Start.
+  Not a cardio tab.
+- Track / profile bodyweight stay off volume.
 - Android Room path stays. No F5. No Expo.
 - Honesty `.971`, resume `.963`, first set ungated, custom
-  `.992`, Start this again `.991`, EMOM `.988`, drop-set `.986`,
-  warmup `.985` stay.
+  `.992`, Start this again `.991`, movement history `.993`
+  stay.
 
-### 3.5 Tests
+### 3.5 Tests (write before product edit)
 
-- Empty history / blank id / tombstone / warmup-only / 0-rep →
-  `[]`. Mutant that seeds a demo row dies.
-- One live Push with bench → one row, that session's working
-  sets. Warmup omitted.
-- Two sessions for the same lift → two rows, newest first. Short
-  flag true. Mutant that invents a third row or a slope field
-  dies.
-- Three sessions → three rows; short flag false. Still no
-  projected max / streak field on the row type.
-- Date keys use `localDateKeyFromIso` (no `toISOString()` day).
-- Header source: name is the open control. Sheet empty copy
-  matches. Footer is Close, not `primary-action` / Start workout.
-- No `UnlockButton` / `/bundle` / `isPremium` / projected /
-  sparkline / `History1RMChart` / Feed permalink / likes / XP /
-  another-human compare on the helper or the sheet.
-- Today lock: lean still one `dock="start"`. No
-  `movement-history` import on lean Today or `/private`.
-- `thinHistory` stays green (Wednesday / week strip unchanged).
-- `firstSetUngated` stays green. History path never mounts
-  SignInPrompt / login wall / Force Sync / Session Expired.
+- `resolveSetRowType`: bench → weight; pull-ups / push-ups /
+  dips → bodyweight; plank / side-plank / wall-sit /
+  hollow-hold / two-mile-run → duration; name/id Assisted →
+  assisted; custom leftover / `{}` / null → weight.
+  Mutant that classifies custom as bodyweight because the
+  typed name includes "plank" dies.
+- Vest volume: `8 × 20` vest → 160; `8 × 0` → 0. Mutant that
+  adds 80 kg from a fixture bodyweight dies.
+- Assisted / duration volume → 0. Mutant that does
+  `assist * reps` dies.
+- `parseDurationSeconds`: `45` → 45; `1:30` → 90; blank → 0.
+- `setRowHasWork`: duration-only set is usable; 0/0/0 is not.
+- Table source: `data-row-type` on the table. Duration live
+  row has Time, not kg header. Weight row still kg × reps.
+- No `loadBodyMetrics` / `bodyweightKg` / `isPremium` /
+  `/bundle` / UnlockButton / Health / speech on the helper
+  or the table type branch.
+- Today lock: lean still one `dock="start"`. No set-row-type
+  import on lean Today or `/private`.
+- `firstSetUngated` stays green. `thinHistory` stays green.
+- `.993` history formats a plank as time, not `45 × 0`.
 - No Feed / Discord.com / likes / XP / four-scene door /
-  Health / counsel-hold / WeChat home / Mind.
+  counsel-hold / WeChat / Mind / cardio-as-home.
 
 ### 3.6 Help / i18n / INDEX
 
-- Help one-liner (getting-started Train): opening a live exercise
-  can show prior sessions of that lift. Empty invents nothing.
+- Help one-liner (getting-started Train): the open row
+  matches the movement — weight, bodyweight reps (optional
+  vest), time, or assist. Empty / custom stays weight × reps.
   Today stays Start workout.
 - i18n: add keys to `activeWorkoutLocales.ts` +
   `t(key, { defaultValue })` matching EN. Coverage cap stays 0.
@@ -207,41 +235,39 @@ Wire from `ActiveExerciseCard` / header. Stay on Train.
 
 ## 4. Refuse
 
-Paywall the diary. Projected-max theater. Another human's number.
-Feed permalink. Shame slope. WeChat home. Four-scene door.
-Health gate. Counsel-hold. Promote. `PRIVATE_MODE` flip. Merge.
-Second Today Start. Discord.com. Mind. Marketplace.
-Android rewrite. Seeding demo history. Lifting Library spark
-onto Train. Rewriting `/history` first paint.
+Auto-add Track / profile bodyweight into volume. Wearable as
+permission. Cardio as a new home or Today tab. Invented
+library-size traction. Paywall a type. Feed / DMs /
+marketplace / shame / four-scene door. Counsel-hold (field
+test / PT / pregnancy). `PRIVATE_MODE` flip. Promote. Merge.
+Second Today Start. Android rewrite. Guessing a custom's
+type from its name.
 
-Do not smash `.992` / `.991` / `.989` / `.988` / `.986` / `.985` /
-`.983` / `.981` / `.980` / `.978` / `.977` / `.976` / `.974` /
-`.973` / `.971` / `.970` / `.967` / `.965` / `.963` / `.961` /
-`.957`.
+Do not smash `.993` / `.992` / `.991` / `.989` / `.988` /
+`.986` / `.985` / `.983` / `.981` / `.980` / `.978` / `.977` /
+`.976` / `.974` / `.973` / `.971` / `.970` / `.967` / `.965` /
+`.963` / `.961` / `.957`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.993`
-- LOG heading `## 2026-08-25 — This-movement history (\`.993`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.994`
+- LOG heading `## 2026-08-25 — Set-row type (\`.994`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.993` citing the full label;
-  keep `.992` … `.973`; rotate oldest shipped Now bullet
-  (`.973`) so the block stays ≤25
+- `CONTEXT.md` `## Now` one-line `.994` citing the full label;
+  keep `.993` … rotate oldest shipped Now bullet so the
+  block stays ≤25
 - Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
-- One draft PR against master. Title: `This-movement history (.993)`.
+- One draft PR against master. Title: `Set-row type (.994)`.
   Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.993` > master `.992`.
+- `tsc --noEmit` clean. `check-build-label` `.994` > master `.993`.
 
 ## 6. Done when
 
-- They can tap the lift and see prior sessions for that movement
-  (their diary). Empty / short list invents nothing. Honesty
-  `.971` still applies.
-- Not a projected-max chart. Not another human's number. Not a
-  Feed permalink. Not a shame slope.
-- Optional. Guest. First set still ungated.
-- Today still one Start (Resume when live). `/private` stays the
-  tight `.957` lock.
-- Does not paywall the diary. No chart on this sheet.
-- Unit tests. tsc clean. Label `.993`. Draft PR against master.
-  Title: `This-movement history (.993)`.
+- Open row speaks the type they actually did (weight / BW
+  reps / duration / assisted).
+- Optional +kg vest does not invent a bodyweight.
+- Today still one Start. First set ungated.
+- Honesty `.971` still applies. Diary stays free.
+- `/private` stays the tight `.957` lock.
+- Label `2026.07-unified.994`. Draft PR against master.
+  Title: `Set-row type (.994)`.

@@ -10,6 +10,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
+1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only.  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
 2c. `customExercise.ts` — named custom on the live picker (`.990`). Local notebook. Unlimited. Empty invents nothing.  
@@ -97,6 +98,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `startAgainSurface.test.ts` | Receipt + History wire Start this again; Today stays one Start; not a shop (`.991`) |
 | `movementHistory.test.ts` | Per-lift diary: empty / short invent nothing; warmup / tombstone skipped (`.993`) |
 | `movementHistorySurface.test.ts` | Tap the open lift; Today stays one Start; no chart / paywall / Feed (`.993`) |
+| `setRowType.test.ts` | Type resolve + vest volume + duration parse; custom name is not a guess (`.994`) |
+| `setRowTypeSurface.test.ts` | Open row speaks the type; Today one Start; no Track BW invent / paywall (`.994`) |
 | `thinHistory.test.ts` | Two named logs invent no Wednesday; week strip does not score 1–2 sessions; saved notebook still wins (`.964`) |
 | `inSetCues.test.ts` | Setup first, cap 3; empty invents nothing; no remote clip URL; Train-only (`.973`) |
 | `openSessionContinuity.test.ts` | Desk start → phone finish is one session; guest; no wipe; no Force Sync (`.958`) |

@@ -5,8 +5,10 @@
 
 import type { SetKind } from '@/types';
 
+export type SetRowDial = { reps: number; weight: number; durationSeconds?: number };
+
 export type ActiveTableSetControls = {
-  setInput: { reps: number; weight: number };
+  setInput: SetRowDial;
   activeSetKind: SetKind;
   /** True when this card owns the next incomplete set. */
   canEdit: boolean;
@@ -25,7 +27,7 @@ export function resolveActiveTableSetControls(params: {
     setIdx: number,
     defaultReps: number,
     defaultWeight: number
-  ) => { reps: number; weight: number };
+  ) => SetRowDial;
 }): ActiveTableSetControls {
   const { nextSet, exIdx, sets, resolveInput } = params;
   if (!nextSet || nextSet.exIdx !== exIdx) {

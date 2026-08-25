@@ -28,6 +28,8 @@ import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
 import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
+import type { SetRowType } from '@/types';
+import { formatSetRowDuration, parseDurationSeconds } from '@/lib/workout/setRowType';
 import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
 import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 import { SetLogNextCite } from '@/components/workout/SetLogNextCite';
@@ -72,8 +74,8 @@ type Props = {
   /** Delete an incomplete warmup from the batch — never required. */
   onRemovePlannedSet?: (setIdx: number) => void;
   onOpenPlates?: () => void;
-  input: { reps: number; weight: number };
-  onInputChange: (field: 'reps' | 'weight', value: number) => void;
+  input: { reps: number; weight: number; durationSeconds?: number };
+  onInputChange: (field: 'reps' | 'weight' | 'duration', value: number) => void;
   /** Optional % of a known 1-rep max — never required (`.981`). */
   knownMax?: number | null;
   onSetLoadPct?: (setIdx: number, loadPct: number | undefined) => void;
@@ -86,6 +88,8 @@ type Props = {
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   plusLoad?: boolean;
+  /** Open-row type (`.994`). Empty / unknown stays weight × reps. */
+  rowType?: SetRowType;
   /** Last working set (not warmup). One tap accepts into the active dial. */
   lastSetGhost?: LastSetGhost | null;
   onAcceptGhost?: (target: { reps: number; weight: number }) => void;
@@ -129,6 +133,7 @@ export function SetLogTable({
   onRateRpe10,
   onRateTempo,
   plusLoad = false,
+  rowType = 'weight',
   lastSetGhost,
   onAcceptGhost,
   afterCompleteCites = [],
@@ -148,6 +153,7 @@ export function SetLogTable({
     <table
       className="w-full table-fixed border-collapse text-sm"
       data-testid="set-log-table"
+      data-row-type={rowType}
       data-pair-mark={pairMark ?? undefined}
     >
       <colgroup>
@@ -165,12 +171,24 @@ export function SetLogTable({
           <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColPrev', { defaultValue: 'Prev' })}
           </th>
-          <th scope="col" className={cn(cell, 'text-start')}>
-            {weightLabel}
+          <th
+            scope="col"
+            colSpan={rowType === 'duration' ? 2 : 1}
+            className={cn(cell, 'text-start')}
+          >
+            {rowType === 'duration'
+              ? t('activeColTime', { defaultValue: 'Time' })
+              : rowType === 'assisted'
+                ? t('activeColAssist', { defaultValue: 'Assist' })
+                : rowType === 'bodyweight'
+                  ? `+${weightLabel}`
+                  : weightLabel}
           </th>
-          <th scope="col" className={cn(cell, 'text-start')}>
-            {t('activeColReps', { defaultValue: 'Reps' })}
-          </th>
+          {rowType === 'duration' ? null : (
+            <th scope="col" className={cn(cell, 'text-start')}>
+              {t('activeColReps', { defaultValue: 'Reps' })}
+            </th>
+          )}
           <th scope="col" className={cell}>
             <span className="sr-only">{t('activeColAction', { defaultValue: 'Action' })}</span>
           </th>
@@ -247,68 +265,86 @@ export function SetLogTable({
 
               {isActive ? (
                 <>
-                  <td className={cell}>
-                    <div className="flex items-center gap-1">
-                      {plusLoad ? (
-                        <span className="shrink-0 text-[11px] font-semibold uppercase text-muted-foreground">
-                          {t('activeSetBodyweight', { defaultValue: 'BW' })}+
-                        </span>
-                      ) : null}
-                      <input
-                        type="text"
-                        inputMode="decimal"
-                        className={numberInput}
-                        value={input.weight}
-                        aria-label={
-                          plusLoad
-                            ? t('activeSetAddedLoad', { defaultValue: 'Load' })
-                            : weightLabel
-                        }
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => {
-                          const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                          const parsed = parseFloat(cleaned);
-                          onInputChange(
-                            'weight',
-                            Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
-                          );
-                        }}
+                  {rowType === 'duration' ? (
+                    <td className={cell} colSpan={2}>
+                      <SetRowDurationField
+                        seconds={input.durationSeconds ?? 0}
+                        onChange={(seconds) => onInputChange('duration', seconds)}
                       />
-                    </div>
-                    {onSetLoadPct ? (
-                      <SetRowPercentField
-                        authored={set.loadPct}
-                        weight={input.weight}
-                        knownMax={knownMax}
-                        onChange={(pct) => onSetLoadPct(setIdx, pct)}
-                      />
-                    ) : null}
-                    {plateLine && !platesSkipped && barWeight != null && onBarWeightChange ? (
-                      <SetLogPlateLine
-                        barWeight={barWeight}
-                        platesLine={plateLine}
-                        onBarWeightChange={onBarWeightChange}
-                        onSkip={() => setPlatesSkipped(true)}
-                      />
-                    ) : null}
-                  </td>
-                  <td className={cell}>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      className={numberInput}
-                      value={input.reps}
-                      aria-label={t('activeReps', { defaultValue: 'Reps' })}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) => {
-                        const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
-                        onInputChange(
-                          'reps',
-                          Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1
-                        );
-                      }}
-                    />
-                  </td>
+                    </td>
+                  ) : (
+                    <>
+                      <td className={cell}>
+                        <div className="flex items-center gap-1">
+                          {plusLoad ? (
+                            <span className="shrink-0 text-[11px] font-semibold uppercase text-muted-foreground">
+                              {t('activeSetBodyweight', { defaultValue: 'BW' })}+
+                            </span>
+                          ) : null}
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className={numberInput}
+                            value={input.weight}
+                            aria-label={
+                              rowType === 'assisted'
+                                ? t('activeSetAssist', { defaultValue: 'Assist' })
+                                : plusLoad
+                                  ? t('activeSetAddedLoad', { defaultValue: 'Load' })
+                                  : weightLabel
+                            }
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => {
+                              const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+                              const parsed = parseFloat(cleaned);
+                              onInputChange(
+                                'weight',
+                                Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
+                              );
+                            }}
+                          />
+                        </div>
+                        {rowType === 'weight' && onSetLoadPct ? (
+                          <SetRowPercentField
+                            authored={set.loadPct}
+                            weight={input.weight}
+                            knownMax={knownMax}
+                            onChange={(pct) => onSetLoadPct(setIdx, pct)}
+                          />
+                        ) : null}
+                        {(rowType === 'weight' ||
+                          (rowType === 'bodyweight' && input.weight > 0)) &&
+                        plateLine &&
+                        !platesSkipped &&
+                        barWeight != null &&
+                        onBarWeightChange ? (
+                          <SetLogPlateLine
+                            barWeight={barWeight}
+                            platesLine={plateLine}
+                            onBarWeightChange={onBarWeightChange}
+                            onSkip={() => setPlatesSkipped(true)}
+                          />
+                        ) : null}
+                      </td>
+                      <td className={cell}>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          className={numberInput}
+                          value={input.reps}
+                          aria-label={t('activeReps', { defaultValue: 'Reps' })}
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
+                            onInputChange(
+                              'reps',
+                              Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1
+                            );
+                          }}
+                        />
+                      </td>
+                    </>
+                  )}
                   <td className={cn(cell, 'text-end')}>
                     {/* Sole red primary on desktop Active log path. */}
                     <button
@@ -333,28 +369,42 @@ export function SetLogTable({
                 </>
               ) : (
                 <>
-                  <td className={cn(cell, completed && 'font-semibold')}>
-                    {completed
-                      ? plusLoad
-                        ? formatPlusLoadWeightCell(
-                            set.weight,
-                            t('activeSetBodyweight', { defaultValue: 'BW' })
-                          )
-                        : set.weight
-                      : kind === 'warmup' && set.weight > 0
-                        ? set.weight
+                  {rowType === 'duration' ? (
+                    <td className={cn(cell, completed && 'font-semibold')} colSpan={2}>
+                      {completed
+                        ? formatSetRowDuration(set.durationSeconds ?? 0) || '—'
                         : '—'}
-                    {completed ? (
-                      <SetRowPercentCite
-                        authored={set.loadPct}
-                        weight={set.weight}
-                        knownMax={knownMax}
-                      />
-                    ) : null}
-                  </td>
-                  <td className={cn(cell, completed && 'font-semibold')}>
-                    {completed ? set.reps : set.reps}
-                  </td>
+                    </td>
+                  ) : (
+                    <>
+                      <td className={cn(cell, completed && 'font-semibold')}>
+                        {completed
+                          ? rowType === 'assisted'
+                            ? set.weight > 0
+                              ? `−${set.weight}`
+                              : '—'
+                            : plusLoad
+                              ? formatPlusLoadWeightCell(
+                                  set.weight,
+                                  t('activeSetBodyweight', { defaultValue: 'BW' })
+                                )
+                              : set.weight
+                          : kind === 'warmup' && set.weight > 0
+                            ? set.weight
+                            : '—'}
+                        {completed && rowType === 'weight' ? (
+                          <SetRowPercentCite
+                            authored={set.loadPct}
+                            weight={set.weight}
+                            knownMax={knownMax}
+                          />
+                        ) : null}
+                      </td>
+                      <td className={cn(cell, completed && 'font-semibold')}>
+                        {set.reps}
+                      </td>
+                    </>
+                  )}
                   <td className={cn(cell, 'text-end')}>
                     {completed ? (
                       <Check
@@ -516,6 +566,51 @@ export function SetLogTable({
       />
     ) : null}
     </div>
+  );
+}
+
+function SetRowDurationField({
+  seconds,
+  onChange,
+}: {
+  seconds: number;
+  onChange: (seconds: number) => void;
+}) {
+  const { t } = useTranslation();
+  const [draft, setDraft] = useState(seconds > 0 ? formatSetRowDuration(seconds) : '');
+  const [focused, setFocused] = useState(false);
+  useEffect(() => {
+    if (!focused) setDraft(seconds > 0 ? formatSetRowDuration(seconds) : '');
+  }, [seconds, focused]);
+  const commit = (raw: string) => onChange(parseDurationSeconds(raw));
+  return (
+    <input
+      type="text"
+      inputMode="decimal"
+      className={numberInput}
+      value={draft}
+      placeholder="0:45"
+      aria-label={t('activeSetTime', { defaultValue: 'Time' })}
+      data-testid="set-table-duration"
+      onFocus={(e) => {
+        setFocused(true);
+        e.target.select();
+      }}
+      onChange={(e) => {
+        setDraft(e.target.value);
+        commit(e.target.value);
+      }}
+      onBlur={() => {
+        setFocused(false);
+        commit(draft);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          commit(draft);
+        }
+      }}
+    />
   );
 }
 

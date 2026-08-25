@@ -40,7 +40,7 @@ import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
-import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
+import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { knownMaxFromHistory, weightFromKnownMaxPct } from '@/lib/workout/setRowPercent';
 import type { WorkClockKind } from '@/lib/workout/workClock';
 import { cn } from '@/lib/utils';
@@ -100,8 +100,8 @@ type Props = {
   onStartRest: (seconds: number) => void;
   /* Desktop only — the table logs in place, so it needs the same input state
      the docked console gets. Compact ignores all three. */
-  setInput: { reps: number; weight: number };
-  onSetInputChange: (field: 'reps' | 'weight', value: number) => void;
+  setInput: { reps: number; weight: number; durationSeconds?: number };
+  onSetInputChange: (field: 'reps' | 'weight' | 'duration', value: number) => void;
   onLogSet: (setIdx: number) => void;
   /** Kind of the set currently being entered, and how to change it. */
   activeSetKind: SetKind;
@@ -212,13 +212,15 @@ export function ActiveExerciseCard({
   });
 
   /** PREVIOUS column / row anchor — same labels for compact rows and desktop table. */
-  const plusLoad = isPlusLoadExercise(exercise);
+  const rowType = resolveSetRowType(exercise);
+  const plusLoad = rowType === 'bodyweight';
   const prevLabels = formatPrevSetLabels(
     workoutHistory,
     exLog.exerciseId,
     exLog.sets.length,
     {
       currentSets: exLog.sets,
+      rowType,
       ...(plusLoad
         ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
         : {}),
@@ -342,6 +344,7 @@ export function ActiveExerciseCard({
             onOpenPlates={onOpenPlates}
             input={setInput}
             plusLoad={plusLoad}
+            rowType={rowType}
             onInputChange={onSetInputChange}
             knownMax={knownMax}
             onSetLoadPct={(setIdx, pct) => {

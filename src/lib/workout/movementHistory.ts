@@ -6,13 +6,15 @@
  * Short list stays a notebook (honesty `.971`). Not a chart. Not a Feed.
  */
 
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetRowType } from '@/types';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { hasUsableWorkingSet } from '@/lib/workout/setRowAdjacency';
+import { formatSetRowPrev, setRowHasWork } from '@/lib/workout/setRowType';
 
 export type MovementHistorySet = {
   reps: number;
   weight: number;
+  durationSeconds?: number;
 };
 
 export type MovementHistoryRow = {
@@ -36,8 +38,14 @@ function workingSetsForLift(
 ): MovementHistorySet[] {
   const out: MovementHistorySet[] = [];
   for (const s of sets) {
-    if (s.kind === 'warmup' || s.reps <= 0) continue;
-    out.push({ reps: s.reps, weight: s.weight });
+    if (!setRowHasWork(s)) continue;
+    out.push({
+      reps: s.reps,
+      weight: s.weight,
+      ...(s.durationSeconds && s.durationSeconds > 0
+        ? { durationSeconds: s.durationSeconds }
+        : {}),
+    });
   }
   return out;
 }
@@ -69,7 +77,19 @@ export function listMovementHistory(
   return rows;
 }
 
-/** Prev-shaped `reps × weight` join — one home for the sheet line. */
-export function formatMovementHistorySets(sets: readonly MovementHistorySet[]): string {
-  return sets.map((s) => `${s.reps} × ${s.weight}`).join(' · ');
+/** Prev-shaped join — one home for the sheet line. Speaks the open-row type. */
+export function formatMovementHistorySets(
+  sets: readonly MovementHistorySet[],
+  type: SetRowType = 'weight'
+): string {
+  return sets
+    .map((s) =>
+      formatSetRowPrev({
+        type,
+        reps: s.reps,
+        weight: s.weight,
+        durationSeconds: s.durationSeconds,
+      })
+    )
+    .join(' · ');
 }

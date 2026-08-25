@@ -6,7 +6,6 @@
  * or Finish writes the sets they actually did. No Force Sync. No
  * Session Expired. Empty leftovers invent no volume.
  */
-import { calculateVolume } from '@/lib/utils';
 import { parseOptionalRir } from '@/lib/workout/rir';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
 import { parseOptionalLoadPct } from '@/lib/workout/setRowPercent';
@@ -15,6 +14,8 @@ import { parseOptionalTempo } from '@/lib/workout/tempo';
 import { completedLoggedSet } from '@/lib/workout/unilateral';
 import { findNextSet } from '@/lib/workout/activeWorkoutHelpers';
 import { stripOrphanGroups } from '@/lib/workout/superset';
+import { resolveExercise } from '@/lib/workout/customExercise';
+import { resolveSetRowType, setRowVolume } from '@/lib/workout/setRowType';
 import type { ActiveWorkout, CompletedWorkoutLog } from '@/types';
 
 export type ThisDeviceResume =
@@ -83,12 +84,14 @@ export function finishPartialFromActive(
           const rpe10 = parseOptionalRpe10(s.rpe10);
           const tempo = parseOptionalTempo(s.tempo);
           const loadPct = parseOptionalLoadPct(s.loadPct);
+          const hold = Number(s.durationSeconds);
           return {
             ...rec,
             ...(rir !== undefined ? { rir } : {}),
             ...(rpe10 !== undefined ? { rpe10 } : {}),
             ...(tempo ? { tempo } : {}),
             ...(loadPct !== undefined ? { loadPct } : {}),
+            ...(Number.isFinite(hold) && hold > 0 ? { durationSeconds: hold } : {}),
           };
         });
       return {
@@ -106,9 +109,13 @@ export function finishPartialFromActive(
 
   if (grouped.length === 0) return null;
 
-  const volumeSets = grouped.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
+  const volume = grouped.reduce((sum, ex) => {
+    const type = resolveSetRowType(resolveExercise(ex.exerciseId));
+    const work = ex.sets.filter((s) => countsTowardVolume(s.kind));
+    return sum + work.reduce((n, s) => n + setRowVolume(s, type), 0);
+  }, 0);
   return {
     exercises: grouped,
-    volume: calculateVolume(volumeSets),
+    volume,
   };
 }

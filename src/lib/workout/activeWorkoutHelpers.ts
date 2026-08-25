@@ -17,6 +17,7 @@ import {
 } from '@/lib/workout/progressiveOverloadCue';
 import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
 import { formatPrevPlusLoadLabel, formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
+import { formatSetRowPrev } from '@/lib/workout/setRowType';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(
@@ -54,7 +55,7 @@ export function getLastPerformanceForSet(
   exerciseId: string,
   setIdx: number,
   currentSets?: { kind?: string }[]
-): { reps: number; weight: number } | null {
+): { reps: number; weight: number; durationSeconds?: number } | null {
   if (currentSets?.[setIdx]?.kind === 'warmup') return null;
   const sets = getLastSessionSets(workoutHistory, exerciseId);
   if (!sets) return null;
@@ -66,7 +67,12 @@ export function getLastPerformanceForSet(
       : setIdx;
   if (wi === null) return null;
   const match = lastWorking[wi] ?? lastWorking[lastWorking.length - 1];
-  return { reps: match.reps, weight: match.weight };
+  const hold = Number(match.durationSeconds);
+  return {
+    reps: match.reps,
+    weight: match.weight,
+    ...(Number.isFinite(hold) && hold > 0 ? { durationSeconds: hold } : {}),
+  };
 }
 
 /**
@@ -87,7 +93,12 @@ export function formatPrevSetLabels(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string,
   setCount: number,
-  opts?: { plusLoad?: boolean; bodyweightLabel?: string; currentSets?: { kind?: string }[] }
+  opts?: {
+    plusLoad?: boolean;
+    bodyweightLabel?: string;
+    currentSets?: { kind?: string }[];
+    rowType?: import('@/types').SetRowType;
+  }
 ): (string | null)[] {
   return Array.from({ length: setCount }, (_, setIdx) => {
     const last = getLastPerformanceForSet(
@@ -97,6 +108,15 @@ export function formatPrevSetLabels(
       opts?.currentSets
     );
     if (!last) return null;
+    if (opts?.rowType) {
+      return formatSetRowPrev({
+        type: opts.rowType,
+        reps: last.reps,
+        weight: last.weight,
+        durationSeconds: last.durationSeconds,
+        bodyweightLabel: opts.bodyweightLabel,
+      });
+    }
     if (opts?.plusLoad) {
       return formatPrevPlusLoadLabel(last.reps, last.weight, opts.bodyweightLabel ?? 'BW');
     }
@@ -254,15 +274,28 @@ export function formatLoggedSetLine(
  */
 export function nextSetInput(params: {
   /** The athlete's own earlier edit, from the updater's `prev` — never a closure. */
-  prevManual?: { reps: number; weight: number };
+  prevManual?: { reps: number; weight: number; durationSeconds?: number };
   /** What the row currently displays, resolved with the set's own reps/weight. */
-  resolved: { reps: number; weight: number };
-  field: 'reps' | 'weight';
+  resolved: { reps: number; weight: number; durationSeconds?: number };
+  field: 'reps' | 'weight' | 'duration';
   value: number;
-}): { reps: number; weight: number } {
+}): { reps: number; weight: number; durationSeconds?: number } {
   const { prevManual, resolved, field, value } = params;
   const base = prevManual ?? resolved;
-  return { reps: base.reps, weight: base.weight, [field]: value };
+  if (field === 'duration') {
+    return {
+      reps: base.reps,
+      weight: base.weight,
+      ...(value > 0 ? { durationSeconds: value } : {}),
+    };
+  }
+  return {
+    reps: field === 'reps' ? value : base.reps,
+    weight: field === 'weight' ? value : base.weight,
+    ...(base.durationSeconds && base.durationSeconds > 0
+      ? { durationSeconds: base.durationSeconds }
+      : {}),
+  };
 }
 
 /**
