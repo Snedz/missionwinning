@@ -154,6 +154,15 @@ export interface ActiveWorkout {
    * strips it; cloud upsert omits it.
    */
   sessionNote?: string;
+  /**
+   * Session elapsed pause (`.1001`). Accumulated running seconds +
+   * `runningSince` (null = paused). Omit on pre-`.1001` persist — those
+   * run from `startedAt`. Not rest. Not EMOM/AMRAP.
+   */
+  sessionClock?: {
+    accumulatedSeconds: number;
+    runningSince: string | null;
+  };
 }
 
 export interface CompletedWorkoutLog {

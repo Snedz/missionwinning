@@ -250,6 +250,10 @@ type ActiveWorkoutStrings = {
   activeRestDefault: string;
   activeSessionMore: string;
   activeSessionTimer: string;
+  /** Pause the live SESSION elapsed clock (`.1001`). Not Today Resume. */
+  activeSessionClockPauseAria: string;
+  activeSessionClockResumeAria: string;
+  activeSessionClockPaused: string;
   activeSetLess: string;
   activeSetOptions: string;
   activeSwap: string;
@@ -589,6 +593,9 @@ const en: ActiveWorkoutStrings = {
   activeRestDefault: 'Default',
   activeSessionMore: 'More session actions',
   activeSessionTimer: 'Session timer',
+  activeSessionClockPauseAria: 'Pause session clock',
+  activeSessionClockResumeAria: 'Resume session clock',
+  activeSessionClockPaused: 'Paused',
   activeSetLess: 'Less',
   activeSetOptions: 'Set options',
   activeSwap: 'Swap',

@@ -99,6 +99,7 @@ import {
   suggestDropFromPrior,
 } from '@/lib/workout/dropSet';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
+import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClock';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { track } from '@/lib/analytics';
@@ -150,6 +151,7 @@ export function ActiveWorkoutPage() {
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
   const adjustRestTimer = useWorkoutStore((s) => s.adjustRestTimer);
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
+  const toggleSessionClock = useWorkoutStore((s) => s.toggleSessionClock);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const startWorkClock = useWorkoutStore((s) => s.startWorkClock);
   const tickWorkClock = useWorkoutStore((s) => s.tickWorkClock);
@@ -747,6 +749,8 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
+        sessionClockPaused={isSessionClockPaused(readSessionClock(activeWorkout))}
+        onToggleSessionClock={toggleSessionClock}
         restTimerActive={restTimerActive}
         nextCue={nextCue}
         logPulse={logPulse}
