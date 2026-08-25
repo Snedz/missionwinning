@@ -116,8 +116,8 @@ const en: TrackStrings = {
   trackSubtitle:
     'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
   trackSubtitleBrief: 'A number you already have. Scale or tape. Never required to train.',
-  trackMoreGpsImport: 'GPS, insights & import',
-  trackMoreBodyWearables: 'Body, wearables & trends',
+  trackMoreGpsImport: 'Walks, GPS & import',
+  trackMoreBodyWearables: 'Trends & extras',
   trackWeekSessions: 'This Week',
   trackTotalTime: 'Total Time',
   trackDistance: 'Distance',

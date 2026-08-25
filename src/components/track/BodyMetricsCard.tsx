@@ -111,7 +111,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
           <Stat
             label={t('bodyWeight', { defaultValue: 'Weight' })}
-            value={`${displayValue(last, 'weightKg')} ${unitLabel === '%' || unitLabel === 'cm' ? weightUnitLabel(units) : unitLabel}`}
+            value={`${displayValue(last, 'weightKg')} ${weightUnitLabel(units)}`}
           />
           <Stat
             label={t('bodyFat', { defaultValue: 'Body fat' })}
