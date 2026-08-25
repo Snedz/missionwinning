@@ -21,7 +21,7 @@
 | `workoutHistory` | zustand persist | Completed logs — merges with cloud |
 | `activeWorkout` | memory + persist | In-progress session — `clientId` / `revision` ride for desk → gym (`.958`) |
 | `pendingRemoteOpenSession` | memory | Other-device session waiting on confirm — never silent-wipe |
-| `restTimer*` | memory | Rest countdown between sets |
+| `restTimer*` | memory | Rest countdown between sets. `restLane` is warmup vs work (`.995`). |
 | `workClock*` | memory | Optional EMOM / AMRAP on the live set row (`.987`). Not rest. |
 | `elapsedSeconds` | memory | Workout clock |
 | `hasHydrated` | memory | True once rehydration settles — gates Active Start. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error and the logger stays disabled). |

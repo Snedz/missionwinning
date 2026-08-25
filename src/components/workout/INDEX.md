@@ -11,7 +11,7 @@
 | `ActiveSessionDock.tsx` | One `ScreenDock` for rest only. Set entry is `SetLogTable`; `resolveActiveDockMode` no longer emits `console` |
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
-| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove. Skip / swap are **this session** (`.959`). Open lift shows short written cues (`.973`). Tap the name for prior sessions of that lift (`.993`). Group of two or more is one round (`.980` / concern `.979`). Free warmup batch from the working weight (`.984` / stamp `.985`). |
+| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove. Skip / swap are **this session** (`.959`). Open lift shows short written cues (`.973`). Tap the name for prior sessions of that lift (`.993`). Work vs warmup rest on the open lift (`.995`). Group of two or more is one round (`.980` / concern `.979`). Free warmup batch from the working weight (`.984` / stamp `.985`). |
 | `ActiveExerciseHeader.tsx` | Title, menus, next line, e1RM. Name opens this-movement history (`.993`). |
 | `MovementHistorySheet.tsx` | Prior sessions of the open lift — their diary. Empty invents nothing. Not a chart (`.993`). |
 | `InSetCueList.tsx` | Short setup / execute on the open live exercise. Optional still. Hide never blocks Log set (`.973`). Quiet link to Learn when they want more than a rack card (`.978`) |
@@ -26,7 +26,8 @@
 | `LogConsole.tsx` | Legacy compact dock entry. Active dock is rest-only; set entry is the table. |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them. Typed catalog miss can name a custom (`.990`). Unlimited. Free. Empty invents nothing. |
 | `HardSessionWarningSheet.tsx` | Pre-start hard-session warning — Back does not start; never gates Log set. Stop line follows pregnancy flag (`.746` v1) |
-| `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s |
+| `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s. Global Default chips stay here — not a second rest home (`.995`). |
+| `ExerciseRestStrip.tsx` | Work vs warmup rest on the open lift. Settable. Free. Writes the lift, not Profile (`.995`). |
 | `SessionJotField.tsx` | Optional private session notes — live Show all + close receipt (`.982`). Empty invents nothing. |
 | `WorkoutVictorySheet.tsx` | Post-workout close receipt — stats + lift table + notes + Next on first paint. Feel, share, rewards, debrief in Show all (`.956` / `.982`). Outline **Save as routine** (`.960`). Outline **Start this again** (`.991`) |
 | `SaveHonoredRoutineDoor.tsx` | Confirm-gated save / replace for a named routine (`.960`). Not the Today red Start |

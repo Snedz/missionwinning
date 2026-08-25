@@ -8,9 +8,12 @@ import {
   LAST_REST_MAX_EXERCISES,
   recallLastRest,
   rememberLastRest,
+  restLaneFromKind,
+  WARMUP_FALLBACK_SECONDS,
   rememberedRestAfterAdjust,
   resolveRestForNextSet,
   resolveRestSeconds,
+  saveDefaultRestSeconds,
   restSecondsForExercise,
   resolveStartRestSeconds,
   restProgress,
@@ -61,9 +64,12 @@ describe('restTimer', () => {
     assert.equal(shouldShowRestPresets(1), false);
   });
 
-  it('resolveRestSeconds uses max of suggested and default', () => {
-    const rest = resolveRestSeconds('Hammer Curl');
-    assert.ok(rest >= 60);
+  it('resolveRestSeconds uses the name heuristic; global default is fallback only', () => {
+    resetStorage();
+    saveDefaultRestSeconds(90);
+    assert.equal(resolveRestSeconds('Barbell Bench Press'), 180);
+    assert.equal(resolveRestSeconds('Lateral Raise'), 60);
+    assert.equal(resolveRestSeconds('Lat Pulldown'), 90);
   });
 
   it('resolveStartRestSeconds prefers explicit duration, else shared default', () => {
@@ -176,5 +182,86 @@ describe('last-rest recall (.715)', () => {
     }
     assert.equal(recallLastRest('ex-0'), null);
     assert.equal(recallLastRest(`ex-${LAST_REST_MAX_EXERCISES + 4}`), 90);
+  });
+});
+
+describe('per-exercise rest lanes (.995)', () => {
+  it('maps warmup kind to the warmup lane; everything else is work', () => {
+    assert.equal(restLaneFromKind('warmup'), 'warmup');
+    assert.equal(restLaneFromKind('normal'), 'work');
+    assert.equal(restLaneFromKind('failure'), 'work');
+    assert.equal(restLaneFromKind('drop'), 'work');
+    assert.equal(restLaneFromKind(undefined), 'work');
+  });
+
+  it('warmup and work rest can differ on the same lift; legacy number is work', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 180);
+    assert.equal(recallLastRest('bench-press'), 180);
+    assert.equal(recallLastRest('bench-press', 'work'), 180);
+    assert.equal(recallLastRest('bench-press', 'warmup'), null);
+    rememberLastRest('bench-press', 60, 'warmup');
+    assert.equal(recallLastRest('bench-press', 'work'), 180);
+    assert.equal(recallLastRest('bench-press', 'warmup'), 60);
+    assert.equal(
+      resolveRestForNextSet({
+        exerciseId: 'bench-press',
+        exerciseName: 'Barbell Bench Press',
+        lane: 'work',
+      }),
+      180
+    );
+    assert.equal(
+      resolveRestForNextSet({
+        exerciseId: 'bench-press',
+        exerciseName: 'Barbell Bench Press',
+        lane: 'warmup',
+      }),
+      60
+    );
+  });
+
+  it('unset warmup is the 60s floor — never the work 3:00', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 180, 'work');
+    assert.equal(
+      resolveRestForNextSet({
+        exerciseId: 'bench-press',
+        exerciseName: 'Barbell Bench Press',
+        lane: 'warmup',
+      }),
+      WARMUP_FALLBACK_SECONDS
+    );
+    assert.equal(WARMUP_FALLBACK_SECONDS, 60);
+  });
+
+  it('laterals work 1:00 while bench work stays 3:00', () => {
+    resetStorage();
+    saveDefaultRestSeconds(90);
+    assert.equal(
+      resolveRestForNextSet({
+        exerciseId: 'lateral-raise',
+        exerciseName: 'Lateral Raise',
+        lane: 'work',
+      }),
+      60
+    );
+    assert.equal(
+      resolveRestForNextSet({
+        exerciseId: 'bench-press',
+        exerciseName: 'Barbell Bench Press',
+        lane: 'work',
+      }),
+      180
+    );
+  });
+
+  it('setting one lane does not rewrite the other', () => {
+    resetStorage();
+    rememberLastRest('squats', 180, 'work');
+    rememberLastRest('squats', 45, 'warmup');
+    rememberLastRest('squats', 150, 'work');
+    assert.equal(recallLastRest('squats', 'work'), 150);
+    assert.equal(recallLastRest('squats', 'warmup'), 45);
   });
 });

@@ -35,6 +35,7 @@ test('workoutStore', async (t) => {
       restTimerActive: false,
       restTimerInitialSeconds: 90,
       restExerciseId: null,
+      restLane: null,
       elapsedSeconds: 0,
       // hasHydrated is deliberately not reset — faking it here would mask the
       // hydration regression the first assertion below guards.
@@ -286,6 +287,17 @@ test('workoutStore', async (t) => {
     useWorkoutStore.getState().adjustRestTimer(15);
     assert.equal(useWorkoutStore.getState().restTimerInitialSeconds, 105);
     assert.equal(recallLastRest('curl'), 105);
+  });
+
+  await t.test('warmup start does not overwrite work rest', async () => {
+    reset();
+    const { recallLastRest } = await import('@/lib/workout/restTimer');
+    useWorkoutStore.getState().startRestTimer(180, 'bench-press', 'work');
+    useWorkoutStore.getState().stopRestTimer();
+    useWorkoutStore.getState().startRestTimer(60, 'bench-press', 'warmup');
+    assert.equal(useWorkoutStore.getState().restLane, 'warmup');
+    assert.equal(recallLastRest('bench-press', 'work'), 180);
+    assert.equal(recallLastRest('bench-press', 'warmup'), 60);
   });
 
   await t.test('stopRestTimer source never writes last rest', async () => {

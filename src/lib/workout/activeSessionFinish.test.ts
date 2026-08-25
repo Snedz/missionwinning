@@ -270,6 +270,55 @@ describe('logSetIsPr + planLogSetRest', () => {
     assert.equal(end.takeRest, true);
     assert.equal(end.restSeconds, 180);
     assert.equal(end.rememberExerciseId, 'bench-press');
+    assert.equal(end.rememberLane, 'work');
+  });
+
+  it('warmup log uses warmup rest; work log keeps work rest', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 180, 'work');
+    rememberLastRest('bench-press', 60, 'warmup');
+    const exercises = [
+      {
+        exerciseId: 'bench-press',
+        sets: [
+          { id: 'w1', reps: 8, weight: 40, completed: true, kind: 'warmup' as const },
+          { id: 'a', reps: 5, weight: 100, completed: false },
+        ],
+      },
+    ];
+    const warmup = planLogSetRest({
+      exercisesAfterLog: exercises,
+      exIdx: 0,
+      setIdx: 0,
+      advanceNext: { exerciseIndex: 0, setIndex: 1 },
+      exerciseName: 'Barbell Bench Press',
+      exerciseId: 'bench-press',
+    });
+    assert.equal(warmup.takeRest, true);
+    assert.equal(warmup.restSeconds, 60);
+    assert.equal(warmup.rememberLane, 'warmup');
+
+    const afterWork = [
+      {
+        exerciseId: 'bench-press',
+        sets: [
+          { id: 'w1', reps: 8, weight: 40, completed: true, kind: 'warmup' as const },
+          { id: 'a', reps: 5, weight: 100, completed: true },
+          { id: 'b', reps: 5, weight: 100, completed: false },
+        ],
+      },
+    ];
+    const work = planLogSetRest({
+      exercisesAfterLog: afterWork,
+      exIdx: 0,
+      setIdx: 1,
+      advanceNext: { exerciseIndex: 0, setIndex: 2 },
+      exerciseName: 'Barbell Bench Press',
+      exerciseId: 'bench-press',
+    });
+    assert.equal(work.takeRest, true);
+    assert.equal(work.restSeconds, 180);
+    assert.equal(work.rememberLane, 'work');
   });
 });
 

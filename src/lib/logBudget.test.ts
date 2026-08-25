@@ -162,6 +162,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'movement. No LOG heading on master ever ended in `.972`.',
   },
   {
+    from: 975,
+    to: 975,
+    why:
+      'Quiet Track concern. The ship stamp is `.976` after master `.974`. No LOG ' +
+      'heading on master ever ended in `.975`.',
+  },
+  {
     from: 982,
     to: 982,
     why:

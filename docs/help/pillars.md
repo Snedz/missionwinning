@@ -8,7 +8,7 @@ Mission Winning organizes health into six pillars. The bottom nav highlights the
 
 Strength and conditioning — log workouts, browse exercises, run programs, and review past sessions. This is the free core of the app. During a live session you can type a name the library does not have and keep logging. Unlimited. Free. Stays on this device.
 
-- **Active workout** — live set logging with rest timer and PR detection. Tap a lift to see prior sessions of that movement. Empty invents nothing.
+- **Active workout** — live set logging with rest timer and PR detection. The open row honors weight, bodyweight, time, or assist. Each lift can remember a work rest and a warmup rest. Tap a lift to see prior sessions of that movement. Empty invents nothing.
 - **Builder** — custom workouts and program templates
 - **Library** — searchable exercises with cues and alternatives
 - **History** — past sessions (date, muscles, set count); tap a row to open that log

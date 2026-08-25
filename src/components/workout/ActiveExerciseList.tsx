@@ -62,7 +62,7 @@ type Props = {
   onAddSet: (exIdx: number) => void;
   onStartDrop: (exIdx: number) => void;
   onRemoveSet: (exIdx: number) => void;
-  onStartRest: (seconds: number, exerciseId: string) => void;
+  onStartRest: (seconds: number, exerciseId: string, lane?: import('@/lib/workout/restTimer').RestLane) => void;
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight' | 'duration', value: number) => void;
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
@@ -175,7 +175,7 @@ export function ActiveExerciseList({
             onAddSet={() => onAddSet(exIdx)}
             onStartDrop={() => onStartDrop(exIdx)}
             onRemoveSet={() => onRemoveSet(exIdx)}
-            onStartRest={(seconds) => onStartRest(seconds, exLog.exerciseId)}
+            onStartRest={(seconds, lane) => onStartRest(seconds, exLog.exerciseId, lane)}
             setInput={tableControls.setInput}
             onSetInputChange={(field, value) => {
               if (!tableControls.canEdit || !nextSet) return;

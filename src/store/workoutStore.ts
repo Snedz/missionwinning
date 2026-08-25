@@ -59,6 +59,7 @@ import {
   rememberLastRest,
   rememberedRestAfterAdjust,
   resolveStartRestSeconds,
+  type RestLane,
 } from "@/lib/workout/restTimer";
 
 /**
@@ -81,6 +82,8 @@ interface WorkoutState {
   restTimerInitialSeconds: number;
   /** Exercise the running rest belongs to — memory only, like other restTimer*. */
   restExerciseId: string | null;
+  /** Warmup vs work for the running rest — memory only (`.995`). */
+  restLane: RestLane | null;
   /** In-set EMOM / AMRAP — memory only, not rest (`.987`). */
   workClockKind: WorkClockKind | null;
   workClockActive: boolean;
@@ -161,7 +164,7 @@ interface WorkoutState {
   setSessionNote: (note: string) => void;
   /** Receipt add / edit of a finished session note. Local only. Empty clears. */
   setHistorySessionNote: (logId: string, note: string) => void;
-  startRestTimer: (seconds?: number, exerciseId?: string) => void;
+  startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
   stopRestTimer: () => void;
@@ -211,6 +214,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restTimerActive: false,
       restTimerInitialSeconds: FALLBACK_REST_SECONDS,
       restExerciseId: null,
+      restLane: null,
       ...IDLE_WORK_CLOCK,
       elapsedSeconds: 0,
       hasHydrated: false,
@@ -283,6 +287,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          restLane: null,
           ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
@@ -304,6 +309,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          restLane: null,
           ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
@@ -321,6 +327,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           ...IDLE_WORK_CLOCK,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          restLane: null,
           pendingRemoteOpenSession: null,
         });
         if (tomb) enqueueOpenSession(tomb);
@@ -369,6 +376,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          restLane: null,
           ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         }));
@@ -850,16 +858,18 @@ export const useWorkoutStore = create<WorkoutState>()(
         }));
       },
 
-      startRestTimer: (seconds?: number, exerciseId?: string) => {
+      startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {
         // `.292` — never invent 30s. One fallback lives in restTimer.ts.
         const sec = resolveStartRestSeconds(seconds);
         const id = (exerciseId?.trim() || get().restExerciseId || '').trim() || null;
-        if (id) rememberLastRest(id, sec);
+        const restLane = lane ?? get().restLane ?? 'work';
+        if (id) rememberLastRest(id, sec, restLane);
         set({
           restSecondsRemaining: sec,
           restTimerInitialSeconds: sec,
           restTimerActive: true,
           restExerciseId: id,
+          restLane,
           ...IDLE_WORK_CLOCK,
         });
       },
@@ -871,8 +881,9 @@ export const useWorkoutStore = create<WorkoutState>()(
             previousInitial: s.restTimerInitialSeconds,
             nextRemaining: next,
           });
+          const restLane = s.restLane ?? 'work';
           if (remembered != null && s.restExerciseId) {
-            rememberLastRest(s.restExerciseId, remembered);
+            rememberLastRest(s.restExerciseId, remembered, restLane);
           }
           return {
             restSecondsRemaining: next,
@@ -880,6 +891,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             restTimerInitialSeconds:
               next > s.restTimerInitialSeconds ? next : s.restTimerInitialSeconds,
             restExerciseId: next > 0 ? s.restExerciseId : null,
+            restLane: next > 0 ? restLane : null,
           };
         });
       },
@@ -892,7 +904,12 @@ export const useWorkoutStore = create<WorkoutState>()(
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
               navigator.vibrate([120, 60, 120]);
             }
-            return { restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null };
+            return {
+              restSecondsRemaining: 0,
+              restTimerActive: false,
+              restExerciseId: null,
+              restLane: null,
+            };
           }
           return { restSecondsRemaining: next };
         });
@@ -905,6 +922,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restExerciseId: null,
+          restLane: null,
           ...IDLE_WORK_CLOCK,
         });
       },
@@ -916,6 +934,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restExerciseId: null,
+          restLane: null,
           workClockKind: resolved.kind,
           workClockActive: true,
           workClockRemaining: resolved.seconds,
@@ -1007,6 +1026,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          restLane: null,
           ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
