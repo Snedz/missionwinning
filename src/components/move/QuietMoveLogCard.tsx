@@ -2,7 +2,7 @@
 
 /**
  * Quiet rest-day walk / easy session on Move.
- * Outline log. Optional minutes or distance. Not a Start. Not a ring.
+ * Outline log. Optional minutes or distance. Not a Start. Not a score circle.
  */
 
 import { useMemo, useState } from 'react';
