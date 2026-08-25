@@ -124,6 +124,10 @@ type Props = {
   workClockRemaining?: number;
   onStartWorkClock?: (kind: WorkClockKind, seconds?: number) => void;
   onStopWorkClock?: () => void;
+  canReorder?: boolean;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  onReorder?: (fromIndex: number, toIndex: number) => void;
 };
 
 export function ActiveExerciseCard({
@@ -177,6 +181,10 @@ export function ActiveExerciseCard({
   workClockRemaining = 0,
   onStartWorkClock,
   onStopWorkClock,
+  canReorder = false,
+  canMoveUp = false,
+  canMoveDown = false,
+  onReorder,
 }: Props) {
   const { t } = useTranslation();
   const [barWeight, setBarWeight] = useBarWeight(units);
@@ -312,6 +320,8 @@ export function ActiveExerciseCard({
         ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
       data-exercise-id={exercise.id}
+      data-ex-idx={exIdx}
+      data-testid="active-exercise-card"
       data-pair-mark={ssLabel ?? undefined}
     >
       <ActiveExerciseHeader
@@ -339,6 +349,11 @@ export function ActiveExerciseCard({
         onRemove={onRemove}
         onSwapTo={onSwapTo}
         onRepeatLast={onRepeatLast}
+        canReorder={canReorder}
+        canMoveUp={canMoveUp}
+        canMoveDown={canMoveDown}
+        onReorder={onReorder}
+        exIdx={exIdx}
       />
       {skipped ? null : (
       <CardContent className="min-w-0 space-y-2 p-3 pt-0">
