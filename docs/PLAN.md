@@ -255,6 +255,17 @@ week strip `.977` / `.976` /
   Draft PR against master. Title:
   `Warmup batch (.984)`.
 
+**Landed `.985` (concern `.984`):** `planWarmupBatch`
+(½ / ⅔ / ¾ × 5 / 3 / 1) in
+`src/lib/workout/warmupRamp.ts`.
+`planWarmupRamp` is the same helper.
+`shouldShowAddWarmups` no longer
+requires a bar. Insert stays a tap.
+Athlete can edit the active row or
+`removePlannedSetAt` any incomplete
+warmup. Empty invents nothing.
+Cites stay `.970`. No paywall.
+
 ---
 
 ## Frozen plan — `.982` Private session notes (2026-08-25)

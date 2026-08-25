@@ -68,6 +68,7 @@ type Props = {
   onSetSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
   onOpenPlates?: () => void;
   onAddWarmups?: (exIdx: number) => void;
+  onRemovePlannedSet?: (exIdx: number, setIdx: number) => void;
 };
 
 export function ActiveExerciseList({
@@ -107,6 +108,7 @@ export function ActiveExerciseList({
   onSetSideChange,
   onOpenPlates,
   onAddWarmups,
+  onRemovePlannedSet,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -185,6 +187,9 @@ export function ActiveExerciseList({
             }}
             onOpenPlates={onOpenPlates}
             onAddWarmups={onAddWarmups ? () => onAddWarmups(exIdx) : undefined}
+            onRemovePlannedSet={
+              onRemovePlannedSet ? (setIdx) => onRemovePlannedSet(exIdx, setIdx) : undefined
+            }
           />
         );
       })}

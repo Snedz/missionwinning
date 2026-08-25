@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-960-for-985.md](./log/LOG-rotate-960-for-985.md) | rotated 2026-08-25 for `.985` warmup batch (`.960`; concern `.984`) |
 | [log/LOG-rotate-959-for-983.md](./log/LOG-rotate-959-for-983.md) | rotated 2026-08-25 for `.983` private session notes (`.959`) |
 | [log/LOG-rotate-958-for-981.md](./log/LOG-rotate-958-for-981.md) | rotated 2026-08-25 for `.981` 1RM percent (`.958`) |
 | [log/LOG-rotate-957-for-980.md](./log/LOG-rotate-957-for-980.md) | rotated 2026-08-25 for `.980` supersets (`.957`) |
