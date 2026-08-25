@@ -13,6 +13,7 @@ import { countsTowardVolume } from '@/lib/workout/setKind';
 import { parseOptionalTempo } from '@/lib/workout/tempo';
 import { completedLoggedSet } from '@/lib/workout/unilateral';
 import { findNextSet } from '@/lib/workout/activeWorkoutHelpers';
+import { stripOrphanGroups } from '@/lib/workout/superset';
 import type { ActiveWorkout, CompletedWorkoutLog } from '@/types';
 
 export type ThisDeviceResume =
@@ -93,15 +94,18 @@ export function finishPartialFromActive(
         ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
         ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
         ...(ex.prescribed ? { prescribed: true as const } : {}),
+        ...(ex.supersetGroup?.trim() ? { supersetGroup: ex.supersetGroup.trim() } : {}),
       };
     })
     .filter((ex) => ex.sets.length > 0);
 
-  if (exercises.length === 0) return null;
+  const grouped = stripOrphanGroups(exercises);
 
-  const volumeSets = exercises.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
+  if (grouped.length === 0) return null;
+
+  const volumeSets = grouped.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
   return {
-    exercises,
+    exercises: grouped,
     volume: calculateVolume(volumeSets),
   };
 }

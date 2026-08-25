@@ -233,6 +233,21 @@ Today Start. Do not smash Learn
 / `.970` / `.967` / `.965` /
 `.963` / `.960`.
 
+**Landed `.980` (concern `.979`):** `groupWithNext` /
+`isNextInThisGroup` /
+`isMidRoundPeerOpen` /
+`restIdentityAfterLog` /
+`stripOrphanGroups` in
+`src/lib/workout/superset.ts`.
+`pairWithNext` is an alias. Rest
+after last peer keys the first
+peer. Cite is quiet mid-round.
+Group persists on template,
+completed log, Save, Start,
+Repeat last, Finish-partial.
+Menu stays until the next lift
+is already in this group.
+
 ### Docs / ship protocol
 
 - `APP_BUILD_LABEL` → `2026.07-unified.980` (past master `.978`; concern `.979`)

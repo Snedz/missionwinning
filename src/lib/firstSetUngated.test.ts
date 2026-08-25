@@ -149,7 +149,7 @@ describe('firstSetUngated wiring', () => {
   it('handleLogSet does not await auth', () => {
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     const fn = page.match(
-      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds(?:,\s*exerciseId)?\);[\s\S]*?\n {2}\};/
+      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds(?:,\s*[^)]+)?\);[\s\S]*?\n {2}\};/
     );
     assert.ok(fn, 'handleLogSet rest block missing');
     const body = fn[0];

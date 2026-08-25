@@ -19,7 +19,7 @@ import {
 } from '@/lib/journal/composeEntry';
 import { computeBodyScores } from '@/lib/score';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
-import { shouldRestAfterLog } from '@/lib/workout/superset';
+import { restIdentityAfterLog, shouldRestAfterLog } from '@/lib/workout/superset';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import {
@@ -126,10 +126,13 @@ export function finishBlockedReason(
 export type LogSetRestPlan = {
   takeRest: boolean;
   restSeconds: number;
+  /** Last-rest key — first peer after a group round, else the logged lift. */
+  rememberExerciseId?: string;
 };
 
 /**
  * After a set is written into the store: whether to start rest and for how long.
+ * A group round rests on the first peer, not A2.
  */
 export function planLogSetRest(params: {
   /** Full active exercises after the set was marked complete. */
@@ -141,18 +144,33 @@ export function planLogSetRest(params: {
   exerciseName: string | undefined;
   /** Catalog id — last-rest recall keys on this, not the localized name. */
   exerciseId?: string;
+  /** Name of the first peer — used when rest is the end of a group round. */
+  groupLeadName?: string;
 }): LogSetRestPlan {
+  const takeRest = shouldRestAfterLog(
+    params.exercisesAfterLog,
+    params.exIdx,
+    params.setIdx,
+    params.advanceNext
+  );
+  const identity = restIdentityAfterLog(
+    params.exercisesAfterLog,
+    params.exIdx,
+    params.setIdx,
+    params.advanceNext
+  );
+  const restId = identity.exerciseId ?? params.exerciseId;
+  const restName =
+    restId && restId !== params.exerciseId
+      ? params.groupLeadName ?? params.exerciseName
+      : params.exerciseName;
   return {
-    takeRest: shouldRestAfterLog(
-      params.exercisesAfterLog,
-      params.exIdx,
-      params.setIdx,
-      params.advanceNext
-    ),
+    takeRest,
     restSeconds: resolveRestForNextSet({
-      exerciseId: params.exerciseId,
-      exerciseName: params.exerciseName,
+      exerciseId: restId,
+      exerciseName: restName,
     }),
+    rememberExerciseId: restId,
   };
 }
 

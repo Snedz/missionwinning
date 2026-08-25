@@ -793,12 +793,12 @@ export function shouldShowLoadPctChip(
   return loadPct != null && loadPct > 0 && exerciseHasWeightedSet(sets);
 }
 
-/** Superset-with-next only when there is a next exercise and none is linked yet. */
+/** Superset-with-next when the next lift exists and is not already in this group. */
 export function shouldShowSupersetLinkMenuitem(
   hasNextExercise: boolean,
-  alreadySupersetted: boolean
+  nextAlreadyInThisGroup = false
 ): boolean {
-  return hasNextExercise && !alreadySupersetted;
+  return hasNextExercise && !nextAlreadyInThisGroup;
 }
 
 /** Swap this session — another movement, not only a garage stand-in (`.959`). */

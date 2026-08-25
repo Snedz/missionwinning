@@ -180,6 +180,53 @@ describe('formatVsLastSetDeltas', () => {
     assert.deepEqual(labels, ['+1 rep']);
   });
 
+  it('A2 vs-last uses A2 history, never A1 numbers', () => {
+    const hist: CompletedWorkoutLog[] = [
+      {
+        id: 'h1',
+        workoutName: 'Push',
+        startedAt: 't0',
+        completedAt: 't1',
+        durationSeconds: 3600,
+        totalVolume: 100,
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [{ reps: 5, weight: 100 }],
+          },
+          {
+            exerciseId: 'bent-over-row',
+            sets: [{ reps: 8, weight: 60 }],
+          },
+        ],
+      },
+    ];
+    const bench = formatVsLastSetDeltas(
+      hist,
+      'bench-press',
+      [{ completed: true, reps: 5, weight: 102.5, kind: 'normal' }],
+      'kg',
+      WORDS
+    );
+    const row = formatVsLastSetDeltas(
+      hist,
+      'bent-over-row',
+      [{ completed: true, reps: 8, weight: 60, kind: 'normal' }],
+      'kg',
+      WORDS
+    );
+    const firstRow = formatVsLastSetDeltas(
+      hist,
+      'curl',
+      [{ completed: true, reps: 10, weight: 20, kind: 'normal' }],
+      'kg',
+      WORDS
+    );
+    assert.deepEqual(bench, ['+2.5 kg']);
+    assert.deepEqual(row, ['same']);
+    assert.deepEqual(firstRow, [null]);
+  });
+
   it('first-ever has no token', () => {
     const labels = formatVsLastSetDeltas(
       [],

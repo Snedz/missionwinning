@@ -17,7 +17,7 @@ import { countsTowardVolume } from "@/lib/workout/setKind";
 import { parseOptionalRir } from "@/lib/workout/rir";
 import { parseOptionalRpe10 } from "@/lib/workout/rpe10";
 import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
-import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
+import { advanceAfterLog, groupWithNext, stripOrphanGroups, unpair } from "@/lib/workout/superset";
 import {
   parseSetSide,
   suggestNextSide,
@@ -227,15 +227,20 @@ export const useWorkoutStore = create<WorkoutState>()(
           workoutId,
           workoutName: name,
           startedAt: new Date().toISOString(),
-          exercises: resolved.map((ex) =>
-            applyHistoryNote(
-              {
-                exerciseId: ex.exerciseId,
-                sets: templateSetsToLogged(ex),
-                ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
-                ...(ex.prescribed ? { prescribed: true } : {}),
-              },
-              history
+          exercises: stripOrphanGroups(
+            resolved.map((ex) =>
+              applyHistoryNote(
+                {
+                  exerciseId: ex.exerciseId,
+                  sets: templateSetsToLogged(ex),
+                  ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+                  ...(ex.prescribed ? { prescribed: true } : {}),
+                  ...(ex.supersetGroup?.trim()
+                    ? { supersetGroup: ex.supersetGroup.trim() }
+                    : {}),
+                },
+                history
+              )
             )
           ),
         });
@@ -613,7 +618,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           return {
             activeWorkout: {
               ...s.activeWorkout,
-              exercises: pairWithNext(s.activeWorkout.exercises, exerciseIndex),
+              exercises: groupWithNext(s.activeWorkout.exercises, exerciseIndex),
             },
           };
         });

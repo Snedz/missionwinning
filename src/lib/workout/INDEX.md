@@ -11,7 +11,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
-3. `superset.ts` — pair-of-two (`pairWithNext` / `unpair` / `pairMark` A1/A2), advance after log, rest gate (`.749`)  
+3. `superset.ts` — group of two or more (`groupWithNext` / `unpair` / `pairMark` A1/A2/A3), advance after log, rest gate, rest identity on first peer (`.749` / `.980` / concern `.979`)  
 4. `nextSetTargets.ts` — set-table-style next set suggestions  
 5. `percentLoad.ts` — a team-training app-style % of e1RM → absolute weight (`loadPct`)  
 6. `workoutTemplate.ts` — template → logged sets  
@@ -70,7 +70,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `importHevyMeasurements.test.ts` | Empty / one / malformed measurements; merge existing-wins; re-import no-op (`.951`) |
 | `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`); preview + confirm (`.940`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
-| `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
+| `superset.test.ts` | Group persist, A1/A2/A3 marks, advance, rest gate, first-peer rest (`.749` / `.980` / concern `.979`) |
 | `nextSetTargets.test.ts` | Progression targets |
 | `percentLoad.test.ts` | e1RM max, % → weight, scale |
 | `workoutTemplate.test.ts` | Template logging |

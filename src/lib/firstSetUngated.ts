@@ -12,6 +12,7 @@
  * `.973` — short written cues on the open live exercise. Never a login wall.
  * `.977` — empty week-strip rest day may log one quiet Fuel / Move / Track row. Never a login wall.
  * `.978` — Quiet Learn intro + cue link. Never a login wall.
+ * `.980` — optional exercise group (superset) in the live log. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

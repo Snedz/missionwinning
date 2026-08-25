@@ -35,6 +35,27 @@ describe('templateFromCompletedLog (K7)', () => {
     assert.equal(t!.exercises[1]!.exerciseId, 'push-ups');
   });
 
+  it('keeps a shared group so Repeat last honors the circuit', () => {
+    const t = templateFromCompletedLog({
+      workoutName: 'Push',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          supersetGroup: 'g1',
+          sets: [{ reps: 5, weight: 100 }],
+        },
+        {
+          exerciseId: 'bent-over-row',
+          supersetGroup: 'g1',
+          sets: [{ reps: 8, weight: 60 }],
+        },
+      ],
+    });
+    assert.ok(t);
+    assert.equal(t!.exercises[0]?.supersetGroup, 'g1');
+    assert.equal(t!.exercises[1]?.supersetGroup, 'g1');
+  });
+
   it('drops warmup-tagged sets so Wednesday / Repeat last do not copy them as work', () => {
     const t = templateFromCompletedLog({
       workoutName: 'Push',

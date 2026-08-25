@@ -39,7 +39,7 @@ import { resolveInSetCues, shouldShowInSetCues } from '@/lib/workout/inSetCues';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
-import { supersetLabel } from '@/lib/workout/superset';
+import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
 import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
@@ -171,6 +171,7 @@ export function ActiveExerciseCard({
   });
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
+  const nextInThisGroup = isNextInThisGroup(exercises, exIdx);
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const formGuide = getFormGuideOrCues(exercise.id, { exercise });
@@ -232,6 +233,7 @@ export function ActiveExerciseCard({
       units,
       goalRange,
       lastRestSeconds,
+      midRoundPeer: isMidRoundPeerOpen(exercises, exIdx, setIdx),
     })
   );
   const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
@@ -275,6 +277,7 @@ export function ActiveExerciseCard({
         hasFormGuide={hasFormGuide}
         hasCompleted={hasCompleted}
         hasNext={hasNext}
+        nextInThisGroup={nextInThisGroup}
         menuOpen={menuOpen}
         onMenuOpenChange={setMenuOpen}
         swapOpen={swapOpen}

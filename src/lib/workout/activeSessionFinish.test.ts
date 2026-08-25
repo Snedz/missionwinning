@@ -204,6 +204,52 @@ describe('logSetIsPr + planLogSetRest', () => {
     });
     assert.equal(rest.takeRest, false);
   });
+
+  it('group round rest keys on the first peer, not A2', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 180);
+    rememberLastRest('bent-over-row', 60);
+    const exercises = [
+      {
+        exerciseId: 'bench-press',
+        supersetGroup: 'g1',
+        sets: [
+          { id: 'a1', reps: 5, weight: 100, completed: true },
+          { id: 'a2', reps: 5, weight: 100, completed: false },
+        ],
+      },
+      {
+        exerciseId: 'bent-over-row',
+        supersetGroup: 'g1',
+        sets: [
+          { id: 'b1', reps: 8, weight: 60, completed: true },
+          { id: 'b2', reps: 8, weight: 60, completed: false },
+        ],
+      },
+    ];
+    const mid = planLogSetRest({
+      exercisesAfterLog: exercises,
+      exIdx: 0,
+      setIdx: 0,
+      advanceNext: { exerciseIndex: 1, setIndex: 0 },
+      exerciseName: 'Barbell Bench Press',
+      exerciseId: 'bench-press',
+    });
+    assert.equal(mid.takeRest, false);
+
+    const end = planLogSetRest({
+      exercisesAfterLog: exercises,
+      exIdx: 1,
+      setIdx: 0,
+      advanceNext: { exerciseIndex: 0, setIndex: 1 },
+      exerciseName: 'Bent Over Row',
+      exerciseId: 'bent-over-row',
+      groupLeadName: 'Barbell Bench Press',
+    });
+    assert.equal(end.takeRest, true);
+    assert.equal(end.restSeconds, 180);
+    assert.equal(end.rememberExerciseId, 'bench-press');
+  });
 });
 
 describe('assembleActiveVictory', () => {
