@@ -1,63 +1,89 @@
-# PLAN.md — Restore the tight `/private` lock (`.957`)
+# PLAN.md — EMOM/AMRAP timer (`.987`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the door freeze (same home as the `.942` four-scene plan
-this ship reverses).
-**Lane:** Engineering-Web · gated first paint · **Horizon:** 0
-**Label:** `2026.07-unified.957` (master is `.956` / `#793` `8b71ea50`.
-Do **not** smash E-Victory `.956`.)
-**Excellence-Override:** restore tight gated lock (no Today/Train restyle)
+ship; this file is the work-clock freeze.
+**Lane:** Engineering-Web · in-set Train · **Horizon:** 0
+**Label:** `2026.07-unified.987` (master is `.985` / `8a9fe41f`
+Warmup batch. Concern `.986` is the clock. Stamp skips `.986` so a
+concurrent drop-set can take that number. If drop-set `.986` merges
+first, rebase and keep this stamp **greater than** the new master.)
+**Excellence-Override:** in-set interval / countdown on the live set
+row (not Watch, not rest-dock reuse)
 
 ---
 
 ## 0. What this is
 
-Founder verdict 2026-08-24: the four-scene gated www door on Preview `.955`
-is refused. The live lock at https://www.missionwinning.com/private
-(build `.696`) is the density they want: one hero, one notify form, one
-access-code section, header badge. Tight. Not a marketing scroll.
+Train already has a rest timer. Missing: a clock that is **not rest** —
+an interval or countdown on the set they are logging so they do not
+fuss with a watch for EMOM or AMRAP.
 
-`#778` (`.942`) turned `/private` into SET → ANYWHERE → WEEK → DOOR.
-That layout is refused as first paint. Restore the old lock chrome.
-Keep the `#776` copy lock. Do not bring old words back.
+TH grammar (do not copy UI or brand): the athlete page carries
+built-in timers for rest, AMRAP, and EMOM as **distinct clocks**.
+This is that in-set steal. Not Watch-as-pitch. Not a Health
+permission. Not a second home.
 
-`PRIVATE_MODE` stays on. This is a gate restore, not a public flip.
-Live www stays `.696`. Do not promote.
+`PRIVATE_MODE` stays on. Live www stays `.696`. Do not promote.
 
-## 1. Investigate (done — hypothesis holds)
+## 1. Investigate (done — hypothesis half-wrong)
 
-| Claim | Verified on `origin/master` `.955` (`2d9428a2`) |
-|-------|-----------------------------------------------|
-| First paint is the four-scene field | **Yes.** `GateTeaser` wraps `CinematicWww mode="gate"` and passes `PrivateTeaserClient` as `door`. Scenes `id="set"` → `anywhere` → `week` → `door`. SET mounts `CinematicLogger` (squat demo). |
-| Cookie / gate-off `/` is `.696` | **Yes.** `app/page.tsx` cookie → `LandingPage`. Do not restore `CinematicWww` as `/`. |
-| `#776` copy lock is still the pack | **Yes.** `gateEn.ts`: `Log a set.` / `Offline.` · `No account. No wearable.` · `Free` · `Get notified` · `Enter with code`. `gatedWwwHonesty.ts` still bans Win Daily / Alpha / Beta / invite-only / Free beta / Private Beta / Get an invite / We're live. |
-| Pre-`.942` door was the tight lock | **Yes.** Parent of `82fcc739` (`GateTeaser` mounts `PrivateTeaserClient` only). Markup: `gate-shell` · MW mark + Mission Winning · `gate-h1` (`gateTitle1` / `gateTitle2`) · `gate-lede` (`gateSubtitle`) · `LaunchNotifyForm variant="gate"` · `<details>` Enter with code · legal footer. That is image 1 density with locked copy already in the pack. |
-| `#778` leftovers that are not the scroll | **Keep.** F-039 `/today` `/train` 308 in `proxy.ts`. `/notify` Super Bundle form (`NotifyPage` + `app/notify/page.tsx`). `LaunchNotifyForm` still has `variant="gate"`. Session probe, territory refuse, invitee expand, `?next=` stay on the teaser. |
+Checked on `origin/master` `.985` (`8a9fe41f`).
 
-**Conclusion:** smallest revert is unmount `CinematicWww` from `GateTeaser` and
-restore the pre-`.942` teaser chrome. Do not delete `CinematicWww` /
-`CinematicLogger` / `cinematic.css` (concept + unused port). Do not remount
-them on `/` or `/private`. Do not revert F-039 or `/notify`.
+| Claim | Verified |
+|-------|----------|
+| Rest lives next to the set row | **No.** Rest is a **post-set dock**. `handleLogSet` → `planLogSetRest` → `startRestTimer` → `RestTimerBar` in `ScreenDock` (`ActiveSessionDock`). Dock mode `rest` replaces the console. The set table has no clock. |
+| Rest can be started by hand | **Yes.** `ActiveExerciseFooter` Timer icon calls `onStartRest(restSec)`. Same rest slice. |
+| Set row already holds optional extras | **Yes.** W / D / F chips, RPE, RIR, tempo, % of known 1RM. Same density home for an optional start. |
+| Rest is local-first, memory-only | **Yes.** `restTimer*` is not in persist. `tickRestTimer` is 1s. `localFirstRestGuard` forbids await/fetch/auth on the rest path. |
+| A work clock already exists | **No.** No EMOM / AMRAP / interval / countdown module. Program notes may *say* EMOM/AMRAP; nothing starts a clock. `LiveHeartRate` is BLE — do not touch. |
+| Today / door | One Start. Resume `.963`. `/private` is the tight `.957` lock. |
 
-## 2. Lock (density + copy)
+**Hypothesis (founder, non-binding):** rest already lives next to the
+set row; extend that surface.
 
-First paint of gated `/` and `/private`:
+**Verdict: discard the “extend the rest dock” half.** Rest is between
+sets. EMOM and AMRAP run **during** the work on the set they are
+logging. Putting the work clock in `RestTimerBar` would steal the
+dock after Log set — the wrong moment — and fight ordinary rest.
 
-| Slot | Chrome | Copy (locked) |
-|------|--------|----------------|
-| Header | MW badge + Mission Winning · eyebrow right | **Free** (`gateEyebrow`) |
-| Hero | `gate-h1` two lines · lede | **Log a set.** / **Offline.** · **No account. No wearable.** |
-| Notify | one section, one red | **Get notified** · email · **Notify me** · no-spam foot |
-| Code | `<details>` below a rule | **Enter with code** |
-| Footer | tagline + legal | `gateFooterTagline` · existing `AppLegalFooter` |
+**Keep the “in-set, athlete-started, not Watch” half.** Optional
+interval / countdown on the **live set row**. Rest dock stays for
+ordinary rest.
 
-Banned on the door (already enforced): Win Daily, Alpha, Beta, invite-only,
-Free beta, Private Beta, Get an invite, We're live.
+## 2. Lock (clock + rest)
 
-No squat demo. No Anywhere scene. No Coach Miss / Travel / Band. No
-four-scene field. One screen, not SET → ANYWHERE → WEEK → DOOR.
+| Slot | Idle | Running |
+|------|------|---------|
+| Live set row | Two chips: **EMOM** · **AMRAP**. No clock painted. | Kind + ticking clock + **Stop**. AMRAP also shows 5 / 10 / 12 / 20 min chips. |
+| Rest dock | Unchanged. Auto after Log set when no work clock. Footer Timer still starts rest. | Rest does **not** auto-start while the work clock is active. Starting a work clock stops rest. Starting rest (footer or auto) stops the work clock. One athlete clock at a time. |
+| Empty | No clock until they start one. No auto from a program note that says EMOM. | EMOM hits 0 → restart 60s. AMRAP hits 0 → stay at 0 until Stop. Stop returns to idle chips. |
+
+Closed rules:
+
+1. **Not rest.** Separate store slice (`workClock*`). Do not reuse
+   `restTimer*` / `RestTimerBar` / `startRestTimer` for the work
+   clock. Share `formatRestClock` only.
+2. **Athlete starts it.** Optional. Guest. Never required to Log set.
+   First set stays ungated.
+3. **Empty invents nothing.** No clock, no persist, no cloud, no
+   Health, no Watch pitch. Program copy that mentions EMOM/AMRAP
+   does not start a timer.
+4. **EMOM = the minute.** Interval, 60s, on 0 restart 60s. Not
+   E2MOM. Not a custom interval shop.
+5. **AMRAP = a window.** Countdown. Closed presets 5 / 10 / 12 / 20
+   min. First tap starts **10:00**. Switching a preset restarts that
+   window. On 0 it stops (window over).
+6. **Ordinary rest stays.** When the work clock is off, `planLogSetRest`
+   + dock + last-rest recall + skip behave as today. Drop-set skip-rest
+   and group-round rest stay their own rules.
+7. **Surfaces.** Clock is on the live set they are logging (`SetLogTable`
+   active row). Not Today. Not Victory. Not `/private`. Not a dashboard.
+   Today still one Start. Resume / Finish-partial stay `.963`.
+8. **Local, memory-only.** Same as rest. Leave/return may lose the
+   ticking clock. Do not add it to persist `partialize`. Tick must not
+   rewrite history (existing `persistDedupe`).
 
 ## 3. Ship (only this)
 
@@ -65,87 +91,148 @@ four-scene field. One screen, not SET → ANYWHERE → WEEK → DOOR.
 
 This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 
-### 3.2 Live door = tight lock
+### 3.2 Pure helper — `src/lib/workout/workClock.ts`
 
-`GateTeaser` mounts `PrivateTeaserClient` only. No `CinematicWww` wrap.
+One module. Deterministic. No store. No DOM. No premium / rewards /
+social / Health / speech / wearables.
 
-- Prod `/private` and Preview/local `/` (until cookie) show the same lock.
-- Cookie / gate-off `/` stays `.696` `LandingPage`.
-- Restore `PrivateTeaserClient` to the pre-`.942` `gate-shell` layout
-  (header / h1 / notify / details / footer). Keep session probe under the
-  poster (no early return). Keep territory refuse / notice. Keep invitee
-  expanded code form. Keep `LaunchNotifyForm` `source="launch-waitlist"`
-  `variant="gate"`.
-- One red: **Notify me** (`gate-btn-primary`). Enter with code is
-  secondary (`gate-btn-secondary`).
+| Export | Rule |
+|--------|------|
+| `WORK_CLOCK_KINDS` | `'interval' \| 'countdown'` |
+| `EMOM_INTERVAL_SECONDS` | `60` |
+| `AMRAP_PRESETS` | `[300, 600, 720, 1200]` (5 / 10 / 12 / 20 min) |
+| `AMRAP_DEFAULT_SECONDS` | `600` |
+| `resolveWorkClockStart({ kind, seconds? })` | interval → 60 (ignore other seconds). countdown → finite seconds in presets, else 600. Invalid kind / non-finite → `null` (empty invents nothing). |
+| `tickWorkClock({ kind, remaining })` | interval: remaining≤1 → `{ remaining: 60, active: true, restarted: true }`. countdown: remaining≤1 → `{ remaining: 0, active: false, restarted: false }`. Else remaining−1, still active. |
+| `shouldAutoRestAfterLog({ workClockActive })` | `false` when the work clock is active; `true` otherwise. Named so the rest compose cannot be inlined and go silent. |
+| `formatWorkClock` | alias of `formatRestClock` — one clock string. |
 
-### 3.3 Keep later-safe `#778` bits (not first paint)
+Do not import this from Today, `/private`, Coach, or www.
 
-- F-039 `/today` `/train` 308 before the gate (`proxy.ts`).
-- `/notify` Super Bundle form. Do not put Super Bundle on the door.
-- Copy lock + honesty pack. Do not restore "Train anywhere. Win daily."
-- `CinematicWww` stays in tree, unmounted from the door.
+### 3.3 Store slice — memory only
 
-### 3.4 Tests
+`workoutStore.ts`, next to rest, **not** in persist:
 
-Door copy lock stays green (`gatedWwwHonesty.test.ts` pack + banned regex).
+- `workClockKind: 'interval' \| 'countdown' \| null`
+- `workClockActive: boolean`
+- `workClockRemaining: number`
+- `workClockInitialSeconds: number`
 
-Rewrite first-paint assertions that require SET / ANYWHERE / WEEK on
-`/private`:
+Actions: `startWorkClock(kind, seconds?)`, `tickWorkClock()`,
+`stopWorkClock()`. Start resolves through `resolveWorkClockStart`
+(null → no-op). Start stops rest. `startRestTimer` / `stopRestTimer`
+stop the work clock. Session complete / cancel / start-new clears
+both clocks (rest already clears; work clock follows).
 
-| File | Change |
-|------|--------|
-| `gatedWwwCraft.test.ts` | Door is tight lock (`gate-shell` / `gate-h1` / no `CinematicWww` on `GateTeaser`). Mutant remounting the wrap dies. Homepage ban holds. Consent still after children. Alpha-on-the-door still banned. Drop scene-order / squat-demo / four-scene polish as *door* assertions. |
-| `previewHomeTeaser.test.ts` | `GateTeaser` is the tight lock; homepage is not cinematic. |
-| `gateTeaserHonesty.test.ts` | Notify title lives on the teaser again (`gateWaitlistTitle`). |
-| `gatedWwwHonesty.test.ts` | Wedge teaser + support lede live on `PrivateTeaserClient` (`data-mw-wedge-teaser` / `gateSubtitle`). |
-| `firstPaintFloor.test.ts` | Gate poster is the teaser h1, not `cineHeroHeadline`. Session probe still must not early-return. |
-| `firstSetWhileGated.test.ts` | Notify stays on the door; form uses `gate` variant (primary notify), not cine ghost. |
+`ActiveWorkoutPage` ticks `tickWorkClock` on a 1s interval while
+`workClockActive` (same shape as `tickRestTimer`). No `await`.
 
-Leave as concept-only (not first paint): `exquisiteComp.test.ts` (HTML
-comp), `landingStatRow.test.ts` (component still exists, still not `/`).
+### 3.4 Rest compose
 
-`landingNotifyForm.test.ts` `/notify` + shared form stay. F-039
-`proxyAliasRedirect.test.ts` stays.
+`planLogSetRest` reads `shouldAutoRestAfterLog`. When the work clock
+is active, `takeRest` is false — they already have a clock.
+When it is off, today’s group / drop / last-rest rules stand.
 
-Mutant that remounts `<CinematicWww` on `GateTeaser` dies.
-Mutant that restores `Train anywhere. Win daily.` on the door dies
-(existing honesty).
+`handleLogSet` stays sync. `localFirstRestGuard` stays green.
+Do not await fetch / outbox / auth before either clock.
 
-### 3.5 Docs that would lie if left on four-scene-as-door
+### 3.5 Live set row
 
-- `app/INDEX.md` `/private` row
-- `src/components/landing/INDEX.md` (`CinematicWww` is not the live door)
-- `src/lib/INDEX.md` first-paint row
+`SetLogTable` active row only (the set they are logging):
+
+- Idle: **EMOM** · **AMRAP** chips (`data-testid="set-row-work-clock-start"`).
+- Running: kind label + `formatWorkClock(remaining)` + **Stop**
+  (`data-testid="set-row-work-clock"`). AMRAP shows the four presets.
+- Completed / planned rows: no chips, no clock.
+- Log set stays the only poster-red control. Clock uses ink / muted
+  tokens, tabular nums, ≥44px taps. No second typeface. No glow.
+
+Wire from `ActiveExerciseCard` / page. Do not mount a second
+`RestTimerBar`. Do not put the clock on Today.
+
+### 3.6 Tests
+
+New `src/lib/workout/workClock.test.ts` (must be able to go red):
+
+1. Interval start is 60. Countdown start without seconds is 600.
+   Unknown kind / NaN / 0 → `null`. Mutant that starts a clock from
+   empty dies.
+2. Interval tick from 1 restarts 60 and stays active. Countdown tick
+   from 1 → 0 and inactive. Mutant that reuses rest-at-zero (stop
+   interval) or that restarts AMRAP dies.
+3. `shouldAutoRestAfterLog({ workClockActive: true })` is false.
+   `{ workClockActive: false }` is true. Mutant that always rests or
+   never rests dies.
+4. Store: start interval does not set `restTimerActive`. Start rest
+   clears the work clock. Stop work clock returns idle. Tick does not
+   write persist fields.
+5. `planLogSetRest` + page: ordinary log still calls
+   `startRestTimer` when the work clock is off. While it is on, the
+   log path does not start rest. `localFirstRestGuard` +
+   `firstSetUngated` stay green.
+6. Today / `/private` / gated door do not import `workClock` or mount
+   the chips. Mutant that mounts them on Today dies.
+7. Helper + row + store actions do not import premium / trial /
+   rewards / social / Health / speech / wearables.
+
+Also run existing `restTimer.test.ts`, `workoutStore` rest cases,
+`firstSetUngated`, `localFirstRestGuard`. `tsc --noEmit` clean.
+`check-build-label` > master.
+
+### 3.7 Docs / i18n / help
+
+- `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md` +
+  `src/store/INDEX.md` — work clock row.
+- `firstSetUngated.ts` comment: optional work clock never a login wall.
+- i18n: `activeWorkoutLocales.ts` keys (`activeWorkClockEmom`,
+  `activeWorkClockAmrap`, `activeWorkClockStop`, …) via
+  `t(key, { defaultValue })`. Fill all `APP_LANGS` packs.
+- Help: one line on getting-started — optional EMOM minute or AMRAP
+  window on the set they are logging; rest still runs for ordinary
+  rest; empty invents nothing.
 
 ## 4. Refuse
 
-- Promote live. Flip `PRIVATE_MODE`. Feed. Public identity. Counsel-hold.
-- Super Bundle on the door.
-- Today / Train / Coach product (`.954` one Start, `.955` Wednesday cite).
-- Restore `CinematicWww` as `/`.
-- Restore old words (Win Daily / Private Beta / Get notified at launch as
-  the company line).
-- Delete F-039 aliases or `/notify`.
-- Smash E-Victory `.956`.
+Watch-as-pitch. Wearable-as-permission. Live-share the clock.
+Feed / DMs. Health gate. WeChat home. Four-scene door.
+Marketplace. Counsel-hold (field test / PT / pregnancy). Promote.
+`PRIVATE_MODE` flip. Merge. Second Today Start. Discord.com. Mind.
+Auto-start from a program note. Custom interval shop. E2MOM.
+Reuse `RestTimerBar` for the work clock. Persist the ticking clock.
+Put the clock on Today or `/private`.
+
+Do not smash warmup `.985` / notes `.983` / 1RM `.981` /
+supersets `.980` / Learn `.978` / week strip `.977` / `.976` /
+`.974` / `.973` / `.971` / `.970` / `.967` / `.965` / `.963` /
+`.960` / `/private` `.957`.
 
 ## 5. Ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.957`
-- LOG heading `## 2026-08-24 — Restore the tight /private lock (\`.957\`)`
-  + rotate oldest live entry (`.941`; `.940` already rotated by `.956`)
-- `.956` landed as `#793` — do **not** declare `956` in
-  `logBudget` `NEVER_SHIPPED`.
-- `CONTEXT.md` `## Now` one-line `.957`; keep the `.956` Now bullet;
-  rotate oldest shipped Now bullet (`.942`) so the block stays ≤25
-- Plan commit `[skip vercel]`. Implement commit `[skip vercel]` (founder
-  did not ask for a Preview). Screenshot the restored `/private` in the PR.
-- Draft PR. Do not merge. Do not promote.
+- `APP_BUILD_LABEL` → `2026.07-unified.987` (past master `.985`;
+  concern `.986`). If drop-set `.986` merges first, rebase and bump
+  so the stamp stays greater than the new master. Title stays
+  `EMOM/AMRAP timer (.987)`.
+- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.987\`)` + rotate
+  oldest live entry
+- `CONTEXT.md` `## Now` cites the full label `2026.07-unified.987`;
+  keep warmup `.985` + notes `.983` + 1RM `.981`; rotate oldest
+  shipped Now bullet so the block stays ≤25
+- Plan commit `[skip vercel]`. Every later commit `[skip vercel]`
+  (Hobby quota is burned). No Preview.
+- Draft PR against master. Title: `EMOM/AMRAP timer (.987)`.
+  One PR only. Do not merge. Do not promote. Live www stays `.696`.
 
 ## 6. Done when
 
 - This section was frozen before product code.
-- First paint of gated `/` and `/private` is the tight lock with locked copy.
-- No four-scene field on the door. Cookie `/` is still `LandingPage`.
-- Label `.957`. Draft PR against master. Title:
-  `Restore the tight /private lock (.957)`.
+- On the live set row they can start an optional interval (EMOM
+  minute) or countdown (AMRAP window) that is not the rest timer.
+- Rest timer still works as today for ordinary rest.
+- Optional. Guest. First set ungated. Empty invents nothing.
+- Today still one Start (Resume when live). `/private` stays the
+  tight `.957` lock.
+- Clock is local, in-flow, on the set they are logging. Not a
+  second home. Not a dashboard. Not a Watch pitch.
+- Targeted tests + rest + `firstSetUngated` + `localFirstRestGuard`
+  green. `tsc --noEmit` clean. Label `.987`. Draft PR. Title:
+  `EMOM/AMRAP timer (.987)`.
