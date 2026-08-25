@@ -14,6 +14,7 @@
  * `.978` — Quiet Learn intro + cue link. Never a login wall.
  * `.980` — optional exercise group (superset) in the live log. Never a login wall.
  * `.981` — optional % of a known 1-rep max on the set row. Never a login wall.
+ * `.983` — optional private session notes on the live session / close receipt (concern `.982`). Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

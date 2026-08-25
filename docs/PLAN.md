@@ -9,13 +9,13 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 ## Frozen plan — `.982` Private session notes (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.982` — next free after master `.980`
-> (`17039cb3` — Supersets). Skip `.981` (1RM percent).
-> Supersets `.980` + Learn `.978` + week strip `.977`
-> + Quiet Track `.976` + Quiet Move `.974` + cues `.973`
-> + honesty `.971` + tags `.970` + RPE `.967`
-> + Fuel `.965` + resume `.963` are on master. Do not
-> smash them.
+> Label: `2026.07-unified.983` — next free after master `.981`
+> (`81b23935` — 1RM percent). Concern stays `.982`.
+> 1RM `.981` + Supersets `.980` + Learn `.978` + week
+> strip `.977` + Quiet Track `.976` + Quiet Move `.974`
+> + cues `.973` + honesty `.971` + tags `.970` + RPE
+> `.967` + Fuel `.965` + resume `.963` are on master.
+> Do not smash them.
 > Do **not** smash week strip `.961`, notebook `.960`,
 > swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
 > close receipt `.956`, Wednesday `.955`, Today Start
@@ -221,13 +221,24 @@ Comments. Discord.com. WeChat
 home. Marketplace. Promote.
 `PRIVATE_MODE` flip. Counsel-hold.
 Merge. Four-scene door. Second
-Today Start. Do not take `.981`
-(1RM percent). Do not smash
-supersets `.980` / Learn `.978`
+Today Start. Do not smash 1RM
+`.981` / supersets `.980` / Learn
+`.978`
 / week strip `.977` / `.976` /
 `.974` / `.973` / `.971` / `.970`
 / `.967` / `.965` / `.963` /
 `.960` / `.956`.
+
+**Landed `.983` (concern `.982`):** `normalizeSessionNote` /
+`attachSessionNote` /
+`preserveSessionNote` in
+`src/lib/workout/sessionNote.ts`.
+Finish copies a trimmed jot onto
+the completed log. Receipt mounts
+the same field. Text keep includes
+Notes only when present. Cloud
+upsert and desk→gym snapshot stay
+without it. Empty invents nothing.
 
 ---
 

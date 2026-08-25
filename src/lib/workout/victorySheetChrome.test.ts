@@ -48,6 +48,7 @@ test('first paint is the close receipt and the Next dock', () => {
   const open = jsx.split('<details')[0];
   assert.match(open, /<VictoryStatsStrip\b/);
   assert.match(open, /<VictoryReceiptStrip\b/, 'lift table is the keepable close, not Show all');
+  assert.match(open, /<SessionJotField\b/, 'session notes sit on the receipt, not Show all');
   assert.equal(
     (jsx.match(/<VictoryReceiptStrip\b/g) ?? []).length,
     1,

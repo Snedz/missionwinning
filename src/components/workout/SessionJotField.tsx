@@ -1,18 +1,17 @@
 'use client';
 
 /**
- * The field note jot — the athlete's half of the session entry.
+ * Private session notes (`.982`).
  *
- * The rest window is dead air; this is where "knee twinge set 3" gets written,
- * in five words, while it is still true. Collapsed to one row so the logger's
- * first 90 seconds stay untouched — the set rows are the job, this is the margin.
- * Whatever lands here opens the journal entry at finish, verbatim and first
- * (see `lib/journal/composeEntry.ts`). It never syncs.
+ * Strong-style: add notes if you have more to record. One field on the live
+ * session (Show all — first 90 seconds stay the table) and the close receipt.
+ * Stored with the session on this device. Empty invents nothing. Not a Feed.
  */
 
 import { useState } from 'react';
 import { PenLine } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SESSION_NOTE_MAX } from '@/lib/workout/sessionNote';
 
 type Props = {
   value: string;
@@ -25,7 +24,7 @@ export function SessionJotField({ value, onChange }: Props) {
   const firstLine = value.split('\n').find((l) => l.trim().length > 0)?.trim() ?? '';
 
   return (
-    <div className="border-2 border-border">
+    <div className="border-2 border-border" data-testid="session-notes">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -34,7 +33,7 @@ export function SessionJotField({ value, onChange }: Props) {
       >
         <PenLine className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
         <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {t('sessionJotLabel', { defaultValue: 'Field note' })}
+          {t('sessionJotLabel', { defaultValue: 'Notes' })}
         </span>
         {!open && firstLine ? (
           <span className="min-w-0 flex-1 truncate text-xs italic text-foreground">
@@ -48,14 +47,17 @@ export function SessionJotField({ value, onChange }: Props) {
             value={value}
             onChange={(e) => onChange(e.target.value)}
             rows={2}
-            aria-label={t('sessionJotLabel', { defaultValue: 'Field note' })}
+            maxLength={SESSION_NOTE_MAX}
+            aria-label={t('sessionJotLabel', { defaultValue: 'Notes' })}
             placeholder={t('sessionJotPlaceholder', {
-              defaultValue: 'Five words is enough — "knee twinge set 3". Opens your journal entry.',
+              defaultValue: 'Add notes if you have more to record.',
             })}
             className="w-full border-2 border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
           <p className="mt-1 text-[11px] text-muted-foreground">
-            {t('sessionJotPrivacy', { defaultValue: 'Stays on this device.' })}
+            {t('sessionJotPrivacy', {
+              defaultValue: 'Stays with this session on this device.',
+            })}
           </p>
         </div>
       ) : null}
