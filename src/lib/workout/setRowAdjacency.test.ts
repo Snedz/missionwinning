@@ -313,6 +313,13 @@ describe('formatAdjacencyCiteLine', () => {
     assert.equal(formatAdjacencyCiteLine({ kind: 'coach' }, t), 'Coach plan');
   });
 
+  it('appends intensity to a Coach plan cite when present', () => {
+    assert.equal(
+      formatAdjacencyCiteLine({ kind: 'coach', intensity: 'RPE 9 · RIR 1' }, t),
+      'Coach plan · RPE 9 · RIR 1'
+    );
+  });
+
   it('appends last work set intensity when present', () => {
     const line = formatAdjacencyCiteLine(
       {
@@ -539,6 +546,66 @@ describe('resolveAfterCompleteCite', () => {
       suggestion: { kind: 'load', reps: 5, weight: 100 },
       cite: { kind: 'coach' },
     });
+  });
+
+  it('prescribed cite quotes the completed set RPE/RIR when present', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'tuck-jump',
+      sessionSets: [
+        { reps: 5, weight: 0, completed: true, kind: 'normal', rpe10: 9, rir: 1 },
+        { reps: 5, weight: 0, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      prescribed: true,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'coach');
+    if (out?.cite.kind !== 'coach') return;
+    assert.equal(out.cite.intensity, 'RPE 9 · RIR 1');
+    const parts = formatAfterCompleteParts(out, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.equal(parts.provenance, 'Coach plan · RPE 9 · RIR 1');
+  });
+
+  it('session cite quotes the completed set RPE when present', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal', rpe10: 9 },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'session');
+    if (out?.cite.kind !== 'session') return;
+    assert.equal(out.cite.intensity, 'RPE 9');
+  });
+
+  it('does not walk back to an earlier rated set when this one is empty', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal', rpe10: 9 },
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 1,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'session');
+    if (out?.cite.kind !== 'session') return;
+    assert.equal(out.cite.intensity, undefined);
   });
 
   it('does not persist a next-session program bump when every prescribed set hits the top of the range', () => {

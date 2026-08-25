@@ -29,7 +29,11 @@ export type SetRowLogCite = {
   intensity?: string;
 };
 
-export type SetRowCoachCite = { kind: 'coach' };
+export type SetRowCoachCite = {
+  kind: 'coach';
+  /** Last work set RPE/RIR when present — never invented (`.967`). */
+  intensity?: string;
+};
 
 /** First-ever this session — no invented weekday for an unfinished workout. */
 export type SetRowSessionCite = {
@@ -136,7 +140,10 @@ export function formatAdjacencyCiteLine(
 ): string | null {
   if (!cite) return null;
   if (cite.kind === 'coach') {
-    return t('activeTargetCiteCoach', { defaultValue: 'Coach plan' });
+    return appendIntensityCite(
+      t('activeTargetCiteCoach', { defaultValue: 'Coach plan' }),
+      cite.intensity
+    );
   }
   if (cite.kind === 'last-rest') {
     return t('activeNextCiteLastRest', { defaultValue: 'Last rest' });
@@ -316,6 +323,8 @@ export function resolveAfterCompleteCite(params: {
     reps: number;
     weight: number;
     kind?: string;
+    rpe10?: number;
+    rir?: number;
   }>;
   completedSetIdx: number;
   prescribed?: boolean;
@@ -333,9 +342,10 @@ export function resolveAfterCompleteCite(params: {
     if (next.kind === 'warmup') return null;
 
     if (params.prescribed) {
+      const intensity = lastWorkSetIntensity([done]) ?? undefined;
       return {
         suggestion: { kind: 'load', reps: next.reps, weight: next.weight },
-        cite: { kind: 'coach' },
+        cite: { kind: 'coach', ...(intensity ? { intensity } : {}) },
       };
     }
 
@@ -376,7 +386,7 @@ export function resolveAfterCompleteCite(params: {
       .filter((n): n is number => typeof n === 'number');
     const setFrom = cited.length ? Math.min(...cited) : (sessionWork[0]?.original ?? 1);
     const setTo = cited.length ? Math.max(...cited) : setFrom;
-    const intensity = lastWorkSetIntensity(params.sessionSets) ?? undefined;
+    const intensity = lastWorkSetIntensity([done]) ?? undefined;
     return {
       suggestion: { kind: 'load', reps: suggestion.reps, weight: suggestion.weight },
       cite: { kind: 'session', setFrom, setTo, ...(intensity ? { intensity } : {}) },
