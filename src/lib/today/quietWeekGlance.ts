@@ -12,12 +12,15 @@ import {
   localDateKeyFromIso,
   startOfLocalWeek,
 } from '@/lib/time/localDate';
+import { quietKindForDate, type QuietWeekRow, type QuietWeekRowKind } from './quietWeekRow';
 
 export type QuietWeekDay = {
   dateKey: string;
   offset: number;
   done: boolean;
   isToday: boolean;
+  /** Present only on an empty rest day that already has one quiet row. */
+  quiet?: QuietWeekRowKind;
 };
 
 export type QuietWeekGlance = {
@@ -59,12 +62,14 @@ function loggedDateKeys(history: readonly CompletedWorkoutLog[]): Set<string> {
  */
 export function quietWeekGlance(opts: {
   history: readonly CompletedWorkoutLog[];
+  quietRows?: readonly QuietWeekRow[];
   now?: Date;
 }): QuietWeekGlance {
   const now = opts.now ?? new Date();
   const weekStart = localDateKey(startOfLocalWeek(now));
   const todayKey = localDateKey(now);
   const doneKeys = loggedDateKeys(opts.history);
+  const quietRows = opts.quietRows ?? [];
   const days: QuietWeekDay[] = [];
   let todayOffset = 0;
 
@@ -72,11 +77,14 @@ export function quietWeekGlance(opts: {
     const dateKey = localDateKeyPlusDays(weekStart, offset);
     const isToday = dateKey === todayKey;
     if (isToday) todayOffset = offset;
+    const done = doneKeys.has(dateKey);
+    const quiet = !done ? quietKindForDate(quietRows, dateKey) : undefined;
     days.push({
       dateKey,
       offset,
-      done: doneKeys.has(dateKey),
+      done,
       isToday,
+      ...(quiet ? { quiet } : {}),
     });
   }
 

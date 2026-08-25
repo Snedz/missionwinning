@@ -298,6 +298,18 @@ type TodayStrings = {
   /** Quiet Mon–Sun diary glance on Today (`.961`). */
   todayQuietWeekLabel: string;
   todayQuietWeekDone: string;
+  /** Empty rest-day quiet row on the week strip (`.977`). */
+  todayQuietWeekFuel: string;
+  todayQuietWeekMove: string;
+  todayQuietWeekTrack: string;
+  todayQuietWeekOfferDay: string;
+  todayQuietWeekOfferHint: string;
+  todayQuietWeekChooser: string;
+  todayQuietWeekFuelItem: string;
+  todayQuietWeekTrackWeight: string;
+  todayQuietWeekTrackWaist: string;
+  todayQuietWeekLog: string;
+  todayQuietWeekDismiss: string;
   /** Stable next day from the diary (`.955`) — Coach / Show all, not a second Today Start. */
   coachNextDayEyebrow: string;
   coachNextDayFromLogs: string;
@@ -619,6 +631,17 @@ const en: TodayStrings = {
   todayReturnNext: 'Next · {{name}}',
   todayQuietWeekLabel: 'This week',
   todayQuietWeekDone: 'Done',
+  todayQuietWeekFuel: 'Fuel',
+  todayQuietWeekMove: 'Walk',
+  todayQuietWeekTrack: 'Scale',
+  todayQuietWeekOfferDay: '{{day}} — rest day, optional log',
+  todayQuietWeekOfferHint: 'Optional rest-day log. Fuel restock, easy walk, or scale/tape.',
+  todayQuietWeekChooser: 'Rest-day log',
+  todayQuietWeekFuelItem: 'Item (optional)',
+  todayQuietWeekTrackWeight: 'Weight',
+  todayQuietWeekTrackWaist: 'Waist cm',
+  todayQuietWeekLog: 'Log',
+  todayQuietWeekDismiss: 'Not now',
   coachNextDayEyebrow: 'Next day',
   coachNextDayFromLogs: 'From your logs',
   coachNextDayFromPlan: "From this week's plan",
@@ -646,6 +669,17 @@ const coachPlanDefaults = {
   todayReturnNext: en.todayReturnNext,
   todayQuietWeekLabel: en.todayQuietWeekLabel,
   todayQuietWeekDone: en.todayQuietWeekDone,
+  todayQuietWeekFuel: en.todayQuietWeekFuel,
+  todayQuietWeekMove: en.todayQuietWeekMove,
+  todayQuietWeekTrack: en.todayQuietWeekTrack,
+  todayQuietWeekOfferDay: en.todayQuietWeekOfferDay,
+  todayQuietWeekOfferHint: en.todayQuietWeekOfferHint,
+  todayQuietWeekChooser: en.todayQuietWeekChooser,
+  todayQuietWeekFuelItem: en.todayQuietWeekFuelItem,
+  todayQuietWeekTrackWeight: en.todayQuietWeekTrackWeight,
+  todayQuietWeekTrackWaist: en.todayQuietWeekTrackWaist,
+  todayQuietWeekLog: en.todayQuietWeekLog,
+  todayQuietWeekDismiss: en.todayQuietWeekDismiss,
   coachNextDayEyebrow: en.coachNextDayEyebrow,
   coachNextDayFromLogs: en.coachNextDayFromLogs,
   coachNextDayFromPlan: en.coachNextDayFromPlan,

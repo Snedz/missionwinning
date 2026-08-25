@@ -48,12 +48,18 @@ describe('quiet track surface lock', () => {
     }
   });
 
-  it('Today tree does not mount weight or photos', () => {
+  it('Today tree does not mount the Track card or photos', () => {
+    const allow = new Set([
+      'src/lib/today/quietWeekRow.ts',
+      'src/lib/today/quietWeekRow.test.ts',
+    ]);
     const todayFiles = walk(path.join(root, 'src/components/today')).concat(
       walk(path.join(root, 'src/lib/today'))
     );
-    const offenders = todayFiles.filter((f) => TRACK_LEAK.test(read(f)));
+    const offenders = todayFiles.filter((f) => !allow.has(f) && TRACK_LEAK.test(read(f)));
     assert.deepEqual(offenders, [], `Today leaked Track log: ${offenders.join(', ')}`);
+    const strip = read('src/components/today/TodayQuietWeekStrip.tsx');
+    assert.doesNotMatch(strip, /BodyMetricsCard|ProgressPhotosCard|primary-action/);
   });
 
   it('Track first paint is the metrics log — no rings, no photos, no red action', () => {

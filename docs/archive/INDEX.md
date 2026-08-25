@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-955-for-977.md](./log/LOG-rotate-955-for-977.md) | rotated 2026-08-25 for `.977` week strip quiet row (`.955`) |
 | [log/LOG-rotate-954-for-976.md](./log/LOG-rotate-954-for-976.md) | rotated 2026-08-25 for `.976` Quiet Track (`.954`; concern `.975`) |
 | [log/LOG-rotate-953-for-974.md](./log/LOG-rotate-953-for-974.md) | rotated 2026-08-25 for `.974` Quiet Move (`.953`; concern `.969`) |
 | [log/LOG-rotate-952-for-973.md](./log/LOG-rotate-952-for-973.md) | rotated 2026-08-25 for `.973` cues on the movement (`.952`) |
