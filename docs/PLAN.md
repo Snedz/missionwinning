@@ -6,6 +6,179 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.966` Free set tags (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Concern stays `.966`. Stamp after rebase: `2026.07-unified.970`
+> (must sit past master `.967` RPE/RIR `#803`).
+> Fuel `.965` is on master. Do not steal it.
+> **Skip `.968`** — honesty #801 rebase. Do not steal it.
+> **Skip `.969`** — Quiet Move (parallel). Do not steal it.
+> Do **not** smash RPE `.967`, Fuel `.965`, resume `.963`, week strip
+> `.961`, notebook `.960`, swap/skip `.959`,
+> desk→gym `.958`, `/private` `.957`, close
+> receipt `.956`, Wednesday `.955`, Today
+> Start `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Kind already exists
+(`normal` / `warmup` / `failure` / `drop`).
+Volume, PR, e1RM, vs-last, after-complete
+cite, and Coach load already skip warmup.
+Missing: tags **on the set row** (Strong
+grammar), and Wednesday / Repeat last /
+Prev still copy warmup slots as work.
+A 40 kg warmup in slot 0 becomes next
+week's Prev and Wednesday's planned set.
+That poisons week-4. Warmup *calculator*
+(40/60/80 ramp) is later / PRO-class —
+do not ship auto formulas this ship.
+
+### One concern
+
+Optional W / D / F on the set. Warmup is
+not evidence for cite / vs-last /
+Wednesday / Repeat last.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `cacf1660` / `.963`
+(`#799`). Set row + `setKind` + Wednesday
+template + Prev.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Kind | `SetKind` + `setSetKind` + volume / PR / e1RM skip warmup. | Kind lives in the footer and a W-only set-number toggle. Strong puts W / D / F **on the set**. |
+| Store | `setSetKind` writes only when `!completed`. `logSet` keeps `kind`. | Forgotten warmup cannot be marked after Log set. Finish then copies it as work. |
+| vs-last | `workingSetIndex` / `vsLastDeltaForSet` skip warmup. | **Keep.** Do not restyle the token. |
+| After-complete cite | `resolveAfterCompleteCite` returns null on warmup. | **Keep.** Why-line stays quiet on W. |
+| Prev | `getLastPerformanceForSet` matches **raw** set index. | Last session W, W, work → today's set 1 Prev is the warmup. |
+| Wednesday / Repeat last | `templateFromCompletedLog` copies every set; empty exercise invents `8 × 0`. `isPerformedSet` is `reps > 0` (warmup counts). | Warmup slots become next week's planned work. Warmup-only session can enter the named rotation. |
+| Footer / ramp | Kind chips + `Add warmups` 40/60/80 (`.764`) + Drop −20% start (`.754`). | Do **not** add formulas. Do not paywall tags. Footer chips may stay; the row is the home. |
+| Resume `.963` | Leave Today / week / receipt, same session. | **Keep.** |
+
+Hypothesis (verified, keep):
+
+A **pure** working-evidence filter (reuse
+`workingSets` / `kind !== 'warmup'`) is
+the one door for Prev, Wednesday
+template, Repeat last, and "did this
+session count". Tags are optional
+`SetKind` on the row — tap W / D / F,
+tap again to clear to work. Never
+required to Log set. `setSetKind` writes
+on completed-in-session sets so a
+forgotten warmup can be marked before
+Finish. Guest path. No Force Sync.
+No auto warmup math.
+
+Closed rules (no paywall, no formulas):
+
+1. **Tags are free.** W / D / F on the
+   live row and on completed-in-session
+   rows. Optional. Log set never waits.
+2. **Warmup is not evidence.** Prev,
+   vs-last, why-line, Wednesday template,
+   Repeat last, and named-log rotation
+   ignore warmup-tagged sets. Empty
+   invents nothing (warmup-only exercise
+   is omitted; warmup-only session is
+   not a Wednesday day).
+3. **One kind.** No injury / pregnancy /
+   PT tags. No second persist flag.
+4. **Surfaces.** Today still one Start.
+   Resume `.963` kept. `/private` stays
+   the tight `.957` lock. First set
+   ungated. Guest.
+
+### Ship (only this)
+
+1. **Row tags.** `SetLogTable` W / D / F
+   chips per set (reuse `activeSetWarmup`
+   / `Drop` / `Failure`). Tap same tag →
+   work. Never blocks Log set. Footer
+   Kind chips stay; do not restyle the
+   table.
+
+2. **Store door.** `setSetKind` writes
+   on incomplete **and** completed-in-
+   session sets. No history rewrite
+   after Finish.
+
+3. **Working evidence.** One helper
+   over `workingSets`:
+   `templateFromCompletedLog` copies
+   working sets only; warmup-only
+   exercise omitted; do not invent
+   `8 × 0`. `getLastPerformanceForSet`
+   / Prev match working-set index;
+   warmup rows stay quiet.
+   `nextDayFromLogs` `isPerformedSet`
+   requires a non-warmup set.
+
+4. **Help one-liner.** Optional Warmup /
+   Drop / Failure on the set. Warmup
+   does not count as last time or
+   Wednesday.
+
+### Tests
+
+- Row can set warmup / drop / failure;
+  Log set with no tag still logs.
+  Tap-again clears to work.
+- Completed-in-session retag to warmup
+  is kept on Finish; leftover empty
+  sets still invent no volume (`.963`).
+- Prev / vs-last / after-complete cite
+  ignore warmup-tagged sets. Mutant
+  that matches raw index including W
+  dies.
+- `templateFromCompletedLog` / Wednesday
+  / Repeat last drop warmup slots.
+  Warmup-only session invents nothing.
+- `firstSetUngated` stays green; no Feed /
+  Top 8 / likes / login wall / Force Sync /
+  Session Expired / four-scene door.
+  Today still one `.primary-action`.
+  No premium import on the tag path.
+
+### Refuse
+
+Paywall tags. Auto warmup formulas.
+Injury / pregnancy / PT tags. Force Sync.
+Session Expired. Shame grid. Four-scene
+door. Counsel-hold. Fuel / Amazon on
+Today. WeChat home. Feed / likes / Top 8.
+Promote live. `PRIVATE_MODE` flip. Merge.
+Resume / week-strip / notebook / `/private`
+rewrite. Do not take `.968` or `.969`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.966`
+- LOG heading `## 2026-08-25 — Free set tags (\`.966\`)` + rotate oldest live entry (`.947`)
+- `CONTEXT.md` `## Now` one-line `.970` (concern `.966`); keep `.967` RPE and `.965` Fuel; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, maybe store)
+- i18n: reuse Warmup / Drop / Failure; no new Force Sync string
+- Help: one line on getting-started (optional tags; warmup is not last time / Wednesday)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Set row can mark warmup / drop / failure
+  (optional). Cite / vs-last / Wednesday
+  ignore warmup. Guest. First set ungated.
+- Label `.970`. PR title stays `Free set tags (.966)`.
+  Same PR `#802`.
+
+---
+
 ## Frozen plan — `.967` RPE / RIR on the set row (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
