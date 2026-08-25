@@ -27,6 +27,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
+10a4. `startAgain.ts` — session-out Start this again from a finished log (`.991`). Wraps `templateFromCompletedLog` + `protectLiveStart`. Empty invents nothing. Not a shop.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
 10b. `openSessionContinuity.ts` — desk → gym decide for the *open* session (`.958`); `reconcileOpenSession.ts` pulls/applies. `sessionNote` stays on device
 10b2. `sessionResume.ts` — this-device leave/return + Finish-partial (`.963`). Live Start is keep. Empty leftovers invent no volume
@@ -89,6 +90,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `honorSavedRoutine.test.ts` | Save then Start uses their routine; Wednesday cite does not overwrite a saved PPL; empty invents nothing (`.960`) |
+| `startAgain.test.ts` | Finished log → Start; empty / live-keep invent nothing (`.991`) |
+| `startAgainSurface.test.ts` | Receipt + History wire Start this again; Today stays one Start; not a shop (`.991`) |
 | `thinHistory.test.ts` | Two named logs invent no Wednesday; week strip does not score 1–2 sessions; saved notebook still wins (`.964`) |
 | `inSetCues.test.ts` | Setup first, cap 3; empty invents nothing; no remote clip URL; Train-only (`.973`) |
 | `openSessionContinuity.test.ts` | Desk start → phone finish is one session; guest; no wipe; no Force Sync (`.958`) |
