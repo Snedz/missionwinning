@@ -316,6 +316,59 @@ describe('nextDayFromLogs', () => {
   });
 });
 
+
+  it('warmup-only named session is not a Wednesday day', () => {
+    const history = [
+      log({
+        id: 'warm',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [{ reps: 8, weight: 40, kind: 'warmup' }],
+          },
+        ],
+      }),
+      log({
+        id: 'pull',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    assert.equal(nextDayFromLogs({ history, now: NOW }), null);
+  });
+
+  it('Wednesday template drops warmup slots from a mixed session', () => {
+    const history = [
+      log({
+        id: 'push',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [
+              { reps: 8, weight: 40, kind: 'warmup' },
+              { reps: 5, weight: 100, kind: 'normal' },
+            ],
+          },
+        ],
+      }),
+      log({
+        id: 'pull',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite?.template?.exercises[0]?.sets.length, 1);
+    assert.equal(cite?.template?.exercises[0]?.sets[0]?.weight, 100);
+  });
+
 describe('nextDayFromLogs refuses catalog / shop / generateWeek', () => {
   const files = [
     'src/lib/coach/nextDayFromLogs.ts',

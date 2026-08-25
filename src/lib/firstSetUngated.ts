@@ -7,6 +7,7 @@
  * `.958` — desk → gym uses the same ungated logger; no Force Sync wall.
  * `.963` — leave Today / week / receipt, come back; same session. No Session Expired.
  * `.967` — optional RPE 1–10 / RIR on a logged set. Never a login wall.
+ * `.970` — optional W / D / F on the set (concern `.966`); never a Log set gate.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

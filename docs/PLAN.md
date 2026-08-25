@@ -159,8 +159,8 @@ rewrite. Do not take `.968` or `.969`.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.966`
-- LOG heading `## 2026-08-25 — Free set tags (\`.966\`)` + rotate oldest live entry (`.947`)
+- `APP_BUILD_LABEL` → `2026.07-unified.970`
+- LOG heading `## 2026-08-25 — Free set tags (\`.970\`)` + rotate oldest live entry if over budget
 - `CONTEXT.md` `## Now` one-line `.970` (concern `.966`); keep `.967` RPE and `.965` Fuel; rotate oldest shipped Now bullet so the block stays ≤25
 - Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, maybe store)
 - i18n: reuse Warmup / Drop / Failure; no new Force Sync string

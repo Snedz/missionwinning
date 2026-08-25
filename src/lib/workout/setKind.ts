@@ -4,6 +4,15 @@ export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 
 export const SET_KINDS: SetKind[] = ['normal', 'warmup', 'failure', 'drop'];
 
+/** Optional row tags — Work is the cleared state, never a required pick. */
+export const SET_ROW_TAGS: Exclude<SetKind, 'normal'>[] = ['warmup', 'drop', 'failure'];
+
+/** Tap the same tag again to return to work. Never invents a fourth kind. */
+export function toggleSetTag(current: SetKind | undefined, tag: SetKind): SetKind {
+  if (tag === 'normal') return 'normal';
+  return current === tag ? 'normal' : tag;
+}
+
 export function countsTowardVolume(kind?: SetKind): boolean {
   return kind !== 'warmup';
 }

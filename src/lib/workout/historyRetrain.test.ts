@@ -35,6 +35,41 @@ describe('templateFromCompletedLog (K7)', () => {
     assert.equal(t!.exercises[1]!.exerciseId, 'push-ups');
   });
 
+  it('drops warmup-tagged sets so Wednesday / Repeat last do not copy them as work', () => {
+    const t = templateFromCompletedLog({
+      workoutName: 'Push',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 8, weight: 40, kind: 'warmup' },
+            { reps: 5, weight: 100, kind: 'normal' },
+            { reps: 5, weight: 100, kind: 'failure' },
+          ],
+        },
+      ],
+    });
+    assert.ok(t);
+    assert.equal(t!.exercises[0]!.sets.length, 2);
+    assert.equal(t!.exercises[0]!.sets[0]!.weight, 100);
+    assert.equal(t!.exercises[0]!.sets[1]!.weight, 100);
+  });
+
+  it('warmup-only exercise is omitted; warmup-only session invents nothing', () => {
+    assert.equal(
+      templateFromCompletedLog({
+        workoutName: 'Push',
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [{ reps: 8, weight: 40, kind: 'warmup' }],
+          },
+        ],
+      }),
+      null
+    );
+  });
+
   it('returns null for empty, tombstoned, or set-less logs', () => {
     assert.equal(templateFromCompletedLog({ workoutName: 'X', exercises: [] }), null);
     assert.equal(

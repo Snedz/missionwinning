@@ -98,7 +98,7 @@ type Props = {
   onLogSet: (setIdx: number) => void;
   /** Kind of the set currently being entered, and how to change it. */
   activeSetKind: SetKind;
-  onSetKindChange: (kind: SetKind) => void;
+  onSetKindChange: (setIdx: number, kind: SetKind) => void;
   offerSetSide?: boolean;
   activeSetSide?: SetSide;
   onSetSideChange?: (side: SetSide | undefined) => void;
@@ -189,9 +189,12 @@ export function ActiveExerciseCard({
     workoutHistory,
     exLog.exerciseId,
     exLog.sets.length,
-    plusLoad
-      ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
-      : undefined
+    {
+      currentSets: exLog.sets,
+      ...(plusLoad
+        ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
+        : {}),
+    }
   );
   const lastSetGhost = resolveLastSetGhost(workoutHistory, exLog.exerciseId);
   /** After-save vs-last — working-set index, independent of Prev/ghost prefill. */
@@ -290,7 +293,12 @@ export function ActiveExerciseCard({
             plateLine={livePlateOffer.show ? livePlateOffer.platesLine : null}
             barWeight={livePlateOffer.barWeight}
             onBarWeightChange={setBarWeight}
-            onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
+            onToggleWarmup={() => {
+              const idx = activeSetIdxForExercise(nextSet, exIdx);
+              if (idx < 0) return;
+              onSetKindChange(idx, nextWarmupKind(activeSetKind));
+            }}
+            onSetKind={(setIdx, kind) => onSetKindChange(setIdx, kind)}
             onOpenPlates={onOpenPlates}
             input={setInput}
             plusLoad={plusLoad}
@@ -318,7 +326,11 @@ export function ActiveExerciseCard({
           holdsActiveSet={holdsActiveSet}
           restSec={restSec}
           activeSetKind={activeSetKind}
-          onSetKindChange={onSetKindChange}
+          onSetKindChange={(kind) => {
+            const idx = activeSetIdxForExercise(nextSet, exIdx);
+            if (idx < 0) return;
+            onSetKindChange(idx, kind);
+          }}
           offerSetSide={offerSetSide}
           activeSetSide={activeSetSide}
           onSetSideChange={onSetSideChange}

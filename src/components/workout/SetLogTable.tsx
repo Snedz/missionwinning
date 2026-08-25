@@ -14,7 +14,13 @@ import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import type { LoggedSet, SetKind, SetTempo } from '@/types';
-import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  SET_ROW_TAGS,
+  setKindBadgeClass,
+  setKindDefaultLabel,
+  setKindLabelKey,
+  toggleSetTag,
+} from '@/lib/workout/setKind';
 import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
@@ -51,6 +57,8 @@ type Props = {
   barWeight?: number;
   onBarWeightChange?: (next: number) => void;
   onToggleWarmup?: () => void;
+  /** Optional W / D / F on any set — never required to Log set. */
+  onSetKind?: (setIdx: number, kind: SetKind) => void;
   onOpenPlates?: () => void;
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
@@ -89,6 +97,7 @@ export function SetLogTable({
   barWeight,
   onBarWeightChange,
   onToggleWarmup,
+  onSetKind,
   input,
   onInputChange,
   onLog,
@@ -309,6 +318,16 @@ export function SetLogTable({
                 </>
               )}
             </tr>
+            {onSetKind && !completed ? (
+              <tr className={cn(!isActive && 'text-muted-foreground')}>
+                <td colSpan={5} className={cn(cell, 'min-w-0 pt-0')}>
+                  <SetRowTagChips
+                    kind={kind}
+                    onPick={(tag) => onSetKind(setIdx, toggleSetTag(kind, tag))}
+                  />
+                </td>
+              </tr>
+            ) : null}
             {completed ? (
               <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
                 <td
@@ -329,14 +348,19 @@ export function SetLogTable({
                         {vsLast}
                       </span>
                     ) : null}
-                    {kind !== 'normal' && (
+                    {onSetKind ? (
+                      <SetRowTagChips
+                        kind={kind}
+                        onPick={(tag) => onSetKind(setIdx, toggleSetTag(kind, tag))}
+                      />
+                    ) : kind !== 'normal' ? (
                       <Badge
                         variant="outline"
                         className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
                       >
                         {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
                       </Badge>
-                    )}
+                    ) : null}
                     {set.isPr && (
                       <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
                     )}
@@ -415,6 +439,42 @@ export function SetLogTable({
         tone="paper"
       />
     ) : null}
+    </div>
+  );
+}
+
+function SetRowTagChips({
+  kind,
+  onPick,
+}: {
+  kind: SetKind;
+  onPick: (tag: (typeof SET_ROW_TAGS)[number]) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <div
+      className="flex flex-wrap items-center gap-1"
+      data-testid="set-table-set-tags"
+      role="group"
+      aria-label={t('activeSetKindMore', { defaultValue: 'Kind' })}
+    >
+      {SET_ROW_TAGS.map((tag) => (
+        <button
+          key={tag}
+          type="button"
+          aria-pressed={kind === tag}
+          data-testid={`set-table-tag-${tag}`}
+          onClick={() => onPick(tag)}
+          className={cn(
+            'min-h-[44px] min-w-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] tap-target',
+            kind === tag
+              ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
+              : 'border-border text-muted-foreground hover:bg-muted'
+          )}
+        >
+          {t(setKindLabelKey(tag), { defaultValue: setKindDefaultLabel(tag) })}
+        </button>
+      ))}
     </div>
   );
 }

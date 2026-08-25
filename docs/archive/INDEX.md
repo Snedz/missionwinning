@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-950-for-970.md](./log/LOG-rotate-950-for-970.md) | rotated 2026-08-25 for `.970` free set tags (`.950`) |
 | [log/LOG-rotate-947-for-965.md](./log/LOG-rotate-947-for-965.md) | rotated 2026-08-25 for `.965` this week's restock they take (`.947`) |
 | [log/LOG-rotate-949-for-967.md](./log/LOG-rotate-949-for-967.md) | rotated 2026-08-25 for `.967` RPE/RIR on the set row (`.949`) |
 | [log/LOG-rotate-946-for-963.md](./log/LOG-rotate-946-for-963.md) | rotated 2026-08-25 for `.963` resume / finish-partial (`.946`) |

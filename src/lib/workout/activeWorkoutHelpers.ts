@@ -6,6 +6,8 @@ import type { CompletedWorkoutLog, SetSide } from '@/types';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { lastLiveSessionForExercise } from '@/lib/workout/setRowAdjacency';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { workingSets } from '@/lib/workout/setMath';
+import { workingSetIndex } from '@/lib/workout/vsLastSet';
 import { resolveLastSetGhost, type LastSetGhost } from '@/lib/workout/lastSetGhost';
 import {
   buildOverloadCue,
@@ -43,24 +45,34 @@ export function getLastSessionSets(
 }
 
 /**
- * Previous value for the matching set index (set-table-style), falling back
- * to the last set when this session plans more sets than last time.
+ * Previous value for the matching *working* set (warmup excluded).
+ * Warmup rows stay quiet. Falls back to the last working set when this
+ * session plans more work than last time.
  */
 export function getLastPerformanceForSet(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string,
-  setIdx: number
+  setIdx: number,
+  currentSets?: { kind?: string }[]
 ): { reps: number; weight: number } | null {
+  if (currentSets?.[setIdx]?.kind === 'warmup') return null;
   const sets = getLastSessionSets(workoutHistory, exerciseId);
   if (!sets) return null;
-  const match = sets[setIdx] ?? sets[sets.length - 1];
+  const lastWorking = workingSets(sets);
+  if (lastWorking.length === 0) return null;
+  const wi =
+    currentSets && currentSets.length > 0
+      ? workingSetIndex(currentSets, setIdx)
+      : setIdx;
+  if (wi === null) return null;
+  const match = lastWorking[wi] ?? lastWorking[lastWorking.length - 1];
   return { reps: match.reps, weight: match.weight };
 }
 
 /**
  * Dial prefill (F-013): last *working* set of this exercise.
  * Reuses the ghost reader so warmup / 0-rep / tombstone stay excluded.
- * Prev column still uses `getLastPerformanceForSet` (set-index last-actuals).
+ * Prev column uses `getLastPerformanceForSet` (working-set last-actuals).
  */
 export function lastWorkingForDial(
   workoutHistory: CompletedWorkoutLog[],
@@ -75,10 +87,15 @@ export function formatPrevSetLabels(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string,
   setCount: number,
-  opts?: { plusLoad?: boolean; bodyweightLabel?: string }
+  opts?: { plusLoad?: boolean; bodyweightLabel?: string; currentSets?: { kind?: string }[] }
 ): (string | null)[] {
   return Array.from({ length: setCount }, (_, setIdx) => {
-    const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
+    const last = getLastPerformanceForSet(
+      workoutHistory,
+      exerciseId,
+      setIdx,
+      opts?.currentSets
+    );
     if (!last) return null;
     if (opts?.plusLoad) {
       return formatPrevPlusLoadLabel(last.reps, last.weight, opts.bodyweightLabel ?? 'BW');
@@ -335,7 +352,8 @@ export function buildConsoleSet(params: {
   const last = getLastPerformanceForSet(
     params.workoutHistory,
     exLog.exerciseId,
-    nextSet.setIdx
+    nextSet.setIdx,
+    exLog.sets
   );
   const lastSets = getLastSessionSets(params.workoutHistory, exLog.exerciseId);
   const range = repRangeForGoal(params.goalId);

@@ -372,6 +372,17 @@ test('workoutStore', async (t) => {
     assert.equal(sets[1].weight, 80);
   });
 
+  await t.test('setSetKind retags a completed-in-session set (forgotten warmup)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    store.logSet(0, 0, 8, 40);
+    store.setSetKind(0, 0, 'warmup');
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets[0].completed, true);
+    assert.equal(sets[0].kind, 'warmup');
+    assert.equal(sets[0].weight, 40);
+  });
+
   await t.test('swapping an exercise is refused once a set is logged', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());

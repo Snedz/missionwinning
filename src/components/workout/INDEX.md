@@ -13,7 +13,7 @@
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove. Skip / swap are **this session** (`.959`) |
 | `SessionSwapSheet.tsx` | This-session swap door — garage stand-ins + another movement; confirm in the footer (`.959`) |
-| `SetLogTable.tsx` | Set list on **every** surface — Set · Prev · kg · Reps · Log. Prev is the row anchor. ≥44px inputs. One poster-red inline `Log set`. After-complete cite via `SetLogNextCite`. |
+| `SetLogTable.tsx` | Set list on **every** surface — Set · Prev · kg · Reps · Log. Prev is the row anchor. ≥44px inputs. One poster-red inline `Log set`. Optional free W / D / F chips per set (`.966`). After-complete cite via `SetLogNextCite`. |
 | `SetLogNextCite.tsx` | Skippable next-set cite after a completed working set (`.939`). Not a feed. |
 | `SetLogPlateLine.tsx` | Skippable both-sides plate breakdown on the live barbell row (`.948`). Editable bar. Never blocks Log set. |
 | `SetRpe10Select.tsx` | Optional 1–10 RPE on a completed set (`.967`). Native select. Never required. |

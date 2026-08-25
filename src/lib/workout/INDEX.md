@@ -6,7 +6,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 
 ## Read order
 
-1. `setKind.ts` — normal/warmup/drop; volume + PR eligibility  
+1. `setKind.ts` — normal/warmup/drop/failure; volume + PR eligibility; optional row tags W / D / F (`toggleSetTag`, `.966`)  
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
@@ -20,8 +20,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all); `workingReps` for BW volume (`.886`)
 9b. `victoryReceipt.ts` — vs-last session totals by **shape** (sorted unique lift ids, `.944`) + per-lift rows (`.713`). Close receipt ready-gate + private text keep (`.956`)  
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover)  
-10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover); Prev matches working-set index and stays quiet on warmup (`.966`)  
+10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10b. `openSessionContinuity.ts` — desk → gym decide for the *open* session (`.958`); `reconcileOpenSession.ts` pulls/applies. `sessionNote` stays on device
 10b2. `sessionResume.ts` — this-device leave/return + Finish-partial (`.963`). Live Start is keep. Empty leftovers invent no volume
@@ -54,7 +54,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 
 | File | Covers |
 |------|--------|
-| `setKind.test.ts` | Volume / PR eligibility |
+| `setKind.test.ts` | Volume / PR eligibility + `toggleSetTag` (`.966`) |
+| `setRowTags.test.ts` | Free W / D / F on the row; warmup is not Prev / vs-last / Wednesday; no paywall / formulas (`.966`) |
 | `dropSet.test.ts` | Load rule / start plan / rest compose (`.754`) |
 | `unilateral.test.ts` | L/R/Alt persist, skip bilateral, suggest next side (`.755`) |
 | `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
