@@ -91,15 +91,18 @@ describe('session clock store', () => {
     });
     useWorkoutStore.getState().startEmptyWorkout();
     useWorkoutStore.getState().startRestTimer(90);
-    useWorkoutStore.getState().startWorkClock('interval');
     assert.equal(useWorkoutStore.getState().restTimerActive, true);
-    assert.equal(useWorkoutStore.getState().workClockActive, true);
-
     useWorkoutStore.getState().toggleSessionClock();
     assert.equal(useWorkoutStore.getState().activeWorkout?.sessionClock?.runningSince, null);
     assert.equal(useWorkoutStore.getState().restTimerActive, true);
+
+    useWorkoutStore.getState().toggleSessionClock();
+    useWorkoutStore.getState().startWorkClock('interval');
+    assert.equal(useWorkoutStore.getState().workClockActive, true);
+    useWorkoutStore.getState().toggleSessionClock();
     assert.equal(useWorkoutStore.getState().workClockActive, true);
     assert.equal(useWorkoutStore.getState().workClockKind, 'interval');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.sessionClock?.runningSince, null);
   });
 
   it('Today Start keep does not auto-pause the clock', async () => {
