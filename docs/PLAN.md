@@ -6,6 +6,47 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.993` This-movement history (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.993` — next free after master `.992`
+> (`7bb7c464` — Custom exercise). Title stays
+> **This-movement history (.993)**.
+> Custom `.992` + Start this again `.991` + Quiet Track
+> trend `.989` + EMOM `.988` + drop-set `.986` +
+> warmup `.985` + notes `.983` + 1RM `.981` + Supersets
+> `.980` + Learn `.978` + week strip `.977` + Quiet Track
+> `.976` + Quiet Move `.974` + cues `.973` + honesty
+> `.971` + tags `.970` + RPE `.967` + Fuel `.965` +
+> resume `.963` + notebook `.960` are on master.
+> Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Vs-last / next-set cite already show last. Missing:
+tap the open lift, see prior sessions of that movement.
+Their diary. Not a chart. Not a Feed. Honesty `.971`
+still applies when the list is short.
+
+### First check (done — hypothesis holds)
+
+Read `origin/master` tip `7bb7c464` / `.992`.
+`lastLiveSessionForExercise` is last-on-the-row.
+The name in `ActiveExerciseHeader` is a span.
+`/history` is whole sessions. Library is a count +
+spark. Today is one `dock="start"`. `/private` stays
+the tight `.957` lock. **Nothing to unmount first.**
+
+Implement only root [PLAN.md](../PLAN.md).
+
 ## Frozen plan — `.991` This session becomes a Start (2026-08-25)
 
 > **Frozen.** Implement only this section + root

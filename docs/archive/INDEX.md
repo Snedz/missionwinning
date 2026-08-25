@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-971-for-993.md](./log/LOG-rotate-971-for-993.md) | rotated 2026-08-25 for `.993` This-movement history (`.971`) |
 | [log/LOG-rotate-970-for-992.md](./log/LOG-rotate-970-for-992.md) | rotated 2026-08-25 for `.992` Custom exercise (`.970`) |
 | [log/LOG-rotate-967-for-991.md](./log/LOG-rotate-967-for-991.md) | rotated 2026-08-25 for `.991` This session becomes a Start (`.967`) |
 | [log/LOG-rotate-965-for-989.md](./log/LOG-rotate-965-for-989.md) | rotated 2026-08-25 for `.989` Quiet Track trend (`.965`) |

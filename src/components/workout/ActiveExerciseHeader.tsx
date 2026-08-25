@@ -13,7 +13,9 @@ import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { MovementHistorySheet } from '@/components/workout/MovementHistorySheet';
 import { SessionSwapSheet } from '@/components/workout/SessionSwapSheet';
+import { listMovementHistory } from '@/lib/workout/movementHistory';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import {
   firstWeightedLoad,
@@ -27,11 +29,12 @@ import {
   saveSessionE1rmVisible,
   sessionE1rmFromSets,
 } from '@/lib/workout/sessionE1rm';
-import type { ActiveExerciseLog, Exercise } from '@/types';
+import type { ActiveExerciseLog, CompletedWorkoutLog, Exercise } from '@/types';
 
 type Props = {
   exercise: Exercise;
   exLog: ActiveExerciseLog;
+  workoutHistory: CompletedWorkoutLog[];
   unitLabel: string;
   ssLabel: string | null;
   hasFormGuide: boolean;
@@ -59,6 +62,7 @@ type Props = {
 export function ActiveExerciseHeader({
   exercise,
   exLog,
+  workoutHistory,
   unitLabel,
   ssLabel,
   hasFormGuide,
@@ -84,7 +88,9 @@ export function ActiveExerciseHeader({
   const skipped = isSkippedThisSession(exLog);
   const { t } = useTranslation();
   const [showE1rm, setShowE1rm] = useState(loadSessionE1rmVisible);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const sessionE1rm = sessionE1rmFromSets(exLog.sets);
+  const historyRows = listMovementHistory(workoutHistory, exercise.id);
 
   const onToggleE1rm = () => {
     const next = !showE1rm;
@@ -96,7 +102,18 @@ export function ActiveExerciseHeader({
     <CardHeader className="p-3 pb-2 space-y-2">
       <div className="flex items-start gap-2">
         <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
-          <span className="leading-tight font-extrabold">{exercise.name}</span>
+          <button
+            type="button"
+            className="leading-tight font-extrabold min-h-[44px] text-left tap-target"
+            data-testid="movement-history-open"
+            aria-label={t('activeMovementHistoryOpenAria', {
+              name: exercise.name,
+              defaultValue: 'Prior sessions of {{name}}',
+            })}
+            onClick={() => setHistoryOpen(true)}
+          >
+            {exercise.name}
+          </button>
           {ssLabel && (
             <Badge variant="outline" className="text-[10px]">
               {ssLabel}
@@ -220,6 +237,12 @@ export function ActiveExerciseHeader({
         currentId={exercise.id}
         garageOptions={swapCandidates}
         onConfirm={onSwapTo}
+      />
+      <MovementHistorySheet
+        open={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+        exerciseName={exercise.name}
+        rows={historyRows}
       />
     </CardHeader>
   );

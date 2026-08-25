@@ -287,6 +287,7 @@ export function ActiveExerciseCard({
       <ActiveExerciseHeader
         exercise={exercise}
         exLog={exLog}
+        workoutHistory={workoutHistory}
         unitLabel={unitLabel}
         ssLabel={ssLabel}
         hasFormGuide={hasFormGuide}

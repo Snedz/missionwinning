@@ -1,117 +1,110 @@
-# PLAN.md — Custom exercise (`.990`)
+# PLAN.md — This-movement history (`.993`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the live-set named-custom freeze.
+ship; this file is the live-lift diary freeze.
 **Lane:** Engineering-Web · Train logger · **Horizon:** 0
-**Label:** `2026.07-unified.992` (master is `.991` / `d561b8a5`
-This session becomes a Start). Title stays **Custom exercise (.990)**.
-Rebased onto that tip so Start this again `.991` still holds.
-**Excellence-Override:** leftover local named custom on the live
-picker (not a marketplace, not a video shop)
+**Label:** `2026.07-unified.993` (master is `.992` / `7bb7c464`
+Custom exercise). Title stays **This-movement history (.993)**.
+**Excellence-Override:** leftover per-lift diary on the open Train
+lift (not a chart product, not a Feed)
 
 ---
 
 ## 0. What this is
 
-The live set picker already searches the static catalog. A library
-miss ends the add: "No matches", and a session row whose id is not
-in `EXERCISES` is dropped (`ActiveExerciseList` `if (!exercise)
-return null`). They cannot name a movement during a live workout
-and keep logging.
+Adjacency is last time on the row. Track trend (`.989`) is the week
+strip. Vs-last and the next-set cite already show last. Missing: tap
+the movement, see the prior sessions of that lift.
 
-This ship is leftover, not a new marketplace. They type a name in
-the existing Train add/swap picker, the name persists locally and
-in the session, and they log sets without leaving Train. Unlimited.
-Free. Guest. First set still ungated. Empty invents nothing.
-
-Android already creates a custom during the live add sheet
-(`custom-${uuid}`, Room, "free forever"). Web has the cloud table
-and CSV slug leftover, not the live invent path.
+Strong grammar (do not copy UI or brand): Exercise Detail History
+tab is free; Charts are PRO. Hevy: performance history workout to
+workout in the library. Ours is their diary on the open lift —
+optional, guest, first set still ungated. Honesty `.971` still
+applies when the list is short.
 
 `PRIVATE_MODE` stays on. Live www stays `.696`. Do not promote.
 
 ---
 
-## 1. Investigate (done — hypothesis holds; Today leak is no)
+## 1. Investigate (done — hypothesis holds)
 
-Checked on `origin/master` `.989` (`adad3e58`).
+Checked on `origin/master` `.992` (`7bb7c464`).
 
 | Claim | Verified |
 |-------|----------|
-| Live picker already has library search | **Yes.** `ExercisePicker` filters `EXERCISES` (cap 40). `AddExerciseSheet` / inline add / swap all mount it. E2E keeps `search exercises`, `option` rows, `add selected exercise`. |
-| Named custom persists locally + in the session | **No on web.** Store `addExerciseToActive` accepts any id, but nothing mints a named leftover. No `mw_` notebook. |
-| Library miss kills the log | **Yes, twice.** Empty query-miss copy is "No matches" (no invent). A session / Repeat-last / CSV slug id that `getExerciseById` misses is **unmounted** — the set row never paints. |
-| CSV already slugs unknown names | **Yes.** `exerciseIdForName` → slug when catalog misses. Comment already calls that "how custom exercises already work." Display then dies on the live list. |
-| Android already has live create | **Yes.** `CreateCustomExercise` from the add sheet. Id `custom-${UUID}`. No cap. Sync is Android / `/api/mobile/sync/customs`. |
-| Web public Library is a catalog | **Yes.** `LibraryPage` is `EXERCISES`. Do not add a shop or a public custom feed. |
-| Unlimited / free / guest | Web picker has no create, so no cap and no paywall — and no path. Android copy: free forever. Hevy free cap is 7; we do not copy that. |
+| Vs-last / next-set cite already shows last | **Yes.** `lastLiveSessionForExercise` is the one last-session reader. Prev is last-actuals on the row. `formatVsLastSetDeltas` / `resolveAfterCompleteCite` cite that last log. First-ever is honest empty (`HONEST_EMPTY` / `ACTIVE_TARGET_EMPTY_LINE`). |
+| Open lift name is tappable | **No.** `ActiveExerciseHeader` paints `exercise.name` as a `<span>`. Info opens the form guide. Overflow is More. There is no per-lift diary door. |
+| History page is a per-lift diary | **No.** `/history` first paint is the **session** list (whole workouts). Charts / 1RM / heatmap sit under Show all → Exercises. That is not tap-the-open-lift. |
+| Library already lists prior sessions | **No.** `LibraryDetailSheet` shows a session **count** plus a volume sparkline when `sessionCount > 0`. No date · sets list. Do not lift that spark onto Train. |
+| `countExerciseHistory` is leftover | It counts appearances (tombstones included). Last-live already skips tombstones / 0-rep / warmup-only. The new list must use the live reader, not the count. |
+| Honesty `.971` | `isThinHistory` is 1–2 **live sessions** (whole diary). Wednesday invents no next day. Week strip does not score a streak. Empty cite has no Start. This ship must not invent a third session, a slope, or an on-track line from one or two lifts. |
+| Custom `.992` | `resolveExercise` keeps a named leftover paint-able. History rows use that name. |
 | Today / door | Lean Today is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. Resume `.963`. `/private` is the tight `.957` lock. |
 
-**Hypothesis (founder, non-binding):** the live set picker already
-has a library search; a named custom that persists locally (and in
-the session) is leftover, not a new marketplace.
+**Hypothesis (founder, non-binding):** vs-last / next-set cite
+already shows last; leftover is a per-movement list of prior
+sessions they tap from the open lift, not a chart product and not
+a Feed.
 
-**Verdict: keep.** The picker is the door. The notebook is local.
-Do not build a shop. Do not require a video. Do not cap the 8th.
+**Verdict: keep.** The door is the open lift name. The list is
+theirs. Do not build a projected-max chart. Do not build a Feed.
 
-### Track trend `.989` — leaked last-vs-this onto Today's home?
+### Custom / Track / Start this again — leaked onto Today?
 
 **No. Nothing to unmount first.**
 
-`.989` last-vs-this paints only inside the existing week-strip
-cell (`data-testid="quiet-week-track-trend"`, 9px muted tabular).
-Lean Today still one `dock="start"`. No `BodyMetricsCard`, no
-`Sparkline`, no `TodayMetricsSparklineRow` on lean Today. Not a
-pin. Not Highlights. Not a second Start. `/track` stays the diary.
-
-Keep that lock in this PR's tests. Do not revert `.989`. Do not
-lift last-vs-this onto a Today widget.
+`.992` customs stay on the Train picker. `.989` last-vs-this stays
+inside the week-strip cell. `.991` Start this again stays on the
+receipt / History (outline, not a red Start). Lean Today still one
+`dock="start"`. Keep that lock.
 
 ---
 
-## 2. Lock (live name + local notebook)
+## 2. Lock (tap the lift → their sessions)
 
-| Slot | Empty / miss | Named |
-|------|--------------|--------|
-| Live add / swap / inline picker | Catalog search. Blank query invents nothing. Whitespace invents nothing. | Type a name that is not the catalog (and not a name they already keep) → one Use-this-name action. Persist. Select. Add selected exercise still confirms. Stay on Train. |
-| Live set row | Catalog miss used to unmount the row. | Resolve catalog, then their notebook, then a leftover id so a real session row never vanishes. Log set stays ungated. No video required. |
-| Repeat last / Start this again / diary | Ids already copy. Names died when catalog missed. | Same ids. Names come from the notebook (or leftover humanize). Not a public catalog. |
-| Library page / `/private` / Today Start | Unchanged. | Unchanged. Customs are not a public catalog. Today stays one Start. |
+| Slot | Empty / short | Has sessions |
+|------|----------------|--------------|
+| Open lift name | Tappable. Sheet opens. Empty copy; invents nothing. One or two sessions list as-is — no slope, no streak, no third row. | Newest first. Each row is one of *their* finished sessions that logged this lift. |
+| Set row / Prev / vs-last / next-set cite | Unchanged. Last time stays on the row. | Unchanged. The sheet is the rest of the diary, not a second Prev. |
+| `/history` / Library / Today / `/private` | Unchanged. | Unchanged. Not a History rewrite. Not a Library shop. Today stays one Start. |
 
 Closed rules:
 
-1. **Lives on the live Train picker.** Not a Library shop. Not a
-   Builder-only form. Not on Today. Not on `/private`.
-2. **Name is enough.** No muscle, equipment, or video required.
-   Empty cues stay empty (`.973` invents nothing).
-3. **Empty invents nothing.** Blank / whitespace → no write, no
-   fake library row. Empty query → no invent action. Do not seed
-   a starter custom list.
-4. **Catalog wins.** A typed name that matches a catalog name
-   (trim, case-insensitive) picks the catalog id. Do not mint a
-   custom "Bench Press".
-5. **Reuse their name.** Same notebook name (trim, case-insensitive)
-   reuses that id. Unlimited means no cap, not eight copies of
-   one name.
-6. **Unlimited. Free. Guest.** No 7-cap. No premium. No account.
-   First set still ungated. The 8th named custom still creates.
-7. **Theirs, not a catalog.** Local `mw_custom_exercises` via
-   `safeStorage`. Repeat last / Start this again / History /
-   Victory resolve the name. `LibraryPage` stays `EXERCISES`.
-8. **Id shape.** New rows: `custom-` + uuid (Android leftover).
-   CSV slug leftovers already in a session still resolve so the
-   row is not killed.
-9. **No video. No paywall. No invented library-size traction.**
-   Do not add a new `300+` / count boast. Existing Library
-   subtitle stays put; do not restamp it.
-10. **Today still one Start** (Resume when live). `/private`
-    stays the tight `.957` lock. `.989` last-vs-this stays on
-    the strip cell only.
-11. **No PWA → mobile customs sync this ship.** Guest local is
-    the path. Do not call `/api/mobile/sync/customs` from web.
-    Do not rewrite Android.
+1. **Lives on the open Train lift.** Tap the movement name. Not a
+   new Today widget. Not a History first-paint rewrite. Not a
+   Library shop. Not on `/private`.
+2. **Their diary.** Only this device's completed logs for **this**
+   `exerciseId`. Newest first. Tombstones, 0-rep junk, and
+   warmup-only blocks are not sessions (same live rule as
+   `lastLiveSessionForExercise`).
+3. **Empty invents nothing.** No prior live session → empty copy,
+   no fake row, no invented date, no projected max. Do not seed
+   demo history.
+4. **Short list stays a notebook.** One or two sessions for this
+   lift list as themselves. No streak / on-track / consistency /
+   "you are behind". Honesty `.971` still scores Train only.
+5. **Working sets only on the row.** Warmup stays out of cites
+   (`.970` / `.985`). Show the loads they logged. Empty set
+   lines invent nothing.
+6. **Not a chart product.** No sparkline, no 1RM curve, no
+   projected-max theater. Charts-as-PRO is not our identity — if
+   a chart were shown it would stay free and unprojected; this
+   ship does not show one.
+7. **Not another human's number.** No leaderboard, no Pacer, no
+   "athletes like you".
+8. **Not a Feed.** No public URL, no likes, no permalink, no
+   share sheet. Session notes stay private (`.983`).
+9. **Optional. Guest. First set ungated.** Opening the sheet is
+   never required to Log set. No account. No premium. No
+   `UnlockButton` / `/bundle`.
+10. **Today still one Start** (Resume when live). The sheet
+    footer is Close, not Start. `/private` stays the tight
+    `.957` lock.
+11. **Custom names stay theirs.** Resolve via `resolveExercise`
+    (`.992`). Do not drop a leftover id.
+12. **Do not rewrite Android.** Web PWA only.
 
 ---
 
@@ -122,150 +115,133 @@ Closed rules:
 This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 Every later commit is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/workout/customExercise.ts`
+### 3.2 Pure helper — `src/lib/workout/movementHistory.ts`
 
-One module. Deterministic create/reuse/resolve. Persist through
-`safeStorage` + `STORAGE_KEYS.customExercises` (`mw_custom_exercises`).
-No premium / rewards / social / Health / speech / wearables.
-No store import. Injectable `now` / `id` / storage for tests so
-fixtures do not expire.
+One module. Deterministic list. No premium / rewards / social /
+Health / speech / wearables. No store import. Reuse the live
+session rule already owned by `lastLiveSessionForExercise` (usable
+working set, not tombstone). Dates via `localDateKeyFromIso` —
+never `toISOString()` for a calendar day.
 
 | Export | Rule |
 |--------|------|
-| `CustomExercise` | `{ id, name, createdAt }` — name is trimmed, non-empty. |
-| `normalizeCustomName(raw)` | Trim + collapse inner space. Blank → `''`. |
-| `decideNamedCustom({ name, catalog, existing })` | `null` if blank. `{ kind: 'catalog', id }` on catalog name match. `{ kind: 'reuse', id }` on existing custom name match. Else `{ kind: 'create', name }`. |
-| `mintCustomId()` | `custom-` + uuid. |
-| `upsertCustomExercise(name)` | `decideNamedCustom` then persist only on `create`. Catalog / reuse / blank write nothing new. Returns `{ id, name }` or `null`. |
-| `loadCustomExercises()` | Valid rows only. Drop blank names / bad ids. Empty storage → `[]`. |
-| `resolveExercise(id)` | Catalog `getExerciseById` first. Then notebook. Then leftover synthetic `{ id, name: humanize(id), muscleGroups: [] }` so a live row is never unmounted. Unknown empty id → `null`. |
-| `exercisesForPicker(catalog)` | Catalog plus **their** notebook rows as `Exercise`s. Do not invent leftovers that were never named. |
+| `MovementHistorySet` | `{ reps, weight }` — working sets only (`kind !== 'warmup'`, `reps > 0`). |
+| `MovementHistoryRow` | `{ sessionId, completedAt, workoutName, dateKey, sets }` — `dateKey` is local calendar or `''` when the ISO is unusable (then the row still lists; the UI does not invent a weekday). |
+| `listMovementHistory(history, exerciseId)` | Newest-first (store order). Skip other lifts, tombstones, warmup-only, 0-rep-only. Blank `exerciseId` → `[]`. Empty history → `[]`. |
+| `isShortMovementHistory(rows)` | `rows.length <= 2` — notebook, not a dataset. UI must not paint a slope / streak from this. |
 
 Do not import this from `/private`, Coach plan engine, www, or
-`LibraryPage` as a public catalog.
+Today lean. Do not compute Epley / projected max here.
 
-### 3.3 Picker — invent on a typed miss
+### 3.3 Sheet — tap the name
 
-`ExercisePicker` (so add sheet, inline add, and swap all get it):
+`ActiveExerciseHeader`: the movement name is a button
+`data-testid="movement-history-open"` (min 44px). Info stays
+Info. More stays More. Log set stays on the table.
 
-- Search list = `exercisesForPicker` then existing `filterExercises`.
-- Their named customs may appear when the query matches **or**
-  when the query is empty and they already named some (theirs,
-  not fake).
-- When `decideNamedCustom` is `create`, show one invent action
-  `data-testid="exercise-picker-use-name"`. Copy via
-  `t('exercisePickerUseName', { defaultValue: 'Use "{{name}}"' })`.
-- Click persist + `onChange(id)`. Footer **Add selected exercise**
-  stays the confirm (e2e contract).
-- Keep `search exercises` placeholder and `option` rows.
-- Blank query: no invent action.
+`MovementHistorySheet` (`AdaptiveOverlay`,
+`data-testid="movement-history-sheet"`):
 
-`ActiveInlineAddExercise` / add sheet confirm resolve via
-`resolveExercise`, not catalog-only `getExerciseById`.
+- Title: exercise name (`resolveExercise`).
+- Eyebrow: History (i18n).
+- Empty: `t('activeMovementHistoryEmpty', { defaultValue: 'No prior sessions yet — log this one' })`.
+- Rows: date (from `dateKey` via existing locale format; skip the
+  date chip when `dateKey` is empty) · workout name · working
+  sets as `weight × reps` (tabular). `data-testid="movement-history-row"`.
+- Short list: no spark, no "on track", no third invented row.
+- Footer: Close only. Not Start. Not Start this again. Not Train
+  this (Library already has that door).
+- Hide / close never blocks Log set.
 
-### 3.4 Live list + diary names
+Wire from `ActiveExerciseCard` / header. Stay on Train.
 
-`ActiveExerciseList` uses `resolveExercise`. **Delete**
-`if (!exercise) return null` as the catalog-miss kill.
-
-`ActiveWorkoutPage` name resolvers, History / Victory / Builder
-display of a logged or saved id, and Repeat last / honor-saved
-start use `resolveExercise` so the name they typed stays theirs.
-
-Cues / form still / Info stay empty when there is no catalog
-media. Hide never blocks Log set.
-
-### 3.5 Surfaces that do not change
+### 3.4 Surfaces that do not change
 
 - Today lean stays date · pins · highlights · strip · Show all ·
   one `JourneyHero` `dock="start"`. `.989` trend stays in the
-  strip cell.
+  strip cell. `.991` Start this again stays on receipt / History.
 - `/private` stays the tight `.957` lock.
-- `LibraryPage` stays the static catalog. No shop. No video
-  required. No custom marketplace.
+- `/history` first paint stays the session list. Do not move
+  charts onto this sheet. Do not paywall History charts.
+- `LibraryDetailSheet` count + spark stays put. Do not add a
+  shame slope to Train. Do not rewrite Library this ship.
 - Android Room path stays. No F5. No Expo.
-- Honesty `.971`, resume `.963`, first set ungated, EMOM `.988`,
-  drop-set `.986`, warmup `.985` stay.
+- Honesty `.971`, resume `.963`, first set ungated, custom
+  `.992`, Start this again `.991`, EMOM `.988`, drop-set `.986`,
+  warmup `.985` stay.
 
-### 3.6 Tests
+### 3.5 Tests
 
-- Blank / whitespace / empty query → no create, no notebook write.
-  Mutant that seeds a fake library row dies.
-- Catalog name (any case) → catalog id, no write.
-- New name → `custom-` uuid, persist, resolve by id.
-- Same name again → reuse, notebook length unchanged.
-- Eight distinct names all persist (no cap). Mutant that refuses
-  the 8th dies.
-- `resolveExercise` catalog hit / notebook hit / leftover slug
-  still returns a paint-able `Exercise` (live list must not
-  `return null` on miss).
-- Picker source: invent action only on a create miss. Keeps
-  search placeholder + add-selected-exercise. No `UnlockButton`
-  / `/bundle` / `isPremium` / video-required / `300+` new boast.
-- Live list source: `resolveExercise`; no catalog-miss unmount.
-- Repeat-last / honor-saved / History / Victory resolve the
-  typed name. `LibraryPage` does not import the notebook as a
-  public catalog.
+- Empty history / blank id / tombstone / warmup-only / 0-rep →
+  `[]`. Mutant that seeds a demo row dies.
+- One live Push with bench → one row, that session's working
+  sets. Warmup omitted.
+- Two sessions for the same lift → two rows, newest first. Short
+  flag true. Mutant that invents a third row or a slope field
+  dies.
+- Three sessions → three rows; short flag false. Still no
+  projected max / streak field on the row type.
+- Date keys use `localDateKeyFromIso` (no `toISOString()` day).
+- Header source: name is the open control. Sheet empty copy
+  matches. Footer is Close, not `primary-action` / Start workout.
+- No `UnlockButton` / `/bundle` / `isPremium` / projected /
+  sparkline / `History1RMChart` / Feed permalink / likes / XP /
+  another-human compare on the helper or the sheet.
 - Today lock: lean still one `dock="start"`. No
-  `BodyMetricsCard` / `Sparkline` / `TodayMetricsSparklineRow`
-  on lean Today. `quiet-week-track-trend` stays on the strip
-  only.
-- `firstSetUngated` stays green. Custom path never mounts
+  `movement-history` import on lean Today or `/private`.
+- `thinHistory` stays green (Wednesday / week strip unchanged).
+- `firstSetUngated` stays green. History path never mounts
   SignInPrompt / login wall / Force Sync / Session Expired.
 - No Feed / Discord.com / likes / XP / four-scene door /
   Health / counsel-hold / WeChat home / Mind.
 
-### 3.7 Help / i18n / INDEX
+### 3.6 Help / i18n / INDEX
 
-- Help one-liner (getting-started Train): during a live session
-  they can type a name the library does not have and keep
-  logging. Unlimited. Free. Stays on this device. Empty
-  invents nothing. Today stays Start workout.
-- i18n: add keys to `libraryLocales.ts` + `t(key, { defaultValue })`
-  matching EN. Coverage cap stays 0.
+- Help one-liner (getting-started Train): opening a live exercise
+  can show prior sessions of that lift. Empty invents nothing.
+  Today stays Start workout.
+- i18n: add keys to `activeWorkoutLocales.ts` +
+  `t(key, { defaultValue })` matching EN. Coverage cap stays 0.
 - Folder INDEX if the file list changes (`src/lib/INDEX.md`,
-  `src/lib/workout/INDEX.md`, `src/components/workout/INDEX.md`,
-  `src/store/INDEX.md`, `src/lib/storage` keys).
+  `src/lib/workout/INDEX.md`, `src/components/workout/INDEX.md`).
 
 ## 4. Refuse
 
-Paywall custom. Marketplace exercise shop. Require a video.
-Invented library-size traction. Cap the 8th. WeChat home.
-Four-scene door. Feed / DMs. Health gate. Counsel-hold.
-Promote. `PRIVATE_MODE` flip. Merge. Second Today Start.
-Discord.com. Mind. PWA customs cloud sync. Android rewrite.
-Seeding fake library rows. Lifting `.989` last-vs-this onto
-a Today widget.
+Paywall the diary. Projected-max theater. Another human's number.
+Feed permalink. Shame slope. WeChat home. Four-scene door.
+Health gate. Counsel-hold. Promote. `PRIVATE_MODE` flip. Merge.
+Second Today Start. Discord.com. Mind. Marketplace.
+Android rewrite. Seeding demo history. Lifting Library spark
+onto Train. Rewriting `/history` first paint.
 
-Do not smash `.991` / `.989` / `.988` / `.986` / `.985` / `.983` /
-`.981` / `.980` / `.978` / `.977` / `.976` / `.974` / `.973` /
-`.971` / `.970` / `.967` / `.965` / `.963` / `.961` / `.957`.
+Do not smash `.992` / `.991` / `.989` / `.988` / `.986` / `.985` /
+`.983` / `.981` / `.980` / `.978` / `.977` / `.976` / `.974` /
+`.973` / `.971` / `.970` / `.967` / `.965` / `.963` / `.961` /
+`.957`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.990`
-- LOG heading `## 2026-08-25 — Custom exercise (\`.990`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.993`
+- LOG heading `## 2026-08-25 — This-movement history (\`.993`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.990` citing the full label;
-  keep `.989` … `.971`; rotate oldest shipped Now bullet
-  (`.970`) so the block stays ≤25
+- `CONTEXT.md` `## Now` one-line `.993` citing the full label;
+  keep `.992` … `.973`; rotate oldest shipped Now bullet
+  (`.973`) so the block stays ≤25
 - Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
-- One draft PR against master. Title: `Custom exercise (.990)`.
+- One draft PR against master. Title: `This-movement history (.993)`.
   Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.990` > master `.989`.
+- `tsc --noEmit` clean. `check-build-label` `.993` > master `.992`.
 
 ## 6. Done when
 
-- During a live session they can name a custom exercise and log
-  sets on it without leaving Train.
-- Unlimited. Free. Guest. First set still ungated. Empty invents
-  nothing (no fake library entries).
-- Custom they named stays theirs on Repeat last / Start this
-  again / the local diary. Not a public catalog.
-- Today still one Start (Resume when live). `/private` stays
-  the tight `.957` lock. `.989` last-vs-this stays on the strip
-  cell only.
-- No video required. No paywall. No invented traction on
-  library size.
-- Unit tests. tsc clean. Label `.990`. Draft PR against master.
-  Title: `Custom exercise (.990)`.
+- They can tap the lift and see prior sessions for that movement
+  (their diary). Empty / short list invents nothing. Honesty
+  `.971` still applies.
+- Not a projected-max chart. Not another human's number. Not a
+  Feed permalink. Not a shame slope.
+- Optional. Guest. First set still ungated.
+- Today still one Start (Resume when live). `/private` stays the
+  tight `.957` lock.
+- Does not paywall the diary. No chart on this sheet.
+- Unit tests. tsc clean. Label `.993`. Draft PR against master.
+  Title: `This-movement history (.993)`.

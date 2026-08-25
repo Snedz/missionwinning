@@ -44,6 +44,11 @@ type ActiveWorkoutStrings = {
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
+  /** Prior sessions of the open lift (`.993`). */
+  activeMovementHistoryEyebrow: string;
+  activeMovementHistoryEmpty: string;
+  activeMovementHistoryClose: string;
+  activeMovementHistoryOpenAria: string;
   /** Short written cues on the open live exercise (`.973`). */
   activeInSetCues: string;
   activeInSetCuesHide: string;
@@ -380,6 +385,10 @@ const en: ActiveWorkoutStrings = {
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add an exercise to begin logging sets.',
   activeFormGuide: 'Form guide',
+  activeMovementHistoryEyebrow: 'History',
+  activeMovementHistoryEmpty: 'No prior sessions yet — log this one',
+  activeMovementHistoryClose: 'Close',
+  activeMovementHistoryOpenAria: 'Prior sessions of {{name}}',
   activeInSetCues: 'Cues',
   activeInSetCuesHide: 'Hide cues',
   activeInSetCuesDemoAlt: '{{name}} setup',
