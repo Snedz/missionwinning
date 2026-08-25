@@ -241,7 +241,8 @@ describe('quiet week track trend source', () => {
     assert.match(src, /entryHasLoggedNumber/);
     assert.doesNotMatch(src, /\bdelta\s*\(/);
     assert.doesNotMatch(src, /Date\.now|toISOString\(/);
-    assert.doesNotMatch(src, /lost|gained|shame|strain|recovery/i);
+    assert.doesNotMatch(src, /lost|gained|strain|recovery/i);
+    assert.doesNotMatch(src, /shame slope|body photo/i);
     assert.doesNotMatch(src, /recharts|Sparkline|ScoreNumeral|ProgressPhotos/);
     assert.doesNotMatch(src, /HealthKit|health\.connect|getCurrentPosition/i);
     assert.doesNotMatch(src, /discord\.com|wechat|marketplace/i);

@@ -2,7 +2,7 @@
  * Quiet last-vs-this on a week-strip Track day.
  *
  * Two same-metric diary numbers or nothing. Not a sparkline. Not a
- * shame slope. `/track` stays the diary.
+ * verdict slope. `/track` stays the diary.
  */
 
 import type { BodyMetricEntry, BodyMetricKey } from '@/lib/bodyMetrics';

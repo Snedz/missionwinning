@@ -147,23 +147,25 @@ export function TodayQuietWeekStrip({ glance, onLogged }: Props) {
                 data-done="false"
                 data-quiet={day.quiet}
                 data-today={day.isToday ? 'true' : 'false'}
-                {...(trendLabel ? { 'data-testid': 'quiet-week-track-trend' } : {})}
               >
                 {weekday}
-                <span
-                  className={cn(
-                    'text-[9px] font-semibold',
-                    trendLabel ? 'tabular-nums text-muted-foreground' : 'text-foreground'
-                  )}
-                >
-                  {trendLabel ??
-                    quietWeekKindCopy(
+                {trendLabel ? (
+                  <span
+                    data-testid="quiet-week-track-trend"
+                    className="text-[9px] font-semibold tabular-nums text-muted-foreground"
+                  >
+                    {trendLabel}
+                  </span>
+                ) : (
+                  <span className="text-[9px] font-semibold text-foreground">
+                    {quietWeekKindCopy(
                       day.quiet,
                       t('todayQuietWeekFuel', { defaultValue: 'Fuel' }),
                       t('todayQuietWeekMove', { defaultValue: 'Walk' }),
                       t('todayQuietWeekTrack', { defaultValue: 'Scale' })
                     )}
-                </span>
+                  </span>
+                )}
               </div>
             );
           }
