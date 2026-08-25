@@ -54,6 +54,7 @@ import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { todayReturnCite } from '@/lib/today/todayReturnCite';
 import { quietWeekGlance } from '@/lib/today/quietWeekGlance';
+import { loadQuietWeekRows, type QuietWeekRow } from '@/lib/today/quietWeekRow';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Start',
@@ -87,6 +88,7 @@ export function HomeTodayLean() {
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
   const [pinIds, setPinIds] = useState<SummaryPinId[]>(() => parseSummaryPinIds(null));
   const [editingPins, setEditingPins] = useState(false);
+  const [quietRows, setQuietRows] = useState<QuietWeekRow[]>([]);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
@@ -95,6 +97,7 @@ export function HomeTodayLean() {
   const refreshFromStorage = useCallback(() => {
     const history = readWorkoutHistoryFromStorage();
     setWorkoutHistory(history);
+    setQuietRows(loadQuietWeekRows());
     setPinIds(parseSummaryPinIds(readRaw(STORAGE_KEYS.summaryPins)));
     const next = syncJourneyPhase(history);
     setJourneyState(next);
@@ -307,7 +310,10 @@ export function HomeTodayLean() {
         {plan.top.map(({ key, node }) => (
           <div key={key}>{node}</div>
         ))}
-        <TodayQuietWeekStrip glance={quietWeekGlance({ history: workoutHistory })} />
+        <TodayQuietWeekStrip
+          glance={quietWeekGlance({ history: workoutHistory, quietRows })}
+          onLogged={() => setQuietRows(loadQuietWeekRows())}
+        />
         <TodayShowAll />
       </div>
       <ScreenDock>

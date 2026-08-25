@@ -54,7 +54,7 @@ Education — structured paths and the Mission Winning guidebook (**Beyond the B
 
 **Route:** `/log` (nav label: **Today**)
 
-Not a separate pillar — Today aggregates readiness, Mission Score, coach insight, journal strip, and quick links into all pillars. Start here each morning.
+Not a separate pillar — Today aggregates readiness, Mission Score, coach insight, journal strip, and quick links into all pillars. Start here each morning. An empty rest day on This week can take one optional Fuel restock, easy walk, or scale/tape. That is not a second Start.
 
 ## Mission Coach (premium Train depth)
 

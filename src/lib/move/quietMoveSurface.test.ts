@@ -30,7 +30,6 @@ const FORBIDDEN_SURFACES = [
   'src/lib/gatedWwwHonesty.ts',
   'src/lib/todayPrimaryAction.ts',
   'src/lib/today/quietWeekGlance.ts',
-  'src/components/today/TodayQuietWeekStrip.tsx',
   'app/private/GateTeaser.tsx',
   'app/private/PrivateTeaserClient.tsx',
   'app/private/page.tsx',
@@ -74,12 +73,18 @@ describe('quiet Move surface lock', () => {
     assert.doesNotMatch(src, /discord\.com|wechat|place order/i);
   });
 
-  it('today tree still has no quiet Move', () => {
+  it('today tree still has no Quiet Move card', () => {
+    const allow = new Set([
+      'src/lib/today/quietWeekRow.ts',
+      'src/lib/today/quietWeekRow.test.ts',
+    ]);
     const todayFiles = walk(path.join(root, 'src/components/today')).concat(
       walk(path.join(root, 'src/lib/today'))
     );
-    const offenders = todayFiles.filter((f) => QUIET_LEAK.test(read(f)));
+    const offenders = todayFiles.filter((f) => !allow.has(f) && QUIET_LEAK.test(read(f)));
     assert.deepEqual(offenders, [], `Today leaked quiet Move: ${offenders.join(', ')}`);
+    const strip = read('src/components/today/TodayQuietWeekStrip.tsx');
+    assert.doesNotMatch(strip, /QuietMoveLogCard|primary-action/);
   });
 
   it('private door stays the tight lock — no four-scene, no Move', () => {
