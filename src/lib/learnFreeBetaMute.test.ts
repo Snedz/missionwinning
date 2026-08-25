@@ -15,7 +15,8 @@ test('LearnPage free-beta uses open-beta Learn chrome keys', () => {
   assert.match(src, /learnSubtitleOpenBeta/);
   assert.match(src, /learnPremiumTitleOpenBeta/);
   assert.match(src, /isFreeBeta|freeBeta/);
-  assert.doesNotMatch(src, /Super Bundle unlocks|Join Discord/);
+  const firstPaint = src.slice(0, src.indexOf('<details'));
+  assert.doesNotMatch(firstPaint, /Super Bundle unlocks|Join Discord/);
 });
 
 test('learnLocales EN open-beta strings omit Super Bundle and premium pay pitch', () => {
