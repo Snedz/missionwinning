@@ -6,6 +6,101 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1002` Merge duplicate exercises (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1002` — rebased onto
+> master `.1001` (`91938fc4` — Pause the live
+> clock). Stamp stays `.1002`. Do not bump.
+> Title stays **Merge duplicate exercises (.1002)**.
+> Same PR. Do not merge this PR yourself.
+> Pause `.1001` + Backfill `.1000` + in-set PR
+> `.999` + Reorder `.998` + History Edit
+> `.997` + Exercise note + pin `.996` +
+> Per-exercise rest `.995` + Set-row type
+> `.994` + This-movement history `.993` +
+> Custom `.992` + Start this again `.991` +
+> Quiet Track trend `.989` + EMOM `.988` +
+> drop-set `.986` + warmup `.985` + notes
+> `.983` + 1RM `.981` + Supersets `.980` +
+> Learn `.978` + week strip `.977` + Quiet
+> Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` +
+> RPE `.967` + Fuel `.965` + resume `.963` +
+> notebook `.960` are on master. Do not smash
+> them. Every commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays
+> ungated. Today stays one Start. Brand:
+> **Log a set. Offline.** / No account. No
+> wearable.
+
+Custom + history + PR split when they
+logged the same movement under two
+names ("Bench" vs "Barbell Bench", a
+custom vs a catalog twin). Strong
+leftover: Transfer Exercise Data.
+
+### First check (done — hypothesis holds)
+
+Read tip `91938fc4` / `.1001`.
+Confirmed:
+
+- **Identity is an id.** Catalog,
+  custom notebook (`.992`), and
+  leftover ids are resolved by
+  `customExercise.ts`. History,
+  this-movement (`.993`), in-set
+  PR (`.999`), 1RM percent
+  (`.981`), rest (`.995`), and
+  pin (`.996`) all key off
+  `exerciseId`. Two names of the
+  same movement stay two diaries
+  until they pick.
+- **Do not auto-merge.**
+  `decideNamedCustom` reuses an
+  exact catalog/custom name on
+  create. It does not invent a
+  twin for "Bench" vs "Barbell
+  Bench". This ship is an
+  explicit source + keeper.
+- **Confirm-gated History /
+  library action.** Same door
+  shape as Edit `.997` / Backfill
+  `.1000`. Not a Today home row.
+  Not a second Start. Not pause
+  clock `.1001`.
+- **PRs recompute.**
+  `getBestPriorSet` /
+  `decideInSetPr` /
+  `knownMaxFromHistory` read the
+  diary. Remap the id; do not
+  invent a max.
+
+### Lock
+
+1. Confirm-gated. Copy says it
+   cannot be undone.
+2. After confirm: source identity
+   is gone; every past set/session
+   that pointed at source now
+   points at keeper. PRs recompute
+   from the merged diary, never
+   invented.
+3. Live session: if the open
+   session has both names, the
+   source card becomes the keeper
+   (or vanishes if keeper already
+   in the session) — sets travel.
+4. Empty / same-id / missing
+   invents nothing. Do not
+   auto-merge lookalikes.
+5. No Today chrome. No second
+   Start. No `/private` leak.
+
+---
+
 ## Frozen plan — `.1001` Pause the live clock (2026-08-25)
 
 > **Frozen.** Implement only this section + root

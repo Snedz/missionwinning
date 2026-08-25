@@ -114,6 +114,24 @@ type HistoryStrings = {
   historyBackfillEnd: string;
   historyBackfillAddExercise: string;
   historyBackfillRemoveExercise: string;
+  /** `.1002` — merge two names of the same movement. */
+  historyMerge: string;
+  historyMergeTitle: string;
+  historyMergeDesc: string;
+  historyMergeSource: string;
+  historyMergeKeeper: string;
+  historyMergeSearch: string;
+  historyMergeSelected: string;
+  historyMergeEmptyPick: string;
+  historyMergeContinue: string;
+  historyMergeCancel: string;
+  historyMergeConfirmTitle: string;
+  historyMergeConfirmDesc: string;
+  historyMergeConfirm: string;
+  historyMergeEmpty: string;
+  historyMergeEmptyDesc: string;
+  historyMergeDone: string;
+  historyMergeDoneDesc: string;
 };
 
 const en: HistoryStrings = {
@@ -225,6 +243,26 @@ const en: HistoryStrings = {
   historyBackfillEnd: 'End',
   historyBackfillAddExercise: 'Add exercise',
   historyBackfillRemoveExercise: 'Remove',
+  historyMerge: 'Merge duplicate exercises',
+  historyMergeTitle: 'Merge duplicate exercises',
+  historyMergeDesc:
+    'If you logged the same movement under two names, pick which name to keep. This cannot be undone.',
+  historyMergeSource: 'Move data from',
+  historyMergeKeeper: 'Keep this name',
+  historyMergeSearch: 'Search a name…',
+  historyMergeSelected: 'Selected: {{name}}',
+  historyMergeEmptyPick: 'No matches',
+  historyMergeContinue: 'Continue',
+  historyMergeCancel: 'Cancel',
+  historyMergeConfirmTitle: 'Merge these names?',
+  historyMergeConfirmDesc:
+    'All history, PRs, notes, tags, rest, and 1RM from {{source}} move onto {{keeper}}. This cannot be undone.',
+  historyMergeConfirm: 'Merge — cannot be undone',
+  historyMergeEmpty: 'Nothing to merge',
+  historyMergeEmptyDesc:
+    'Empty invents nothing — pick two different names that already exist.',
+  historyMergeDone: 'Merged',
+  historyMergeDoneDesc: 'History, PRs, notes, and rest now use the name you kept.',
 };
 
 const es: HistoryStrings = {

@@ -17,9 +17,12 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
+import { decideMergeExercises, knownIdsForMerge } from '@/lib/workout/mergeExercises';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -76,6 +79,10 @@ export function LibraryPage() {
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
+  const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
+  const [mergeOpen, setMergeOpen] = useState(false);
   const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [detailId, setDetailId] = useState<string | null>(null);
   const [catalogRevision, setCatalogRevision] = useState(0);
@@ -163,6 +170,15 @@ export function LibraryPage() {
         defaultValue: 'Search movements. Filters when you need them.',
       })}
     >
+      <Button
+        type="button"
+        variant="outline"
+        className="mb-3 w-full min-h-[44px] tap-target"
+        data-testid="library-merge-open"
+        onClick={() => setMergeOpen(true)}
+      >
+        {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
+      </Button>
       <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -580,6 +596,46 @@ export function LibraryPage() {
           </div>
         </div>
       )}
+
+      <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
+        <DialogContent
+          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          data-testid="library-merge-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyMergeTitle', { defaultValue: 'Merge duplicate exercises' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyMergeDesc', {
+                defaultValue:
+                  'If you logged the same movement under two names, pick which name to keep. This cannot be undone.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {mergeOpen ? (
+            <HistoryMergeExercises
+              history={workoutHistory}
+              live={activeWorkout?.exercises ?? null}
+              saved={savedWorkouts}
+              onConfirm={(sourceId, keeperId) => {
+                const decision = decideMergeExercises({
+                  sourceId,
+                  keeperId,
+                  knownIds: knownIdsForMerge({
+                    history: workoutHistory,
+                    live: activeWorkout?.exercises ?? null,
+                    saved: savedWorkouts,
+                  }),
+                });
+                if (decision.kind !== 'needs-confirm') return;
+                if (applyMergedExercises(sourceId, keeperId)) setMergeOpen(false);
+              }}
+              onCancel={() => setMergeOpen(false)}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </PillarPageShell>
   );
 }

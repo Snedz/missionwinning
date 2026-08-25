@@ -20,7 +20,7 @@
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
-| `history/` | History charts, muscle heatmap, finished-session edit (`.997`), past-session backfill (`.1000`) |
+| `history/` | History charts, muscle heatmap, finished-session edit (`.997`), past-session backfill (`.1000`), merge duplicates (`.1002`) |
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
 | `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
