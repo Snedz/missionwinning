@@ -65,6 +65,11 @@ export const STORAGE_KEYS = {
    * writes. Cap lives in restTimer.ts, not here.
    */
   lastRestByExercise: 'mw_last_rest_by_exercise',
+  /**
+   * `.996` — pinned reminder per exercise id. Device-local. Not History.
+   * Empty deletes. Cap lives in exercisePin.ts, not here.
+   */
+  pinnedNoteByExercise: 'mw_pinned_note_by_exercise',
   /** Last ecc/pause/con tempo per exercise id — prefill on the next set (`.734`). */
   lastTempoByExercise: 'mw_last_tempo_by_exercise',
   /** `.761` — hide educational session e1RM on the Active exercise row. Default shown. */

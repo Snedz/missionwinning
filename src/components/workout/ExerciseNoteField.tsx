@@ -27,7 +27,7 @@ export function ExerciseNoteField({ value, onChange, inputRef }: Props) {
       data-testid="exercise-note"
       aria-label={t('activeNote', { defaultValue: 'Note' })}
       placeholder={t('activeNotePlaceholder', {
-        defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
+        defaultValue: 'Note — "left shoulder felt off"…',
       })}
       onChange={(e) => onChange(e.target.value)}
       className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground"

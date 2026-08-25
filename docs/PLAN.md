@@ -6,6 +6,131 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.996` Exercise note + pinned reminder (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.996` — next free after master `.995`
+> (`8f7f19c9` — Per-exercise rest). Title stays
+> **Exercise note + pinned reminder (.996)**.
+> Per-exercise rest `.995` + Set-row type `.994` +
+> This-movement history `.993` + Custom `.992` + Start this
+> again `.991` + Quiet Track trend `.989` + EMOM `.988` +
+> drop-set `.986` + warmup `.985` + notes `.983` + 1RM
+> `.981` + Supersets `.980` + Learn `.978` + week strip
+> `.977` + Quiet Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook `.960` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Session notes `.983` cover the
+workout. Cues `.973` are *our*
+rack card. `.748` already has a
+one-line field, but last History
+note prefills it. Missing: their
+sentence on this lift, and a pin
+that returns next time. Strong:
+Exercise Notes + Pinned Notes.
+Pin does not go on History.
+`.993` / `.994` / `.995` did not
+put chrome on Today.
+
+### First check (done — hypothesis holds; no Today leak)
+
+Read `origin/master` tip `8f7f19c9`
+/ `.995`. `sessionNote` is the
+workout. `inSetCues` is our rack
+card. `applyHistoryNote` seeds
+`noteFromHistory` at start / add
+/ swap. No `mw_pinned_note_*`.
+Today is one `dock="start"`. Lean
+does not import rest / history /
+set-row type. `/private` stays
+the tight `.957` lock. **Nothing
+to unmount first.** Do not add a
+History notes tab.
+
+### Lock
+
+Two fields on the open Train lift.
+This-session note stays `ex.note`.
+Pin lives in
+`mw_pinned_note_by_exercise`.
+Last History note is not a pin.
+`applyHistoryNote` drops a leaked
+swap note and does not seed
+history. Pin returns next session
+of that lift. Pin never writes the
+completed log, receipt, movement-
+history sheet, or History page.
+Empty invents nothing. Guest.
+First set ungated. Today still
+one Start. Honesty `.971` still
+applies. Cues `.973` and session
+notes `.983` stay.
+
+1. One pin map, 80 ids, cap 200.
+   Empty deletes. Blank id never
+   writes. Custom leftover ids
+   work.
+2. Chrome on the **open** lift
+   only. After the set table,
+   before the footer. Not Today.
+   Not `/private`. Not a Feed.
+   Not a paywall. Not a live
+   share.
+3. This-movement history `.993`
+   stays sets. Today stays one
+   `JourneyHero` `dock="start"`.
+4. Rest `.995` and set-row type
+   `.994` still hold.
+
+### Refuse
+
+- Put the note or pin on History,
+  a public URL, or another
+  human's number
+- Feed / DMs / marketplace /
+  Discord.com / shame / four-
+  scene door
+- Replace cues `.973` or session
+  notes `.983`
+- Treat last History note as a
+  pin
+- Counsel-hold (field test / PT /
+  pregnancy)
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Auto-add Track bodyweight into
+  volume
+- Put note / pin chrome on Today
+
+### Done when
+
+- Open lift has their note +
+  optional pin that returns next
+  session of that lift
+- Pin does not appear on History
+- Today still one Start · first
+  set ungated
+- Label `2026.07-unified.996`
+
+Excellence-Override: leftover
+exercise note + pinned reminder
+on the open Train lift.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.995` Per-exercise rest (2026-08-25)
 
 > **Frozen.** Implement only this section + root

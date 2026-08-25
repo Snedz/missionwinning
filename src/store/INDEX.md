@@ -11,7 +11,7 @@
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 | `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
-| `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`) |
+| `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`). This-session note does not prefill from History (`.996`). |
 
 ## State slices (`workoutStore`)
 

@@ -43,7 +43,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
-20. `exerciseNote.ts` — per-exercise diary seed (unset vs clear) + history wrap (`.748`)
+20. `exerciseNote.ts` — this-session diary on the lift (unset vs clear). Appearance drops a leaked note; last History is not a pin (`.748` / `.996`)
+20b. `exercisePin.ts` — pinned reminder per lift id. Returns next session. Not History (`.996`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
 21b. `sessionExerciseOnce.ts` — skip or swap this exercise **this session** (`.959`); does not write Wednesday / saved / plan
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
@@ -109,7 +110,9 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.939`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
-| `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |
+| `exerciseNote.test.ts` | This-session note + appearance wipe; last History is not a pin (`.748` / `.996`) |
+| `exercisePin.test.ts` | Pin normalize / per-id persist / cap / refuse History seed (`.996`) |
+| `exerciseNotePinSurface.test.ts` | Open-lift note + pin; Today one Start; pin off History (`.996`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
 | `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
