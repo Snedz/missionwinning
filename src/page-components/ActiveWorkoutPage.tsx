@@ -130,6 +130,7 @@ export function ActiveWorkoutPage() {
   const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
   const insertWarmupRampOnExercise = useWorkoutStore((s) => s.insertWarmupRampOnExercise);
+  const removePlannedSetAt = useWorkoutStore((s) => s.removePlannedSetAt);
   const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
   const skipExerciseInActive = useWorkoutStore((s) => s.skipExerciseInActive);
@@ -779,6 +780,10 @@ export function ActiveWorkoutPage() {
               exIdx,
               planWarmupRamp({ workWeight: load.weight, units })
             );
+            setSetInputs({});
+          }}
+          onRemovePlannedSet={(exIdx, setIdx) => {
+            removePlannedSetAt(exIdx, setIdx);
             setSetInputs({});
           }}
         />

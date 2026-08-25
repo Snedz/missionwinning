@@ -123,11 +123,13 @@ interface WorkoutState {
   toggleSupersetWithNext: (exerciseIndex: number) => void;
   unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
-  /** Insert planned warmup sets before the first incomplete set (garage ramp). */
+  /** Insert planned warmup sets before the first incomplete set (free batch). */
   insertWarmupRampOnExercise: (
     exerciseIndex: number,
     ramp: { reps: number; weight: number }[]
   ) => void;
+  /** Removes one not-yet-completed set (athlete-owned warmup / extra planned). */
+  removePlannedSetAt: (exerciseIndex: number, setIndex: number) => void;
   /** Removes the last not-yet-completed set (planned-too-many case). */
   removeLastPlannedSet: (exerciseIndex: number) => void;
   removeExerciseFromActive: (exerciseIndex: number) => void;
@@ -164,7 +166,11 @@ interface WorkoutState {
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 import { materializeTemplates } from '@/lib/workout/materializeProgram';
 import { applyHistoryNote } from '@/lib/workout/exerciseNote';
-import { insertWarmupSets, warmupRampAlreadyPresent } from '@/lib/workout/warmupRamp';
+import {
+  insertWarmupSets,
+  removePlannedSetAt,
+  warmupRampAlreadyPresent,
+} from '@/lib/workout/warmupRamp';
 
 function createLoggedSets(count: number, reps = 0, weight = 0): LoggedSet[] {
   const now = Date.now();
@@ -697,6 +703,19 @@ export const useWorkoutStore = create<WorkoutState>()(
             ...ex,
             sets: insertWarmupSets(ex.sets, rampSets),
           };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      removePlannedSetAt: (exerciseIndex, setIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex) return s;
+          const nextSets = removePlannedSetAt(ex.sets, setIndex);
+          if (nextSets === ex.sets) return s;
+          exercises[exerciseIndex] = { ...ex, sets: nextSets };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
       },

@@ -15,6 +15,7 @@
  * `.980` — optional exercise group (superset) in the live log. Never a login wall.
  * `.981` — optional % of a known 1-rep max on the set row. Never a login wall.
  * `.983` — optional private session notes on the live session / close receipt (concern `.982`). Never a login wall.
+ * `.985` — free warmup batch from the working weight (concern `.984`). Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

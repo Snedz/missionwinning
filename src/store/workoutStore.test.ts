@@ -327,20 +327,32 @@ test('workoutStore', async (t) => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template('bench-press', 2));
     useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
-      { reps: 8, weight: 40 },
-      { reps: 5, weight: 60 },
+      { reps: 5, weight: 50 },
+      { reps: 3, weight: 67.5 },
+      { reps: 1, weight: 75 },
     ]);
     const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
-    assert.equal(sets.length, 4);
+    assert.equal(sets.length, 5);
     assert.equal(sets[0].kind, 'warmup');
-    assert.equal(sets[0].weight, 40);
+    assert.equal(sets[0].weight, 50);
     assert.equal(sets[1].kind, 'warmup');
-    assert.equal(sets[2].kind, 'normal');
+    assert.equal(sets[3].kind, 'normal');
     useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
-      { reps: 8, weight: 40 },
-      { reps: 5, weight: 60 },
+      { reps: 5, weight: 50 },
+      { reps: 3, weight: 67.5 },
+      { reps: 1, weight: 75 },
     ]);
-    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].sets.length, 4);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].sets.length, 5);
+    useWorkoutStore.getState().removePlannedSetAt(0, 0);
+    const after = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(after.length, 4);
+    assert.equal(after[0].weight, 67.5);
+    useWorkoutStore.getState().logSet(0, 0, 3, 67.5);
+    useWorkoutStore.getState().removePlannedSetAt(0, 0);
+    assert.equal(
+      useWorkoutStore.getState().activeWorkout?.exercises[0].sets[0]?.completed,
+      true
+    );
   });
 
   await t.test('removing a planned set never removes completed work', () => {

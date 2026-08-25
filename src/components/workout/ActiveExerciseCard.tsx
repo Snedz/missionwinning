@@ -110,6 +110,7 @@ type Props = {
   onSetSideChange?: (side: SetSide | undefined) => void;
   onOpenPlates?: () => void;
   onAddWarmups?: () => void;
+  onRemovePlannedSet?: (setIdx: number) => void;
 };
 
 export function ActiveExerciseCard({
@@ -158,6 +159,7 @@ export function ActiveExerciseCard({
   onSetSideChange,
   onOpenPlates,
   onAddWarmups,
+  onRemovePlannedSet,
 }: Props) {
   const { t } = useTranslation();
   const [barWeight, setBarWeight] = useBarWeight(units);
@@ -259,7 +261,6 @@ export function ActiveExerciseCard({
     liveDial: holdsActiveSet ? setInput : null,
   });
   const showAddWarmups = shouldShowAddWarmups({
-    barLoaded,
     workingWeight: workingLoad?.weight ?? null,
     units,
     sets: exLog.sets,
@@ -327,6 +328,7 @@ export function ActiveExerciseCard({
               onSetKindChange(idx, nextWarmupKind(activeSetKind));
             }}
             onSetKind={(setIdx, kind) => onSetKindChange(setIdx, kind)}
+            onRemovePlannedSet={onRemovePlannedSet}
             onOpenPlates={onOpenPlates}
             input={setInput}
             plusLoad={plusLoad}

@@ -64,6 +64,8 @@ type Props = {
   onToggleWarmup?: () => void;
   /** Optional W / D / F on any set — never required to Log set. */
   onSetKind?: (setIdx: number, kind: SetKind) => void;
+  /** Delete an incomplete warmup from the batch — never required. */
+  onRemovePlannedSet?: (setIdx: number) => void;
   onOpenPlates?: () => void;
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
@@ -106,6 +108,7 @@ export function SetLogTable({
   onBarWeightChange,
   onToggleWarmup,
   onSetKind,
+  onRemovePlannedSet,
   input,
   onInputChange,
   knownMax = null,
@@ -302,6 +305,16 @@ export function SetLogTable({
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
+                    {kind === 'warmup' && onRemovePlannedSet ? (
+                      <button
+                        type="button"
+                        onClick={() => onRemovePlannedSet(setIdx)}
+                        data-testid="set-table-remove-warmup"
+                        className="mt-1 min-h-[44px] w-full tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                      >
+                        {t('activeRemoveSet', { defaultValue: 'Remove set' })}
+                      </button>
+                    ) : null}
                   </td>
                 </>
               ) : (
@@ -314,7 +327,9 @@ export function SetLogTable({
                             t('activeSetBodyweight', { defaultValue: 'BW' })
                           )
                         : set.weight
-                      : '—'}
+                      : kind === 'warmup' && set.weight > 0
+                        ? set.weight
+                        : '—'}
                     {completed ? (
                       <SetRowPercentCite
                         authored={set.loadPct}
@@ -338,6 +353,16 @@ export function SetLogTable({
                       <span className="sr-only">
                         {t('activeSetLoggedSr', { defaultValue: 'Logged' })}
                       </span>
+                    ) : null}
+                    {kind === 'warmup' && !completed && onRemovePlannedSet ? (
+                      <button
+                        type="button"
+                        onClick={() => onRemovePlannedSet(setIdx)}
+                        data-testid="set-table-remove-warmup"
+                        className="ms-auto mt-1 min-h-[44px] tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                      >
+                        {t('activeRemoveSet', { defaultValue: 'Remove set' })}
+                      </button>
                     ) : null}
                   </td>
                 </>

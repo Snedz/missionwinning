@@ -11,6 +11,7 @@
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 | `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
+| `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`) |
 
 ## State slices (`workoutStore`)
 
@@ -40,6 +41,7 @@
 | `ensureOpenSessionIdentity` | Stamp `clientId` once on a pre-`.958` persist |
 | `cancelActiveWorkout` | Discard in-progress. Tombstones the open session so the other surface does not reopen it |
 | `skipExerciseInActive` | Skip this exercise once, this session (`.959`). Keeps logged sets. Does not rewrite the plan |
+| `insertWarmupRampOnExercise` / `removePlannedSetAt` | Free warmup batch from the working weight; athlete can delete any incomplete warmup (`.984` / stamp `.985`) |
 
 ## Who reads / writes
 
@@ -62,7 +64,7 @@ on pre-sync-v2 logs so they can reach the cloud without duplicating.
 - `lib/sync/outbox.ts` — durable queue for the cloud write
 - `lib/storage/safeStorage.ts` — guarded device storage
 - `leaderboardSync.ts` — post-workout push
-- `setKind.ts`, `superset.ts` — set semantics
+- `setKind.ts`, `superset.ts`, `warmupRamp.ts` — set semantics + free warmup batch
 
 ## Related
 

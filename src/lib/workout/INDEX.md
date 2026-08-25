@@ -50,7 +50,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 25b. `setRowAdjacency.ts` — next-set target + log cite; `resolveAfterCompleteCite` after a completed working set (`.939`)
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
-28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateBreakdown` (`.948`)
+28. `warmupRamp.ts` — free warmup batch from the working weight (½ / ⅔ / ¾, concern `.984` / stamp `.985`); set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateBreakdown` (`.948`)
 29. `importCsv.ts` + `importCsvRestore.ts` — workout CSV in/out. Strong session export is `workoutsToSetTableBCsv` / `buildWorkoutCsvDownload('set-table-b')`. Hevy set export is `set-table-a`. MW native export is `workoutsToMwCsv` / `buildWorkoutCsvDownload('mw')` (`.953`). Empty history is header-only (`.943`). Import preview + confirm stays `.940`. English Hevy workout CSV is `set-table-a` (`.947`) — same Account path, no new dialect
 29b. `importHevyMeasurements.ts` — Hevy official wide `measurement_data.csv` → `bodyMetrics`. Header-only detect. Existing native fields win (`.951`)
 
@@ -108,7 +108,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `sessionE1rm.test.ts` | Epley formula + warmup / load-0 exclusion (`.761`) |
 | `sessionE1rmCopy.test.ts` | Copy names Epley; does not say "your max" |
 | `homeGymKit.test.ts` | Parse, $0 floor, matching, I-Day seed, free-path (`.763`) |
-| `warmupRamp.test.ts` | 40/60/80 ramp, ordinals, idempotent insert (`.764`) |
+| `warmupRamp.test.ts` | ½ / ⅔ / ¾ batch, ordinals, idempotent insert, no bar gate (`.764` / `.985`) |
 | `plateWarmupFree.test.ts` | Plate/warmup path never imports premium (`.764`) |
 | `importCsv.test.ts` | Strong / Hevy / set-table / MW parse + header-only empty Strong export (`.943`) |
 | `importCsvRestore.test.ts` | Preview vs confirm (`.940` / `.947` / `.951`); persist-layer Strong export round-trip (`.943`); MW dump re-imports as a no-op (`.953`) |
