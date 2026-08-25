@@ -27,6 +27,7 @@
 | `leaderboard/` | Leaderboard UI |
 | `learn/` | Learn path UI + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
+| `move/` | Move UI — `MoveLockedPreview`, `QuietMoveLogCard` (`.969` quiet rest-day walk / easy session) |
 | `nutrition/` | Fuel UI — `FuelMacroOverview`, `FuelQuickLogPanel`, `FuelMoreTools`, `FuelTodayLogCard`, `FuelLogSheet`, `FuelRecipesPanel`, `FuelRestockCard` (`.965` this week's restock they take) |
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |

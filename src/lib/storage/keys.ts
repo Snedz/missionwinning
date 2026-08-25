@@ -181,6 +181,8 @@ export const STORAGE_KEYS = {
   premiumCourseProgress: 'mw_premium_course_progress',
 
   // ── Move / Mind / Track ──
+  /** `.969` — optional rest-day walk / easy session on Move. Not a Train day. */
+  quietMoveLog: 'mw_quiet_move_log',
   mindCheckIns: 'mw_mind_checkins',
   lastAssessment: 'mw_last_assessment',
   wearablesHubSamples: 'mw_wearables_hub_samples',

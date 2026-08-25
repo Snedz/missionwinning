@@ -30,6 +30,7 @@
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
 | **First-set ungated** | `firstSetUngated.ts` | F-017 / `.766` + `.762` + `.941` + `.949` + `.958` + `.963` + `.967` + `.970` + `.971` + `.973` — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. Guest `SIGNED_OUT` does not wipe the local log. Guest `SIGNED_IN` keeps it. Open session continues across signed-in surfaces. This-device leave/return is the same session. Thin diary stays a notebook. In-set cues never a login wall. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionQuickLog.ts`, `fuelRestock.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; this week's restock they take (`.965`); photo draft |
+| **Move** | [`move/`](move/INDEX.md) | Mobility filters + Victory seam + quiet rest-day walk / easy log (`.969`) |
 | **Habit week count** | `habitWeekCount.ts` | Unique local Train days this week — [HABIT.md](../../docs/contracts/HABIT.md) |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts`, `today/todayReturnCite.ts`, `today/quietWeekGlance.ts` | Shared Just Go / journey primary for lean + dashboard; last/next cite on Start (`.954`); quiet Mon–Sun diary glance (`.961`); thin flag when 1–2 sessions (`.971`) |
 | **Search catalog** | `searchCatalog.ts` | Filter More rooms by query; map Fuel/Coach/Train to Summary pin ids |
@@ -59,6 +60,7 @@
 
 | Folder | INDEX |
 |--------|-------|
+| `move/` | Quiet rest-day log + mobility filters — [move/INDEX.md](move/INDEX.md) |
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
 | `builder/` | Blank first; templates in Show all — [builder/INDEX.md](builder/INDEX.md) |
 | `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
