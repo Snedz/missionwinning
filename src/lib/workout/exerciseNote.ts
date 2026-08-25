@@ -1,9 +1,10 @@
 /**
- * Per-exercise diary cue — the one line the athlete typed last time.
+ * Per-exercise diary — the one line they typed *this session*.
  *
- * Seed only at appearance (start / add / swap). `undefined` means unset and
- * may take the last persisted cue; `''` means they cleared it this session
- * and must not be overwritten. The module never rewords and never calls an LLM.
+ * Appearance drops a leaked prior-lift note. Last History note is not a pin
+ * (`.996`) — pin lives in `exercisePin.ts`. `undefined` means unset; `''`
+ * means they cleared it this session. The module never rewords and never
+ * calls an LLM.
  */
 
 import type { CompletedWorkoutLog } from '@/types';
@@ -29,14 +30,13 @@ export function noteFromHistory(
 }
 
 /**
- * Appearance-time seed: drop any prior `note` (swap must not leak the old lift)
- * and write the last cue for *this* `exerciseId`, or omit the field.
+ * Appearance-time wipe: drop any prior `note` (swap must not leak the old lift).
+ * Last History note is not a pin (`.996`). Pin lives in `exercisePin.ts`.
  */
 export function applyHistoryNote<T extends { exerciseId: string; note?: string }>(
   ex: T,
-  history: CompletedWorkoutLog[]
+  _history?: CompletedWorkoutLog[]
 ): T {
   const { note: _ignored, ...rest } = ex;
-  const seeded = seedExerciseNote(undefined, noteFromHistory(ex.exerciseId, history));
-  return (seeded !== undefined ? { ...rest, note: seeded } : rest) as T;
+  return rest as T;
 }

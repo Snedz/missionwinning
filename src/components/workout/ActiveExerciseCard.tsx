@@ -2,8 +2,8 @@
 
 /**
  * One exercise block in the active logger (header + set rows + actions).
- * Open lift: short written cues in-set (`.973`). Full Form guide stays
- * behind Info. Actions in overflow.
+ * Open lift: short written cues in-set (`.973`). Their note + pin (`.996`).
+ * Full Form guide stays behind Info. Actions in overflow.
  */
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
@@ -13,6 +13,7 @@ import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
 import { ExerciseNoteField } from '@/components/workout/ExerciseNoteField';
+import { ExercisePinnedNoteField } from '@/components/workout/ExercisePinnedNoteField';
 import { InSetCueList } from '@/components/workout/InSetCueList';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import {
@@ -47,6 +48,7 @@ import {
 } from '@/lib/workout/restTimer';
 import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
 import { resolveSetRowType } from '@/lib/workout/setRowType';
+import { readPinnedNote, writePinnedNote } from '@/lib/workout/exercisePin';
 import { knownMaxFromHistory, weightFromKnownMaxPct } from '@/lib/workout/setRowPercent';
 import type { WorkClockKind } from '@/lib/workout/workClock';
 import { cn } from '@/lib/utils';
@@ -184,6 +186,9 @@ export function ActiveExerciseCard({
   const [cuesHidden, setCuesHidden] = useState(false);
   const [restRev, setRestRev] = useState(0);
   const noteRef = useRef<HTMLInputElement>(null);
+  const [pinDraft, setPinDraft] = useState(
+    () => readPinnedNote(exLog.exerciseId) ?? ''
+  );
   const skipped = isSkippedThisSession(exLog);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
@@ -222,6 +227,10 @@ export function ActiveExerciseCard({
   useEffect(() => {
     if (noteOpen) noteRef.current?.focus();
   }, [noteOpen]);
+
+  useEffect(() => {
+    setPinDraft(readPinnedNote(exLog.exerciseId) ?? '');
+  }, [exLog.exerciseId]);
 
   const nextTarget = resolveExerciseNextTarget({
     sets: exLog.sets,
@@ -389,6 +398,13 @@ export function ActiveExerciseCard({
             onStopWorkClock={onStopWorkClock}
           />
         </div>
+        <ExercisePinnedNoteField
+          value={pinDraft}
+          onChange={(pin) => {
+            setPinDraft(pin);
+            writePinnedNote(exLog.exerciseId, pin);
+          }}
+        />
         <ExerciseNoteField
           value={exLog.note ?? ''}
           onChange={onNoteChange}

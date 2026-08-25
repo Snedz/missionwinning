@@ -237,6 +237,9 @@ type ActiveWorkoutStrings = {
   activeE1rmAria: string;
   activeNote: string;
   activeNotePlaceholder: string;
+  /** Pinned reminder on the open lift — returns next session (`.996`). */
+  activePinnedNote: string;
+  activePinnedNotePlaceholder: string;
   activeRemoveExercise: string;
   activeRemoveExerciseLogged: string;
   activeRemoveSet: string;
@@ -565,7 +568,9 @@ const en: ActiveWorkoutStrings = {
   activeE1rmShow: 'Show e1RM estimate',
   activeE1rmAria: 'Estimated one-rep max from the Epley formula, not a tested max',
   activeNote: 'Note',
-  activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
+  activeNotePlaceholder: 'Note — "left shoulder felt off"…',
+  activePinnedNote: 'Pin',
+  activePinnedNotePlaceholder: 'Pin — "45 degree incline"…',
   activeRemoveExercise: 'Remove exercise',
   activeRemoveExerciseLogged: 'Remove exercise — discards logged sets',
   activeRemoveSet: 'Remove set',

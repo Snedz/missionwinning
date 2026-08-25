@@ -71,12 +71,12 @@ describe('noteFromHistory / applyHistoryNote', () => {
     assert.equal(noteFromHistory('deadlift', history), undefined);
   });
 
-  it('appearance seed writes the last cue and drops a leaked prior note', () => {
+  it('appearance drops a leaked prior note and does not seed History', () => {
     const swapped = applyHistoryNote(
       { exerciseId: 'squat', note: 'tuck elbows' },
       history
     );
-    assert.equal(swapped.note, 'belt on 3');
+    assert.equal('note' in swapped, false);
     const fresh = applyHistoryNote({ exerciseId: 'deadlift' }, history);
     assert.equal('note' in fresh, false);
   });
