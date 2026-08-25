@@ -6,6 +6,254 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.977` Week strip quiet row (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.977` — next free after master `.976`
+> (`e3f22bbd` — Quiet Track).
+> Quiet Track `.976` + Quiet Move `.974` + cues `.973` + honesty
+> `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`
+> are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes
+> only where a write can wipe. Brand: **Log a set. Offline.**
+> / No account. No wearable. Coach stays opt-in / skippable.
+> Train + Coach only on the door. Today stays one Start.
+
+Rest days on the quiet week strip
+(`.961`) are empty on purpose. Empty
+is not a fail. Fuel restock, Quiet
+Move, and Quiet Track already live
+on their own surfaces. Missing: one
+tap on an empty week-strip day that
+can take **one** optional quiet
+pillar row — Fuel restock, easy
+walk, or scale/tape — without a
+second home, a six-pillar dock, or
+WeChat.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `e3f22bbd` /
+`.976`. Today lean (`HomeTodayLean`)
+still mounts date · pins · highlights
+· `TodayQuietWeekStrip` · Show all ·
+one `JourneyHero` `dock="start"`.
+No Fuel restock card. No Quiet Move
+card. No Body metrics card. No
+second Start. No six-pillar row.
+Surface locks from `.965` / `.974` /
+`.976` still hold. **Nothing to
+unmount first.**
+
+### One concern
+
+Empty rest day on the existing week
+strip can log one quiet Fuel / Move
+/ Track row. Optional. Empty invents
+nothing. Today stays Start workout.
+
+### Investigate (done — hypothesis holds)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Week strip `.961` | `quietWeekGlance` + `TodayQuietWeekStrip`. Done = live Train log. Empty stays empty. No click. Tests forbid `<button>`. | Rest-day hole has no quiet tap. |
+| Honesty `.971` | `thin` on 0–2 live Train sessions. No streak / on-track / consistency. | **Keep.** Quiet rows do not count as Train sessions and do not score. |
+| Fuel `.965` | Restock list on Fuel Show more. Typed extras `mw_fuel_restock_extras`. Off Today. | Restock is weekly, not dated. A rest-day Fuel row needs a dated quiet mark + optional item. Do **not** mount `FuelRestockCard` on Today. |
+| Move `.974` | `decideQuietMove` + `QuietMoveLogCard` on `/move`. Own diary. Does not mark Done. | Reuse the helper. Do **not** mount the card on Today. |
+| Track `.976` | `quietTrackSnapshot` / `canSaveQuietTrack` + `BodyMetricsCard` on `/track`. Date already on `BodyMetricEntry`. Blank save refused. | Reuse save + honesty. Do **not** mount the card on Today. |
+| Today Start `.954` | One `.primary-action` → Train / Resume | **Keep.** Strip Log is outline. |
+| Resume `.963` | Leave/return is the same live session | **Keep.** |
+| Cues / tags / RPE | On the set row | **Keep.** |
+| `/private` `.957` | Tight lock. No four-scene door. | **Keep.** |
+| Surface locks | Today tree must not import `fuelRestock` / `quietMove` / `quietTrack` / cards | **Narrow.** Week strip may offer a quiet row via a new helper. Full cards, shop, rings, Health stay off Today. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper decides one quiet
+row for an empty local day:
+`fuel` | `move` | `track`. Train
+`done` refuses (rest-day hole only).
+A second row on the same day
+refuses. Fuel may be kind-only or
+carry one typed restock item
+(empty / checkout filler invents
+nothing). Move reuses
+`decideQuietMove` (kind-only is
+valid; 0 / junk omit the number).
+Track needs at least one finite
+scale / tape number (blank refused
+— `.976` honesty). Own store
+`mw_quiet_week_rows` is the strip
+diary (one row per date). Write-
+through: Fuel item appends restock
+extras; Move appends
+`mw_quiet_move_log`; Track writes
+`saveBodyMetric` for that date.
+Glance: `done` still Train-only.
+`quiet` is present only when a row
+exists and the day is not Done.
+Empty days keep the four keys
+(`dateKey`, `done`, `isToday`,
+`offset`) — no third shame state.
+`thin` still reads Train history
+only. Guest. Strip Log is outline,
+never `.primary-action`. No ring.
+No Health permission. No Mind /
+Learn. No six-pillar dock.
+
+Closed rules:
+
+1. **One row, empty day only.**
+   Train Done is not a rest-day
+   hole. A second kind that day
+   invents nothing.
+2. **Done stays Train.** A quiet
+   row never paints Done, never
+   fills the cell, never marks a
+   streak. No shame ✕.
+3. **Not a second home.** Today
+   still one Start. No Fuel / Move
+   / Track card on first paint. No
+   six-pillar dock. No WeChat.
+4. **Honesty holds.** 1–2 Train
+   sessions stay `thin`. Quiet
+   rows do not score. Empty
+   invents nothing.
+5. **Surfaces stay.** `/private`
+   stays the tight `.957` lock.
+   No four-scene door. Resume
+   `.963` stays. Full pillar
+   pages keep their first paint.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/today/quietWeekRow.ts`.
+   `decideQuietWeekRow` ·
+   `listQuietWeekRows` ·
+   `quietKindForDate` ·
+   `appendQuietWeekRow`.
+   Deterministic. Inject
+   `todayIso` / `nowIso` / `id`.
+   No `generateWeek`. No GPS.
+
+2. **Glance.** `quietWeekGlance`
+   accepts optional `quietRows`.
+   Empty + a row ⇒ `quiet`.
+   Done ⇒ no `quiet`. Empty
+   without a row stays the four
+   keys. `thin` unchanged.
+
+3. **Strip.** Empty day is a
+   quiet tap (not Start). One
+   chooser under the strip:
+   Fuel restock / Walk / Scale
+   + dismiss. Inline outline
+   Log for the picked kind.
+   Quiet day shows the kind
+   label. Done stays Done.
+   No ✕. No `.primary-action`.
+
+4. **Write-through** to the
+   existing pillar stores
+   (restock extras / quiet Move
+   / body metrics). Guest.
+   Additive. Backup prefix-scan
+   picks `mw_quiet_week_rows`
+   up. Do **not** register it
+   as a journey day.
+
+5. **Help one-liner.** An empty
+   rest day on This week can
+   take an optional Fuel
+   restock, easy walk, or
+   scale/tape. Today stays
+   Start workout. Empty invents
+   nothing.
+
+### Tests
+
+- Fuel kind-only · Fuel + item ·
+  Move kind-only · Move + minutes
+  · Track weight · Track waist.
+  Mutant that requires Fuel /
+  Move numbers dies. Mutant that
+  saves a blank Track dies.
+- Train `done` day refuses. Second
+  row that day refuses. Invalid
+  kind / date invents nothing.
+- Glance: quiet row does **not**
+  set `done`. Thin 1–2 Train
+  sessions still `thin: true`.
+  No `streak` / `onTrack` /
+  consistency. Empty days without
+  a row keep four keys.
+- Strip has no `.primary-action`,
+  no ✕, no Mind / Learn, no six
+  names, no shop, no Health, no
+  ring. Today lean still one
+  `dock="start"`. No
+  `FuelRestockCard` /
+  `QuietMoveLogCard` /
+  `BodyMetricsCard` on Today /
+  Train / door.
+- `firstSetUngated` stays green.
+  No Feed / Discord.com / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene
+  door.
+- Resume / Finish-partial stay
+  green. Cues stay on the lift.
+  Tags / RPE stay optional.
+
+### Refuse
+
+WeChat / six-pillar home. Four-scene
+door. Health permission before Train.
+Streak shame on empty days. Rings as
+home. Feed. Discord.com. Marketplace.
+Promote. `PRIVATE_MODE` flip.
+Counsel-hold. Merge. Do not smash
+`.976` / `.974` / `.973` / `.971` /
+`.970` / `.967` / `.965` / `.963` /
+`.961` / `.957`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.977`
+- LOG heading `## 2026-08-25 — Week strip quiet row (\`.977\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.977`; keep Quiet Track `.976` + Quiet Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/INDEX.md`, today components)
+- i18n: quiet-row copy via `t(key, { defaultValue })` — no shame
+- Help: one line on getting-started / pillars
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- Empty rest day on the existing
+  week strip can log one quiet
+  pillar row (Fuel restock, easy
+  walk, or scale/tape). Optional.
+  Empty invents nothing.
+- Today still one Start. No second
+  home. No rings-as-home. No streak
+  X on empty days. Week strip does
+  not score thin history.
+- Guest. First set ungated.
+  `/private` stays `.957`. No
+  four-scene door. Unit tests.
+  tsc clean. Label `.977`. Draft
+  PR against master. Title:
+  `Week strip quiet row (.977)`.
+
+---
+
 ## Frozen plan — `.975` Quiet Track (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
