@@ -6,6 +6,179 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.963` Resume / finish-partial (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.963` — next free after master `.961`
+> (`#798` squash `26345f1b` — quiet week strip).
+> **Skip `.962`** — reserved for a separate Fuel list
+> ship if it lands. Do not steal it.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Week strip + Wednesday + receipt give them
+three other screens. Week-4 dies when they
+open the strip and the active set is gone.
+Strong: Finish with partial sets is OK.
+Their fail is Session Expired / Force Sync.
+We already refuse that chore. Missing:
+leave Today / week / receipt, come back,
+**same session**, or Finish writes the sets
+they actually did.
+
+### One concern
+
+Open session survives this-device leave.
+Finish keeps logged work. Empty leftovers
+invent no volume.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `26345f1b` / `.961`
+(`#798`). Workout store + `.958` open
+session + `.949` identity.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Persist | `activeWorkout` in zustand persist. `hasHydrated` gates Start. Rest timer is memory-only. | Persist is not enough if Start / Wednesday **replace** it. |
+| Today Start | `runTodayPrimaryAction` resumes when `hasActiveWorkout`. Lean reads `useActiveWorkoutPulse()`. | Pulse **first-paints `false`** (`useState(false)` then effect). Lean Start can call `startWorkout` over a live session. |
+| Pulse | In-memory flag + storage hydrate. Dashboard reads the store. | Lean / nav pulse race. First paint of Today / week strip is "no session." |
+| `startWorkout` | Unconditional replace. `.204` `hasLoggedWork` documents the wipe and does not stop it. | Any Start (Today, Wednesday cite, Coach session, Train empty if race) silent-wipes. |
+| Wednesday | `CoachNextDayCite` / `useStartCoachSession` always `startWorkout`. | Opening Wednesday while live starts a new session. |
+| Week strip | `.961` glance is read-only, no Start. | Do **not** restyle. Glance is why they leave Train. |
+| Receipt | `.956` close receipt from the finished log. Empty invents none. | Receipt must see **logged** sets only after Finish-partial. |
+| Finish | `completeActiveWorkout` already filters `s.completed`. Empty Finish is a no-op. Store test exists. | No one-home helper. No leave→back→Finish-partial contract. Leftover planned 0s must not mint volume. |
+| Desk→gym `.958` | `decideOpenSession` / tombstone / confirm-before-replace. No Force Sync. | **Keep.** This ship is *this device* leave/return. |
+| Identity `.949` | Guest sets survive sign-in. `SIGNED_IN` re-queues. | **Keep.** No Force Sync tap. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over the live `activeWorkout`
+returns resume (`{ clientId, nextSet }` via
+`findNextSet`) or empty. A live session
+(they already tapped Start — even 0 completed
+sets) is resume. Start / Wednesday / Coach
+session consult it **before** `startWorkout`.
+`startWorkout` / `startEmptyWorkout` refuse
+to replace a usable live session (Cancel is
+the discard). Pulse first-paints from the
+in-memory flag / persist so Lean Today is
+Resume on the first paint. Finish-partial
+is a second pure helper: completed sets
+only; leftover empty planned sets dropped;
+volume from completed volume-counting sets;
+empty session ⇒ `null` (invents nothing).
+Guest path. Same `clientId`. No Force Sync.
+No Session Expired wall. No silent wipe.
+
+Closed rules (no Force Sync, no wipe, no Fuel):
+
+1. **Same session.** Leave Train → Today /
+   week strip / Wednesday / receipt → back
+   keeps `clientId`, logged sets, and the
+   live set slot (`findNextSet`). Uncommitted
+   dial edits re-prefill (F-013). No new
+   `startWorkout`.
+2. **Start cannot wipe.** Live session ⇒
+   navigate `/active` only. Mutant that
+   calls `startWorkout` while live dies.
+3. **Finish-partial.** Logged work stays.
+   Empty leftover sets do not invent
+   volume or receipt rows. Empty session
+   invents nothing (session stays).
+4. **Surfaces.** Today still one Start
+   (Resume when open). Saved routine still
+   owns a *cold* Start. Swap/skip this-
+   session. `/private` stays the tight
+   `.957` lock. Week strip stays glance.
+   Receipt stays private.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/sessionResume.ts`.
+   `decideThisDeviceResume` · `protectLiveStart`
+   · `finishPartialFromActive`. Deterministic.
+   Reuse `findNextSet` + `countsTowardVolume`.
+   No Force Sync UI. No `generateWeek`.
+
+2. **Store door.** `startWorkout` /
+   `startEmptyWorkout` keep a usable live
+   session (no replace). `completeActiveWorkout`
+   writes through `finishPartialFromActive`.
+
+3. **Pulse first paint.** `useActiveWorkoutPulse`
+   initialises from flag / persist, not
+   `useState(false)`. Lean Today Resume is
+   true on first paint when a session is open.
+
+4. **Wednesday / Coach Start.** If live,
+   navigate `/active` — do not
+   `startWorkout` / `startCoachSession`.
+
+5. **Help one-liner.** Leave Today / the
+   week / a receipt — Train is the same
+   session. Finish keeps the sets you
+   logged; leftover empty sets do not count.
+
+### Tests
+
+- Leave Train → Today → back = same
+  `clientId`, same logged sets, same next
+  set. Mutant that `startWorkout`s on
+  Today while live dies.
+- Finish partial keeps logged sets;
+  leftover empty planned sets are absent
+  from the log and add 0 volume.
+- Empty session invents nothing (`null`,
+  session stays).
+- Pulse / Lean first-paint is not a
+  forced `false` when persist has a live
+  session.
+- `firstSetUngated` stays green; no Feed /
+  Top 8 / likes / login wall / Force Sync /
+  Session Expired / four-scene door.
+  Today still one `.primary-action`.
+  Swap/skip does not write saved / plan.
+
+### Refuse
+
+Force Sync button. Session Expired.
+Silent wipe. Shame grid. Four-scene door.
+Counsel-hold. Fuel / Amazon on Today.
+Promote live. `PRIVATE_MODE` flip. Merge.
+Week-strip restyle. Notebook / swap-skip /
+desk→gym / identity / `/private` rewrite.
+Do not take `.962`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.963`
+- LOG heading `## 2026-08-25 — Resume / finish-partial (\`.963\`)` + rotate oldest live entry (`.946`)
+- `CONTEXT.md` `## Now` one-line `.963`; rotate oldest shipped Now bullet (`.947`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, maybe store / hooks)
+- i18n: reuse Resume copy; no new Force Sync string
+- Help: one line on getting-started (same session when you leave; Finish keeps logged sets)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Leave Today / week / receipt, come back,
+  same session. Finish-partial keeps logged
+  sets. Empty invents nothing.
+- Label `.963`. Draft PR against master.
+  Title: `Resume / finish-partial (.963)`.
+
+---
+
 ## Frozen plan — `.961` Quiet week strip (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

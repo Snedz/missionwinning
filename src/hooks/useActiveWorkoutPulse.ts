@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import {
   getActiveWorkoutFlag,
-  hydrateActiveWorkoutFlagFromStorage,
+  readActiveWorkoutPulse,
   subscribeActiveWorkoutFlag,
 } from '@/lib/workout/activeWorkoutPulse';
 
-/** Whether an active workout is in progress — for nav pulse only. */
+/** Whether an active workout is in progress — for nav pulse and Lean Today Resume. */
 export function useActiveWorkoutPulse(): boolean {
-  const [on, setOn] = useState(false);
+  const [on, setOn] = useState(readActiveWorkoutPulse);
 
   useEffect(() => {
-    setOn(hydrateActiveWorkoutFlagFromStorage());
+    setOn(readActiveWorkoutPulse());
     return subscribeActiveWorkoutFlag(() => setOn(getActiveWorkoutFlag()));
   }, []);
 

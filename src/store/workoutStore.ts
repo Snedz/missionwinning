@@ -5,7 +5,6 @@
  */
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { calculateVolume } from "@/lib/utils";
 import type {
   ActiveWorkout,
   CompletedWorkoutLog,
@@ -19,7 +18,6 @@ import { parseOptionalRir } from "@/lib/workout/rir";
 import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
 import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
 import {
-  completedLoggedSet,
   parseSetSide,
   suggestNextSide,
   type SetSide,
@@ -43,6 +41,7 @@ import {
   type OpenSessionSnapshot,
 } from "@/lib/workout/openSessionContinuity";
 import { skipExerciseThisSession, swapExerciseThisSession } from "@/lib/workout/sessionExerciseOnce";
+import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
@@ -214,6 +213,8 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       startWorkout: (name, exercises, workoutId) => {
+        // `.963` — leave Today / week / Wednesday must not mint a second session.
+        if (protectLiveStart(get().activeWorkout) === 'keep') return;
         // %-authored program sets resolve against the athlete's history at start
         // time, so a saved cycle keeps its percentages and re-anchors each run.
         const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
@@ -249,6 +250,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       startEmptyWorkout: () => {
+        if (protectLiveStart(get().activeWorkout) === 'keep') return;
         const active = touchOpenSession({
           workoutName: "Quick Workout",
           startedAt: new Date().toISOString(),
@@ -288,35 +290,13 @@ export const useWorkoutStore = create<WorkoutState>()(
 
         // Prefer muscle groups already on the active log (set when exercise was added).
         // Avoid importing the full exercise catalog into every page that uses this store.
-        const exercises = activeWorkout.exercises
-          .map((ex) => {
-            return {
-              exerciseId: ex.exerciseId,
-              sets: ex.sets
-                .filter((s) => s.completed)
-                .map((s) => {
-                  const rec = completedLoggedSet(s, ex.exerciseId);
-                  const rir = parseOptionalRir(s.rir);
-                  const tempo = parseOptionalTempo(s.tempo);
-                  return {
-                    ...rec,
-                    ...(rir !== undefined ? { rir } : {}),
-                    ...(tempo ? { tempo } : {}),
-                  };
-                }),
-              ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
-              ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
-              // Victory + history must know this was a Coach load, not freestyle (`.410`).
-              ...(ex.prescribed ? { prescribed: true as const } : {}),
-            };
-          })
-          .filter((ex) => ex.sets.length > 0);
-
-        if (exercises.length === 0) {
+        // `.963` — Finish-partial: logged work only; leftover empty sets invent no volume.
+        const partial = finishPartialFromActive(activeWorkout);
+        if (!partial) {
           // Keep the active session — empty Finish is a no-op, not a discard.
           return null;
         }
-
+        const { exercises, volume } = partial;
         const allSets = exercises.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
         const completedAt = new Date().toISOString();
         const log: CompletedWorkoutLog = {
@@ -329,7 +309,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           completedAt,
           durationSeconds: elapsedSeconds,
           exercises,
-          totalVolume: calculateVolume(allSets),
+          totalVolume: volume,
         };
 
         const isFirstWorkout = get().workoutHistory.length === 0;

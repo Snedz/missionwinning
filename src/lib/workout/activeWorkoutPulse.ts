@@ -28,6 +28,12 @@ export function hydrateActiveWorkoutFlagFromStorage(): boolean {
   return on;
 }
 
+/** First paint — never a forced false when a live session is already in memory or persist. */
+export function readActiveWorkoutPulse(): boolean {
+  if (getActiveWorkoutFlag()) return true;
+  return hydrateActiveWorkoutFlagFromStorage();
+}
+
 export function subscribeActiveWorkoutFlag(listener: Listener): () => void {
   listeners.add(listener);
   return () => {
