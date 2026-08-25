@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { historyForWeek } from '@/lib/workout/startHistoryFrom';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
@@ -45,7 +46,8 @@ export function CoachTodayCard() {
    * debrief makes after a session, offered before one. Descriptive only: `load.ts`
    * documents at length why an ACWR band must never be phrased as a prediction.
    */
-  const bands = useMemo(() => loadBands(workoutHistory), [workoutHistory]);
+  const weekHistory = useMemo(() => historyForWeek(workoutHistory), [workoutHistory]);
+  const bands = useMemo(() => loadBands(weekHistory), [weekHistory]);
   const bandLine =
     bands.ratio === null
       ? null
@@ -62,8 +64,8 @@ export function CoachTodayCard() {
             });
 
   const continuity = useMemo(
-    () => sessionContinuity(workoutHistory, plan),
-    [workoutHistory, plan]
+    () => sessionContinuity(weekHistory, plan),
+    [weekHistory, plan]
   );
 
   const sessionWhy = useMemo(() => {
@@ -115,7 +117,7 @@ export function CoachTodayCard() {
             plan={plan}
             compact
             rationaleHints={{
-              loggedWorkoutCount: workoutHistory.length,
+              loggedWorkoutCount: weekHistory.length,
               loadZone: bands.ratio === null ? null : bands.zone,
             }}
           />

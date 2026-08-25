@@ -30,6 +30,11 @@ export const STORAGE_KEYS = {
   // ── Train / Today (wedge) ──
   lastWorkoutDate: 'mw_last_workout_date',
   /**
+   * `.1005` — local calendar day week strip / Coach / streak start from.
+   * Older sessions stay in History. Empty clears the fold.
+   */
+  startHistoryFrom: 'mw_start_history_from',
+  /**
    * `.990` — named custom movements they typed on Train. Device-local
    * notebook, not a public catalog. Unlimited. Empty invents nothing.
    */

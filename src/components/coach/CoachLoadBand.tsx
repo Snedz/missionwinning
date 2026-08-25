@@ -27,6 +27,7 @@ import { Activity } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { resolveLoadBandView } from '@/lib/coach/loadBandView';
+import { historyForWeek } from '@/lib/workout/startHistoryFrom';
 
 const ZONE_COPY: Record<'light' | 'steady' | 'high', { key: string; fallback: string }> = {
   light: { key: 'coachLoadZoneLight', fallback: 'Lighter than your recent normal' },
@@ -37,7 +38,7 @@ const ZONE_COPY: Record<'light' | 'steady' | 'high', { key: string; fallback: st
 export function CoachLoadBand() {
   const { t } = useTranslation();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
-  const view = resolveLoadBandView(workoutHistory);
+  const view = resolveLoadBandView(historyForWeek(workoutHistory));
 
   return (
     <Card>

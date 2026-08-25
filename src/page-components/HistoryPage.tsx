@@ -49,6 +49,7 @@ import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
+import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
 import {
   decideEditSave,
   type FinishedSessionDraft,
@@ -117,6 +118,7 @@ export function HistoryPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [backfillOpen, setBackfillOpen] = useState(false);
   const [mergeOpen, setMergeOpen] = useState(false);
+  const [startFromOpen, setStartFromOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
   const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
@@ -151,6 +153,12 @@ export function HistoryPage() {
 
   const openMerge = () => {
     setMergeOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const openStartFrom = () => {
+    setStartFromOpen(true);
     setSelected(null);
     setEditing(false);
   };
@@ -392,6 +400,15 @@ export function HistoryPage() {
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-2 w-full min-h-[44px] tap-target"
+            data-testid="session-history-start-from-open"
+            onClick={openStartFrom}
+          >
+            {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
+          </Button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -412,6 +429,15 @@ export function HistoryPage() {
             onClick={openMerge}
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="session-history-start-from-open"
+            onClick={openStartFrom}
+          >
+            {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
           </Button>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
@@ -931,6 +957,39 @@ export function HistoryPage() {
                 }
               }}
               onCancel={() => setMergeOpen(false)}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={startFromOpen} onOpenChange={(open) => !open && setStartFromOpen(false)}>
+        <DialogContent
+          className="max-w-md max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-start-from-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyStartFromTitle', { defaultValue: 'Start history from this date' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyStartFromDesc', {
+                defaultValue:
+                  'Week strip, Coach, and streak start here. Older sessions stay in History. Empty invents nothing.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {startFromOpen ? (
+            <HistoryStartFrom
+              history={liveHistory}
+              onApplied={() => setStartFromOpen(false)}
+              onEmpty={() => {
+                toast({
+                  title: t('historyStartFromEmpty', { defaultValue: 'Nothing to fold' }),
+                  description: t('historyStartFromEmptyDesc', {
+                    defaultValue: 'Empty invents nothing — pick a date that is not in the future.',
+                  }),
+                });
+              }}
             />
           ) : null}
         </DialogContent>

@@ -15,6 +15,7 @@ import { getTodayCheckIn } from "@/lib/mindCheckIns";
 import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
+import { historyForWeek } from "@/lib/workout/startHistoryFrom";
 import { summarizeRewards } from "@/lib/rewards/summary";
 import {
   sumHistoryVolume,
@@ -232,7 +233,7 @@ export function HomeTodayDashboard() {
   );
 
   // Training streak (light) — needed for hero rings/score. Heavy week tools deferred.
-  const streak = useMemo(() => getTrainingStreak(workoutHistory), [workoutHistory]);
+  const streak = useMemo(() => getTrainingStreak(historyForWeek(workoutHistory)), [workoutHistory]);
   const [nightSessions, setNightSessions] = useState(0);
   const [dawnSessions, setDawnSessions] = useState(0);
   const [todaysWorkout, setTodaysWorkout] = useState<ReturnType<
@@ -649,7 +650,7 @@ export function HomeTodayDashboard() {
           bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
         })}
         streak={streak}
-        daysLoggedThisWeek={countTrainDaysThisWeek(workoutHistory)}
+        daysLoggedThisWeek={countTrainDaysThisWeek(historyForWeek(workoutHistory))}
         userEmail={userEmail}
         hasFirstWorkout={workoutHistory.length > 0}
         action={action}

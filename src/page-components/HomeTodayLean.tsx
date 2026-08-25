@@ -55,6 +55,7 @@ import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { todayReturnCite } from '@/lib/today/todayReturnCite';
 import { loadBodyMetrics, type BodyMetricEntry } from '@/lib/bodyMetrics';
 import { quietWeekGlance } from '@/lib/today/quietWeekGlance';
+import { historyForWeek } from '@/lib/workout/startHistoryFrom';
 import { loadQuietWeekRows, type QuietWeekRow } from '@/lib/today/quietWeekRow';
 
 const SSR_ACTION: JourneyAction = {
@@ -314,7 +315,7 @@ export function HomeTodayLean() {
           <div key={key}>{node}</div>
         ))}
         <TodayQuietWeekStrip
-          glance={quietWeekGlance({ history: workoutHistory, quietRows, trackEntries })}
+          glance={quietWeekGlance({ history: historyForWeek(workoutHistory), quietRows, trackEntries })}
           onLogged={refreshFromStorage}
         />
         <TodayShowAll />

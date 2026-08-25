@@ -6,6 +6,81 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1005` Start history from this date (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1005` — rebased onto
+> master `.1004` (`b48e54b0` — Hide this
+> exercise from the library). Stamp stays
+> `.1005`. Do not bump. Title stays **Start
+> history from this date (.1005)**. Same
+> PR. Do not merge this PR yourself. Hide
+> `.1004` + Delete `.1003` + Merge `.1002`
+> + Pause `.1001` + Backfill `.1000` +
+> in-set PR `.999` + Reorder `.998` +
+> History Edit `.997` + Exercise note +
+> pin `.996` + Per-exercise rest `.995` +
+> Set-row type `.994` + This-movement
+> history `.993` + Custom `.992` + Start
+> this again `.991` + Quiet Track trend
+> `.989` + EMOM `.988` + drop-set `.986`
+> + warmup `.985` + notes `.983` + 1RM
+> `.981` + Supersets `.980` + Learn
+> `.978` + week strip `.977` + Quiet
+> Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970`
+> + RPE `.967` + Fuel `.965` + resume
+> `.963` + notebook `.960` are on master.
+> Do not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Import + backfill dump years into week
+1. Missing: a date week strip / Coach /
+streak start from, so week 1 is honest.
+Older logs stay in the diary.
+
+### First check (done — hypothesis holds)
+
+Read tip `4c810d57` / `.1003`, then
+rebased onto `b48e54b0` / `.1004`.
+Confirmed:
+
+- **Fold, don't erase.** History list
+  still lists older sessions. Detail
+  still opens them. Week strip
+  (`quietWeekGlance`), Coach
+  (`useCoachPlan` / `ctx.history`),
+  and streak (`getTrainingStreak`)
+  read `historyForWeek`.
+- **History overflow, not Today.**
+  Same door family as Backfill `.1000`
+  / Merge `.1002`. No second Start.
+  No `/private` leak. No Feed.
+- **Empty / missing / future invent
+  nothing.** `decideStartHistoryFrom`
+  never mints a row and never deletes
+  one. Confirm when folded train days
+  ≥ 14. Clear restores the full diary.
+
+### Lock
+
+- Fold, don't erase.
+- Confirm-gated if it hides a lot of days.
+- No Today chrome. No second Start.
+- Not delete-session, not hide-exercise,
+  not backfill, not edit.
+- Counsel-hold stays drafts. Do not
+  touch field test / PT / pregnancy.
+- `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1004` Hide this exercise from the library (2026-08-25)
 
 > **Frozen.** Implement only this section + root
