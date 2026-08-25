@@ -21,6 +21,7 @@
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
 | `history/` | History charts, muscle heatmap, finished-session edit (`.997`), past-session backfill (`.1000`), merge duplicates (`.1002`), delete this finished session (`.1003`) |
+| `library/` | Exercise picker + detail. Picker omits hidden names (`.1004`) |
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
 | `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |

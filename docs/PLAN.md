@@ -6,6 +6,94 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1004` Hide this exercise from the library (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1004` — rebased onto
+> master `.1003` (`4c810d57` — Delete this
+> finished session). Stamp stays `.1004`.
+> Do not bump. Title stays **Hide this
+> exercise from the library (.1004)**.
+> Same PR. Do not merge this PR yourself.
+> Delete `.1003` + Merge `.1002` + Pause
+> `.1001` + Backfill `.1000` + in-set PR
+> `.999` + Reorder `.998` + History Edit
+> `.997` + Exercise note + pin `.996` +
+> Per-exercise rest `.995` + Set-row type
+> `.994` + This-movement history `.993` +
+> Custom `.992` + Start this again `.991` +
+> Quiet Track trend `.989` + EMOM `.988`
+> + drop-set `.986` + warmup `.985` +
+> notes `.983` + 1RM `.981` + Supersets
+> `.980` + Learn `.978` + week strip
+> `.977` + Quiet Track `.976` + Quiet
+> Move `.974` + cues `.973` + honesty
+> `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook
+> `.960` are on master. Do not smash
+> them. Every commit `[skip vercel]`. No
+> Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+Custom + merge-dupes still leave a
+noisy Add list. Strong leftover:
+swipe-hide a movement from the
+library (iOS; Android officially
+missing). Hidden ≠ deleted.
+
+### First check (done — hypothesis holds)
+
+Read tip `f0b10181` / `.1002`, then
+rebased onto `4c810d57` / `.1003`.
+Confirmed:
+
+- **Identity is an id.** Catalog,
+  custom notebook (`.992`), and
+  leftover ids resolve in
+  `customExercise.ts`. Add / search
+  / picker read `exercisesForPicker`.
+  History / this-movement / PRs key
+  off `exerciseId` and must keep
+  reading it after hide.
+- **Hide is not delete.** A hidden
+  id set (`mw_hidden_exercises`)
+  omits the name from Add / search /
+  picker / library list. Diary,
+  notes, pins, merge source stay.
+- **Library / overflow, not Today.**
+  `decideHideExercise(id)` /
+  `decideUnhideExercise(id)`. Same
+  door shape as merge `.1002`. Not a
+  Today home row. Not a second
+  Start. Not delete-session.
+- **Empty / missing / already-hidden
+  invents nothing.** Do not
+  auto-hide lookalikes. Unhide
+  invents nothing new. A hidden
+  movement already in a live session
+  stays on that session.
+
+### Lock
+
+1. Hidden ≠ deleted. History / PRs /
+   notes stay.
+2. Add / search / picker omit hidden
+   names.
+3. Unhide restores the list. Empty /
+   missing / already-hidden invents
+   nothing.
+4. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+5. Not delete-session, not
+   merge-dupes, not backfill, not
+   edit.
+
+---
+
 ## Frozen plan — `.1003` Delete this finished session (2026-08-25)
 
 > **Frozen.** Implement only this section + root
