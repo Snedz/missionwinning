@@ -43,6 +43,9 @@ type ActiveWorkoutStrings = {
   /** Empty-state Start when a last completed session exists (.717). Not last set. */
   activeRepeatLastSession: string;
   activeRepeatLastSessionDesc: string;
+  /** Empty-state Start when a saved routine owns the tap (`.960`). */
+  activeSavedRoutineStart: string;
+  activeSavedRoutineDesc: string;
   /** Empty-state Start for the I-Day equipment preview (`.768`). Not Just Go inside resolveActiveEmptyStart. */
   activeStartPreviewSession: string;
   activeLastPerformance: string;
@@ -354,6 +357,8 @@ const en: ActiveWorkoutStrings = {
   activeRepeatLast: 'Repeat last set',
   activeRepeatLastSession: 'Repeat last session',
   activeRepeatLastSessionDesc: 'Same exercises and last loads. Log when ready.',
+  activeSavedRoutineStart: 'Start {{name}}',
+  activeSavedRoutineDesc: 'Your saved routine — last loads stay on the set row.',
   activeStartPreviewSession: 'Start {{name}} — {{count}} exercises',
   activeLastPerformance: 'Last: {{reps}} × {{weight}}',
   activeSetLogged: 'Set logged',

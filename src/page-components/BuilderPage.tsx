@@ -39,6 +39,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { ensureFullExerciseCatalog, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { useHonorSavedRoutine } from "@/hooks/useHonorSavedRoutine";
+import { SaveHonoredRoutineDoor } from "@/components/workout/SaveHonoredRoutineDoor";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
@@ -55,6 +57,7 @@ export function BuilderPage() {
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const honor = useHonorSavedRoutine();
 
   const [workoutName, setWorkoutName] = useState("");
   const [sessionNotes, setSessionNotes] = useState("");
@@ -197,38 +200,35 @@ export function BuilderPage() {
   };
 
   const handleSave = () => {
-    if (!workoutName.trim()) {
+    const opened = honor.requestSave({
+      name: workoutName,
+      exercises: exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets })),
+      note: sessionNotes.trim() || undefined,
+    });
+    if (opened.kind === 'empty') {
       toast({
         title: t('builderNameRequired', { defaultValue: 'Name required' }),
         description: t('builderNameRequiredDesc', { defaultValue: 'Give your workout a name.' }),
         variant: "destructive",
       });
-      return;
     }
-    if (exercises.length === 0) {
+  };
+
+  const confirmHonoredSave = () => {
+    const result = honor.confirmSave();
+    if (result.kind === 'added' || result.kind === 'replaced') {
       toast({
-        title: t('builderAddExercises', { defaultValue: 'Add exercises' }),
-        description: t('builderAddExercisesDesc', { defaultValue: 'Add at least one exercise.' }),
-        variant: "destructive",
+        title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),
+        description: t('builderWorkoutSavedDesc', {
+          name: result.name,
+          defaultValue: `"${result.name}" is ready to use.`,
+        }),
       });
-      return;
+      setWorkoutName("");
+      setSessionNotes("");
+      setExercises([]);
+      setStep(1);
     }
-    addSavedWorkout({
-      name: workoutName.trim(),
-      exercises: exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets })),
-      note: sessionNotes.trim() || undefined,
-    });
-    toast({
-      title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),
-      description: t('builderWorkoutSavedDesc', {
-        name: workoutName,
-        defaultValue: `"${workoutName}" is ready to use.`,
-      }),
-    });
-    setWorkoutName("");
-    setSessionNotes("");
-    setExercises([]);
-    setStep(1);
   };
 
   const handleStart = () => {
@@ -581,6 +581,15 @@ export function BuilderPage() {
         </CardContent>
       </Card>
       )}
+
+      <SaveHonoredRoutineDoor
+        open={!!honor.door}
+        name={honor.door?.draft.name ?? workoutName}
+        onNameChange={honor.setName}
+        replaceExisting={!!honor.door?.replaceExisting}
+        onCancel={honor.cancelSave}
+        onConfirm={confirmHonoredSave}
+      />
 
       <Dialog open={!!detailProgram} onOpenChange={(open) => !open && setDetailProgram(null)}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">

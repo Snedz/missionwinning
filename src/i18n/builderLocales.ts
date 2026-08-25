@@ -93,6 +93,18 @@ type BuilderStrings = {
   builderRemoveExercise: string;
   builderRemoveSet: string;
   builderContinue: string;
+  /** Confirm-gated save of a named routine they recognize (`.960`). */
+  honorSaveTitle: string;
+  honorSaveDesc: string;
+  honorReplaceTitle: string;
+  honorReplaceDesc: string;
+  honorRoutineName: string;
+  honorSaveConfirm: string;
+  honorReplaceConfirm: string;
+  honorSaveCancel: string;
+  honorSaveAsRoutine: string;
+  honorSaveEmpty: string;
+  honorSaveEmptyDesc: string;
 };
 
 const en: BuilderStrings = {
@@ -189,6 +201,19 @@ const en: BuilderStrings = {
   builderRemoveExercise: 'Remove exercise',
   builderRemoveSet: 'Remove set',
   builderContinue: 'Continue',
+  honorSaveTitle: 'Save this routine?',
+  honorSaveDesc:
+    'Keep the lifts you just did (or typed) under a name you recognize. Start uses it — Wednesday from logs does not replace it.',
+  honorReplaceTitle: 'Replace this routine?',
+  honorReplaceDesc:
+    '“{{name}}” is already yours. Confirm to update it. Start will use this list.',
+  honorRoutineName: 'Routine name',
+  honorSaveConfirm: 'Save routine',
+  honorReplaceConfirm: 'Replace routine',
+  honorSaveCancel: 'Cancel',
+  honorSaveAsRoutine: 'Save as routine',
+  honorSaveEmpty: 'Nothing to save',
+  honorSaveEmptyDesc: 'A routine needs a name and at least one lift.',
 };
 
 const es: BuilderStrings = {

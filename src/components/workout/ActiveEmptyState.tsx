@@ -18,6 +18,8 @@ type Props = {
   hydrated?: boolean;
   /** Last completed session exists — Start copies it (`.717`). */
   hasLastSession?: boolean;
+  /** Saved notebook owns empty Start (`.960`). */
+  savedRoutineName?: string;
   /**
    * I-Day equipment preview (`.768`). Dock label + handler only when there is
    * no last session. Does not go through `resolveActiveEmptyStart`.
@@ -42,6 +44,7 @@ export function ActiveEmptyState({
   onStart,
   hydrated = true,
   hasLastSession = false,
+  savedRoutineName,
   previewName,
   previewExerciseCount,
   onPreviewStart,
@@ -157,7 +160,12 @@ export function ActiveEmptyState({
               ? t('activeLoadingSessionDesc', {
                   defaultValue: 'Reading the last workout saved on this device.',
                 })
-              : hasLastSession
+              : savedRoutineName
+                ? t('activeSavedRoutineDesc', {
+                    name: savedRoutineName,
+                    defaultValue: 'Your saved routine — last loads stay on the set row.',
+                  })
+                : hasLastSession
                 ? t('activeRepeatLastSessionDesc', {
                     defaultValue: 'Same exercises and last loads. Log when ready.',
                   })
@@ -168,18 +176,25 @@ export function ActiveEmptyState({
           <button
             type="button"
             onClick={
-              !hasLastSession && onPreviewStart ? onPreviewStart : onStart
+              !savedRoutineName && !hasLastSession && onPreviewStart ? onPreviewStart : onStart
             }
             disabled={!hydrated}
             className="primary-action min-h-[52px] w-full text-[19px] disabled:opacity-60"
             aria-busy={hydrated ? undefined : true}
             data-testid={
-              !hasLastSession && previewName ? 'active-start-preview' : undefined
+              !savedRoutineName && !hasLastSession && previewName
+                ? 'active-start-preview'
+                : undefined
             }
           >
             <span className="flex-1 text-start">
               {!hydrated
                 ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
+                : savedRoutineName
+                  ? t('activeSavedRoutineStart', {
+                      name: savedRoutineName,
+                      defaultValue: 'Start {{name}}',
+                    })
                 : hasLastSession
                   ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
                   : previewName

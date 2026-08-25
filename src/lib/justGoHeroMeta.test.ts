@@ -64,6 +64,23 @@ describe('buildJustGoHeroMeta', () => {
     });
   });
 
+  it('saved notebook wins over live Coach and Repeat last', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Legs',
+      coach: {
+        name: 'Upper A',
+        status: 'planned',
+        exercises: [{ exerciseId: 'bench-press', sets: 3, reps: 8, weight: 60 }],
+      },
+      repeatLastName: 'Push',
+      savedRoutineName: 'Legs',
+    });
+    assert.equal(meta?.source, 'saved');
+    assert.equal(meta?.sessionName, 'Legs');
+  });
+
   it('live Coach still wins over Repeat last', () => {
     const meta = buildJustGoHeroMeta({
       hasActiveWorkout: false,
@@ -162,6 +179,18 @@ describe('resolveJustGoHeroCopy', () => {
     assert.match(copy.defaultLabel, /Just Go/i);
   });
 
+  it('names the saved notebook without Just Go or week-1 overlay', () => {
+    const copy = resolveJustGoHeroCopy(
+      { focusLabel: 'Chest', source: 'saved', sessionName: 'Legs' },
+      { completedSessions: 1 }
+    );
+    assert.equal(copy.labelKey, 'todaySavedRoutineCta');
+    assert.equal(copy.defaultTitle, 'Legs');
+    assert.doesNotMatch(copy.defaultLabel, /just go/i);
+    assert.doesNotMatch(copy.defaultDesc, /just go/i);
+    assert.doesNotMatch(copy.defaultLabel, /session 2/i);
+  });
+
   it('names Repeat last session without Just Go or week-1 overlay', () => {
     const copy = resolveJustGoHeroCopy(
       { focusLabel: 'Chest', source: 'repeat_last', sessionName: 'Push' },
@@ -182,5 +211,6 @@ describe('isFreestyleJustGo', () => {
     assert.equal(isFreestyleJustGo('starter'), true);
     assert.equal(isFreestyleJustGo('coach'), false);
     assert.equal(isFreestyleJustGo('repeat_last'), false);
+    assert.equal(isFreestyleJustGo('saved'), false);
   });
 });

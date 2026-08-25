@@ -66,6 +66,7 @@ import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import { pickHonoredStart } from '@/lib/workout/honorSavedRoutine';
 
 const CommandersIntent = dynamic(
   () => import('@/components/journey/CommandersIntent').then((m) => m.CommandersIntent),
@@ -553,6 +554,7 @@ export function HomeTodayDashboard() {
       recommendedFocus,
       readiness,
       history: workoutHistory,
+      savedWorkouts,
       units,
       equipment: userEquip,
       homeGymKit: loadHomeGymKit(),
@@ -574,6 +576,10 @@ export function HomeTodayDashboard() {
       phase: action.phase,
     });
     const coach = peekCoachToday();
+    const honored = pickHonoredStart({
+      saved: savedWorkouts,
+      history: workoutHistory,
+    });
     const lastSession = shouldRepeatLastOnToday({
       hasLiveCoach: !!(coach && coach.exercises.length > 0),
       history: workoutHistory,
@@ -584,8 +590,9 @@ export function HomeTodayDashboard() {
       focusLabel: muscleGroupLabel(recommendedFocus.group, t),
       coach,
       repeatLastName: lastSession?.name ?? null,
+      savedRoutineName: honored?.name ?? null,
     });
-  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory]);
+  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory, savedWorkouts]);
 
   /*
    * Every block declares what it costs the screen.

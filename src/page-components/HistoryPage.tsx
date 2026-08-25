@@ -77,6 +77,9 @@ import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
+import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
+import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import { MUSCLE_GROUP_I18N } from '@/lib/muscleGroups';
 import {
@@ -99,6 +102,7 @@ export function HistoryPage() {
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
   const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const honor = useHonorSavedRoutine();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const liveHistory = useMemo(() => liveSessionLogs(workoutHistory), [workoutHistory]);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
@@ -717,7 +721,7 @@ export function HistoryPage() {
               </div>
               {/* K7 — return path: replay this session in Train. */}
               {templateFromCompletedLog(selected) ? (
-                <div className="pt-2 border-t-2 border-border">
+                <div className="pt-2 space-y-2 border-t-2 border-border">
                   <Button
                     type="button"
                     className="w-full min-h-[44px] primary-action"
@@ -725,12 +729,56 @@ export function HistoryPage() {
                   >
                     {t('historyTrainAgain', { defaultValue: 'Train this again' })}
                   </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full min-h-[44px] tap-target"
+                    data-testid="history-save-routine"
+                    onClick={() => {
+                      const template = templateFromCompletedLog(selected);
+                      const opened = honor.requestSave({
+                        name: template?.name ?? selected.workoutName,
+                        exercises: template?.exercises,
+                      });
+                      if (opened.kind === 'empty') {
+                        toast({
+                          title: t('honorSaveEmpty', { defaultValue: 'Nothing to save' }),
+                          description: t('honorSaveEmptyDesc', {
+                            defaultValue: 'A routine needs a name and at least one lift.',
+                          }),
+                          variant: 'destructive',
+                        });
+                      }
+                    }}
+                  >
+                    {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
+                  </Button>
                 </div>
               ) : null}
             </>
           )}
         </DialogContent>
       </Dialog>
+
+      <SaveHonoredRoutineDoor
+        open={!!honor.door}
+        name={honor.door?.draft.name ?? selected?.workoutName ?? ''}
+        onNameChange={honor.setName}
+        replaceExisting={!!honor.door?.replaceExisting}
+        onCancel={honor.cancelSave}
+        onConfirm={() => {
+          const result = honor.confirmSave();
+          if (result.kind === 'added' || result.kind === 'replaced') {
+            toast({
+              title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),
+              description: t('builderWorkoutSavedDesc', {
+                name: result.name,
+                defaultValue: `"${result.name}" is ready to use.`,
+              }),
+            });
+          }
+        }}
+      />
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
         <Link

@@ -26,7 +26,7 @@
 | **Device storage** | `storage/safeStorage.ts` | Guarded localStorage — never throws |
 | **Surface parking** | `surface.ts` | Which non-wedge surfaces are reachable (`NEXT_PUBLIC_SURFACES`) |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
-| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, [`history/`](history/INDEX.md), `benchmarks.ts` | Logger helpers; Just Go; session list rows; rest/PR/superset/tempo; vs-last; Repeat last session (`.747`) |
+| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, [`history/`](history/INDEX.md), `benchmarks.ts` | Logger helpers; Just Go; session list rows; rest/PR/superset/tempo; vs-last; Repeat last session (`.747`); honor saved routine (`.960`) |
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
 | **First-set ungated** | `firstSetUngated.ts` | F-017 / `.766` + `.762` + `.941` + `.949` + `.958` — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. Guest `SIGNED_OUT` does not wipe the local log. Guest `SIGNED_IN` keeps it. Open session continues across signed-in surfaces. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |

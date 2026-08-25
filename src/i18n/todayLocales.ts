@@ -17,6 +17,11 @@ type TodayStrings = {
   todayRepeatLastKicker: string;
   todayRepeatLastTitle: string;
   todayRepeatLastDesc: string;
+  /** Today hero when Start honors a saved routine (`.960`). */
+  todaySavedRoutineCta: string;
+  todaySavedRoutineKicker: string;
+  todaySavedRoutineTitle: string;
+  todaySavedRoutineDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -311,6 +316,10 @@ const en: TodayStrings = {
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
   todayRepeatLastCta: 'Repeat last session',
+  todaySavedRoutineCta: 'Start {{name}}',
+  todaySavedRoutineKicker: 'Your routine',
+  todaySavedRoutineTitle: '{{name}}',
+  todaySavedRoutineDesc: 'The routine you saved — last loads stay on the set row.',
   todayRepeatLastKicker: 'Train',
   todayRepeatLastTitle: '{{name}}',
   todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
@@ -621,6 +630,10 @@ const coachPlanDefaults = {
   todayRepeatLastKicker: en.todayRepeatLastKicker,
   todayRepeatLastTitle: en.todayRepeatLastTitle,
   todayRepeatLastDesc: en.todayRepeatLastDesc,
+  todaySavedRoutineCta: en.todaySavedRoutineCta,
+  todaySavedRoutineKicker: en.todaySavedRoutineKicker,
+  todaySavedRoutineTitle: en.todaySavedRoutineTitle,
+  todaySavedRoutineDesc: en.todaySavedRoutineDesc,
   todayReturnLast: en.todayReturnLast,
   todayReturnNext: en.todayReturnNext,
   coachNextDayEyebrow: en.coachNextDayEyebrow,

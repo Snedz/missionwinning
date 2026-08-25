@@ -29,7 +29,11 @@ import { ScreenDock } from '@/components/layout/ScreenDock';
 import { computeReentry } from '@/lib/reentry';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
-import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
+import { pickHonoredStart } from '@/lib/workout/honorSavedRoutine';
+import {
+  readSavedWorkoutsFromStorage,
+  readWorkoutHistoryFromStorage,
+} from '@/lib/workout/workoutPersistLite';
 import {
   getDefaultJourneyState,
   getNextAction,
@@ -158,6 +162,7 @@ export function HomeTodayLean() {
   const handleJourneyPrimary = () => {
     void (async () => {
       const history = readWorkoutHistoryFromStorage();
+      const savedWorkouts = readSavedWorkoutsFromStorage();
       const [{ computeReadinessFromHistory }, { getRecommendedFocus }] = await Promise.all([
         import('@/lib/readinessIndex'),
         import('@/lib/score'),
@@ -172,19 +177,25 @@ export function HomeTodayLean() {
         recommendedFocus,
         readiness,
         history,
+        savedWorkouts,
         units,
         equipment: userEquip,
         homeGymKit: loadHomeGymKit(),
         includeBasicJustGo: false,
         includeColdStart: true,
         doseScale: reentry?.show ? reentry.doseScale : 1,
-        startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),
+        startWorkout: (name, exercises, workoutId) =>
+          startWorkoutFromStore(name, exercises, workoutId),
         navigate: (href) => router.push(href),
       });
     })();
   };
 
   const coachPeek = peekCoachToday();
+  const honored = pickHonoredStart({
+    saved: readSavedWorkoutsFromStorage(),
+    history: workoutHistory,
+  });
   const lastSession = shouldRepeatLastOnToday({
     hasLiveCoach: !!(coachPeek && coachPeek.exercises.length > 0),
     history: workoutHistory,
@@ -204,7 +215,8 @@ export function HomeTodayLean() {
     })
   );
   const plannedMissShowing = !!(plannedMiss.offer?.show && !hasActiveWorkout);
-  const nextSessionName = coachPeek?.name?.trim() || lastSession?.name?.trim() || null;
+  const nextSessionName =
+    honored?.name?.trim() || coachPeek?.name?.trim() || lastSession?.name?.trim() || null;
   const returnCite = todayReturnCite({
     lastSessionName: lastLoggedName,
     nextSessionName,
@@ -224,6 +236,7 @@ export function HomeTodayLean() {
       focusLabel || t('todaySessionFocus', { defaultValue: 'Training' }),
     coach: coachPeek,
     repeatLastName: lastSession?.name ?? null,
+    savedRoutineName: honored?.name ?? null,
   });
 
   const blocks: TodayBlockCandidate<React.ReactNode>[] = [

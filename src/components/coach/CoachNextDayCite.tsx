@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { honorCiteStart } from '@/lib/workout/honorSavedRoutine';
 import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
 import type { CoachPlan } from '@/lib/coach/types';
 
@@ -25,20 +26,32 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const startCoachSession = useStartCoachSession();
+  const honored = honorCiteStart({
+    cite,
+    saved: savedWorkouts,
+    history: workoutHistory,
+  });
 
-  const canStartLogs = cite.source === 'logs' && !!cite.template;
-  const canStartPlan = cite.source === 'plan' && !!cite.planSessionId;
+  const canStartLogs = honored?.source === 'logs' || honored?.source === 'saved';
+  const canStartPlan = cite.source === 'plan' && !!cite.planSessionId && honored?.source !== 'saved';
   const showStart = !hideStart && (canStartLogs || canStartPlan);
 
   const start = () => {
-    if (cite.source === 'plan' && cite.planSessionId) {
+    if (honored?.source === 'saved') {
+      startWorkout(honored.routine.name, honored.routine.exercises, honored.routine.id);
+      router.push('/active');
+      return;
+    }
+    if (cite.source === 'plan' && cite.planSessionId && honored?.source !== 'saved') {
       const session = plan?.sessions.find((s) => s.id === cite.planSessionId);
       if (session) startCoachSession(session, { from: 'coach' });
       return;
     }
-    if (!cite.template) return;
-    startWorkout(cite.template.name, cite.template.exercises);
+    if (honored?.source !== 'logs') return;
+    startWorkout(honored.name, honored.exercises);
     router.push('/active');
   };
 
@@ -69,7 +82,8 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
           data-testid="coach-next-day-start"
         >
           {t('coachNextDayStart', {
-            name: cite.name,
+            name:
+              honored?.source === 'saved' ? honored.routine.name : cite.name,
             defaultValue: 'Start {{name}}',
           })}
         </Button>

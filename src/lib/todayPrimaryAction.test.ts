@@ -82,6 +82,8 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
       const src = readFileSync(path.join(root, rel), 'utf8');
       assert.match(src, /shouldRepeatLastOnToday\(/, rel);
       assert.match(src, /repeatLastName:/, rel);
+      assert.match(src, /savedWorkouts/, rel);
+      assert.match(src, /savedRoutineName:/, rel);
     }
   });
 
