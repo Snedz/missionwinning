@@ -152,7 +152,10 @@ describe('decideStartAgain (.991)', () => {
     assert.equal(decision.kind, 'start');
     if (decision.kind !== 'start') return;
     assert.equal(decision.exercises[0]?.exerciseId, 'custom-aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee');
-    assert.equal(decision.exercises[0]?.sets[0]?.completed, false);
+    assert.equal(
+      (decision.exercises[0]?.sets[0] as { completed?: boolean }).completed,
+      undefined
+    );
   });
 
   it('wraps templateFromCompletedLog + protectLiveStart rather than forking', () => {
