@@ -55,6 +55,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`). Dial prefill reuses the same reader via `lastWorkingForDial` (`.946` / F-013)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
+25c. `inSetPr.ts` — quiet diary PR on the live set (`.999`). Heaviest / most reps / best logged 5. No prior invents nothing. Not Epley.
 25b. `setRowAdjacency.ts` — next-set target + log cite; `resolveAfterCompleteCite` after a completed working set (`.939`)
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
@@ -109,6 +110,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `openSessionContinuity.test.ts` | Desk start → phone finish is one session; guest; no wipe; no Force Sync (`.958`) |
 | `sessionResume.test.ts` | Leave Today → back = same session; Finish-partial keeps logged sets; empty invents nothing (`.963`) |
 | `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |
+| `inSetPr.test.ts` | Honest diary PR: empty / warmup / heaviest / most reps / best logged 5 (`.999`) |
+| `inSetPrSurface.test.ts` | Live-set chrome only; Today one Start; History Edit stays on History (`.999`) |
 | `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.939`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |

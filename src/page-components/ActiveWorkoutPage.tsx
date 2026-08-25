@@ -446,24 +446,29 @@ export function ActiveWorkoutPage() {
     const { exerciseId, setKind, input } = payload;
     const exercise = resolveExercise(exerciseId);
     const rowType = resolveSetRowType(exercise);
+    const hold = Number(
+      getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0).durationSeconds
+    );
+    const sessionPriors = (exLog?.sets ?? []).filter(
+      (row, i) => i !== setIdx && row.completed
+    );
     const isPr = logSetIsPr({
       exerciseId,
       reps: input.reps,
       weight: input.weight,
       setKind,
       workoutHistory,
+      durationSeconds: hold,
+      rowType,
+      sessionPriors,
     });
-
-    const hold = Number(
-      getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0).durationSeconds
-    );
     if (rowType === 'duration' && !(Number.isFinite(hold) && hold > 0)) return;
     const next = logSetAndAdvance(
       exIdx,
       setIdx,
       rowType === 'duration' ? 0 : input.reps,
       rowType === 'duration' ? 0 : input.weight,
-      rowType === 'duration' ? false : isPr,
+      isPr,
       rowType === 'duration' ? hold : undefined
     );
     const updatedExercises =
@@ -495,7 +500,7 @@ export function ActiveWorkoutPage() {
     }
     setLogPulse((n) => n + 1);
 
-    // Honor = inline brass PR chip on the set row (Design Orchestration D0).
+    // Quiet diary PR on the live set (`.999`) — haptic only when they beat a number they already wrote.
     const haptic = planPrHaptic(isPr);
     if (haptic && typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate([...haptic]);

@@ -61,6 +61,8 @@ type Props = {
   pairMark?: string | null;
   /** After-save vs-last tokens; null slots stay unpainted. */
   vsLastLabels?: (string | null)[];
+  /** Quiet diary PR on the live set (`.999`). Null = no prior / not a beat. */
+  inSetPrLabels?: (string | null)[];
   /** Strong set column: `W` or working-set `1..n`. */
   ordinalLabels?: string[];
   /** Live barbell row only — both-sides plate counts (`2×45`). */
@@ -116,6 +118,7 @@ export function SetLogTable({
   prevLabels,
   pairMark = null,
   vsLastLabels = [],
+  inSetPrLabels = [],
   ordinalLabels,
   plateLine = null,
   barWeight,
@@ -201,6 +204,7 @@ export function SetLogTable({
           const completed = Boolean(set.completed);
           const side = parseSetSide(set.side);
           const vsLast = vsLastLabels[setIdx] ?? null;
+          const inSetPr = inSetPrLabels[setIdx] ?? null;
 
           return (
             <Fragment key={set.id}>
@@ -487,10 +491,20 @@ export function SetLogTable({
                         {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
                       </Badge>
                     ) : null}
-                    {set.isPr && (
-                      <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
-                    )}
-                    {!set.isPr && !set.rpe && (
+                    {inSetPr ? (
+                      <span
+                        className="inline-flex min-h-[44px] items-center gap-1 text-[11px] text-muted-foreground"
+                        data-testid="set-table-in-set-pr"
+                        aria-label={t('activeInSetPrAria', {
+                          kinds: inSetPr,
+                          defaultValue: 'Personal record: {{kinds}}',
+                        })}
+                      >
+                        <span aria-hidden="true">✓</span>
+                        {inSetPr}
+                      </span>
+                    ) : null}
+                    {!inSetPr && !set.rpe && (
                       <div className="flex min-w-0 flex-wrap items-center justify-end gap-0.5">
                         {(['easy', 'med', 'hard'] as const).map((r) => (
                           <button
