@@ -145,6 +145,25 @@ describe('finishPartialFromActive', () => {
     assert.equal(finishPartialFromActive(null), null);
   });
 
+  it('copies authored loadPct and omits empty (`.981`)', () => {
+    const open: ActiveWorkout = {
+      workoutName: 'Push',
+      startedAt: 't0',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { ...set(true, 5, 80), loadPct: 80 },
+            { ...set(true, 5, 70) },
+          ],
+        },
+      ],
+    };
+    const partial = finishPartialFromActive(open);
+    assert.equal(partial?.exercises[0]?.sets[0]?.loadPct, 80);
+    assert.equal(partial?.exercises[0]?.sets[1]?.loadPct, undefined);
+  });
+
   it('keeps a shared group when both peers logged; orphan invents none', () => {
     const open: ActiveWorkout = {
       workoutName: 'Push',

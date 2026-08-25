@@ -16,6 +16,7 @@ import type {
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { parseOptionalRir } from "@/lib/workout/rir";
 import { parseOptionalRpe10 } from "@/lib/workout/rpe10";
+import { parseOptionalLoadPct } from "@/lib/workout/setRowPercent";
 import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
 import { advanceAfterLog, groupWithNext, stripOrphanGroups, unpair } from "@/lib/workout/superset";
 import {
@@ -108,6 +109,8 @@ interface WorkoutState {
   rateSetRir: (exerciseIndex: number, setIndex: number, rir: number | undefined) => void;
   /** Optional 1–10 RPE after log — never stamped by `logSet` (`.967`). */
   rateSetRpe10: (exerciseIndex: number, setIndex: number, rpe10: number | undefined) => void;
+  /** Optional % of known max — never stamped by `logSet` (`.981`). */
+  setSetLoadPct: (exerciseIndex: number, setIndex: number, loadPct: number | undefined) => void;
   /** Optional ecc/pause/con after log — last tempo prefills on `logSet` (`.734`). */
   rateSetTempo: (
     exerciseIndex: number,
@@ -527,6 +530,27 @@ export const useWorkoutStore = create<WorkoutState>()(
             const next = { ...sets[setIndex] };
             if (parsed === undefined) delete next.rpe10;
             else next.rpe10 = parsed;
+            sets[setIndex] = next;
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      setSetLoadPct: (exerciseIndex, setIndex, loadPct) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalLoadPct(loadPct);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.loadPct;
+            else next.loadPct = parsed;
             sets[setIndex] = next;
           }
           ex.sets = sets;

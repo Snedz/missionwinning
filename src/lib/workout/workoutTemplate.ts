@@ -11,5 +11,6 @@ export function templateSetsToLogged(
     weight: s.weight,
     completed: false,
     kind: 'normal' as SetKind,
+    ...(typeof s.loadPct === 'number' && s.loadPct > 0 ? { loadPct: s.loadPct } : {}),
   }));
 }

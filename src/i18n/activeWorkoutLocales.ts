@@ -64,6 +64,9 @@ type ActiveWorkoutStrings = {
   activeRpeEasy: string;
   activeRpeMed: string;
   activeRpeHard: string;
+  /** Optional % of known 1RM on the live set row (`.981`). */
+  activeSetPct: string;
+  activeSetPctAria: string;
   /** Optional 1–10 RPE on a completed set (`.967`). */
   activeRpe10: string;
   activeRpe10Tip: string;
@@ -382,6 +385,8 @@ const en: ActiveWorkoutStrings = {
   activeNothingLoggedDesc: 'Finish unlocks after at least one completed set.',
   activeReps: 'Reps',
   activeWeight: 'lbs',
+  activeSetPct: '%',
+  activeSetPctAria: 'Percent of known one-rep max. Optional.',
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',

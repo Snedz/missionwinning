@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.980` supersets (concern `.979`; past master `.978` Quiet Learn `1a06fbd7`; keep Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`). */
-export const APP_BUILD_LABEL = "2026.07-unified.980";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.981` 1RM percent (past master `.980` Supersets `17039cb3`; keep supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`). */
+export const APP_BUILD_LABEL = "2026.07-unified.981";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -14,6 +14,7 @@ import type { UnitsPref } from '@/lib/units';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
+import { appendKnownMaxPctCite, loadPctOfKnownMax } from '@/lib/workout/setRowPercent';
 
 /** Monday=0 … Sunday=6 — same order as coach `weekdayLabel`. */
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -173,15 +174,23 @@ export function formatAdjacencyCiteLine(
 export function formatAfterCompleteParts(
   row: AfterCompleteCite,
   t: AdjacencyCiteT,
-  restClock?: string
+  restClock?: string,
+  knownMax?: number | null
 ): { target: string; provenance: string; line: string } {
-  const target =
+  let target =
     row.suggestion.kind === 'load'
       ? formatTargetLabel(row.suggestion.reps, row.suggestion.weight)
       : t('activeNextCiteRest', {
           clock: restClock ?? `${row.suggestion.seconds}s`,
           defaultValue: `Rest ${restClock ?? `${row.suggestion.seconds}s`}`,
         });
+  if (row.suggestion.kind === 'load') {
+    target =
+      appendKnownMaxPctCite(
+        target,
+        loadPctOfKnownMax(knownMax, row.suggestion.weight)
+      ) ?? target;
+  }
   const provenance = formatAdjacencyCiteLine(row.cite, t) ?? '';
   const line = provenance ? `${target} · ${provenance}` : target;
   return { target, provenance, line };

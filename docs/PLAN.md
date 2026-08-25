@@ -279,6 +279,15 @@ smash Supersets `.980` / Learn
   master. Title:
   `1RM percent (.981)`.
 
+**Landed `.981`:** `knownMaxFromHistory` /
+`parseOptionalLoadPct` /
+`weightFromKnownMaxPct` in
+`src/lib/workout/setRowPercent.ts`.
+Known max is a logged single.
+Optional `%` on `SetLogTable`. Cite
+appends `%` when a known max exists.
+Empty invents nothing.
+
 ---
 
 ## Frozen plan — `.979` Supersets (2026-08-25)
