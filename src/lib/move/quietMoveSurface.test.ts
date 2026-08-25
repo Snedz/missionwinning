@@ -62,6 +62,11 @@ describe('quiet Move surface lock', () => {
     assert.match(src, /data-testid="quiet-move-log-submit"/);
     assert.match(src, /moveQuietLog|Log/);
     assert.match(src, /variant="outline"/);
+    assert.match(src, /useEffect/);
+    assert.doesNotMatch(
+      src,
+      /typeof window !== 'undefined' \? localDateKey/
+    );
     assert.doesNotMatch(src, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(src, /geolocation|getCurrentPosition|watchPosition|HealthKit/i);
     assert.doesNotMatch(src, /ScoreNumeral|MeterBar|progress-ring|habitWeek|fuelStreak/i);

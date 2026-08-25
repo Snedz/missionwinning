@@ -5,7 +5,7 @@
  * Outline log. Optional minutes or distance. Not a Start. Not a score circle.
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,25 +30,32 @@ export function QuietMoveLogCard() {
   const [kind, setKind] = useState<QuietMoveKind>('walk');
   const [minutes, setMinutes] = useState('');
   const [distanceKm, setDistanceKm] = useState('');
-  const [rows, setRows] = useState<QuietMoveRow[]>(() =>
-    typeof window !== 'undefined' ? loadQuietMoveLog() : []
-  );
+  // Date + diary hydrate after mount. A render-time `typeof window` check
+  // stays '' after SSR, so a successful Log would save and then hide the row.
+  const [today, setToday] = useState('');
+  const [rows, setRows] = useState<QuietMoveRow[]>([]);
 
-  const today = typeof window !== 'undefined' ? localDateKey() : '';
+  useEffect(() => {
+    setToday(localDateKey());
+    setRows(loadQuietMoveLog());
+  }, []);
+
   const todayRows = useMemo(() => listQuietMoveForDate(rows, today), [rows, today]);
 
   const handleLog = () => {
+    const todayIso = today || localDateKey();
     const row = decideQuietMove({
       kind,
       minutes,
       distanceKm,
-      todayIso: localDateKey(),
+      todayIso,
       nowIso: new Date().toISOString(),
       id: `qm-${Date.now()}`,
     });
     if (!row) return;
     const next = appendQuietMove(loadQuietMoveLog(), row);
     saveQuietMoveLog(next);
+    setToday(todayIso);
     setRows(next);
     setMinutes('');
     setDistanceKm('');
