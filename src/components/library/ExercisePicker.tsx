@@ -54,15 +54,14 @@ export function ExercisePicker({
     [pickerExercises, query]
   );
 
-  const invent = useMemo(
-    () =>
-      decideNamedCustom({
-        name: query,
-        catalog: EXERCISES,
-        existing: loadCustomExercises(),
-      }),
-    [query, namedTick]
-  );
+  const invent = useMemo(() => {
+    void namedTick;
+    return decideNamedCustom({
+      name: query,
+      catalog: EXERCISES,
+      existing: loadCustomExercises(),
+    });
+  }, [query, namedTick]);
 
   const selected =
     resolveExercise(value, { catalog: pickerExercises }) ??
