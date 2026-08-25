@@ -4,6 +4,7 @@ import {
   countsTowardPr,
   countsTowardStrengthEstimate,
   countsTowardVolume,
+  toggleSetTag,
 } from '@/lib/workout/setKind';
 
 describe('setKind', () => {
@@ -47,5 +48,13 @@ describe('setKind', () => {
   it('normal is default working set', () => {
     assert.equal(countsTowardVolume('normal'), true);
     assert.equal(countsTowardVolume(undefined), true);
+  });
+
+  it('toggleSetTag picks a tag and tap-again returns to work', () => {
+    assert.equal(toggleSetTag('normal', 'warmup'), 'warmup');
+    assert.equal(toggleSetTag(undefined, 'drop'), 'drop');
+    assert.equal(toggleSetTag('warmup', 'warmup'), 'normal');
+    assert.equal(toggleSetTag('drop', 'failure'), 'failure');
+    assert.equal(toggleSetTag('failure', 'normal'), 'normal');
   });
 });

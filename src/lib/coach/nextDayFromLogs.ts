@@ -29,8 +29,8 @@ export type NextDayCite = {
   intensity?: string;
 };
 
-function isPerformedSet(set: { reps?: number }): boolean {
-  return (set.reps ?? 0) > 0;
+function isPerformedSet(set: { reps?: number; kind?: string }): boolean {
+  return (set.reps ?? 0) > 0 && set.kind !== 'warmup';
 }
 
 function isLiveLog(log: CompletedWorkoutLog): boolean {

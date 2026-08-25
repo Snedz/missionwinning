@@ -460,7 +460,8 @@ export function ActiveWorkoutPage() {
     setSetKind(exIdx, setIdx, kind);
     if (kind !== 'drop') return;
     const ex = activeWorkout?.exercises[exIdx];
-    if (!ex) return;
+    const target = ex?.sets[setIdx];
+    if (!ex || !target || target.completed) return;
     const prefill = suggestDropFromPrior(ex.sets, setIdx, units);
     if (prefill) applyDropDial(exIdx, setIdx, prefill.reps, prefill.weight);
   };

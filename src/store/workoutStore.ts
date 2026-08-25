@@ -562,7 +562,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = { ...exercises[exerciseIndex] };
           const sets = [...ex.sets];
-          if (sets[setIndex] && !sets[setIndex].completed) {
+          if (sets[setIndex]) {
             sets[setIndex] = { ...sets[setIndex], kind };
           }
           ex.sets = sets;

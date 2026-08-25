@@ -6,6 +6,7 @@
  */
 
 import type { CompletedWorkoutLog, WorkoutExerciseTemplate } from '@/types';
+import { workingSets } from '@/lib/workout/setMath';
 
 export type HistoryRetrainTemplate = {
   name: string;
@@ -44,15 +45,14 @@ export function templateFromCompletedLog(
   const exercises: WorkoutExerciseTemplate[] = [];
   for (const ex of log.exercises) {
     if (!ex.exerciseId) continue;
-    const sets = (ex.sets ?? [])
+    const sets = workingSets(ex.sets ?? [])
       .map((s) => ({
         reps: typeof s.reps === 'number' && s.reps > 0 ? s.reps : 8,
         weight: typeof s.weight === 'number' && s.weight >= 0 ? s.weight : 0,
       }))
       .filter((s) => s.reps > 0);
-    if (sets.length === 0) {
-      sets.push({ reps: 8, weight: 0 });
-    }
+    // Warmup-only (or empty) exercise is omitted — do not invent 8 × 0 work.
+    if (sets.length === 0) continue;
     exercises.push({ exerciseId: ex.exerciseId, sets });
   }
 

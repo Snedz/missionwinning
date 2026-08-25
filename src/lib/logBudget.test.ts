@@ -130,16 +130,23 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
     from: 964,
     to: 964,
     why:
-      'Reserved for thin-history honesty #801 while Fuel shipped as `.965` and this branch ' +
-      'is `.967`. Honesty rebased as `.968` (do not take). No LOG heading on master ever ' +
-      'ended in `.964`.',
+      'Reserved for thin-history honesty #801 while Fuel shipped as `.965` and RPE as `.967`. ' +
+      'Honesty rebased as `.968` (do not take). No LOG heading on master ever ended in `.964`.',
   },
   {
     from: 966,
     to: 966,
     why:
-      'Reserved for set tags #802 while this branch is `.967` RPE/RIR on Fuel `.965`. ' +
-      'No LOG heading on master ever ended in `.966`.',
+      'Set-tags concern number. The ship stamp is `.970` after master `.967`; no LOG heading ' +
+      'on master ever ended in `.966`.',
+  },
+  {
+    from: 968,
+    to: 969,
+    why:
+      '`.968` is honesty #801 rebase; `.969` is Quiet Move. Parallel reservations. ' +
+      'No LOG heading on master ever ended in those labels, so `.970` can sit past `.967` ' +
+      'without a missing rotation.',
   },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);

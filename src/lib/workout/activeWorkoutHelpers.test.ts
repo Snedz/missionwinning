@@ -55,7 +55,7 @@ import type { CompletedWorkoutLog } from '@/types';
 
 function historyWith(
   exerciseId: string,
-  sets: { reps: number; weight: number }[]
+  sets: { reps: number; weight: number; kind?: 'normal' | 'warmup' | 'failure' | 'drop' }[]
 ): CompletedWorkoutLog[] {
   return [
     {
@@ -68,7 +68,7 @@ function historyWith(
       exercises: [
         {
           exerciseId,
-          sets: sets.map((s) => ({ ...s, kind: 'normal' as const })),
+          sets: sets.map((s) => ({ ...s, kind: s.kind ?? ('normal' as const) })),
         },
       ],
     },
@@ -158,6 +158,29 @@ describe('activeWorkoutHelpers', () => {
       weight: 65,
     });
     assert.equal(getLastPerformanceForSet(hist, 'none', 0), null);
+  });
+
+  it('getLastPerformanceForSet / Prev ignore warmup-tagged last-session sets', () => {
+    const hist = historyWith('bench-press', [
+      { reps: 8, weight: 40, kind: 'warmup' },
+      { reps: 5, weight: 100, kind: 'normal' },
+    ]);
+    assert.deepEqual(getLastPerformanceForSet(hist, 'bench-press', 0), {
+      reps: 5,
+      weight: 100,
+    });
+    assert.equal(
+      getLastPerformanceForSet(hist, 'bench-press', 0, [{ kind: 'warmup' }, { kind: 'normal' }]),
+      null,
+      'warmup row stays quiet'
+    );
+    assert.deepEqual(
+      getLastPerformanceForSet(hist, 'bench-press', 1, [{ kind: 'warmup' }, { kind: 'normal' }]),
+      { reps: 5, weight: 100 }
+    );
+    assert.deepEqual(formatPrevSetLabels(hist, 'bench-press', 2, {
+      currentSets: [{ kind: 'warmup' }, { kind: 'normal' }],
+    }), [null, '5 × 100']);
   });
 
   it('formatPrevSetLabels builds table prev column (.425)', () => {

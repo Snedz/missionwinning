@@ -169,10 +169,7 @@ export function ActiveExerciseList({
             }}
             onLogSet={(setIdx) => onLogSet(exIdx, setIdx)}
             activeSetKind={tableControls.activeSetKind}
-            onSetKindChange={(kind) => {
-              if (!tableControls.canEdit || !nextSet) return;
-              onSetKindChange(exIdx, nextSet.setIdx, kind);
-            }}
+            onSetKindChange={(setIdx, kind) => onSetKindChange(exIdx, setIdx, kind)}
             offerSetSide={shouldOfferSetSide(exercise)}
             activeSetSide={
               tableControls.canEdit && nextSet
