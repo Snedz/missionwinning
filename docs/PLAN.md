@@ -6,6 +6,59 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1008` Find a past session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1008` — from master
+> `.1007` (`cd066471` — Name this finished
+> session). Stamp stays `.1008`. Do not
+> bump. Title stays **Find a past session
+> (.1008)**. Same PR. Do not merge this
+> PR yourself. Name `.1007` + Restore
+> `.1006` + Start-from `.1005` + Hide
+> `.1004` + Delete `.1003` are on master.
+> Do not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Search the History list after import +
+backfill. Week strip + movement history
++ start-from still leave a long scroll.
+Off Today. Empty query invents nothing.
+
+### First check (done — hypothesis holds)
+
+Read tip `cd066471` / `.1007`.
+Confirmed:
+
+- History already has a name box that
+  matches **`workoutName` only**.
+- Untitled rows show the date (`.1007`).
+  Template name still on the log.
+- Live list skips tombs. Restore is a
+  different door.
+- Start-from does not hide History rows.
+
+### Lock
+
+1. `decideSearchHistory` — empty query
+   returns the same live rows. Else
+   match title, template name, date,
+   lift names, session note.
+2. No matches → empty list. No fake
+   sessions. Tombs stay out.
+3. Keep 7/30/all chips.
+4. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+5. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1007` Name this finished session (2026-08-25)
 
 > **Frozen.** Implement only this section + root

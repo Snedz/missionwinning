@@ -36,6 +36,7 @@
  * `.1005` — start history from this date (fold, don't erase). Never a login wall.
  * `.1006` — restore a deleted History session. Never a login wall.
  * `.1007` — name this finished session. Never a login wall.
+ * `.1008` — search the History list. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

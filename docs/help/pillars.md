@@ -11,7 +11,7 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 - **Active workout** — live set logging with rest timer and PR detection. The open row honors weight, bodyweight, time, or assist. Each lift can remember a work rest and a warmup rest. Tap a lift to see prior sessions of that movement. Empty invents nothing.
 - **Builder** — custom workouts and program templates
 - **Library** — searchable exercises with cues and alternatives. Hide a name so it leaves Add and search; history stays.
-- **History** — past sessions (date, muscles, set count); tap a row to open that log and edit the sets you logged, then Save. Confirm before a destructive change. Empty invents nothing. You can also delete that one finished session after confirm — Restore is on History → Deleted sessions. Other days stay.
+- **History** — past sessions (date, muscles, set count); tap a row to open that log and edit the sets you logged, then Save. Confirm before a destructive change. Empty invents nothing. Search by name, date, or lift. You can also delete that one finished session after confirm — Restore is on History → Deleted sessions. Other days stay.
 
 ## Fuel
 

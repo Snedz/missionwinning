@@ -29,6 +29,9 @@ Open it in Library and tap **Hide this exercise**, or use **Hide from library** 
 **I imported years of sessions and week 1 looks like I have been here forever.**  
 On History, open **Start history from this date**. Pick the day week 1 should start. Older sessions stay in History — they fold out of the week strip, Coach, and streak. If that hides a lot of days, confirm first. **Show the full diary** clears the fold. Empty or a future date invents nothing.
 
+**How do I find a past session?**  
+On History, type in the search box. It matches the name you gave that session, the template name, the date, a lift, or a private note. An empty search shows the same list. No matches stays empty. Deleted sessions stay under **Deleted sessions**.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
