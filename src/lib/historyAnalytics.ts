@@ -10,6 +10,7 @@ import {
 } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKey, localWeekKey, startOfLocalWeek, formatLocalDateKey } from '@/lib/time/localDate';
+import { sessionWorkingVolume, workingSetVolume } from '@/lib/workout/workingSetVolume';
 
 /** Charts / briefing skip tombs so a deleted Monday is not still "trained" (`.1006`). */
 function liveHistoryLogs(history: readonly CompletedWorkoutLog[]): CompletedWorkoutLog[] {
@@ -84,7 +85,7 @@ export function buildWeeklyVolumeTimeline(
   for (const log of liveHistoryLogs(history)) {
     const key = weekStartKey(log.completedAt);
     if (!byWeek[key]) continue;
-    byWeek[key].volume += log.totalVolume;
+    byWeek[key].volume += sessionWorkingVolume(log);
     byWeek[key].sessions += 1;
   }
 
@@ -147,7 +148,7 @@ export function buildMuscleHeatmap(
         : (EXERCISES.find((e) => e.id === ex.exerciseId)?.muscleGroups ?? []).filter(
             (mg): mg is MuscleGroup => (MAJOR_GROUPS as readonly string[]).includes(mg)
           );
-      const vol = ex.sets.reduce((s, set) => s + set.reps * set.weight, 0);
+      const vol = ex.sets.reduce((s, set) => s + workingSetVolume(set.reps, set.weight), 0);
       const setCount = ex.sets.length;
       if (!groups.length) continue;
       const share = 1 / groups.length;

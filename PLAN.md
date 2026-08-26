@@ -1,31 +1,34 @@
-# PLAN — Coach chat empty load is BW, not 0 (`.1021`)
+# PLAN — Heatmap empty-load volume is reps, not 0 (`.1022`)
 
 **Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1021`.
-**Base:** master `8a606a12b` — Last cite is BW, not 0, on empty load (`.1017`).
-**Do not smash:** `#843` `.1018`, `#845` `.1019`, `#846` `.1020`, logger cites `.1009`–`.1017`.
+**Frozen:** 2026-08-26. **Ship-as:** `.1022`.
+**Base:** master `710d0b7de` — Coach chat empty load is BW, not 0 (`.1021`).
+**Do not smash:** `.1021` chat cite, `.1020` library spark, `.1019` never-trained overdue, `.1018` month.
 
 ---
 
 ## The one thing
 
-Coach chat interpolates stored `weight: 0` as `Push-ups 0 × 8`.
+Anatomy heatmap still sums `reps * weight`. Eight push-ups add 0 volume, so a trained group looks idle.
+
+Library spark `.1020` already scores empty load as reps. Heatmap did not follow.
 
 ## In / out
 
 **In**
 
-- Chat log-fact display: empty load → `8 × BW`.
-- `cite_last_log` / `lookup_recent_sets` / ReAct prompt share one helper.
-- Loaded stays the existing `weight × reps` order.
-- Display only. Store still `weight: 0`.
+- One helper `workingSetVolume`: empty load → reps; loaded → reps × kg.
+- `buildMuscleHeatmap` uses it.
+- Spark reuses it (no second copy).
+- Guest. First set ungated.
 
 **Out**
 
-- `logCitation` session-vs-set contract.
-- Library spark (`.1020` in flight).
-- Today chrome. `#843`. Promote.
+- History `calculateVolume` kg totals.
+- Score 99 sentinel. Month they own.
+- Today chrome. Promote. `PRIVATE_MODE`.
 
 ## Verify
 
-- `src/lib/coachChatEmptyLoad.test.ts`
+- `src/lib/heatmapEmptyLoadVolume.test.ts`
+- `src/lib/librarySparkBw.test.ts`

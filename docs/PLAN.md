@@ -6,6 +6,31 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1022` Heatmap empty-load volume is reps, not 0 (2026-08-26)
+
+> **Frozen.** Label `2026.07-unified.1022` from master `.1021`
+> (`710d0b7de`). Do not smash `.1021`–`.1018`.
+> Do not merge. `[skip vercel]`. No `PRIVATE_MODE`
+> flip. Live www stays `.696`.
+
+Heatmap still does `reps * weight`, so
+push-ups add 0 volume.
+
+### Done means
+
+Chest from `8 × 0` push-ups has volume > 0.
+Loaded stays kg. Spark still `[8]`.
+
+### Accept
+
+```
+npx tsx --test src/lib/heatmapEmptyLoadVolume.test.ts
+npx tsx --test src/lib/librarySparkBw.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1021` Coach chat empty load is BW, not 0 (2026-08-26)
 
 > **Frozen.** Label `2026.07-unified.1021` from master `.1017`

@@ -1,6 +1,7 @@
 import type { Exercise, ProgramTag } from '@/types';
 import { compareText } from '@/lib/i18n/formatLocale';
 import { countsTowardVolume, type SetKind } from '@/lib/workout/setKind';
+import { workingSetVolume } from '@/lib/workout/workingSetVolume';
 import {
   FORM_PATTERN_IDS,
   inferFormPattern,
@@ -102,12 +103,7 @@ export function libraryExerciseVolumeSpark(
     if (!block) continue;
     const vol = (block.sets ?? []).reduce((s, set) => {
       if (!countsTowardVolume(set.kind)) return s;
-      const reps = Number(set.reps);
-      const weight = Number(set.weight);
-      if (!Number.isFinite(reps) || reps <= 0) return s;
-      const load = Number.isFinite(weight) ? weight : 0;
-      // Empty load is stored 0 (cite already prints BW). Spark shape is reps, not a floor.
-      return s + (load > 0 ? reps * load : reps);
+      return s + workingSetVolume(set.reps, set.weight);
     }, 0);
     vols.push(vol);
     if (vols.length >= cap) break;

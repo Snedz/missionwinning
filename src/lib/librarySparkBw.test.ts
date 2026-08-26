@@ -69,7 +69,7 @@ describe('library spark is reps, not 0, on empty load (.1020)', () => {
 
   it('Library still uses the helper; Today stays one Start', () => {
     const helper = read('src/lib/libraryFilters.ts');
-    assert.match(helper, /load > 0 \? reps \* load : reps/);
+    assert.match(helper, /workingSetVolume/);
     assert.doesNotMatch(helper, /s \+ set\.reps \* set\.weight/);
     const sheet = read('src/components/library/LibraryDetailSheet.tsx');
     assert.match(sheet, /libraryExerciseVolumeSpark/);
