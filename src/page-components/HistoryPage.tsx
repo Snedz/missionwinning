@@ -52,6 +52,7 @@ import { HistorySessionName } from '@/components/history/HistorySessionName';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
+import { HistoryExport } from '@/components/history/HistoryExport';
 import {
   decideEditSave,
   type FinishedSessionDraft,
@@ -128,6 +129,7 @@ export function HistoryPage() {
   const [backfillOpen, setBackfillOpen] = useState(false);
   const [mergeOpen, setMergeOpen] = useState(false);
   const [startFromOpen, setStartFromOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
@@ -171,6 +173,12 @@ export function HistoryPage() {
 
   const openStartFrom = () => {
     setStartFromOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const openExport = () => {
+    setExportOpen(true);
     setSelected(null);
     setEditing(false);
   };
@@ -446,6 +454,15 @@ export function HistoryPage() {
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-2 w-full min-h-[44px] tap-target"
+            data-testid="session-history-export-open"
+            onClick={openExport}
+          >
+            {t('historyExport', { defaultValue: 'Export this diary' })}
+          </Button>
           {deletedHistory.length > 0 ? (
             <Button
               type="button"
@@ -486,6 +503,15 @@ export function HistoryPage() {
             onClick={openStartFrom}
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="session-history-export-open"
+            onClick={openExport}
+          >
+            {t('historyExport', { defaultValue: 'Export this diary' })}
           </Button>
           {deletedHistory.length > 0 ? (
             <Button
@@ -1082,6 +1108,26 @@ export function HistoryPage() {
               }}
             />
           ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={exportOpen} onOpenChange={(open) => !open && setExportOpen(false)}>
+        <DialogContent
+          className="max-w-md max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-export-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyExportTitle', { defaultValue: 'Export this diary' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyExportDesc', {
+                defaultValue:
+                  'Save the sessions you logged as a file. Empty invents nothing. Deleted sessions stay out.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {exportOpen ? <HistoryExport history={workoutHistory} /> : null}
         </DialogContent>
       </Dialog>
 

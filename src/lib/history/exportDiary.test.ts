@@ -32,7 +32,7 @@ const helperSrc = readFileSync(
   'utf8'
 );
 
-describe('decideExportDiary (.1010)', () => {
+describe('decideExportDiary (.1011)', () => {
   it('empty / missing / non-array invents nothing', () => {
     assert.deepEqual(decideExportDiary(null), { kind: 'empty' });
     assert.deepEqual(decideExportDiary(undefined), { kind: 'empty' });

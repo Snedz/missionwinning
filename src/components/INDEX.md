@@ -20,7 +20,7 @@
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
-| `history/` | History charts, muscle heatmap, finished-session edit (`.997`), past-session backfill (`.1000`), merge duplicates (`.1002`), delete this finished session (`.1003`), restore a deleted session (`.1006`), name this finished session (`.1007`), start history from this date (`.1005`) |
+| `history/` | History charts, muscle heatmap, finished-session edit (`.997`), past-session backfill (`.1000`), merge duplicates (`.1002`), delete this finished session (`.1003`), restore a deleted session (`.1006`), name this finished session (`.1007`), start history from this date (`.1005`), export this diary (`.1011`) |
 | `library/` | Exercise picker + detail. Picker omits hidden names (`.1004`) |
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
 | `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |

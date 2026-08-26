@@ -14,7 +14,7 @@ const BANNED =
 const FEED = /likes|Top 8|Feed permalink|shame slope|navigator\.share|mailto:/i;
 const EXPORT = /decideExportDiary|session-history-export|history\/exportDiary/;
 
-describe('export this diary surface lock (.1010)', () => {
+describe('export this diary surface lock (.1011)', () => {
   it('History mounts the file-out door and calls decideExportDiary', () => {
     const page = read('src/page-components/HistoryPage.tsx');
     assert.match(page, /decideExportDiary|HistoryExport/);

@@ -160,6 +160,12 @@ type HistoryStrings = {
   historyStartFromConfirmDesc: string;
   historyStartFromConfirm: string;
   historyStartFromCancel: string;
+  /** `.1011` — file-out of the live diary. */
+  historyExport: string;
+  historyExportTitle: string;
+  historyExportDesc: string;
+  historyExportSave: string;
+  historyExportJson: string;
 };
 
 const en: HistoryStrings = {
@@ -319,6 +325,12 @@ const en: HistoryStrings = {
     'This folds {{count}} training days out of the week strip, Coach, and streak. Sessions stay in History.',
   historyStartFromConfirm: 'Fold — sessions stay',
   historyStartFromCancel: 'Cancel',
+  historyExport: 'Export this diary',
+  historyExportTitle: 'Export this diary',
+  historyExportDesc:
+    'Save the sessions you logged as a file. Empty invents nothing. Deleted sessions stay out.',
+  historyExportSave: 'Save diary CSV',
+  historyExportJson: 'Save diary JSON',
 };
 
 const es: HistoryStrings = {
@@ -328,6 +340,12 @@ const es: HistoryStrings = {
   historyVolumeTitle: 'Volumen semanal',
   historyHeatmapTitle: 'Mapa muscular',
   history1rmTitle: '1RM estimado',
+  historyExport: 'Exportar este diario',
+  historyExportTitle: 'Exportar este diario',
+  historyExportDesc:
+    'Guarda las sesiones que registraste como un archivo. Vacío no inventa nada. Las sesiones eliminadas quedan fuera.',
+  historyExportSave: 'Guardar diario CSV',
+  historyExportJson: 'Guardar diario JSON',
 };
 
 const zh: HistoryStrings = {
