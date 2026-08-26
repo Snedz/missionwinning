@@ -53,6 +53,8 @@ import type { CompletedWorkoutLog } from '@/types';
 type Props = {
   history: readonly CompletedWorkoutLog[];
   unitLabel: string;
+  /** `.1028` empty-day door prefills this local dateKey. Overflow stays blank. */
+  initialDateKey?: string;
   onSaveRequest: (draft: BackfillDraft) => void;
   onCancel: () => void;
 };
@@ -79,10 +81,16 @@ function typeHeaders(type: SetRowType, t: (key: string, opts: { defaultValue: st
   ];
 }
 
-export function HistoryBackfill({ history, unitLabel, onSaveRequest, onCancel }: Props) {
+export function HistoryBackfill({
+  history,
+  unitLabel,
+  initialDateKey,
+  onSaveRequest,
+  onCancel,
+}: Props) {
   const { t } = useTranslation();
   const todayKey = localDateKey();
-  const [draft, setDraft] = useState<BackfillDraft>(() => emptyBackfillDraft());
+  const [draft, setDraft] = useState<BackfillDraft>(() => emptyBackfillDraft(initialDateKey));
   const [pickId, setPickId] = useState('');
 
   const prLabels = useMemo(

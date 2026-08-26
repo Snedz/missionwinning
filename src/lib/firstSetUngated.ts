@@ -56,6 +56,7 @@
  * `.1025` — completed set-table empty load is BW, not 0. Never a login wall.
  * `.1026` — Repeat this session from History into the live Start. Never a login wall.
  * `.1027` — Move this session to another day from History. Never a login wall.
+ * `.1028` — log onto this empty day from the History month. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

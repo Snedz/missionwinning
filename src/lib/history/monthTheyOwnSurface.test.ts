@@ -22,6 +22,8 @@ describe('month they own surface lock (.1018)', () => {
     assert.match(page, /decideMonthDaySelect/);
     assert.match(page, /data-testid="history-month-day-list"/);
     assert.match(page, /data-testid="history-month-day-empty"/);
+    assert.match(page, /decideEmptyDayLog/);
+    assert.match(page, /data-testid="history-month-day-log"/);
     assert.match(page, /data-testid="session-history-row"/);
     assert.match(page, /data-testid="session-history-log"/);
     assert.doesNotMatch(page, BANNED);
@@ -39,6 +41,7 @@ describe('month they own surface lock (.1018)', () => {
     assert.doesNotMatch(cal, STREAK);
     const helper = read('src/lib/history/monthTheyOwn.ts');
     assert.match(helper, /decideMonthDaySelect/);
+    assert.match(helper, /decideEmptyDayLog/);
     assert.match(helper, /monthLiveFacts/);
     assert.doesNotMatch(helper, /from '@\/store\/workoutStore'/);
     assert.doesNotMatch(helper, /foldHistoryFrom/);

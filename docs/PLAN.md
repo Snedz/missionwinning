@@ -6,6 +6,75 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1028` Log onto this empty day from the month (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1028` — from master
+> `.1027` (`c721fa5b36d8e730457f4cae207a33239fae03ba`
+> — Move this session to another day).
+> Stamp stays `.1028`. Do not smash Move
+> `.1027` / Repeat `.1026` / set-table
+> `.1025` / month `.1018` / edit-finished
+> `.997` / backfill `.1000` overflow.
+> Empty day is a new row on that
+> dateKey. Overflow stays "Log a past
+> session". Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Resume `.963` kept.
+> Brand: **Log a set. Offline.**
+
+`.1018` month empty day currently
+prints "Nothing logged". Missing:
+one plus / log-onto-this-day door
+on that empty day. Reuse `.1000`
+backfill on that dateKey.
+
+### First check (done — hypothesis holds)
+
+Read tip `c721fa5b36` / `.1027`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1027`.
+- `decideMonthDaySelect` kind `none`
+  still only paints "Nothing logged"
+  (`history-month-day-empty`). It does
+  **not** already start a backfill.
+- Overflow `.1000` is
+  `session-history-backfill-open` +
+  `HistoryBackfill` +
+  `decideBackfillSession`.
+- `emptyBackfillDraft()` starts with
+  `dateKey: ''`.
+- Today is one `dock="start"`.
+
+### Done means
+
+History month they own: empty past
+or today day (`kind: 'none'`) gets
+one plus / log onto this day.
+Prefills backfill draft dateKey.
+Save still `decideBackfillSession`.
+Empty / missing / junk / future
+invents nothing. Vacated day opens
+on that date. Tombs stay out unless
+restored. Overflow `.1000` stays.
+No second Start. No Today chrome.
+Guest.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/backfillSession.test.ts src/lib/history/monthTheyOwn.test.ts src/lib/history/monthTheyOwnSurface.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1027` Move this session to another day (2026-08-26)
 
 > **Frozen.** Implement only this section + root

@@ -41,13 +41,22 @@ describe('parseBackfillTime', () => {
   });
 });
 
-describe('emptyBackfillDraft (.1000)', () => {
+describe('emptyBackfillDraft (.1000 / .1028 prefill)', () => {
   it('starts with no date, timing off, and no copied sets', () => {
     const draft = emptyBackfillDraft();
     assert.equal(draft.dateKey, '');
     assert.equal(draft.timing.enabled, false);
     assert.equal(draft.exercises.length, 0);
     assert.equal(draft.workoutName, '');
+  });
+
+  it('prefills a real local dateKey and refuses junk', () => {
+    const draft = emptyBackfillDraft(MONDAY);
+    assert.equal(draft.dateKey, MONDAY);
+    assert.equal(draft.exercises.length, 0);
+    assert.equal(emptyBackfillDraft('').dateKey, '');
+    assert.equal(emptyBackfillDraft('2026-13-40').dateKey, '');
+    assert.equal(emptyBackfillDraft('July 2').dateKey, '');
   });
 });
 
@@ -70,6 +79,16 @@ describe('decideBackfillSession (.1000)', () => {
     assert.equal(decision.next.durationSeconds, 0);
     assert.equal(localDateKey(new Date(decision.next.completedAt)), MONDAY);
     assert.equal(localDateKey(new Date(decision.next.startedAt)), MONDAY);
+  });
+
+  it('prefilled emptyBackfillDraft date + work still applies on that day (.1028)', () => {
+    let draft = emptyBackfillDraft(MONDAY);
+    draft = appendBackfillExercise(draft, 'bench-press');
+    draft = patchBackfillSet(draft, 0, 0, { reps: 5, weight: 135 });
+    const decision = decideBackfillSession({ draft, todayKey: TODAY, ...ids() });
+    assert.equal(decision.kind, 'apply');
+    if (decision.kind !== 'apply') return;
+    assert.equal(localDateKey(new Date(decision.next.completedAt)), MONDAY);
   });
 
   it('empty invents nothing — no date, no work, 0/0/0, future', () => {
