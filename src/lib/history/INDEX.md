@@ -1,6 +1,6 @@
 # src/lib/history/
 
-> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), and this session as a file they own (`.1016`).
+> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), this session as a file they own (`.1016`), empty-load Last cite (`.1017`), and the month they own (`.1018`).
 
 ## Read order
 
@@ -9,8 +9,9 @@
 3. `exportDiary.ts` — export this diary (`.1011`); empty invents nothing
 4. `importDiary.ts` — import that file back (`.1013`); confirm-gated; empty invents nothing
 5. `exportSession.ts` — this session as a file they own (`.1016`); empty / tomb invents nothing
-6. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
-7. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
+6. `monthTheyOwn.ts` — tap a live day (`.1018`); tombs out; start-from never erases the month
+7. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
+8. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 
@@ -21,6 +22,7 @@
 | `exportDiary.ts` | Export this diary (`.1011`). Honest logged fields. Tombs stay out. Start-from does not shrink the file. Empty invents nothing. |
 | `importDiary.ts` | Our export comes back (`.1013`). Confirm-gated merge of the file export wrote. Empty invents nothing. |
 | `exportSession.ts` | This session as a file they own (`.1016`). One finished History log. Reuses `decideExportDiary` columns. Empty / missing / tomb invents nothing. |
+| `monthTheyOwn.ts` | Month they own (`.1018`). Live-day facts + tap select. Tombs out. Start-from ignored. Empty invents nothing. Not a fire count. |
 | `monthGrid.ts` | Month grid vocabulary |
 | `guideHistory561.test.ts` | History empty-copy honesty |
 

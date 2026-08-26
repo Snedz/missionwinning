@@ -6,6 +6,74 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1018` Month they own (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1018` — from master
+> `.1017` (`8a606a12` — Last cite is BW,
+> not 0, on empty load). Stamp stays
+> `.1018`. Do not bump. Title stays
+> **Month they own (.1018)**. Same PR
+> `#843`. Branch may stay
+> `feat/month-they-own-1017`. Do not
+> merge this PR yourself. Empty-load
+> cite `.1017` + session-file `.1016`
+> + assisted cite `.1015` + duration
+> cite `.1014` + import `.1013` +
+> title-fix `.1012` + export `.1011`
+> + Library skip `.1010` + BW cite
+> `.1009` are on master. Do not smash
+> them. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Guest path. First set stays ungated.
+> Today stays one Start. Brand: **Log
+> a set. Offline.** / No account. No
+> wearable.
+
+The existing History month grid
+marks trained days. Missing is
+Hevy's steal: tap a date, see that
+day's live sessions, open the row
+they already have. Fire count is
+refused. Start-from fold never
+erases the month they own. Search
+stays a query. Charts stay
+unfiltered. `#844` took `.1017`.
+
+### First check (done — hypothesis holds)
+
+Read tip `8a606a12` / `.1017`.
+Confirmed:
+
+- Empty-load Last cite prints `8 × BW`.
+- `HistoryCalendar` days are buttons
+  on this branch; tap lists live rows.
+- Tombs out. Start-from ignored.
+- Search is `decideSearchHistory`.
+- Charts read `liveHistory`.
+- Session-file `.1016` mounts.
+
+### Done means
+
+History Show-all month: tap a live
+day, see that day's live rows,
+open existing detail. Tombs out.
+Empty month calm. Today still one
+Start. Empty-load cite `.1017` stays.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/monthTheyOwn.test.ts src/lib/history/monthTheyOwnSurface.test.ts
+npx tsx --test src/lib/firstSetUngated.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1017` Last cite is BW, not 0, on empty load (2026-08-26)
 
 > **Frozen.** Implement only this section + root

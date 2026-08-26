@@ -180,6 +180,8 @@ type HistoryStrings = {
   /** `.1016` — one finished session as a local file. */
   historySessionFileSave: string;
   historySessionFileJson: string;
+  /** `.1018` — empty month on the History calendar. */
+  historyMonthEmpty: string;
 };
 
 const en: HistoryStrings = {
@@ -359,6 +361,7 @@ const en: HistoryStrings = {
   historyImportEmptyDesc: 'Empty invents nothing — pick the CSV or JSON you saved.',
   historySessionFileSave: 'Save this session CSV',
   historySessionFileJson: 'Save this session JSON',
+  historyMonthEmpty: 'Nothing logged this month.',
 };
 
 const es: HistoryStrings = {

@@ -32,6 +32,9 @@ On History, open **Start history from this date**. Pick the day week 1 should st
 **How do I find a past session?**  
 On History, type in the search box. It matches the name you gave that session, the template name, the date, a lift, or a private note. An empty search shows the same list. No matches stays empty. Deleted sessions stay under **Deleted sessions**.
 
+**How do I see a month of sessions?**  
+On History, open **Show all** → Calendar. Days you trained are marked. Tap a day to open those sessions. Deleted sessions stay out. An empty month invents nothing. Folding week 1 from a date does not hide this month. Search and charts stay the full diary.
+
 **How do I save one session as a file?**  
 On History, open that session. **Save this session CSV** writes only that log (JSON is the same rows). Empty or deleted stays off. The file is on this device — not a public link, not an email. You can Import this diary later if you want that session back.
 
