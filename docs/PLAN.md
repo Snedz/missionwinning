@@ -6,6 +6,90 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1011` Export this diary (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1011` — from master
+> `.1010` (`4d128292` — Library skips
+> deleted sessions). Stamp stays
+> `.1011`. Do not bump. Title stays
+> **Export this diary (.1011)**. Same
+> PR `#834`. Branch may stay
+> `feat/export-diary-1009`. Do not
+> merge this PR yourself. Library
+> skip tombs `.1010` + BW cite
+> `.1009` + Search `.1008` + Name
+> `.1007` + Restore `.1006` +
+> Start-from `.1005` + Hide `.1004` +
+> Delete `.1003` are on master. Do
+> not smash them. Do not rebuild
+> `.1000`–`.1010`. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today
+> stays one Start. Brand: **Log a
+> set. Offline.** / No account. No
+> wearable.
+
+Import + backfill dumped years into
+the diary. Search finds a row.
+Missing is a file they can take.
+History-only door. Empty invents
+nothing. Tombs stay out unless
+restored. Not a Feed.
+
+### First check (done — hypothesis holds)
+
+Read tip `4d128292` / `.1010`.
+Confirmed:
+
+- History search matches title /
+  template / date / lift / note.
+  Empty query is the same live list.
+- **No History file-out.** Account
+  already has Strong / Hevy / MW
+  interchange (`buildWorkoutCsvDownload`).
+  That door has no `sessionTitle`,
+  Strong flattens kinds, MW writes
+  duration even when 0, and it is
+  not History. Do not reuse it as
+  this door.
+- Start-from folds week-strip /
+  Coach / streak. History rows stay.
+  Export is the full live diary.
+- Live list skips tombs. Restore is
+  a different door. Library count
+  + spark skip tombs (`.1010`).
+- Master `.1010` is **Library skips
+  deleted sessions**. Keep it.
+
+### Lock
+
+1. `decideExportDiary(logs)` — missing
+   / empty live sets → `{ kind:
+   'empty' }`. Else one row per
+   logged set. Tombs out. Ignore
+   start-from. Ignore search.
+2. Columns: date, sessionTitle,
+   workoutName, lift, set type, kg,
+   reps, RPE, tags, notes, duration
+   if present. Do not invent 1RM or
+   duration.
+3. CSV is the file. JSON is the
+   same rows — the smaller honest
+   extra.
+4. History overflow / page action
+   downloads a local blob. Empty
+   Save stays disabled.
+5. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+   No email. No Discord.
+6. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1010` Library skips deleted sessions (2026-08-25)
 
 > **Frozen.** Implement only this section + root
