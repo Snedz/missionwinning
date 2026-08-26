@@ -6,6 +6,57 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1009` Next cite is BW, not 0 kg (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1009` — from master
+> `.1008` (`727c6f484` — Find a past
+> session). Stamp stays `.1009`. Do not
+> bump. Title stays **Next cite is BW,
+> not 0 kg (.1009)**. Same PR. Do not
+> merge this PR yourself. Search `.1008`
+> + Name `.1007` + Restore `.1006` are
+> on master. Do not smash them. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Victory already says 8 reps. Prev already
+says BW. The open lift still interpolates
+raw `weight: 0` as **Next: 8 × 0 kg**.
+Off Today. Empty invents nothing.
+
+### First check (done — hypothesis holds)
+
+Read tip `727c6f484` / `.1008`.
+Confirmed:
+
+- `ActiveExerciseHeader` Next line is
+  `{{reps}} × {{weight}} {{unit}}`.
+- `formatTargetLabel` is
+  `` `${reps} × ${weight}` ``.
+- Ghost is `Last: {{reps}} × {{weight}}`.
+- `formatSetRowLine` already prints BW.
+
+### Lock
+
+1. Bodyweight Next / Last / after-complete
+   cites print BW, not `0 kg`. Vest is
+   `BW + 20`.
+2. Loaded stays kg. No next / no ghost
+   invents nothing.
+3. Reuse `formatSetRowLine` /
+   `formatSetRowPrev`.
+4. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+5. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1008` Find a past session (2026-08-25)
 
 > **Frozen.** Implement only this section + root
