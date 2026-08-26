@@ -6,6 +6,83 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1038` Remove this lift from a finished session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1038` — from master
+> `.1037` (`b5cbfd21c8d967ba8085ed6db1d71a6b3259d3d8`
+> — Add a lift to this finished session).
+> Stamp stays `.1038`. Do not smash Add
+> `.1037` / Replace `.1036` / Duration `.1035`
+> / Reorder `.1034` / remove-set / Name `.1007`
+> / Edit sets `.997` / Delete-session `.1003`.
+> Resume `.963` stays. Live pause `.1001`
+> stays on Train. Same finished log. Same id.
+> Save still confirm-gated `decideEditSave`.
+> Last remaining lift is noop — they already
+> have delete-session. Do not tomb the
+> session. Do not merge this PR yourself.
+> Every commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.**
+
+History edit can add a lift (`.1037`),
+replace (`.1036`), reorder (`.1034`),
+and remove a **set** (`removeDraftSet`).
+It cannot drop a whole movement they
+added by mistake. Session delete `.1003`
+is the **whole log**.
+
+### First check (done — hypothesis holds)
+
+Read tip `b5cbfd21c8d967ba8085ed6db1d71a6b3259d3d8` / `.1037`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1037`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Add `.1037` is
+  `ExercisePicker` at the bottom. Replace
+  `.1036` is `ExercisePicker` per lift.
+  Reorder `.1034` is Up / Down on that draft.
+- `removeDraftSet` is per set, not per lift.
+  Delete-session `.1003` tombs the whole log.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideRemoveFinishedExercise({ draft,
+exerciseIndex })`. Empty on missing
+draft / not an array / junk index.
+Noop on out of range / only one lift
+left. Apply splices that index out.
+Clone so the source draft is not
+mutated. Other lifts unchanged. Does
+not write Wednesday / saved / live
+Start. Does not tomb the session.
+`HistorySessionEdit` when editing and
+`draft.exercises.length >= 2`: outline
+44px **Remove lift** per lift. testid
+`session-history-remove-lift-{exIdx}`.
+Apply to local draft only. Save still
+`decideEditSave`. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/appendFinishedExercise.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/removeFinishedExercise.test.ts src/lib/workout/removeFinishedExerciseSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1037` Add a lift to this finished session (2026-08-26)
 
 > **Frozen.** Implement only this section + root
