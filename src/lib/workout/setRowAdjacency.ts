@@ -15,7 +15,11 @@ import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
 import { appendKnownMaxPctCite, loadPctOfKnownMax } from '@/lib/workout/setRowPercent';
-import { setRowHasWork } from '@/lib/workout/setRowType';
+import {
+  formatSetRowPrev,
+  setRowHasWork,
+  type SetRowType,
+} from '@/lib/workout/setRowType';
 
 /** Monday=0 … Sunday=6 — same order as coach `weekdayLabel`. */
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -120,8 +124,18 @@ function originalWorkingNumbers(sets: { kind?: string }[]): number[] {
   return nums;
 }
 
-function formatTargetLabel(reps: number, weight: number): string {
-  return `${reps} × ${weight}`;
+function formatTargetLabel(
+  reps: number,
+  weight: number,
+  rowType: SetRowType = 'weight',
+  bodyweightLabel = 'BW'
+): string {
+  return formatSetRowPrev({
+    type: rowType,
+    reps,
+    weight,
+    bodyweightLabel,
+  });
 }
 
 /** i18n `t` — weekday keys stay literal (coverage forbids computed keys). */
@@ -177,11 +191,19 @@ export function formatAfterCompleteParts(
   row: AfterCompleteCite,
   t: AdjacencyCiteT,
   restClock?: string,
-  knownMax?: number | null
+  knownMax?: number | null,
+  opts?: { rowType?: SetRowType; bodyweightLabel?: string }
 ): { target: string; provenance: string; line: string } {
+  const rowType = opts?.rowType ?? 'weight';
+  const bodyweightLabel = opts?.bodyweightLabel ?? 'BW';
   let target =
     row.suggestion.kind === 'load'
-      ? formatTargetLabel(row.suggestion.reps, row.suggestion.weight)
+      ? formatTargetLabel(
+          row.suggestion.reps,
+          row.suggestion.weight,
+          rowType,
+          bodyweightLabel
+        )
       : t('activeNextCiteRest', {
           clock: restClock ?? `${row.suggestion.seconds}s`,
           defaultValue: `Rest ${restClock ?? `${row.suggestion.seconds}s`}`,

@@ -12,6 +12,7 @@ import {
   shouldOfferLastSetGhost,
   type LastSetGhost,
 } from '@/lib/workout/lastSetGhost';
+import { formatSetRowPrev, type SetRowType } from '@/lib/workout/setRowType';
 
 type Props = {
   ghost: LastSetGhost | null | undefined;
@@ -19,16 +20,30 @@ type Props = {
   onAccept: (ghost: { reps: number; weight: number }) => void;
   /** Ink dock vs paper table. */
   tone: 'ink' | 'paper';
+  rowType?: SetRowType;
+  bodyweightLabel?: string;
 };
 
-export function LastSetGhostButton({ ghost, dial, onAccept, tone }: Props) {
+export function LastSetGhostButton({
+  ghost,
+  dial,
+  onAccept,
+  tone,
+  rowType = 'weight',
+  bodyweightLabel,
+}: Props) {
   const { t } = useTranslation();
   if (!shouldOfferLastSetGhost(ghost, dial) || !ghost) return null;
   const extras = formatLastSetGhostExtras(ghost);
+  const bw = bodyweightLabel ?? t('activeSetBodyweight', { defaultValue: 'BW' });
   const line = t('activeLastPerformance', {
-    reps: ghost.reps,
-    weight: ghost.weight,
-    defaultValue: 'Last: {{reps}} × {{weight}}',
+    line: formatSetRowPrev({
+      type: rowType,
+      reps: ghost.reps,
+      weight: ghost.weight,
+      bodyweightLabel: bw,
+    }),
+    defaultValue: 'Last: {{line}}',
   });
 
   return (

@@ -10,7 +10,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
-1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only.  
+1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only. Live Next/Last cites reuse this grammar (`.1009`) so BW is not `0 kg`.  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`) with warmup vs work lanes (`.995`)  
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
 2b2. `sessionClock.ts` — pause / resume the SESSION elapsed clock (`.1001`). Not rest. Not EMOM. Empty invents nothing.  

@@ -17,7 +17,7 @@ import { ExerciseReorderHandle } from '@/components/workout/ExerciseReorderHandl
 import { MovementHistorySheet } from '@/components/workout/MovementHistorySheet';
 import { SessionSwapSheet } from '@/components/workout/SessionSwapSheet';
 import { listMovementHistory } from '@/lib/workout/movementHistory';
-import { resolveSetRowType } from '@/lib/workout/setRowType';
+import { formatSetRowLine, resolveSetRowType } from '@/lib/workout/setRowType';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import {
   firstWeightedLoad,
@@ -200,10 +200,14 @@ export function ActiveExerciseHeader({
       {nextTarget && (
         <p className="text-[11px] tabular-nums text-muted-foreground">
           {t('activeNextTargetLine', {
-            reps: nextTarget.reps,
-            weight: nextTarget.weight,
-            unit: unitLabel,
-            defaultValue: 'Next: {{reps}} × {{weight}} {{unit}}',
+            line: formatSetRowLine({
+              type: resolveSetRowType(exercise),
+              reps: nextTarget.reps,
+              weight: nextTarget.weight,
+              unitLabel,
+              bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+            }),
+            defaultValue: 'Next: {{line}}',
           })}
         </p>
       )}
