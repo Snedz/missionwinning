@@ -37,6 +37,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
 10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
+10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -146,6 +147,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `editFinishedSessionSurface.test.ts` | History door; Today one Start; not Resume; no permalink (`.997`) |
 | `reorderFinishedExercises.test.ts` | Finished-session lift order: empty / junk / one-lift invent nothing; sets ride (`.1034`) |
 | `reorderFinishedExercisesSurface.test.ts` | History edit Up / Down; Today one Start; live `.998` / Copy / Move / Repeat stay (`.1034`) |
+| `replaceFinishedExercise.test.ts` | Finished-session lift replace: empty / junk invent nothing; same id / unknown / OOB noop; bench→squat keeps 135×5; clone (`.1036`) |
+| `replaceFinishedExerciseSurface.test.ts` | History edit ExercisePicker; Today one Start; reorder / duration / copy / move stay (`.1036`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
