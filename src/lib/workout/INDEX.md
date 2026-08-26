@@ -8,7 +8,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 
 1. `setKind.ts` — normal/warmup/drop/failure; volume + PR eligibility; optional row tags W / D / F (`toggleSetTag`, `.966`); History edit can retag a finished set (`.1039`)  
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
-1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
+1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`); History edit can correct a logged side (`.1042`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest; completed kg cell empty load is BW (`.1025`)  
 1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only. Live Next/Last cites reuse this grammar (`.1009` BW, `.1014` hold `0:45`, `.1015` assisted 0 → BW not `0 kg`, `.1017` weight-type empty load → BW not `8 × 0`).  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`) with warmup vs work lanes (`.995`)  
@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a4c. `moveSessionDay.ts` — re-date a finished History log (`.1027`). Same id. Vacated day drops that row. Empty / tomb / future invents nothing. Not a new backfill.  
 10a4d. `copySessionDay.ts` — copy a finished History log onto another day (`.1030`). New id. Original stays. Empty / tomb / same-day / future invents nothing. Not Move. Not Repeat.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
-10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
+10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`).  
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
@@ -43,6 +43,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6f. `patchFinishedSetKind.ts` — set kind on a finished History set (`.1039`). Same W/D/F as live. Empty invents nothing. Save still `decideEditSave`.  
 10a6g. `patchFinishedSetRpe10.ts` — optional 1–10 RPE on a finished History set (`.1040`). Empty is valid (clear). Empty invents nothing. Save still `decideEditSave`.  
 10a6h. `patchFinishedSetRir.ts` — optional 0–5 RIR on a finished History set (`.1041`). Empty is valid (clear). Empty invents nothing. Never replaces RPE. Save still `decideEditSave`.  
+10a6i. `patchFinishedSetSide.ts` — optional L / R / Alt on a finished History set (`.1042`). Empty is valid (clear). Bilateral invents nothing. Never a SetKind. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -164,6 +165,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `patchFinishedSetRpe10Surface.test.ts` | History edit RPE control; Today one Start; set-kind / remove-lift stay; no rainbow RPE (`.1040`) |
 | `patchFinishedSetRir.test.ts` | Finished-session RIR 0–5: empty / junk invent nothing; 6 invents nothing; 2 apply; blank clears; same value noop; no rpe10 write; clone (`.1041`) |
 | `patchFinishedSetRirSurface.test.ts` | History edit RIR control; Today one Start; RPE / set-kind / remove-lift stay (`.1041`) |
+| `patchFinishedSetSide.test.ts` | Finished-session L/R/Alt: empty / junk invent nothing; `left` invents nothing; squat + L invents nothing; L apply on lunge; blank clears; same value noop; no rpe/rir/kind write; clone (`.1042`) |
+| `patchFinishedSetSideSurface.test.ts` | History edit side control only when `shouldOfferSetSide`; Today one Start; RIR / RPE / set-kind stay (`.1042`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |

@@ -11,6 +11,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import { parseOptionalRir } from '@/lib/workout/rir';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
+import { parseSetSide } from '@/lib/workout/unilateral';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import { attachSessionNote } from '@/lib/workout/sessionNote';
 import { resolveSetRowType, setRowHasWork, setRowVolume } from '@/lib/workout/setRowType';
@@ -89,7 +90,8 @@ function sameEvidence(
     Number(a.durationSeconds ?? 0) === Number(b.durationSeconds ?? 0) &&
     (a.kind ?? 'normal') === (b.kind ?? 'normal') &&
     parseOptionalRpe10(a.rpe10) === parseOptionalRpe10(b.rpe10) &&
-    parseOptionalRir(a.rir) === parseOptionalRir(b.rir)
+    parseOptionalRir(a.rir) === parseOptionalRir(b.rir) &&
+    parseSetSide(a.side) === parseSetSide(b.side)
   );
 }
 
@@ -124,6 +126,7 @@ function stripDraft(draft: FinishedSessionDraft): FinishedExerciseDraft[] {
         if (!Number.isFinite(hold) || hold <= 0) delete next.durationSeconds;
         if (next.rpe10 === undefined) delete next.rpe10;
         if (next.rir === undefined) delete next.rir;
+        if (next.side === undefined) delete next.side;
         return next;
       }),
     }))
