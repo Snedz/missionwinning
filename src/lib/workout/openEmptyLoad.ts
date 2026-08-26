@@ -24,3 +24,23 @@ export function parseOpenLoadInput(raw: unknown): number {
   const n = Number.parseFloat(text);
   return Number.isFinite(n) ? n : 0;
 }
+
+/** Table min/max already on the open cell. Parser itself does not clamp. */
+export function clampOpenLoadWeight(n: number): number {
+  return Math.min(9999, Math.max(0, n));
+}
+
+/**
+ * Focused: keep the typed string so `0.` / `2.5` survive.
+ * Unfocused: format the store (empty is blank, not 0).
+ * Binding `value={formatOpenLoadInput(weight)}` round-trips
+ * `0.` → 0 → `''` and makes 2.5 untypeable.
+ */
+export function displayOpenLoadDraft(params: {
+  focused: boolean;
+  draft: string;
+  weight: unknown;
+}): string {
+  if (params.focused) return params.draft;
+  return formatOpenLoadInput(params.weight);
+}

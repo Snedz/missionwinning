@@ -34,10 +34,15 @@ junk → `0` (store stays 0). Never
 clamp into a load they did not type
 beyond existing min/max if already
 in the table. `SetLogTable` open
-weight/assist cell uses the helper
-for `value`. Plus-load `BW+` prefix
-stays; the number beside it is blank
-when added-load is 0. LogConsole
+weight/assist cell is
+`SetRowLoadField`: local draft like
+the time cell so `0.` / `2.5` stay
+typeable; unfocused empty is still
+blank. Binding format to `value`
+round-trips `0.` to blank. Plus-load
+`BW+` prefix stays; the number
+beside it is blank when added-load
+is 0. LogConsole
 leftover plus-load uses the same
 helper. Do not remount dead
 LogConsole. Never write BW / a

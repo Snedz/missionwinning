@@ -70,9 +70,10 @@ number string.
 into a load they did not type beyond
 existing min/max if already in the
 table. `SetLogTable` open weight/assist
-cell uses `formatOpenLoadInput` for
-`value`. Keep existing `data-testid` /
-aria. Plus-load `BW+` prefix stays; the
+cell is `SetRowLoadField`: focused
+draft keeps `0.` / `2.5`; unfocused
+empty is blank. Keep existing aria.
+Plus-load `BW+` prefix stays; the
 number beside it is blank when
 added-load is 0. LogConsole load field
 if it still paints a raw `0` for empty

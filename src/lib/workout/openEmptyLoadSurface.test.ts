@@ -20,12 +20,15 @@ const RAINBOW =
   /bg-red(?:-\d+)?|bg-orange|bg-yellow|bg-green|bg-lime|bg-emerald|from-red|to-green|to-red|rpe-color|rainbow/i;
 
 describe('open empty load surface lock (.1048)', () => {
-  it('SetLogTable open cell uses formatOpenLoadInput — not raw input.weight', () => {
+  it('SetLogTable open cell uses a draft field — not raw input.weight', () => {
     const table = read('src/components/workout/SetLogTable.tsx');
+    assert.match(table, /function SetRowLoadField/);
+    assert.match(table, /displayOpenLoadDraft/);
     assert.match(table, /formatOpenLoadInput/);
     assert.match(table, /parseOpenLoadInput/);
-    assert.match(table, /value=\{formatOpenLoadInput\(input\.weight\)\}/);
+    assert.match(table, /<SetRowLoadField/);
     assert.doesNotMatch(table, /value=\{input\.weight\}/);
+    assert.doesNotMatch(table, /value=\{formatOpenLoadInput\(input\.weight\)\}/);
     assert.match(table, /formatCompletedWeightCell/);
     assert.doesNotMatch(table, BANNED);
     assert.doesNotMatch(table, FEED);
