@@ -6,6 +6,89 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1040` RPE on a finished set (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1040` — from master
+> `.1039` (`a11cd01ee9aae03a65d5827c0634eaabd3f06696`
+> — Set kind on a finished set).
+> Stamp stays `.1040`. Do not smash Set
+> kind `.1039` / Remove lift `.1038` /
+> Add `.1037` / Replace `.1036` /
+> Reorder `.1034` / remove-set / Name `.1007`
+> / Edit sets `.997` / Delete-session `.1003`.
+> Resume `.963` stays. Live pause `.1001`
+> stays on Train. Live RPE 1–10 `.967`
+> stays on Train. Same finished log. Same id.
+> Empty is valid (clear). Never required.
+> Save still confirm-gated `decideEditSave`.
+> Reuse `parseOptionalRpe10` / `SetRpe10Select`.
+> Never clamp out-of-range. Do not invent
+> 1–10 from Easy/Med/Hard. Paper/ink,
+> existing tokens only. Do not merge this
+> PR yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.**
+
+Optional RPE 1–10 on a finished set.
+Live already has `parseOptionalRpe10` /
+`SetRpe10Select` (`.967`). History edit
+cannot correct a logged RPE.
+
+### First check (done — hypothesis holds)
+
+Read tip `a11cd01ee9aae03a65d5827c0634eaabd3f06696` / `.1039`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1039`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live RPE 1–10 is
+  `parseOptionalRpe10` / `SetRpe10Select`.
+- Set kind `.1039` / Remove lift `.1038` /
+  Add `.1037` / Replace `.1036` / Reorder
+  `.1034` / remove-set stay on that draft.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSetRpe10({ draft,
+exerciseIndex, setIndex, rpe10 })`. Empty
+on missing draft / not an array / junk
+indexes. Empty on junk 99 (parse fails on
+a non-empty raw — invents nothing). Noop
+on out of range set index / same value as
+current. Explicit clear (`''` / `null` /
+`undefined`) omits the field unless already
+omitted (noop). Apply patches via
+`patchDraftSet`. Clone so the source draft
+is not mutated. Empty field is absent, not
+stored undefined. Does not write
+categorical `rpe`. `HistorySessionEdit`
+when editing: `SetRpe10Select` per set.
+testid
+`session-history-set-rpe-{exIdx}-{setIdx}`.
+Outline 44px. No color scale. Apply to
+local draft only. Save still
+`decideEditSave`. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/rpe10.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetRpe10.test.ts src/lib/workout/patchFinishedSetRpe10Surface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1039` Set kind on a finished set (2026-08-26)
 
 > **Frozen.** Implement only this section + root
