@@ -1,53 +1,58 @@
-# PLAN.md — Library skips deleted sessions (`.1010`)
+# PLAN.md — Export this diary (`.1011`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the library-tomb skip freeze.
-**Lane:** Engineering-Web · Library · **Horizon:** 0
-**Label:** `2026.07-unified.1010` (master is `.1009` / `20faec3ab`
-Next cite is BW, not 0 kg). Title stays **Library
-skips deleted sessions (.1010)**.
-**Excellence-Override:** leftover library spark/count
-after History tombstone (`.1006`) (not a Feed)
+ship; this file is the History file-out freeze.
+**Lane:** Engineering-Web · History · **Horizon:** 0
+**Label:** `2026.07-unified.1011` (master is `.1010` / `4d128292d`
+Library skips deleted sessions). Title stays **Export this
+diary (.1011)**.
+**Excellence-Override:** leftover History file-out after
+search (`.1008`) (not a Feed)
 
 ---
 
 ## 0. What this is
 
-Delete a bogus Monday. History skips
-it. Library still counts it in
-“Logged in N sessions” and the
-volume spark. Empty invents nothing.
-Guest. First set ungated. Today stays
-one Start.
+Import + backfill dumped years into
+the diary. Search finds a row.
+Missing was a file they can take.
+Empty invents nothing. Guest. First
+set ungated. Today stays one Start.
 
 `PRIVATE_MODE` stays on. Live www
 stays `.696`. Do not promote. Do
 not merge.
 
 Full lock: [docs/PLAN.md](docs/PLAN.md)
-frozen section `.1010`.
+frozen section `.1011`.
 
 ---
 
 ## 1. Investigate (done)
 
-`countExerciseHistory` has no
-`deletedAt`. Spark walks reversed
-history with no skip. History
-charts already use `liveHistory`.
-This-movement history already skips.
+`#834` shipped this file-out against
+`.1009` and collided with Library
+skip tombs (`.1010`). Rebase onto
+master `4d128292d`. Stamp `.1011`.
+Do not smash `libraryFilters`.
 
 ---
 
 ## 2. Lock
 
-1. Library session count and spark
-   skip `deletedAt`. Tomb-only is
-   empty.
-2. Empty / missing invents nothing.
-3. Do not smash History skip.
-4. No Today chrome. No Feed.
-5. `[skip vercel]` on every commit.
+1. History overflow saves the live
+   diary as CSV. JSON is the same
+   rows.
+2. Empty / missing invents nothing
+   (Save stays disabled).
+3. Tombs stay out unless restored.
+   Start-from / search do not shrink
+   the file.
+4. Honest logged columns only. Do
+   not invent 1RM or duration from
+   start/end.
+5. No Today chrome. No Feed.
+6. `[skip vercel]` on every commit.
    Do not merge this PR yourself.

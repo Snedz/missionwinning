@@ -6,6 +6,55 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1011` Export this diary (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1011` — from master
+> `.1010` (`4d128292d` — Library skips
+> deleted sessions). Stamp stays `.1011`.
+> Do not bump. Title stays **Export this
+> diary (.1011)**. Same PR. Do not merge
+> this PR yourself. Library skip `.1010`
+> + BW cite `.1009` + Search `.1008` are
+> on master. Do not smash them. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Import + backfill dumped years. Search
+finds a row. Missing was a file they
+can take.
+
+### First check (done — hypothesis holds)
+
+Read tip `4d128292d` / `.1010`.
+Confirmed:
+
+- No `decideExportDiary` on master.
+- `#834` had the helper + History door
+  but stamped `.1010` against `.1009`.
+- Empty / tombs / start-from tests
+  already live on that branch.
+
+### Done means
+
+History overflow **Export this diary**
+saves live rows as CSV. Empty disables
+Save. Tombs stay out. Start-from does
+not shrink the file.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/exportDiary.test.ts src/lib/history/exportDiarySurface.test.ts
+```
+
+---
+
 ## Frozen plan — `.1010` Library skips deleted sessions (2026-08-25)
 
 > **Frozen.** Implement only this section + root
