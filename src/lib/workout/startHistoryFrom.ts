@@ -99,10 +99,10 @@ export function foldHistoryFrom(
   fromDate: string | null | undefined
 ): CompletedWorkoutLog[] {
   if (!Array.isArray(history)) return [];
+  const live = history.filter((log) => log && !log.deletedAt);
   const dateKey = normalizeStartHistoryDate(fromDate);
-  if (!dateKey) return history.slice();
-  return history.filter((log) => {
-    if (!log) return false;
+  if (!dateKey) return live;
+  return live.filter((log) => {
     const key = logDateKey(log);
     if (!key) return false;
     return key >= dateKey;

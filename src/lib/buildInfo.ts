@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1005` Start history from this date (rebased onto master `.1004` Hide this exercise `b48e54b0`; stamp stays `.1005`; keep hide `.1004` + delete `.1003` + merge `.1002` + pause `.1001` + backfill `.1000` + in-set PR `.999` + reorder `.998` + History Edit `.997` + note+pin `.996` + rest `.995` + set-row type `.994` + history `.993` + custom `.992` + Start this again `.991` + Track trend `.989` + EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + resume `.963` + notebook `.960`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1005";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1006` Restore a deleted session (from master `.1005` Start history from this date `a6856d74`; stamp stays `.1006`; keep start-from `.1005` + hide `.1004` + delete `.1003` + merge `.1002` + pause `.1001` + backfill `.1000` + in-set PR `.999` + reorder `.998` + History Edit `.997` + note+pin `.996` + rest `.995` + set-row type `.994` + history `.993` + custom `.992` + Start this again `.991` + Track trend `.989` + EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + resume `.963` + notebook `.960`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1006";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

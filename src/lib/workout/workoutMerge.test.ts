@@ -1,12 +1,16 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   HISTORY_CAP,
+  incomingWorkoutBeats,
   mergeWorkoutHistories,
   mergeWorkoutHistoriesDetailed,
   workoutFingerprint,
   mapCloudToLocal,
 } from './workoutMerge.ts';
+import { listSessionHistoryRows } from '@/lib/history/sessionHistoryList.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
 function log(
@@ -262,7 +266,167 @@ describe('workoutMerge', () => {
           completedAt: '2026-07-01T12:00:00Z',
         }),
       ];
-      assert.equal(mergeWorkoutHistories(local, cloud).length, 0);
+      const merged = mergeWorkoutHistories(local, cloud);
+      assert.equal(listSessionHistoryRows(merged).length, 0);
+      assert.equal(merged.length, 1);
+      assert.ok(merged[0].deletedAt);
+    });
+
+    it('a newer restore beats an older tombstone (.1006)', () => {
+      const local = [
+        log({
+          id: 'log-1',
+          clientId: 'c-1',
+          revision: 3,
+          deletedAt: null,
+          workoutName: 'Push',
+          completedAt: '2026-07-01T12:00:00Z',
+        }),
+      ];
+      const cloud = [
+        log({
+          id: 'cloud-abc',
+          clientId: 'c-1',
+          revision: 2,
+          deletedAt: '2026-07-02T00:00:00Z',
+          workoutName: 'Push',
+          completedAt: '2026-07-01T12:00:00Z',
+        }),
+      ];
+      const merged = mergeWorkoutHistories(local, cloud);
+      assert.equal(merged.length, 1);
+      assert.equal(merged[0].deletedAt ?? null, null);
+      assert.equal(merged[0].revision, 3);
+      assert.equal(listSessionHistoryRows(merged).length, 1);
+    });
+
+    it('an older restore does not undelete a newer tombstone', () => {
+      const local = [
+        log({
+          id: 'log-1',
+          clientId: 'c-1',
+          revision: 2,
+          deletedAt: null,
+          workoutName: 'Push',
+          completedAt: '2026-07-01T12:00:00Z',
+        }),
+      ];
+      const cloud = [
+        log({
+          id: 'cloud-abc',
+          clientId: 'c-1',
+          revision: 4,
+          deletedAt: '2026-07-03T00:00:00Z',
+          workoutName: 'Push',
+          completedAt: '2026-07-01T12:00:00Z',
+        }),
+      ];
+      const merged = mergeWorkoutHistories(local, cloud);
+      assert.equal(listSessionHistoryRows(merged).length, 0);
+      assert.ok(merged[0].deletedAt);
+      assert.equal(merged[0].revision, 4);
+    });
+
+    it('HISTORY_CAP slices live rows; tombstones ride along', () => {
+      const live = Array.from({ length: HISTORY_CAP + 3 }, (_, i) =>
+        log({
+          id: `l-${i}`,
+          clientId: `c-live-${i}`,
+          workoutName: `L${i}`,
+          completedAt: new Date(Date.UTC(2020, 0, 1, 0, i)).toISOString(),
+          totalVolume: i,
+        })
+      );
+      const tombs = [
+        log({
+          id: 'tomb-1',
+          clientId: 'c-tomb',
+          revision: 2,
+          deletedAt: '2026-08-25T12:00:00Z',
+          workoutName: 'Gone',
+          completedAt: '2026-08-01T12:00:00Z',
+        }),
+        log({
+          id: 'tomb-2',
+          clientId: 'c-tomb-2',
+          revision: 2,
+          deletedAt: '2026-08-24T12:00:00Z',
+          workoutName: 'Gone 2',
+          completedAt: '2026-07-01T12:00:00Z',
+        }),
+      ];
+      const result = mergeWorkoutHistoriesDetailed([...live, ...tombs], []);
+      assert.equal(result.logs.filter((row) => !row.deletedAt).length, HISTORY_CAP);
+      assert.equal(result.logs.filter((row) => row.deletedAt).length, 2);
+      assert.equal(
+        result.logs.length,
+        HISTORY_CAP + 2,
+        'tombs ride along and do not consume the live cap'
+      );
+      assert.equal(result.truncated, 3);
+      assert.ok(result.logs.some((row) => row.id === 'tomb-1'));
+      assert.ok(result.logs.some((row) => row.id === 'tomb-2'));
+    });
+
+    it('web push and mobile upsert call incomingWorkoutBeats from workoutMerge', () => {
+      const web = readFileSync(
+        path.join(import.meta.dirname, '..', 'sync', 'workoutSync.ts'),
+        'utf8'
+      );
+      const mobile = readFileSync(
+        path.join(import.meta.dirname, '..', '..', '..', 'app/api/mobile/sync/workouts/route.ts'),
+        'utf8'
+      );
+      for (const [rel, src] of [
+        ['src/lib/sync/workoutSync.ts', web],
+        ['app/api/mobile/sync/workouts/route.ts', mobile],
+      ] as const) {
+        assert.match(src, /from '@\/lib\/workout\/workoutMerge'/, rel);
+        assert.match(src, /incomingWorkoutBeats\(\{/, rel);
+        assert.match(src, /incomingRevision:/, rel);
+        assert.match(src, /serverRevision/, rel);
+        assert.match(src, /incomingDeleted/, rel);
+        assert.match(src, /serverDeleted/, rel);
+      }
+    });
+
+    it('incomingWorkoutBeats: higher rev restore wins; equal-rev tombstone still wins', () => {
+      assert.equal(
+        incomingWorkoutBeats({
+          incomingRevision: 3,
+          serverRevision: 2,
+          incomingDeleted: false,
+          serverDeleted: true,
+        }),
+        true
+      );
+      assert.equal(
+        incomingWorkoutBeats({
+          incomingRevision: 1,
+          serverRevision: 2,
+          incomingDeleted: false,
+          serverDeleted: true,
+        }),
+        false
+      );
+      assert.equal(
+        incomingWorkoutBeats({
+          incomingRevision: 2,
+          serverRevision: 2,
+          incomingDeleted: true,
+          serverDeleted: false,
+        }),
+        true
+      );
+      assert.equal(
+        incomingWorkoutBeats({
+          incomingRevision: 2,
+          serverRevision: 2,
+          incomingDeleted: false,
+          serverDeleted: true,
+        }),
+        false
+      );
     });
 
     it('collapses a legacy local copy against its synced clientId version', () => {

@@ -11,6 +11,11 @@ import {
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKey, localWeekKey, startOfLocalWeek, formatLocalDateKey } from '@/lib/time/localDate';
 
+/** Charts / briefing skip tombs so a deleted Monday is not still "trained" (`.1006`). */
+function liveHistoryLogs(history: readonly CompletedWorkoutLog[]): CompletedWorkoutLog[] {
+  return history.filter((log) => !log.deletedAt);
+}
+
 export interface WeeklyVolumePoint {
   weekStart: string;
   label: string;
@@ -64,7 +69,7 @@ export function buildWeeklyVolumeTimeline(
     byWeek[b.key] = { volume: 0, sessions: 0 };
   });
 
-  for (const log of history) {
+  for (const log of liveHistoryLogs(history)) {
     const key = weekStartKey(log.completedAt);
     if (!byWeek[key]) continue;
     byWeek[key].volume += log.totalVolume;
@@ -81,7 +86,7 @@ export function buildWeeklyVolumeTimeline(
 
 function logsInWindow(history: CompletedWorkoutLog[], windowDays: number): CompletedWorkoutLog[] {
   const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
-  return history.filter((log) => new Date(log.completedAt).getTime() >= cutoff);
+  return liveHistoryLogs(history).filter((log) => new Date(log.completedAt).getTime() >= cutoff);
 }
 
 /** Per major muscle group: recent volume + readiness for heatmap cells. */
@@ -89,8 +94,9 @@ export function buildMuscleHeatmap(
   history: CompletedWorkoutLog[],
   windowDays = 14
 ): MuscleHeatCell[] {
-  const readiness = computeReadiness(history);
-  const windowLogs = logsInWindow(history, windowDays);
+  const live = liveHistoryLogs(history);
+  const readiness = computeReadiness(live);
+  const windowLogs = logsInWindow(live, windowDays);
 
   const volumeByGroup: Record<MuscleGroup, number> = {
     Chest: 0,
@@ -164,7 +170,7 @@ export function pickChartExerciseId(history: CompletedWorkoutLog[]): string | nu
   if (!ids.length) return null;
 
   const sessionCounts: Record<string, number> = {};
-  for (const log of history) {
+  for (const log of liveHistoryLogs(history)) {
     for (const ex of log.exercises) {
       if (ex.sets.some((s) => s.weight > 0 && s.reps > 0)) {
         sessionCounts[ex.exerciseId] = (sessionCounts[ex.exerciseId] || 0) + 1;
@@ -176,7 +182,7 @@ export function pickChartExerciseId(history: CompletedWorkoutLog[]): string | nu
 }
 
 export function build1RMChartData(exerciseId: string, history: CompletedWorkoutLog[]) {
-  const stats = buildExerciseBenchmark(exerciseId, history);
+  const stats = buildExerciseBenchmark(exerciseId, liveHistoryLogs(history));
   if (!stats) return [];
   // Raw ISO, not a label. `.242` — the caller draws the axis and owns the
   // language; a label minted here would be stamped with whatever the app was
@@ -189,11 +195,12 @@ export function build1RMChartData(exerciseId: string, history: CompletedWorkoutL
 }
 
 export function historySummaryStats(history: CompletedWorkoutLog[]) {
-  const recent = history.slice(0, 5);
+  const live = liveHistoryLogs(history);
+  const recent = live.slice(0, 5);
   const avgVolume =
     recent.length > 0
       ? Math.round(recent.reduce((s, l) => s + l.totalVolume, 0) / recent.length)
       : 0;
-  const totalVolume = history.reduce((s, l) => s + l.totalVolume, 0);
-  return { avgVolume, totalVolume, sessionCount: history.length };
+  const totalVolume = live.reduce((s, l) => s + l.totalVolume, 0);
+  return { avgVolume, totalVolume, sessionCount: live.length };
 }

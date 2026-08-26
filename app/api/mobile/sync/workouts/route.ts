@@ -4,6 +4,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { flattenExercises, groupFlatSets, normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
+import { incomingWorkoutBeats } from '@/lib/workout/workoutMerge';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
@@ -185,12 +186,15 @@ async function upsertWorkout(
 
   if (byClient) {
     const serverRev = (byClient.revision as number) ?? 1;
-    // Tombstone always wins; else highest revision wins (equal → accept incoming)
+    // Higher revision wins, including restore (`.1006`). Equal-rev tombstone still beats live.
     const incomingDeleted = Boolean(w.deletedAt);
     const serverDeleted = Boolean(byClient.deleted_at);
-    const shouldApply =
-      incomingDeleted ||
-      (!serverDeleted && w.revision >= serverRev);
+    const shouldApply = incomingWorkoutBeats({
+      incomingRevision: w.revision,
+      serverRevision: serverRev,
+      incomingDeleted,
+      serverDeleted,
+    });
 
     if (!shouldApply) {
       return {

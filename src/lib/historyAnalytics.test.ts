@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   buildMuscleHeatmap,
   buildWeeklyVolumeTimeline,
+  historySummaryStats,
   pickChartExerciseId,
   weekStartKey,
 } from '@/lib/historyAnalytics';
@@ -57,6 +58,18 @@ describe('historyAnalytics', () => {
       sampleLog(3, 1000, 'squats'),
     ];
     assert.equal(pickChartExerciseId(history), 'bench-press');
+  });
+
+  it('a tombstone is not a session or volume (.1006)', () => {
+    const live = sampleLog(1, 8000);
+    const tomb = { ...sampleLog(2, 9000), id: 'gone', deletedAt: isoDaysAgo(0) };
+    const history = [live, tomb];
+    const stats = historySummaryStats(history);
+    assert.equal(stats.sessionCount, 1);
+    assert.equal(stats.totalVolume, 8000);
+    const timeline = buildWeeklyVolumeTimeline(history, 4, 'en');
+    assert.equal(timeline.reduce((s, p) => s + p.volume, 0), 8000);
+    assert.equal(timeline.reduce((s, p) => s + p.sessions, 0), 1);
   });
 });
 

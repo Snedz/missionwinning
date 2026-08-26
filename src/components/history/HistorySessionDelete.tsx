@@ -2,7 +2,7 @@
 
 /**
  * Delete one finished History log (`.1003`).
- * Confirm-gated. Cannot be recovered.
+ * Confirm-gated. Restore lives on History (`.1006`).
  * Not Resume. Not live cancel. Not the Today Start.
  */
 
@@ -67,7 +67,7 @@ export function HistorySessionDelete({
             <DialogDescription>
               {t('historyDeleteConfirmDesc', {
                 defaultValue:
-                  'This session will be gone from History. It cannot be recovered. Other days stay.',
+                  'This session leaves History. Restore it from Deleted sessions. Other days stay.',
               })}
             </DialogDescription>
           </DialogHeader>
@@ -89,7 +89,7 @@ export function HistorySessionDelete({
               }}
             >
               {t('historyDeleteConfirm', {
-                defaultValue: 'Delete — cannot be recovered',
+                defaultValue: 'Delete this session',
               })}
             </Button>
             <Button
