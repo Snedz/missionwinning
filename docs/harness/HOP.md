@@ -1,14 +1,15 @@
 # Live hop
 
-ticket: residual-library-spark-bw
-done_means: Library spark plots bodyweight work as reps, not a flat zero
-accept: npx tsx --test src/lib/librarySparkBw.test.ts
-test_written: yes
+The open hop only. Not CONTEXT, not GRAPH_LOOP, not LOG.
+Write this **before** the first product edit. Clear it back to this
+template after the row is marked `done`. `npm run harness:done` is the
+closer — the agent's last message is not.
+
+ticket:
+done_means:
+accept:
+test_written:
 
 ## progress
 
-#843 owns .1018. #845 owns .1019. This hop is .1020.
-
 ## decisions
-
-Spark point = weight > 0 ? reps * weight : reps. Warmups still out. Tombs still out. Store still weight: 0.
