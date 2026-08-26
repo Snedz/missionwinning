@@ -61,6 +61,17 @@ export function formatPlusLoadWeightCell(weight: number, bodyweightLabel = 'BW')
   return `${bodyweightLabel}+${weight}`;
 }
 
+/** Completed kg cell. Empty load is BW, not 0. Barbell loaded stays the number. */
+export function formatCompletedWeightCell(
+  weight: number,
+  bodyweightLabel: string,
+  plusLoad: boolean
+): string {
+  if (!Number.isFinite(weight) || weight <= 0) return bodyweightLabel;
+  if (plusLoad) return formatPlusLoadWeightCell(weight, bodyweightLabel);
+  return String(weight);
+}
+
 export function formatPrevPlusLoadLabel(
   reps: number,
   weight: number,

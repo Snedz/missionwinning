@@ -1,32 +1,29 @@
-# PLAN — Coach citation empty load is BW, not 0kg (`.1023`)
+# PLAN — Completed set-table empty load is BW, not 0 (`.1025`)
 
 **Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1023`.
-**Base:** master `934524eca` — Heatmap empty-load volume is reps, not 0 (`.1022`).
-**Do not smash:** heatmap `.1022`, chat `.1021`, spark `.1020`, overdue `.1019`, month `.1018`.
+**Frozen:** 2026-08-26. **Ship-as:** `.1025`.
+**Base:** master `72685e9b` — History empty-load volume is reps, not 0 kg (`.1024`).
+**Do not smash:** History volume `.1024`, citation `.1023`, heatmap `.1022`, chat `.1021`.
 
 ---
 
 ## The one thing
 
-`coachLogCitation` already refuses a 0 kg *set*. `coachCitationFact` still interpolates `weight` as a number, so a `kind: 'set'` with `weight: 0` would print `0kg × 8`.
-
-Chat `.1021` already uses `formatSetLoadLine`. This formatter did not.
+Logger cites already print `8 × BW`. The completed kg cell still painted stored `weight: 0` as `0`.
 
 ## In / out
 
 **In**
 
-- Empty-load `kind: 'set'` → `8 × BW` via `formatSetLoadLine`.
-- Loaded stays `60kg × 5`.
-- Guest. First set ungated.
+- `formatCompletedWeightCell` — empty is `BW`; loaded barbell stays the number; plus-load extra stays `BW+N`.
+- Display only. Store still `weight: 0`.
+- Guest. First set ungated. Today still one Start.
 
 **Out**
 
-- Changing which set is quoted (still last loaded).
-- Heatmap `.1022`. Today chrome. Promote.
+- Assisted 0 mute (`—`) — later hop.
+- History volume `.1024`. Citation `.1023`. Heatmap `.1022`. Today chrome. Promote.
 
 ## Verify
 
-- `src/lib/coachCitationEmptyLoad.test.ts`
-- `src/lib/coach/logCitation.test.ts`
+- `src/lib/workout/setTableEmptyLoadCell.test.ts`
