@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import type { MuscleHeatCell } from '@/lib/historyAnalytics';
+import { anatomyGroupOverdue, type MuscleHeatCell } from '@/lib/historyAnalytics';
 import { MAJOR_GROUPS, type MuscleGroup } from '@/lib/muscleGroups';
 
 type Props = {
@@ -34,7 +34,7 @@ export function AnatomyHeatMap({ cells, className }: Props) {
   const region = (group: MuscleGroup) => {
     const cell = byGroup.get(group);
     const intensity = cell?.intensity ?? 0;
-    const overdue = (cell?.daysSince ?? 0) >= 7;
+    const overdue = anatomyGroupOverdue(cell);
     return {
       group,
       intensity,
