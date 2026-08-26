@@ -9,6 +9,7 @@ import {
   formatRetrievalBlock,
   retrieveCoachKnowledge,
 } from '@/lib/coach/agent/retrieve';
+import { formatCoachLogFactCite } from '@/lib/coach/agent/facts';
 import type {
   CoachAgentWorld,
   CoachToolResult,
@@ -135,7 +136,7 @@ export function dispatchCoachTool(
       }
       return {
         ok: true,
-        observation: `From your log: ${fact.exerciseName} ${fact.weight} × ${fact.reps} · ${fact.at}`,
+        observation: `From your log: ${formatCoachLogFactCite(fact)}`,
       };
     }
     case 'cite_last_log': {
@@ -148,7 +149,7 @@ export function dispatchCoachTool(
       }
       return {
         ok: true,
-        observation: `From your log: ${fact.exerciseName} ${fact.weight} × ${fact.reps} · ${fact.at}`,
+        observation: `From your log: ${formatCoachLogFactCite(fact)}`,
       };
     }
     case 'lookup_week_plan': {

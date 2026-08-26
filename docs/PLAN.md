@@ -6,6 +6,28 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1021` Coach chat empty load is BW, not 0 (2026-08-26)
+
+> **Frozen.** Label `2026.07-unified.1021` from master `.1017`
+> (`8a606a12b`). `#843` `.1018` · `#845` `.1019` · `#846` `.1020`
+> in flight. Do not smash. Do not merge. `[skip vercel]`.
+> No `PRIVATE_MODE` flip. Live www stays `.696`.
+
+Coach chat prints `0 × 8` on stored empty load.
+
+### Done means
+
+`Push-ups 8 × BW`, not `0 × 8`. Loaded unchanged.
+
+### Accept
+
+```
+npx tsx --test src/lib/coachChatEmptyLoad.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1020` Library spark is reps, not 0, on empty load (2026-08-26)
 
 > **Frozen.** Implement only this section + root
