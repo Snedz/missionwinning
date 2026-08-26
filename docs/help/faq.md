@@ -32,6 +32,9 @@ On History, open **Start history from this date**. Pick the day week 1 should st
 **How do I find a past session?**  
 On History, type in the search box. It matches the name you gave that session, the template name, the date, a lift, or a private note. An empty search shows the same list. No matches stays empty. Deleted sessions stay under **Deleted sessions**.
 
+**How do I save one session as a file?**  
+On History, open that session. **Save this session CSV** writes only that log (JSON is the same rows). Empty or deleted stays off. The file is on this device — not a public link, not an email. You can Import this diary later if you want that session back.
+
 **How do I export my diary?**  
 On History, open **Export this diary**. Save a CSV of the sessions you logged (JSON is the same rows). Empty invents nothing — Save stays off until you have a live session. Deleted sessions stay out. Folding week 1 from a date does not shrink the file. This is a file on this device, not a share or an email. Account interchange CSV stays on Account.
 

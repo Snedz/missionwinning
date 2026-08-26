@@ -177,6 +177,9 @@ type HistoryStrings = {
   historyImportReplaceConfirm: string;
   historyImportEmptyDesc: string;
   historyStartFromCancel: string;
+  /** `.1016` — one finished session as a local file. */
+  historySessionFileSave: string;
+  historySessionFileJson: string;
 };
 
 const en: HistoryStrings = {
@@ -354,6 +357,8 @@ const en: HistoryStrings = {
   historyImportReplace: 'Replace diary with this file…',
   historyImportReplaceConfirm: 'Replace the diary with {{count}} sessions from this file',
   historyImportEmptyDesc: 'Empty invents nothing — pick the CSV or JSON you saved.',
+  historySessionFileSave: 'Save this session CSV',
+  historySessionFileJson: 'Save this session JSON',
 };
 
 const es: HistoryStrings = {
