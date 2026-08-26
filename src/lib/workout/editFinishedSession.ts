@@ -9,6 +9,7 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { resolveExercise } from '@/lib/workout/customExercise';
+import { parseOptionalRir } from '@/lib/workout/rir';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import { attachSessionNote } from '@/lib/workout/sessionNote';
@@ -87,7 +88,8 @@ function sameEvidence(
     Number(a.weight) === Number(b.weight) &&
     Number(a.durationSeconds ?? 0) === Number(b.durationSeconds ?? 0) &&
     (a.kind ?? 'normal') === (b.kind ?? 'normal') &&
-    parseOptionalRpe10(a.rpe10) === parseOptionalRpe10(b.rpe10)
+    parseOptionalRpe10(a.rpe10) === parseOptionalRpe10(b.rpe10) &&
+    parseOptionalRir(a.rir) === parseOptionalRir(b.rir)
   );
 }
 
@@ -121,6 +123,7 @@ function stripDraft(draft: FinishedSessionDraft): FinishedExerciseDraft[] {
         const next = { ...set };
         if (!Number.isFinite(hold) || hold <= 0) delete next.durationSeconds;
         if (next.rpe10 === undefined) delete next.rpe10;
+        if (next.rir === undefined) delete next.rir;
         return next;
       }),
     }))
