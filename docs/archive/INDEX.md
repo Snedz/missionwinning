@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1023-for-1038.md](./log/LOG-rotate-1023-for-1038.md) | rotated 2026-08-26 for `.1038` Remove this lift from a finished session (`.1023`) |
 | [log/LOG-rotate-1022-for-1037.md](./log/LOG-rotate-1022-for-1037.md) | rotated 2026-08-26 for `.1037` Add a lift to this finished session (`.1022`) |
 | [log/LOG-rotate-1021-for-1036.md](./log/LOG-rotate-1021-for-1036.md) | rotated 2026-08-26 for `.1036` Replace this lift on a finished session (`.1021`) |
 | [log/LOG-rotate-1020-for-1035.md](./log/LOG-rotate-1020-for-1035.md) | rotated 2026-08-26 for `.1035` Edit this session's logged duration (`.1020`) |

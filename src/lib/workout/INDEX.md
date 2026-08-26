@@ -39,6 +39,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
+10a6e. `removeFinishedExercise.ts` — remove a lift from that finished History draft (`.1038`). Last remaining is noop. Empty invents nothing. Save still `decideEditSave`. Does not delete the session.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -152,6 +153,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `replaceFinishedExerciseSurface.test.ts` | History edit ExercisePicker; Today one Start; reorder / duration / copy / move stay (`.1036`) |
 | `appendFinishedExercise.test.ts` | Finished-session add lift: empty / junk invent nothing; unknown noop; squat after bench 135×5 is 0/0; clone; duplicate allowed (`.1037`) |
 | `appendFinishedExerciseSurface.test.ts` | History edit add-lift picker; Today one Start; replace / reorder / copy / move stay (`.1037`) |
+| `removeFinishedExercise.test.ts` | Finished-session remove lift: empty / junk invent nothing; last remaining / OOB noop; two lifts remove first keeps second; clone (`.1038`) |
+| `removeFinishedExerciseSurface.test.ts` | History edit Remove lift; Today one Start; add-lift / replace / reorder / copy / move stay (`.1038`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
