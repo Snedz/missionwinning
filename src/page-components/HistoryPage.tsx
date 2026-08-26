@@ -48,6 +48,7 @@ import { formatDuration } from '@/lib/utils';
 import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
+import { HistorySessionName } from '@/components/history/HistorySessionName';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
@@ -88,6 +89,7 @@ import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { decideStartAgain } from '@/lib/workout/startAgain';
+import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
 import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
 import { toast } from '@/hooks/use-toast';
@@ -131,6 +133,7 @@ export function HistoryPage() {
   const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
   const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
   const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
+  const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
   const openLog = (log: CompletedWorkoutLog) => {
@@ -569,11 +572,16 @@ export function HistoryPage() {
                     className="min-h-[44px] min-w-0 flex-1 text-left"
                     onClick={() => openLog(log)}
                     aria-label={t('historyOpenLog', {
-                      name: row.title,
-                      defaultValue: `Open log: ${row.title}`,
+                      name: historySessionLabel(log, fmt.longDate(row.completedAt)),
+                      defaultValue: `Open log: ${historySessionLabel(log, fmt.longDate(row.completedAt))}`,
                     })}
                   >
-                    <p className="font-semibold truncate">{row.title}</p>
+                    <p className="font-semibold truncate">
+                      {historySessionLabel(log, fmt.longDate(row.completedAt))}
+                    </p>
+                    {log.sessionTitle && log.workoutName && log.sessionTitle !== log.workoutName ? (
+                      <p className="text-xs text-muted-foreground truncate">{log.workoutName}</p>
+                    ) : null}
                     {muscleLine ? (
                       <p className="text-xs text-muted-foreground mt-0.5 truncate">{muscleLine}</p>
                     ) : null}
@@ -820,7 +828,9 @@ export function HistoryPage() {
           {selected && (
             <>
               <DialogHeader>
-                <DialogTitle>{selected.workoutName}</DialogTitle>
+                <DialogTitle>
+                  {historySessionLabel(selected, fmt.longDate(selected.completedAt))}
+                </DialogTitle>
                 <DialogDescription>
                   {fmt.longDate(selected.completedAt)}
                   {selected.durationSeconds > 0
@@ -865,6 +875,19 @@ export function HistoryPage() {
                     </div>
                   );
                 })()}
+                {!selected.deletedAt ? (
+                  <HistorySessionName
+                    key={selected.id}
+                    sessionId={selected.id}
+                    history={workoutHistory}
+                    live={activeWorkout}
+                    dateText={fmt.longDate(selected.completedAt)}
+                    onSave={(sessionId, title) => {
+                      const named = nameFinishedHistoryLog(sessionId, title);
+                      if (named) setSelected(named);
+                    }}
+                  />
+                ) : null}
                 {selected.deletedAt ? null : (
                 <HistorySessionEdit
                   log={selected}

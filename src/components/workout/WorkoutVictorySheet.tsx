@@ -38,6 +38,8 @@ import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStri
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
 import { SessionJotField } from '@/components/workout/SessionJotField';
+import { HistorySessionName } from '@/components/history/HistorySessionName';
+import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
 import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
@@ -106,6 +108,7 @@ export function WorkoutVictorySheet({
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const setHistorySessionNote = useWorkoutStore((s) => s.setHistorySessionNote);
+  const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
   const finishedLog = workoutId
     ? workoutHistory.find((row) => row.id === workoutId)
     : undefined;
@@ -314,7 +317,9 @@ export function WorkoutVictorySheet({
             {t('victoryTitle', { defaultValue: 'Session locked' })}
           </DialogTitle>
           <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
-            {summary.workoutName}
+            {finishedLog
+              ? historySessionLabel(finishedLog, fmt.longDate(finishedLog.completedAt))
+              : summary.workoutName}
           </DialogDescription>
         </DialogHeader>
 
@@ -333,6 +338,19 @@ export function WorkoutVictorySheet({
             receipt={summary.receipt}
             unitLabel={unitLabel}
             onSaveReceipt={handleSaveReceipt}
+          />
+        ) : null}
+
+        {summary.receipt && workoutId && finishedLog && !finishedLog.deletedAt ? (
+          <HistorySessionName
+            key={finishedLog.id + (finishedLog.sessionTitle ?? '')}
+            sessionId={finishedLog.id}
+            history={workoutHistory}
+            live={activeWorkout}
+            dateText={fmt.longDate(finishedLog.completedAt)}
+            onSave={(sessionId, title) => {
+              nameFinishedHistoryLog(sessionId, title);
+            }}
           />
         ) : null}
 

@@ -11,6 +11,8 @@ import { EXERCISES } from '@/data/exercises';
 import { resolveMajorMuscleGroups } from '@/lib/exerciseMuscleMap';
 import { MAJOR_GROUPS, type MuscleGroup } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
+import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type SessionHistoryRow = {
   id: string;
@@ -60,7 +62,10 @@ export function toSessionHistoryRow(
   if (log.deletedAt) return null;
   return {
     id: log.id,
-    title: log.workoutName,
+    title: historySessionLabel(
+      log,
+      localDateKeyFromIso(log.completedAt || log.startedAt)
+    ),
     completedAt: log.completedAt,
     setCount: sessionSetCount(log),
     muscles: sessionMuscles(log),
@@ -92,7 +97,10 @@ export function toDeletedSessionHistoryRow(
   if (!log.deletedAt) return null;
   return {
     id: log.id,
-    title: log.workoutName,
+    title: historySessionLabel(
+      log,
+      localDateKeyFromIso(log.completedAt || log.startedAt)
+    ),
     completedAt: log.completedAt,
     setCount: sessionSetCount(log),
     muscles: sessionMuscles(log),

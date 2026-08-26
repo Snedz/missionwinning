@@ -179,6 +179,12 @@ export interface CompletedWorkoutLog {
   /** Tombstone — set instead of removing so a delete propagates between devices. */
   deletedAt?: string | null;
   workoutName: string;
+  /**
+   * Optional private title of this finished log (`.1007`).
+   * Empty / omitted falls back to the date. Not the template name.
+   * Not a Feed. Cloud upsert omits it.
+   */
+  sessionTitle?: string;
   startedAt: string;
   completedAt: string;
   durationSeconds: number;

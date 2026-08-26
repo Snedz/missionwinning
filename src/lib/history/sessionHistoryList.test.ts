@@ -82,7 +82,9 @@ test('sessionMuscles backfills from the catalog when the log has no snapshot', (
 });
 
 test('toSessionHistoryRow projects the scan and skips tombstones', () => {
-  const live = toSessionHistoryRow(log({ id: 'live', workoutName: 'Upper' }));
+  const live = toSessionHistoryRow(
+    log({ id: 'live', workoutName: 'Upper', sessionTitle: 'Upper' })
+  );
   assert.ok(live);
   assert.equal(live.title, 'Upper');
   assert.equal(live.setCount, 3);
@@ -90,6 +92,11 @@ test('toSessionHistoryRow projects the scan and skips tombstones', () => {
 
   const dead = toSessionHistoryRow(log({ id: 'dead', deletedAt: isoDaysAgo(0) }));
   assert.equal(dead, null);
+
+  const untitled = toSessionHistoryRow(log({ id: 'day', workoutName: 'Push' }));
+  assert.ok(untitled);
+  assert.notEqual(untitled.title, 'Push');
+  assert.match(untitled.title, /^\d{4}-\d{2}-\d{2}$/);
 });
 
 test('listSessionHistoryRows is empty when there is nothing live', () => {
@@ -121,7 +128,12 @@ test('deleted session rows are tombstones only — empty invents nothing', () =>
   assert.deepEqual(listDeletedSessionHistoryRows([]), []);
   const live = log({ id: 'live', workoutName: 'Upper' });
   assert.equal(toDeletedSessionHistoryRow(live), null);
-  const tomb = log({ id: 'gone', workoutName: 'Bogus Monday', deletedAt: isoDaysAgo(0) });
+  const tomb = log({
+    id: 'gone',
+    workoutName: 'Push',
+    sessionTitle: 'Bogus Monday',
+    deletedAt: isoDaysAgo(0),
+  });
   const row = toDeletedSessionHistoryRow(tomb);
   assert.ok(row);
   assert.equal(row.id, 'gone');
