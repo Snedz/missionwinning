@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1040` RPE on a finished set (from master `.1039` `a11cd01ee`; stamp stays `.1040`; Set kind `.1039` / Remove lift `.1038` / Add `.1037` / Replace `.1036` / Reorder `.1034` / Edit `.997` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1040";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1041` RIR on a finished set (from master `.1040` `672bb5aec`; stamp stays `.1041`; RPE `.1040` / Set kind `.1039` / Remove lift `.1038` / Add `.1037` / Replace `.1036` / Reorder `.1034` / Edit `.997` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1041";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

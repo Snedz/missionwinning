@@ -272,4 +272,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1040` — RPE on a finished History set/);
   });
+
+  it('RIR on a finished set stays ungated (.1041)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1041` — RIR on a finished History set/);
+  });
 });

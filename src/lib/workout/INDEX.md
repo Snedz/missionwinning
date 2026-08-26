@@ -42,6 +42,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6e. `removeFinishedExercise.ts` — remove a lift from that finished History draft (`.1038`). Last remaining is noop. Empty invents nothing. Save still `decideEditSave`. Does not delete the session.  
 10a6f. `patchFinishedSetKind.ts` — set kind on a finished History set (`.1039`). Same W/D/F as live. Empty invents nothing. Save still `decideEditSave`.  
 10a6g. `patchFinishedSetRpe10.ts` — optional 1–10 RPE on a finished History set (`.1040`). Empty is valid (clear). Empty invents nothing. Save still `decideEditSave`.  
+10a6h. `patchFinishedSetRir.ts` — optional 0–5 RIR on a finished History set (`.1041`). Empty is valid (clear). Empty invents nothing. Never replaces RPE. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -161,6 +162,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `patchFinishedSetKindSurface.test.ts` | History edit kind control; Today one Start; remove-lift / add-lift / replace / reorder stay (`.1039`) |
 | `patchFinishedSetRpe10.test.ts` | Finished-session RPE 1–10: empty / junk invent nothing; 99 invents nothing; 8 apply; blank clears; same value noop; no categorical rpe; clone (`.1040`) |
 | `patchFinishedSetRpe10Surface.test.ts` | History edit RPE control; Today one Start; set-kind / remove-lift stay; no rainbow RPE (`.1040`) |
+| `patchFinishedSetRir.test.ts` | Finished-session RIR 0–5: empty / junk invent nothing; 6 invents nothing; 2 apply; blank clears; same value noop; no rpe10 write; clone (`.1041`) |
+| `patchFinishedSetRirSurface.test.ts` | History edit RIR control; Today one Start; RPE / set-kind / remove-lift stay (`.1041`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |

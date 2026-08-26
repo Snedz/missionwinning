@@ -75,11 +75,11 @@ test('completed set rows expose optional RIR; Log set does not require it', () =
   );
   assert.match(
     store,
-    /get\(\)\.logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr\)/,
+    /get\(\)\.logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr(?:, durationSeconds)?\)/,
     'log path must still leave ratings unstamped'
   );
   const implStart = store.indexOf(
-    'logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) =>'
+    'logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr, durationSeconds) =>'
   );
   assert.ok(implStart > 0, 'could not find logSetAndAdvance implementation');
   const impl = store.slice(implStart, implStart + 280);

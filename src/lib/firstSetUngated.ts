@@ -69,6 +69,7 @@
  * `.1038` — remove this lift from a finished History session. Never a login wall.
  * `.1039` — set kind on a finished History set. Never a login wall.
  * `.1040` — RPE on a finished History set. Never a login wall.
+ * `.1041` — RIR on a finished History set. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
