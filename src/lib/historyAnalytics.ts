@@ -10,7 +10,7 @@ import {
 } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKey, localWeekKey, startOfLocalWeek, formatLocalDateKey } from '@/lib/time/localDate';
-import { workingSetVolume } from '@/lib/workout/workingSetVolume';
+import { sessionWorkingVolume, workingSetVolume } from '@/lib/workout/workingSetVolume';
 
 /** Charts / briefing skip tombs so a deleted Monday is not still "trained" (`.1006`). */
 function liveHistoryLogs(history: readonly CompletedWorkoutLog[]): CompletedWorkoutLog[] {
@@ -85,7 +85,7 @@ export function buildWeeklyVolumeTimeline(
   for (const log of liveHistoryLogs(history)) {
     const key = weekStartKey(log.completedAt);
     if (!byWeek[key]) continue;
-    byWeek[key].volume += log.totalVolume;
+    byWeek[key].volume += sessionWorkingVolume(log);
     byWeek[key].sessions += 1;
   }
 

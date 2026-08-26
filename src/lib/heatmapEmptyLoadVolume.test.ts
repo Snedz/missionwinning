@@ -6,8 +6,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { workingSetVolume } from './workout/workingSetVolume.ts';
-import { buildMuscleHeatmap } from './historyAnalytics.ts';
+import { sessionWorkingVolume, workingSetVolume } from './workout/workingSetVolume.ts';
+import { buildMuscleHeatmap, buildWeeklyVolumeTimeline } from './historyAnalytics.ts';
 import { libraryExerciseVolumeSpark } from './libraryFilters.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -48,6 +48,31 @@ describe('heatmap empty-load volume is reps, not 0 (.1022)', () => {
     assert.ok(chest);
     assert.ok(chest.volume > 0, String(chest.volume));
     assert.ok(chest.intensity > 0);
+  });
+
+  it('weekly timeline uses working volume, not stored 0 kg totalVolume', () => {
+    const log: CompletedWorkoutLog = {
+      id: 'log-week',
+      workoutName: 'Push',
+      startedAt: isoDaysAgo(1),
+      completedAt: isoDaysAgo(1),
+      durationSeconds: 600,
+      totalVolume: 0,
+      exercises: [
+        {
+          exerciseId: 'push-ups',
+          muscleGroups: ['Chest'],
+          sets: [{ reps: 8, weight: 0 }],
+        },
+      ],
+    };
+    assert.equal(sessionWorkingVolume(log), 8);
+    const points = buildWeeklyVolumeTimeline([log], 4, 'en');
+    const total = points.reduce((s, p) => s + p.volume, 0);
+    assert.equal(total, 8);
+    const timelineSrc = read('src/lib/historyAnalytics.ts');
+    assert.match(timelineSrc, /sessionWorkingVolume/);
+    assert.doesNotMatch(timelineSrc, /log\.totalVolume/);
   });
 
   it('spark and heatmap share workingSetVolume — no second reps * weight', () => {
