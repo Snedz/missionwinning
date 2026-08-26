@@ -35,6 +35,9 @@ On History, type in the search box. It matches the name you gave that session, t
 **How do I see a month of sessions?**  
 On History, open **Show all** → Calendar. Days you trained are marked. Tap a day to open those sessions. Deleted sessions stay out. An empty month invents nothing. Folding week 1 from a date does not hide this month. Search and charts stay the full diary.
 
+**How do I repeat a finished session?**  
+Open that session in History and tap **Repeat this session**. It copies the sets you logged into Start. Warmups stay. Empty or deleted invents nothing. If a workout is already going, Train keeps that one. This is not a share and not someone else's workout.
+
 **How do I save one session as a file?**  
 On History, open that session. **Save this session CSV** writes only that log (JSON is the same rows). Empty or deleted stays off. The file is on this device — not a public link, not an email. You can Import this diary later if you want that session back.
 

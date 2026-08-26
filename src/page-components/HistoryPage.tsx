@@ -92,7 +92,7 @@ import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { formatLogVolumeDisplay } from '@/lib/workout/volumeDisplay';
-import { decideStartAgain } from '@/lib/workout/startAgain';
+import { decideRepeatThisSession } from '@/lib/workout/repeatThisSession';
 import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
 import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
@@ -279,9 +279,9 @@ export function HistoryPage() {
     setEditing(false);
   };
 
-  /** K7/K11 / `.991` — start this finished log again; never wipe a live session. */
+  /** `.1026` — copy this finished log into the one live Start; never wipe a live session. */
   const retrainFromLog = (log: CompletedWorkoutLog) => {
-    const decision = decideStartAgain({ log, active: activeWorkout });
+    const decision = decideRepeatThisSession({ log, active: activeWorkout });
     if (decision.kind === 'empty') return;
     setSelected(null);
     if (decision.kind === 'start') {
@@ -671,7 +671,7 @@ export function HistoryPage() {
                     </p>
                   </button>
                   <div className="flex shrink-0 items-center gap-0.5">
-                    {templateFromCompletedLog(log) ? (
+                    {decideRepeatThisSession({ log }).kind !== 'empty' ? (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -1037,40 +1037,48 @@ export function HistoryPage() {
                   />
                 ) : null}
               </div>
-              {/* K7 — return path: replay this session in Train. */}
-              {!editing && !selected.deletedAt && templateFromCompletedLog(selected) ? (
+              {/* `.1026` — copy this finished log into the one live Start. */}
+              {!editing &&
+              !selected.deletedAt &&
+              (decideRepeatThisSession({ log: selected }).kind !== 'empty' ||
+                templateFromCompletedLog(selected)) ? (
                 <div className="pt-2 space-y-2 border-t-2 border-border">
-                  <Button
-                    type="button"
-                    className="w-full min-h-[44px] primary-action"
-                    onClick={() => retrainFromLog(selected)}
-                  >
-                    {t('historyTrainAgain', { defaultValue: 'Start this again' })}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full min-h-[44px] tap-target"
-                    data-testid="history-save-routine"
-                    onClick={() => {
-                      const template = templateFromCompletedLog(selected);
-                      const opened = honor.requestSave({
-                        name: template?.name ?? selected.workoutName,
-                        exercises: template?.exercises,
-                      });
-                      if (opened.kind === 'empty') {
-                        toast({
-                          title: t('honorSaveEmpty', { defaultValue: 'Nothing to save' }),
-                          description: t('honorSaveEmptyDesc', {
-                            defaultValue: 'A routine needs a name and at least one lift.',
-                          }),
-                          variant: 'destructive',
+                  {decideRepeatThisSession({ log: selected }).kind !== 'empty' ? (
+                    <Button
+                      type="button"
+                      className="w-full min-h-[44px] primary-action"
+                      data-testid="history-repeat-session"
+                      onClick={() => retrainFromLog(selected)}
+                    >
+                      {t('historyRepeatSession', { defaultValue: 'Repeat this session' })}
+                    </Button>
+                  ) : null}
+                  {templateFromCompletedLog(selected) ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full min-h-[44px] tap-target"
+                      data-testid="history-save-routine"
+                      onClick={() => {
+                        const template = templateFromCompletedLog(selected);
+                        const opened = honor.requestSave({
+                          name: template?.name ?? selected.workoutName,
+                          exercises: template?.exercises,
                         });
-                      }
-                    }}
-                  >
-                    {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
-                  </Button>
+                        if (opened.kind === 'empty') {
+                          toast({
+                            title: t('honorSaveEmpty', { defaultValue: 'Nothing to save' }),
+                            description: t('honorSaveEmptyDesc', {
+                              defaultValue: 'A routine needs a name and at least one lift.',
+                            }),
+                            variant: 'destructive',
+                          });
+                        }
+                      }}
+                    >
+                      {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
+                    </Button>
+                  ) : null}
                 </div>
               ) : null}
               {!editing && selected.deletedAt ? (

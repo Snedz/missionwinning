@@ -10,7 +10,11 @@ export function templateSetsToLogged(
     reps: s.reps,
     weight: s.weight,
     completed: false,
-    kind: 'normal' as SetKind,
+    kind: (s.kind ?? 'normal') as SetKind,
     ...(typeof s.loadPct === 'number' && s.loadPct > 0 ? { loadPct: s.loadPct } : {}),
+    ...(typeof s.durationSeconds === 'number' && s.durationSeconds > 0
+      ? { durationSeconds: s.durationSeconds }
+      : {}),
+    ...(s.side ? { side: s.side } : {}),
   }));
 }

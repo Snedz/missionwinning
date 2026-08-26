@@ -52,6 +52,9 @@
  * `.1021` — Coach chat empty load is BW, not 0 × 8. Never a login wall.
  * `.1022` — heatmap empty-load volume is reps, not a 0 kg floor. Never a login wall.
  * `.1023` — Coach citation empty load is BW, not 0kg. Never a login wall.
+ * `.1024` — History empty-load volume is reps, not 0 kg. Never a login wall.
+ * `.1025` — completed set-table empty load is BW, not 0. Never a login wall.
+ * `.1026` — Repeat this session from History into the live Start. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

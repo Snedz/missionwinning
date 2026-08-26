@@ -55,6 +55,12 @@ export interface WorkoutSetTemplate {
    * the authored weight (usually 0) stands and the logger behaves as today.
    */
   loadPct?: number;
+  /** Copied from a finished log (`.1026`). Omit on authored templates. */
+  kind?: SetKind;
+  /** Hold seconds copied from a finished log (`.1026`). Omit when missing. */
+  durationSeconds?: number;
+  /** L / R / Alt copied from a finished log (`.1026`). Omit on bilateral. */
+  side?: SetSide;
 }
 
 export interface WorkoutExerciseTemplate {

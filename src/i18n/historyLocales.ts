@@ -43,6 +43,8 @@ type HistoryStrings = {
   historySessionVolume: string;
   /** K7 / `.991` — start a finished session again. */
   historyTrainAgain: string;
+  /** `.1026` — copy this finished session into the live Start. */
+  historyRepeatSession: string;
   /** K11 — short label on session list rows. */
   historyTrainAgainShort: string;
   historyTableSet: string;
@@ -226,6 +228,7 @@ const en: HistoryStrings = {
   historySignInFoot: 'Sign in (optional) to load full cloud history.',
   historySessionVolume: '{{volume}} {{unit}} total volume',
   historyTrainAgain: 'Start this again',
+  historyRepeatSession: 'Repeat this session',
   historyTrainAgainShort: 'Again',
   historyTableSet: 'Set',
   historyTableReps: 'Reps',

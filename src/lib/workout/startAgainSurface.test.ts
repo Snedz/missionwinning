@@ -27,19 +27,19 @@ describe('start again surface lock (.991)', () => {
     assert.doesNotMatch(sheet, PREMIUM);
   });
 
-  it('History list / details / day call the same helper', () => {
+  it('History list / details / day call Repeat (.1026); receipt keeps Start this again', () => {
     for (const rel of [
       'src/page-components/HistoryPage.tsx',
       'src/page-components/HistoryDayPage.tsx',
     ]) {
       const src = read(rel);
-      assert.match(src, /decideStartAgain/, rel);
+      assert.match(src, /decideRepeatThisSession/, rel);
       assert.doesNotMatch(src, SHOP, rel);
       assert.doesNotMatch(src, /SavedWorkout\[\]|template folder|routine shop/i, rel);
     }
     const list = read('src/page-components/HistoryPage.tsx');
     assert.match(list, /history-save-routine|honorSaveAsRoutine/);
-    assert.match(list, /Start this again|historyTrainAgain/);
+    assert.match(list, /Repeat this session|historyRepeatSession/);
   });
 
   it('Today stays one Start; primary action does not import startAgain', () => {

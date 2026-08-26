@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1025` Completed set-table empty load is BW, not 0 (from master `.1024` `72685e9b`; stamp stays `.1025`; History volume `.1024` / citation `.1023` / heatmap `.1022` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1025";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1026` Repeat this session (from master `.1025` `24f69641`; stamp stays `.1026`; set-table `.1025` / History volume `.1024` / citation `.1023` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1026";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
