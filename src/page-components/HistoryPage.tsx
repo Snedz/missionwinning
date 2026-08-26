@@ -100,6 +100,7 @@ import {
   liveSessionLogs,
   toSessionHistoryRow,
 } from '@/lib/history/sessionHistoryList';
+import { decideSearchHistory } from '@/lib/history/searchHistory';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -295,17 +296,21 @@ export function HistoryPage() {
   }, [pillarWins]);
 
   const filteredHistory = useMemo(() => {
-    const q = nameQuery.trim().toLowerCase();
     const cutoff =
       range === 'all'
         ? 0
         : Date.now() - Number(range) * 24 * 60 * 60 * 1000;
-    return liveHistory.filter((log) => {
+    const ranged = liveHistory.filter((log) => {
       if (cutoff && new Date(log.completedAt).getTime() < cutoff) return false;
-      if (q && !log.workoutName.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [liveHistory, nameQuery, range]);
+    return decideSearchHistory({
+      query: nameQuery,
+      rows: ranged,
+      dateText: (row) => fmt.longDate(row.completedAt),
+      liftName: (id) => resolveExercise(id)?.name,
+    });
+  }, [liveHistory, nameQuery, range, fmt]);
 
   const visibleHistory = useMemo(
     () => filteredHistory.slice(0, visibleCount),
@@ -496,14 +501,15 @@ export function HistoryPage() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="search"
+              data-testid="session-history-search"
               value={nameQuery}
               onChange={(e) => setNameQuery(e.target.value)}
               placeholder={t('historySearchPlaceholder', {
-                defaultValue: 'Search by workout name…',
+                defaultValue: 'Search sessions (name, date, lift)…',
               })}
               className="sm:flex-1 min-h-[44px]"
               aria-label={t('historySearchPlaceholder', {
-                defaultValue: 'Search by workout name…',
+                defaultValue: 'Search sessions (name, date, lift)…',
               })}
             />
             <div className="flex flex-wrap gap-1.5">

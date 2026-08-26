@@ -216,7 +216,7 @@ const en: HistoryStrings = {
   historyEyebrow: 'History',
   historyMissionStory: 'At a glance',
   historyStartWorkout: 'Open Today',
-  historySearchPlaceholder: 'Search by workout name…',
+  historySearchPlaceholder: 'Search sessions (name, date, lift)…',
   historyNoMatches: 'No sessions match these filters',
   historyLoadMore: 'Show more ({{remaining}} left)',
   anatomyMapLead: 'Tap a region for exercises. Color = recent volume; red = overdue.',
