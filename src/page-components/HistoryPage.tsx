@@ -310,24 +310,24 @@ export function HistoryPage() {
   );
 
   const weeklyVolume = useMemo(
-    () => buildWeeklyVolumeTimeline(workoutHistory, 12, i18n.language),
-    [workoutHistory, i18n.language]
+    () => buildWeeklyVolumeTimeline(liveHistory, 12, i18n.language),
+    [liveHistory, i18n.language]
   );
   const heatmapCells = useMemo(
-    () => buildMuscleHeatmap(workoutHistory, HEATMAP_WINDOW_DAYS),
-    [workoutHistory]
+    () => buildMuscleHeatmap(liveHistory, HEATMAP_WINDOW_DAYS),
+    [liveHistory]
   );
   const exerciseIds = useMemo(
-    () => getExercisesWithBenchmarkData(workoutHistory),
-    [workoutHistory]
+    () => getExercisesWithBenchmarkData(liveHistory),
+    [liveHistory]
   );
-  const defaultExerciseId = useMemo(() => pickChartExerciseId(workoutHistory), [workoutHistory]);
+  const defaultExerciseId = useMemo(() => pickChartExerciseId(liveHistory), [liveHistory]);
   const activeChartId = chartExerciseId || defaultExerciseId || '';
   const oneRmData = useMemo(
-    () => (activeChartId ? build1RMChartData(activeChartId, workoutHistory) : []),
-    [activeChartId, workoutHistory]
+    () => (activeChartId ? build1RMChartData(activeChartId, liveHistory) : []),
+    [activeChartId, liveHistory]
   );
-  const summary = useMemo(() => historySummaryStats(workoutHistory), [workoutHistory]);
+  const summary = useMemo(() => historySummaryStats(liveHistory), [liveHistory]);
 
   /*
    * `.247` — the day set is swept on load rather than written at each log site.
@@ -340,9 +340,9 @@ export function HistoryPage() {
     first: null,
   });
   useEffect(() => {
-    sweepDaysWithData(workoutHistory.map((w) => w.completedAt));
+    sweepDaysWithData(liveHistory.map((w) => w.completedAt));
     setDayStats({ count: daysWithDataCount(), first: firstDayWithData() });
-  }, [workoutHistory]);
+  }, [liveHistory]);
 
   const briefingLine = useMemo(() => {
     if (liveHistory.length === 0) {

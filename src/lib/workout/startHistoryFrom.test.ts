@@ -175,6 +175,18 @@ describe('foldHistoryFrom (.1005)', () => {
     assert.equal(foldHistoryFrom(null, '2026-08-20').length, 0);
   });
 
+  it('tombs are not week-1 — restore is History (.1006)', () => {
+    const tomb = { ...mid, id: 'gone', deletedAt: '2026-08-25T12:00:00.000Z' };
+    assert.deepEqual(
+      foldHistoryFrom([old, tomb, neu], null).map((row) => row.id),
+      ['old', 'new']
+    );
+    assert.deepEqual(
+      foldHistoryFrom([old, tomb, neu], '2026-08-20').map((row) => row.id),
+      ['new']
+    );
+  });
+
   it('folds older logs out of week surfaces and keeps History detail', () => {
     const week = foldHistoryFrom(history, '2026-08-20');
     assert.deepEqual(
