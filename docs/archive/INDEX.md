@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1033-for-1048.md](./log/LOG-rotate-1033-for-1048.md) | rotated 2026-08-26 for `.1048` Open empty load is blank, not 0 (`.1033`) |
 | [log/LOG-rotate-1032-for-1047.md](./log/LOG-rotate-1032-for-1047.md) | rotated 2026-08-26 for `.1047` Superset on a finished session (`.1032`) |
 | [log/LOG-rotate-1031-for-1046.md](./log/LOG-rotate-1031-for-1046.md) | rotated 2026-08-26 for `.1046` Session note on a finished session (`.1031`) |
 | [log/LOG-rotate-1030-for-1045.md](./log/LOG-rotate-1030-for-1045.md) | rotated 2026-08-26 for `.1045` Lift note on a finished exercise (`.1030`) |

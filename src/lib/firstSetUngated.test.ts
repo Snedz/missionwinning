@@ -307,4 +307,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1047` — superset on a finished History session/);
   });
+
+  it('open empty load is blank stays ungated (.1048)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1048` — open empty load is blank, not 0/);
+  });
 });

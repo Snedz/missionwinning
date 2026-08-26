@@ -30,6 +30,7 @@ import {
   formatCompletedWeightCell,
   formatPlusLoadWeightCell,
 } from '@/lib/workout/bodyweightLoad';
+import { formatOpenLoadInput, parseOpenLoadInput } from '@/lib/workout/openEmptyLoad';
 import { cn } from '@/lib/utils';
 import type { SetRowType } from '@/types';
 import { formatSetRowDuration, parseDurationSeconds } from '@/lib/workout/setRowType';
@@ -296,7 +297,7 @@ export function SetLogTable({
                             type="text"
                             inputMode="decimal"
                             className={numberInput}
-                            value={input.weight}
+                            value={formatOpenLoadInput(input.weight)}
                             aria-label={
                               rowType === 'assisted'
                                 ? t('activeSetAssist', { defaultValue: 'Assist' })
@@ -306,11 +307,10 @@ export function SetLogTable({
                             }
                             onFocus={(e) => e.target.select()}
                             onChange={(e) => {
-                              const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                              const parsed = parseFloat(cleaned);
+                              const parsed = parseOpenLoadInput(e.target.value);
                               onInputChange(
                                 'weight',
-                                Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
+                                Math.min(9999, Math.max(0, parsed))
                               );
                             }}
                           />
