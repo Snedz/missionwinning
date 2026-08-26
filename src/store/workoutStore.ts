@@ -198,6 +198,8 @@ interface WorkoutState {
   restoreFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
   /** History name of one finished session. Empty title is allowed (`.1007`). */
   nameFinishedHistoryLog: (sessionId: string, title: string) => CompletedWorkoutLog | null;
+  /** History confirm-gated import of the diary file `.1011` saved (`.1013`). */
+  applyImportedHistory: (next: CompletedWorkoutLog[]) => boolean;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -1030,6 +1032,17 @@ export const useWorkoutStore = create<WorkoutState>()(
         set({ workoutHistory: applied.history });
         enqueueWorkoutUpsert(applied.next);
         return applied.next;
+      },
+
+      applyImportedHistory: (next) => {
+        if (!Array.isArray(next)) return false;
+        const before = get().workoutHistory;
+        const beforeById = new Map(before.map((row) => [row.id, row]));
+        set({ workoutHistory: next });
+        for (const log of next) {
+          if (beforeById.get(log.id) !== log) enqueueWorkoutUpsert(log);
+        }
+        return true;
       },
 
       startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {

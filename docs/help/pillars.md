@@ -11,7 +11,7 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 - **Active workout** — live set logging with rest timer and PR detection. The open row honors weight, bodyweight, time, or assist. The next line on a bodyweight lift says BW, not 0 kg. Each lift can remember a work rest and a warmup rest. Tap a lift to see prior sessions of that movement. Empty invents nothing.
 - **Builder** — custom workouts and program templates
 - **Library** — searchable exercises with cues and alternatives. Hide a name so it leaves Add and search; history stays. Deleted sessions do not count in Library history.
-- **History** — past sessions (date, muscles, set count); tap a row to open that log and edit the sets you logged, then Save. Confirm before a destructive change. Empty invents nothing. Search by name, date, or lift. **Export this diary** saves the live diary as a file. Empty invents nothing. Deleted sessions stay out. You can also delete that one finished session after confirm — Restore is on History → Deleted sessions. Other days stay.
+- **History** — past sessions (date, muscles, set count); tap a row to open that log and edit the sets you logged, then Save. Confirm before a destructive change. Empty invents nothing. Search by name, date, or lift. **Export this diary** saves the live diary as a file. Empty invents nothing. Deleted sessions stay out. **Import this diary** brings that file back after you confirm. Empty invents nothing. You can also delete that one finished session after confirm — Restore is on History → Deleted sessions. Other days stay.
 
 ## Fuel
 

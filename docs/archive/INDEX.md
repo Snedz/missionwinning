@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-998-for-1013.md](./log/LOG-rotate-998-for-1013.md) | rotated 2026-08-26 for `.1013` Our export comes back (`.998`) |
 | [log/LOG-rotate-997-for-1012.md](./log/LOG-rotate-997-for-1012.md) | rotated 2026-08-25 for `.1012` This-movement title is the date or the name (`.997`) |
 | [log/LOG-rotate-996-for-1011.md](./log/LOG-rotate-996-for-1011.md) | rotated 2026-08-26 for `.1011` Export this diary (`.996`) |
 | [log/LOG-rotate-995-for-1010.md](./log/LOG-rotate-995-for-1010.md) | rotated 2026-08-25 for `.1010` Library skips deleted sessions (`.995`) |

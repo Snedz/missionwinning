@@ -41,6 +41,7 @@
  * `.1010` — library spark/count skip deleted sessions. Never a login wall.
  * `.1011` — export this diary from History. Never a login wall.
  * `.1012` — this-movement title is the date or the name. Never a login wall.
+ * `.1013` — import the diary file they saved. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

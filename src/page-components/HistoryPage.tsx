@@ -53,6 +53,7 @@ import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
 import { HistoryExport } from '@/components/history/HistoryExport';
+import { HistoryImport } from '@/components/history/HistoryImport';
 import {
   decideEditSave,
   type FinishedSessionDraft,
@@ -130,6 +131,7 @@ export function HistoryPage() {
   const [mergeOpen, setMergeOpen] = useState(false);
   const [startFromOpen, setStartFromOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
@@ -137,6 +139,7 @@ export function HistoryPage() {
   const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
   const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
   const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
+  const applyImportedHistory = useWorkoutStore((s) => s.applyImportedHistory);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
   const openLog = (log: CompletedWorkoutLog) => {
@@ -179,6 +182,12 @@ export function HistoryPage() {
 
   const openExport = () => {
     setExportOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const openImport = () => {
+    setImportOpen(true);
     setSelected(null);
     setEditing(false);
   };
@@ -463,6 +472,15 @@ export function HistoryPage() {
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-2 w-full min-h-[44px] tap-target"
+            data-testid="session-history-import-open"
+            onClick={openImport}
+          >
+            {t('historyImport', { defaultValue: 'Import this diary' })}
+          </Button>
           {deletedHistory.length > 0 ? (
             <Button
               type="button"
@@ -512,6 +530,15 @@ export function HistoryPage() {
             onClick={openExport}
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="session-history-import-open"
+            onClick={openImport}
+          >
+            {t('historyImport', { defaultValue: 'Import this diary' })}
           </Button>
           {deletedHistory.length > 0 ? (
             <Button
@@ -1128,6 +1155,35 @@ export function HistoryPage() {
             </DialogDescription>
           </DialogHeader>
           {exportOpen ? <HistoryExport history={workoutHistory} /> : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={importOpen} onOpenChange={(open) => !open && setImportOpen(false)}>
+        <DialogContent
+          className="max-w-md max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-import-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyImportTitle', { defaultValue: 'Import this diary' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyImportDesc', {
+                defaultValue:
+                  'Bring back the file you saved. Confirm before it writes. Empty invents nothing.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {importOpen ? (
+            <HistoryImport
+              history={workoutHistory}
+              onApply={(next) => {
+                applyImportedHistory(next);
+                setImportOpen(false);
+              }}
+              onCancel={() => setImportOpen(false)}
+            />
+          ) : null}
         </DialogContent>
       </Dialog>
 
