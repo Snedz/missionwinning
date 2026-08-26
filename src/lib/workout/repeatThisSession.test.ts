@@ -133,7 +133,7 @@ describe('decideRepeatThisSession (.1026)', () => {
         exercises: [
           {
             exerciseId: 'bench-press',
-            sets: [{ weight: 100 } as { weight: number }],
+            sets: [{ weight: 100 } as CompletedWorkoutLog['exercises'][number]['sets'][number]],
           },
         ],
       }),
