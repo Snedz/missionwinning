@@ -4,6 +4,7 @@ import type { MuscleGroup } from '@/types';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import {
   countExerciseHistory,
+  libraryExerciseVolumeSpark,
   filterExercises,
   uniqueMuscleGroups,
 } from './libraryFilters';
@@ -80,5 +81,30 @@ describe('libraryFilters', () => {
     ];
     assert.equal(countExerciseHistory(history, 'squats'), 2);
     assert.equal(countExerciseHistory(history, 'deadlift'), 0);
+  });
+
+  it('skips tombstones — deleted Monday is not a library session (.1010)', () => {
+    const history = [
+      {
+        deletedAt: '2026-08-25T12:00:00.000Z',
+        exercises: [
+          {
+            exerciseId: 'squats',
+            sets: [{ reps: 5, weight: 100, kind: 'normal' as const }],
+          },
+        ],
+      },
+      {
+        exercises: [
+          {
+            exerciseId: 'squats',
+            sets: [{ reps: 5, weight: 80, kind: 'normal' as const }],
+          },
+        ],
+      },
+    ];
+    assert.equal(countExerciseHistory(history, 'squats'), 1);
+    assert.deepEqual(libraryExerciseVolumeSpark(history, 'squats'), [400]);
+    assert.deepEqual(libraryExerciseVolumeSpark([], 'squats'), []);
   });
 });

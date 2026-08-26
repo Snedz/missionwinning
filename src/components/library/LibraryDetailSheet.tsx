@@ -10,7 +10,11 @@ import { Badge } from '@/components/ui/badge';
 import { getExerciseById } from '@/data/exercises';
 import type { Exercise } from '@/types';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
-import { countExerciseHistory } from '@/lib/libraryFilters';
+import {
+  PATTERN_FILTER_LABELS,
+  countExerciseHistory,
+  libraryExerciseVolumeSpark,
+} from '@/lib/libraryFilters';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import {
   formGuideStillUrl,
@@ -20,9 +24,7 @@ import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { Sparkline } from '@/components/today/Sparkline';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { countsTowardVolume } from '@/lib/workout/setKind';
 import { inferFormPattern } from '@/lib/formPatterns';
-import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
 import { hideExerciseNow } from '@/lib/workout/hideExercise';
 
 type Props = {
@@ -64,18 +66,7 @@ export function LibraryDetailSheet({
 
   const volumeSpark = useMemo(() => {
     if (!exercise) return [] as number[];
-    const vols: number[] = [];
-    for (const log of [...workoutHistory].reverse()) {
-      const block = log.exercises.find((e) => e.exerciseId === exercise.id);
-      if (!block) continue;
-      const vol = block.sets.reduce(
-        (s, set) => (countsTowardVolume(set.kind) ? s + set.reps * set.weight : s),
-        0
-      );
-      vols.push(vol);
-      if (vols.length >= 12) break;
-    }
-    return vols;
+    return libraryExerciseVolumeSpark(workoutHistory, exercise.id);
   }, [exercise, workoutHistory]);
 
   const guide = exercise ? getFormGuideOrCues(exercise.id, { exercise }) : null;
