@@ -1,6 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
 import { preserveSessionNote } from '@/lib/workout/sessionNote';
+import { preserveSessionTitle } from '@/lib/workout/nameFinishedSession';
 
 /**
  * Keep enough history for year-over-year comparisons. Truncation is reported
@@ -82,7 +83,10 @@ function pickWinner(a: CompletedWorkoutLog, b: CompletedWorkoutLog): CompletedWo
       winner = aCloud !== bCloud ? (aCloud ? a : b) : b;
     }
   }
-  return preserveSessionNote(winner, winner === a ? b : a);
+  return preserveSessionTitle(
+    preserveSessionNote(winner, winner === a ? b : a),
+    winner === a ? b : a
+  );
 }
 
 export interface MergeResult {

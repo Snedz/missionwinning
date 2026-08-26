@@ -57,6 +57,7 @@ import {
   applyDeleteFinishedSession,
   applyRestoreFinishedSession,
 } from "@/lib/workout/deleteFinishedSession";
+import { applyNameFinishedSession } from "@/lib/workout/nameFinishedSession";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
@@ -195,6 +196,8 @@ interface WorkoutState {
   deleteFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
   /** History restore of one tombstone. Empty / not-deleted / live invents nothing (`.1006`). */
   restoreFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
+  /** History name of one finished session. Empty title is allowed (`.1007`). */
+  nameFinishedHistoryLog: (sessionId: string, title: string) => CompletedWorkoutLog | null;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -1006,6 +1009,20 @@ export const useWorkoutStore = create<WorkoutState>()(
         const state = get();
         const applied = applyRestoreFinishedSession({
           sessionId,
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
+      },
+
+      nameFinishedHistoryLog: (sessionId, title) => {
+        const state = get();
+        const applied = applyNameFinishedSession({
+          sessionId,
+          title,
           history: state.workoutHistory,
           live: state.activeWorkout,
         });

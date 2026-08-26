@@ -36,6 +36,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
+10a12. `nameFinishedSession.ts` — private title on a finished History log (`.1007`). Empty is the date. Does not rename the template.  
 10a10. `hideExercise.ts` — hide / unhide a library name (`.1004`). History stays. Empty / missing / already-hidden invents nothing.  
 10a11. `startHistoryFrom.ts` — fold older diary days out of week strip / Coach / streak (`.1005`). Data stays. Empty / missing / future invents nothing. Confirm if it hides a lot.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
@@ -136,6 +137,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `hideExerciseSurface.test.ts` | Library / overflow door; Today one Start; Add omits hidden (`.1004`) |
 | `startHistoryFrom.test.ts` | Fold-from-date; empty / missing / future invent nothing; confirm when hiding a lot (`.1005`) |
 | `startHistoryFromSurface.test.ts` | History overflow door; week strip / Coach / streak fold; Today one Start (`.1005`) |
+| `nameFinishedSession.test.ts` | Private log title; empty is the date; missing / tomb / live invent nothing (`.1007`) |
+| `nameFinishedSessionSurface.test.ts` | History / receipt door; Today one Start (`.1007`) |
 | `backfillSession.test.ts` | Past-session mint: date + work applies; empty / 0/0/0 / future invent nothing; timing off is duration 0 (`.1000`) |
 | `backfillSessionSurface.test.ts` | History + Train overflow door; Today one Start; Edit stays on History (`.1000`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
