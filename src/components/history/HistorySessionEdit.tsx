@@ -23,6 +23,10 @@
  * Optional per-lift diary while editing
  * (`.1045`) — empty is valid (clear). Never
  * required. Over-cap truncates at 200.
+ * Optional exercise group while editing
+ * (`.1047`) — pair this lift with the next
+ * when 2+ lifts. Unpair clears this lift
+ * then strips orphans. Draft only.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -66,6 +70,7 @@ import {
 import { decideAppendFinishedExercise } from '@/lib/workout/appendFinishedExercise';
 import { EXERCISE_NOTE_MAX } from '@/lib/workout/exerciseNote';
 import { decidePatchFinishedExerciseNote } from '@/lib/workout/patchFinishedExerciseNote';
+import { decidePatchFinishedSuperset } from '@/lib/workout/patchFinishedSuperset';
 import {
   cycleFinishedSetKind,
   decidePatchFinishedSetKind,
@@ -314,10 +319,23 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSuperset = (exerciseIndex: number, pair: true | false) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedSuperset({
+        draft: current,
+        exerciseIndex,
+        pair,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
   const canRemoveLift = editing && draft.exercises.length >= 2;
+  const canSuperset = editing && draft.exercises.length >= 2;
 
   return (
     <div className="space-y-4">
@@ -371,6 +389,22 @@ export function HistorySessionEdit({
                   onClick={() => removeLift(exIdx)}
                 >
                   {t('historyRemoveLift', { defaultValue: 'Remove lift' })}
+                </Button>
+              ) : null}
+              {canSuperset ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-[44px] tap-target"
+                  data-testid={`session-history-superset-${exIdx}`}
+                  disabled={!ex.supersetGroup?.trim() && exIdx === draft.exercises.length - 1}
+                  onClick={() =>
+                    patchSuperset(exIdx, ex.supersetGroup?.trim() ? false : true)
+                  }
+                >
+                  {ex.supersetGroup?.trim()
+                    ? t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })
+                    : t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
                 </Button>
               ) : null}
             </div>

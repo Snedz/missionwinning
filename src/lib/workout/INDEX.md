@@ -15,7 +15,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
 2b2. `sessionClock.ts` — pause / resume the SESSION elapsed clock (`.1001`). Not rest. Not EMOM. Empty invents nothing.  
 2c. `customExercise.ts` — named custom on the live picker (`.990`). Local notebook. Unlimited. Empty invents nothing.  
-3. `superset.ts` — group of two or more (`groupWithNext` / `unpair` / `pairMark` A1/A2/A3), advance after log, rest gate, rest identity on first peer (`.749` / `.980` / concern `.979`)  
+3. `superset.ts` — group of two or more (`groupWithNext` / `unpair` / `pairMark` A1/A2/A3), advance after log, rest gate, rest identity on first peer (`.749` / `.980` / concern `.979`); History edit can pair / unpair a finished log (`.1047`)  
 4. `nextSetTargets.ts` — set-table-style next set suggestions  
 5. `percentLoad.ts` — a team-training app-style % of e1RM → absolute weight (`loadPct`)
 5b. `setRowPercent.ts` — optional % of a **known** 1-rep max on the live set row (`.981`). History edit can correct a logged `loadPct` (`.1044`). Empty invents nothing. Not Epley.  
@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a4c. `moveSessionDay.ts` — re-date a finished History log (`.1027`). Same id. Vacated day drops that row. Empty / tomb / future invents nothing. Not a new backfill.  
 10a4d. `copySessionDay.ts` — copy a finished History log onto another day (`.1030`). New id. Original stays. Empty / tomb / same-day / future invents nothing. Not Move. Not Repeat.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
-10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes loadPct (`.1044`) / tempo (`.1043`) / side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`). `draftsEqual` includes the lift note (`.1045`).  
+10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes loadPct (`.1044`) / tempo (`.1043`) / side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`). `draftsEqual` includes the lift note (`.1045`) and `supersetGroup` (`.1047`). `stripDraft` omits a blank group and runs `stripOrphanGroups`.  
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
@@ -47,6 +47,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6j. `patchFinishedSetTempo.ts` — optional e-p-c tempo on a finished History set (`.1043`). Empty is valid (clear). Empty invents nothing. Never clamps. Does not call `rememberLastTempo`. Save still `decideEditSave`.  
 10a6k. `patchFinishedSetLoadPct.ts` — optional % of a known 1-rep max on a finished History set (`.1044`). Empty is valid (clear). Empty invents nothing. Never clamps. Does not invent % from kg. Does not rewrite kg from %. Save still `decideEditSave`.  
 10a6l. `patchFinishedExerciseNote.ts` — optional per-lift diary on a finished History exercise (`.1045`). Empty is valid (clear). Over-cap truncates at 200. Does not rewrite sets / sessionNote / pin. Save still `decideEditSave`.  
+10a6m. `patchFinishedSuperset.ts` — optional exercise group on a finished History session (`.1047`). Pair with next. Unpair then `stripOrphanGroups`. One lift / junk empty. Already sharing with next is noop. Does not rewrite sets / notes / duration / name. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -177,6 +178,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `patchFinishedSetLoadPctSurface.test.ts` | History edit load-% field on weight rows only; Today one Start; tempo / L/R / RIR / RPE / set-kind stay (`.1044`) |
 | `patchFinishedExerciseNote.test.ts` | Finished-session lift note: empty / junk invent nothing; non-string empty; apply "paused"; blank clears; same text noop; over-cap truncates to 200; no sets/sessionNote write; clone; no lastNotesFor / LLM; Save still decideEditSave (`.1045`) |
 | `patchFinishedExerciseNoteSurface.test.ts` | History edit lift-note textarea; Today one Start; load-pct / tempo / L/R / RIR / RPE stay (`.1045`) |
+| `patchFinishedSuperset.test.ts` | Finished-session group: empty / junk / one-lift invent nothing; last + next empty; pair two shares id; already paired noop; unpair clears and strips orphan; no sets/notes write; clone; no store; Save still decideEditSave (`.1047`) |
+| `patchFinishedSupersetSurface.test.ts` | History edit superset control; Today one Start; session-note / lift-note / load-pct stay (`.1047`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
