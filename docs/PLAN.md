@@ -6,6 +6,68 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1027` Move this session to another day (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1027` — from master
+> `.1026` (`f3a273caeab0e0be22597f9a90227ccd12ce4140`
+> — Repeat this session).
+> Stamp stays `.1027`. Do not smash Repeat
+> `.1026` / set-table `.1025` / History volume
+> `.1024` / month `.1018` / edit-finished
+> `.997` / backfill `.1000`.
+> Edit-finished is sets. Backfill is a new
+> row. This is re-dating the existing
+> finished log. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Resume `.963` kept.
+> Brand: **Log a set. Offline.**
+
+Strong adjusts the date on the
+finished log. Missing: History
+detail re-dates that same row.
+The vacated day no longer shows
+it. The destination day does.
+
+### First check (done — hypothesis holds)
+
+Read tip `f3a273ca` / `.1026`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1026`.
+- Edit `.997` rewrites sets on the same id.
+- Backfill `.1000` mints a new row.
+- Session day is `localDateKeyFromIso(completedAt || startedAt)`.
+- Today is one `dock="start"`.
+- Repeat `.1026` copies into the live Start.
+
+### Done means
+
+History detail (finished live
+session only): one Move to another
+day action. Same id. Same sets.
+Clock stays. Vacated day drops
+that row. Destination day shows
+it. Empty / missing / tomb /
+future invents nothing. Tombs
+stay out unless restored. No
+second Start. No Today chrome.
+Guest.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/moveSessionDay.test.ts src/lib/workout/moveSessionDaySurface.test.ts src/lib/firstSetUngated.ts src/lib/today/leanDockStart.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1026` Repeat this session (2026-08-26)
 
 > **Frozen.** Implement only this section + root
