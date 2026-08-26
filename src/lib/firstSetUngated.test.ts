@@ -212,4 +212,9 @@ describe('firstSetUngated wiring', () => {
       assert.doesNotMatch(read(rel), SPEECH_IMPORT, `${rel} imports speech on the Active hop`);
     }
   });
+
+  it('this month as a file they own stays ungated (.1029)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1029` — this month as a local file they own/);
+  });
 });

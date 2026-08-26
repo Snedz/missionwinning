@@ -189,6 +189,9 @@ type HistoryStrings = {
   historyMonthEmpty: string;
   /** `.1028` — log onto this empty month day. */
   historyMonthDayLog: string;
+  /** `.1029` — this month as a local file they own. */
+  historyMonthFileSave: string;
+  historyMonthFileJson: string;
 };
 
 const en: HistoryStrings = {
@@ -373,6 +376,8 @@ const en: HistoryStrings = {
   historySessionFileJson: 'Save this session JSON',
   historyMonthEmpty: 'Nothing logged this month.',
   historyMonthDayLog: 'Log onto this day',
+  historyMonthFileSave: 'Save this month CSV',
+  historyMonthFileJson: 'Save this month JSON',
 };
 
 const es: HistoryStrings = {

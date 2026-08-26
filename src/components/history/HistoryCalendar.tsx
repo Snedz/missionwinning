@@ -23,14 +23,15 @@
  *
  * Month they own: a day is a button. Tap lists that day's live History
  * rows. Session count is a fact, not a fire count. Tombs stay out.
- * Start-from fold does not hide a mark.
+ * Start-from fold does not hide a mark. Viewed `monthKey` is lifted so
+ * Save this month (`.1029`) writes the month on screen.
  */
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Dumbbell } from 'lucide-react';
 import type { CompletedWorkoutLog } from '@/types';
-import { localDateKeyFromIso, localMonthKey, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
+import { localDateKeyFromIso, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
 import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/monthGrid';
 import { monthLiveFacts } from '@/lib/history/monthTheyOwn';
 import { cn } from '@/lib/utils';
@@ -43,6 +44,9 @@ type Props = {
   selectedKey?: string;
   /** Tap a date — parent lists that day's live rows. */
   onSelectDate?: (key: string) => void;
+  /** Local `YYYY-MM` currently shown — owned by History so the month file matches the screen. */
+  monthKey: string;
+  onMonthKeyChange: (key: string) => void;
 };
 
 function DayCell({
@@ -93,9 +97,15 @@ function DayCell({
   );
 }
 
-export function HistoryCalendar({ history, loggedKeys, selectedKey, onSelectDate }: Props) {
+export function HistoryCalendar({
+  history,
+  loggedKeys,
+  selectedKey,
+  onSelectDate,
+  monthKey,
+  onMonthKeyChange,
+}: Props) {
   const { t, i18n } = useTranslation();
-  const [monthKey, setMonthKey] = useState(() => localMonthKey());
   const facts = useMemo(() => monthLiveFacts(history), [history]);
 
   const grid = useMemo(() => {
@@ -148,7 +158,7 @@ export function HistoryCalendar({ history, loggedKeys, selectedKey, onSelectDate
               that still points left would send the reader the wrong way. */}
           <button
             type="button"
-            onClick={() => setMonthKey((k) => shiftLocalMonth(k, -1))}
+            onClick={() => onMonthKeyChange(shiftLocalMonth(monthKey, -1))}
             aria-label={t('historyCalPrev', { defaultValue: 'Previous month' })}
             className="flex h-11 w-11 items-center justify-center border-2 border-border text-foreground transition-colors hover:bg-muted"
           >
@@ -156,7 +166,7 @@ export function HistoryCalendar({ history, loggedKeys, selectedKey, onSelectDate
           </button>
           <button
             type="button"
-            onClick={() => setMonthKey((k) => shiftLocalMonth(k, 1))}
+            onClick={() => onMonthKeyChange(shiftLocalMonth(monthKey, 1))}
             aria-label={t('historyCalNext', { defaultValue: 'Next month' })}
             className="-ms-0.5 flex h-11 w-11 items-center justify-center border-2 border-border text-foreground transition-colors hover:bg-muted"
           >

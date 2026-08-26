@@ -15,6 +15,8 @@ import {
   patchBackfillSet,
 } from '@/lib/workout/backfillSession.ts';
 import { localDateKeyFromIso } from '@/lib/time/localDate.ts';
+import { decideExportDiary } from './exportDiary.ts';
+import { decideExportMonth, exportMonthFileName } from './exportMonth.ts';
 import { decideEmptyDayLog, decideMonthDaySelect, monthLiveFacts } from './monthTheyOwn.ts';
 
 function isoOnLocalDay(year: number, month: number, day: number, hour = 12): string {
@@ -41,6 +43,8 @@ const helperSrc = readFileSync(path.join(import.meta.dirname, 'monthTheyOwn.ts')
 
 const JULY_2 = localDateKeyFromIso(isoOnLocalDay(2026, 7, 2));
 const JUNE_20 = localDateKeyFromIso(isoOnLocalDay(2026, 6, 20));
+const JULY_MONTH = JULY_2.slice(0, 7);
+const JUNE_MONTH = JUNE_20.slice(0, 7);
 const TODAY = '2026-08-25';
 const YESTERDAY = '2026-08-24';
 const TOMORROW = '2026-08-26';
@@ -282,6 +286,71 @@ describe('decideEmptyDayLog (.1028)', () => {
       }).kind,
       'empty'
     );
+  });
+});
+
+describe('this month as a file they own (.1029)', () => {
+  it('empty month disables Save', () => {
+    const history = [log({ id: 'tue' })];
+    assert.deepEqual(decideExportMonth({ monthKey: '2026-01', history }), { kind: 'empty' });
+    assert.deepEqual(decideExportMonth({ monthKey: '', history }), { kind: 'empty' });
+    assert.deepEqual(decideExportMonth({ monthKey: '2026-13', history }), { kind: 'empty' });
+    assert.deepEqual(decideExportMonth({ monthKey: JULY_MONTH, history: [] }), { kind: 'empty' });
+  });
+
+  it('a live month writes only that month’s rows', () => {
+    const july = log({ id: 'jul', sessionTitle: 'July squat' });
+    const june = log({
+      id: 'jun',
+      sessionTitle: 'June bench',
+      startedAt: isoOnLocalDay(2026, 6, 20, 10),
+      completedAt: isoOnLocalDay(2026, 6, 20, 11),
+    });
+    const decided = decideExportMonth({ monthKey: JULY_MONTH, history: [july, june] });
+    assert.equal(decided.kind, 'ready');
+    if (decided.kind !== 'ready') return;
+    assert.equal(decided.rows[0]?.sessionTitle, 'July squat');
+    assert.equal(decided.csv.includes('June bench'), false);
+  });
+
+  it('paging to another month changes the file', () => {
+    const july = log({ id: 'jul', sessionTitle: 'July squat' });
+    const june = log({
+      id: 'jun',
+      sessionTitle: 'June bench',
+      startedAt: isoOnLocalDay(2026, 6, 20, 10),
+      completedAt: isoOnLocalDay(2026, 6, 20, 11),
+    });
+    const onScreen = decideExportMonth({ monthKey: JULY_MONTH, history: [july, june] });
+    const paged = decideExportMonth({ monthKey: JUNE_MONTH, history: [july, june] });
+    assert.equal(onScreen.kind, 'ready');
+    assert.equal(paged.kind, 'ready');
+    if (onScreen.kind !== 'ready' || paged.kind !== 'ready') return;
+    assert.notEqual(onScreen.csv, paged.csv);
+    assert.equal(onScreen.rows[0]?.sessionTitle, 'July squat');
+    assert.equal(paged.rows[0]?.sessionTitle, 'June bench');
+    assert.notEqual(
+      exportMonthFileName(JULY_MONTH, 'csv'),
+      exportMonthFileName(JUNE_MONTH, 'csv')
+    );
+  });
+
+  it('overflow diary export still writes the whole diary', () => {
+    const july = log({ id: 'jul', sessionTitle: 'July squat' });
+    const june = log({
+      id: 'jun',
+      sessionTitle: 'June bench',
+      startedAt: isoOnLocalDay(2026, 6, 20, 10),
+      completedAt: isoOnLocalDay(2026, 6, 20, 11),
+    });
+    const monthFile = decideExportMonth({ monthKey: JULY_MONTH, history: [july, june] });
+    const whole = decideExportDiary([july, june]);
+    assert.equal(whole.kind, 'ready');
+    assert.equal(monthFile.kind, 'ready');
+    if (whole.kind !== 'ready' || monthFile.kind !== 'ready') return;
+    assert.ok(whole.count > monthFile.count);
+    assert.equal(whole.csv.includes('June bench'), true);
+    assert.equal(monthFile.csv.includes('June bench'), false);
   });
 });
 

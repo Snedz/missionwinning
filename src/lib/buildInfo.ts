@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1028` Log onto this empty day from the month (from master `.1027` `c721fa5b36`; stamp stays `.1028`; Move `.1027` / Repeat `.1026` / set-table `.1025` / month `.1018` / edit `.997` / backfill `.1000` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1028";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1029` This month as a file they own (from master `.1028` `65f50302e76`; stamp stays `.1029`; empty-day `.1028` / Move `.1027` / Repeat `.1026` / session file `.1016` / diary `.1011` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1029";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
