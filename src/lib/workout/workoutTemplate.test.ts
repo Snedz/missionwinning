@@ -45,4 +45,20 @@ describe('templateSetsToLogged', () => {
     );
     assert.equal(empty[0]?.loadPct, undefined);
   });
+
+  it('copies kind, duration, and side when a Repeat payload carries them', () => {
+    const sets = templateSetsToLogged(
+      {
+        exerciseId: 'plank',
+        sets: [
+          { reps: 0, weight: 0, kind: 'warmup', durationSeconds: 45, side: 'L' },
+        ],
+      },
+      3000
+    );
+    assert.equal(sets[0]?.kind, 'warmup');
+    assert.equal(sets[0]?.durationSeconds, 45);
+    assert.equal(sets[0]?.side, 'L');
+    assert.equal(sets[0]?.completed, false);
+  });
 });

@@ -31,6 +31,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10a4. `startAgain.ts` — session-out Start this again from a finished log (`.991`). Wraps `templateFromCompletedLog` + `protectLiveStart`. Empty invents nothing. Not a shop.  
+10a4b. `repeatThisSession.ts` — History detail copies the sets they logged into the one live Start (`.1026`). Honest fields. Warmup stays. Empty invents nothing. Not a shop.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
 10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty invents nothing. Not Resume. Not Edit.  
@@ -110,7 +111,9 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `honorSavedRoutine.test.ts` | Save then Start uses their routine; Wednesday cite does not overwrite a saved PPL; empty invents nothing (`.960`) |
 | `startAgain.test.ts` | Finished log → Start; empty / live-keep invent nothing (`.991`) |
-| `startAgainSurface.test.ts` | Receipt + History wire Start this again; Today stays one Start; not a shop (`.991`) |
+| `startAgainSurface.test.ts` | Receipt keeps Start this again; History Repeat is `.1026`; Today stays one Start (`.991`) |
+| `repeatThisSession.test.ts` | Finished log → live Start; warmup / empty-load stay; missing invents nothing (`.1026`) |
+| `repeatThisSessionSurface.test.ts` | History detail Repeat; Today one Start; receipt `.991` stays (`.1026`) |
 | `movementHistory.test.ts` | Per-lift diary: empty / short invent nothing; warmup / tombstone skipped (`.993`); untitled title is the date, named is sessionTitle (`.1012`) |
 | `movementHistorySurface.test.ts` | Tap the open lift; title is `movementHistoryTitle`; Today stays one Start; no chart / paywall / Feed (`.993` / `.1012`) |
 | `setRowType.test.ts` | Type resolve + vest volume + duration parse; custom name is not a guess (`.994`) |

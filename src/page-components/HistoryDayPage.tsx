@@ -24,11 +24,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { buildDayRecord, isDayKey } from '@/lib/journey/dayRecord';
 import { sweepDaysWithData } from '@/lib/journey/daysWithData';
-import {
-  logFromTrainJournalId,
-  templateFromCompletedLog,
-} from '@/lib/workout/historyRetrain';
-import { decideStartAgain } from '@/lib/workout/startAgain';
+import { logFromTrainJournalId } from '@/lib/workout/historyRetrain';
+import { decideRepeatThisSession } from '@/lib/workout/repeatThisSession';
 import { track } from '@/lib/analytics';
 import { formatLocalDateKey } from '@/lib/time/localDate';
 
@@ -119,7 +116,9 @@ export function HistoryDayPage({ date }: Props) {
                 e.pillar === 'train'
                   ? logFromTrainJournalId(e.id, workoutHistory)
                   : null;
-              const canRetrain = trainLog ? !!templateFromCompletedLog(trainLog) : false;
+              const canRetrain = trainLog
+                ? decideRepeatThisSession({ log: trainLog }).kind !== 'empty'
+                : false;
               return (
                 <li key={e.id} className="border-2 border-border p-3">
                   <div className="flex items-baseline justify-between gap-3">
@@ -142,7 +141,7 @@ export function HistoryDayPage({ date }: Props) {
                       size="sm"
                       className="mt-2 min-h-[44px]"
                       onClick={() => {
-                        const decision = decideStartAgain({
+                        const decision = decideRepeatThisSession({
                           log: trainLog,
                           active: activeWorkout,
                         });
@@ -156,7 +155,7 @@ export function HistoryDayPage({ date }: Props) {
                         router.push('/active');
                       }}
                     >
-                      {t('historyTrainAgain', { defaultValue: 'Start this again' })}
+                      {t('historyRepeatSession', { defaultValue: 'Repeat this session' })}
                     </Button>
                   ) : null}
                 </li>
