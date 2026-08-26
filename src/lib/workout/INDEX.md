@@ -25,7 +25,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all); `workingReps` for BW volume (`.886`)
 9b. `victoryReceipt.ts` — vs-last session totals by **shape** (sorted unique lift ids, `.944`) + per-lift rows (`.713`). Close receipt ready-gate + private text keep (`.956`). Session notes ride the keep when present (`.982`)
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)
-9d. `sessionNote.ts` — optional private session diary; empty invents nothing; cloud upsert omits it (`.982`)  
+9d. `sessionNote.ts` — optional private session diary; empty invents nothing; cloud upsert omits it (`.982`); History detail can patch a finished log (`.1046`)  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover); Prev matches working-set index and stays quiet on warmup (`.966`)  
 10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
@@ -52,6 +52,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
 10a12. `nameFinishedSession.ts` — private title on a finished History log (`.1007`). Empty is the date. Does not rename the template.  
 10a13. `editSessionDuration.ts` — edit the logged session clock on a finished History log (`.1035`). Same id. Same sets. Same date. `0` clears. Empty invents nothing. Never invents elapsed from `startedAt`.  
+10a14. `patchFinishedSessionNote.ts` — optional private session note on a finished History log (`.1046`). Empty is valid (clear). Over-cap truncates at 500. Own Save. Does not smash `decideEditSave`. Does not rewrite sets / duration / name / lift notes.  
 10a10. `hideExercise.ts` — hide / unhide a library name (`.1004`). History stays. Empty / missing / already-hidden invents nothing.  
 10a11. `startHistoryFrom.ts` — fold older diary days out of week strip / Coach / streak (`.1005`). Data stays. Empty / missing / future invents nothing. Confirm if it hides a lot.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
@@ -188,6 +189,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `nameFinishedSessionSurface.test.ts` | History / receipt door; Today one Start (`.1007`) |
 | `editSessionDuration.test.ts` | Logged session clock; empty / junk / negative / over-cap invent nothing; 0 clears; 90 minutes apply; startedAt unchanged (`.1035`) |
 | `editSessionDurationSurface.test.ts` | History detail door; Today one Start; Name / Reorder / Move / Copy stay (`.1035`) |
+| `patchFinishedSessionNote.test.ts` | Finished-session note: empty / junk invent nothing; non-string empty; apply "felt heavy"; blank clears; same text noop; live/tomb noop; over-cap truncates to 500; no sets/duration/name/lift-note write; clone; no store / LLM (`.1046`) |
+| `patchFinishedSessionNoteSurface.test.ts` | History detail session-note field; own Save; Today one Start; Duration / Name / lift note stay (`.1046`) |
 | `backfillSession.test.ts` | Past-session mint: date + work applies; empty / 0/0/0 / future invent nothing; timing off is duration 0 (`.1000`); empty-day date prefill (`.1028`) |
 | `backfillSessionSurface.test.ts` | History + Train overflow door; Today one Start; Edit stays on History (`.1000`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |

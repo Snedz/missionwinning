@@ -45,6 +45,7 @@
 | `moveFinishedHistoryLog` | History re-date of one finished session. Same id. Vacated day drops it (`.1027`) |
 | `copyFinishedHistoryLog` | History copy of one finished session onto another day. New id. Original stays (`.1030`) |
 | `durationFinishedHistoryLog` | History edit of the logged session clock. Same id. Same sets. Same date. 0 clears (`.1035`) |
+| `noteFinishedHistoryLog` | History Save of a finished session note. Same id. Empty clears. Durable outbox. Does not smash the receipt jot (`.1046`) |
 | `applyImportedHistory` | History confirm-gated import of the diary file `.1011` saved (`.1013`). Confirm lives in the helper. |
 | `loadFromCloud` | Merge Supabase history with local |
 | `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`). Also enqueues the open session (`.958`) |
