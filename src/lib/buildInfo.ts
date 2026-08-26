@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1011` Export this diary (from master `.1010` Library skips deleted sessions `4d128292`; stamp stays `.1011`; keep library skip tombs `.1010` + BW cite `.1009` + search `.1008` + name `.1007` + restore `.1006`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1011";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1012` This-movement title is the date or the name (from master `.1011` Export this diary `8df323949`; stamp stays `.1012`; keep export `.1011` + library skip `.1010` + BW cite `.1009` + name `.1007`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1012";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

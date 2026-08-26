@@ -6,6 +6,55 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1012` This-movement title is the date or the name (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1012` — from master
+> `.1011` (`8df323949` — Export this diary).
+> Stamp stays `.1012`. Do not bump. Title
+> stays **This-movement title is the date
+> or the name (.1012)**. Same PR. Do not
+> merge this PR yourself. Export `.1011`
+> + Library skip `.1010` + BW cite `.1009`
+> + Name `.1007` are on master. Do not
+> smash them. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+History list already uses
+`historySessionLabel`. This-movement
+still bolds the template.
+
+### First check (done — hypothesis holds)
+
+Read tip `8df323949` / `.1011`.
+Confirmed:
+
+- `MovementHistorySheet` bolds
+  `{row.workoutName}`.
+- `listMovementHistory` has no
+  `sessionTitle`.
+- `historySessionLabel` is the one
+  home (`.1007`).
+
+### Done means
+
+This-movement title is the date or
+the private name. Template is
+subtitle only when it differs.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/movementHistory.test.ts src/lib/workout/movementHistorySurface.test.ts src/lib/workout/nameFinishedSession.test.ts
+```
+
+---
+
 ## Frozen plan — `.1011` Export this diary (2026-08-26)
 
 > **Frozen.** Implement only this section + root

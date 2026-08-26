@@ -14,7 +14,7 @@ const BANNED =
   /UnlockButton|isPremium|\/bundle|History1RMChart|Sparkline|projected.?max|permalink|discord\.com|WeChat|four-scene|Force Sync|Session Expired|SignInPrompt/i;
 const FEED = /likes|Top 8|Feed permalink|shame slope/i;
 
-describe('movement history surface lock (.993)', () => {
+describe('movement history surface lock (.993 / .1012)', () => {
   it('header name is the open control; sheet empty copy matches; footer is Close', () => {
     const header = read('src/components/workout/ActiveExerciseHeader.tsx');
     assert.match(header, /data-testid="movement-history-open"/);
@@ -35,6 +35,9 @@ describe('movement history surface lock (.993)', () => {
     assert.doesNotMatch(sheet, BANNED);
     assert.doesNotMatch(sheet, FEED);
     assert.doesNotMatch(sheet, /onTrack|consistency|streak|projected/i);
+    assert.match(sheet, /movementHistoryTitle/);
+    assert.match(sheet, /historySessionLabel|movementHistoryTitle/);
+    assert.doesNotMatch(sheet, /font-semibold">\{row\.workoutName\}/);
   });
 
   it('Today stays one Start; lean and /private do not import movement history', () => {

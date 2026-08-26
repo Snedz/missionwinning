@@ -12,6 +12,7 @@ import { formatLocalDateKey } from '@/lib/time/localDate';
 import {
   formatMovementHistorySets,
   isShortMovementHistory,
+  movementHistoryTitle,
   type MovementHistoryRow,
 } from '@/lib/workout/movementHistory';
 import type { SetRowType } from '@/types';
@@ -75,7 +76,11 @@ export function MovementHistorySheet({
                     {formatLocalDateKey(row.dateKey, i18n.language)}
                   </p>
                 ) : null}
-                <p className="text-sm font-semibold">{row.workoutName}</p>
+                <p className="text-sm font-semibold">{movementHistoryTitle(row)}</p>
+                {row.workoutName &&
+                row.workoutName !== movementHistoryTitle(row) ? (
+                  <p className="text-xs text-muted-foreground">{row.workoutName}</p>
+                ) : null}
                 <p className="text-sm tabular-nums text-muted-foreground">
                   {formatMovementHistorySets(row.sets, rowType)}
                 </p>
