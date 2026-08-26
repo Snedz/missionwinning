@@ -6,6 +6,82 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1030` Copy this session onto another day (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1030` — from master
+> `.1029` (`fad56f1f3b2d569ad297392b6ec4caf0f1b7a4c0`
+> — This month as a file they own).
+> Stamp stays `.1030`. Do not smash month
+> file `.1029` / empty-day `.1028` / Move
+> `.1027` / Repeat `.1026` / typed
+> backfill `.1000`.
+> New row. Original stays. Not Move
+> (same id). Not Repeat (live Start).
+> Do not merge this PR yourself. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Resume `.963` kept. Brand: **Log a set.
+> Offline.**
+
+Hevy duplicate onto a date.
+Missing: copy THAT finished History
+log onto another day as a new row.
+Original stays on the source day.
+
+### First check (done — hypothesis holds)
+
+Read tip `fad56f1f3b2d569ad297392b6ec4caf0f1b7a4c0` / `.1029`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1029`.
+- Move `.1027` is `decideMoveSessionDay` /
+  `applyMoveSessionDay` / same id /
+  vacated day drops that row.
+- Repeat `.1026` is
+  `decideRepeatThisSession` → live Start.
+- Empty-day `.1028` plus prefills
+  backfill. Typed backfill `.1000`
+  mints a typed row.
+- Today is one `dock="start"`.
+
+### Done means
+
+History detail (finished live
+session only): one **Copy to
+another day** (date + save).
+Outline, 44px, not primary-fill.
+New id + new clientId
+(`newClientId`). Same sets. Same
+name/title/notes. Duration copied
+as logged, not invented. Shift
+startedAt/completedAt by local
+calendar days via `localDayDelta`
+/ `shiftIsoByLocalDays`. Source
+day still lists the original.
+Destination day lists the copy.
+Empty / missing / tomb /
+live-open / junk / future invents
+nothing. Same-day is noop. Store
+`copyFinishedHistoryLog` enqueues
+the copy on the durable outbox.
+Never wipe the live set. Guest.
+First set ungated. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/moveSessionDay.test.ts src/lib/workout/repeatThisSession.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1029` This month as a file they own (2026-08-26)
 
 > **Frozen.** Implement only this section + root

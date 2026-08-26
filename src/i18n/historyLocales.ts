@@ -48,6 +48,9 @@ type HistoryStrings = {
   /** `.1027` — re-date this finished session. */
   historyMoveDayLabel: string;
   historyMoveDaySave: string;
+  /** `.1030` — copy this finished session onto another day. */
+  historyCopyDayLabel: string;
+  historyCopyDaySave: string;
   /** K11 — short label on session list rows. */
   historyTrainAgainShort: string;
   historyTableSet: string;
@@ -239,6 +242,8 @@ const en: HistoryStrings = {
   historyRepeatSession: 'Repeat this session',
   historyMoveDayLabel: 'Move to another day',
   historyMoveDaySave: 'Move to this day',
+  historyCopyDayLabel: 'Copy to another day',
+  historyCopyDaySave: 'Copy to this day',
   historyTrainAgainShort: 'Again',
   historyTableSet: 'Set',
   historyTableReps: 'Reps',

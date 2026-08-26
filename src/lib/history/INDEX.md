@@ -1,6 +1,6 @@
 # src/lib/history/
 
-> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), this session as a file they own (`.1016`), empty-load Last cite (`.1017`), the month they own (`.1018`), Repeat this session into the live Start (`.1026`), move this session to another day (`.1027`), log onto this empty day from the month (`.1028`), and this month as a file they own (`.1029`).
+> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), this session as a file they own (`.1016`), empty-load Last cite (`.1017`), the month they own (`.1018`), Repeat this session into the live Start (`.1026`), move this session to another day (`.1027`), log onto this empty day from the month (`.1028`), this month as a file they own (`.1029`), and copy this session onto another day (`.1030`).
 
 ## Read order
 

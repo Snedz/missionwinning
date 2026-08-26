@@ -41,6 +41,9 @@ Open that session in History and tap **Repeat this session**. It copies the sets
 **How do I move a session to another day?**  
 Open that session in History and pick a new date under **Move to another day**. The session leaves the old day and shows on the new one. Sets stay. Empty, deleted, or a future day invents nothing. This is not a new session and not a share.
 
+**How do I copy a session onto another day?**  
+Open that session in History and pick a date under **Copy to another day**. A new session lands on that day with the same sets. The original stays. Empty, deleted, same day, or a future day invents nothing. This is not Repeat and not a share.
+
 **How do I save one session as a file?**  
 On History, open that session. **Save this session CSV** writes only that log (JSON is the same rows). Empty or deleted stays off. The file is on this device — not a public link, not an email. You can Import this diary later if you want that session back.
 
