@@ -6,6 +6,51 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1010` Library skips deleted sessions (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1010` — from master
+> `.1009` (`20faec3ab` — Next cite is BW,
+> not 0 kg). Stamp stays `.1010`. Do not
+> bump. Title stays **Library skips
+> deleted sessions (.1010)**. Same PR.
+> Do not merge this PR yourself. BW cite
+> `.1009` + Search `.1008` + Name `.1007`
+> + Restore `.1006` are on master. Do
+> not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Delete a bogus Monday. History skips
+the tomb. Library still counts it.
+
+### First check (done — hypothesis holds)
+
+Read tip `20faec3ab` / `.1009`.
+Confirmed:
+
+- `countExerciseHistory` has no
+  `deletedAt`.
+- Spark in `LibraryDetailSheet`
+  walks reversed history with no skip.
+- History charts / this-movement
+  history already skip tombs.
+
+### Lock
+
+1. Library count + spark skip
+   `deletedAt`. Tomb-only is empty.
+2. Empty invents nothing.
+3. No Today chrome. No Feed.
+4. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1009` Next cite is BW, not 0 kg (2026-08-25)
 
 > **Frozen.** Implement only this section + root

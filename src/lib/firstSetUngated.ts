@@ -38,6 +38,7 @@
  * `.1007` — name this finished session. Never a login wall.
  * `.1008` — search the History list. Never a login wall.
  * `.1009` — live next cite is BW, not 0 kg. Never a login wall.
+ * `.1010` — library spark/count skip deleted sessions. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

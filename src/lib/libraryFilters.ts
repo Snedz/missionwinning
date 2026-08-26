@@ -1,5 +1,6 @@
 import type { Exercise, ProgramTag } from '@/types';
 import { compareText } from '@/lib/i18n/formatLocale';
+import { countsTowardVolume, type SetKind } from '@/lib/workout/setKind';
 import {
   FORM_PATTERN_IDS,
   inferFormPattern,
@@ -70,9 +71,41 @@ export function uniqueMuscleGroups(exercises: Exercise[], lang: string): string[
   return [...set].sort((a, b) => compareText(a, b, lang));
 }
 
+type LibraryHistoryLog = {
+  deletedAt?: string | null;
+  exercises: {
+    exerciseId: string;
+    sets?: { reps: number; weight: number; kind?: SetKind }[];
+  }[];
+};
+
 export function countExerciseHistory(
-  workoutHistory: { exercises: { exerciseId: string }[] }[],
+  workoutHistory: LibraryHistoryLog[],
   exerciseId: string
 ): number {
-  return workoutHistory.filter((w) => w.exercises.some((e) => e.exerciseId === exerciseId)).length;
+  return workoutHistory.filter(
+    (w) =>
+      !w.deletedAt && w.exercises.some((e) => e.exerciseId === exerciseId)
+  ).length;
+}
+
+/** Oldest → newest, cap 12. Tombs stay out. Empty invents nothing. */
+export function libraryExerciseVolumeSpark(
+  workoutHistory: LibraryHistoryLog[],
+  exerciseId: string,
+  cap = 12
+): number[] {
+  const vols: number[] = [];
+  for (const log of [...workoutHistory].reverse()) {
+    if (log.deletedAt) continue;
+    const block = log.exercises.find((e) => e.exerciseId === exerciseId);
+    if (!block) continue;
+    const vol = (block.sets ?? []).reduce(
+      (s, set) => (countsTowardVolume(set.kind) ? s + set.reps * set.weight : s),
+      0
+    );
+    vols.push(vol);
+    if (vols.length >= cap) break;
+  }
+  return vols;
 }
