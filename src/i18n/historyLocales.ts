@@ -165,6 +165,17 @@ type HistoryStrings = {
   historyExportDesc: string;
   historyExportSave: string;
   historyExportJson: string;
+  /** `.1013` — file-in of the diary `.1011` saved. */
+  historyImport: string;
+  historyImportTitle: string;
+  historyImportDesc: string;
+  historyImportPick: string;
+  historyImportMergeNamed: string;
+  historyImportConfirm: string;
+  historyImportCancel: string;
+  historyImportReplace: string;
+  historyImportReplaceConfirm: string;
+  historyImportEmptyDesc: string;
   historyStartFromCancel: string;
 };
 
@@ -331,6 +342,18 @@ const en: HistoryStrings = {
     'Save the sessions you logged as a file. Empty invents nothing. Deleted sessions stay out.',
   historyExportSave: 'Save diary CSV',
   historyExportJson: 'Save diary JSON',
+  historyImport: 'Import this diary',
+  historyImportTitle: 'Import this diary',
+  historyImportDesc:
+    'Bring back the file you saved. Confirm before it writes. Empty invents nothing.',
+  historyImportPick: 'Choose diary file',
+  historyImportMergeNamed:
+    'Merge {{count}} sessions from this file into your diary. Existing sessions stay.',
+  historyImportConfirm: 'Merge {{count}} sessions from this file',
+  historyImportCancel: 'Cancel',
+  historyImportReplace: 'Replace diary with this file…',
+  historyImportReplaceConfirm: 'Replace the diary with {{count}} sessions from this file',
+  historyImportEmptyDesc: 'Empty invents nothing — pick the CSV or JSON you saved.',
 };
 
 const es: HistoryStrings = {

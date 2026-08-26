@@ -35,6 +35,9 @@ On History, type in the search box. It matches the name you gave that session, t
 **How do I export my diary?**  
 On History, open **Export this diary**. Save a CSV of the sessions you logged (JSON is the same rows). Empty invents nothing — Save stays off until you have a live session. Deleted sessions stay out. Folding week 1 from a date does not shrink the file. This is a file on this device, not a share or an email. Account interchange CSV stays on Account.
 
+**How do I import my diary?**  
+On History, open **Import this diary**. Pick the Mission Winning CSV or JSON you saved. Confirm merge before it writes — existing sessions stay. Cancel leaves the diary unchanged. Empty or unreadable invents nothing. Deleted sessions stay deleted unless that file has the live row. This is not Hevy import and not a share.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
