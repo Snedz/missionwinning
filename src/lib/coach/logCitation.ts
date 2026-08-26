@@ -45,6 +45,7 @@ import { getExerciseById } from '@/data/exercises';
 import { formatLocalDate, formatLocalNumber } from '@/lib/i18n/formatLocale';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
+import { formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
 
 /** A quotable fact from the device's own log, or the absence of one. */
 export type CoachLogCitation =
@@ -160,8 +161,14 @@ export function coachCitationFact(
   if (citation.kind === 'session') {
     return when ? `${citation.sessionName} · ${when}` : citation.sessionName;
   }
-  const load = `${formatLocalNumber(citation.weight, lang)}${unitLabel}`;
-  const set = `${citation.exerciseName} ${load} × ${formatLocalNumber(citation.reps, lang)}`;
+  const set =
+    !Number.isFinite(citation.weight) || citation.weight <= 0
+      ? `${citation.exerciseName} ${formatSetLoadLine({
+          reps: citation.reps,
+          weight: citation.weight,
+          unitLabel,
+        })}`
+      : `${citation.exerciseName} ${formatLocalNumber(citation.weight, lang)}${unitLabel} × ${formatLocalNumber(citation.reps, lang)}`;
   return when ? `${set} · ${when}` : set;
 }
 
