@@ -6,6 +6,104 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1047` Superset on a finished session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1047` — from master
+> `.1046` (`89437956d39fbd93fc5a6b0bd9640bb7194e80cc`
+> — Session note on a finished session).
+> Stamp stays `.1047`. Do not smash Session
+> note `.1046` / Lift note `.1045` / Load %
+> `.1044` / Tempo `.1043` / L/R `.1042` /
+> RIR `.1041` / RPE `.1040` / Set kind
+> `.1039` / Remove lift `.1038` / Add
+> `.1037` / Replace `.1036` / Reorder
+> `.1034` / remove-set / Name `.1007` /
+> Edit sets `.997` / Delete-session
+> `.1003`. Resume `.963` stays. Live
+> pause `.1001` stays on Train. Live
+> superset `.980` stays on Train.
+> Session note `.983` stays. Pin `.996`
+> stays. Same finished log. Same id.
+> Pair this lift with the next. Unpair
+> clears this lift then
+> `stripOrphanGroups`. One lift / junk
+> indexes empty. Already sharing with
+> next → noop. Not a new SetKind. Not
+> marketplace circuits. Does not rewrite
+> sets / notes / duration / name. Save
+> still confirm-gated `decideEditSave`.
+> Reuse `stripOrphanGroups`. Do not
+> rewrite pair-mark grammar. Paper/ink,
+> existing tokens only. Do not merge
+> this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First
+> set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.**
+
+Optional exercise group (superset) on a
+finished History session. Live already
+has `superset.ts` / `supersetGroup` /
+`stripOrphanGroups` / "Superset w/ next"
+(`.980`). History edit cannot pair or
+unpair lifts on a finished log.
+
+### First check (done — hypothesis holds)
+
+Read tip `89437956d39fbd93fc5a6b0bd9640bb7194e80cc` / `.1046`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1046`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live group is
+  `superset.ts` / `stripOrphanGroups`.
+- Session note `.1046` / lift note
+  `.1045` stay on History.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSuperset({ draft,
+exerciseIndex, pair })`.
+Empty on missing draft / junk indexes /
+one-lift session. Empty on last lift +
+pair-with-next. `pair` true / `'next'`
+shares a group id with the next
+exercise (reuse existing group on
+either side; else mint a short id).
+Same group already → noop. `pair` false
+/ `''` / blank clears this lift's
+`supersetGroup`, then
+`stripOrphanGroups`. Already unpaired
+→ noop. Apply via clone of exercises.
+Does not rewrite sets / notes /
+`sessionNote` / duration. `draftsEqual`
+includes `supersetGroup` (trimmed /
+omitted equal). `stripDraft` omits an
+undefined group and runs
+`stripOrphanGroups`. `HistorySessionEdit`
+when editing and 2+ lifts: outline
+44px control per lift. testid
+`session-history-superset-{exIdx}`.
+Pair with next when a next lift exists;
+unpair when grouped. Draft only. Save
+still `decideEditSave`. Guest. First
+set ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSuperset.test.ts src/lib/workout/patchFinishedSupersetSurface.test.ts src/lib/workout/patchFinishedSessionNote.test.ts src/lib/workout/patchFinishedSessionNoteSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1045` Lift note on a finished exercise (2026-08-26)
 
 > **Frozen.** Implement only this section + root

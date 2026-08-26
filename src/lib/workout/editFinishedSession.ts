@@ -18,6 +18,7 @@ import { countsTowardVolume } from '@/lib/workout/setKind';
 import { normalizeExerciseNote } from '@/lib/workout/exerciseNote';
 import { attachSessionNote } from '@/lib/workout/sessionNote';
 import { resolveSetRowType, setRowHasWork, setRowVolume } from '@/lib/workout/setRowType';
+import { stripOrphanGroups } from '@/lib/workout/superset';
 
 export type FinishedSetDraft = CompletedWorkoutLog['exercises'][number]['sets'][number];
 export type FinishedExerciseDraft = CompletedWorkoutLog['exercises'][number];
@@ -120,8 +121,12 @@ export function isDestructiveEdit(
   return false;
 }
 
+function groupKey(group: string | undefined): string {
+  return group?.trim() ?? '';
+}
+
 function stripDraft(draft: FinishedSessionDraft): FinishedExerciseDraft[] {
-  return draft.exercises
+  const exercises = draft.exercises
     .map((ex) => {
       const next: FinishedExerciseDraft = {
         ...ex,
@@ -141,9 +146,13 @@ function stripDraft(draft: FinishedSessionDraft): FinishedExerciseDraft[] {
       const note = normalizeExerciseNote(ex.note);
       if (note === undefined) delete next.note;
       else next.note = note;
+      const group = groupKey(ex.supersetGroup);
+      if (!group) delete next.supersetGroup;
+      else next.supersetGroup = group;
       return next;
     })
     .filter((ex) => ex.exerciseId && ex.sets.length > 0);
+  return stripOrphanGroups(exercises);
 }
 
 function volumeOf(exercises: FinishedExerciseDraft[]): number {
@@ -164,6 +173,7 @@ function draftsEqual(
     const b = draft.exercises[i];
     if (!a || !b || a.exerciseId !== b.exerciseId) return false;
     if (normalizeExerciseNote(a.note) !== normalizeExerciseNote(b.note)) return false;
+    if (groupKey(a.supersetGroup) !== groupKey(b.supersetGroup)) return false;
     if ((a.sets ?? []).length !== (b.sets ?? []).length) return false;
     for (let j = 0; j < a.sets.length; j += 1) {
       if (!sameEvidence(a.sets[j], b.sets[j])) return false;
