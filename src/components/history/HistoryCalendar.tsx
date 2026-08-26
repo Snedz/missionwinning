@@ -191,7 +191,9 @@ export function HistoryCalendar({
           data-testid="history-calendar-this-month"
           onClick={() => {
             onMonthKeyChange(thisMonth.monthKey);
-            onSelectDate?.(thisMonth.dateKey);
+            if (selectedKey !== thisMonth.dateKey) {
+              onSelectDate?.(thisMonth.dateKey);
+            }
           }}
         >
           {t('historyCalThisMonth', { defaultValue: 'This month' })}
