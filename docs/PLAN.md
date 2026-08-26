@@ -6,6 +6,68 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1026` Repeat this session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1026` — from master
+> `.1025` (`24f6964188faab0fc6a0a3ad90b1ac0b87f7e135`
+> — Completed set-table empty load is BW, not 0).
+> Stamp stays `.1026`. Do not smash set-table
+> `.1025` / History volume `.1024` / citation
+> `.1023` / heatmap `.1022` / month `.1018`.
+> Session-Start `.991` stays save-as-template
+> / Start this again on the receipt. This is
+> copy finished → live Start (today/now).
+> Do not merge this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First
+> set stays ungated. Today stays one
+> Start. Resume `.963` kept. Brand:
+> **Log a set. Offline.**
+
+Hevy copies the workout in one tap.
+Strong is save-template then start.
+Missing: History detail copies the
+sets they actually logged into the
+one live Start.
+
+### First check (done — hypothesis holds)
+
+Read tip `24f69641` / `.1025`.
+Confirmed:
+
+- `decideStartAgain` (`.991`) wraps
+  `templateFromCompletedLog` — last
+  loads as targets, invents 8 reps,
+  drops warmup.
+- History detail already has Save as
+  routine (notebook). Receipt keeps
+  Start this again.
+- Today is one `dock="start"`.
+- `startWorkout` honors `protectLiveStart`.
+
+### Done means
+
+History detail (finished live session
+only): one Repeat this session action.
+Copies honest logged exercises/sets
+(including warmup and empty-load 0).
+Empty / missing / tomb invents nothing.
+Lands on the existing Start. No second
+Start. No Today chrome. Guest.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/repeatThisSession.test.ts src/lib/workout/repeatThisSessionSurface.test.ts src/lib/firstSetUngated.ts src/lib/today/leanDockStart.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1024` History empty-load volume is reps, not 0 kg (2026-08-26)
 
 > **Frozen.** Label `2026.07-unified.1024` from master `.1023`
