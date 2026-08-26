@@ -120,7 +120,12 @@ export function formatPrevSetLabels(
     if (opts?.plusLoad) {
       return formatPrevPlusLoadLabel(last.reps, last.weight, opts.bodyweightLabel ?? 'BW');
     }
-    return `${last.reps} × ${last.weight}`;
+    return formatSetRowPrev({
+      type: 'weight',
+      reps: last.reps,
+      weight: last.weight,
+      bodyweightLabel: opts?.bodyweightLabel,
+    });
   });
 }
 
