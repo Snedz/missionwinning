@@ -227,4 +227,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1031` — This month on the History calendar/);
   });
+
+  it('trained day session count stays ungated (.1032)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1032` — trained day shows how many live sessions/);
+  });
 });
