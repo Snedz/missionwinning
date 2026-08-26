@@ -50,6 +50,7 @@ import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
 import { HistorySessionName } from '@/components/history/HistorySessionName';
+import { HistorySessionDuration } from '@/components/history/HistorySessionDuration';
 import { HistorySessionMove } from '@/components/history/HistorySessionMove';
 import { HistorySessionCopy } from '@/components/history/HistorySessionCopy';
 import { HistorySessionFile } from '@/components/history/HistorySessionFile';
@@ -148,6 +149,7 @@ export function HistoryPage() {
   const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
   const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
   const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
+  const durationFinishedHistoryLog = useWorkoutStore((s) => s.durationFinishedHistoryLog);
   const moveFinishedHistoryLog = useWorkoutStore((s) => s.moveFinishedHistoryLog);
   const copyFinishedHistoryLog = useWorkoutStore((s) => s.copyFinishedHistoryLog);
   const applyImportedHistory = useWorkoutStore((s) => s.applyImportedHistory);
@@ -1053,6 +1055,18 @@ export function HistoryPage() {
                     onSave={(sessionId, title) => {
                       const named = nameFinishedHistoryLog(sessionId, title);
                       if (named) setSelected(named);
+                    }}
+                  />
+                ) : null}
+                {!selected.deletedAt ? (
+                  <HistorySessionDuration
+                    key={`duration-${selected.id}-${selected.durationSeconds}`}
+                    sessionId={selected.id}
+                    history={workoutHistory}
+                    live={activeWorkout}
+                    onSave={(sessionId, durationSeconds) => {
+                      const edited = durationFinishedHistoryLog(sessionId, durationSeconds);
+                      if (edited) setSelected(edited);
                     }}
                   />
                 ) : null}

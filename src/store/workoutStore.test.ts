@@ -891,4 +891,45 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().copyFinishedHistoryLog(monday.id, '2099-01-01'), null);
     assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
   });
+
+  await t.test('durationFinishedHistoryLog updates duration and leaves the live set (.1035)', async () => {
+    reset();
+    useWorkoutStore.getState().startWorkout('Live', template('row', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const monday = {
+      id: 'log-mon-1035',
+      clientId: 'cid-mon-1035',
+      revision: 1,
+      workoutName: 'Monday',
+      startedAt: '2026-08-17T10:00:00.000Z',
+      completedAt: '2026-08-17T11:00:00.000Z',
+      durationSeconds: 3600,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(monday));
+    const edited = useWorkoutStore.getState().durationFinishedHistoryLog(monday.id, 5400);
+    assert.ok(edited);
+    assert.equal(edited?.id, monday.id);
+    assert.equal(edited?.durationSeconds, 5400);
+    assert.equal(edited?.startedAt, monday.startedAt);
+    assert.equal(edited?.completedAt, monday.completedAt);
+    assert.equal(edited?.exercises[0]?.sets[0]?.weight, 135);
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)
+        ?.durationSeconds,
+      5400
+    );
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().durationFinishedHistoryLog('', 90), null);
+    assert.equal(useWorkoutStore.getState().durationFinishedHistoryLog(monday.id, 5400), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    const cleared = useWorkoutStore.getState().durationFinishedHistoryLog(monday.id, 0);
+    assert.ok(cleared);
+    assert.equal(cleared?.durationSeconds, 0);
+    assert.equal(cleared?.startedAt, monday.startedAt);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+  });
 });

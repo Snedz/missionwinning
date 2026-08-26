@@ -6,6 +6,75 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1035` Edit this session's logged duration (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1035` — from master
+> `.1034` (`a075f994fb08f5caa30ef1e997d3779932535272`
+> — Reorder lifts on this finished session).
+> Stamp stays `.1035`. Do not smash Reorder
+> `.1034` / Name `.1007` / Edit sets `.997` /
+> Move `.1027` / Copy `.1030`. Live pause
+> `.1001` stays on Train. Same finished log.
+> Same id. Same sets. Same date. Do not
+> invent elapsed from `startedAt`. Do not
+> merge this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Resume `.963` kept. Brand: **Log a set.
+> Offline.**
+
+History already **prints**
+`log.durationSeconds` (`formatDuration`).
+Set-hold duration is already editable in
+History edit. The **session clock they
+logged** is not.
+
+### First check (done — hypothesis holds)
+
+Read tip `a075f994fb08f5caa30ef1e997d3779932535272` / `.1034`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1034`.
+- History list/detail print `formatDuration(log.durationSeconds)`.
+- Hold duration is `parseDurationSeconds` on History edit.
+- Name `.1007` / Reorder `.1034` / Move `.1027` / Copy `.1030` stay.
+- Live pause `.1001` is Train `sessionClock`.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideEditSessionDuration({ sessionId,
+durationSeconds, history, live })`.
+Parse with `parseDurationSeconds`. Cap
+`SESSION_DURATION_MAX = 86400`. Empty on
+missing id / junk / negative / over-cap
+/ unparseable. Noop on missing / tomb /
+live-open / same value (missing current
+is 0). Apply otherwise. `0` clears the
+clock. Apply keeps same id, same sets,
+same `startedAt`/`completedAt`; only
+`durationSeconds` + `updatedAt`. Durable
+caller enqueues. Never wipe live.
+`HistorySessionDuration` on History
+detail next to Name. Outline 44px Save.
+Guest. First set ungated. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/nameFinishedSession.test.ts src/lib/workout/editFinishedSession.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/editSessionDuration.test.ts src/lib/workout/editSessionDurationSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1034` Reorder lifts on this finished session (2026-08-26)
 
 > **Frozen.** Implement only this section + root

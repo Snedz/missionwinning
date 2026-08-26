@@ -242,4 +242,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1034` — reorder lifts on a finished History session/);
   });
+
+  it('edit this session duration stays ungated (.1035)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1035` — edit this session's logged duration from History/);
+  });
 });
