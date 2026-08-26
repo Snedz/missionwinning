@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1022` Heatmap empty-load volume is reps, not 0 (from master `.1021` Coach chat empty load `710d0b7de`; stamp stays `.1022`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1022";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1023` Coach citation empty load is BW, not 0kg (from master `.1022` `934524eca`; stamp stays `.1023`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1023";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

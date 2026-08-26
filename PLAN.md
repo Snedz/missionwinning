@@ -1,34 +1,32 @@
-# PLAN — Heatmap empty-load volume is reps, not 0 (`.1022`)
+# PLAN — Coach citation empty load is BW, not 0kg (`.1023`)
 
 **Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1022`.
-**Base:** master `710d0b7de` — Coach chat empty load is BW, not 0 (`.1021`).
-**Do not smash:** `.1021` chat cite, `.1020` library spark, `.1019` never-trained overdue, `.1018` month.
+**Frozen:** 2026-08-26. **Ship-as:** `.1023`.
+**Base:** master `934524eca` — Heatmap empty-load volume is reps, not 0 (`.1022`).
+**Do not smash:** heatmap `.1022`, chat `.1021`, spark `.1020`, overdue `.1019`, month `.1018`.
 
 ---
 
 ## The one thing
 
-Anatomy heatmap still sums `reps * weight`. Eight push-ups add 0 volume, so a trained group looks idle.
+`coachLogCitation` already refuses a 0 kg *set*. `coachCitationFact` still interpolates `weight` as a number, so a `kind: 'set'` with `weight: 0` would print `0kg × 8`.
 
-Library spark `.1020` already scores empty load as reps. Heatmap did not follow.
+Chat `.1021` already uses `formatSetLoadLine`. This formatter did not.
 
 ## In / out
 
 **In**
 
-- One helper `workingSetVolume`: empty load → reps; loaded → reps × kg.
-- `buildMuscleHeatmap` uses it.
-- Spark reuses it (no second copy).
+- Empty-load `kind: 'set'` → `8 × BW` via `formatSetLoadLine`.
+- Loaded stays `60kg × 5`.
 - Guest. First set ungated.
 
 **Out**
 
-- History `calculateVolume` kg totals.
-- Score 99 sentinel. Month they own.
-- Today chrome. Promote. `PRIVATE_MODE`.
+- Changing which set is quoted (still last loaded).
+- Heatmap `.1022`. Today chrome. Promote.
 
 ## Verify
 
-- `src/lib/heatmapEmptyLoadVolume.test.ts`
-- `src/lib/librarySparkBw.test.ts`
+- `src/lib/coachCitationEmptyLoad.test.ts`
+- `src/lib/coach/logCitation.test.ts`

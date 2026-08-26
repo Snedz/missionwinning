@@ -6,6 +6,30 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1023` Coach citation empty load is BW, not 0kg (2026-08-26)
+
+> **Frozen.** Label `2026.07-unified.1023` from master `.1022`
+> (`934524eca`). Do not smash heatmap `.1022` / chat `.1021`.
+> Do not merge. `[skip vercel]`. No `PRIVATE_MODE`
+> flip. Live www stays `.696`.
+
+`coachCitationFact` interpolates `0kg × 8`
+if `kind: 'set'` ever carries weight 0.
+
+### Done means
+
+Empty-load set fact is `8 × BW`. Loaded stays.
+
+### Accept
+
+```
+npx tsx --test src/lib/coachCitationEmptyLoad.test.ts
+npx tsx --test src/lib/coach/logCitation.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1022` Heatmap empty-load volume is reps, not 0 (2026-08-26)
 
 > **Frozen.** Label `2026.07-unified.1022` from master `.1021`
