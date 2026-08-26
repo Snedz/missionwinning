@@ -6,6 +6,32 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1024` History empty-load volume is reps, not 0 kg (2026-08-26)
+
+> **Frozen.** Label `2026.07-unified.1024` from master `.1023`
+> (`825bd9fc`). Do not smash citation `.1023` / heatmap `.1022`
+> / chat `.1021`. Do not merge. `[skip vercel]`. No
+> `PRIVATE_MODE` flip. Live www stays `.696`.
+
+Victory already prints `8 reps`. History
+list + session detail still interpolated
+stored `totalVolume` 0 as `0 kg`.
+
+### Done means
+
+Empty-load session prints `8 reps` via
+`formatLogVolumeDisplay`. Loaded stays kg.
+Career briefing + avg stay kg-honest.
+
+### Accept
+
+```
+npx tsx --test src/lib/historyEmptyLoadVolume.test.ts src/lib/workout/volumeDisplay.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1023` Coach citation empty load is BW, not 0kg (2026-08-26)
 
 > **Frozen.** Label `2026.07-unified.1023` from master `.1022`

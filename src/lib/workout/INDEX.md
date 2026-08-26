@@ -100,7 +100,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action + BW working reps (`.886`) |
-| `volumeDisplay.test.ts` | Load vs reps volume label |
+| `volumeDisplay.test.ts` | Load vs reps volume label; History session helper (`.1024`) |
 | `victoryReceipt.test.ts` | Vs-last session by shape + per-lift receipt (`.713` / `.944`). Close: empty → no receipt; finished → one keepable text (`.956`) |
 | `sessionNote.test.ts` | Optional session diary; empty omit; merge keeps local note; text keep only when present (`.982`) |
 | `sessionNoteSurface.test.ts` | Notes stay off Today / `/private`; jot off Active first paint; receipt field is not Start (`.982`) |
