@@ -62,6 +62,7 @@
  * `.1031` — This month on the History calendar. Never a login wall.
  * `.1032` — trained day shows how many live sessions. Never a login wall.
  * `.1033` — this month shows how many live sessions. Never a login wall.
+ * `.1034` — reorder lifts on a finished History session. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

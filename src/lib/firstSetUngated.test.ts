@@ -237,4 +237,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1033` — this month shows how many live sessions/);
   });
+
+  it('reorder lifts on a finished session stays ungated (.1034)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1034` — reorder lifts on a finished History session/);
+  });
 });

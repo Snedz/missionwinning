@@ -2,7 +2,8 @@
 
 /**
  * Edit the sets on a finished History log (`.997`).
- * Confirm before a destructive change. Empty invents nothing.
+ * Reorder lifts while editing (`.1034`). Confirm before a
+ * destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
 
@@ -36,6 +37,7 @@ import {
   removeDraftSet,
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
+import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
   formatSetRowLine,
@@ -108,7 +110,21 @@ export function HistorySessionEdit({
     onEditingChange(false);
   };
 
+  const reorderLift = (fromIndex: number, toIndex: number) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decideReorderFinishedExercises({
+        draft: current,
+        fromIndex,
+        toIndex,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
+
+  const canReorder = editing && draft.exercises.length >= 2;
 
   return (
     <div className="space-y-4">
@@ -118,13 +134,37 @@ export function HistorySessionEdit({
         const headers = typeHeaders(rowType, t);
         return (
           <div key={`${ex.exerciseId}-${exIdx}`} className="space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h4 className="font-semibold">{exercise?.name ?? ex.exerciseId}</h4>
               {exercise?.muscleGroups.map((mg) => (
                 <Badge key={mg} variant="muscle" className="text-[10px]">
                   {mg}
                 </Badge>
               ))}
+              {canReorder ? (
+                <div className="flex items-center gap-1">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    data-testid={`session-history-reorder-up-${exIdx}`}
+                    disabled={exIdx === 0}
+                    onClick={() => reorderLift(exIdx, exIdx - 1)}
+                  >
+                    {t('historyReorderUp', { defaultValue: 'Move up' })}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    data-testid={`session-history-reorder-down-${exIdx}`}
+                    disabled={exIdx === draft.exercises.length - 1}
+                    onClick={() => reorderLift(exIdx, exIdx + 1)}
+                  >
+                    {t('historyReorderDown', { defaultValue: 'Move down' })}
+                  </Button>
+                </div>
+              ) : null}
             </div>
             {ex.note?.trim() ? (
               <p className="text-sm italic text-muted-foreground border-l-2 border-border pl-3">

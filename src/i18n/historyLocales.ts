@@ -101,6 +101,9 @@ type HistoryStrings = {
   historyEditEmptyDesc: string;
   historyAddSet: string;
   historyRemoveSet: string;
+  /** `.1034` — reorder lifts on this finished session. */
+  historyReorderUp: string;
+  historyReorderDown: string;
   historyTableTime: string;
   historyTableVest: string;
   historyTableAssist: string;
@@ -295,6 +298,8 @@ const en: HistoryStrings = {
   historyEditEmptyDesc: 'Empty invents nothing — this session stays as it was.',
   historyAddSet: 'Add set',
   historyRemoveSet: 'Remove',
+  historyReorderUp: 'Move up',
+  historyReorderDown: 'Move down',
   historyTableTime: 'Time',
   historyTableVest: '+kg',
   historyTableAssist: 'Assist',

@@ -6,6 +6,73 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1034` Reorder lifts on this finished session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1034` — from master
+> `.1033` (`51e4df41c38cf082733c6ee3b437dce47b1ee9e2`
+> — This month shows how many live sessions).
+> Stamp stays `.1034`. Do not smash live Train
+> `.998` / Edit `.997` / Repeat `.1026` / Move
+> `.1027` / Copy `.1030`. Same finished log.
+> Same id. Save still confirm-gated
+> `decideEditSave`. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Resume `.963` kept.
+> Brand: **Log a set. Offline.**
+
+Live Train already drags this session
+(`.998` `reorderSessionExercises`).
+History edit `.997` can change sets,
+not lift order. Same finished log.
+Same id. Save still confirm-gated.
+
+### First check (done — hypothesis holds)
+
+Read tip `51e4df41c38cf082733c6ee3b437dce47b1ee9e2` / `.1033`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1033`.
+- Live reorder is `reorderSessionExercises`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`.
+- Copy `.1030` / Move `.1027` / Repeat
+  `.1026` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideReorderFinishedExercises({ draft,
+fromIndex, toIndex })` wraps
+`reorderSessionExercises`. Empty on
+missing draft / not an array / junk
+indexes. Noop on same index, one lift,
+out of range. Apply otherwise — sets
+cloned with the lift. Does not change
+ids, dates, set loads. Does not write
+Wednesday / saved / live Start.
+`HistorySessionEdit` when editing and
+2+ lifts: outline 44px Up / Down per
+lift (disable at ends). Apply to local
+draft only. Save still `decideEditSave`.
+Guest. First set ungated. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/sessionReorder.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/reorderFinishedExercises.test.ts src/lib/workout/reorderFinishedExercisesSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1033` This month shows how many live sessions (2026-08-26)
 
 > **Frozen.** Implement only this section + root
