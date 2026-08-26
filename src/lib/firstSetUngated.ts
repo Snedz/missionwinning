@@ -74,6 +74,7 @@
  * `.1043` — tempo on a finished History set. Never a login wall.
  * `.1044` — load % on a finished History set. Never a login wall.
  * `.1045` — lift note on a finished History exercise. Never a login wall.
+ * `.1046` — session note on a finished History session. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

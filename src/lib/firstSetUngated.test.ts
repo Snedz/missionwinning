@@ -297,4 +297,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1045` — lift note on a finished History exercise/);
   });
+
+  it('session note on a finished session stays ungated (.1046)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1046` — session note on a finished History session/);
+  });
 });

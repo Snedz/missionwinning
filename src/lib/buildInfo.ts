@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1045` Lift note on a finished exercise (from master `.1044` `64277eb80`; stamp stays `.1045`; Load % `.1044` / Tempo `.1043` / L/R `.1042` / RIR `.1041` / RPE `.1040` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1045";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1046` Session note on a finished session (from master `.1045` `a67650a61`; stamp stays `.1046`; Lift note `.1045` / Load % `.1044` / Tempo `.1043` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1046";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -166,6 +166,9 @@ type HistoryStrings = {
   /** `.1035` — logged session clock on the finished log. */
   historyDurationLabel: string;
   historyDurationSave: string;
+  /** `.1046` — private session note on the finished log. */
+  historySessionNoteLabel: string;
+  historySessionNoteSave: string;
   /** `.1005` — fold older days out of week 1. */
   historyStartFrom: string;
   historyStartFromTitle: string;
@@ -368,6 +371,8 @@ const en: HistoryStrings = {
   historyNameSave: 'Save name',
   historyDurationLabel: 'Duration',
   historyDurationSave: 'Save duration',
+  historySessionNoteLabel: 'Notes',
+  historySessionNoteSave: 'Save notes',
   historyStartFrom: 'Start history from this date',
   historyStartFromTitle: 'Start history from this date',
   historyStartFromDesc:

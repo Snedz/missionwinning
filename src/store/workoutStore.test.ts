@@ -932,4 +932,56 @@ test('workoutStore', async (t) => {
     assert.equal(cleared?.startedAt, monday.startedAt);
     assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
   });
+
+  await t.test('noteFinishedHistoryLog updates sessionNote and leaves the live set (.1046)', async () => {
+    reset();
+    useWorkoutStore.getState().startWorkout('Live', template('row', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const monday = {
+      id: 'log-mon-1046',
+      clientId: 'cid-mon-1046',
+      revision: 1,
+      workoutName: 'Monday',
+      startedAt: '2026-08-17T10:00:00.000Z',
+      completedAt: '2026-08-17T11:00:00.000Z',
+      durationSeconds: 3600,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', note: 'paused', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(monday));
+    const edited = useWorkoutStore.getState().noteFinishedHistoryLog(monday.id, 'felt heavy');
+    assert.ok(edited);
+    assert.equal(edited?.id, monday.id);
+    assert.equal(edited?.sessionNote, 'felt heavy');
+    assert.equal(edited?.durationSeconds, 3600);
+    assert.equal(edited?.exercises[0]?.note, 'paused');
+    assert.equal(edited?.exercises[0]?.sets[0]?.weight, 135);
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)
+        ?.sessionNote,
+      'felt heavy'
+    );
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    const upserts = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: { kind: string }) => op.kind === 'workout.upsert'
+    );
+    assert.equal(
+      upserts.some((op: { dedupeKey?: string }) => op.dedupeKey === monday.clientId),
+      true
+    );
+    assert.equal(useWorkoutStore.getState().noteFinishedHistoryLog('', 'felt heavy'), null);
+    assert.equal(useWorkoutStore.getState().noteFinishedHistoryLog(monday.id, 'felt heavy'), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    const cleared = useWorkoutStore.getState().noteFinishedHistoryLog(monday.id, '');
+    assert.ok(cleared);
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(cleared ?? {}, 'sessionNote'),
+      false
+    );
+    assert.equal(cleared?.durationSeconds, 3600);
+    assert.equal(cleared?.exercises[0]?.note, 'paused');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+  });
 });

@@ -59,6 +59,7 @@ import {
 } from "@/lib/workout/deleteFinishedSession";
 import { applyNameFinishedSession } from "@/lib/workout/nameFinishedSession";
 import { applyEditSessionDuration } from "@/lib/workout/editSessionDuration";
+import { applyPatchFinishedSessionNote } from "@/lib/workout/patchFinishedSessionNote";
 import { applyMoveSessionDay } from "@/lib/workout/moveSessionDay";
 import { applyCopySessionDay } from "@/lib/workout/copySessionDay";
 import { localDateKey } from "@/lib/time/localDate";
@@ -206,6 +207,11 @@ interface WorkoutState {
   durationFinishedHistoryLog: (
     sessionId: string,
     durationSeconds: number
+  ) => CompletedWorkoutLog | null;
+  /** History Save of a finished session note. Same id. Empty clears (`.1046`). */
+  noteFinishedHistoryLog: (
+    sessionId: string,
+    note: string | undefined
   ) => CompletedWorkoutLog | null;
   /** History re-date of one finished session. Same id. Vacated day drops it (`.1027`). */
   moveFinishedHistoryLog: (sessionId: string, dateKey: string) => CompletedWorkoutLog | null;
@@ -1052,6 +1058,20 @@ export const useWorkoutStore = create<WorkoutState>()(
         const applied = applyEditSessionDuration({
           sessionId,
           durationSeconds,
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
+      },
+
+      noteFinishedHistoryLog: (sessionId, note) => {
+        const state = get();
+        const applied = applyPatchFinishedSessionNote({
+          sessionId,
+          note,
           history: state.workoutHistory,
           live: state.activeWorkout,
         });

@@ -51,6 +51,7 @@ import { HistorySessionDelete } from '@/components/history/HistorySessionDelete'
 import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
 import { HistorySessionName } from '@/components/history/HistorySessionName';
 import { HistorySessionDuration } from '@/components/history/HistorySessionDuration';
+import { HistorySessionNote } from '@/components/history/HistorySessionNote';
 import { HistorySessionMove } from '@/components/history/HistorySessionMove';
 import { HistorySessionCopy } from '@/components/history/HistorySessionCopy';
 import { HistorySessionFile } from '@/components/history/HistorySessionFile';
@@ -150,6 +151,7 @@ export function HistoryPage() {
   const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
   const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
   const durationFinishedHistoryLog = useWorkoutStore((s) => s.durationFinishedHistoryLog);
+  const noteFinishedHistoryLog = useWorkoutStore((s) => s.noteFinishedHistoryLog);
   const moveFinishedHistoryLog = useWorkoutStore((s) => s.moveFinishedHistoryLog);
   const copyFinishedHistoryLog = useWorkoutStore((s) => s.copyFinishedHistoryLog);
   const applyImportedHistory = useWorkoutStore((s) => s.applyImportedHistory);
@@ -1066,6 +1068,18 @@ export function HistoryPage() {
                     live={activeWorkout}
                     onSave={(sessionId, durationSeconds) => {
                       const edited = durationFinishedHistoryLog(sessionId, durationSeconds);
+                      if (edited) setSelected(edited);
+                    }}
+                  />
+                ) : null}
+                {!selected.deletedAt ? (
+                  <HistorySessionNote
+                    key={`note-${selected.id}-${selected.sessionNote ?? ''}`}
+                    sessionId={selected.id}
+                    history={workoutHistory}
+                    live={activeWorkout}
+                    onSave={(sessionId, note) => {
+                      const edited = noteFinishedHistoryLog(sessionId, note);
                       if (edited) setSelected(edited);
                     }}
                   />
