@@ -4,7 +4,8 @@
  * Custom `.992` names a movement. The row still spoke kg × reps.
  * This is the one home for weight · bodyweight reps · duration ·
  * assisted. Empty / unknown stays weight×reps. Vest is extra only —
- * never Track / profile bodyweight.
+ * never Track / profile bodyweight. Assisted 0 is BW, not `8 × 0 kg`
+ * (`.1015`). Help still prints minus.
  */
 
 import type { Exercise, LoggedSet, SetRowType } from '@/types';
@@ -154,7 +155,8 @@ export function formatSetRowLine(opts: {
   }
   if (opts.type === 'assisted') {
     const reps = opts.reps;
-    if (!Number.isFinite(opts.weight) || opts.weight <= 0) return `${reps} × 0 ${opts.unitLabel}`;
+    const bw = opts.bodyweightLabel ?? 'BW';
+    if (!Number.isFinite(opts.weight) || opts.weight <= 0) return `${reps} × ${bw}`;
     return `${reps} × −${opts.weight} ${opts.unitLabel}`;
   }
   return formatSetLoadLine({
@@ -177,7 +179,8 @@ export function formatSetRowPrev(opts: {
     return formatSetRowDuration(opts.durationSeconds ?? 0) || '—';
   }
   if (opts.type === 'assisted') {
-    if (!Number.isFinite(opts.weight) || opts.weight <= 0) return `${opts.reps} × 0`;
+    const bw = opts.bodyweightLabel ?? 'BW';
+    if (!Number.isFinite(opts.weight) || opts.weight <= 0) return `${opts.reps} × ${bw}`;
     return `${opts.reps} × −${opts.weight}`;
   }
   if (opts.type === 'bodyweight') {
