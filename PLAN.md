@@ -1,57 +1,48 @@
-# PLAN.md — Next cite is 0:45, not mute (`.1014`)
+# PLAN — Next cite is BW, not 0 kg, on assisted 0 (`.1015`)
 
-**Freeze.** Implement only this file. Do not reopen refused items mid-build.
-**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
-gets a matching frozen section so agents following the boot order find this
-ship; this file is the duration-cite freeze.
-**Lane:** Engineering-Web · Train · **Horizon:** 0
-**Label:** `2026.07-unified.1014` (master is `.1013` / `3a28b75fa`
-Our export comes back). Title stays **Next cite
-is 0:45, not mute (.1014)**.
-**Excellence-Override:** leftover duration Next/Last after
-BW cite (`.1009`) (not a Feed)
+**Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
+**Frozen:** 2026-08-26. **Ship-as:** `.1015`.
+**Base:** master `f4b852279` — Next cite is 0:45, not mute (`.1014`).
+**Do not smash:** `.1014` duration cite, `.1013` import, `.1012` this-movement title, `.1011` export door, `.1010` Library tomb skip, `.1009` BW cite.
 
 ---
 
-## 0. What this is
+## The one thing
 
-Prev already says 0:45 for a plank.
-Next / Last / after-complete still
-dropped `durationSeconds`, so the
-cite stayed mute. Empty invents
-nothing. Guest. First set ungated.
-Today stays one Start.
+Assisted 0 is BW, not `8 × 0 kg`.
 
-`PRIVATE_MODE` stays on. Live www
-stays `.696`. Do not promote. Do
-not merge.
+BW cite `.1009` closed vest-0 on Next / Last / after-complete. Assisted still printed `8 × 0 kg` when help was 0. Help already prints minus. Zero help is unassisted bodyweight.
 
-Full lock: [docs/PLAN.md](docs/PLAN.md)
-frozen section `.1014`.
+## Why this, why now
 
----
+Year-one metric is week-4 loggers. Duration cite `.1014` is on master. This hop is the assisted leftover.
 
-## 1. Investigate (done)
+## In / out
 
-`formatSetRowLine` already prints
-`0:45` when seconds are passed.
-`suggestNextSetTarget` bails on
-`lastReps < 1`. Ghost filters
-`reps > 0`. `formatTargetLabel`
-never forwarded the hold.
+**In**
 
----
+- `formatSetRowLine` / `formatSetRowPrev` assisted 0 → `8 × BW`.
+- Help > 0 stays `8 × −20 kg`.
+- Display only. Store still `weight: 0`.
+- Guest. First set ungated.
 
-## 2. Lock
+**Out**
 
-1. Next, Last ghost, and after-complete
-   cite a logged hold as `0:45`.
-2. Missing hold invents nothing.
-   Do not treat reps as seconds.
-3. Copy last hold. Do not add +1s.
-4. No Today chrome. No Feed.
-5. Do not smash import `.1013` /
-   titles `.1012` / export `.1011` /
-   BW cite `.1009`.
-6. `[skip vercel]` on every commit.
-   Do not merge this PR yourself.
+- Custom / unknown rewrite (stays weight).
+- Duration cite `.1014` (keep).
+- Today chrome, Feed, `/private`.
+- Counsel-hold, Mind, cloud sync, account.
+- Promote. Live www stays `.696`.
+
+## Done when
+
+1. Assisted 0 prints `8 × BW`, not `8 × 0 kg`.
+2. Help still prints minus.
+3. Loaded cite unchanged.
+4. Today still one Start. First set ungated.
+
+## Verify
+
+- `src/lib/workout/assistedCite.test.ts`
+- `npx tsx --test src/lib/firstSetUngated.ts`
+- `npx tsx scripts/check-build-label.mjs` — `.1015` > master `.1014`.

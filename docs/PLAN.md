@@ -6,6 +6,59 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1015` Next cite is BW, not 0 kg, on assisted 0 (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1015` — from master
+> `.1014` (`f4b852279` — Next cite is
+> 0:45, not mute). Stamp stays `.1015`.
+> Do not bump. Title stays **Next cite
+> is BW, not 0 kg, on assisted 0
+> (.1015)**. Do not merge this PR
+> yourself. Duration cite `.1014` +
+> import `.1013` + title-fix `.1012` +
+> export `.1011` + Library skip `.1010`
+> + BW cite `.1009` are on master. Do
+> not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+BW cite `.1009` closed vest-0.
+Assisted 0 still printed `8 × 0 kg`.
+
+### First check (done — hypothesis holds)
+
+Read tip `f4b852279` / `.1014`.
+Confirmed:
+
+- `formatSetRowLine` assisted 0 is
+  `` `${reps} × 0 ${unitLabel}` ``.
+- Help > 0 already prints minus.
+- Next / Last / after-complete reuse
+  that grammar.
+
+### Done means
+
+Assisted 0 prints `8 × BW`. Help
+stays minus. Missing invents nothing.
+Store still `weight: 0`. Duration
+cite `.1014` stays.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/assistedCite.test.ts
+npx tsx --test src/lib/firstSetUngated.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1014` Next cite is 0:45, not mute (2026-08-26)
 
 > **Frozen.** Implement only this section + root
