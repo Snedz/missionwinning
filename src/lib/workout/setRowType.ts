@@ -5,7 +5,8 @@
  * This is the one home for weight · bodyweight reps · duration ·
  * assisted. Empty / unknown stays weight×reps. Vest is extra only —
  * never Track / profile bodyweight. Assisted 0 is BW, not `8 × 0 kg`
- * (`.1015`). Help still prints minus.
+ * (`.1015`). Weight-type empty load Last is BW, not `8 × 0` (`.1017`).
+ * Help still prints minus.
  */
 
 import type { Exercise, LoggedSet, SetRowType } from '@/types';
@@ -186,6 +187,8 @@ export function formatSetRowPrev(opts: {
   if (opts.type === 'bodyweight') {
     return formatPrevPlusLoadLabel(opts.reps, opts.weight, opts.bodyweightLabel ?? 'BW');
   }
+  const bw = opts.bodyweightLabel ?? 'BW';
+  if (!Number.isFinite(opts.weight) || opts.weight <= 0) return `${opts.reps} × ${bw}`;
   return `${opts.reps} × ${opts.weight}`;
 }
 
