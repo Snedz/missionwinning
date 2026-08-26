@@ -36,7 +36,7 @@ const helperSrc = readFileSync(path.join(import.meta.dirname, 'monthTheyOwn.ts')
 const JULY_2 = localDateKeyFromIso(isoOnLocalDay(2026, 7, 2));
 const JUNE_20 = localDateKeyFromIso(isoOnLocalDay(2026, 6, 20));
 
-describe('monthLiveFacts (.1017)', () => {
+describe('monthLiveFacts (.1018)', () => {
   it('empty / missing history invents nothing', () => {
     assert.equal(monthLiveFacts(undefined).size, 0);
     assert.equal(monthLiveFacts(null).size, 0);
@@ -105,7 +105,7 @@ describe('monthLiveFacts (.1017)', () => {
   });
 });
 
-describe('decideMonthDaySelect (.1017)', () => {
+describe('decideMonthDaySelect (.1018)', () => {
   it('empty / missing / junk date invents nothing', () => {
     const history = [log({ id: 'tue' })];
     assert.deepEqual(decideMonthDaySelect({}), { kind: 'empty' });

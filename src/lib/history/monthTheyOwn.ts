@@ -1,5 +1,5 @@
 /**
- * Month they own (`.1017`).
+ * Month they own (`.1018`).
  *
  * Quiet History month. Live sessions only. Tombs out.
  * Start-from fold never erases a month mark or a day row.

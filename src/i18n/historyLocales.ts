@@ -180,7 +180,7 @@ type HistoryStrings = {
   /** `.1016` — one finished session as a local file. */
   historySessionFileSave: string;
   historySessionFileJson: string;
-  /** `.1017` — empty month on the History calendar. */
+  /** `.1018` — empty month on the History calendar. */
   historyMonthEmpty: string;
 };
 

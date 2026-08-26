@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1017` Last cite is BW, not 0, on empty load (from master `.1016` This session as a file they own `fa96397d5`; stamp stays `.1017`; keep session file `.1016` + assisted cite `.1015` + duration cite `.1014` + import `.1013` + titles `.1012` + export `.1011` + library skip `.1010` + BW cite `.1009`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1017";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1018` Month they own (from master `.1017` Last cite is BW, not 0, on empty load `8a606a12`; stamp stays `.1018`; keep empty-load `.1017` + session file `.1016` + assisted cite `.1015` + duration cite `.1014` + import `.1013` + titles `.1012` + export `.1011` + library skip `.1010` + BW cite `.1009`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1018";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -15,7 +15,7 @@ const FEED = /likes|Top 8|Feed permalink|shame slope|navigator\.share|mailto:/i;
 const STREAK = /streak|🔥|shame|ordinal|badge|pass-fail|day \d+ of|fire-emoji/i;
 const MONTH = /decideMonthDaySelect|monthLiveFacts|history-month-day/;
 
-describe('month they own surface lock (.1017)', () => {
+describe('month they own surface lock (.1018)', () => {
   it('History Show-all calendar taps a day into existing rows / detail', () => {
     const page = read('src/page-components/HistoryPage.tsx');
     assert.match(page, /HistoryCalendar/);
@@ -91,6 +91,15 @@ describe('month they own surface lock (.1017)', () => {
       assert.doesNotMatch(src, /SignInPrompt|SignInPanel/, rel);
       assert.doesNotMatch(src, /Force Sync|Session Expired/, rel);
     }
+  });
+
+  it('empty-load cite .1017 still mounts — this does not smash it', () => {
+    const cite = read('src/lib/workout/emptyLoadCite.test.ts');
+    assert.match(cite, /empty load cite is BW, not 0 \(\.1017\)/);
+    const first = read('src/lib/firstSetUngated.ts');
+    assert.match(first, /\.1017 — live Last\/Prev empty load is BW/);
+    const setRow = read('src/lib/workout/setRowType.ts');
+    assert.match(setRow, /\.1017/);
   });
 
   it('session-file .1016 through export / import / search still mount — this does not smash them', () => {
