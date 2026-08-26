@@ -282,4 +282,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1042` — L\/R on a finished History set/);
   });
+
+  it('tempo on a finished set stays ungated (.1043)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1043` — tempo on a finished History set/);
+  });
 });

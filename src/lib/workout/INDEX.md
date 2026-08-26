@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a4c. `moveSessionDay.ts` — re-date a finished History log (`.1027`). Same id. Vacated day drops that row. Empty / tomb / future invents nothing. Not a new backfill.  
 10a4d. `copySessionDay.ts` — copy a finished History log onto another day (`.1030`). New id. Original stays. Empty / tomb / same-day / future invents nothing. Not Move. Not Repeat.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
-10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`).  
+10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes tempo (`.1043`) / side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`).  
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
@@ -44,6 +44,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6g. `patchFinishedSetRpe10.ts` — optional 1–10 RPE on a finished History set (`.1040`). Empty is valid (clear). Empty invents nothing. Save still `decideEditSave`.  
 10a6h. `patchFinishedSetRir.ts` — optional 0–5 RIR on a finished History set (`.1041`). Empty is valid (clear). Empty invents nothing. Never replaces RPE. Save still `decideEditSave`.  
 10a6i. `patchFinishedSetSide.ts` — optional L / R / Alt on a finished History set (`.1042`). Empty is valid (clear). Bilateral invents nothing. Never a SetKind. Save still `decideEditSave`.  
+10a6j. `patchFinishedSetTempo.ts` — optional e-p-c tempo on a finished History set (`.1043`). Empty is valid (clear). Empty invents nothing. Never clamps. Does not call `rememberLastTempo`. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -71,7 +72,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
 22b. `rpe10.ts` — optional integer 1–10 RPE; empty valid; never required to log (`.967`)
 22c. `workSetIntensity.ts` — last work set RPE/RIR cite token; empty stays empty (`.967`)
-23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
+23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`); History edit can correct a logged tempo (`.1043`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`). Dial prefill reuses the same reader via `lastWorkingForDial` (`.946` / F-013)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
 25c. `inSetPr.ts` — quiet diary PR on the live set (`.999`). Heaviest / most reps / best logged 5. No prior invents nothing. Not Epley.
@@ -167,6 +168,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `patchFinishedSetRirSurface.test.ts` | History edit RIR control; Today one Start; RPE / set-kind / remove-lift stay (`.1041`) |
 | `patchFinishedSetSide.test.ts` | Finished-session L/R/Alt: empty / junk invent nothing; `left` invents nothing; squat + L invents nothing; L apply on lunge; blank clears; same value noop; no rpe/rir/kind write; clone (`.1042`) |
 | `patchFinishedSetSideSurface.test.ts` | History edit side control only when `shouldOfferSetSide`; Today one Start; RIR / RPE / set-kind stay (`.1042`) |
+| `patchFinishedSetTempo.test.ts` | Finished-session tempo e-p-c: empty / junk invent nothing; `311` / `10-0-0` invent nothing; `3-1-1` apply; blank clears; same value noop; no rpe/rir/kind/side write; clone; no rememberLastTempo (`.1043`) |
+| `patchFinishedSetTempoSurface.test.ts` | History edit tempo field; Today one Start; L/R / RIR / RPE / set-kind stay (`.1043`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |

@@ -15,6 +15,8 @@
  * Optional L / R / Alt while editing (`.1042`) —
  * empty is valid (clear). Only on a unilateral
  * lift. Never a SetKind.
+ * Optional e-p-c tempo while editing (`.1043`) —
+ * empty is valid (clear). Never required.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -44,6 +46,7 @@ import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetSideSelect } from '@/components/workout/SetSideSelect';
+import { SetTempoField } from '@/components/workout/SetTempoField';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import {
   appendDraftSet,
@@ -61,6 +64,8 @@ import {
 import { decidePatchFinishedSetRir } from '@/lib/workout/patchFinishedSetRir';
 import { decidePatchFinishedSetRpe10 } from '@/lib/workout/patchFinishedSetRpe10';
 import { decidePatchFinishedSetSide } from '@/lib/workout/patchFinishedSetSide';
+import { decidePatchFinishedSetTempo } from '@/lib/workout/patchFinishedSetTempo';
+import { parseOptionalTempo } from '@/lib/workout/tempo';
 import {
   parseSetSide,
   shouldOfferSetSide,
@@ -77,7 +82,7 @@ import {
   type SetRowType,
 } from '@/lib/workout/setRowType';
 import { cn } from '@/lib/utils';
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetTempo } from '@/types';
 
 type Props = {
   log: CompletedWorkoutLog;
@@ -252,6 +257,23 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSetTempo = (
+    exerciseIndex: number,
+    setIndex: number,
+    tempo: SetTempo | undefined
+  ) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedSetTempo({
+        draft: current,
+        exerciseIndex,
+        setIndex,
+        tempo,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -342,6 +364,7 @@ export function HistorySessionEdit({
                     <>
                       <TableHead>{t('activeRpe10', { defaultValue: 'RPE' })}</TableHead>
                       <TableHead>{t('activeRir', { defaultValue: 'RIR' })}</TableHead>
+                      <TableHead>{t('activeTempo', { defaultValue: 'Tempo' })}</TableHead>
                       {offerSetSide ? (
                         <TableHead>
                           {t('activeSetSideAria', { defaultValue: 'Set side' })}
@@ -459,6 +482,14 @@ export function HistorySessionEdit({
                               rir={set.rir}
                               onRateRir={(value) => patchSetRir(exIdx, setIdx, value)}
                               testId={`session-history-set-rir-${exIdx}-${setIdx}`}
+                              className="min-h-[44px]"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <SetTempoField
+                              tempo={parseOptionalTempo(set.tempo)}
+                              onRateTempo={(value) => patchSetTempo(exIdx, setIdx, value)}
+                              testId={`session-history-set-tempo-${exIdx}-${setIdx}`}
                               className="min-h-[44px]"
                             />
                           </TableCell>
