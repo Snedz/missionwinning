@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1005-for-1020.md](./log/LOG-rotate-1005-for-1020.md) | rotated 2026-08-26 for `.1020` Library spark is reps, not 0, on empty load (`.1005`) |
 | [log/LOG-rotate-1004-for-1019.md](./log/LOG-rotate-1004-for-1019.md) | rotated 2026-08-26 for `.1019` Never-trained is not overdue (`.1004`) |
 | [log/LOG-rotate-1003-for-1018.md](./log/LOG-rotate-1003-for-1018.md) | rotated 2026-08-26 for `.1018` Month they own (`.1003`) |
 | [log/LOG-rotate-1002-for-1017.md](./log/LOG-rotate-1002-for-1017.md) | rotated 2026-08-26 for `.1017` Last cite is BW, not 0, on empty load (`.1002`) |

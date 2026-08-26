@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1019` Never-trained is not overdue (from master `.1018` Month they own `b376d4ecd`; stamp stays `.1019`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1019";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1020` Library spark is reps, not 0, on empty load (from master `.1019` Never-trained is not overdue `cdb1b5a5e`; stamp stays `.1020`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1020";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
