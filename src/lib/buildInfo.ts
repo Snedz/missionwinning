@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1010` Library skips deleted sessions (from master `.1009` Next cite is BW `20faec3ab`; stamp stays `.1010`; keep BW cite `.1009` + search `.1008` + name `.1007` + restore `.1006`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1010";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1011` Export this diary (from master `.1010` Library skips deleted sessions `4d128292`; stamp stays `.1011`; keep library skip tombs `.1010` + BW cite `.1009` + search `.1008` + name `.1007` + restore `.1006`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1011";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

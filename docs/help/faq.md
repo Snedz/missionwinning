@@ -32,6 +32,9 @@ On History, open **Start history from this date**. Pick the day week 1 should st
 **How do I find a past session?**  
 On History, type in the search box. It matches the name you gave that session, the template name, the date, a lift, or a private note. An empty search shows the same list. No matches stays empty. Deleted sessions stay under **Deleted sessions**.
 
+**How do I export my diary?**  
+On History, open **Export this diary**. Save a CSV of the sessions you logged (JSON is the same rows). Empty invents nothing — Save stays off until you have a live session. Deleted sessions stay out. Folding week 1 from a date does not shrink the file. This is a file on this device, not a share or an email. Account interchange CSV stays on Account.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 

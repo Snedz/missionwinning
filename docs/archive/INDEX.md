@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-996-for-1011.md](./log/LOG-rotate-996-for-1011.md) | rotated 2026-08-26 for `.1011` Export this diary (`.996`) |
 | [log/LOG-rotate-995-for-1010.md](./log/LOG-rotate-995-for-1010.md) | rotated 2026-08-25 for `.1010` Library skips deleted sessions (`.995`) |
 | [log/LOG-rotate-994-for-1009.md](./log/LOG-rotate-994-for-1009.md) | rotated 2026-08-25 for `.1009` Next cite is BW, not 0 kg (`.994`) |
 | [log/LOG-rotate-993-for-1008.md](./log/LOG-rotate-993-for-1008.md) | rotated 2026-08-25 for `.1008` Find a past session (`.993`) |
