@@ -6,7 +6,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 
 ## Read order
 
-1. `setKind.ts` — normal/warmup/drop/failure; volume + PR eligibility; optional row tags W / D / F (`toggleSetTag`, `.966`)  
+1. `setKind.ts` — normal/warmup/drop/failure; volume + PR eligibility; optional row tags W / D / F (`toggleSetTag`, `.966`); History edit can retag a finished set (`.1039`)  
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest; completed kg cell empty load is BW (`.1025`)  
@@ -40,6 +40,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
 10a6e. `removeFinishedExercise.ts` — remove a lift from that finished History draft (`.1038`). Last remaining is noop. Empty invents nothing. Save still `decideEditSave`. Does not delete the session.  
+10a6f. `patchFinishedSetKind.ts` — set kind on a finished History set (`.1039`). Same W/D/F as live. Empty invents nothing. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -155,6 +156,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `appendFinishedExerciseSurface.test.ts` | History edit add-lift picker; Today one Start; replace / reorder / copy / move stay (`.1037`) |
 | `removeFinishedExercise.test.ts` | Finished-session remove lift: empty / junk invent nothing; last remaining / OOB noop; two lifts remove first keeps second; clone (`.1038`) |
 | `removeFinishedExerciseSurface.test.ts` | History edit Remove lift; Today one Start; add-lift / replace / reorder / copy / move stay (`.1038`) |
+| `patchFinishedSetKind.test.ts` | Finished-session set kind: empty / junk / unknown invent nothing; same kind noop; warmup→normal; drop stays until toggled; clone (`.1039`) |
+| `patchFinishedSetKindSurface.test.ts` | History edit kind control; Today one Start; remove-lift / add-lift / replace / reorder stay (`.1039`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
