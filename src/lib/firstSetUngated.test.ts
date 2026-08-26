@@ -217,4 +217,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1029` — this month as a local file they own/);
   });
+
+  it('copy this session onto another day stays ungated (.1030)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1030` — copy this session onto another day from History/);
+  });
 });

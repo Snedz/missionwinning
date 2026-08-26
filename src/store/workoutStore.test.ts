@@ -831,4 +831,64 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().moveFinishedHistoryLog(monday.id, '2099-01-01'), null);
     assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
   });
+
+  await t.test('copyFinishedHistoryLog mints a new id and leaves the live set (.1030)', async () => {
+    useWorkoutStore.getState().startWorkout('Live', template('row', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const { localDateKey, localDateKeyFromIso, previousLocalDateKey } = await import(
+      '@/lib/time/localDate'
+    );
+    const today = localDateKey();
+    const dest = previousLocalDateKey(today);
+    const from = previousLocalDateKey(dest);
+    const [fy, fm, fd] = from.split('-').map(Number);
+    const monday = {
+      id: 'log-mon-1030',
+      clientId: 'cid-mon-1030',
+      revision: 1,
+      workoutName: 'Monday',
+      sessionTitle: 'Garage',
+      sessionNote: 'felt heavy',
+      startedAt: new Date(fy, fm - 1, fd, 10, 0, 0, 0).toISOString(),
+      completedAt: new Date(fy, fm - 1, fd, 11, 0, 0, 0).toISOString(),
+      durationSeconds: 3600,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(monday));
+    const copied = useWorkoutStore.getState().copyFinishedHistoryLog(monday.id, dest);
+    assert.ok(copied);
+    assert.notEqual(copied?.id, monday.id);
+    assert.notEqual(copied?.clientId, monday.clientId);
+    assert.equal(copied?.workoutName, 'Monday');
+    assert.equal(copied?.sessionTitle, 'Garage');
+    assert.equal(copied?.sessionNote, 'felt heavy');
+    assert.equal(copied?.durationSeconds, 3600);
+    assert.equal(copied?.exercises[0]?.sets[0]?.weight, 135);
+    assert.equal(localDateKeyFromIso(copied!.completedAt), dest);
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)?.id,
+      monday.id
+    );
+    assert.equal(
+      localDateKeyFromIso(
+        useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)!.completedAt
+      ),
+      from
+    );
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    const upserts = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: { kind: string }) => op.kind === 'workout.upsert'
+    );
+    assert.equal(
+      upserts.some((op: { dedupeKey?: string }) => op.dedupeKey === copied?.clientId),
+      true
+    );
+    assert.equal(useWorkoutStore.getState().copyFinishedHistoryLog('', dest), null);
+    assert.equal(useWorkoutStore.getState().copyFinishedHistoryLog(monday.id, from), null);
+    assert.equal(useWorkoutStore.getState().copyFinishedHistoryLog(monday.id, '2099-01-01'), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+  });
 });

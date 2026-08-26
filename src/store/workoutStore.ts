@@ -59,6 +59,7 @@ import {
 } from "@/lib/workout/deleteFinishedSession";
 import { applyNameFinishedSession } from "@/lib/workout/nameFinishedSession";
 import { applyMoveSessionDay } from "@/lib/workout/moveSessionDay";
+import { applyCopySessionDay } from "@/lib/workout/copySessionDay";
 import { localDateKey } from "@/lib/time/localDate";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
@@ -202,6 +203,8 @@ interface WorkoutState {
   nameFinishedHistoryLog: (sessionId: string, title: string) => CompletedWorkoutLog | null;
   /** History re-date of one finished session. Same id. Vacated day drops it (`.1027`). */
   moveFinishedHistoryLog: (sessionId: string, dateKey: string) => CompletedWorkoutLog | null;
+  /** History copy of one finished session onto another day. New id. Original stays (`.1030`). */
+  copyFinishedHistoryLog: (sessionId: string, dateKey: string) => CompletedWorkoutLog | null;
   /** History confirm-gated import of the diary file `.1011` saved (`.1013`). */
   applyImportedHistory: (next: CompletedWorkoutLog[]) => boolean;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
@@ -1041,6 +1044,21 @@ export const useWorkoutStore = create<WorkoutState>()(
       moveFinishedHistoryLog: (sessionId, dateKey) => {
         const state = get();
         const applied = applyMoveSessionDay({
+          sessionId,
+          dateKey,
+          todayKey: localDateKey(),
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
+      },
+
+      copyFinishedHistoryLog: (sessionId, dateKey) => {
+        const state = get();
+        const applied = applyCopySessionDay({
           sessionId,
           dateKey,
           todayKey: localDateKey(),
