@@ -6,6 +6,52 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1019` Never-trained is not overdue (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1019` — from master
+> `.1017` (`8a606a12b` — Last cite is BW,
+> not 0, on empty load). Stamp stays
+> `.1019`. `#843` owns `.1018` Month they
+> own — do not smash. Do not merge this
+> PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First
+> set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.**
+
+Anatomy `daysSince >= 7` paints
+never-trained (`days = 99`) overdue.
+
+### First check (done — hypothesis holds)
+
+Read tip `8a606a12b` / `.1017`.
+Confirmed:
+
+- `AnatomyHeatMap` overdue is
+  `(cell?.daysSince ?? 0) >= 7`.
+- `computeReadinessFromHistory`
+  never-trained `days = 99`.
+- Grid heatmap already idles `>= 99`.
+
+### Done means
+
+Never-trained is not overdue.
+Trained then left ≥7 days still is.
+Score 99 sentinel stays.
+
+### Accept
+
+```
+npx tsx --test src/lib/neverTrainedOverdue.test.ts
+npx tsx --test src/lib/firstSetUngated.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1018` Month they own (2026-08-26)
 
 > **Frozen.** Implement only this section + root
