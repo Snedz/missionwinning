@@ -138,6 +138,11 @@ type HistoryStrings = {
   historyDeleteConfirmDesc: string;
   historyDeleteConfirm: string;
   historyDeleteCancel: string;
+  /** `.1006` — restore a tombstone. */
+  historyRestore: string;
+  historyRestoreOpen: string;
+  historyRestoreTitle: string;
+  historyRestoreDesc: string;
   /** `.1005` — fold older days out of week 1. */
   historyStartFrom: string;
   historyStartFromTitle: string;
@@ -286,9 +291,14 @@ const en: HistoryStrings = {
   historyDelete: 'Delete this session',
   historyDeleteConfirmTitle: 'Delete this session?',
   historyDeleteConfirmDesc:
-    'This session will be gone from History. It cannot be recovered. Other days stay.',
-  historyDeleteConfirm: 'Delete — cannot be recovered',
+    'This session leaves History. Restore it from Deleted sessions. Other days stay.',
+  historyDeleteConfirm: 'Delete this session',
   historyDeleteCancel: 'Cancel',
+  historyRestore: 'Restore this session',
+  historyRestoreOpen: 'Deleted sessions',
+  historyRestoreTitle: 'Deleted sessions',
+  historyRestoreDesc:
+    'Restore a session you deleted. Empty invents nothing. A live workout is not this.',
   historyStartFrom: 'Start history from this date',
   historyStartFromTitle: 'Start history from this date',
   historyStartFromDesc:

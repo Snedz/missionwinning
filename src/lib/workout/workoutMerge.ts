@@ -41,29 +41,45 @@ function updatedAtOf(log: CompletedWorkoutLog): number {
 }
 
 /**
+ * Whether an incoming upsert should replace the server row (`.1006`).
+ *
+ * Higher revision wins, including a restore that clears `deletedAt`.
+ * Equal revision: a tombstone still beats a live row. An equal-rev
+ * restore does not undelete. Lower revision never wins.
+ */
+export function incomingWorkoutBeats(input: {
+  incomingRevision: number;
+  serverRevision: number;
+  incomingDeleted: boolean;
+  serverDeleted: boolean;
+}): boolean {
+  if (input.incomingRevision > input.serverRevision) return true;
+  if (input.incomingRevision < input.serverRevision) return false;
+  if (input.incomingDeleted !== input.serverDeleted) return input.incomingDeleted;
+  return true;
+}
+
+/**
  * Pick the winner between two versions of the same log.
- * Tombstones win outright; then highest revision; then most recently updated;
- * then a cloud row over a purely local one (it has a server id).
+ * Highest revision wins (restore is rev+1 with `deletedAt` cleared).
+ * Equal revision: tombstone still beats live. Then most recently
+ * updated; then a cloud row over a purely local one.
  * Local session notes (`.982`) survive a cloud winner that has none.
  */
 function pickWinner(a: CompletedWorkoutLog, b: CompletedWorkoutLog): CompletedWorkoutLog {
-  const aDeleted = !!a.deletedAt;
-  const bDeleted = !!b.deletedAt;
+  const aRev = revisionOf(a);
+  const bRev = revisionOf(b);
   let winner: CompletedWorkoutLog;
-  if (aDeleted !== bDeleted) winner = aDeleted ? a : b;
+  if (aRev !== bRev) winner = aRev > bRev ? a : b;
+  else if (!!a.deletedAt !== !!b.deletedAt) winner = a.deletedAt ? a : b;
   else {
-    const aRev = revisionOf(a);
-    const bRev = revisionOf(b);
-    if (aRev !== bRev) winner = aRev > bRev ? a : b;
+    const aUpdated = updatedAtOf(a);
+    const bUpdated = updatedAtOf(b);
+    if (aUpdated !== bUpdated) winner = aUpdated > bUpdated ? a : b;
     else {
-      const aUpdated = updatedAtOf(a);
-      const bUpdated = updatedAtOf(b);
-      if (aUpdated !== bUpdated) winner = aUpdated > bUpdated ? a : b;
-      else {
-        const aCloud = !!a.id?.startsWith('cloud');
-        const bCloud = !!b.id?.startsWith('cloud');
-        winner = aCloud !== bCloud ? (aCloud ? a : b) : b;
-      }
+      const aCloud = !!a.id?.startsWith('cloud');
+      const bCloud = !!b.id?.startsWith('cloud');
+      winner = aCloud !== bCloud ? (aCloud ? a : b) : b;
     }
   }
   return preserveSessionNote(winner, winner === a ? b : a);
@@ -77,8 +93,9 @@ export interface MergeResult {
 
 /**
  * Merge cloud + local history. Keyed on `clientId` where available so a retry can
- * never produce a duplicate, with the legacy fingerprint as fallback. Tombstoned
- * logs are removed from the returned list but still resolve conflicts.
+ * never produce a duplicate, with the legacy fingerprint as fallback.
+ * Tombstones stay in the array so Restore has a row after a cloud pull (`.1006`).
+ * `HISTORY_CAP` still slices live rows only — tombs do not evict the diary.
  */
 export function mergeWorkoutHistoriesDetailed(
   local: CompletedWorkoutLog[],
@@ -105,13 +122,15 @@ export function mergeWorkoutHistoriesDetailed(
     if (legacy && !legacy.clientId) byIdentity.delete(legacyKey);
   }
 
-  const sorted = [...byIdentity.values()]
-    .filter((log) => !log.deletedAt)
-    .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
+  const newestFirst = (a: CompletedWorkoutLog, b: CompletedWorkoutLog) =>
+    new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime();
+  const all = [...byIdentity.values()];
+  const live = all.filter((log) => !log.deletedAt).sort(newestFirst);
+  const tombs = all.filter((log) => !!log.deletedAt).sort(newestFirst);
 
   return {
-    logs: sorted.slice(0, HISTORY_CAP),
-    truncated: Math.max(0, sorted.length - HISTORY_CAP),
+    logs: [...live.slice(0, HISTORY_CAP), ...tombs],
+    truncated: Math.max(0, live.length - HISTORY_CAP),
   };
 }
 

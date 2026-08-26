@@ -4,7 +4,7 @@
  * `/history` Sessions is the list (PLAN.md `.720`). Calendar and day-replay
  * are other surfaces. This module is the scan: date, title, muscles, set count.
  * It does not decide how to open a row (the page opens the log; `.997` can edit;
- * `.1003` can delete one finished session).
+ * `.1003` can delete one finished session; `.1006` can restore a tombstone).
  */
 
 import { EXERCISES } from '@/data/exercises';
@@ -83,4 +83,36 @@ export function liveSessionLogs(
   history: readonly CompletedWorkoutLog[]
 ): CompletedWorkoutLog[] {
   return history.filter((log) => !log.deletedAt);
+}
+
+/** Tombstone matching the live row shape. Live rows are not this. */
+export function toDeletedSessionHistoryRow(
+  log: CompletedWorkoutLog
+): SessionHistoryRow | null {
+  if (!log.deletedAt) return null;
+  return {
+    id: log.id,
+    title: log.workoutName,
+    completedAt: log.completedAt,
+    setCount: sessionSetCount(log),
+    muscles: sessionMuscles(log),
+  };
+}
+
+/** Tombstones, store order. Empty invents nothing. */
+export function listDeletedSessionHistoryRows(
+  history: readonly CompletedWorkoutLog[]
+): SessionHistoryRow[] {
+  const rows: SessionHistoryRow[] = [];
+  for (const log of history) {
+    const row = toDeletedSessionHistoryRow(log);
+    if (row) rows.push(row);
+  }
+  return rows;
+}
+
+export function deletedSessionLogs(
+  history: readonly CompletedWorkoutLog[]
+): CompletedWorkoutLog[] {
+  return history.filter((log) => !!log.deletedAt);
 }

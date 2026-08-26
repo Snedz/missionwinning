@@ -12,10 +12,12 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
 import {
+  listDeletedSessionHistoryRows,
   listSessionHistoryRows,
   liveSessionLogs,
   sessionMuscles,
   sessionSetCount,
+  toDeletedSessionHistoryRow,
   toSessionHistoryRow,
 } from './sessionHistoryList';
 
@@ -113,6 +115,21 @@ test('listSessionHistoryRows keeps store order and drops tombstones', () => {
   );
   assert.equal(rows[1]?.setCount, 1);
   assert.deepEqual(liveSessionLogs([newest, tomb, older]).map((l) => l.id), ['new', 'old']);
+});
+
+test('deleted session rows are tombstones only — empty invents nothing', () => {
+  assert.deepEqual(listDeletedSessionHistoryRows([]), []);
+  const live = log({ id: 'live', workoutName: 'Upper' });
+  assert.equal(toDeletedSessionHistoryRow(live), null);
+  const tomb = log({ id: 'gone', workoutName: 'Bogus Monday', deletedAt: isoDaysAgo(0) });
+  const row = toDeletedSessionHistoryRow(tomb);
+  assert.ok(row);
+  assert.equal(row.id, 'gone');
+  assert.equal(row.title, 'Bogus Monday');
+  assert.deepEqual(
+    listDeletedSessionHistoryRows([live, tomb]).map((r) => r.id),
+    ['gone']
+  );
 });
 
 const PAGE_DIR = path.join(root, 'src/page-components');

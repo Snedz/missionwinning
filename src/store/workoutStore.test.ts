@@ -223,7 +223,8 @@ test('workoutStore', async (t) => {
       deletedAt: new Date().toISOString(),
     };
     const { logs } = mergeDetailed(useWorkoutStore.getState().workoutHistory, [deleted]);
-    assert.equal(logs.length, 0);
+    assert.equal(logs.length, 1);
+    assert.ok(logs[0].deletedAt);
   });
 
   await t.test('cancelling clears the session and the timers', () => {
@@ -755,5 +756,43 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().deleteFinishedHistoryLog(live!.clientId ?? ''), null);
     assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
     assert.equal(useWorkoutStore.getState().workoutHistory.filter((row) => !row.deletedAt).length, 1);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog(live!.clientId ?? ''), null);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog(''), null);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog('missing'), null);
+    assert.ok(useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)?.deletedAt);
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === tuesday.id)?.deletedAt ?? null,
+      null
+    );
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    const restored = useWorkoutStore.getState().restoreFinishedHistoryLog(monday.clientId);
+    assert.ok(restored);
+    assert.equal(restored?.deletedAt, null);
+    const restoreUpserts = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: {
+        kind: string;
+        payload?: { clientId?: string; deletedAt?: string | null; revision?: number };
+      }) => op.kind === 'workout.upsert' && op.payload?.clientId === monday.clientId
+    );
+    const lastUpsert = restoreUpserts[restoreUpserts.length - 1];
+    assert.equal(lastUpsert?.payload?.deletedAt ?? null, null);
+    assert.equal(lastUpsert?.payload?.revision, restored?.revision);
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)?.deletedAt ?? null,
+      null
+    );
+    assert.equal(
+      useWorkoutStore.getState().workoutHistory.find((row) => row.id === tuesday.id)?.deletedAt ?? null,
+      null
+    );
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog(''), null);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog('missing'), null);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog(live!.clientId ?? ''), null);
+    assert.equal(useWorkoutStore.getState().restoreFinishedHistoryLog(monday.id), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    assert.equal(useWorkoutStore.getState().workoutHistory.filter((row) => !row.deletedAt).length, 2);
   });
 });

@@ -53,7 +53,10 @@ import {
   persistMergedCustoms,
   persistMergedPrefs,
 } from "@/lib/workout/mergeExercises";
-import { applyDeleteFinishedSession } from "@/lib/workout/deleteFinishedSession";
+import {
+  applyDeleteFinishedSession,
+  applyRestoreFinishedSession,
+} from "@/lib/workout/deleteFinishedSession";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
@@ -190,6 +193,8 @@ interface WorkoutState {
   applyMergedExercises: (sourceId: string, keeperId: string) => boolean;
   /** History delete of one finished session. Confirm lives in the helper. Leaves the live set. */
   deleteFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
+  /** History restore of one tombstone. Empty / not-deleted / live invents nothing (`.1006`). */
+  restoreFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -997,6 +1002,19 @@ export const useWorkoutStore = create<WorkoutState>()(
         return applied.next;
       },
 
+      restoreFinishedHistoryLog: (sessionId) => {
+        const state = get();
+        const applied = applyRestoreFinishedSession({
+          sessionId,
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
+      },
+
       startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {
         // `.292` — never invent 30s. One fallback lives in restTimer.ts.
         const sec = resolveStartRestSeconds(seconds);
@@ -1120,7 +1138,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       getRecentHistory: (limit = 5) => {
-        return get().workoutHistory.slice(0, limit);
+        return get().workoutHistory.filter((log) => !log.deletedAt).slice(0, limit);
       },
 
       loadFromCloud: async () => {

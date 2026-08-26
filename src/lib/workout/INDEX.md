@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
-10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`). Empty / live / missing invents nothing. Cannot recover.  
+10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
 10a10. `hideExercise.ts` — hide / unhide a library name (`.1004`). History stays. Empty / missing / already-hidden invents nothing.  
 10a11. `startHistoryFrom.ts` — fold older diary days out of week strip / Coach / streak (`.1005`). Data stays. Empty / missing / future invents nothing. Confirm if it hides a lot.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
@@ -130,8 +130,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `editFinishedSessionSurface.test.ts` | History door; Today one Start; not Resume; no permalink (`.997`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
-| `deleteFinishedSession.test.ts` | Confirm-gated delete; empty / live / missing invent nothing; other days stay (`.1003`) |
-| `deleteFinishedSessionSurface.test.ts` | History detail door; Today one Start; confirm cannot be recovered (`.1003`) |
+| `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
+| `deleteFinishedSessionSurface.test.ts` | History detail + Deleted sessions door; Today one Start (`.1003` / `.1006`) |
 | `hideExercise.test.ts` | Hide / unhide; empty / missing / already-hidden invent nothing; history stays (`.1004`) |
 | `hideExerciseSurface.test.ts` | Library / overflow door; Today one Start; Add omits hidden (`.1004`) |
 | `startHistoryFrom.test.ts` | Fold-from-date; empty / missing / future invent nothing; confirm when hiding a lot (`.1005`) |

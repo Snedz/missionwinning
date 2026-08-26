@@ -1,6 +1,7 @@
 /**
- * Delete this finished session. Empty / live / missing invent nothing.
- * Confirm-gated. Other days stay. Never wipes the account.
+ * Delete this finished session. Restore a tombstone.
+ * Empty / live / missing / not-deleted invent nothing.
+ * Confirm-gated delete. Other days stay. Never wipes the account.
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,12 +9,18 @@ import { readFileSync } from 'node:fs';
 import path from 'path';
 import type { ActiveWorkout, CompletedWorkoutLog } from '@/types';
 import { countTrainDaysThisWeek } from '@/lib/habitWeekCount.ts';
-import { listSessionHistoryRows } from '@/lib/history/sessionHistoryList.ts';
+import {
+  listDeletedSessionHistoryRows,
+  listSessionHistoryRows,
+} from '@/lib/history/sessionHistoryList.ts';
 import { listMovementHistory } from './movementHistory.ts';
 import { getBestPriorSet } from './workoutPr.ts';
 import {
   applyDeleteFinishedSession,
+  applyRestoreFinishedSession,
   decideDeleteFinishedSession,
+  decideRestoreFinishedSession,
+  findDeletedSession,
   findFinishedSession,
 } from './deleteFinishedSession.ts';
 
@@ -233,11 +240,130 @@ describe('applyDeleteFinishedSession (.1003)', () => {
   });
 });
 
+describe('decideRestoreFinishedSession (.1006)', () => {
+  const NOW = '2026-08-25T16:00:00.000Z';
+  const tomb = (): CompletedWorkoutLog => ({
+    ...monday(),
+    deletedAt: '2026-08-25T15:00:00.000Z',
+    revision: 2,
+  });
+
+  it('empty id invents nothing', () => {
+    const history = [tomb(), tuesday()];
+    assert.equal(decideRestoreFinishedSession({ sessionId: '', history }).kind, 'empty');
+    assert.equal(decideRestoreFinishedSession({ sessionId: '   ', history }).kind, 'empty');
+    assert.equal(decideRestoreFinishedSession({ sessionId: null, history }).kind, 'empty');
+    assert.equal(applyRestoreFinishedSession({ sessionId: '', history }), null);
+  });
+
+  it('not-deleted / missing invents nothing', () => {
+    const history = [monday(), tuesday()];
+    assert.equal(
+      decideRestoreFinishedSession({ sessionId: 'log-mon', history }).kind,
+      'noop'
+    );
+    assert.equal(
+      decideRestoreFinishedSession({ sessionId: 'log-missing', history: [tomb()] }).kind,
+      'noop'
+    );
+    assert.equal(applyRestoreFinishedSession({ sessionId: 'log-mon', history }), null);
+    assert.equal(findDeletedSession(history, 'log-mon'), null);
+  });
+
+  it('findDeletedSession matches id or clientId — live rows are not this', () => {
+    const gone = tomb();
+    const history = [gone, tuesday()];
+    assert.equal(findDeletedSession(history, 'log-mon')?.id, 'log-mon');
+    assert.equal(findDeletedSession(history, 'cid-log-mon')?.id, 'log-mon');
+    assert.equal(findDeletedSession(history, ' cid-log-mon ')?.id, 'log-mon');
+    assert.equal(findDeletedSession([monday(), tuesday()], 'cid-log-mon'), null);
+    assert.equal(findDeletedSession(history, 'cid-tue'), null);
+    assert.equal(findDeletedSession(null, 'cid-log-mon'), null);
+    assert.equal(findDeletedSession(undefined, 'log-mon'), null);
+    assert.equal(findDeletedSession(history, ''), null);
+  });
+
+  it('live session id invents nothing — do not undelete a live session', () => {
+    const open = live();
+    const history = [
+      { ...tomb(), id: open.clientId ?? 'x', clientId: open.clientId },
+      tuesday(),
+    ];
+    assert.equal(
+      findDeletedSession(history, open.clientId)?.clientId,
+      open.clientId,
+      'the tomb exists; live is what noops'
+    );
+    assert.equal(
+      decideRestoreFinishedSession({
+        sessionId: open.clientId,
+        history,
+        live: open,
+      }).kind,
+      'noop'
+    );
+    assert.equal(
+      applyRestoreFinishedSession({
+        sessionId: open.clientId,
+        history,
+        live: open,
+      }),
+      null
+    );
+    assert.equal(
+      decideRestoreFinishedSession({
+        sessionId: 'wid-live',
+        history,
+        live: live({ workoutId: 'wid-live' }),
+      }).kind,
+      'noop'
+    );
+  });
+
+  it('a tombstone restores that one session — other days stay', () => {
+    const history = [tomb(), tuesday()];
+    assert.deepEqual(
+      decideRestoreFinishedSession({ sessionId: ' log-mon ', history }),
+      { kind: 'restore', sessionId: 'log-mon' }
+    );
+    assert.deepEqual(
+      decideRestoreFinishedSession({ sessionId: 'cid-log-mon', history }),
+      { kind: 'restore', sessionId: 'log-mon' }
+    );
+    const applied = applyRestoreFinishedSession({
+      sessionId: 'cid-log-mon',
+      history,
+      now: NOW,
+    });
+    assert.ok(applied);
+    assert.equal(applied?.next.id, 'log-mon');
+    assert.equal(applied?.next.deletedAt, null);
+    assert.equal(applied?.next.updatedAt, NOW);
+    assert.equal(applied?.next.revision, 3);
+    const tue = applied?.history.find((row) => row.id === 'log-tue');
+    assert.ok(tue && !tue.deletedAt);
+    assert.deepEqual(
+      listSessionHistoryRows(applied!.history).map((row) => row.id),
+      ['log-mon', 'log-tue']
+    );
+    assert.equal(listDeletedSessionHistoryRows(applied!.history).length, 0);
+    assert.equal(listMovementHistory(applied!.history, 'bench-press').length, 1);
+    assert.deepEqual(getBestPriorSet('bench-press', applied!.history), {
+      weight: 135,
+      reps: 5,
+    });
+    const weekNow = new Date('2026-08-19T12:00:00');
+    assert.equal(countTrainDaysThisWeek(applied!.history, weekNow), 2);
+  });
+});
+
 describe('deleteFinishedSession wiring', () => {
   it('stays one home — no store / resume / paywall / wipe / live cancel', () => {
     const src = read('src/lib/workout/deleteFinishedSession.ts');
     assert.match(src, /decideDeleteFinishedSession/);
     assert.match(src, /applyDeleteFinishedSession/);
+    assert.match(src, /decideRestoreFinishedSession/);
+    assert.match(src, /applyRestoreFinishedSession/);
     assert.match(src, /needs-confirm/);
     assert.doesNotMatch(src, /from '@\/store\/workoutStore'/);
     assert.doesNotMatch(src, /startWorkout|protectLiveStart|decideThisDeviceResume/);

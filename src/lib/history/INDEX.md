@@ -12,7 +12,7 @@
 
 | File | Concern |
 |------|---------|
-| `sessionHistoryList.ts` | Row projection for the one true list (`.720`). Fold-from-date (`.1005`) does not hide a row. |
+| `sessionHistoryList.ts` | Row projection for the one true list (`.720`). Fold-from-date (`.1005`) does not hide a row. Tombstones are a separate restore list (`.1006`). |
 | `monthGrid.ts` | Month grid vocabulary |
 | `guideHistory561.test.ts` | History empty-copy honesty |
 

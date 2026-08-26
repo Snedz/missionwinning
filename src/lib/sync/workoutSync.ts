@@ -17,6 +17,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { supabase, getUser } from '@/lib/supabase';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
+import { incomingWorkoutBeats } from '@/lib/workout/workoutMerge';
 
 export interface WorkoutSyncPayload {
   clientId: string;
@@ -102,9 +103,13 @@ export async function pushWorkout(payload: unknown): Promise<boolean> {
     const serverDeleted = !!existing.deleted_at;
     const incomingDeleted = !!payload.deletedAt;
 
-    // Tombstone always wins; otherwise the highest revision does.
-    const shouldApply = incomingDeleted || (!serverDeleted && payload.revision >= serverRevision);
-    if (!shouldApply) return true; // server is ahead — nothing to do
+    const shouldApply = incomingWorkoutBeats({
+      incomingRevision: payload.revision,
+      serverRevision,
+      incomingDeleted,
+      serverDeleted,
+    });
+    if (!shouldApply) return true;
 
     const { error } = await supabase
       .from('workout_logs')

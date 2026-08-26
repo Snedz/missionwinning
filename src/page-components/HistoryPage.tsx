@@ -47,6 +47,7 @@ import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { formatDuration } from '@/lib/utils';
 import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
+import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
@@ -59,7 +60,10 @@ import {
   type BackfillDraft,
 } from '@/lib/workout/backfillSession';
 import { decideMergeExercises, knownIdsForMerge } from '@/lib/workout/mergeExercises';
-import { decideDeleteFinishedSession } from '@/lib/workout/deleteFinishedSession';
+import {
+  decideDeleteFinishedSession,
+  decideRestoreFinishedSession,
+} from '@/lib/workout/deleteFinishedSession';
 import { newClientId } from '@/lib/workout/clientId';
 import {
   build1RMChartData,
@@ -90,6 +94,7 @@ import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import { MUSCLE_GROUP_I18N } from '@/lib/muscleGroups';
 import {
+  deletedSessionLogs,
   liveSessionLogs,
   toSessionHistoryRow,
 } from '@/lib/history/sessionHistoryList';
@@ -112,6 +117,7 @@ export function HistoryPage() {
   const honor = useHonorSavedRoutine();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const liveHistory = useMemo(() => liveSessionLogs(workoutHistory), [workoutHistory]);
+  const deletedHistory = useMemo(() => deletedSessionLogs(workoutHistory), [workoutHistory]);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
   const [editing, setEditing] = useState(false);
   const [pendingDraft, setPendingDraft] = useState<FinishedSessionDraft | null>(null);
@@ -119,10 +125,12 @@ export function HistoryPage() {
   const [backfillOpen, setBackfillOpen] = useState(false);
   const [mergeOpen, setMergeOpen] = useState(false);
   const [startFromOpen, setStartFromOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
   const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
   const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
+  const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
   const openLog = (log: CompletedWorkoutLog) => {
@@ -161,6 +169,27 @@ export function HistoryPage() {
     setStartFromOpen(true);
     setSelected(null);
     setEditing(false);
+  };
+
+  const openRestore = () => {
+    if (deletedHistory.length === 0) return;
+    setRestoreOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const requestRestore = (sessionId: string) => {
+    const decision = decideRestoreFinishedSession({
+      sessionId,
+      history: workoutHistory,
+      live: activeWorkout,
+    });
+    if (decision.kind !== 'restore') return;
+    const restored = restoreFinishedHistoryLog(decision.sessionId);
+    if (restored) {
+      setRestoreOpen(false);
+      setSelected(restored);
+    }
   };
 
   const requestBackfillSave = (draft: BackfillDraft) => {
@@ -409,6 +438,17 @@ export function HistoryPage() {
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
           </Button>
+          {deletedHistory.length > 0 ? (
+            <Button
+              type="button"
+              variant="outline"
+              className="mt-2 w-full min-h-[44px] tap-target"
+              data-testid="session-history-restore-open"
+              onClick={openRestore}
+            >
+              {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
+            </Button>
+          ) : null}
         </div>
       ) : (
         <div className="space-y-3">
@@ -439,6 +479,17 @@ export function HistoryPage() {
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
           </Button>
+          {deletedHistory.length > 0 ? (
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full min-h-[44px] tap-target"
+              data-testid="session-history-restore-open"
+              onClick={openRestore}
+            >
+              {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
+            </Button>
+          ) : null}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="search"
@@ -814,6 +865,7 @@ export function HistoryPage() {
                     </div>
                   );
                 })()}
+                {selected.deletedAt ? null : (
                 <HistorySessionEdit
                   log={selected}
                   unitLabel={unitLabel}
@@ -827,9 +879,10 @@ export function HistoryPage() {
                     setPendingDraft(null);
                   }}
                 />
+                )}
               </div>
               {/* K7 — return path: replay this session in Train. */}
-              {!editing && templateFromCompletedLog(selected) ? (
+              {!editing && !selected.deletedAt && templateFromCompletedLog(selected) ? (
                 <div className="pt-2 space-y-2 border-t-2 border-border">
                   <Button
                     type="button"
@@ -864,7 +917,15 @@ export function HistoryPage() {
                   </Button>
                 </div>
               ) : null}
-              {!editing ? (
+              {!editing && selected.deletedAt ? (
+                <HistorySessionRestore
+                  sessionId={selected.id}
+                  history={deletedHistory}
+                  live={activeWorkout}
+                  onRestore={requestRestore}
+                />
+              ) : null}
+              {!editing && !selected.deletedAt ? (
                 <HistorySessionDelete
                   sessionId={selected.id}
                   history={workoutHistory}
@@ -877,7 +938,7 @@ export function HistoryPage() {
                     });
                     if (decision.kind !== 'needs-confirm') return;
                     const deleted = deleteFinishedHistoryLog(decision.sessionId);
-                    if (deleted) closeSelected();
+                    if (deleted) setSelected(deleted);
                   }}
                 />
               ) : null}
@@ -990,6 +1051,32 @@ export function HistoryPage() {
                   }),
                 });
               }}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={restoreOpen} onOpenChange={(open) => !open && setRestoreOpen(false)}>
+        <DialogContent
+          className="max-w-md max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-restore-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyRestoreTitle', { defaultValue: 'Deleted sessions' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyRestoreDesc', {
+                defaultValue:
+                  'Restore a session you deleted. Empty invents nothing. A live workout is not this.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {restoreOpen ? (
+            <HistorySessionRestore
+              history={deletedHistory}
+              live={activeWorkout}
+              onRestore={requestRestore}
             />
           ) : null}
         </DialogContent>

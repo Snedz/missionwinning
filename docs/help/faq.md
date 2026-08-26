@@ -21,7 +21,7 @@ Yes as a PWA — log workouts offline; sync when back online if signed in.
 On History or Library, open **Merge duplicate exercises**. Pick the name to move data from and the name to keep, then confirm. History, PRs, notes, tags, rest, and 1RM ride the name you kept. This cannot be undone. The app does not guess a match.
 
 **I logged a session on the wrong day.**  
-Open that finished session in History and **Delete this session**. Confirm — it cannot be recovered. Other days stay. This does not wipe your account and does not cancel a live workout.
+Open that finished session in History and **Delete this session**. Confirm — it leaves History. Restore it from **Deleted sessions**. Other days stay. This does not wipe your account and does not cancel a live workout.
 
 **How do I hide a movement from Add?**  
 Open it in Library and tap **Hide this exercise**, or use **Hide from library** on the live lift overflow. The name leaves Add and search. Past sets, PRs, and notes stay. Unhide it from the Hidden list on Library. The app does not hide lookalikes.
