@@ -34,6 +34,18 @@ export interface MuscleHeatCell {
   statusKey: ReadinessStatusKey;
 }
 
+/** Anatomy overdue is a missed session — never-trained (`days === 99`) is idle, not shame. */
+export function anatomyGroupOverdue(
+  cell: Pick<MuscleHeatCell, 'daysSince'> | null | undefined
+): boolean {
+  if (!cell) return false;
+  const days = Number(cell.daysSince);
+  if (!Number.isFinite(days) || days < 7) return false;
+  // 99 is the readiness sentinel for no last session — not a 99-day gap.
+  if (days === 99) return false;
+  return true;
+}
+
 /** Monday-based week start (local YYYY-MM-DD) — buckets the volume timeline. */
 export function weekStartKey(iso: string): string {
   const d = new Date(iso);

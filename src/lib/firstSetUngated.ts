@@ -47,6 +47,7 @@
  * `.1016` — this session as a local file they own. Never a login wall.
  * `.1017` — live Last/Prev empty load is BW, not 0. Never a login wall.
  * `.1018` — the History month they own. Never a login wall.
+ * `.1019` — never-trained anatomy is idle, not overdue. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
