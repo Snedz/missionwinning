@@ -6,6 +6,58 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1017` Last cite is BW, not 0, on empty load (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1017` — from master
+> `.1016` (`fa96397d5` — This session as
+> a file they own). Stamp stays `.1017`.
+> Do not bump. Title stays **Last cite
+> is BW, not 0, on empty load (.1017)**.
+> Do not merge this PR yourself. Session
+> file `.1016` + assisted `.1015` +
+> duration `.1014` + import `.1013` +
+> titles `.1012` + export `.1011` +
+> Library skip `.1010` + BW cite `.1009`
+> are on master. Do not smash them.
+> Every commit `[skip vercel]`. No
+> Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+Next already prints `8 × BW` on empty
+load. Last / Prev still print `8 × 0`.
+
+### First check (done — hypothesis holds)
+
+Read tip `fa96397d5` / `.1016`.
+Confirmed:
+
+- `formatSetRowLine` weight-0 goes to
+  `formatSetLoadLine` → `8 × BW`.
+- `formatSetRowPrev` weight branch is
+  `` `${reps} × ${weight}` `` → `8 × 0`.
+- Custom id stays type `weight`.
+
+### Done means
+
+Last / Prev / after-complete print
+`8 × BW` on empty load. Loaded
+unchanged. Duration / assisted stay.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/emptyLoadCite.test.ts
+npx tsx --test src/lib/workout/durationCite.test.ts src/lib/workout/assistedCite.test.ts src/lib/workout/nextCiteBw.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1016` This session as a file they own (2026-08-26)
 
 > **Frozen.** Implement only this section + root
