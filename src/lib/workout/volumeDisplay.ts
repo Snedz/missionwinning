@@ -34,3 +34,21 @@ export function sumWorkingReps(
   }
   return reps;
 }
+
+/** One History / Victory session label. Career totals stay kg-honest elsewhere. */
+export function formatLogVolumeDisplay(
+  log: {
+    totalVolume: number;
+    exercises?: { sets: { reps: number; kind?: string; completed?: boolean }[] }[];
+  },
+  unitLabel: string,
+  formatNumber: (n: number) => string
+): VolumeDisplay {
+  const volume = Number.isFinite(log.totalVolume) ? log.totalVolume : 0;
+  return formatWorkoutVolumeDisplay(
+    volume,
+    sumWorkingReps(log.exercises ?? []),
+    unitLabel,
+    formatNumber
+  );
+}

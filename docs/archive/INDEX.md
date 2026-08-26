@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1009-for-1024.md](./log/LOG-rotate-1009-for-1024.md) | rotated 2026-08-26 for `.1024` History empty-load volume is reps, not 0 kg (`.1009`) |
 | [log/LOG-rotate-1008-for-1023.md](./log/LOG-rotate-1008-for-1023.md) | rotated 2026-08-26 for `.1023` Coach citation empty load is BW, not 0kg (`.1008`) |
 | [log/LOG-rotate-1007-for-1022.md](./log/LOG-rotate-1007-for-1022.md) | rotated 2026-08-26 for `.1022` Heatmap empty-load volume is reps, not 0 (`.1007`) |
 | [log/LOG-rotate-1006-for-1021.md](./log/LOG-rotate-1006-for-1021.md) | rotated 2026-08-26 for `.1021` Coach chat empty load is BW, not 0 (`.1006`) |

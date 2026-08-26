@@ -91,6 +91,7 @@ import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { formatLogVolumeDisplay } from '@/lib/workout/volumeDisplay';
 import { decideStartAgain } from '@/lib/workout/startAgain';
 import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
@@ -626,6 +627,7 @@ export function HistoryPage() {
                       count: row.setCount,
                       defaultValue: `${row.setCount} sets`,
                     });
+              const vol = formatLogVolumeDisplay(log, unitLabel, fmt.num);
               return (
               <Card
                 key={log.id}
@@ -664,7 +666,7 @@ export function HistoryPage() {
                         </span>
                       ) : null}
                       <span>
-                        {fmt.num(log.totalVolume)} {unitLabel}
+                        {vol.value} {vol.unit}
                       </span>
                     </p>
                   </button>
@@ -959,11 +961,14 @@ export function HistoryPage() {
                     ? ` · ${formatDuration(selected.durationSeconds)}`
                     : ''}{' '}
                   ·{' '}
-                  {t('historySessionVolume', {
-                    volume: fmt.num(selected.totalVolume),
-                    unit: unitLabel,
-                    defaultValue: `${fmt.num(selected.totalVolume)} ${unitLabel} total volume`,
-                  })}
+                  {(() => {
+                    const vol = formatLogVolumeDisplay(selected, unitLabel, fmt.num);
+                    return t('historySessionVolume', {
+                      volume: vol.value,
+                      unit: vol.unit,
+                      defaultValue: `${vol.value} ${vol.unit} total volume`,
+                    });
+                  })()}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 mt-2">
