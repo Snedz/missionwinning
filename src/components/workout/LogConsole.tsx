@@ -70,7 +70,11 @@ type Props = {
   plusLoad?: boolean;
   /** Last working set (not warmup). One tap accepts into the dial. */
   lastSetGhost?: LastSetGhost | null;
-  onAcceptGhost?: (target: { reps: number; weight: number }) => void;
+  onAcceptGhost?: (target: {
+    reps: number;
+    weight: number;
+    durationSeconds?: number;
+  }) => void;
   /** Live barbell plate hint (`25 + 15`). */
   plateLine?: string | null;
   onOpenPlates?: () => void;

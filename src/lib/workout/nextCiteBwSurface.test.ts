@@ -35,6 +35,10 @@ describe('next cite BW surface lock (.1009)', () => {
     const table = read('src/components/workout/SetLogTable.tsx');
     assert.match(table, /rowType/);
     assert.match(table, /formatAfterCompleteParts/);
+
+    assert.match(header, /durationSeconds/);
+    assert.match(ghost, /durationSeconds/);
+    assert.match(adj, /durationSeconds/);
   });
 
   it('Today stays one Start; lean and /private do not import the cite', () => {

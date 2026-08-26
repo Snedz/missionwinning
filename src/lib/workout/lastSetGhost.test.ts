@@ -25,6 +25,7 @@ function logWith(
     rir?: number;
     rpe10?: number;
     side?: string;
+    durationSeconds?: number;
   }[],
   over: Partial<CompletedWorkoutLog> = {}
 ): CompletedWorkoutLog {
@@ -49,6 +50,9 @@ function logWith(
           ...(s.rir != null ? { rir: s.rir } : {}),
           ...(s.rpe10 != null ? { rpe10: s.rpe10 } : {}),
           ...(s.side ? { side: s.side } : {}),
+          ...(s.durationSeconds && s.durationSeconds > 0
+            ? { durationSeconds: s.durationSeconds }
+            : {}),
         })),
       },
     ],
@@ -174,6 +178,15 @@ describe('resolveLastSetGhost', () => {
       rpe10: 9,
       rir: 2,
       side: 'L',
+    });
+  });
+
+  it('plank hold is a ghost, not 0-rep junk (.1014)', () => {
+    const history = [logWith('plank', [{ reps: 0, weight: 0, durationSeconds: 45 }])];
+    assert.deepEqual(resolveLastSetGhost(history, 'plank'), {
+      reps: 0,
+      weight: 0,
+      durationSeconds: 45,
     });
   });
 

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1013` Our export comes back (from master `.1012` This-movement title `aa23a539`; stamp stays `.1013`; keep title-fix `.1012` + export `.1011` + library skip `.1010` + BW cite `.1009`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1013";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1014` Next cite is 0:45, not mute (from master `.1013` Our export comes back `3a28b75fa`; stamp stays `.1014`; keep import `.1013` + titles `.1012` + export `.1011` + library skip `.1010` + BW cite `.1009`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1014";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

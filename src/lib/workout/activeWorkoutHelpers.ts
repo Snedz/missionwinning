@@ -17,7 +17,7 @@ import {
 } from '@/lib/workout/progressiveOverloadCue';
 import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
 import { formatPrevPlusLoadLabel, formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
-import { formatSetRowPrev } from '@/lib/workout/setRowType';
+import { formatSetRowPrev, setRowDurationHold } from '@/lib/workout/setRowType';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(
@@ -850,7 +850,11 @@ export function shouldShowSessionSkip(params: {
   return !params.skippedThisSession;
 }
 
-export type ExerciseNextTarget = { reps: number; weight: number };
+export type ExerciseNextTarget = {
+  reps: number;
+  weight: number;
+  durationSeconds?: number;
+};
 
 /**
  * The "Next: N × W" line for an exercise card.
@@ -860,9 +864,9 @@ export type ExerciseNextTarget = { reps: number; weight: number };
  * so prescribed never runs `suggestNextSetTarget`.
  */
 export function resolveExerciseNextTarget(params: {
-  sets: { reps: number; weight: number; completed: boolean }[];
+  sets: { reps: number; weight: number; durationSeconds?: number; completed: boolean }[];
   prescribed: boolean | undefined;
-  lastSets: { reps: number; weight: number }[] | null;
+  lastSets: { reps: number; weight: number; durationSeconds?: number }[] | null;
   units: Parameters<typeof suggestNextSetTarget>[2];
   goalRange?: { min: number; max: number };
   suggest?: typeof suggestNextSetTarget;
@@ -871,9 +875,24 @@ export function resolveExerciseNextTarget(params: {
   if (nextPlannedIdx < 0) return null;
   if (params.prescribed) {
     const set = params.sets[nextPlannedIdx];
-    return { reps: set.reps, weight: set.weight };
+    const hold = setRowDurationHold(set);
+    return {
+      reps: set.reps,
+      weight: set.weight,
+      ...(hold != null ? { durationSeconds: hold } : {}),
+    };
   }
   if (!params.lastSets) return null;
+  const lastWork = workingSets(params.lastSets);
+  const lastMatch = lastWork[nextPlannedIdx] ?? lastWork[lastWork.length - 1];
+  const hold = setRowDurationHold(lastMatch);
+  if (hold != null) {
+    return {
+      reps: lastMatch?.reps ?? 0,
+      weight: lastMatch?.weight ?? 0,
+      durationSeconds: hold,
+    };
+  }
   const suggest = params.suggest ?? suggestNextSetTarget;
   return suggest(params.lastSets, nextPlannedIdx, params.units, {
     repMin: params.goalRange?.min,

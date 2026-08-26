@@ -6,6 +6,56 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1014` Next cite is 0:45, not mute (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1014` — from master
+> `.1013` (`3a28b75fa` — Our export comes
+> back). Stamp stays `.1014`. Do not bump.
+> Title stays **Next cite is 0:45, not
+> mute (.1014)**. Same PR. Do not merge
+> this PR yourself. Import `.1013` +
+> Titles `.1012` + Export `.1011` + Library
+> skip `.1010` + BW cite `.1009` are on
+> master. Do not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Prev already says 0:45. Next / Last /
+after-complete still dropped the hold.
+
+### First check (done — hypothesis holds)
+
+Read tip `3a28b75fa` / `.1013`.
+Confirmed:
+
+- `formatSetRowLine` prints `0:45`
+  when `durationSeconds` is passed.
+- `suggestNextSetTarget` bails on
+  `lastReps < 1`. Ghost filters
+  `reps > 0`.
+- Missing seconds invents nothing
+  (`''` / `—`), not `45 × 0 kg`.
+
+### Done means
+
+Next, Last ghost, and after-complete
+cite a logged plank hold as `0:45`.
+Missing invents nothing.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/durationCite.test.ts src/lib/workout/lastSetGhost.test.ts src/lib/workout/nextCiteBw.test.ts src/lib/workout/nextCiteBwSurface.test.ts
+```
+
+---
+
 ## Frozen plan — `.1013` Our export comes back (2026-08-26)
 
 > **Frozen.** Implement only this section + root

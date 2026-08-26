@@ -10,7 +10,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
-1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only. Live Next/Last cites reuse this grammar (`.1009`) so BW is not `0 kg`.  
+1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only. Live Next/Last cites reuse this grammar (`.1009` BW, `.1014` hold `0:45`).  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`) with warmup vs work lanes (`.995`)  
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
 2b2. `sessionClock.ts` — pause / resume the SESSION elapsed clock (`.1001`). Not rest. Not EMOM. Empty invents nothing.  
@@ -113,6 +113,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `movementHistory.test.ts` | Per-lift diary: empty / short invent nothing; warmup / tombstone skipped (`.993`); untitled title is the date, named is sessionTitle (`.1012`) |
 | `movementHistorySurface.test.ts` | Tap the open lift; title is `movementHistoryTitle`; Today stays one Start; no chart / paywall / Feed (`.993` / `.1012`) |
 | `setRowType.test.ts` | Type resolve + vest volume + duration parse; custom name is not a guess (`.994`) |
+| `durationCite.test.ts` | Next / Last / after-complete cite a hold as `0:45`; missing invents nothing (`.1014`) |
 | `setRowTypeSurface.test.ts` | Open row speaks the type; Today one Start; no Track BW invent / paywall (`.994`) |
 | `thinHistory.test.ts` | Two named logs invent no Wednesday; week strip does not score 1–2 sessions; saved notebook still wins (`.964`) |
 | `inSetCues.test.ts` | Setup first, cap 3; empty invents nothing; no remote clip URL; Train-only (`.973`) |

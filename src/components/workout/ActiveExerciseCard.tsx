@@ -418,6 +418,9 @@ export function ActiveExerciseCard({
             onAcceptGhost={(target) => {
               onSetInputChange('reps', target.reps);
               onSetInputChange('weight', target.weight);
+              if (target.durationSeconds && target.durationSeconds > 0) {
+                onSetInputChange('duration', target.durationSeconds);
+              }
             }}
             afterCompleteCites={afterCompleteCites}
             workClockKind={workClockKind}

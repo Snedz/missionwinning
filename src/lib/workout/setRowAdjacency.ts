@@ -17,9 +17,11 @@ import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSet
 import { appendKnownMaxPctCite, loadPctOfKnownMax } from '@/lib/workout/setRowPercent';
 import {
   formatSetRowPrev,
+  setRowDurationHold,
   setRowHasWork,
   type SetRowType,
 } from '@/lib/workout/setRowType';
+import { workingSets } from '@/lib/workout/setMath';
 
 /** Monday=0 … Sunday=6 — same order as coach `weekdayLabel`. */
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -57,7 +59,7 @@ export type SetRowCite = SetRowLogCite | SetRowCoachCite;
 export type AfterCompleteProvenance = SetRowCite | SetRowSessionCite | SetRowLastRestCite;
 
 export type AfterCompleteSuggestion =
-  | { kind: 'load'; reps: number; weight: number }
+  | { kind: 'load'; reps: number; weight: number; durationSeconds?: number }
   | { kind: 'rest'; seconds: number };
 
 /** Visible next-set cite after a completed working set. Always skippable in UI. */
@@ -128,13 +130,15 @@ function formatTargetLabel(
   reps: number,
   weight: number,
   rowType: SetRowType = 'weight',
-  bodyweightLabel = 'BW'
+  bodyweightLabel = 'BW',
+  durationSeconds?: number
 ): string {
   return formatSetRowPrev({
     type: rowType,
     reps,
     weight,
     bodyweightLabel,
+    durationSeconds,
   });
 }
 
@@ -202,7 +206,8 @@ export function formatAfterCompleteParts(
           row.suggestion.reps,
           row.suggestion.weight,
           rowType,
-          bodyweightLabel
+          bodyweightLabel,
+          row.suggestion.durationSeconds
         )
       : t('activeNextCiteRest', {
           clock: restClock ?? `${row.suggestion.seconds}s`,
@@ -332,15 +337,37 @@ function sessionCompletedWorking(sets: {
   completed?: boolean;
   reps: number;
   weight: number;
+  durationSeconds?: number;
   kind?: string;
-}[]): { set: { reps: number; weight: number; kind?: string }; original: number }[] {
-  const out: { set: { reps: number; weight: number; kind?: string }; original: number }[] = [];
+}[]): {
+  set: { reps: number; weight: number; durationSeconds?: number; kind?: string };
+  original: number;
+}[] {
+  const out: {
+    set: { reps: number; weight: number; durationSeconds?: number; kind?: string };
+    original: number;
+  }[] = [];
   for (let i = 0; i < sets.length; i++) {
     const s = sets[i];
-    if (!s?.completed || s.kind === 'warmup' || s.reps < 1) continue;
+    if (!s?.completed || s.kind === 'warmup' || !setRowHasWork(s)) continue;
     out.push({ set: s, original: i + 1 });
   }
   return out;
+}
+
+function loadCiteFromHold(set: {
+  reps: number;
+  weight: number;
+  durationSeconds?: number;
+}): AfterCompleteSuggestion | null {
+  const hold = setRowDurationHold(set);
+  if (hold == null) return null;
+  return {
+    kind: 'load',
+    reps: set.reps,
+    weight: set.weight,
+    durationSeconds: hold,
+  };
 }
 
 /**
@@ -355,6 +382,7 @@ export function resolveAfterCompleteCite(params: {
     completed?: boolean;
     reps: number;
     weight: number;
+    durationSeconds?: number;
     kind?: string;
     rpe10?: number;
     rir?: number;
@@ -379,15 +407,45 @@ export function resolveAfterCompleteCite(params: {
 
     if (params.prescribed) {
       const intensity = lastWorkSetIntensity([done]) ?? undefined;
+      const hold = setRowDurationHold(next);
       return {
-        suggestion: { kind: 'load', reps: next.reps, weight: next.weight },
+        suggestion: {
+          kind: 'load',
+          reps: next.reps,
+          weight: next.weight,
+          ...(hold != null ? { durationSeconds: hold } : {}),
+        },
         cite: { kind: 'coach', ...(intensity ? { intensity } : {}) },
       };
     }
 
     const lastLog = lastLiveSessionForExercise(params.workoutHistory, params.exerciseId);
     const lastEx = lastLog?.exercises.find((e) => e.exerciseId === params.exerciseId);
-    if (lastEx) {
+    if (lastLog && lastEx) {
+      const lastWork = workingSets(lastEx.sets);
+      const lastMatch = lastWork[nextIdx] ?? lastWork[lastWork.length - 1];
+      const holdCite = lastMatch ? loadCiteFromHold(lastMatch) : null;
+      if (holdCite) {
+        const day =
+          weekdayFromIso(lastLog.completedAt) ?? weekdayFromIso(lastLog.startedAt);
+        if (day) {
+          const workingNums = originalWorkingNumbers(lastEx.sets);
+          const matchIdx = lastWork.length
+            ? Math.min(nextIdx, lastWork.length - 1)
+            : 0;
+          const setN = workingNums[matchIdx] ?? workingNums[0] ?? 1;
+          return {
+            suggestion: holdCite,
+            cite: {
+              kind: 'logs',
+              weekdayMondayOffset: day.offset,
+              weekdayShort: day.short,
+              setFrom: setN,
+              setTo: setN,
+            },
+          };
+        }
+      }
       const suggestion = suggestNextSetTarget(lastEx.sets, nextIdx, params.units, {
         repMin: params.goalRange?.min,
         repMax: params.goalRange?.max,
@@ -410,6 +468,20 @@ export function resolveAfterCompleteCite(params: {
 
     const sessionWork = sessionCompletedWorking(params.sessionSets);
     if (!sessionWork.length) return null;
+    const sessionHold = loadCiteFromHold(sessionWork[sessionWork.length - 1]!.set);
+    if (sessionHold) {
+      const intensity = lastWorkSetIntensity([done]) ?? undefined;
+      const original = sessionWork[sessionWork.length - 1]!.original;
+      return {
+        suggestion: sessionHold,
+        cite: {
+          kind: 'session',
+          setFrom: original,
+          setTo: original,
+          ...(intensity ? { intensity } : {}),
+        },
+      };
+    }
     const suggestion = suggestNextSetTarget(
       sessionWork.map((w) => w.set),
       Math.max(0, sessionWork.length - 1),
