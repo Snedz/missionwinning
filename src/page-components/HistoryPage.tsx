@@ -104,6 +104,7 @@ import {
   toSessionHistoryRow,
 } from '@/lib/history/sessionHistoryList';
 import { decideSearchHistory } from '@/lib/history/searchHistory';
+import { decideMonthDaySelect } from '@/lib/history/monthTheyOwn';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -296,6 +297,11 @@ export function HistoryPage() {
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
   const [tab, setTab] = useState<HistoryTab>('calendar');
+  const [monthDayKey, setMonthDayKey] = useState('');
+  const monthDay = useMemo(
+    () => decideMonthDaySelect({ dateKey: monthDayKey, history: workoutHistory }),
+    [monthDayKey, workoutHistory]
+  );
 
   /*
    * Days the athlete used the app without lifting.
@@ -783,7 +789,63 @@ export function HistoryPage() {
             ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
           />
           {tab === 'calendar' ? (
-            <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
+            <div className="space-y-3">
+            <HistoryCalendar
+              history={workoutHistory}
+              loggedKeys={loggedDayKeys}
+              selectedKey={monthDayKey}
+              onSelectDate={(key) => setMonthDayKey((current) => (current === key ? '' : key))}
+            />
+            {monthDay.kind === 'none' ? (
+              <p
+                data-testid="history-month-day-empty"
+                className="text-[13px] text-muted-foreground"
+              >
+                {t('historyCalNothing', { defaultValue: 'Nothing logged' })}
+              </p>
+            ) : null}
+            {monthDay.kind === 'day' ? (
+              <div className="space-y-3" data-testid="history-month-day-list">
+                <p className="text-[13px] text-muted-foreground tabular-nums">
+                  {t('historySessionCount', {
+                    count: monthDay.rows.length,
+                    defaultValue: '{{count}} completed session',
+                  })}
+                </p>
+                {monthDay.rows.map((log) => {
+                  const row = toSessionHistoryRow(log);
+                  if (!row) return null;
+                  return (
+                    <button
+                      key={log.id}
+                      type="button"
+                      data-testid="session-history-row"
+                      className="min-h-[44px] w-full border-2 border-border bg-card px-4 py-3 text-left tap-target"
+                      onClick={() => openLog(log)}
+                      aria-label={t('historyOpenLog', {
+                        name: historySessionLabel(log, fmt.longDate(row.completedAt)),
+                        defaultValue: `Open log: ${historySessionLabel(log, fmt.longDate(row.completedAt))}`,
+                      })}
+                    >
+                      <p className="font-semibold truncate">
+                        {historySessionLabel(log, fmt.longDate(row.completedAt))}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {fmt.longDate(row.completedAt)}
+                        {' · '}
+                        {row.setCount === 1
+                          ? t('historySetCountOne', { defaultValue: '1 set' })
+                          : t('historySetCount', {
+                              count: row.setCount,
+                              defaultValue: `${row.setCount} sets`,
+                            })}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
+            </div>
           ) : tab === 'journal' ? (
             <JournalTimeline />
           ) : tab === 'exercises' ? (

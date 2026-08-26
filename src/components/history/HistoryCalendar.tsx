@@ -20,6 +20,10 @@
  * other 42 sites onto `useLocaleFormat()` and deleted `utils.formatDate`, whose
  * `undefined` first argument silently meant *ask the browser*. Monday-first,
  * matching `startOfLocalWeek` and every other week in the app.
+ *
+ * Month they own: a day is a button. Tap lists that day's live History
+ * rows. Session count is a fact, not a fire count. Tombs stay out.
+ * Start-from fold does not hide a mark.
  */
 
 import { useMemo, useState } from 'react';
@@ -28,24 +32,46 @@ import { ChevronLeft, ChevronRight, Dumbbell } from 'lucide-react';
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKeyFromIso, localMonthKey, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
 import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/monthGrid';
+import { monthLiveFacts } from '@/lib/history/monthTheyOwn';
 import { cn } from '@/lib/utils';
 
 type Props = {
   history: CompletedWorkoutLog[];
   /** Local date keys with a non-training signal — food, check-in, activity, win. */
   loggedKeys?: ReadonlySet<string>;
+  /** Local `YYYY-MM-DD` currently opened on History. */
+  selectedKey?: string;
+  /** Tap a date — parent lists that day's live rows. */
+  onSelectDate?: (key: string) => void;
 };
 
-function DayCell({ day, label }: { day: MonthDay; label: string }) {
+function DayCell({
+  day,
+  label,
+  selected,
+  onSelect,
+}: {
+  day: MonthDay;
+  label: string;
+  selected: boolean;
+  onSelect: (key: string) => void;
+}) {
   const trained = day.mark === 'trained';
   return (
-    <div
+    <button
+      type="button"
+      data-testid="history-month-day"
+      data-date={day.key}
+      aria-pressed={selected}
       aria-current={day.isToday ? 'date' : undefined}
+      aria-label={`${day.key} — ${label}`}
+      onClick={() => onSelect(day.key)}
       className={cn(
-        'flex aspect-square flex-col items-center justify-center border-2 text-[13px] tabular-nums',
+        'flex aspect-square min-h-[44px] flex-col items-center justify-center border-2 text-[13px] tabular-nums',
         'border-transparent',
         trained && 'bg-foreground text-background',
         day.mark === 'logged' && 'bg-card',
+        selected && !day.isToday && 'border-foreground',
         // Drawn last so it still reads on a filled cell.
         day.isToday && 'border-[hsl(var(--accent-poster))]',
         /*
@@ -63,23 +89,30 @@ function DayCell({ day, label }: { day: MonthDay; label: string }) {
           gets — the fill alone would make WCAG 1.4.1 the only thing carrying it. */}
       {trained && <Dumbbell className="mt-0.5 h-3 w-3" aria-hidden />}
       {day.mark === 'logged' && <span className="mt-1 h-0.5 w-3 bg-foreground" aria-hidden />}
-      <span className="sr-only">{label}</span>
-    </div>
+    </button>
   );
 }
 
-export function HistoryCalendar({ history, loggedKeys }: Props) {
+export function HistoryCalendar({ history, loggedKeys, selectedKey, onSelectDate }: Props) {
   const { t, i18n } = useTranslation();
   const [monthKey, setMonthKey] = useState(() => localMonthKey());
+  const facts = useMemo(() => monthLiveFacts(history), [history]);
 
   const grid = useMemo(() => {
     const trained = trainedDayKeys(history, localDateKeyFromIso);
-    return buildMonthGrid({
+    const built = buildMonthGrid({
       monthKey,
       trainedKeys: new Set(trained.keys()),
       loggedKeys: loggedKeys ?? new Set<string>(),
     });
-  }, [history, loggedKeys, monthKey]);
+    return {
+      ...built,
+      days: built.days.map((d) => ({
+        ...d,
+        sessions: facts.get(d.key)?.sessions ?? 0,
+      })),
+    };
+  }, [facts, history, loggedKeys, monthKey]);
 
   const monthLabel = useMemo(
     () => formatLocalMonthKey(monthKey, i18n.language),
@@ -148,7 +181,13 @@ export function HistoryCalendar({ history, loggedKeys }: Props) {
           <div key={`blank-${i}`} aria-hidden />
         ))}
         {grid.days.map((d) => (
-          <DayCell key={d.key} day={d} label={`${d.key} — ${dayLabel(d)}`} />
+          <DayCell
+            key={d.key}
+            day={d}
+            selected={selectedKey === d.key}
+            onSelect={(key) => onSelectDate?.(key)}
+            label={`${d.key} — ${dayLabel(d)}`}
+          />
         ))}
       </div>
 
@@ -159,6 +198,15 @@ export function HistoryCalendar({ history, loggedKeys }: Props) {
           defaultValue: `${grid.trainedDays} training days · ${grid.loggedDays} other logged days`,
         })}
       </p>
+
+      {grid.trainedDays === 0 ? (
+        <p
+          data-testid="history-month-empty"
+          className="mt-2 text-[13px] text-muted-foreground"
+        >
+          {t('historyMonthEmpty', { defaultValue: 'Nothing logged this month.' })}
+        </p>
+      ) : null}
 
       {/*
         Storage limits are not behaviour. Nutrition prunes at 90 days and mind
