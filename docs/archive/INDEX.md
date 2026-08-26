@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1028-for-1043.md](./log/LOG-rotate-1028-for-1043.md) | rotated 2026-08-26 for `.1043` Tempo on a finished set (`.1028`) |
 | [log/LOG-rotate-1027-for-1042.md](./log/LOG-rotate-1027-for-1042.md) | rotated 2026-08-26 for `.1042` L/R on a finished set (`.1027`) |
 | [log/LOG-rotate-1026-for-1041.md](./log/LOG-rotate-1026-for-1041.md) | rotated 2026-08-26 for `.1041` RIR on a finished set (`.1026`) |
 | [log/LOG-rotate-1025-for-1040.md](./log/LOG-rotate-1025-for-1040.md) | rotated 2026-08-26 for `.1040` RPE on a finished set (`.1025`) |
