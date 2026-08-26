@@ -6,6 +6,89 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1032` Trained day shows how many live sessions (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1032` — from master
+> `.1031` (`12a2bcfbb53f4aa26ab915acec1ca6b1e4645d82`
+> — This month on the History calendar).
+> Stamp stays `.1032`. Do not smash This
+> month `.1031` / Copy `.1030` / month file
+> `.1029` / empty-day `.1028` / Move
+> `.1027` / Repeat `.1026`.
+> Print the live session count on a
+> trained day. Not a fire. Not a streak.
+> Not a missed ✕. Not a year picker.
+> Do not merge this PR yourself. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Resume `.963` kept. Brand: **Log a set.
+> Offline.**
+
+The History calendar already computes
+`monthLiveFacts.sessions` and spreads
+it onto `MonthDay.sessions`. DayCell
+still paints one dumbbell whether they
+logged one session or three. Missing:
+print the count.
+
+### First check (done — hypothesis holds)
+
+Read tip `12a2bcfbb53f4aa26ab915acec1ca6b1e4645d82` / `.1031`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1031`.
+- `MonthDay.sessions` exists in
+  `monthGrid.ts`.
+- `HistoryCalendar` maps
+  `monthLiveFacts` onto `d.sessions`.
+- DayCell paints one dumbbell on
+  `mark === 'trained'`.
+- This month `.1031` is
+  `decideThisMonth`.
+- Copy `.1030` / month file `.1029` /
+  empty-day `.1028` / Move `.1027` /
+  Repeat `.1026` stay.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideDaySessionCount({ mark,
+sessions })` → empty when mark is
+not `'trained'`, or sessions is
+missing / junk / not a finite
+integer / `< 1`. Apply with `count`
+when mark is `'trained'` and
+sessions is a finite integer `≥ 1`.
+Never invent 1 on a blank / logged
+/ future day. Never count tombs
+(caller already uses
+`monthLiveFacts`). DayCell prints
+`count` as `text-[11px] tabular-nums`
+with the dumbbell (dumbbell stays —
+WCAG 1.4.1). testid
+`history-month-day-sessions`. Aria
+includes the count when apply. Not
+a fire. Not a streak. Not missed ✕.
+Does not change `monthLiveFacts`
+semantics. Never `toISOString()` for
+a calendar date. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/thisMonthCalendar.test.ts src/lib/history/monthTheyOwn.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/history/daySessionCount.test.ts src/lib/history/daySessionCountSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1031` This month on the History calendar (2026-08-26)
 
 > **Frozen.** Implement only this section + root
