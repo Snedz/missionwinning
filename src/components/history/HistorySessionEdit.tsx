@@ -3,8 +3,9 @@
 /**
  * Edit the sets on a finished History log (`.997`).
  * Reorder lifts while editing (`.1034`). Replace a lift
- * while editing (`.1036`) — sets stay. Confirm before a
- * destructive change. Empty invents nothing.
+ * while editing (`.1036`) — sets stay. Add a lift while
+ * editing (`.1037`) — empty 0/0, then they type evidence.
+ * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
 
@@ -39,6 +40,7 @@ import {
   removeDraftSet,
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
+import { decideAppendFinishedExercise } from '@/lib/workout/appendFinishedExercise';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
@@ -131,6 +133,17 @@ export function HistorySessionEdit({
       const decision = decideReplaceFinishedExercise({
         draft: current,
         exerciseIndex,
+        nextExerciseId,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
+  const appendLift = (nextExerciseId: string) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decideAppendFinishedExercise({
+        draft: current,
         nextExerciseId,
       });
       return decision.kind === 'apply' ? decision.draft : current;
@@ -334,6 +347,15 @@ export function HistorySessionEdit({
           </div>
         );
       })}
+
+      {editing ? (
+        <div data-testid="session-history-add-lift">
+          <p className="text-sm font-semibold">
+            {t('historyAddLift', { defaultValue: 'Add a lift' })}
+          </p>
+          <ExercisePicker value="" onChange={(id) => appendLift(id)} />
+        </div>
+      ) : null}
 
       <div className="flex flex-col gap-2">
         {editing ? (

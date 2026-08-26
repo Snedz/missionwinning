@@ -252,4 +252,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1036` — replace a lift on a finished History session/);
   });
+
+  it('add a lift to a finished session stays ungated (.1037)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1037` — add a lift to this finished History session/);
+  });
 });
