@@ -6,6 +6,66 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1016` This session as a file they own (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1016` — from master
+> `.1015` (`4046afd9` — Next cite is BW,
+> not 0 kg, on assisted 0). Stamp stays
+> `.1016`. Do not bump. Title stays
+> **This session as a file they own
+> (.1016)**. Same PR `#840`. Branch may
+> stay `feat/session-file-1014`. Do not
+> merge this PR yourself. Assisted
+> cite `.1015` + duration cite `.1014`
+> + import `.1013` + title-fix `.1012`
+> + export `.1011` + Library skip
+> `.1010` + BW cite `.1009` are on
+> master. Do not smash them. Every
+> commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+Full-diary dump is `.1011`. Missing
+is Tuesday's receipt as one file
+they own. History detail. Not a
+share link. No public URL.
+
+### First check (done — hypothesis holds)
+
+Read tip `4046afd9` / `.1015`.
+Confirmed:
+
+- Export door is the full live diary.
+- Import reads that file back.
+- Duration cite prints `0:45`.
+- Assisted 0 prints `8 × BW`.
+- History detail has name / edit /
+  start-again / delete. No one-session
+  file-out.
+
+### Done means
+
+History detail saves THAT session
+as CSV (JSON if the same rows).
+Empty / tomb Save disabled. File
+re-imports via `.1013`. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/exportSession.test.ts src/lib/history/exportSessionSurface.test.ts
+npx tsx --test src/lib/firstSetUngated.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1015` Next cite is BW, not 0 kg, on assisted 0 (2026-08-26)
 
 > **Frozen.** Implement only this section + root
