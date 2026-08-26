@@ -33,7 +33,7 @@ On History, open **Start history from this date**. Pick the day week 1 should st
 On History, type in the search box. It matches the name you gave that session, the template name, the date, a lift, or a private note. An empty search shows the same list. No matches stays empty. Deleted sessions stay under **Deleted sessions**.
 
 **How do I see a month of sessions?**  
-On History, open **Show all** → Calendar. Days you trained are marked. Tap a day to open those sessions. Deleted sessions stay out. An empty month invents nothing. Folding week 1 from a date does not hide this month. Search and charts stay the full diary. After paging months, **This month** jumps back to the current month. No year picker.
+On History, open **Show all** → Calendar. Days you trained are marked. Tap a day to open those sessions. The month on screen shows how many live sessions, not a fire. Deleted sessions stay out. An empty month invents nothing. Folding week 1 from a date does not hide this month. Search and charts stay the full diary. After paging months, **This month** jumps back to the current month. No year picker.
 
 **How do I repeat a finished session?**  
 Open that session in History and tap **Repeat this session**. It copies the sets you logged into Start. Warmups stay. Empty or deleted invents nothing. If a workout is already going, Train keeps that one. This is not a share and not someone else's workout.
