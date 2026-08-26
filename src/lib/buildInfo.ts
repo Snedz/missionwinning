@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1038` Remove this lift from a finished session (from master `.1037` `b5cbfd21c`; stamp stays `.1038`; Add `.1037` / Replace `.1036` / Duration `.1035` / Reorder `.1034` / Edit `.997` / Delete `.1003` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1038";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1039` Set kind on a finished set (from master `.1038` `1dac3fb4b`; stamp stays `.1039`; Remove lift `.1038` / Add `.1037` / Replace `.1036` / Reorder `.1034` / Edit `.997` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1039";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

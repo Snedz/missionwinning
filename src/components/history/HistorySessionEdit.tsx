@@ -6,7 +6,9 @@
  * while editing (`.1036`) — sets stay. Add a lift while
  * editing (`.1037`) — empty 0/0, then they type evidence.
  * Remove a lift while editing (`.1038`) when two or more
- * remain — last remaining is delete-session.
+ * remain — last remaining is delete-session. Set kind
+ * while editing (`.1039`) — warmup they logged as work,
+ * or the reverse. Same W/D/F as live.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -43,6 +45,10 @@ import {
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
 import { decideAppendFinishedExercise } from '@/lib/workout/appendFinishedExercise';
+import {
+  cycleFinishedSetKind,
+  decidePatchFinishedSetKind,
+} from '@/lib/workout/patchFinishedSetKind';
 import { decideRemoveFinishedExercise } from '@/lib/workout/removeFinishedExercise';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
@@ -164,6 +170,20 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSetKind = (exerciseIndex: number, setIndex: number) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const set = current.exercises[exerciseIndex]?.sets[setIndex];
+      const decision = decidePatchFinishedSetKind({
+        draft: current,
+        exerciseIndex,
+        setIndex,
+        kind: cycleFinishedSetKind(set?.kind),
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -262,7 +282,19 @@ export function HistorySessionEdit({
                     <TableRow key={setIdx} className={cn(kind !== 'normal' && 'bg-card')}>
                       <TableCell>{setIdx + 1}</TableCell>
                       <TableCell>
-                        {kind === 'normal' ? (
+                        {editing ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="min-h-[44px] tap-target"
+                            data-testid={`session-history-set-kind-${exIdx}-${setIdx}`}
+                            onClick={() => patchSetKind(exIdx, setIdx)}
+                          >
+                            {t(setKindLabelKey(kind), {
+                              defaultValue: setKindDefaultLabel(kind),
+                            })}
+                          </Button>
+                        ) : kind === 'normal' ? (
                           <span className="text-muted-foreground">—</span>
                         ) : (
                           <Badge

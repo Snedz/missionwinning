@@ -262,4 +262,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1038` — remove this lift from a finished History session/);
   });
+
+  it('set kind on a finished set stays ungated (.1039)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1039` — set kind on a finished History set/);
+  });
 });

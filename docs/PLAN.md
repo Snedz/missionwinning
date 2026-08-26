@@ -6,6 +6,84 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1039` Set kind on a finished set (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1039` — from master
+> `.1038` (`1dac3fb4b6d5542ce2d39b8a2b030efe16c27264`
+> — Remove this lift from a finished session).
+> Stamp stays `.1039`. Do not smash Remove
+> lift `.1038` / Add `.1037` / Replace `.1036`
+> / Reorder `.1034` / remove-set / Name `.1007`
+> / Edit sets `.997` / Delete-session `.1003`.
+> Resume `.963` stays. Live pause `.1001`
+> stays on Train. Live W/D/F `.966` stays
+> on Train. Same finished log. Same id.
+> Save still confirm-gated `decideEditSave`.
+> Do not fork kinds — reuse `SetKind` /
+> `SET_KINDS` / `toggleSetTag`. Warmup still
+> excluded from volume. Do not merge this
+> PR yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.**
+
+History edit shows set kind as a badge.
+They cannot mark a warmup they logged as
+work (or the reverse). Live already has
+W/D/F via `toggleSetTag` (`.966`).
+
+### First check (done — hypothesis holds)
+
+Read tip `1dac3fb4b6d5542ce2d39b8a2b030efe16c27264` / `.1038`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1038`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Kind is a badge via
+  `setKindLabelKey`. Live W/D/F is
+  `toggleSetTag` on Train.
+- Remove lift `.1038` / Add `.1037` /
+  Replace `.1036` / Reorder `.1034` /
+  remove-set stay on that draft.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSetKind({ draft,
+exerciseIndex, setIndex, kind })`. Empty
+on missing draft / not an array / junk
+indexes / unknown kind. Noop on out of
+range / same kind as current (missing
+current is `'normal'`). Apply patches
+that set's `kind` via `patchDraftSet`.
+Clone so the source draft is not
+mutated. `cycleFinishedSetKind` uses
+`toggleSetTag`; still validate through
+decide. `HistorySessionEdit` when
+editing: outline 44px kind control per
+set. testid
+`session-history-set-kind-{exIdx}-{setIdx}`.
+Apply to local draft only. Save still
+`decideEditSave`. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/setKind.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetKind.test.ts src/lib/workout/patchFinishedSetKindSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1038` Remove this lift from a finished session (2026-08-26)
 
 > **Frozen.** Implement only this section + root

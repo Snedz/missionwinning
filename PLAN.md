@@ -1,44 +1,45 @@
-# PLAN — Remove this lift from a finished session (`.1038`)
+# PLAN — Set kind on a finished set (`.1039`)
 
 **Status:** Frozen. One leftover. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1038`.
-**Base:** master `b5cbfd21c8d967ba8085ed6db1d71a6b3259d3d8` — Add a lift to this finished session (`.1037`).
-**Do not smash:** Add `.1037`, Replace `.1036`, Duration `.1035`, Reorder `.1034`, remove-set, Name `.1007`, Edit sets `.997`, Delete-session `.1003`. Resume `.963` stays. Live pause `.1001` stays on Train.
+**Frozen:** 2026-08-26. **Ship-as:** `.1039`.
+**Base:** master `1dac3fb4b6d5542ce2d39b8a2b030efe16c27264` — Remove this lift from a finished session (`.1038`).
+**Do not smash:** Remove lift `.1038`, Add `.1037`, Replace `.1036`, Reorder `.1034`, remove-set, Name `.1007`, Edit sets `.997`, Delete-session `.1003`. Resume `.963` stays. Live pause `.1001` stays on Train. Live W/D/F `.966` stays on Train.
 
 ---
 
 ## The one thing
 
-History edit can add a lift (`.1037`), replace (`.1036`), reorder (`.1034`), and remove a **set** (`removeDraftSet`). It cannot drop a whole movement they added by mistake. Session delete `.1003` is the **whole log**. Same id. Save still confirm-gated `decideEditSave`. Last remaining lift is noop — they already have delete-session.
+History edit shows set kind as a badge. They cannot mark a warmup they logged as work (or the reverse). Live already has W/D/F via `toggleSetTag` (`.966`). Same finished log. Same id. Save still confirm-gated `decideEditSave`. Do not fork kinds.
 
 ## In / out
 
 **In**
 
-- Pure helper (no store): `src/lib/workout/removeFinishedExercise.ts`
-  - `decideRemoveFinishedExercise({ draft, exerciseIndex })` returns
-    - `{ kind: 'empty' }` missing draft / not an array / junk index
-    - `{ kind: 'noop' }` out of range / only one lift left
-    - `{ kind: 'apply'; draft }` splices that index out. Clone. Other lifts unchanged.
-  - Does not write Wednesday / saved / live Start. Does not tomb the session.
-- `HistorySessionEdit.tsx`: when `editing` and `draft.exercises.length >= 2`, outline 44px **Remove lift** per lift (not the existing Remove set). testid `session-history-remove-lift-{exIdx}`. Draft only.
-  - i18n `historyRemoveLift` default `Remove lift`.
+- Pure helper (no store): `src/lib/workout/patchFinishedSetKind.ts`
+  - `decidePatchFinishedSetKind({ draft, exerciseIndex, setIndex, kind })` returns
+    - `{ kind: 'empty' }` missing draft / not an array / junk indexes / unknown kind (not in `SET_KINDS`)
+    - `{ kind: 'noop' }` out of range / same kind as current (treat missing current as `'normal'`)
+    - `{ kind: 'apply'; draft }` patches that set's `kind` via existing `patchDraftSet`. Clone so source is not mutated.
+  - `cycleFinishedSetKind(current)` using `toggleSetTag` — History edit is tap-to-cycle. Still validate through decide.
+  - Warmup still excluded from volume (`countsTowardVolume`) — do not change that rule.
+- `HistorySessionEdit.tsx`: when `editing`, each set gets outline 44px kind control. testid `session-history-set-kind-{exIdx}-{setIdx}`. Draft only.
+  - i18n: reuse existing set-kind label keys (`setKindLabelKey`); do not invent a fourth kind.
   - Save still existing Save → `decideEditSave`.
-- Add `.1037` / Replace `.1036` / Reorder `.1034` / Duration `.1035` / remove-set / delete-session `.1003` stay.
+- Remove lift `.1038` / Add `.1037` / Replace `.1036` / Reorder `.1034` / remove-set stay.
 - History only. Guest. First set ungated. Today still one Start. Resume `.963` kept.
-- Add `.1038` line to `src/lib/firstSetUngated.ts`.
+- Add `.1039` line to `src/lib/firstSetUngated.ts`.
 
 **Out**
 
-- Wiping the whole session / Feed / Today chrome / skipping confirm
-- Smashing `removeDraftSet` or add-lift
+- New set types / Epley / Feed / Today chrome / skipping confirm
+- Rewriting `countsTowardVolume` / live logger tags
 - Counsel-hold / Mind / `PRIVATE_MODE` flip / promote
 - `localStorage`
 
 ## Accept
 
 ```
-npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/appendFinishedExercise.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/removeFinishedExercise.test.ts src/lib/workout/removeFinishedExerciseSurface.test.ts
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/setKind.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetKind.test.ts src/lib/workout/patchFinishedSetKindSurface.test.ts
 npx tsc --noEmit
 npx tsx scripts/check-build-label.mjs
 ```
