@@ -15,6 +15,7 @@ import { parseOptionalLoadPct } from '@/lib/workout/setRowPercent';
 import { parseOptionalTempo, temposEqual } from '@/lib/workout/tempo';
 import { parseSetSide } from '@/lib/workout/unilateral';
 import { countsTowardVolume } from '@/lib/workout/setKind';
+import { normalizeExerciseNote } from '@/lib/workout/exerciseNote';
 import { attachSessionNote } from '@/lib/workout/sessionNote';
 import { resolveSetRowType, setRowHasWork, setRowVolume } from '@/lib/workout/setRowType';
 
@@ -121,21 +122,27 @@ export function isDestructiveEdit(
 
 function stripDraft(draft: FinishedSessionDraft): FinishedExerciseDraft[] {
   return draft.exercises
-    .map((ex) => ({
-      ...ex,
-      exerciseId: ex.exerciseId.trim(),
-      sets: (ex.sets ?? []).filter(setHasEvidence).map((set) => {
-        const hold = Number(set.durationSeconds);
-        const next = { ...set };
-        if (!Number.isFinite(hold) || hold <= 0) delete next.durationSeconds;
-        if (next.rpe10 === undefined) delete next.rpe10;
-        if (next.rir === undefined) delete next.rir;
-        if (next.side === undefined) delete next.side;
-        if (next.tempo === undefined) delete next.tempo;
-        if (next.loadPct === undefined) delete next.loadPct;
-        return next;
-      }),
-    }))
+    .map((ex) => {
+      const next: FinishedExerciseDraft = {
+        ...ex,
+        exerciseId: ex.exerciseId.trim(),
+        sets: (ex.sets ?? []).filter(setHasEvidence).map((set) => {
+          const hold = Number(set.durationSeconds);
+          const stripped = { ...set };
+          if (!Number.isFinite(hold) || hold <= 0) delete stripped.durationSeconds;
+          if (stripped.rpe10 === undefined) delete stripped.rpe10;
+          if (stripped.rir === undefined) delete stripped.rir;
+          if (stripped.side === undefined) delete stripped.side;
+          if (stripped.tempo === undefined) delete stripped.tempo;
+          if (stripped.loadPct === undefined) delete stripped.loadPct;
+          return stripped;
+        }),
+      };
+      const note = normalizeExerciseNote(ex.note);
+      if (note === undefined) delete next.note;
+      else next.note = note;
+      return next;
+    })
     .filter((ex) => ex.exerciseId && ex.sets.length > 0);
 }
 
@@ -156,6 +163,7 @@ function draftsEqual(
     const a = original.exercises[i];
     const b = draft.exercises[i];
     if (!a || !b || a.exerciseId !== b.exerciseId) return false;
+    if (normalizeExerciseNote(a.note) !== normalizeExerciseNote(b.note)) return false;
     if ((a.sets ?? []).length !== (b.sets ?? []).length) return false;
     for (let j = 0; j < a.sets.length; j += 1) {
       if (!sameEvidence(a.sets[j], b.sets[j])) return false;

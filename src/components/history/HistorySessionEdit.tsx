@@ -20,6 +20,9 @@
  * Optional % of a known 1-rep max while
  * editing (`.1044`) — empty is valid (clear).
  * Weight rows only. Never rewrites kg from %.
+ * Optional per-lift diary while editing
+ * (`.1045`) — empty is valid (clear). Never
+ * required. Over-cap truncates at 200.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -61,6 +64,8 @@ import {
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
 import { decideAppendFinishedExercise } from '@/lib/workout/appendFinishedExercise';
+import { EXERCISE_NOTE_MAX } from '@/lib/workout/exerciseNote';
+import { decidePatchFinishedExerciseNote } from '@/lib/workout/patchFinishedExerciseNote';
 import {
   cycleFinishedSetKind,
   decidePatchFinishedSetKind,
@@ -297,6 +302,18 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchLiftNote = (exerciseIndex: number, note: string) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedExerciseNote({
+        draft: current,
+        exerciseIndex,
+        note,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -368,7 +385,20 @@ export function HistorySessionEdit({
                 />
               </div>
             ) : null}
-            {ex.note?.trim() ? (
+            {editing ? (
+              <textarea
+                data-testid={`session-history-lift-note-${exIdx}`}
+                value={ex.note ?? ''}
+                maxLength={EXERCISE_NOTE_MAX}
+                rows={2}
+                aria-label={t('activeNote', { defaultValue: 'Note' })}
+                placeholder={t('activeNotePlaceholder', {
+                  defaultValue: 'Note — "left shoulder felt off"…',
+                })}
+                onChange={(e) => patchLiftNote(exIdx, e.target.value)}
+                className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+              />
+            ) : ex.note?.trim() ? (
               <p className="text-sm italic text-muted-foreground border-l-2 border-border pl-3">
                 {ex.note}
               </p>

@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a4c. `moveSessionDay.ts` — re-date a finished History log (`.1027`). Same id. Vacated day drops that row. Empty / tomb / future invents nothing. Not a new backfill.  
 10a4d. `copySessionDay.ts` — copy a finished History log onto another day (`.1030`). New id. Original stays. Empty / tomb / same-day / future invents nothing. Not Move. Not Repeat.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart. Untitled title is the date; a private name is the title (`.1012`). Template stays subtitle.  
-10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes loadPct (`.1044`) / tempo (`.1043`) / side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`).  
+10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume. `sameEvidence` includes loadPct (`.1044`) / tempo (`.1043`) / side (`.1042`) / RIR (`.1041`) / RPE (`.1040`) / kind (`.1039`). `draftsEqual` includes the lift note (`.1045`).  
 10a6b. `reorderFinishedExercises.ts` — reorder lifts on that finished History draft (`.1034`). Wraps `reorderSessionExercises`. Empty invents nothing. Save still `decideEditSave`.  
 10a6c. `replaceFinishedExercise.ts` — replace a lift on that finished History draft (`.1036`). Sets ride unchanged. Empty invents nothing. Save still `decideEditSave`.  
 10a6d. `appendFinishedExercise.ts` — add a lift to that finished History draft (`.1037`). Empty 0/0. Duplicate ids allowed. Empty invents nothing. Save still `decideEditSave`.  
@@ -46,6 +46,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a6i. `patchFinishedSetSide.ts` — optional L / R / Alt on a finished History set (`.1042`). Empty is valid (clear). Bilateral invents nothing. Never a SetKind. Save still `decideEditSave`.  
 10a6j. `patchFinishedSetTempo.ts` — optional e-p-c tempo on a finished History set (`.1043`). Empty is valid (clear). Empty invents nothing. Never clamps. Does not call `rememberLastTempo`. Save still `decideEditSave`.  
 10a6k. `patchFinishedSetLoadPct.ts` — optional % of a known 1-rep max on a finished History set (`.1044`). Empty is valid (clear). Empty invents nothing. Never clamps. Does not invent % from kg. Does not rewrite kg from %. Save still `decideEditSave`.  
+10a6l. `patchFinishedExerciseNote.ts` — optional per-lift diary on a finished History exercise (`.1045`). Empty is valid (clear). Over-cap truncates at 200. Does not rewrite sets / sessionNote / pin. Save still `decideEditSave`.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty-day month door may prefill that dateKey (`.1028`). Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`) and restore of that tombstone (`.1006`). Empty / live / missing / not-deleted invents nothing.  
@@ -65,7 +66,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
-20. `exerciseNote.ts` — this-session diary on the lift (unset vs clear). Appearance drops a leaked note; last History is not a pin (`.748` / `.996`)
+20. `exerciseNote.ts` — this-session diary on the lift (unset vs clear). Appearance drops a leaked note; last History is not a pin (`.748` / `.996`). History edit can correct a logged lift note via `normalizeExerciseNote` (`.1045`)
 20b. `exercisePin.ts` — pinned reminder per lift id. Returns next session. Not History (`.996`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
 21b. `sessionExerciseOnce.ts` — skip or swap this exercise **this session** (`.959`); does not write Wednesday / saved / plan
@@ -148,7 +149,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.939`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
-| `exerciseNote.test.ts` | This-session note + appearance wipe; last History is not a pin (`.748` / `.996`) |
+| `exerciseNote.test.ts` | This-session note + appearance wipe; last History is not a pin (`.748` / `.996`); `normalizeExerciseNote` trims / truncates (`.1045`) |
 | `exercisePin.test.ts` | Pin normalize / per-id persist / cap / refuse History seed (`.996`) |
 | `exerciseNotePinSurface.test.ts` | Open-lift note + pin; Today one Start; pin off History (`.996`) |
 | `editFinishedSession.test.ts` | Finished-session edit: typo applies; empty does not wipe; drop needs confirm (`.997`) |
@@ -173,6 +174,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `patchFinishedSetTempoSurface.test.ts` | History edit tempo field; Today one Start; L/R / RIR / RPE / set-kind stay (`.1043`) |
 | `patchFinishedSetLoadPct.test.ts` | Finished-session load %: empty / junk invent nothing; `0` / `101` / `80.12` invent nothing; `80` / `76.5` / `80%` apply; blank clears; same value noop; no weight/rpe/rir/kind/side/tempo write; clone; no Epley / knownMax (`.1044`) |
 | `patchFinishedSetLoadPctSurface.test.ts` | History edit load-% field on weight rows only; Today one Start; tempo / L/R / RIR / RPE / set-kind stay (`.1044`) |
+| `patchFinishedExerciseNote.test.ts` | Finished-session lift note: empty / junk invent nothing; non-string empty; apply "paused"; blank clears; same text noop; over-cap truncates to 200; no sets/sessionNote write; clone; no lastNotesFor / LLM; Save still decideEditSave (`.1045`) |
+| `patchFinishedExerciseNoteSurface.test.ts` | History edit lift-note textarea; Today one Start; load-pct / tempo / L/R / RIR / RPE stay (`.1045`) |
 | `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete + restore; empty / live / missing / not-deleted invent nothing; other days stay (`.1003` / `.1006`) |
