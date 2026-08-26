@@ -40,6 +40,7 @@
  * `.1009` — live next cite is BW, not 0 kg. Never a login wall.
  * `.1010` — library spark/count skip deleted sessions. Never a login wall.
  * `.1011` — export this diary from History. Never a login wall.
+ * `.1012` — this-movement title is the date or the name. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

@@ -17,7 +17,9 @@ import {
   formatMovementHistorySets,
   isShortMovementHistory,
   listMovementHistory,
+  movementHistoryTitle,
 } from './movementHistory.ts';
+import { historySessionLabel } from './nameFinishedSession.ts';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (rel: string) => readFileSync(path.join(root, rel), 'utf8');
@@ -226,6 +228,69 @@ describe('listMovementHistory', () => {
     assert.equal(formatMovementHistorySets(rows[0]!.sets, 'duration'), '0:45');
     assert.doesNotMatch(formatMovementHistorySets(rows[0]!.sets, 'duration'), /45 × 0/);
   });
+
+  it('untitled this-movement title is the date, not workoutName (.1012)', () => {
+    const completedAt = '2026-08-17T11:00:00.000Z';
+    const rows = listMovementHistory(
+      [
+        log({
+          id: 'p1',
+          workoutName: 'Quick Workout',
+          completedAt,
+          exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+        }),
+      ],
+      'bench-press'
+    );
+    assert.equal(rows.length, 1);
+    const title = movementHistoryTitle(rows[0]!);
+    assert.equal(title, localDateKeyFromIso(completedAt));
+    assert.notEqual(title, 'Quick Workout');
+    assert.equal(rows[0]?.workoutName, 'Quick Workout');
+    assert.equal(
+      title,
+      historySessionLabel(
+        { completedAt, startedAt: completedAt },
+        rows[0]!.dateKey
+      )
+    );
+  });
+
+  it('named this-movement title is sessionTitle; template stays subtitle (.1012)', () => {
+    const rows = listMovementHistory(
+      [
+        log({
+          id: 'p1',
+          workoutName: 'Push',
+          sessionTitle: 'Hell Monday',
+          exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+        }),
+      ],
+      'bench-press'
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(movementHistoryTitle(rows[0]!), 'Hell Monday');
+    assert.equal(rows[0]?.workoutName, 'Push');
+    assert.notEqual(movementHistoryTitle(rows[0]!), rows[0]?.workoutName);
+  });
+
+  it('blank sessionTitle does not invent a nickname (.1012)', () => {
+    const completedAt = '2026-08-17T11:00:00.000Z';
+    const rows = listMovementHistory(
+      [
+        log({
+          id: 'p1',
+          workoutName: 'Push',
+          sessionTitle: '   ',
+          completedAt,
+          exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+        }),
+      ],
+      'bench-press'
+    );
+    assert.equal(movementHistoryTitle(rows[0]!), localDateKeyFromIso(completedAt));
+    assert.notEqual(movementHistoryTitle(rows[0]!), 'Push');
+  });
 });
 
 describe('movementHistory refuse', () => {
@@ -237,5 +302,7 @@ describe('movementHistory refuse', () => {
     );
     assert.doesNotMatch(src, /UnlockButton|isPremium|\/bundle|History1RMChart|Sparkline|e1rm|projected/i);
     assert.doesNotMatch(src, /toISOString\(\)/);
+    assert.match(src, /historySessionLabel/);
+    assert.match(src, /from ['"]@\/lib\/workout\/nameFinishedSession['"]/);
   });
 });
