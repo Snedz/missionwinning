@@ -8,8 +8,14 @@ import { readFileSync } from 'node:fs';
 import path from 'path';
 import type { CompletedWorkoutLog } from '@/types';
 import { foldHistoryFrom } from '@/lib/workout/startHistoryFrom.ts';
+import {
+  appendBackfillExercise,
+  decideBackfillSession,
+  emptyBackfillDraft,
+  patchBackfillSet,
+} from '@/lib/workout/backfillSession.ts';
 import { localDateKeyFromIso } from '@/lib/time/localDate.ts';
-import { decideMonthDaySelect, monthLiveFacts } from './monthTheyOwn.ts';
+import { decideEmptyDayLog, decideMonthDaySelect, monthLiveFacts } from './monthTheyOwn.ts';
 
 function isoOnLocalDay(year: number, month: number, day: number, hour = 12): string {
   return new Date(year, month - 1, day, hour).toISOString();
@@ -35,6 +41,9 @@ const helperSrc = readFileSync(path.join(import.meta.dirname, 'monthTheyOwn.ts')
 
 const JULY_2 = localDateKeyFromIso(isoOnLocalDay(2026, 7, 2));
 const JUNE_20 = localDateKeyFromIso(isoOnLocalDay(2026, 6, 20));
+const TODAY = '2026-08-25';
+const YESTERDAY = '2026-08-24';
+const TOMORROW = '2026-08-26';
 
 describe('monthLiveFacts (.1018)', () => {
   it('empty / missing history invents nothing', () => {
@@ -178,6 +187,101 @@ describe('decideMonthDaySelect (.1018)', () => {
     assert.equal(decision.kind, 'day');
     if (decision.kind !== 'day') return;
     assert.equal(decision.rows[0]?.id, 'june');
+  });
+});
+
+describe('decideEmptyDayLog (.1028)', () => {
+  it('empty / missing / junk invents nothing', () => {
+    const history = [log({ id: 'tue' })];
+    assert.deepEqual(decideEmptyDayLog({ todayKey: TODAY, history }), { kind: 'empty' });
+    assert.deepEqual(decideEmptyDayLog({ dateKey: '', todayKey: TODAY, history }), {
+      kind: 'empty',
+    });
+    assert.deepEqual(decideEmptyDayLog({ dateKey: YESTERDAY, todayKey: '', history }), {
+      kind: 'empty',
+    });
+    assert.deepEqual(decideEmptyDayLog({ dateKey: '2026-13-40', todayKey: TODAY, history }), {
+      kind: 'empty',
+    });
+    assert.deepEqual(decideEmptyDayLog({ dateKey: null, todayKey: TODAY, history }), {
+      kind: 'empty',
+    });
+  });
+
+  it('a vacated / empty past day opens backfill on that dateKey', () => {
+    const history = [log({ id: 'tue' })];
+    assert.deepEqual(decideEmptyDayLog({ dateKey: YESTERDAY, todayKey: TODAY, history }), {
+      kind: 'open',
+      dateKey: YESTERDAY,
+    });
+    assert.deepEqual(decideEmptyDayLog({ dateKey: JULY_2, todayKey: TODAY, history: [] }), {
+      kind: 'open',
+      dateKey: JULY_2,
+    });
+  });
+
+  it('today empty day opens; a live day is not this door', () => {
+    assert.deepEqual(decideEmptyDayLog({ dateKey: TODAY, todayKey: TODAY, history: [] }), {
+      kind: 'open',
+      dateKey: TODAY,
+    });
+    assert.equal(
+      decideEmptyDayLog({
+        dateKey: JULY_2,
+        todayKey: TODAY,
+        history: [log({ id: 'tue' })],
+      }).kind,
+      'empty'
+    );
+  });
+
+  it('future invents nothing', () => {
+    assert.equal(
+      decideEmptyDayLog({ dateKey: TOMORROW, todayKey: TODAY, history: [] }).kind,
+      'empty'
+    );
+  });
+
+  it('tomb-only day opens a new row — tombs stay out', () => {
+    const history = [
+      log({
+        id: 'tomb',
+        deletedAt: isoOnLocalDay(2026, 7, 4, 9),
+      }),
+    ];
+    assert.deepEqual(decideEmptyDayLog({ dateKey: JULY_2, todayKey: TODAY, history }), {
+      kind: 'open',
+      dateKey: JULY_2,
+    });
+  });
+
+  it('save on the empty-day door lists a new row that day', () => {
+    const door = decideEmptyDayLog({ dateKey: YESTERDAY, todayKey: TODAY, history: [] });
+    assert.equal(door.kind, 'open');
+    if (door.kind !== 'open') return;
+    let draft = emptyBackfillDraft(door.dateKey);
+    draft = appendBackfillExercise(draft, 'bench-press');
+    draft = patchBackfillSet(draft, 0, 0, { reps: 5, weight: 135 });
+    const saved = decideBackfillSession({
+      draft,
+      todayKey: TODAY,
+      id: 'log-empty-day',
+      clientId: 'cid-empty-day',
+    });
+    assert.equal(saved.kind, 'apply');
+    if (saved.kind !== 'apply') return;
+    const day = decideMonthDaySelect({ dateKey: YESTERDAY, history: [saved.next] });
+    assert.equal(day.kind, 'day');
+    if (day.kind !== 'day') return;
+    assert.equal(day.rows[0]?.id, 'log-empty-day');
+    assert.equal(
+      decideEmptyDayLog({
+        dateKey: YESTERDAY,
+        todayKey: TODAY,
+        history: [saved.next],
+      }).kind,
+      'empty'
+    );
   });
 });
 

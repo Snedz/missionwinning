@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
+import { Calendar, Dumbbell, History as HistoryIcon, Plus, SearchX, Timer, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -107,7 +107,7 @@ import {
   toSessionHistoryRow,
 } from '@/lib/history/sessionHistoryList';
 import { decideSearchHistory } from '@/lib/history/searchHistory';
-import { decideMonthDaySelect } from '@/lib/history/monthTheyOwn';
+import { decideEmptyDayLog, decideMonthDaySelect } from '@/lib/history/monthTheyOwn';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -133,6 +133,7 @@ export function HistoryPage() {
   const [pendingDraft, setPendingDraft] = useState<FinishedSessionDraft | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [backfillOpen, setBackfillOpen] = useState(false);
+  const [backfillDateKey, setBackfillDateKey] = useState('');
   const [mergeOpen, setMergeOpen] = useState(false);
   const [startFromOpen, setStartFromOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -169,6 +170,7 @@ export function HistoryPage() {
   }, []);
 
   const openBackfill = () => {
+    setBackfillDateKey('');
     setBackfillOpen(true);
     setSelected(null);
     setEditing(false);
@@ -306,6 +308,23 @@ export function HistoryPage() {
     () => decideMonthDaySelect({ dateKey: monthDayKey, history: workoutHistory }),
     [monthDayKey, workoutHistory]
   );
+  const emptyDayLog = useMemo(
+    () =>
+      decideEmptyDayLog({
+        dateKey: monthDay.kind === 'none' ? monthDay.dateKey : '',
+        todayKey: localDateKey(),
+        history: workoutHistory,
+      }),
+    [monthDay, workoutHistory]
+  );
+
+  const openEmptyDayLog = () => {
+    if (emptyDayLog.kind !== 'open') return;
+    setBackfillDateKey(emptyDayLog.dateKey);
+    setBackfillOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
 
   /*
    * Days the athlete used the app without lifting.
@@ -802,12 +821,23 @@ export function HistoryPage() {
               onSelectDate={(key) => setMonthDayKey((current) => (current === key ? '' : key))}
             />
             {monthDay.kind === 'none' ? (
-              <p
-                data-testid="history-month-day-empty"
-                className="text-[13px] text-muted-foreground"
-              >
-                {t('historyCalNothing', { defaultValue: 'Nothing logged' })}
-              </p>
+              <div className="space-y-2" data-testid="history-month-day-empty">
+                <p className="text-[13px] text-muted-foreground">
+                  {t('historyCalNothing', { defaultValue: 'Nothing logged' })}
+                </p>
+                {emptyDayLog.kind === 'open' ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full min-h-[44px] tap-target"
+                    data-testid="history-month-day-log"
+                    onClick={openEmptyDayLog}
+                  >
+                    <Plus className="h-4 w-4" aria-hidden />
+                    {t('historyMonthDayLog', { defaultValue: 'Log onto this day' })}
+                  </Button>
+                ) : null}
+              </div>
             ) : null}
             {monthDay.kind === 'day' ? (
               <div className="space-y-3" data-testid="history-month-day-list">
@@ -1152,8 +1182,10 @@ export function HistoryPage() {
           </DialogHeader>
           {backfillOpen ? (
             <HistoryBackfill
+              key={backfillDateKey || 'overflow'}
               history={liveHistory}
               unitLabel={unitLabel}
+              initialDateKey={backfillDateKey}
               onSaveRequest={requestBackfillSave}
               onCancel={() => setBackfillOpen(false)}
             />

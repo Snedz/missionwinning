@@ -3,7 +3,8 @@
  *
  * Edit `.997` corrects an existing History row. Resume `.963` is the
  * live set. This file mints one new completed log they own, dated
- * honestly. Empty invents nothing. Never open a live session. Never
+ * honestly. Empty-day month door (`.1028`) may prefill dateKey.
+ * Empty invents nothing. Never open a live session. Never
  * tombstone. Pure: no store.
  */
 
@@ -68,9 +69,9 @@ export function parseBackfillTime(raw: unknown): string {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 }
 
-export function emptyBackfillDraft(): BackfillDraft {
+export function emptyBackfillDraft(dateKey?: unknown): BackfillDraft {
   return {
-    dateKey: '',
+    dateKey: isLocalDateKey(dateKey) ? dateKey : '',
     timing: { enabled: false, startTime: '', endTime: '' },
     workoutName: '',
     exercises: [],

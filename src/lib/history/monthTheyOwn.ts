@@ -1,9 +1,10 @@
 /**
- * Month they own (`.1018`).
+ * Month they own (`.1018`). Empty-day log (`.1028`).
  *
  * Quiet History month. Live sessions only. Tombs out.
  * Start-from fold never erases a month mark or a day row.
  * Empty / missing / junk invents nothing. Not a fire count.
+ * Kind `none` past-or-today opens backfill on that dateKey.
  * Pure: no store.
  */
 
@@ -21,6 +22,10 @@ export type MonthDaySelectDecision =
   | { kind: 'empty' }
   | { kind: 'none'; dateKey: string }
   | { kind: 'day'; dateKey: string; rows: CompletedWorkoutLog[] };
+
+export type EmptyDayLogDecision =
+  | { kind: 'empty' }
+  | { kind: 'open'; dateKey: string };
 
 function liveRows(
   history: readonly CompletedWorkoutLog[] | null | undefined
@@ -78,4 +83,27 @@ export function decideMonthDaySelect(input: {
   const rows = liveRows(input.history).filter((log) => logDateKey(log) === dateKey);
   if (rows.length === 0) return { kind: 'none', dateKey };
   return { kind: 'day', dateKey, rows };
+}
+
+/**
+ * Empty-day door (`.1028`). Kind `none` past-or-today opens backfill on
+ * that dateKey. Live rows, junk, missing, and future invent nothing.
+ * Tombs do not occupy the day. Vacated day is empty.
+ */
+export function decideEmptyDayLog(input: {
+  dateKey?: unknown;
+  todayKey?: unknown;
+  history?: readonly CompletedWorkoutLog[] | null;
+  startFrom?: string | null;
+}): EmptyDayLogDecision {
+  void input.startFrom;
+  if (!isLocalDateKey(input.todayKey)) return { kind: 'empty' };
+  const select = decideMonthDaySelect({
+    dateKey: input.dateKey,
+    history: input.history,
+    startFrom: input.startFrom,
+  });
+  if (select.kind !== 'none') return { kind: 'empty' };
+  if (select.dateKey > input.todayKey) return { kind: 'empty' };
+  return { kind: 'open', dateKey: select.dateKey };
 }
