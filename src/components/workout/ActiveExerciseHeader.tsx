@@ -49,7 +49,7 @@ type Props = {
   swapCandidates: Exercise[];
   /** Always-on garage list length — sheet candidates are empty when closed. */
   swapOptionCount: number;
-  nextTarget: { reps: number; weight: number } | null;
+  nextTarget: { reps: number; weight: number; durationSeconds?: number } | null;
   onFormGuide: () => void;
   onToggleSuperset: () => void;
   onUnlinkSuperset: () => void;
@@ -206,6 +206,7 @@ export function ActiveExerciseHeader({
               weight: nextTarget.weight,
               unitLabel,
               bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+              durationSeconds: nextTarget.durationSeconds,
             }),
             defaultValue: 'Next: {{line}}',
           })}

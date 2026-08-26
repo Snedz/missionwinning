@@ -27,4 +27,4 @@ Label `2026.07-unified.998` (past
 master `.997` / `bb13642b`). Live
 www stays `.696`.
 
-Rotated LOG oldest → [LOG-rotate-978-for-998.md](./LOG-rotate-978-for-998.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-978-for-998.md](docs/archive/log/LOG-rotate-978-for-998.md).

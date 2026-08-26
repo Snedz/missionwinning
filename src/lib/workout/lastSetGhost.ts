@@ -15,10 +15,12 @@ import type { CompletedWorkoutLog } from '@/types';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
 import { parseOptionalRir } from '@/lib/workout/rir';
 import { workingSets } from '@/lib/workout/setMath';
+import { setRowDurationHold, setRowHasWork } from '@/lib/workout/setRowType';
 
 export type LastSetGhost = {
   reps: number;
   weight: number;
+  durationSeconds?: number;
   tempo?: string;
   rir?: number;
   rpe10?: number;
@@ -28,6 +30,7 @@ export type LastSetGhost = {
 type GhostSourceSet = {
   reps: number;
   weight: number;
+  durationSeconds?: number;
   kind?: string;
   tempo?: unknown;
   rir?: unknown;
@@ -65,12 +68,16 @@ export function resolveLastSetGhost(
     if (log.deletedAt) continue;
     const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
     if (!ex || ex.sets.length === 0) continue;
-    const work = workingSets(ex.sets as GhostSourceSet[]).filter((s) => s.reps > 0);
+    const work = workingSets(ex.sets as GhostSourceSet[]).filter((s) =>
+      setRowHasWork(s)
+    );
     if (work.length === 0) continue;
     const last = work[work.length - 1];
+    const hold = setRowDurationHold(last);
     return {
       reps: last.reps,
       weight: last.weight,
+      ...(hold != null ? { durationSeconds: hold } : {}),
       ...pickOptionalExtras(last),
     };
   }
@@ -80,10 +87,16 @@ export function resolveLastSetGhost(
 /** Offer the ghost only when there is one and the dial does not already hold it. */
 export function shouldOfferLastSetGhost(
   ghost: LastSetGhost | null | undefined,
-  dial: { reps: number; weight: number }
+  dial: { reps: number; weight: number; durationSeconds?: number }
 ): boolean {
   if (!ghost) return false;
-  return ghost.reps !== dial.reps || ghost.weight !== dial.weight;
+  const ghostHold = setRowDurationHold(ghost) ?? 0;
+  const dialHold = setRowDurationHold(dial) ?? 0;
+  return (
+    ghost.reps !== dial.reps ||
+    ghost.weight !== dial.weight ||
+    ghostHold !== dialHold
+  );
 }
 
 /** Notation suffix (tempo · RPE · RIR · side) — empty when none of those fields exist. */

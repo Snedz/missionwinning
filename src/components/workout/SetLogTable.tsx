@@ -94,7 +94,11 @@ type Props = {
   rowType?: SetRowType;
   /** Last working set (not warmup). One tap accepts into the active dial. */
   lastSetGhost?: LastSetGhost | null;
-  onAcceptGhost?: (target: { reps: number; weight: number }) => void;
+  onAcceptGhost?: (target: {
+    reps: number;
+    weight: number;
+    durationSeconds?: number;
+  }) => void;
   /** After-complete next-set cite; null slots stay unpainted. */
   afterCompleteCites?: (AfterCompleteCite | null)[];
   /** Optional EMOM / AMRAP on the live row only (`.987`). */

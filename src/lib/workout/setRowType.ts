@@ -91,8 +91,16 @@ export function setRowHasWork(set: SetRowWork | null | undefined): boolean {
   if (!set || set.kind === 'warmup') return false;
   const reps = Number(set.reps);
   if (Number.isFinite(reps) && reps > 0) return true;
-  const hold = Number(set.durationSeconds);
-  return Number.isFinite(hold) && hold > 0;
+  return setRowDurationHold(set) != null;
+}
+
+/** Logged hold/finish time. Missing / 0 invents nothing. */
+export function setRowDurationHold(
+  set: { durationSeconds?: number } | null | undefined
+): number | undefined {
+  const hold = Number(set?.durationSeconds);
+  if (!Number.isFinite(hold) || hold <= 0) return undefined;
+  return Math.round(hold);
 }
 
 export function setRowVolume(set: Pick<LoggedSet, 'reps' | 'weight'>, type: SetRowType): number {

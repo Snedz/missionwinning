@@ -6,16 +6,16 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
-## Frozen plan — `.1013` Next cite is 0:45, not mute (2026-08-26)
+## Frozen plan — `.1014` Next cite is 0:45, not mute (2026-08-26)
 
 > **Frozen.** Implement only this section + root
 > [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.1013` — from master
-> `.1012` (`aa23a5394` — This-movement title
-> is the date or the name). Stamp stays
-> `.1013`. Do not bump. Title stays **Next
-> cite is 0:45, not mute (.1013)**. Same
-> PR. Do not merge this PR yourself.
+> Label: `2026.07-unified.1014` — from master
+> `.1013` (`3a28b75fa` — Our export comes
+> back). Stamp stays `.1014`. Do not bump.
+> Title stays **Next cite is 0:45, not
+> mute (.1014)**. Same PR. Do not merge
+> this PR yourself. Import `.1013` +
 > Titles `.1012` + Export `.1011` + Library
 > skip `.1010` + BW cite `.1009` are on
 > master. Do not smash them. Every commit
@@ -31,7 +31,7 @@ after-complete still dropped the hold.
 
 ### First check (done — hypothesis holds)
 
-Read tip `aa23a5394` / `.1012`.
+Read tip `3a28b75fa` / `.1013`.
 Confirmed:
 
 - `formatSetRowLine` prints `0:45`
@@ -52,6 +52,62 @@ Missing invents nothing.
 
 ```
 npx tsx --test src/lib/workout/durationCite.test.ts src/lib/workout/lastSetGhost.test.ts src/lib/workout/nextCiteBw.test.ts src/lib/workout/nextCiteBwSurface.test.ts
+```
+
+---
+
+## Frozen plan — `.1013` Our export comes back (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1013` — from master
+> `.1012` (`aa23a539` — This-movement
+> title is the date or the name).
+> Stamp stays `.1013`. Do not bump. Title
+> stays **Our export comes back (.1013)**.
+> Same PR `#838`. Branch may stay
+> `feat/export-comes-back-1012`. Do not
+> merge this PR yourself. Title-fix
+> `.1012` + export `.1011` + Library
+> skip `.1010` + BW cite `.1009` are
+> on master. Do not smash them. Every
+> commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+Export this diary (`.1011`) writes
+the local history. Missing is the
+confirm-gated door that opens that
+file again.
+
+### First check (done — hypothesis holds)
+
+Read tip `aa23a539` / `.1012`.
+Confirmed:
+
+- Export door is History only.
+- No import of *our* `.1011` file.
+- Account Strong / Hevy interchange
+  is a different door.
+
+### Done means
+
+A `.1011` export file re-imports
+into local history after confirm.
+Cancel unchanged. Empty / garbage
+invents nothing. Merge is the
+default. Replace is a second named
+confirm. History only.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/importDiary.test.ts src/lib/history/importDiarySurface.test.ts
+npx tsx --test src/lib/firstSetUngated.ts
+npx tsx scripts/check-build-label.mjs
 ```
 
 ---

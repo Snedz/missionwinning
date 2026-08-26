@@ -1,13 +1,13 @@
-# PLAN.md — Next cite is 0:45, not mute (`.1013`)
+# PLAN.md — Next cite is 0:45, not mute (`.1014`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
 ship; this file is the duration-cite freeze.
 **Lane:** Engineering-Web · Train · **Horizon:** 0
-**Label:** `2026.07-unified.1013` (master is `.1012` / `aa23a5394`
-This-movement title is the date or the name). Title stays
-**Next cite is 0:45, not mute (.1013)**.
+**Label:** `2026.07-unified.1014` (master is `.1013` / `3a28b75fa`
+Our export comes back). Title stays **Next cite
+is 0:45, not mute (.1014)**.
 **Excellence-Override:** leftover duration Next/Last after
 BW cite (`.1009`) (not a Feed)
 
@@ -27,7 +27,7 @@ stays `.696`. Do not promote. Do
 not merge.
 
 Full lock: [docs/PLAN.md](docs/PLAN.md)
-frozen section `.1013`.
+frozen section `.1014`.
 
 ---
 
@@ -50,7 +50,8 @@ never forwarded the hold.
    Do not treat reps as seconds.
 3. Copy last hold. Do not add +1s.
 4. No Today chrome. No Feed.
-5. Do not smash titles `.1012` /
-   export `.1011` / BW cite `.1009`.
+5. Do not smash import `.1013` /
+   titles `.1012` / export `.1011` /
+   BW cite `.1009`.
 6. `[skip vercel]` on every commit.
    Do not merge this PR yourself.
