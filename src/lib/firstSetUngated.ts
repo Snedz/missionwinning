@@ -50,6 +50,7 @@
  * `.1019` — never-trained anatomy is idle, not overdue. Never a login wall.
  * `.1020` — library spark empty load is reps, not a flat zero. Never a login wall.
  * `.1021` — Coach chat empty load is BW, not 0 × 8. Never a login wall.
+ * `.1022` — heatmap empty-load volume is reps, not a 0 kg floor. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
