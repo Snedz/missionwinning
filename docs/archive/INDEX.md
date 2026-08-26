@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1014-for-1029.md](./log/LOG-rotate-1014-for-1029.md) | rotated 2026-08-26 for `.1029` This month as a file they own (`.1014`) |
 | [log/LOG-rotate-1013-for-1028.md](./log/LOG-rotate-1013-for-1028.md) | rotated 2026-08-26 for `.1028` Log onto this empty day from the month (`.1013`) |
 | [log/LOG-rotate-1012-for-1027.md](./log/LOG-rotate-1012-for-1027.md) | rotated 2026-08-26 for `.1027` Move this session to another day (`.1012`) |
 | [log/LOG-rotate-1011-for-1026.md](./log/LOG-rotate-1011-for-1026.md) | rotated 2026-08-26 for `.1026` Repeat this session (`.1011`) |

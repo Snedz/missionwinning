@@ -1,39 +1,44 @@
-# PLAN — Log onto this empty day from the month (`.1028`)
+# PLAN — This month as a file they own (`.1029`)
 
 **Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1028`.
-**Base:** master `c721fa5b36d8e730457f4cae207a33239fae03ba` — Move this session to another day (`.1027`).
-**Do not smash:** Move `.1027`, Repeat `.1026`, set-table `.1025`, month `.1018`, edit-finished `.997`, backfill `.1000` overflow.
+**Frozen:** 2026-08-26. **Ship-as:** `.1029`.
+**Base:** master `65f50302e76f4cd3fa656d4ba1abb69ed182f28b` — Log onto this empty day from the month (`.1028`).
+**Do not smash:** empty-day `.1028`, Move `.1027`, Repeat `.1026`, diary `.1011`, session file `.1016`, import `.1013`.
 
 ---
 
 ## The one thing
 
-`.1018` month empty day currently prints "Nothing logged". Missing: one plus / log-onto-this-day door on that empty day. Reuse `.1000` backfill on that dateKey. New row. Not a second overflow door.
+Hevy calendar: they own the month on screen. Missing: save THAT month's live rows as a local CSV (JSON is the same rows). Reuse `decideExportDiary` columns. Not the whole diary (`.1011`). Not one session (`.1016`).
 
 ## In / out
 
 **In**
 
-- History month they own (`HistoryCalendar` + `decideMonthDaySelect` kind `none`): one plus / log onto this empty day.
-- Prefills the existing backfill draft date to that local dateKey. Save still goes through `decideBackfillSession` (empty / missing / junk invents nothing). Future invents nothing. Tombs stay out unless restored.
-- History only. Guest. First set ungated. Today still exactly one Start. Resume `.963` kept.
-- Add `.1028` line to `src/lib/firstSetUngated.ts`.
+- From History month they own: one **Save this month** door on the calendar month currently shown (`HistoryCalendar` `monthKey`, `YYYY-MM` via `localMonthKey` / `shiftLocalMonth`).
+- The viewed month is currently *inside* `HistoryCalendar` (`useState(() => localMonthKey())`). Lift it or callback so the file matches the month on screen — not "today's month" if they paged to July.
+- Live sessions whose local date key starts with that `YYYY-MM`. Tombs out. Start-from fold does not shrink the file.
+- Empty month / missing / junk invents nothing — Save stays disabled.
+- Honest logged columns only. Reuse `decideExportDiary` on the filtered live rows (do not rewrite the diary helper; do not shrink `.1011` to a month). Filename like `mission-winning-month-YYYY-MM.csv`.
+- No public URL, Feed, share, email, clipboard permalink.
+- History only. Not Today. Guest. First set ungated. Today still exactly one Start. Resume `.963` kept.
+- `.1011` whole-diary export and `.1016` this-session file stay. Empty-day `.1028` plus stays.
+- Add `.1029` line to `src/lib/firstSetUngated.ts`.
 
 **Out**
 
 - Streak / rest-day count / future-day planner.
 - Second Start / Feed / share / public URL.
-- Today chrome leak (HomeTodayLean stays one `dock="start"`; no month/backfill import on Today).
-- Second backfill overflow button. `.1000` stays the History overflow "Log a past session".
+- Today chrome leak (HomeTodayLean still one `dock="start"`).
+- Rewriting empty-day `.1028` / Move `.1027` / Repeat `.1026` / diary `.1011` semantics / session file `.1016` / import `.1013`.
 - Counsel-hold / Mind / `PRIVATE_MODE` flip / promote live www.
-- Rewriting Move `.1027` / Repeat `.1026` / set-table `.1025` / edit `.997` / backfill helper semantics except date prefill.
 
 ## Verify
 
-- `src/lib/workout/backfillSession.test.ts`
+- `src/lib/history/exportDiary.test.ts`
+- `src/lib/history/exportSession.test.ts`
 - `src/lib/history/monthTheyOwn.test.ts`
 - `src/lib/history/monthTheyOwnSurface.test.ts`
-- Colocated empty-day door tests (vacated/empty day opens backfill on that date; future invents nothing; Today still one Start; overflow `.1000` still exists)
+- Colocated tests: empty month disables Save; a live month writes only that month's rows; paging to another month changes the file; overflow diary export still writes the whole diary; Today still one Start
 - `src/lib/firstSetUngated.test.ts`
 - `src/lib/today/leanDockStart.test.ts`

@@ -6,6 +6,79 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1029` This month as a file they own (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1029` — from master
+> `.1028` (`65f50302e76f4cd3fa656d4ba1abb69ed182f28b`
+> — Log onto this empty day from the month).
+> Stamp stays `.1029`. Do not smash empty-day
+> `.1028` / Move `.1027` / Repeat `.1026` /
+> diary `.1011` / session file `.1016` /
+> import `.1013`.
+> Not the whole diary. Not one session.
+> Do not merge this PR yourself. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Resume `.963` kept. Brand: **Log a set.
+> Offline.**
+
+Hevy calendar: they own the month
+on screen. Missing: save THAT
+month's live rows as a local CSV
+(JSON is the same rows). Reuse
+`decideExportDiary` columns.
+
+### First check (done — hypothesis holds)
+
+Read tip `65f50302e76f4cd3fa656d4ba1abb69ed182f28b` / `.1028`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1028`.
+- `HistoryCalendar` owns `monthKey` in
+  `useState(() => localMonthKey())`.
+- `.1011` is `decideExportDiary` on the
+  whole live diary (`HistoryExport`).
+- `.1016` is `decideExportSession` →
+  `decideExportDiary([found])`.
+- Empty-day `.1028` plus stays on
+  kind `none`. Today is one
+  `dock="start"`.
+
+### Done means
+
+History month they own: one Save
+this month door on the calendar
+month currently shown. Lift or
+callback `monthKey` so the file is
+the month on screen, not today's
+month after they page to July.
+Live sessions whose local date key
+starts with that `YYYY-MM`. Tombs
+out. Start-from does not shrink
+the file. Empty / missing / junk
+invents nothing — Save stays
+disabled. Reuse `decideExportDiary`
+on the filtered live rows. Filename
+`mission-winning-month-YYYY-MM.csv`.
+No public URL / Feed / share.
+`.1011` whole-diary and `.1016`
+this-session stay. Guest. First
+set ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/exportDiary.test.ts src/lib/history/exportSession.test.ts src/lib/history/monthTheyOwn.test.ts src/lib/history/monthTheyOwnSurface.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1028` Log onto this empty day from the month (2026-08-26)
 
 > **Frozen.** Implement only this section + root

@@ -32,6 +32,7 @@ import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
 import { JournalTimeline } from '@/components/history/JournalTimeline';
 import { HistoryCalendar } from '@/components/history/HistoryCalendar';
+import { HistoryMonthFile } from '@/components/history/HistoryMonthFile';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
@@ -90,7 +91,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
-import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso, localMonthKey, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { formatLogVolumeDisplay } from '@/lib/workout/volumeDisplay';
 import { decideRepeatThisSession } from '@/lib/workout/repeatThisSession';
@@ -303,6 +304,7 @@ export function HistoryPage() {
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
   const [tab, setTab] = useState<HistoryTab>('calendar');
+  const [monthKey, setMonthKey] = useState(() => localMonthKey());
   const [monthDayKey, setMonthDayKey] = useState('');
   const monthDay = useMemo(
     () => decideMonthDaySelect({ dateKey: monthDayKey, history: workoutHistory }),
@@ -819,7 +821,10 @@ export function HistoryPage() {
               loggedKeys={loggedDayKeys}
               selectedKey={monthDayKey}
               onSelectDate={(key) => setMonthDayKey((current) => (current === key ? '' : key))}
+              monthKey={monthKey}
+              onMonthKeyChange={setMonthKey}
             />
+            <HistoryMonthFile monthKey={monthKey} history={workoutHistory} />
             {monthDay.kind === 'none' ? (
               <div className="space-y-2" data-testid="history-month-day-empty">
                 <p className="text-[13px] text-muted-foreground">

@@ -117,4 +117,22 @@ describe('month they own surface lock (.1018)', () => {
     assert.match(sessionFile, /data-testid="session-history-file"/);
     assert.match(sessionFile, /decideExportSession/);
   });
+
+  it('Save this month is the month on screen — empty disables Save; diary stays whole', () => {
+    const page = read('src/page-components/HistoryPage.tsx');
+    assert.match(page, /HistoryMonthFile/);
+    assert.match(page, /useState\(\(\) => localMonthKey\(\)\)/);
+    assert.match(page, /monthKey=\{monthKey\}/);
+    assert.match(page, /HistoryExport/);
+    const fields = read('src/components/history/HistoryMonthFile.tsx');
+    assert.match(fields, /disabled=\{!ready\}/);
+    assert.match(fields, /decideExportMonth/);
+    const helper = read('src/lib/history/exportMonth.ts');
+    assert.match(helper, /decideExportDiary/);
+    const exportFields = read('src/components/history/HistoryExport.tsx');
+    assert.match(exportFields, /decideExportDiary\(history\)/);
+    const cal = read('src/components/history/HistoryCalendar.tsx');
+    assert.doesNotMatch(cal, /useState\(\(\) => localMonthKey\(\)\)/);
+    assert.match(cal, /onMonthKeyChange/);
+  });
 });
