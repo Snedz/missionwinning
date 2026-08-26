@@ -6,6 +6,51 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1020` Library spark is reps, not 0, on empty load (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1020` — from master
+> `.1017` (`8a606a12b` — Last cite is BW,
+> not 0, on empty load). Stamp stays
+> `.1020`. `#843` owns `.1018`. `#845`
+> owns `.1019`. Do not smash. Do not
+> merge this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First
+> set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.**
+
+Library spark is `reps * weight`. Empty
+load is stored `0`, so eight push-ups
+plot as a flat zero.
+
+### First check (done — hypothesis holds)
+
+Read tip `8a606a12b` / `.1017`.
+Confirmed:
+
+- `libraryExerciseVolumeSpark` sums
+  `reps * weight` for countable sets.
+- Victory already ranks BW as reps
+  (`workingSetScore`).
+- `.1010` only skipped tombs.
+
+### Done means
+
+Push-ups `8 × 0` spark is `[8]`.
+Loaded stays kg. Empty invents nothing.
+
+### Accept
+
+```
+npx tsx --test src/lib/librarySparkBw.test.ts
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1019` Never-trained is not overdue (2026-08-26)
 
 > **Frozen.** Implement only this section + root
