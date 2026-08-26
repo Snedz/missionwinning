@@ -1,48 +1,55 @@
-# PLAN — Next cite is BW, not 0 kg, on assisted 0 (`.1015`)
+# PLAN — This session as a file they own (`.1016`)
 
 **Status:** Frozen. One daily. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1015`.
-**Base:** master `f4b852279` — Next cite is 0:45, not mute (`.1014`).
-**Do not smash:** `.1014` duration cite, `.1013` import, `.1012` this-movement title, `.1011` export door, `.1010` Library tomb skip, `.1009` BW cite.
+**Frozen:** 2026-08-26. **Ship-as:** `.1016`.
+**Base:** master `4046afd9` — Next cite is BW, not 0 kg, on assisted 0 (`.1015`).
+**Do not smash:** `.1015` assisted cite, `.1014` duration cite, `.1013` import, `.1012` historySessionLabel, `.1011` export, `.1010` Library tomb skip, `.1009` BW cite.
 
 ---
 
 ## The one thing
 
-Assisted 0 is BW, not `8 × 0 kg`.
+Tuesday's receipt is a local file they own.
 
-BW cite `.1009` closed vest-0 on Next / Last / after-complete. Assisted still printed `8 × 0 kg` when help was 0. Help already prints minus. Zero help is unassisted bodyweight.
+Full-diary dump is `.1011`. The complementary door is one finished session as CSV (JSON if the same rows). Strong share is a public link. Hevy share lets the other person save it. We give them the finished session as a file. No public URL.
 
 ## Why this, why now
 
-Year-one metric is week-4 loggers. Duration cite `.1014` is on master. This hop is the assisted leftover.
+`.1011` writes the whole live diary. `.1013` reads that file back. Missing is the receipt of *this* session — one file, one log, History detail.
 
 ## In / out
 
 **In**
 
-- `formatSetRowLine` / `formatSetRowPrev` assisted 0 → `8 × BW`.
-- Help > 0 stays `8 × −20 kg`.
-- Display only. Store still `weight: 0`.
-- Guest. First set ungated.
+- History detail (finished-session sheet) saves THAT session as CSV.
+- JSON if the same rows as export (`.1011` columns).
+- Reuse `decideExportDiary` filtered to one session, or a thin helper that shares its columns.
+- The file re-imports via `.1013` if they want it back.
+- Empty / missing / tomb invents nothing — Save disabled.
+- Honest logged columns only. No invented 1RM or duration.
+- History / session detail door. Guest. First set stays ungated.
 
 **Out**
 
-- Custom / unknown rewrite (stays weight).
-- Duration cite `.1014` (keep).
-- Today chrome, Feed, `/private`.
-- Counsel-hold, Mind, cloud sync, account.
-- Promote. Live www stays `.696`.
+- Share link, email, Feed, Discord, clipboard permalink, public URL.
+- Full-diary dump (already `.1011`). Re-import (already `.1013`).
+- Assisted cite (already `.1015`). Duration cite (already `.1014`).
+- Today chrome. `/private`. Counsel-hold. Mind. Promote.
+- Live www stays `.696`.
 
 ## Done when
 
-1. Assisted 0 prints `8 × BW`, not `8 × 0 kg`.
-2. Help still prints minus.
-3. Loaded cite unchanged.
-4. Today still one Start. First set ungated.
+1. One live session writes a file of only that session's live rows.
+2. A second live session is not in the file.
+3. Tomb / empty / missing Save is disabled and invents nothing.
+4. The file parses through `decideImportDiary` (`.1013`).
+5. History detail mounts the door. Today still has one Start. No Feed. No `/private`.
+6. First set stays ungated. No login wall.
+7. Export `.1011` and import `.1013` still mount. Assisted cite `.1015` and duration cite `.1014` stay.
 
 ## Verify
 
-- `src/lib/workout/assistedCite.test.ts`
-- `npx tsx --test src/lib/firstSetUngated.ts`
-- `npx tsx scripts/check-build-label.mjs` — `.1015` > master `.1014`.
+- `src/lib/history/exportSession.test.ts` — one session only, tomb/empty disabled, columns shared, re-import via `.1013`.
+- `src/lib/history/exportSessionSurface.test.ts` — History detail mounts; Today lean; first-set ungated; export / import stay.
+- `npx tsx --test src/lib/firstSetUngated.ts` green.
+- `npx tsx scripts/check-build-label.mjs` — `.1016` > master `.1015`.

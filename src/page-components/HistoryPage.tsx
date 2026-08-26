@@ -49,6 +49,7 @@ import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
 import { HistorySessionName } from '@/components/history/HistorySessionName';
+import { HistorySessionFile } from '@/components/history/HistorySessionFile';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
@@ -962,6 +963,12 @@ export function HistoryPage() {
                   }}
                 />
                 )}
+                {!editing ? (
+                  <HistorySessionFile
+                    sessionId={selected.id}
+                    history={workoutHistory}
+                  />
+                ) : null}
               </div>
               {/* K7 — return path: replay this session in Train. */}
               {!editing && !selected.deletedAt && templateFromCompletedLog(selected) ? (
