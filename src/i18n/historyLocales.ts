@@ -197,6 +197,9 @@ type HistoryStrings = {
   historyMonthFileJson: string;
   /** `.1031` — jump the History calendar back to the current local month. */
   historyCalThisMonth: string;
+  /** `.1033` — live session count for the month on screen. */
+  historyCalSessions: string;
+  historyCalSessionsOne: string;
 };
 
 const en: HistoryStrings = {
@@ -386,6 +389,8 @@ const en: HistoryStrings = {
   historyMonthFileSave: 'Save this month CSV',
   historyMonthFileJson: 'Save this month JSON',
   historyCalThisMonth: 'This month',
+  historyCalSessions: '{{count}} sessions',
+  historyCalSessionsOne: '1 session',
 };
 
 const es: HistoryStrings = {

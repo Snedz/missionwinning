@@ -1,6 +1,6 @@
 # src/lib/history/
 
-> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), this session as a file they own (`.1016`), empty-load Last cite (`.1017`), the month they own (`.1018`), Repeat this session into the live Start (`.1026`), move this session to another day (`.1027`), log onto this empty day from the month (`.1028`), this month as a file they own (`.1029`), copy this session onto another day (`.1030`), This month on the calendar (`.1031`), and a trained day shows how many live sessions (`.1032`).
+> One concern: past-session facts for `/history` — month marks, the session list, find-a-past-session search (`.1008`), export this diary (`.1011`), import that file back (`.1013`), this session as a file they own (`.1016`), empty-load Last cite (`.1017`), the month they own (`.1018`), Repeat this session into the live Start (`.1026`), move this session to another day (`.1027`), log onto this empty day from the month (`.1028`), this month as a file they own (`.1029`), copy this session onto another day (`.1030`), This month on the calendar (`.1031`), a trained day shows how many live sessions (`.1032`), and this month shows how many live sessions (`.1033`).
 
 ## Read order
 
@@ -13,8 +13,9 @@
 7. `exportMonth.ts` — this month as a file they own (`.1029`); empty / junk invents nothing
 8. `thisMonthCalendar.ts` — This month on the calendar (`.1031`); empty / junk invents nothing; already-this-month is noop
 9. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
-10. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
-11. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
+10. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
+11. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
+12. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 
@@ -29,6 +30,7 @@
 | `exportMonth.ts` | This month as a file they own (`.1029`). Reuses `decideExportDiary` columns. Empty / junk invents nothing. |
 | `thisMonthCalendar.ts` | This month on the History calendar (`.1031`). Jump back to the current local month and today. Empty / junk invents nothing. Already-this-month is noop. |
 | `daySessionCount.ts` | Trained day live session count (`.1032`). Prints how many live sessions with the dumbbell. Empty / junk invents nothing. Never a fire. |
+| `monthSessionCount.ts` | Month live session count (`.1033`). Prints how many live sessions for the month on screen. Empty / junk invents nothing. Never a fire-zero. Sessions, not training days. |
 | `monthGrid.ts` | Month grid vocabulary |
 | `guideHistory561.test.ts` | History empty-copy honesty |
 | `emptyDayLogSurface.test.ts` | Empty month day plus / log-onto-this-day; overflow `.1000` stays; Today one Start (`.1028`) |
@@ -38,5 +40,7 @@
 | `thisMonthCalendarSurface.test.ts` | This month on History calendar; Today one Start; Copy/Move/Repeat/empty-day/month-file stay (`.1031`) |
 | `daySessionCount.test.ts` | Trained-day count: empty on none/logged/future/junk/0; apply 1 and 3 (`.1032`) |
 | `daySessionCountSurface.test.ts` | Count on History DayCell; dumbbell stays; Today one Start; This month/Copy/Move/Repeat/empty-day/month-file stay (`.1032`) |
+| `monthSessionCount.test.ts` | Month count: junk/empty invents nothing; two sessions one day apply 2; tomb ignored; startFrom does not shrink (`.1033`) |
+| `monthSessionCountSurface.test.ts` | Count on History calendar footer; training-days stay; Today one Start; day-cell/This month/Copy/Move/Repeat/empty-day/month-file stay (`.1033`) |
 
 Day replay (`HistoryDayPage`) and charts (`historyAnalytics.ts`) live elsewhere.

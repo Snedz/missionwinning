@@ -27,7 +27,9 @@
  * Save this month (`.1029`) writes the month on screen. After paging
  * prev/next, **This month** (`.1031`) jumps back to the current local
  * month and today. A trained day prints how many live sessions
- * (`.1032`) with the dumbbell — not a fire, not missed ✕.
+ * (`.1032`) with the dumbbell — not a fire, not missed ✕. The
+ * month on screen prints how many live sessions (`.1033`) — not
+ * a fire, not a training-day stand-in.
  */
 
 import { useMemo } from 'react';
@@ -40,6 +42,7 @@ import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/mon
 import { monthLiveFacts } from '@/lib/history/monthTheyOwn';
 import { decideThisMonth } from '@/lib/history/thisMonthCalendar';
 import { decideDaySessionCount } from '@/lib/history/daySessionCount';
+import { decideMonthSessionCount } from '@/lib/history/monthSessionCount';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -154,6 +157,7 @@ export function HistoryCalendar({
     viewedMonthKey: monthKey,
     todayKey: localDateKey(),
   });
+  const monthSessions = decideMonthSessionCount({ monthKey, history });
 
   /*
    * Weekday initials derived, not hardcoded. `WeekStrip` and `Skeleton` each
@@ -256,6 +260,20 @@ export function HistoryCalendar({
           defaultValue: `${grid.trainedDays} training days · ${grid.loggedDays} other logged days`,
         })}
       </p>
+
+      {monthSessions.kind === 'apply' ? (
+        <p
+          data-testid="history-month-sessions"
+          className="mt-2 text-[13px] tabular-nums text-muted-foreground"
+        >
+          {monthSessions.count === 1
+            ? t('historyCalSessionsOne', { defaultValue: '1 session' })
+            : t('historyCalSessions', {
+                count: monthSessions.count,
+                defaultValue: '{{count}} sessions',
+              })}
+        </p>
+      ) : null}
 
       {grid.trainedDays === 0 ? (
         <p

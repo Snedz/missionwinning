@@ -6,6 +6,79 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1033` This month shows how many live sessions (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1033` — from master
+> `.1032` (`56b7e3eabc2ad256d0e3162ff549b4da680830c5`
+> — Trained day shows how many live sessions).
+> Stamp stays `.1033`. Do not smash day-cell
+> `.1032` / This month `.1031` / Copy `.1030` /
+> month file `.1029` / empty-day `.1028` / Move
+> `.1027` / Repeat `.1026`.
+> Print the live session count for the month
+> on screen. Not a fire. Not a streak. Not a
+> year picker. Do not merge this PR yourself.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays
+> ungated. Today stays one Start. Resume
+> `.963` kept. Brand: **Log a set. Offline.**
+
+The History calendar footer already prints
+**training days**. Two logs on Tuesday is
+still one training day. Missing: the live
+session count for the month on screen.
+
+### First check (done — hypothesis holds)
+
+Read tip `56b7e3eabc2ad256d0e3162ff549b4da680830c5` / `.1032`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1032`.
+- Footer prints `historyCalSummary` from
+  `grid.trainedDays` / `grid.loggedDays`.
+- Empty month is `history-month-empty`.
+- Day-cell count `.1032` is
+  `decideDaySessionCount`.
+- This month `.1031` is `decideThisMonth`.
+- Copy `.1030` / month file `.1029` /
+  empty-day `.1028` / Move `.1027` /
+  Repeat `.1026` stay.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideMonthSessionCount({ monthKey,
+history, startFrom? })` → empty when
+`monthKey` is missing / junk, or there
+are no live rows whose local date key
+starts with that `YYYY-MM`. Apply with
+`count` = those live rows otherwise.
+Tombs stay out. `startFrom` is ignored.
+Never invent `0` as apply. Footer prints
+the count as `text-[13px] tabular-nums`
+(testid `history-month-sessions`) when
+apply. Training-days summary stays.
+`history-month-empty` stays when
+`trainedDays === 0`. Not a fire. Not a
+streak. Not a year picker. Never
+`toISOString()` for a calendar date.
+Guest. First set ungated. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/daySessionCount.test.ts src/lib/history/thisMonthCalendar.test.ts src/lib/history/monthTheyOwn.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/history/monthSessionCount.test.ts src/lib/history/monthSessionCountSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1032` Trained day shows how many live sessions (2026-08-26)
 
 > **Frozen.** Implement only this section + root
