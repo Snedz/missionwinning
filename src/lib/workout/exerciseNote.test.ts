@@ -5,6 +5,7 @@ import path from 'node:path';
 import {
   EXERCISE_NOTE_MAX,
   applyHistoryNote,
+  normalizeExerciseNote,
   noteFromHistory,
   seedExerciseNote,
 } from '@/lib/workout/exerciseNote';
@@ -34,6 +35,26 @@ function log(
     })),
   };
 }
+
+describe('normalizeExerciseNote', () => {
+  it('empty / whitespace / non-string invent nothing', () => {
+    assert.equal(normalizeExerciseNote(undefined), undefined);
+    assert.equal(normalizeExerciseNote(null), undefined);
+    assert.equal(normalizeExerciseNote(''), undefined);
+    assert.equal(normalizeExerciseNote('   \n\t'), undefined);
+    assert.equal(normalizeExerciseNote(0), undefined);
+    assert.equal(normalizeExerciseNote(true), undefined);
+    assert.equal(normalizeExerciseNote({ text: 'paused' }), undefined);
+  });
+
+  it('trims kept text and truncates over-cap — never pads, never empties', () => {
+    assert.equal(normalizeExerciseNote('  paused  '), 'paused');
+    const long = 'x'.repeat(EXERCISE_NOTE_MAX + 40);
+    const kept = normalizeExerciseNote(long);
+    assert.equal(kept, 'x'.repeat(EXERCISE_NOTE_MAX));
+    assert.equal(kept?.length, EXERCISE_NOTE_MAX);
+  });
+});
 
 describe('seedExerciseNote', () => {
   it('prefills unset from the last cue, verbatim', () => {

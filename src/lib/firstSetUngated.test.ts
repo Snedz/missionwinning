@@ -292,4 +292,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1044` — load % on a finished History set/);
   });
+
+  it('lift note on a finished exercise stays ungated (.1045)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1045` — lift note on a finished History exercise/);
+  });
 });

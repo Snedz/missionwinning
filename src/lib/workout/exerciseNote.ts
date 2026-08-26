@@ -12,6 +12,20 @@ import { lastNotesFor } from '@/lib/journal/cueMemory';
 
 export const EXERCISE_NOTE_MAX = 200;
 
+/**
+ * Boundary parse. Empty / whitespace / non-string → `undefined`.
+ * Over-cap is truncated — never padded, never invented from volume.
+ * Does not call lastNotesFor / cueMemory / LLM.
+ */
+export function normalizeExerciseNote(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  return trimmed.length > EXERCISE_NOTE_MAX
+    ? trimmed.slice(0, EXERCISE_NOTE_MAX)
+    : trimmed;
+}
+
 export function seedExerciseNote(
   current: string | undefined,
   last: string | undefined
