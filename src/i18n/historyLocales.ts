@@ -106,6 +106,8 @@ type HistoryStrings = {
   historyReorderDown: string;
   /** `.1036` — replace a lift on this finished session. */
   historyReplaceLift: string;
+  /** `.1037` — add a lift to this finished session. */
+  historyAddLift: string;
   historyTableTime: string;
   historyTableVest: string;
   historyTableAssist: string;
@@ -306,6 +308,7 @@ const en: HistoryStrings = {
   historyReorderUp: 'Move up',
   historyReorderDown: 'Move down',
   historyReplaceLift: 'Replace lift',
+  historyAddLift: 'Add a lift',
   historyTableTime: 'Time',
   historyTableVest: '+kg',
   historyTableAssist: 'Assist',

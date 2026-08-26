@@ -6,6 +6,83 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1037` Add a lift to this finished session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1037` — from master
+> `.1036` (`3408cbfef6f72c79e49e951da78384393f1b94ad`
+> — Replace this lift on a finished session).
+> Stamp stays `.1037`. Do not smash Replace
+> `.1036` / Duration `.1035` / Reorder `.1034`
+> / Name `.1007` / Edit sets `.997` / Backfill
+> `.1000`. Resume `.963` stays. Live pause
+> `.1001` stays on Train. Same finished log.
+> Same id. Save still confirm-gated
+> `decideEditSave`. Reuse `ExercisePicker`.
+> Do not mint a second session. Do not merge
+> this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays
+> ungated. Today stays one Start. Brand:
+> **Log a set. Offline.**
+
+History edit can change sets, reorder,
+and replace a lift. It cannot add a
+movement they forgot. Backfill `.1000`
+is a new row. Add set is on an existing
+lift.
+
+### First check (done — hypothesis holds)
+
+Read tip `3408cbfef6f72c79e49e951da78384393f1b94ad` / `.1036`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1036`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Replace `.1036` is
+  `ExercisePicker` per lift. Reorder `.1034`
+  is Up / Down on that draft.
+- Backfill already mounts `ExercisePicker`.
+  `appendDraftSet` is `{ reps: 0, weight: 0 }`
+  on an existing lift.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideAppendFinishedExercise({ draft,
+nextExerciseId })`. Empty on missing
+draft / not an array / empty next id.
+Noop on unknown lift (same known-lift
+check as replace). Apply appends
+`{ exerciseId, sets: [{ reps: 0, weight: 0 }] }`.
+Existing lifts unchanged. Clone so the
+source draft is not mutated. Duplicate
+lift ids allowed. Does not invent loads.
+Does not write Wednesday / saved / live
+Start. `HistorySessionEdit` when editing:
+one block at the bottom, label +
+`ExercisePicker`. testid
+`session-history-add-lift`. Apply to
+local draft only. Save still
+`decideEditSave`. Empty 0/0 still needs
+evidence. Guest. First set ungated.
+Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/replaceFinishedExercise.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/appendFinishedExercise.test.ts src/lib/workout/appendFinishedExerciseSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1036` Replace this lift on a finished session (2026-08-26)
 
 > **Frozen.** Implement only this section + root
