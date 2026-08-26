@@ -2,7 +2,8 @@
 
 /**
  * Edit the sets on a finished History log (`.997`).
- * Reorder lifts while editing (`.1034`). Confirm before a
+ * Reorder lifts while editing (`.1034`). Replace a lift
+ * while editing (`.1036`) — sets stay. Confirm before a
  * destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -28,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import {
   appendDraftSet,
@@ -38,6 +40,7 @@ import {
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
+import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
   formatSetRowLine,
@@ -122,6 +125,18 @@ export function HistorySessionEdit({
     });
   };
 
+  const replaceLift = (exerciseIndex: number, nextExerciseId: string) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decideReplaceFinishedExercise({
+        draft: current,
+        exerciseIndex,
+        nextExerciseId,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -166,6 +181,17 @@ export function HistorySessionEdit({
                 </div>
               ) : null}
             </div>
+            {editing ? (
+              <div data-testid={`session-history-replace-${exIdx}`}>
+                <p className="text-sm font-semibold">
+                  {t('historyReplaceLift', { defaultValue: 'Replace lift' })}
+                </p>
+                <ExercisePicker
+                  value={ex.exerciseId}
+                  onChange={(id) => replaceLift(exIdx, id)}
+                />
+              </div>
+            ) : null}
             {ex.note?.trim() ? (
               <p className="text-sm italic text-muted-foreground border-l-2 border-border pl-3">
                 {ex.note}

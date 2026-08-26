@@ -64,6 +64,7 @@
  * `.1033` — this month shows how many live sessions. Never a login wall.
  * `.1034` — reorder lifts on a finished History session. Never a login wall.
  * `.1035` — edit this session's logged duration from History. Never a login wall.
+ * `.1036` — replace a lift on a finished History session. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

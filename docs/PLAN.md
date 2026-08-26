@@ -6,6 +6,79 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1036` Replace this lift on a finished session (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1036` — from master
+> `.1035` (`a5236f9865533cdbbc962653e5b7a4698d64c749`
+> — Edit this session's logged duration).
+> Stamp stays `.1036`. Do not smash Duration
+> `.1035` / Reorder `.1034` / Name `.1007` /
+> Edit sets `.997` / Move `.1027` / Copy
+> `.1030`. Resume `.963` stays. Live pause
+> `.1001` stays on Train. Same finished log.
+> Same id. Sets stay. Save still
+> confirm-gated `decideEditSave`. Do not
+> invent a second picker. Do not merge this
+> PR yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.**
+
+History edit can change sets and reorder
+lifts. It cannot swap the movement they
+logged by mistake. Pick another exercise,
+keep the sets.
+
+### First check (done — hypothesis holds)
+
+Read tip `a5236f9865533cdbbc962653e5b7a4698d64c749` / `.1035`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1035`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Reorder `.1034` is Up /
+  Down on that draft.
+- Backfill already mounts `ExercisePicker`.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decideReplaceFinishedExercise({ draft,
+exerciseIndex, nextExerciseId })`. Empty
+on missing draft / not an array / junk
+index / empty next id. Noop on same
+exerciseId, unknown lift (`resolveExercise`
+returns nothing), out of range. Apply
+otherwise — that index's `exerciseId`
+becomes the new id; sets ride unchanged
+(clone sets so the source draft is not
+mutated). Does not mint sets. Does not
+write Wednesday / saved / live Start.
+`HistorySessionEdit` when editing: each
+lift gets `ExercisePicker` (same component
+as backfill). testid
+`session-history-replace-{exIdx}` on the
+wrap. Apply to local draft only. Save
+still `decideEditSave`. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/reorderFinishedExercises.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/replaceFinishedExercise.test.ts src/lib/workout/replaceFinishedExerciseSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1035` Edit this session's logged duration (2026-08-26)
 
 > **Frozen.** Implement only this section + root
