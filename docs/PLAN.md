@@ -6,6 +6,103 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1045` Lift note on a finished exercise (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1045` — from master
+> `.1044` (`64277eb801781b13aa8bcab65eb4f6eb98622511`
+> — Load % on a finished set).
+> Stamp stays `.1045`. Do not smash Load %
+> `.1044` / Tempo `.1043` / L/R `.1042` /
+> RIR `.1041` / RPE `.1040` / Set kind
+> `.1039` / Remove lift `.1038` / Add
+> `.1037` / Replace `.1036` / Reorder
+> `.1034` / remove-set / Name `.1007` /
+> Edit sets `.997` / Delete-session
+> `.1003`. Resume `.963` stays. Live
+> pause `.1001` stays on Train. Live
+> exercise note `.996` stays on Train.
+> Session note `.983` stays. Pin `.996`
+> stays. Live loadPct `.981` stays on
+> Train. Same finished log. Same id.
+> Empty is valid (clear). Never
+> required. Over-cap **truncates** at
+> 200 (same as `normalizeSessionNote`
+> — do not empty). Not a pin. Not
+> `sessionNote`. Does not write sets.
+> Save still confirm-gated
+> `decideEditSave`. Reuse
+> `normalizeExerciseNote`. Never pad.
+> Never invent from volume. Never call
+> `lastNotesFor` / cueMemory / LLM from
+> this helper. Paper/ink, existing
+> tokens only. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Guest path. First set stays ungated.
+> Today stays one Start. Brand: **Log a
+> set. Offline.**
+
+Optional per-lift diary on a finished
+exercise. Live already has
+`exerciseNote.ts` / `EXERCISE_NOTE_MAX`
+200 (`.996`). History edit displays
+`ex.note` as italic and cannot correct
+it. `draftsEqual` ignores notes, so a
+typed note would Save as noop.
+
+### First check (done — hypothesis holds)
+
+Read tip `64277eb801781b13aa8bcab65eb4f6eb98622511` / `.1044`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1044`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live note is
+  `exerciseNote.ts` / `EXERCISE_NOTE_MAX`.
+- Load % `.1044` / tempo `.1043` / L/R
+  `.1042` / RIR `.1041` / RPE `.1040`
+  stay on that draft.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedExerciseNote({ draft,
+exerciseIndex, note })`.
+Empty on missing draft / not an array /
+junk indexes. Empty on non-string junk.
+Noop on out of range exercise index /
+same normalized text as current.
+Blank / null / undefined clears
+(field omitted) unless already omitted
+(noop). Over-cap truncates at 200.
+Apply via clone of the exercise
+(`{ ...ex, note }`). Does not rewrite
+sets / `sessionNote` / pin. Clone so
+the source draft is not mutated.
+`draftsEqual` includes the lift note.
+`stripDraft` omits an undefined `note`.
+`HistorySessionEdit` when editing:
+textarea for the lift note. testid
+`session-history-lift-note-{exIdx}`.
+Outline 44px. min-h 44px. Draft only.
+Read-only italic stays when not editing.
+Save still `decideEditSave`. Guest. First
+set ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/exerciseNote.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedExerciseNote.test.ts src/lib/workout/patchFinishedExerciseNoteSurface.test.ts src/lib/workout/patchFinishedSetLoadPct.test.ts src/lib/workout/patchFinishedSetLoadPctSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1044` Load % on a finished set (2026-08-26)
 
 > **Frozen.** Implement only this section + root
