@@ -72,6 +72,7 @@
  * `.1041` — RIR on a finished History set. Never a login wall.
  * `.1042` — L/R on a finished History set. Never a login wall.
  * `.1043` — tempo on a finished History set. Never a login wall.
+ * `.1044` — load % on a finished History set. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

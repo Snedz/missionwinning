@@ -6,6 +6,105 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1044` Load % on a finished set (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1044` — from master
+> `.1043` (`4dfc2d287256e457ae465613237a0d98731a5569`
+> — Tempo on a finished set).
+> Stamp stays `.1044`. Do not smash Tempo
+> `.1043` / L/R `.1042` / RIR `.1041` /
+> RPE `.1040` / Set kind `.1039` /
+> Remove lift `.1038` / Add `.1037` /
+> Replace `.1036` / Reorder `.1034` /
+> remove-set / Name `.1007` / Edit sets
+> `.997` / Delete-session `.1003`. Resume
+> `.963` stays. Live pause `.1001` stays
+> on Train. Live loadPct `.981` stays on
+> Train. Live tempo `.734` / `.757`
+> stays on Train. Same finished log.
+> Same id. Empty is valid (clear). Never
+> required. Range **1–100**, one decimal
+> (`76.5`). Trailing `%` allowed (`80%`).
+> Out of range, extra decimals, junk
+> invent nothing — never clamped. Does
+> **not** invent a percent from the
+> logged weight. Does **not** rewrite
+> `weight` from the percent. No Epley.
+> No `knownMaxFromHistory` /
+> `weightFromKnownMaxPct` /
+> `loadPctOfKnownMax` in this helper.
+> Does not write `rpe` / `rpe10` /
+> `rir` / `kind` / `side` / `tempo`.
+> Save still confirm-gated
+> `decideEditSave`. Reuse
+> `parseOptionalLoadPct`. Never clamp.
+> Paper/ink, existing tokens only. Do
+> not merge this PR yourself. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today stays
+> one Start. Brand: **Log a set. Offline.**
+
+Optional percent of a known 1-rep max on
+a finished set. Live already has
+`parseOptionalLoadPct` / live
+`SetRowPercentField` (`.981`). History
+edit cannot correct a logged `loadPct`.
+
+### First check (done — hypothesis holds)
+
+Read tip `4dfc2d287256e457ae465613237a0d98731a5569` / `.1043`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1043`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live % is
+  `parseOptionalLoadPct`.
+- Tempo `.1043` / L/R `.1042` / RIR
+  `.1041` / RPE `.1040` / Set kind
+  `.1039` stay on that draft.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSetLoadPct({ draft,
+exerciseIndex, setIndex, loadPct })`.
+Empty on missing draft / not an array /
+junk indexes. Empty on junk `0` / `101`
+/ `80.12` / `nope` / boolean. Noop on
+out of range set index / same value as
+current. Explicit clear (`''` / `null`
+/ `undefined`) omits the field unless
+already omitted (noop). Apply patches
+via `patchDraftSet`. Clone so the source
+draft is not mutated. Empty field is
+absent, not stored undefined. Does not
+write `weight` / `rpe` / `rpe10` /
+`rir` / `kind` / `side` / `tempo`.
+`sameEvidence` includes loadPct so Save
+confirms when only % changes.
+`HistorySessionEdit` when editing:
+weight rows get `SetLoadPctField`.
+testid
+`session-history-set-load-pct-{exIdx}-{setIdx}`.
+Outline 44px. Apply to local draft only.
+Save still `decideEditSave`. Guest. First
+set ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/setRowPercent.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetLoadPct.test.ts src/lib/workout/patchFinishedSetLoadPctSurface.test.ts src/lib/workout/patchFinishedSetTempo.test.ts src/lib/workout/patchFinishedSetTempoSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1043` Tempo on a finished set (2026-08-26)
 
 > **Frozen.** Implement only this section + root

@@ -24,6 +24,7 @@
 | `SetRirSelect.tsx` | Optional 0–5 RIR on a completed set (`.725`). Native select. Never required. |
 | `SetSideSelect.tsx` | Optional L / R / Alt on a completed set (`.1042` History). Native select. Never required. Live chips stay on Train (`.724`). |
 | `SetTempoField.tsx` | Optional e-p-c tempo on a completed set (`.734` live, `.1043` History). Never required. Live last-used stays on Train. |
+| `SetLoadPctField.tsx` | Optional authored % of a known 1-rep max on a finished History set (`.1044`). Empty is valid. Never cites % from kg. Live `SetRowPercentField` stays on Train (`.981`). |
 | `SetLogAdjacencyStack.tsx` | Unused TARGET-above-PREVIOUS stack — do not remount into Prev (would restyle the table). |
 | `SetLogRow.tsx` | Legacy read-only set record (not mounted on Active). Kept for tests of the old compact density. |
 | `LogConsole.tsx` | Legacy compact dock entry. Active dock is rest-only; set entry is the table. |
