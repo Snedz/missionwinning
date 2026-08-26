@@ -70,6 +70,7 @@
  * `.1039` — set kind on a finished History set. Never a login wall.
  * `.1040` — RPE on a finished History set. Never a login wall.
  * `.1041` — RIR on a finished History set. Never a login wall.
+ * `.1042` — L/R on a finished History set. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

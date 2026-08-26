@@ -12,6 +12,9 @@
  * while editing (`.1040`) — empty is valid (clear).
  * Optional 0–5 RIR while editing (`.1041`) — empty is
  * valid (clear). Never replaces RPE.
+ * Optional L / R / Alt while editing (`.1042`) —
+ * empty is valid (clear). Only on a unilateral
+ * lift. Never a SetKind.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -40,6 +43,7 @@ import {
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
+import { SetSideSelect } from '@/components/workout/SetSideSelect';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import {
   appendDraftSet,
@@ -56,6 +60,12 @@ import {
 } from '@/lib/workout/patchFinishedSetKind';
 import { decidePatchFinishedSetRir } from '@/lib/workout/patchFinishedSetRir';
 import { decidePatchFinishedSetRpe10 } from '@/lib/workout/patchFinishedSetRpe10';
+import { decidePatchFinishedSetSide } from '@/lib/workout/patchFinishedSetSide';
+import {
+  parseSetSide,
+  shouldOfferSetSide,
+  type SetSide,
+} from '@/lib/workout/unilateral';
 import { decideRemoveFinishedExercise } from '@/lib/workout/removeFinishedExercise';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
@@ -225,6 +235,23 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSetSide = (
+    exerciseIndex: number,
+    setIndex: number,
+    side: SetSide | undefined
+  ) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedSetSide({
+        draft: current,
+        exerciseIndex,
+        setIndex,
+        side,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -236,6 +263,10 @@ export function HistorySessionEdit({
         const exercise = resolveExercise(ex.exerciseId);
         const rowType = resolveSetRowType(exercise);
         const headers = typeHeaders(rowType, t);
+        const offerSetSide = shouldOfferSetSide({
+          id: ex.exerciseId,
+          name: exercise?.name ?? ex.exerciseId,
+        });
         return (
           <div key={`${ex.exerciseId}-${exIdx}`} className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -311,6 +342,11 @@ export function HistorySessionEdit({
                     <>
                       <TableHead>{t('activeRpe10', { defaultValue: 'RPE' })}</TableHead>
                       <TableHead>{t('activeRir', { defaultValue: 'RIR' })}</TableHead>
+                      {offerSetSide ? (
+                        <TableHead>
+                          {t('activeSetSideAria', { defaultValue: 'Set side' })}
+                        </TableHead>
+                      ) : null}
                       <TableHead className="w-[72px]">
                         <span className="sr-only">
                           {t('historyRemoveSet', { defaultValue: 'Remove' })}
@@ -426,6 +462,16 @@ export function HistorySessionEdit({
                               className="min-h-[44px]"
                             />
                           </TableCell>
+                          {offerSetSide ? (
+                            <TableCell>
+                              <SetSideSelect
+                                side={parseSetSide(set.side)}
+                                onSetSide={(value) => patchSetSide(exIdx, setIdx, value)}
+                                testId={`session-history-set-side-${exIdx}-${setIdx}`}
+                                className="min-h-[44px]"
+                              />
+                            </TableCell>
+                          ) : null}
                           <TableCell>
                             <Button
                               type="button"
