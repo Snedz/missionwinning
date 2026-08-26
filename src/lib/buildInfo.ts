@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1008` Find a past session (from master `.1007` Name this finished session `cd066471`; stamp stays `.1008`; keep name `.1007` + restore `.1006` + start-from `.1005` + hide `.1004` + delete `.1003`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1008";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1009` Next cite is BW, not 0 kg (from master `.1008` Find a past session `727c6f484`; stamp stays `.1009`; keep search `.1008` + name `.1007` + restore `.1006`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1009";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -551,7 +551,10 @@ export function SetLogTable({
                 cite.suggestion.kind === 'rest'
                   ? formatRestClock(cite.suggestion.seconds)
                   : undefined;
-              const parts = formatAfterCompleteParts(cite, t, restClock, knownMax);
+              const parts = formatAfterCompleteParts(cite, t, restClock, knownMax, {
+                rowType,
+                bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+              });
               return (
                 <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
                   <td colSpan={5} className={cn(cell, 'min-w-0')}>
@@ -577,6 +580,8 @@ export function SetLogTable({
         dial={input}
         onAccept={onAcceptGhost}
         tone="paper"
+        rowType={rowType}
+        bodyweightLabel={t('activeSetBodyweight', { defaultValue: 'BW' })}
       />
     ) : null}
     </div>

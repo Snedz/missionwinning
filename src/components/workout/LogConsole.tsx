@@ -232,6 +232,8 @@ export function LogConsole({
           dial={{ reps, weight }}
           onAccept={onAcceptGhost}
           tone="ink"
+          rowType={plusLoad ? 'bodyweight' : 'weight'}
+          bodyweightLabel={t('activeSetBodyweight', { defaultValue: 'BW' })}
         />
       ) : null}
 
