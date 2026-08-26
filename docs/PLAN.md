@@ -6,6 +6,107 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1043` Tempo on a finished set (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1043` — from master
+> `.1042` (`c1dd3facfdd17074e0b9e177f9bf4ee296f31e10`
+> — L/R on a finished set).
+> Stamp stays `.1043`. Do not smash L/R
+> `.1042` / RIR `.1041` / RPE `.1040` /
+> Set kind `.1039` / Remove lift `.1038` /
+> Add `.1037` / Replace `.1036` /
+> Reorder `.1034` / remove-set / Name
+> `.1007` / Edit sets `.997` /
+> Delete-session `.1003`. Resume `.963`
+> stays. Live pause `.1001` stays on
+> Train. Live tempo `.734` / `.757`
+> stays on Train. Live L/R/Alt `.724`
+> / `.755` stays on Train. Live RIR
+> 0–5 `.725` / `.756` stays on Train.
+> Live RPE 1–10 `.967` stays on Train.
+> Same finished log. Same id. Empty
+> is valid (clear). Never required.
+> Display is `e-p-c` (e.g. `3-1-1`).
+> Each phase is an integer **0–9**.
+> Out of range, 4-count strings,
+> bare `311`, and NaN invent nothing
+> — never clamped. Does not write
+> `rpe` / `rpe10` / `rir` / `kind` /
+> `side`. Does **not** call
+> `rememberLastTempo`. Save still
+> confirm-gated `decideEditSave`.
+> Reuse `parseOptionalTempo` /
+> `temposEqual`. Never clamp. Paper/ink,
+> existing tokens only. Do not merge
+> this PR yourself. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote.
+> Live www stays `.696`. Guest path.
+> First set stays ungated. Today stays
+> one Start. Brand: **Log a set. Offline.**
+
+Optional tempo (eccentric-pause-concentric
+seconds) on a finished set. Live already
+has `parseOptionalTempo` / `SetTempoField`
+(`.734`). History edit cannot correct a
+logged tempo.
+
+### First check (done — hypothesis holds)
+
+Read tip `c1dd3facfdd17074e0b9e177f9bf4ee296f31e10` / `.1042`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1042`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live tempo is
+  `parseOptionalTempo` / `SetTempoField`.
+- L/R `.1042` / RIR `.1041` / RPE `.1040` /
+  Set kind `.1039` / Remove lift `.1038` /
+  Add `.1037` / Replace `.1036` / Reorder
+  `.1034` / remove-set stay on that draft.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSetTempo({ draft,
+exerciseIndex, setIndex, tempo })`. Empty
+on missing draft / not an array / junk
+indexes. Empty on junk `311` / `3-1-1-1`
+/ `10-0-0` / `nope` / number / boolean.
+Noop on out of range set index / same
+value as current (`temposEqual`). Explicit
+clear (`''` / `null` / `undefined`)
+omits the field unless already omitted
+(noop). Apply patches via
+`patchDraftSet`. Clone so the source
+draft is not mutated. Empty field is
+absent, not stored undefined. Does not
+write `rpe` / `rpe10` / `rir` / `kind` /
+`side`. Does not call `rememberLastTempo`.
+`sameEvidence` includes tempo so Save
+confirms when only tempo changes.
+`HistorySessionEdit` when editing: each
+set gets `SetTempoField`. testid
+`session-history-set-tempo-{exIdx}-{setIdx}`.
+Outline 44px. Apply to local draft only.
+Save still `decideEditSave`. Guest. First
+set ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/tempo.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetTempo.test.ts src/lib/workout/patchFinishedSetTempoSurface.test.ts src/lib/workout/patchFinishedSetSide.test.ts src/lib/workout/patchFinishedSetSideSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1042` L/R on a finished set (2026-08-26)
 
 > **Frozen.** Implement only this section + root
