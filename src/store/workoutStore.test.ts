@@ -795,4 +795,40 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
     assert.equal(useWorkoutStore.getState().workoutHistory.filter((row) => !row.deletedAt).length, 2);
   });
+
+  await t.test('moveFinishedHistoryLog re-dates the same id and leaves the live set (.1027)', async () => {
+    useWorkoutStore.getState().startWorkout('Live', template('row', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const { localDateKey, localDateKeyFromIso, previousLocalDateKey } = await import(
+      '@/lib/time/localDate'
+    );
+    const today = localDateKey();
+    const dest = previousLocalDateKey(today);
+    const from = previousLocalDateKey(dest);
+    const [fy, fm, fd] = from.split('-').map(Number);
+    const monday = {
+      id: 'log-mon-1027',
+      clientId: 'cid-mon-1027',
+      revision: 1,
+      workoutName: 'Monday',
+      startedAt: new Date(fy, fm - 1, fd, 10, 0, 0, 0).toISOString(),
+      completedAt: new Date(fy, fm - 1, fd, 11, 0, 0, 0).toISOString(),
+      durationSeconds: 3600,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(monday));
+    const moved = useWorkoutStore.getState().moveFinishedHistoryLog(monday.id, dest);
+    assert.ok(moved);
+    assert.equal(moved?.id, monday.id);
+    assert.equal(moved?.exercises[0]?.sets[0]?.weight, 135);
+    assert.equal(localDateKeyFromIso(moved!.completedAt), dest);
+    assert.equal(useWorkoutStore.getState().workoutHistory.find((row) => row.id === monday.id)?.id, monday.id);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().moveFinishedHistoryLog('', dest), null);
+    assert.equal(useWorkoutStore.getState().moveFinishedHistoryLog(monday.id, '2099-01-01'), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+  });
 });

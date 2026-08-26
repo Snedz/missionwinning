@@ -49,6 +49,7 @@ import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistorySessionRestore } from '@/components/history/HistorySessionRestore';
 import { HistorySessionName } from '@/components/history/HistorySessionName';
+import { HistorySessionMove } from '@/components/history/HistorySessionMove';
 import { HistorySessionFile } from '@/components/history/HistorySessionFile';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
@@ -93,6 +94,7 @@ import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/tim
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { formatLogVolumeDisplay } from '@/lib/workout/volumeDisplay';
 import { decideRepeatThisSession } from '@/lib/workout/repeatThisSession';
+import { decideMoveSessionDay } from '@/lib/workout/moveSessionDay';
 import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
 import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
@@ -142,6 +144,7 @@ export function HistoryPage() {
   const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
   const restoreFinishedHistoryLog = useWorkoutStore((s) => s.restoreFinishedHistoryLog);
   const nameFinishedHistoryLog = useWorkoutStore((s) => s.nameFinishedHistoryLog);
+  const moveFinishedHistoryLog = useWorkoutStore((s) => s.moveFinishedHistoryLog);
   const applyImportedHistory = useWorkoutStore((s) => s.applyImportedHistory);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
@@ -1012,6 +1015,26 @@ export function HistoryPage() {
                     onSave={(sessionId, title) => {
                       const named = nameFinishedHistoryLog(sessionId, title);
                       if (named) setSelected(named);
+                    }}
+                  />
+                ) : null}
+                {!editing && !selected.deletedAt ? (
+                  <HistorySessionMove
+                    key={`move-${selected.id}-${selected.completedAt}`}
+                    sessionId={selected.id}
+                    history={workoutHistory}
+                    live={activeWorkout}
+                    onSave={(sessionId, dateKey) => {
+                      const decision = decideMoveSessionDay({
+                        sessionId,
+                        dateKey,
+                        todayKey: localDateKey(),
+                        history: workoutHistory,
+                        live: activeWorkout,
+                      });
+                      if (decision.kind !== 'apply') return;
+                      const moved = moveFinishedHistoryLog(decision.sessionId, decision.dateKey);
+                      if (moved) setSelected(moved);
                     }}
                   />
                 ) : null}

@@ -45,6 +45,9 @@ type HistoryStrings = {
   historyTrainAgain: string;
   /** `.1026` — copy this finished session into the live Start. */
   historyRepeatSession: string;
+  /** `.1027` — re-date this finished session. */
+  historyMoveDayLabel: string;
+  historyMoveDaySave: string;
   /** K11 — short label on session list rows. */
   historyTrainAgainShort: string;
   historyTableSet: string;
@@ -229,6 +232,8 @@ const en: HistoryStrings = {
   historySessionVolume: '{{volume}} {{unit}} total volume',
   historyTrainAgain: 'Start this again',
   historyRepeatSession: 'Repeat this session',
+  historyMoveDayLabel: 'Move to another day',
+  historyMoveDaySave: 'Move to this day',
   historyTrainAgainShort: 'Again',
   historyTableSet: 'Set',
   historyTableReps: 'Reps',
