@@ -8,7 +8,8 @@
  * Remove a lift while editing (`.1038`) when two or more
  * remain — last remaining is delete-session. Set kind
  * while editing (`.1039`) — warmup they logged as work,
- * or the reverse. Same W/D/F as live.
+ * or the reverse. Same W/D/F as live. Optional 1–10 RPE
+ * while editing (`.1040`) — empty is valid (clear).
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -35,6 +36,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
+import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import {
   appendDraftSet,
@@ -49,6 +51,7 @@ import {
   cycleFinishedSetKind,
   decidePatchFinishedSetKind,
 } from '@/lib/workout/patchFinishedSetKind';
+import { decidePatchFinishedSetRpe10 } from '@/lib/workout/patchFinishedSetRpe10';
 import { decideRemoveFinishedExercise } from '@/lib/workout/removeFinishedExercise';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
@@ -184,6 +187,23 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSetRpe10 = (
+    exerciseIndex: number,
+    setIndex: number,
+    rpe10: number | undefined
+  ) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedSetRpe10({
+        draft: current,
+        exerciseIndex,
+        setIndex,
+        rpe10,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -267,11 +287,14 @@ export function HistorySessionEdit({
                   {!editing ? (
                     <TableHead>{t('historyTableLogged', { defaultValue: 'Logged' })}</TableHead>
                   ) : (
-                    <TableHead className="w-[72px]">
-                      <span className="sr-only">
-                        {t('historyRemoveSet', { defaultValue: 'Remove' })}
-                      </span>
-                    </TableHead>
+                    <>
+                      <TableHead>{t('activeRpe10', { defaultValue: 'RPE' })}</TableHead>
+                      <TableHead className="w-[72px]">
+                        <span className="sr-only">
+                          {t('historyRemoveSet', { defaultValue: 'Remove' })}
+                        </span>
+                      </TableHead>
+                    </>
                   )}
                 </TableRow>
               </TableHeader>
@@ -365,6 +388,14 @@ export function HistorySessionEdit({
                               </TableCell>
                             </>
                           )}
+                          <TableCell>
+                            <SetRpe10Select
+                              rpe10={set.rpe10}
+                              onRateRpe10={(value) => patchSetRpe10(exIdx, setIdx, value)}
+                              testId={`session-history-set-rpe-${exIdx}-${setIdx}`}
+                              className="min-h-[44px]"
+                            />
+                          </TableCell>
                           <TableCell>
                             <Button
                               type="button"
