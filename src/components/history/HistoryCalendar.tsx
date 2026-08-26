@@ -26,7 +26,8 @@
  * Start-from fold does not hide a mark. Viewed `monthKey` is lifted so
  * Save this month (`.1029`) writes the month on screen. After paging
  * prev/next, **This month** (`.1031`) jumps back to the current local
- * month and today.
+ * month and today. A trained day prints how many live sessions
+ * (`.1032`) with the dumbbell — not a fire, not missed ✕.
  */
 
 import { useMemo } from 'react';
@@ -38,6 +39,7 @@ import { localDateKey, localDateKeyFromIso, shiftLocalMonth, formatLocalMonthKey
 import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/monthGrid';
 import { monthLiveFacts } from '@/lib/history/monthTheyOwn';
 import { decideThisMonth } from '@/lib/history/thisMonthCalendar';
+import { decideDaySessionCount } from '@/lib/history/daySessionCount';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -65,6 +67,7 @@ function DayCell({
   onSelect: (key: string) => void;
 }) {
   const trained = day.mark === 'trained';
+  const session = decideDaySessionCount({ mark: day.mark, sessions: day.sessions });
   return (
     <button
       type="button"
@@ -94,8 +97,23 @@ function DayCell({
     >
       <span className={cn('font-semibold', trained && 'text-background')}>{day.day}</span>
       {/* The glyph, not the fill, is what a colour-blind or low-vision reader
-          gets — the fill alone would make WCAG 1.4.1 the only thing carrying it. */}
-      {trained && <Dumbbell className="mt-0.5 h-3 w-3" aria-hidden />}
+          gets — the fill alone would make WCAG 1.4.1 the only thing carrying it.
+          `.1032` prints the live session count with the dumbbell. Colour is
+          still not the only carrier. */}
+      {trained && (
+        <span className="mt-0.5 flex items-center gap-0.5">
+          <Dumbbell className="h-3 w-3" aria-hidden />
+          {session.kind === 'apply' ? (
+            <span
+              data-testid="history-month-day-sessions"
+              className="text-[11px] tabular-nums"
+              aria-hidden
+            >
+              {session.count}
+            </span>
+          ) : null}
+        </span>
+      )}
       {day.mark === 'logged' && <span className="mt-1 h-0.5 w-3 bg-foreground" aria-hidden />}
     </button>
   );
@@ -152,7 +170,12 @@ export function HistoryCalendar({
   );
 
   const dayLabel = (d: MonthDay) => {
-    if (d.mark === 'trained') return t('historyCalTrained', { defaultValue: 'Trained' });
+    if (d.mark === 'trained') {
+      const trainedWord = t('historyCalTrained', { defaultValue: 'Trained' });
+      const session = decideDaySessionCount({ mark: d.mark, sessions: d.sessions });
+      if (session.kind === 'apply') return `${trainedWord} · ${session.count}`;
+      return trainedWord;
+    }
     if (d.mark === 'logged') return t('historyCalLogged', { defaultValue: 'Logged activity' });
     return t('historyCalNothing', { defaultValue: 'Nothing logged' });
   };
