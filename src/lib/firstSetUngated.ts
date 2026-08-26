@@ -66,6 +66,7 @@
  * `.1035` — edit this session's logged duration from History. Never a login wall.
  * `.1036` — replace a lift on a finished History session. Never a login wall.
  * `.1037` — add a lift to this finished History session. Never a login wall.
+ * `.1038` — remove this lift from a finished History session. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

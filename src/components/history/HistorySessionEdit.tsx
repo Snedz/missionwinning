@@ -5,6 +5,8 @@
  * Reorder lifts while editing (`.1034`). Replace a lift
  * while editing (`.1036`) — sets stay. Add a lift while
  * editing (`.1037`) — empty 0/0, then they type evidence.
+ * Remove a lift while editing (`.1038`) when two or more
+ * remain — last remaining is delete-session.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -41,6 +43,7 @@ import {
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
 import { decideAppendFinishedExercise } from '@/lib/workout/appendFinishedExercise';
+import { decideRemoveFinishedExercise } from '@/lib/workout/removeFinishedExercise';
 import { decideReorderFinishedExercises } from '@/lib/workout/reorderFinishedExercises';
 import { decideReplaceFinishedExercise } from '@/lib/workout/replaceFinishedExercise';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
@@ -150,9 +153,21 @@ export function HistorySessionEdit({
     });
   };
 
+  const removeLift = (exerciseIndex: number) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decideRemoveFinishedExercise({
+        draft: current,
+        exerciseIndex,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
+  const canRemoveLift = editing && draft.exercises.length >= 2;
 
   return (
     <div className="space-y-4">
@@ -192,6 +207,17 @@ export function HistorySessionEdit({
                     {t('historyReorderDown', { defaultValue: 'Move down' })}
                   </Button>
                 </div>
+              ) : null}
+              {canRemoveLift ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-[44px] tap-target"
+                  data-testid={`session-history-remove-lift-${exIdx}`}
+                  onClick={() => removeLift(exIdx)}
+                >
+                  {t('historyRemoveLift', { defaultValue: 'Remove lift' })}
+                </Button>
               ) : null}
             </div>
             {editing ? (
