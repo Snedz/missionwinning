@@ -6,6 +6,64 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1007` Name this finished session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1007` — from master
+> `.1006` (`a913ffae` — Restore a deleted
+> session). Stamp stays `.1007`. Do not
+> bump. Title stays **Name this finished
+> session (.1007)**. Same PR. Do not merge
+> this PR yourself. Restore `.1006` +
+> Start-from `.1005` + Hide `.1004` +
+> Delete `.1003` + Merge `.1002` + Pause
+> `.1001` + Backfill `.1000` are on
+> master. Do not smash them. Every commit
+> `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Brand: **Log a set. Offline.** / No
+> account. No wearable.
+
+Untitled date rows are how they delete
+the wrong Monday. Strong names the
+template, not the history row — we
+name the log. Empty title is allowed
+(falls back to the date). Not a Feed
+name.
+
+### First check (done — hypothesis holds)
+
+Read tip `a913ffae` / `.1006`.
+Confirmed:
+
+- **`workoutName` is the template.**
+  Start this again / Save as routine
+  use it. Do not overwrite.
+- **No private log title.** Row
+  title is `workoutName` today.
+  Analog: `sessionNote` — optional,
+  device diary, cloud omits.
+- **History / receipt, not Today.**
+  Same door family as Edit / Restore.
+  No second Start. No `/private`
+  leak. No Feed.
+
+### Lock
+
+1. Optional `sessionTitle` on the
+   finished log. Empty → date label.
+2. Empty / missing / tombstone /
+   live invents nothing.
+3. Do not write `workoutName`.
+4. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+5. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1006` Restore a deleted session (2026-08-25)
 
 > **Frozen.** Implement only this section + root
