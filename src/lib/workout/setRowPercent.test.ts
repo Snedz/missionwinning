@@ -184,11 +184,11 @@ describe('surfaces and log path', () => {
     assert.match(table, /set-table-load-pct|activeSetPct/);
     assert.match(
       store,
-      /get\(\)\.logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr\)/,
+      /get\(\)\.logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr/,
       'log path must still leave percent unstamped'
     );
     const implStart = store.indexOf(
-      'logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) =>'
+      'logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr'
     );
     assert.ok(implStart > 0, 'could not find logSetAndAdvance implementation');
     const impl = store.slice(implStart, implStart + 280);

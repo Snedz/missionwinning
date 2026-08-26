@@ -17,6 +17,9 @@
  * lift. Never a SetKind.
  * Optional e-p-c tempo while editing (`.1043`) —
  * empty is valid (clear). Never required.
+ * Optional % of a known 1-rep max while
+ * editing (`.1044`) — empty is valid (clear).
+ * Weight rows only. Never rewrites kg from %.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
@@ -43,6 +46,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
+import { SetLoadPctField } from '@/components/workout/SetLoadPctField';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetSideSelect } from '@/components/workout/SetSideSelect';
@@ -64,7 +68,9 @@ import {
 import { decidePatchFinishedSetRir } from '@/lib/workout/patchFinishedSetRir';
 import { decidePatchFinishedSetRpe10 } from '@/lib/workout/patchFinishedSetRpe10';
 import { decidePatchFinishedSetSide } from '@/lib/workout/patchFinishedSetSide';
+import { decidePatchFinishedSetLoadPct } from '@/lib/workout/patchFinishedSetLoadPct';
 import { decidePatchFinishedSetTempo } from '@/lib/workout/patchFinishedSetTempo';
+import { parseOptionalLoadPct } from '@/lib/workout/setRowPercent';
 import { parseOptionalTempo } from '@/lib/workout/tempo';
 import {
   parseSetSide,
@@ -274,6 +280,23 @@ export function HistorySessionEdit({
     });
   };
 
+  const patchSetLoadPct = (
+    exerciseIndex: number,
+    setIndex: number,
+    loadPct: number | undefined
+  ) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const decision = decidePatchFinishedSetLoadPct({
+        draft: current,
+        exerciseIndex,
+        setIndex,
+        loadPct,
+      });
+      return decision.kind === 'apply' ? decision.draft : current;
+    });
+  };
+
   if (!draft) return null;
 
   const canReorder = editing && draft.exercises.length >= 2;
@@ -358,6 +381,9 @@ export function HistorySessionEdit({
                   {headers.map((h) => (
                     <TableHead key={h}>{h}</TableHead>
                   ))}
+                  {editing && rowType === 'weight' ? (
+                    <TableHead>{t('activeSetPct', { defaultValue: '%' })}</TableHead>
+                  ) : null}
                   {!editing ? (
                     <TableHead>{t('historyTableLogged', { defaultValue: 'Logged' })}</TableHead>
                   ) : (
@@ -469,6 +495,18 @@ export function HistorySessionEdit({
                               </TableCell>
                             </>
                           )}
+                          {rowType === 'weight' ? (
+                            <TableCell>
+                              <SetLoadPctField
+                                loadPct={parseOptionalLoadPct(set.loadPct)}
+                                onRateLoadPct={(value) =>
+                                  patchSetLoadPct(exIdx, setIdx, value)
+                                }
+                                testId={`session-history-set-load-pct-${exIdx}-${setIdx}`}
+                                className="min-h-[44px]"
+                              />
+                            </TableCell>
+                          ) : null}
                           <TableCell>
                             <SetRpe10Select
                               rpe10={set.rpe10}
