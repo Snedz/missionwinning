@@ -195,6 +195,8 @@ type HistoryStrings = {
   /** `.1029` — this month as a local file they own. */
   historyMonthFileSave: string;
   historyMonthFileJson: string;
+  /** `.1031` — jump the History calendar back to the current local month. */
+  historyCalThisMonth: string;
 };
 
 const en: HistoryStrings = {
@@ -383,6 +385,7 @@ const en: HistoryStrings = {
   historyMonthDayLog: 'Log onto this day',
   historyMonthFileSave: 'Save this month CSV',
   historyMonthFileJson: 'Save this month JSON',
+  historyCalThisMonth: 'This month',
 };
 
 const es: HistoryStrings = {

@@ -6,6 +6,82 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1031` This month on the History calendar (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1031` — from master
+> `.1030` (`674983aa999fcbf4869d712286b90a4466507813`
+> — Copy this session onto another day).
+> Stamp stays `.1031`. Do not smash Copy
+> `.1030` / month file `.1029` / empty-day
+> `.1028` / Move `.1027` / Repeat `.1026`.
+> Jump back to the current local month
+> and today. Not a year picker. Not a
+> streak. Not a rest-day count. Not a
+> future planner.
+> Do not merge this PR yourself. Every
+> commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`. Guest path. First set
+> stays ungated. Today stays one Start.
+> Resume `.963` kept. Brand: **Log a set.
+> Offline.**
+
+After paging months with prev/next,
+jump back to the current local month
+and today. Missing: one **This month**
+on the History calendar when the
+viewed month is not this month.
+
+### First check (done — hypothesis holds)
+
+Read tip `674983aa999fcbf4869d712286b90a4466507813` / `.1030`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1030`.
+- `HistoryPage` owns `monthKey` /
+  `setMonthKey` and selected day.
+- `HistoryCalendar` receives
+  `monthKey` + `onMonthKeyChange`.
+- Copy `.1030` is `decideCopySessionDay`.
+- Month file `.1029` is
+  `decideExportMonth` / Save this month.
+- Empty-day `.1028` plus prefills
+  backfill. Move `.1027` same id.
+  Repeat `.1026` lands Start.
+- Today is one `dock="start"`.
+
+### Done means
+
+History calendar: when viewed
+`monthKey` is not the current local
+month, one **This month**
+(`variant="outline"`, `min-h-[44px]`,
+not primary-fill). testid
+`history-calendar-this-month`.
+`decideThisMonth({ viewedMonthKey,
+todayKey })` → empty / noop / apply.
+On apply, `onMonthKeyChange` +
+`onSelectDate` so the month on
+screen is this month and today is
+selected. Empty / junk hides.
+Already-this-month hides. Does not
+mutate history. Does not invent
+sessions. Never `toISOString()` for
+a calendar date. Guest. First set
+ungated. Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/history/monthTheyOwn.test.ts src/lib/workout/copySessionDay.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/history/thisMonthCalendar.test.ts src/lib/history/thisMonthCalendarSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1030` Copy this session onto another day (2026-08-26)
 
 > **Frozen.** Implement only this section + root

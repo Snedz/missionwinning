@@ -24,16 +24,20 @@
  * Month they own: a day is a button. Tap lists that day's live History
  * rows. Session count is a fact, not a fire count. Tombs stay out.
  * Start-from fold does not hide a mark. Viewed `monthKey` is lifted so
- * Save this month (`.1029`) writes the month on screen.
+ * Save this month (`.1029`) writes the month on screen. After paging
+ * prev/next, **This month** (`.1031`) jumps back to the current local
+ * month and today.
  */
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Dumbbell } from 'lucide-react';
 import type { CompletedWorkoutLog } from '@/types';
-import { localDateKeyFromIso, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
+import { Button } from '@/components/ui/button';
+import { localDateKey, localDateKeyFromIso, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
 import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/monthGrid';
 import { monthLiveFacts } from '@/lib/history/monthTheyOwn';
+import { decideThisMonth } from '@/lib/history/thisMonthCalendar';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -128,6 +132,10 @@ export function HistoryCalendar({
     () => formatLocalMonthKey(monthKey, i18n.language),
     [monthKey, i18n.language]
   );
+  const thisMonth = decideThisMonth({
+    viewedMonthKey: monthKey,
+    todayKey: localDateKey(),
+  });
 
   /*
    * Weekday initials derived, not hardcoded. `WeekStrip` and `Skeleton` each
@@ -174,6 +182,23 @@ export function HistoryCalendar({
           </button>
         </div>
       </div>
+
+      {thisMonth.kind === 'apply' ? (
+        <Button
+          type="button"
+          variant="outline"
+          className="mt-3 w-full min-h-[44px] tap-target"
+          data-testid="history-calendar-this-month"
+          onClick={() => {
+            onMonthKeyChange(thisMonth.monthKey);
+            if (selectedKey !== thisMonth.dateKey) {
+              onSelectDate?.(thisMonth.dateKey);
+            }
+          }}
+        >
+          {t('historyCalThisMonth', { defaultValue: 'This month' })}
+        </Button>
+      ) : null}
 
       <div className="mt-3 grid grid-cols-7 gap-1" aria-hidden>
         {weekdayInitials.map((w, i) => (
