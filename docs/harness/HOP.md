@@ -1,14 +1,15 @@
 # Live hop
 
-ticket: residual-coach-chat-empty-load
-done_means: Coach chat log facts print 8 × BW, not 0 × 8
-accept: npx tsx --test src/lib/coachChatEmptyLoad.test.ts
-test_written: yes
+The open hop only. Not CONTEXT, not GRAPH_LOOP, not LOG.
+Write this **before** the first product edit. Clear it back to this
+template after the row is marked `done`. `npm run harness:done` is the
+closer — the agent's last message is not.
+
+ticket:
+done_means:
+accept:
+test_written:
 
 ## progress
 
-#843 .1018 · #845 .1019 · #846 .1020 in flight. This hop is .1021.
-
 ## decisions
-
-Reuse formatSetLoadLine. Loaded cite order stays. Store still weight: 0.

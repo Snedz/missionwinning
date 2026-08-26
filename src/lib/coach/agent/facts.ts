@@ -10,6 +10,22 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { CoachLogFact, CoachWeekSessionFact } from '@/lib/coach/agent/types';
 import { getExerciseById } from '@/data/exercises';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
+
+/** Chat cites empty load as BW — same home as the logger (`.1021`). */
+export function formatCoachLogFactCite(
+  fact: Pick<CoachLogFact, 'exerciseName' | 'weight' | 'reps' | 'at'>
+): string {
+  if (!Number.isFinite(fact.weight) || fact.weight <= 0) {
+    const load = formatSetLoadLine({
+      reps: fact.reps,
+      weight: fact.weight,
+      unitLabel: 'kg',
+    });
+    return `${fact.exerciseName} ${load} · ${fact.at}`;
+  }
+  return `${fact.exerciseName} ${fact.weight} × ${fact.reps} · ${fact.at}`;
+}
 
 export const MAX_COACH_LOG_FACTS = 12;
 export const MAX_COACH_WEEK_SESSIONS = 8;

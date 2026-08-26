@@ -7,6 +7,7 @@
  * spend the daily quota on a loop.
  */
 
+import { formatCoachLogFactCite } from '@/lib/coach/agent/facts';
 import { formatRetrievalBlock } from '@/lib/coach/agent/retrieve';
 import { COACH_AGENT_TOOLS, dispatchCoachTool, formatToolCatalog } from '@/lib/coach/agent/tools';
 import type {
@@ -147,7 +148,7 @@ export function buildCoachReactUserPrompt(params: {
     world.logFacts.length > 0
       ? world.logFacts
           .slice(0, 6)
-          .map((f) => `${f.exerciseName} ${f.weight} × ${f.reps} · ${f.at}`)
+          .map((f) => formatCoachLogFactCite(f))
           .join('; ')
       : 'none';
   const week =
