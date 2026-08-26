@@ -97,7 +97,7 @@ describe('month they own surface lock (.1018)', () => {
     const cite = read('src/lib/workout/emptyLoadCite.test.ts');
     assert.match(cite, /empty load cite is BW, not 0 \(\.1017\)/);
     const first = read('src/lib/firstSetUngated.ts');
-    assert.match(first, /\.1017 — live Last\/Prev empty load is BW/);
+    assert.match(first, /`\.1017` — live Last\/Prev empty load is BW/);
     const setRow = read('src/lib/workout/setRowType.ts');
     assert.match(setRow, /\.1017/);
   });
