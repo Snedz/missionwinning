@@ -6,6 +6,92 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1048` Open empty load is blank, not 0 (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1048` — from master
+> `.1047` (`48958422cfd42cb2d6d2dcf8a5ab45d7bf3709f2`
+> — Superset on a finished session).
+> Stamp stays `.1048`. Do not smash
+> completed kg cell BW `.1025` /
+> History edit empty string `.997` /
+> live Next/Last BW cites `.1009`
+> `.1015` `.1017` / Coach chat cite
+> `.1021` / History volume `.1024`.
+> Do not rewrite History
+> `calculateVolume`. Store stays
+> `weight: 0`. Display only. Never
+> write BW / a bodyweight kilogram
+> into the store. Assisted-0
+> **completed** cell mute stays later.
+> Resume `.963` stays. Guest path.
+> First set stays ungated. Today stays
+> one Start. Paper/ink, existing
+> tokens only. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Brand: **Log a set. Offline.**
+
+Open set-row empty load is blank, not
+`0`. Live `SetLogTable` binds
+`value={input.weight}` so a reps-only
+/ empty-load cell paints **0**. History
+edit already uses empty string when
+weight is 0 (`.997`). Completed kg
+cell already BW for weight/vest
+(`.1025`). Store stays `0`. Display
+only.
+
+### First check (done — hypothesis holds)
+
+Read tip `48958422cfd42cb2d6d2dcf8a5ab45d7bf3709f2` / `.1047`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1047`.
+- Live table is `SetLogTable` open cell
+  `value={input.weight}`.
+- History edit is
+  `set.weight ? String(set.weight) : ''`.
+- Completed cell is
+  `formatCompletedWeightCell`.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`formatOpenLoadInput(weight)` → `''`
+when weight is 0 / missing /
+non-finite; otherwise the typed
+number string.
+`parseOpenLoadInput(raw)` blank → `0`
+(store stays 0). Junk → 0. Never clamp
+into a load they did not type beyond
+existing min/max if already in the
+table. `SetLogTable` open weight/assist
+cell uses `formatOpenLoadInput` for
+`value`. Keep existing `data-testid` /
+aria. Plus-load `BW+` prefix stays; the
+number beside it is blank when
+added-load is 0. LogConsole load field
+if it still paints a raw `0` for empty
+— same helper. Do not remount dead
+LogConsole if unused. History edit
+empty string stays. Completed `.1025`
+BW stays. Guest. First set ungated.
+Today still one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/setRowType.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/openEmptyLoad.test.ts src/lib/workout/openEmptyLoadSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1047` Superset on a finished session (2026-08-26)
 
 > **Frozen.** Implement only this section + root
