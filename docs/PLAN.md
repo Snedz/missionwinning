@@ -6,6 +6,96 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1041` RIR on a finished set (2026-08-26)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1041` — from master
+> `.1040` (`672bb5aec720900ed7b5a894b11a3810c861302c`
+> — RPE on a finished set).
+> Stamp stays `.1041`. Do not smash RPE
+> `.1040` / Set kind `.1039` / Remove lift
+> `.1038` / Add `.1037` / Replace `.1036` /
+> Reorder `.1034` / remove-set / Name `.1007`
+> / Edit sets `.997` / Delete-session `.1003`.
+> Resume `.963` stays. Live pause `.1001`
+> stays on Train. Live RIR 0–5 `.725` /
+> `.756` stays on Train. Live RPE 1–10
+> `.967` stays on Train. Same finished
+> log. Same id. Empty is valid (clear).
+> Never required. Scale is **0–5** (do
+> not invent 0–10 — collides with RPE).
+> Never replaces `rpe` / `rpe10`. Save
+> still confirm-gated `decideEditSave`.
+> Reuse `parseOptionalRir` / `SetRirSelect`.
+> Never clamp out-of-range. Paper/ink,
+> existing tokens only. Do not merge this
+> PR yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.**
+
+Optional RIR 0–5 on a finished set.
+Live already has `parseOptionalRir` /
+`SetRirSelect` (`.725`). History edit
+cannot correct a logged RIR.
+
+### First check (done — hypothesis holds)
+
+Read tip `672bb5aec720900ed7b5a894b11a3810c861302c` / `.1040`.
+Confirmed:
+
+- `APP_BUILD_LABEL` is `2026.07-unified.1040`.
+- History edit is `HistorySessionEdit` +
+  `decideEditSave`. Live RIR 0–5 is
+  `parseOptionalRir` / `SetRirSelect`.
+- RPE `.1040` / Set kind `.1039` / Remove
+  lift `.1038` / Add `.1037` / Replace
+  `.1036` / Reorder `.1034` / remove-set
+  stay on that draft.
+- Duration `.1035` / Copy `.1030` / Move
+  `.1027` stay on HistoryPage.
+- Today is one `dock="start"`.
+
+### Done means
+
+Pure helper
+`decidePatchFinishedSetRir({ draft,
+exerciseIndex, setIndex, rir })`. Empty
+on missing draft / not an array / junk
+indexes. Empty on junk 6 / 10 / "nope"
+(parse fails on a non-empty raw —
+invents nothing). Noop on out of range
+set index / same value as current.
+Explicit clear (`''` / `null` /
+`undefined`) omits the field unless
+already omitted (noop). Apply patches
+via `patchDraftSet`. Clone so the
+source draft is not mutated. Empty
+field is absent, not stored undefined.
+Does not write `rpe` or `rpe10`.
+`sameEvidence` includes RIR so Save
+confirms when only RIR changes.
+`HistorySessionEdit` when editing:
+`SetRirSelect` per set. testid
+`session-history-set-rir-{exIdx}-{setIdx}`.
+Outline 44px. Apply to local draft
+only. Save still `decideEditSave`.
+Guest. First set ungated. Today still
+one Start.
+
+### Accept
+
+```
+npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/workout/rir.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSetRir.test.ts src/lib/workout/patchFinishedSetRirSurface.test.ts
+npx tsc --noEmit
+npx tsx scripts/check-build-label.mjs
+```
+
+---
+
 ## Frozen plan — `.1040` RPE on a finished set (2026-08-26)
 
 > **Frozen.** Implement only this section + root
