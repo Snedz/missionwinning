@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1020-for-1035.md](./log/LOG-rotate-1020-for-1035.md) | rotated 2026-08-26 for `.1035` Edit this session's logged duration (`.1020`) |
 | [log/LOG-rotate-1019-for-1034.md](./log/LOG-rotate-1019-for-1034.md) | rotated 2026-08-26 for `.1034` Reorder lifts on this finished session (`.1019`) |
 | [log/LOG-rotate-1018-for-1033.md](./log/LOG-rotate-1018-for-1033.md) | rotated 2026-08-26 for `.1033` This month shows how many live sessions (`.1018`) |
 | [log/LOG-rotate-1017-for-1032.md](./log/LOG-rotate-1017-for-1032.md) | rotated 2026-08-26 for `.1032` Trained day shows how many live sessions (`.1017`) |

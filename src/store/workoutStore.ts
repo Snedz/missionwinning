@@ -58,6 +58,7 @@ import {
   applyRestoreFinishedSession,
 } from "@/lib/workout/deleteFinishedSession";
 import { applyNameFinishedSession } from "@/lib/workout/nameFinishedSession";
+import { applyEditSessionDuration } from "@/lib/workout/editSessionDuration";
 import { applyMoveSessionDay } from "@/lib/workout/moveSessionDay";
 import { applyCopySessionDay } from "@/lib/workout/copySessionDay";
 import { localDateKey } from "@/lib/time/localDate";
@@ -201,6 +202,11 @@ interface WorkoutState {
   restoreFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
   /** History name of one finished session. Empty title is allowed (`.1007`). */
   nameFinishedHistoryLog: (sessionId: string, title: string) => CompletedWorkoutLog | null;
+  /** History edit of the logged session clock. Same id. 0 clears (`.1035`). */
+  durationFinishedHistoryLog: (
+    sessionId: string,
+    durationSeconds: number
+  ) => CompletedWorkoutLog | null;
   /** History re-date of one finished session. Same id. Vacated day drops it (`.1027`). */
   moveFinishedHistoryLog: (sessionId: string, dateKey: string) => CompletedWorkoutLog | null;
   /** History copy of one finished session onto another day. New id. Original stays (`.1030`). */
@@ -1032,6 +1038,20 @@ export const useWorkoutStore = create<WorkoutState>()(
         const applied = applyNameFinishedSession({
           sessionId,
           title,
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
+      },
+
+      durationFinishedHistoryLog: (sessionId, durationSeconds) => {
+        const state = get();
+        const applied = applyEditSessionDuration({
+          sessionId,
+          durationSeconds,
           history: state.workoutHistory,
           live: state.activeWorkout,
         });

@@ -157,6 +157,9 @@ type HistoryStrings = {
   /** `.1007` — private title on the finished log. */
   historyNameLabel: string;
   historyNameSave: string;
+  /** `.1035` — logged session clock on the finished log. */
+  historyDurationLabel: string;
+  historyDurationSave: string;
   /** `.1005` — fold older days out of week 1. */
   historyStartFrom: string;
   historyStartFromTitle: string;
@@ -354,6 +357,8 @@ const en: HistoryStrings = {
     'Restore a session you deleted. Empty invents nothing. A live workout is not this.',
   historyNameLabel: 'Name this session',
   historyNameSave: 'Save name',
+  historyDurationLabel: 'Duration',
+  historyDurationSave: 'Save duration',
   historyStartFrom: 'Start history from this date',
   historyStartFromTitle: 'Start history from this date',
   historyStartFromDesc:

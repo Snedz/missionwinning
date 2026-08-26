@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1034` Reorder lifts on this finished session (from master `.1033` `51e4df41c`; stamp stays `.1034`; live Train `.998` / Edit `.997` / Repeat `.1026` / Move `.1027` / Copy `.1030` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1034";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1035` Edit this session's logged duration (from master `.1034` `a075f994f`; stamp stays `.1035`; Reorder `.1034` / Name `.1007` / Edit `.997` / Move `.1027` / Copy `.1030` stay; live pause `.1001` stays on Train). */
+export const APP_BUILD_LABEL = "2026.07-unified.1035";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
