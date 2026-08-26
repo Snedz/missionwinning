@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1026` Repeat this session (from master `.1025` `24f69641`; stamp stays `.1026`; set-table `.1025` / History volume `.1024` / citation `.1023` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1026";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1027` Move this session to another day (from master `.1026` `f3a273ca`; stamp stays `.1027`; Repeat `.1026` / set-table `.1025` / History volume `.1024` / edit `.997` / backfill `.1000` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1027";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

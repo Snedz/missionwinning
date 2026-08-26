@@ -55,6 +55,7 @@
  * `.1024` — History empty-load volume is reps, not 0 kg. Never a login wall.
  * `.1025` — completed set-table empty load is BW, not 0. Never a login wall.
  * `.1026` — Repeat this session from History into the live Start. Never a login wall.
+ * `.1027` — Move this session to another day from History. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

@@ -38,6 +38,9 @@ On History, open **Show all** → Calendar. Days you trained are marked. Tap a d
 **How do I repeat a finished session?**  
 Open that session in History and tap **Repeat this session**. It copies the sets you logged into Start. Warmups stay. Empty or deleted invents nothing. If a workout is already going, Train keeps that one. This is not a share and not someone else's workout.
 
+**How do I move a session to another day?**  
+Open that session in History and pick a new date under **Move to another day**. The session leaves the old day and shows on the new one. Sets stay. Empty, deleted, or a future day invents nothing. This is not a new session and not a share.
+
 **How do I save one session as a file?**  
 On History, open that session. **Save this session CSV** writes only that log (JSON is the same rows). Empty or deleted stays off. The file is on this device — not a public link, not an email. You can Import this diary later if you want that session back.
 
