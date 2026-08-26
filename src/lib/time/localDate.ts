@@ -125,6 +125,20 @@ export function localMonthKey(d: Date = new Date()): string {
 }
 
 /**
+ * Is `value` a well-formed local month key `YYYY-MM`?
+ *
+ * Shape **and** calendar: `2026-13` matches a sloppy regex and is not a month.
+ * Built from local fields, **never** `Date.parse` of a bare `YYYY-MM` (UTC
+ * midnight — the previous month west of Greenwich on the 1st).
+ */
+export function isLocalMonthKey(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}$/.test(value)) return false;
+  const [y, m] = value.split('-').map(Number) as [number, number];
+  if (!Number.isFinite(y) || !Number.isFinite(m) || m < 1 || m > 12) return false;
+  return localMonthKey(new Date(y, m - 1, 1)) === value;
+}
+
+/**
  * The month `delta` months from `monthKey`, clamped by JS `Date` rollover.
  *
  * `new Date(y, m, 1)` handles `m = -1` and `m = 12` correctly by construction, so

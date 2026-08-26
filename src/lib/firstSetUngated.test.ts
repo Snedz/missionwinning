@@ -222,4 +222,9 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1030` — copy this session onto another day from History/);
   });
+
+  it('This month on the History calendar stays ungated (.1031)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1031` — This month on the History calendar/);
+  });
 });

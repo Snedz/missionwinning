@@ -59,6 +59,7 @@
  * `.1028` — log onto this empty day from the History month. Never a login wall.
  * `.1029` — this month as a local file they own. Never a login wall.
  * `.1030` — copy this session onto another day from History. Never a login wall.
+ * `.1031` — This month on the History calendar. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
