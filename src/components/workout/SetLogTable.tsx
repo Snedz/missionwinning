@@ -26,7 +26,10 @@ import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
-import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
+import {
+  formatCompletedWeightCell,
+  formatPlusLoadWeightCell,
+} from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 import type { SetRowType } from '@/types';
 import { formatSetRowDuration, parseDurationSeconds } from '@/lib/workout/setRowType';
@@ -391,12 +394,11 @@ export function SetLogTable({
                             ? set.weight > 0
                               ? `−${set.weight}`
                               : '—'
-                            : plusLoad
-                              ? formatPlusLoadWeightCell(
-                                  set.weight,
-                                  t('activeSetBodyweight', { defaultValue: 'BW' })
-                                )
-                              : set.weight
+                            : formatCompletedWeightCell(
+                                set.weight,
+                                t('activeSetBodyweight', { defaultValue: 'BW' }),
+                                plusLoad
+                              )
                           : kind === 'warmup' && set.weight > 0
                             ? set.weight
                             : '—'}

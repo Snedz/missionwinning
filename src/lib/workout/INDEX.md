@@ -9,7 +9,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1. `setKind.ts` — normal/warmup/drop/failure; volume + PR eligibility; optional row tags W / D / F (`toggleSetTag`, `.966`)  
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`); log/tag a drop zeros a running timer (`.986`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
-1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
+1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest; completed kg cell empty load is BW (`.1025`)  
 1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only. Live Next/Last cites reuse this grammar (`.1009` BW, `.1014` hold `0:45`, `.1015` assisted 0 → BW not `0 kg`, `.1017` weight-type empty load → BW not `8 × 0`).  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`) with warmup vs work lanes (`.995`)  
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
@@ -101,6 +101,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action + BW working reps (`.886`) |
 | `volumeDisplay.test.ts` | Load vs reps volume label; History session helper (`.1024`) |
+| `setTableEmptyLoadCell.test.ts` | Completed kg cell empty load is BW, not 0 (`.1025`) |
 | `victoryReceipt.test.ts` | Vs-last session by shape + per-lift receipt (`.713` / `.944`). Close: empty → no receipt; finished → one keepable text (`.956`) |
 | `sessionNote.test.ts` | Optional session diary; empty omit; merge keeps local note; text keep only when present (`.982`) |
 | `sessionNoteSurface.test.ts` | Notes stay off Today / `/private`; jot off Active first paint; receipt field is not Start (`.982`) |

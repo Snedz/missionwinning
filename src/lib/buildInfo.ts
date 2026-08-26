@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1024` History empty-load volume is reps, not 0 kg (from master `.1023` `825bd9fc`; stamp stays `.1024`; citation `.1023` / heatmap `.1022` / chat `.1021` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1024";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1025` Completed set-table empty load is BW, not 0 (from master `.1024` `72685e9b`; stamp stays `.1025`; History volume `.1024` / citation `.1023` / heatmap `.1022` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1025";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

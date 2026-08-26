@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: residual-history-empty-load-volume
-done_means: History list row and session detail print working reps for an empty-load session, not 0 kg.
-accept: npx tsx --test src/lib/historyEmptyLoadVolume.test.ts src/lib/workout/volumeDisplay.test.ts
+ticket: residual-set-table-empty-load-cell
+done_means: A completed weight-type empty-load cell prints BW, not 0.
+accept: npx tsx --test src/lib/workout/setTableEmptyLoadCell.test.ts
 test_written: yes
 
 ## progress
 
-Tests written first (4 red). Helper + History list/detail wired. Tests 8/8.
+Tests written first (4 red). Helper + SetLogTable wired. Tests 4/4.
 
 ## decisions
 
-- Reuse Victory helper `formatWorkoutVolumeDisplay` / `sumWorkingReps`. Display only.
-- Career briefing + avg volume stay kg-honest (`summary.totalVolume`). Do not mix units.
-- Today chrome untouched. Store still `weight: 0`.
-- Not a GRAPH_LOOP letter. VISION stays ready-for-founder.
-- Citation `.1023` / heatmap `.1022` / chat `.1021` stay. This hop stamps `.1024` from master `.1023` (`825bd9fc`).
+- Cites already print 8 × BW (.1017). Completed kg cell still painted raw 0.
+- New helper `formatCompletedWeightCell` — empty is BW; loaded barbell stays the number; plus-load extra stays BW+N.
+- Assisted 0 mute (`—`) is a later hop. Duration stays Time.
+- Display only. Today one Start. Not a letter. VISION stays ready-for-founder.
+- Stamp `.1025` from master `.1024` (`72685e9b`). History volume `.1024` / citation `.1023` / heatmap `.1022` stay.
