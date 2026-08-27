@@ -68,6 +68,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Builder start | `.house-builder` | Blank workout is the filled action. Saved rows are hairline items. Templates stay in Show all |
 | You leftover | `.house-profile` | Quiet title stays. Account door is a ghost house button |
 | Fuel leftover | `.house-fuel` | Log stays first paint. Search / barcode / recipes stay in Show all |
+| Quiet More | `.house-move` `.house-mind` `.house-track` `.house-learn` | Quiet title stays. First paint unchanged. Extra tools in house-card Show all |
 | More leftover | `.house-more-panel` | Fuel / You / Account + quiet foot |
 
 ## Rooms (existing engines)

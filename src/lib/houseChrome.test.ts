@@ -360,6 +360,11 @@ test('house design system is the signed-in token table', () => {
   assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
   assert.match(fuel, /id="fuel-log"/);
   assert.match(fuel, /className="house-card group"/);
+  assert.match(read('src/page-components/MovePage.tsx'), /className="house-move"/);
+  assert.match(read('src/page-components/MindPage.tsx'), /className="house-mind"/);
+  assert.match(read('src/page-components/TrackPage.tsx'), /className="house-track"/);
+  assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);
+  assert.match(read('src/page-components/LearnCoursePage.tsx'), /className="house-learn"/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

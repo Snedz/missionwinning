@@ -105,6 +105,7 @@ export function MindPage() {
 
   return (
     <PillarPageShell
+      className="house-mind"
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
@@ -116,7 +117,7 @@ export function MindPage() {
       <DailyCheckIn />
       <BreathingTimer />
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="mind-show-all"
@@ -238,7 +239,7 @@ export function MindPage() {
       )}
 
       {premium && filteredPremium.length > 0 && (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <span>
               {freeBeta
@@ -283,7 +284,7 @@ export function MindPage() {
       )}
 
       {recentWins.length > 0 ? (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
             {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}
           </summary>
@@ -297,6 +298,7 @@ export function MindPage() {
         </details>
       ) : (
         <EmptyState
+          className="house-empty"
           icon={Brain}
           title={t('mindEmptyTitle', { defaultValue: 'No mind sessions logged yet' })}
           description={t('mindEmptyDesc', {

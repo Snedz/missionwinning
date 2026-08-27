@@ -196,6 +196,7 @@ export function MovePage() {
 
   return (
     <PillarPageShell
+      className="house-move"
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
@@ -253,7 +254,7 @@ export function MovePage() {
       </div>
 
       {premium && filteredPremium.length > 0 && (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <span>
               {t('movePremiumFlowsCount', {
@@ -325,7 +326,7 @@ export function MovePage() {
       )}
 
       {recentWins.length > 0 ? (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
             {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}
           </summary>
@@ -339,6 +340,7 @@ export function MovePage() {
         </details>
       ) : (
         <EmptyState
+          className="house-empty"
           icon={Wind}
           title={t('moveEmptyTitle', { defaultValue: 'No Move sessions logged yet' })}
           description={t('moveEmptyDesc', {

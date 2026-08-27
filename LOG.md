@@ -72,7 +72,12 @@ in Show all. Account leftover carries
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /
-barcode / recipes in Show all).
+barcode / recipes in Show all). Quiet
+More leftovers Move / Mind / Track /
+Learn carry house-move / house-mind /
+house-track / house-learn. First paint
+unchanged; extra tools stay in
+house-card Show all.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate
