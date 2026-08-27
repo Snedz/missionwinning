@@ -57,6 +57,8 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
     return series(metric, 30);
   }, [metric, refreshKey, tick]);
 
+  const unitLabel = metric === 'weightKg' ? weightUnitLabel(units) : metric === 'bodyFatPct' ? '%' : 'cm';
+
   const displayValue = (e: BodyMetricEntry | null, key: BodyMetricKey): string => {
     if (!e || e[key] == null) return '—';
     const v = e[key] as number;

@@ -82,20 +82,12 @@ export function footerGroups(): FooterGroup[] {
  * Wayfinding for the nav and the mobile menu — the content a visitor arriving on an
  * exercise page from search has no other way to reach.
  */
-export function primaryNavLinks(opts?: { gated?: boolean }): FooterLink[] {
-  const gated = opts?.gated === true;
+export function primaryNavLinks(): FooterLink[] {
   return [
-    { href: '/active', labelKey: 'navTrain', defaultValue: 'Train' },
-    {
-      href: gated ? '/private#coach' : '/coach',
-      labelKey: 'navCoachTab',
-      defaultValue: 'Coach',
-    },
-    {
-      href: gated ? '/private#history' : '/history',
-      labelKey: 'navHistory',
-      defaultValue: 'History',
-    },
+    { href: '/exercises', labelKey: 'footerLearnExercises', defaultValue: 'Exercises' },
+    { href: '/guide', labelKey: 'footerLearnGuide', defaultValue: 'Guide' },
+    { href: '/paths', labelKey: 'footerLearnPaths', defaultValue: 'Paths' },
+    { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
     { href: '/about', labelKey: 'footerCompanyAbout', defaultValue: 'About' },
   ];
 }

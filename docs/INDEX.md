@@ -116,7 +116,6 @@
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** |
 | [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
-| [DESIGN.md](DESIGN.md) | `.1049` layout freeze — Patreon structure on locked modernist tokens |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
 

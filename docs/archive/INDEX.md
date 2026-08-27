@@ -12,7 +12,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-1034-for-1049.md](./log/LOG-rotate-1034-for-1049.md) | rotated 2026-08-27 for `.1049` Modernist tokens, Patreon layout (`.1034`) |
+| [log/LOG-rotate-1034-for-1050.md](./log/LOG-rotate-1034-for-1050.md) | rotated 2026-08-27 for `.1050` Revert modernist Patreon door (`.1034`) |
+| [log/LOG-rotate-1049-for-1050.md](./log/LOG-rotate-1049-for-1050.md) | archived 2026-08-27 for `.1050` revert of squash PR #875 (`.1049`) |
 | [log/LOG-rotate-1033-for-1048.md](./log/LOG-rotate-1033-for-1048.md) | rotated 2026-08-26 for `.1048` Open empty load is blank, not 0 (`.1033`) |
 | [log/LOG-rotate-1032-for-1047.md](./log/LOG-rotate-1032-for-1047.md) | rotated 2026-08-26 for `.1047` Superset on a finished session (`.1032`) |
 | [log/LOG-rotate-1031-for-1046.md](./log/LOG-rotate-1031-for-1046.md) | rotated 2026-08-26 for `.1046` Session note on a finished session (`.1031`) |

@@ -668,12 +668,6 @@
   border-color: hsl(var(--background));
 }
 
-/* Paper nav: the MW mark is ink-on-paper. On-dark it stays paper-on-ink. */
-[data-nav]:not(.on-dark) [data-nav-mark] {
-  background-color: hsl(var(--foreground));
-  color: hsl(var(--background));
-}
-
 /*
  * Four utilities, and deliberately not more.
  *
