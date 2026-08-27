@@ -3,11 +3,13 @@
  *
  * The sheet used to mirror desktop `RAIL_GROUPS` (Mission / Pillars / Toolkit),
  * which after tab filtering left History alone under Mission and mixed Profile
- * into Toolkit. Athletes open More for *everything that is not a tab* — three
- * scannable tiers beat a rail copy:
+ * into Toolkit. Athletes open More for *everything that is not a tab* — named
+ * loops beat a rail copy:
  *
- *   Wedge   — History · Library · Builder (PAR-Q is coach-generate intake)
- *   Pillars — Move · Mind · Track · Learn
+ *   Log     — Train (when not live) · History
+ *   Week    — Coach
+ *   Catalog — Library · Builder
+ *   Pillars — Fuel · Move · Mind · Track · Learn (F-004 until first workout)
  *   You     — Profile · Messenger · Account
  *
  * Library + Builder is the official training catalog (docs/IA_SKELETON.md).
@@ -48,22 +50,34 @@ export const MORE_SHEET_TIER_HREFS: {
   hrefs: readonly string[];
 }[] = [
   {
-    id: 'wedge',
-    title: 'Wedge',
-    titleKey: 'moreTierWedge',
-    hrefs: ['/active', '/coach', '/nutrition', '/history', '/leaderboard', '/library', '/builder'],
+    id: 'log',
+    title: 'Log',
+    titleKey: 'navGroupLog',
+    hrefs: ['/active', '/history'],
+  },
+  {
+    id: 'week',
+    title: 'Week',
+    titleKey: 'navGroupWeek',
+    hrefs: ['/coach'],
+  },
+  {
+    id: 'catalog',
+    title: 'Catalog',
+    titleKey: 'navGroupCatalog',
+    hrefs: ['/library', '/builder'],
   },
   {
     id: 'pillars',
     title: 'Pillars',
     titleKey: 'moreTierPillars',
-    hrefs: ['/move', '/mind', '/track', '/learn'],
+    hrefs: ['/nutrition', '/move', '/mind', '/track', '/learn'],
   },
   {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile', '/server', '/account'],
+    hrefs: ['/profile', '/server', '/account', '/leaderboard'],
   },
 ];
 
@@ -104,25 +118,30 @@ export type MoreSheetNavOpts = {
  * Resolve Search sheet tiers. Empty tiers are dropped. Live tab routes
  * never appear as rows.
  */
+/** Depth pillars hide until first workout. Fuel stays — it was never I-Day-gated. */
+const GATED_PILLAR_HREFS = new Set(['/move', '/mind', '/track', '/learn']);
+
 export function moreSheetTiersForNav(opts?: MoreSheetNavOpts): MoreSheetTier[] {
   const revealPillars = opts?.hasFirstWorkout !== false;
   const liveTabs = new Set(
     resolveMobileTabHrefs({ hasActiveWorkout: !!opts?.hasActiveWorkout })
   );
-  return MORE_SHEET_TIER_HREFS.filter((tier) => revealPillars || tier.id !== 'pillars')
-    .map((tier) => ({
-      id: tier.id,
-      title: tier.title,
-      titleKey: tier.titleKey,
-      items: tier.hrefs
-        .filter((href) => !liveTabs.has(href) && isPathEnabled(href))
-        .map((href) => {
-          const base = NAV_BY_HREF.get(href);
-          if (!base) throw new Error(`MORE_SHEET_TIER_HREFS: no nav item for ${href}`);
-          return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
-        }),
-    }))
-    .filter((tier) => tier.items.length > 0);
+  return MORE_SHEET_TIER_HREFS.map((tier) => ({
+    id: tier.id,
+    title: tier.title,
+    titleKey: tier.titleKey,
+    items: tier.hrefs
+      .filter((href) => {
+        if (liveTabs.has(href) || !isPathEnabled(href)) return false;
+        if (!revealPillars && GATED_PILLAR_HREFS.has(href)) return false;
+        return true;
+      })
+      .map((href) => {
+        const base = NAV_BY_HREF.get(href);
+        if (!base) throw new Error(`MORE_SHEET_TIER_HREFS: no nav item for ${href}`);
+        return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
+      }),
+  })).filter((tier) => tier.items.length > 0);
 }
 
 export function moreSheetQuietForNav(): MoreQuietLink[] {

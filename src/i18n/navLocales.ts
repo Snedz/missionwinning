@@ -24,6 +24,13 @@ type NavStrings = {
   navGroupMission: string;
   navGroupPillars: string;
   navGroupToolkit: string;
+  navGroupLog: string;
+  navGroupWeek: string;
+  navGroupCatalog: string;
+  navGroupYou: string;
+  todayWeekDoorReady: string;
+  todayWeekDoorEmpty: string;
+  todayWeekDoorOpen: string;
   navSectionRecover: string;
   navSectionTrain: string;
   navSectionLearn: string;
@@ -82,6 +89,13 @@ const en: NavStrings = {
   navGroupMission: 'Mission',
   navGroupPillars: 'Pillars',
   navGroupToolkit: 'Toolkit',
+  navGroupLog: 'Log',
+  navGroupWeek: 'Week',
+  navGroupCatalog: 'Catalog',
+  navGroupYou: 'You',
+  todayWeekDoorReady: "This week's plan is ready",
+  todayWeekDoorEmpty: 'Generate this week from your logs',
+  todayWeekDoorOpen: 'Open week',
   navSectionRecover: 'Recover',
   navSectionTrain: 'Train deeper',
   navSectionLearn: 'Learn & measure',

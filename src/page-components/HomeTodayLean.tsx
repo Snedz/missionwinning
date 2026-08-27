@@ -1,9 +1,9 @@
 'use client';
 /**
- * Lean Today — Summary. Date, 0–4 pins, one highlights sentence,
- * quiet Mon–Sun glance, one Start. Tour chrome (journey strip, rewards,
- * continuity, day-review) is deleted. Coach week lives in Show all.
- * Dashboard is not this route.
+ * Lean Today — working desk. Date, 0–4 pins, one highlights sentence,
+ * WEEK door to /coach, quiet Mon–Sun glance, one Start. Tour chrome
+ * (journey strip, rewards, continuity, day-review) is deleted. The
+ * full Coach week strip lives in Show all. Dashboard is not this route.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
 import { TodayHighlights } from '@/components/today/TodayHighlights';
 import { TodayShowAll } from '@/components/today/TodayShowAll';
+import { TodayWeekDoor } from '@/components/today/TodayWeekDoor';
 import { TodayQuietWeekStrip } from '@/components/today/TodayQuietWeekStrip';
 import {
   parseSummaryPinIds,
@@ -314,10 +315,16 @@ export function HomeTodayLean() {
         {plan.top.map(({ key, node }) => (
           <div key={key}>{node}</div>
         ))}
-        <TodayQuietWeekStrip
-          glance={quietWeekGlance({ history: historyForWeek(workoutHistory), quietRows, trackEntries })}
-          onLogged={refreshFromStorage}
-        />
+        <TodayWeekDoor />
+        <div className="space-y-2">
+          <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+            {t('navGroupLog', { defaultValue: 'Log' })}
+          </p>
+          <TodayQuietWeekStrip
+            glance={quietWeekGlance({ history: historyForWeek(workoutHistory), quietRows, trackEntries })}
+            onLogged={refreshFromStorage}
+          />
+        </div>
         <TodayShowAll />
       </div>
       <ScreenDock>

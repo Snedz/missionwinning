@@ -8,7 +8,8 @@
 |------|---------|
 | `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). |
 | `AppHeader.tsx` | Top bar, title from navConfig |
-| `Sidebar.tsx` | Desktop nav; athlete chip is public version |
+| `Sidebar.tsx` | Desktop nav — named Log / Week / Catalog / You loops |
+| `CatalogLoopTabs.tsx` | Library \| Builder state tabs. One catalog, not a shop. |
 | `MobileNav.tsx` | Bottom tab bar — cold Summary + Search; live Train joins. In flow (not fixed) so it reserves its own height. Rooms: [docs/IA_SKELETON.md](../../../docs/IA_SKELETON.md) |
 | `MoreSheet.tsx` | Search sheet: catalog field + pin-from-row for Fuel/Coach/Train + What’s New + First Steps |
 | `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |

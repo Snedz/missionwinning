@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { railGroupsForNav } from '@/lib/navConfig';
 import { APP_PUBLIC_VERSION } from '@/lib/buildInfo';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useWorkoutStore } from '@/store/workoutStore';
 
 function pathActive(pathname: string, href: string): boolean {
   if (href === '/log') return pathname === '/log' || pathname === '/';
@@ -17,26 +16,18 @@ function pathActive(pathname: string, href: string): boolean {
 }
 
 /**
- * Desktop side rail — the 13 signed-in screens grouped Mission / Pillars /
- * Toolkit (Modernist handoff). Everything that is not one of those screens
- * (calculators, leaderboard, guidebook, bundle) stays in the header menu.
+ * Desktop side rail — named loops: Log · Week · Catalog · You.
+ * Pillars and Garage (`/server`) stay in More. Labels stay visible;
+ * this is not the unlabeled 5-item rail.
  *
- * The rail scrolls: 13 items plus three group headers overflow a short laptop
- * window, and the alternative — compressing rows until they stop being
- * thumb-sized — trades a scroll nobody minds for a tap target that misses.
+ * The rail scrolls if a short laptop overflows. Do not compress rows
+ * below 44px to avoid a tap target that misses.
  */
 export function Sidebar() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
-  // F-004 — demote Pillars rail until first logged workout (same store signal as More).
-  const hasFirstWorkout = useWorkoutStore(
-    (s) => s.hasHydrated && s.workoutHistory.length > 0
-  );
-  const groups = useMemo(
-    () => railGroupsForNav({ hasFirstWorkout }),
-    [hasFirstWorkout]
-  );
+  const groups = useMemo(() => railGroupsForNav(), []);
 
   return (
     <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] shrink-0 flex-col border-e-2 border-border bg-card">

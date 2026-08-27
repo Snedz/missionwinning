@@ -45,7 +45,7 @@ const NAV_EXEMPT: { path: string; reason: string }[] = [
   {
     path: '/benchmarks',
     reason:
-      'Founder decision pending: promote to RAIL_GROUPS.toolkit, or keep as a destination the Learn path links into. Recorded here so it is a choice, not the drift it was.',
+      'Founder decision pending: promote to a More row, or keep as a destination the Learn path links into. Recorded here so it is a choice, not the drift it was.',
   },
   {
     path: '/programs',
@@ -54,7 +54,7 @@ const NAV_EXEMPT: { path: string; reason: string }[] = [
   },
   {
     path: '/paths',
-    reason: 'Reached from inside /learn, which is in the rail. A second top-level entry to the same content would split it.',
+    reason: 'Reached from inside /learn, which is a More pillar row. A second top-level entry to the same content would split it.',
   },
   {
     path: '/guide',

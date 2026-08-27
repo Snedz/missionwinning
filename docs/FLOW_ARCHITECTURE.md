@@ -56,9 +56,10 @@ Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREF
 
 | Group | Routes |
 |-------|--------|
-| Train | `/log` `/active` `/coach` `/history` |
-| Pillars | `/nutrition` `/move` `/mind` `/track` `/learn` |
-| Toolkit | `/assessments` `/library` `/builder` `/profile` |
+| Log | `/log` `/active` `/history` |
+| Week | `/coach` |
+| Catalog | `/library` `/builder` |
+| You | `/profile` `/account` |
 
 Source: [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) `RAIL_GROUPS`.
 
@@ -76,7 +77,7 @@ Source: [`src/components/marketing/footerLinks.ts`](../src/components/marketing/
 i-day → basic → readiness → commissioned
 ```
 
-Today mux: `HomeTodayLean` vs `HomeTodayDashboard` ([`HomePage.tsx`](../src/page-components/HomePage.tsx)). Full ladder: [JOURNEY.md](JOURNEY.md).
+Today is `HomeTodayLean` ([`HomePage.tsx`](../src/page-components/HomePage.tsx)). `HomeTodayDashboard` stays parked. Full ladder: [JOURNEY.md](JOURNEY.md).
 
 ---
 

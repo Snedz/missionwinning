@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1055` later-door object model + isolation holds (from master `.1054` `20b996709ba3bda351e8e17227d704d0762c86f6`; stamp stays `.1055`; docs + cite existing isolation; no costume). */
-export const APP_BUILD_LABEL = "2026.07-unified.1055";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1056` signed-in desk names the three loops (from master `.1055` `e44351c3`; visual preview; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1056";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
