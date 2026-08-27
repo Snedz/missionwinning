@@ -310,13 +310,7 @@ export function HomeTodayLean() {
 
   return (
     <>
-      <div className="ptn today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
-        <p className="ptn-name">{t('navToday', { defaultValue: 'Today' })}</p>
-        <div className="flex gap-6 ptn-hairline border-b pb-2">
-          <span className="ptn-tab ptn-tab-active">
-            {t('landingNavHome', { defaultValue: 'Home' })}
-          </span>
-        </div>
+      <div className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
         {plan.top.map(({ key, node }) => (
           <div key={key}>{node}</div>
         ))}

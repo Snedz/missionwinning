@@ -1,6 +1,0 @@
-# Astro build output and caches. Note: the Vercel CLI reads only the ROOT
-# .gitignore, so this file is invisible to it — `sites/` is excluded there too,
-# or the upload re-hits the 15,000-file cap that .vercelignore exists to prevent.
-dist/
-.astro/
-node_modules/

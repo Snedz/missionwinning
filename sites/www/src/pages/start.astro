@@ -52,7 +52,7 @@ const proofs = [
   description="A free offline workout logger that turns what you actually did into next week's plan. No wearable, no gym, no account."
 >
   <main>
-    <section class="stage on-dark ptn-on-dark flex min-h-[100svh] flex-col px-5 py-10 sm:px-8 lg:py-14">
+    <section class="stage on-dark flex min-h-[100svh] flex-col px-5 py-10 sm:px-8 lg:py-14">
       <StagePhoto
         base="/photo/phone-bench"
         alt="A phone resting on a gym bench between sets"
@@ -62,10 +62,13 @@ const proofs = [
       <div class="stage-body mx-auto flex w-full max-w-6xl flex-1 flex-col">
         <!-- Wordmark only. Not a nav — there is nowhere else to go from here,
              and that is the point of the page. -->
-        <div class="flex w-full items-center justify-between gap-3">
-          <a href="/" class="ptn-rail tracking-[0.12em]">MISSION WINNING</a>
-          <CtaSlot variant="quiet" terminal />
-        </div>
+        <a href="/" class="flex shrink-0 items-center gap-3 self-start">
+          <span
+            class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+            >MW</span
+          >
+          <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+        </a>
 
         <div class="mt-auto grid gap-10 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
           <div>
@@ -86,7 +89,7 @@ const proofs = [
             <dl class="mt-10 grid grid-cols-3 gap-0.5 border-2 border-rule bg-rule">
               {proofs.map((p) => (
                 <div class="flex flex-col gap-2 bg-paper p-4">
-                  <dt class="ptn-name">
+                  <dt class="text-[28px] font-extrabold leading-none tracking-[-0.02em] text-poster">
                     {p.figure}
                   </dt>
                   <dd class="eyebrow">{p.label}</dd>

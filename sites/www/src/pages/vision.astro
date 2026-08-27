@@ -7,15 +7,30 @@
  * No national-fitness track. No host flip. No _redirects.
  */
 import Base from '../layouts/Base.astro';
-import PtnNav from '../components/PtnNav.astro';
-import PtnClose from '../components/PtnClose.astro';
+import CtaSlot from '../components/CtaSlot.astro';
 import StagePhoto from '../components/StagePhoto.astro';
 import { appUrl } from '../lib/appLinks';
 import { META, HERO, SECTIONS } from '../lib/visionContent';
 ---
 
 <Base title={META.title} description={META.description}>
-  <PtnNav terminal />
+  <header
+    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
+    data-nav
+  >
+    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
+      <a href="/" class="flex shrink-0 items-center gap-3">
+        <span
+          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+          data-nav-mark>MW</span
+        >
+        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+      </a>
+      <a href="/" class="hidden text-[15px] font-semibold hover:underline md:inline">Homepage</a>
+      <a href="/about" class="hidden text-[15px] font-semibold hover:underline md:inline">About</a>
+      <CtaSlot variant="quiet" terminal class="ml-auto shrink-0" />
+    </div>
+  </header>
 
   <main>
     <section
@@ -70,7 +85,12 @@ import { META, HERO, SECTIONS } from '../lib/visionContent';
     }
   </main>
 
-  <PtnClose line="The logger stays free." />
+  <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
+    <div class="mx-auto max-w-6xl">
+      <p class="display-statement wipe"><span>The logger stays free.</span></p>
+      <CtaSlot terminal class="mt-10 max-w-[420px]" />
+    </div>
+  </footer>
 
   <div class="ground-ink px-5 py-6 sm:px-8">
     <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2">
@@ -82,3 +102,23 @@ import { META, HERO, SECTIONS } from '../lib/visionContent';
     </div>
   </div>
 </Base>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const hero = document.querySelector<HTMLElement>('main > section');
+  if (nav && hero) {
+    const onDark = () => {
+      nav.classList.add('on-dark');
+      nav.classList.remove('bg-paper', 'border-rule');
+      nav.classList.add('border-transparent');
+    };
+    const onPaper = () => {
+      nav.classList.remove('on-dark', 'border-transparent');
+      nav.classList.add('bg-paper', 'border-rule');
+    };
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? onDark() : onPaper()), {
+      rootMargin: '-72px 0px 0px 0px',
+      threshold: 0,
+    }).observe(hero);
+  }
+</script>

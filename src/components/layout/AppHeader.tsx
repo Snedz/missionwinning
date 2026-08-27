@@ -95,8 +95,8 @@ export function AppHeader({
   );
 
   return (
-    <header className="ptn shrink-0 z-50 border-b border-border bg-background">
-      <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px] md:min-h-[48px]">
+    <header className="shrink-0 z-50 border-b-2 border-border bg-background">
+      <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
         {isCompact ? (
           <button
             type="button"
@@ -108,14 +108,12 @@ export function AppHeader({
             {brand}
           </button>
         ) : (
-          <p className="ptn-title flex-1 min-w-0 truncate">{pageTitle}</p>
+          <div className="flex flex-1 min-w-0 items-center gap-3 py-1">{brand}</div>
         )}
         <HeaderAuthChip />
-        {isCompact && (
-          <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[140px] truncate">
-            {pageTitle}
-          </span>
-        )}
+        <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[140px] truncate">
+          {pageTitle}
+        </span>
       </div>
     </header>
   );

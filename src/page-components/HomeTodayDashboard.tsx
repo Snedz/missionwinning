@@ -816,23 +816,13 @@ export function HomeTodayDashboard() {
       </Dialog>
       {/* See HomeTodayLean — `max-w-lg` is the phone measure; desktop takes
           `AppLayout`'s container, which is the handoff's ~960px band. */}
-      <div className="ptn">
-        <p className="ptn-name">{t('navToday', { defaultValue: 'Today' })}</p>
-        <div className="mt-4 mb-8 flex gap-6 ptn-hairline border-b">
-          <span className="ptn-tab ptn-tab-active pb-2">
-            {t('landingNavHome', { defaultValue: 'Home' })}
-          </span>
-        </div>
-        <div className="ptn-card ptn-pad">
-          <StaggerGroup className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
-          {plan.top.map(({ key, node }, index) => (
-            <StaggerItem key={key} index={index}>
-              {node}
-            </StaggerItem>
-          ))}
-          </StaggerGroup>
-        </div>
-      </div>
+      <StaggerGroup className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
+      {plan.top.map(({ key, node }, index) => (
+        <StaggerItem key={key} index={index}>
+          {node}
+        </StaggerItem>
+      ))}
+      </StaggerGroup>
       <ScreenDock>
         <JourneyHero
           action={action}

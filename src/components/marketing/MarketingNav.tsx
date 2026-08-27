@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
@@ -13,7 +14,6 @@ import {
 } from '@/lib/buildInfo';
 import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 import { isClientPrivateGateEnabled } from '@/lib/privateGateClientFlag';
-import '@/styles/patreonTokens.css';
 
 type MarketingNavProps = {
   /** full = site links + primary CTA; compact = logo + primary CTA only */
@@ -38,7 +38,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
     <nav
       aria-label="Site"
       className={cn(
-        'ptn sticky top-0 z-50 border-b border-border bg-background',
+        'sticky top-0 z-50 border-b-2 border-border bg-background',
         className
       )}
     >
@@ -86,12 +86,9 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               so an onClick-only CTA does nothing until React hydrates and crawlers see no
               link at all. Visible at every width — the primary conversion action must not
               move a tap deeper on the viewport most visitors arrive on. */}
-          <Link href="/welcome" className="ptn-pill ptn-pill-ghost hidden sm:inline-flex">
-            {t('signIn', { defaultValue: 'Log in' })}
-          </Link>
-          <Link href={ctaHref} className="ptn-pill ptn-pill-solid">
-            {ctaLabel}
-          </Link>
+          <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-medium">
+            <Link href={ctaHref}>{ctaLabel}</Link>
+          </Button>
 
           <PublicNavMenu
             links={navLinks.map((l) => ({

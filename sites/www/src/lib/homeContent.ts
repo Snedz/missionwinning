@@ -113,10 +113,10 @@ export const QUESTIONS = {
 };
 
 export const NAV_LINKS = [
-  { href: '/#train', label: 'Train' },
   { href: '/#adapt', label: 'Coach' },
-  { href: '/#history', label: 'History' },
-  { href: '/about', label: 'About' },
+  { href: '/#anywhere', label: 'Anywhere' },
+  { href: '/#free', label: 'Free core' },
+  { href: '/#questions', label: 'Questions' },
 ] as const;
 
 export const CTA = {

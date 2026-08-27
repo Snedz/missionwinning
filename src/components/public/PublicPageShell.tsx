@@ -4,7 +4,6 @@ import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
 import { PublicSiteFooter } from '@/components/public/PublicSiteFooter';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
-import '@/styles/patreonTokens.css';
 
 /**
  * The chrome for every public SEO surface — exercises, hubs, compare, paths.
@@ -74,7 +73,7 @@ export function PublicPageShell({
     footerGroups().find((g) => g.titleKey === 'footerGroupLegal')?.links ?? [];
 
   return (
-    <div className="ptn min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:rounded-xl focus:bg-primary-fill focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
@@ -85,7 +84,7 @@ export function PublicPageShell({
       {/* Modernist: solid paper bar under a 2px rule — no blur, no translucency. */}
       <nav
         aria-label="Site"
-        className="sticky top-0 z-50 border-b border-border bg-background"
+        className="sticky top-0 z-50 border-b-2 border-border bg-background"
       >
         <PublicStatusBar />
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-5 sm:h-16">
@@ -110,10 +109,10 @@ export function PublicPageShell({
                 </li>
               ))}
             </ul>
-            <Link href="/welcome" className="ptn-pill ptn-pill-ghost hidden md:inline-flex">
-              Log in
-            </Link>
-            <Link href={ctaHref} className="ptn-pill ptn-pill-solid hidden md:inline-flex">
+            <Link
+              href={ctaHref}
+              className="hidden text-sm font-semibold text-foreground transition-colors hover:text-primary md:inline"
+            >
               {ctaLabel}
             </Link>
             <PublicNavMenu
@@ -144,7 +143,7 @@ export function PublicPageShell({
               text link by design (`.104`), which left these pages with nothing to press
               above the fold — on a free product. Each page's own closing CTA is the
               second, which is the two-per-page ceiling first-90.spec.ts asserts for `/`. */}
-          <Link href={ctaHref} className="primary-action ptn-pill ptn-pill-solid min-h-[52px] tap-target mt-8 max-w-sm sm:w-auto sm:px-10">
+          <Link href={ctaHref} className="primary-action min-h-[52px] tap-target mt-8 max-w-sm sm:w-auto sm:px-10">
             {ctaLabel}
           </Link>
           {breadcrumb && (

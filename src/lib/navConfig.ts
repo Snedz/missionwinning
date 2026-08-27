@@ -227,24 +227,6 @@ export type RailNavOpts = {
  * that empties out removed — same rule the header menu already follows, since
  * a rail entry that 404s is worse than no entry.
  */
-/** Creator-studio map for the Patreon costume. Other rail destinations stay in More. */
-export const STUDIO_RAIL_HREFS = [
-  '/log',
-  '/active',
-  '/coach',
-  '/history',
-  '/library',
-  '/account',
-] as const;
-
-export function studioItemsForNav(): NavLinkItem[] {
-  return STUDIO_RAIL_HREFS.map((href) => {
-    const base = NAV_BY_HREF.get(href);
-    if (!base) throw new Error(`STUDIO_RAIL_HREFS: no nav item for ${href}`);
-    return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
-  });
-}
-
 export function railGroupsForNav(opts?: RailNavOpts): NavSection[] {
   const revealPillars = opts?.hasFirstWorkout !== false;
   return RAIL_GROUPS.filter((group) => revealPillars || group.id !== 'pillars')

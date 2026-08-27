@@ -26,7 +26,6 @@ import {
   type OAuthProvider,
 } from '@/lib/supabase';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
-import '@/styles/patreonTokens.css';
 
 type SignInPanelProps = {
   /** Called after magic link is sent or user skips (Welcome flow). */
@@ -279,7 +278,7 @@ export function SignInPanel({
   }
 
   return (
-    <div className={`ptn ${compact ? 'space-y-4' : 'space-y-5'}`}>
+    <div className={compact ? 'space-y-4' : 'space-y-5'}>
       {/*
         `.240` — a 2px rule, not a tinted pill.
         Two compounding failures, both from fading a token picked for its
@@ -378,7 +377,7 @@ export function SignInPanel({
         <Button
           type="submit"
           disabled={!!loading || !email.trim()}
-          className="ptn-pill ptn-pill-solid w-full h-12 text-[15px] font-semibold"
+          className="w-full h-12 text-[15px] font-semibold bg-primary hover:bg-primary"
         >
           {loading === 'email' ? 'Sending secure link…' : 'Send magic link'}
         </Button>

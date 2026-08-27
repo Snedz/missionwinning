@@ -1,6 +1,6 @@
-# LOG rotate — `.1035` for `.1051`
+# Archived from LOG.md for `.1052` (Revert Patreon costume, restore wireframe)
 
-Superseded in the live LOG by Patreon costume on our skeleton (`.1051`).
+Rotated 2026-08-27. Whole `##` section, order preserved.
 
 ## 2026-08-26 — Edit this session's logged duration (`.1035`)
 
@@ -37,4 +37,4 @@ Label `2026.07-unified.1035` (from
 master `.1034` / `a075f994f`). Stamp
 stays `.1035`. Live www stays `.696`.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1020-for-1035.md](LOG-rotate-1020-for-1035.md).
+Rotated LOG oldest → [LOG-rotate-1020-for-1035.md](LOG-rotate-1020-for-1035.md).
