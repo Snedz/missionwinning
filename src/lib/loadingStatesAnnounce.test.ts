@@ -230,11 +230,11 @@ test('/active declares aria-busy while persist rehydrates', () => {
    * already announces that); it is `ActiveEmptyState` with `hydrated={false}`,
    * which said nothing. Now it does, and the general rule covers it.
    */
-  const src = read('src/components/workout/ActiveEmptyState.tsx');
+  const src = read('src/components/house/TrainComposeEmpty.tsx');
   assert.match(
     src,
     /aria-busy=\{hydrated \? undefined : true\}/,
-    'ActiveEmptyState must mark itself busy while unhydrated, or a11y.spec.ts loses /active'
+    'TrainComposeEmpty must mark itself busy while unhydrated, or a11y.spec.ts loses /active'
   );
 });
 

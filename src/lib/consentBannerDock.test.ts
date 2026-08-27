@@ -32,15 +32,15 @@ test('consent banner is never position:fixed at the bottom', () => {
   assert.match(src, /role="dialog"/, 'consent choice stays a dialog');
 });
 
-test('AppLayout reserves a flex host between ScreenDock and MobileNav', () => {
-  const src = read('src/components/layout/AppLayout.tsx');
+test('HouseShell reserves a flex host between ScreenDock and the floor rail', () => {
+  const src = read('src/components/house/HouseShell.tsx');
   const dock = src.indexOf('id={SCREEN_DOCK_HOST_ID}');
   const consent = src.indexOf('id={CONSENT_BANNER_HOST_ID}');
-  const nav = src.indexOf('<MobileNav');
-  assert.ok(dock >= 0 && consent >= 0 && nav >= 0, 'dock, consent host, and MobileNav must exist');
+  const nav = src.indexOf('floor');
+  assert.ok(dock >= 0 && consent >= 0 && nav >= 0, 'dock, consent host, and floor rail must exist');
   assert.ok(
     dock < consent && consent < nav,
-    'consent host must sit between #screen-dock and MobileNav so Start stays above the banner'
+    'consent host must sit between #screen-dock and the floor rail so Start stays above the banner'
   );
 });
 

@@ -41,7 +41,7 @@ function stripComments(src: string): string {
 const PROFILE_PAGE = 'src/page-components/AccountPage.tsx';
 const CARD = 'src/components/profile/ProfileFeedbackCard.tsx';
 const SHEET = 'src/components/profile/FeedbackSheet.tsx';
-const SHELL = 'src/components/layout/AppLayout.tsx';
+const SHELL = 'src/components/house/HouseShell.tsx';
 const LEADS_ROUTE = 'app/api/leads/route.ts';
 const SCHEMA = 'src/lib/apiSchemas.ts';
 

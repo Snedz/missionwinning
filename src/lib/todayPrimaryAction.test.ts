@@ -54,12 +54,17 @@ describe('isTodayTrainReady', () => {
       path.join(import.meta.dirname, '..', 'page-components', 'HomeTodayLean.tsx'),
       'utf8'
     );
+    const desk = readFileSync(
+      path.join(import.meta.dirname, '..', 'page-components', 'TodayDesk.tsx'),
+      'utf8'
+    );
     const primary = readFileSync(
       path.join(import.meta.dirname, 'todayPrimaryAction.ts'),
       'utf8'
     );
     assert.match(dash, /isTodayTrainReady\(/);
     assert.match(lean, /isTodayTrainReady\(/);
+    assert.match(desk, /isTodayTrainReady\(/);
     assert.match(primary, /isTodayTrainReady\(/);
     assert.doesNotMatch(
       dash,
@@ -78,6 +83,7 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
     for (const rel of [
       'src/page-components/HomeTodayLean.tsx',
       'src/page-components/HomeTodayDashboard.tsx',
+      'src/page-components/TodayDesk.tsx',
     ]) {
       const src = readFileSync(path.join(root, rel), 'utf8');
       assert.match(src, /shouldRepeatLastOnToday\(/, rel);
@@ -92,12 +98,13 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
     for (const rel of [
       'src/page-components/HomeTodayLean.tsx',
       'src/page-components/HomeTodayDashboard.tsx',
+      'src/page-components/TodayDesk.tsx',
     ]) {
       const src = readFileSync(path.join(root, rel), 'utf8');
       assert.match(src, /runTodayPrimaryAction\(/, rel);
       assert.match(
         src,
-        /doseScale:\s*reentry\?\.show\s*\?\s*reentry\.doseScale\s*:\s*1/,
+        /doseScale:\s*(?:liveReentry|reentry\?)\.show\s*\?\s*(?:liveReentry|reentry)\.doseScale\s*:\s*1/,
         `${rel} must ease Just Go when re-entry shows (criterion 4)`
       );
     }

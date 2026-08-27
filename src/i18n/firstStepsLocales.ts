@@ -26,6 +26,31 @@ const FIRST_STEPS_EN: Record<string, string> = {
   firstStepsSheetIntro:
     'None of these are required — the logger and your weekly plan work without any of them. They are the parts of the app most people never find.',
 
+  houseGuideRailTitle: 'Your week lives here',
+  houseGuideRailBody: 'Start, this week, History, and Weekly plan sit next to the icons.',
+  houseGuideStartTitle: 'Start the session',
+  houseGuideStartBody: 'One tap opens Train.',
+  houseGuideContinue: 'Continue',
+  houseGuideClose: 'Close',
+  houseGuideGotIt: 'Got it',
+  houseRoomWeeklyPlan: 'Weekly plan',
+  firstStepsCount: '{{done}} of {{total}} complete',
+  houseFirstRoomsTitle: 'Your first rooms',
+  houseFirstLogTitle: 'Log a set',
+  houseFirstLogWhy: 'Type the number. That is the product.',
+  houseFirstWeekTitle: 'Open this week',
+  houseFirstWeekWhy: 'See the week Coach wrote from your logs.',
+  houseFirstHistoryTitle: 'Open History after a finish',
+  houseFirstHistoryWhy: 'After one finish, History is yours.',
+  houseFirstHistoryLock: 'Finish a session first — then History is yours.',
+  houseWeekPaneTitle: 'This week',
+  houseWeekPaneBlurb: 'Coach writes the next session from your logs.',
+  houseWeekPaneToday: 'Today on the canvas',
+  houseWeekPanePlan: 'Weekly plan',
+  houseGarageLock: 'Garage is later — Train and Today come first.',
+  houseGuideCollapse: 'Collapse',
+  houseGuideExpand: 'Expand',
+
   // The six steps. Each `Why` line is load-bearing: it is the difference
   // between a checklist someone finishes and a chore list they dismiss.
   firstStepWorkoutTitle: 'Log your first workout',

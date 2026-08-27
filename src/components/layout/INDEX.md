@@ -6,7 +6,8 @@
 
 | File | Purpose |
 |------|---------|
-| `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). |
+| `HouseShell.tsx` | **Live signed-in chrome** — `src/components/house/`. Icon rail, desk, compose sidecar. |
+| `AppLayout.tsx` | Previous chrome. Not first-paint on this branch. |
 | `AppHeader.tsx` | Top bar, title from navConfig |
 | `Sidebar.tsx` | Desktop nav; athlete chip is public version |
 | `MobileNav.tsx` | Bottom tab bar — cold Summary + Search; live Train joins. In flow (not fixed) so it reserves its own height. Rooms: [docs/IA_SKELETON.md](../../../docs/IA_SKELETON.md) |

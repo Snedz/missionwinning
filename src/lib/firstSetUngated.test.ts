@@ -101,8 +101,19 @@ describe('firstSetUngated wiring', () => {
       names.length >= 5,
       `expected Active workout children, got ${names.join(', ') || '(none)'}`
     );
-    assert.ok(names.includes('ActiveEmptyState'), 'empty Start shell missing from imports');
     assert.ok(names.includes('ActiveExerciseList'), 'set-log list missing from imports');
+    const pageSrc = read('src/page-components/ActiveWorkoutPage.tsx');
+    assert.match(pageSrc, /TrainComposeEmpty/, 'empty Start shell missing from imports');
+    assert.doesNotMatch(
+      read('src/components/house/TrainComposeEmpty.tsx'),
+      SIGNIN_PROMPT_JSX,
+      'TrainComposeEmpty mounts SignInPrompt'
+    );
+    assert.doesNotMatch(
+      read('src/components/house/TrainComposeEmpty.tsx'),
+      SIGNIN_PROMPT_IMPORT,
+      'TrainComposeEmpty imports SignInPrompt'
+    );
     for (const name of names) {
       const rel = resolveWorkoutFile(name);
       assert.ok(rel, `unresolved workout import ${name}`);
@@ -200,7 +211,7 @@ describe('firstSetUngated wiring', () => {
       'src/components/workout/ActiveExerciseList.tsx',
       'src/components/workout/LogConsole.tsx',
       'src/components/workout/ActiveSessionChrome.tsx',
-      'src/components/workout/ActiveEmptyState.tsx',
+      'src/components/house/TrainComposeEmpty.tsx',
     ];
     for (const rel of firstPaint) {
       assert.doesNotMatch(read(rel), SPEECH_IMPORT, `${rel} imports speech on first paint`);

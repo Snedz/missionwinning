@@ -174,6 +174,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/fitness-test': 'surface',
   'src/components/form': 'surface',
   'src/components/history': 'surface',
+  'src/components/house': 'surface',
   'src/components/i18n': 'surface',
   'src/components/journey': 'wedge',
   'src/components/landing': 'surface',
