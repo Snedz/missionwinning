@@ -6,6 +6,66 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1053` Product IA skeleton (2026-08-27)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1053` — from master
+> `.1052` (`895d940daebdf8f10f6a041360d7478f81492a05`
+> — Revert Patreon costume, restore wireframe).
+> Stamp stays `.1053`. Skeleton only.
+> No costume. No CSS / theme /
+> `/private` / www / nav-appearance
+> edits. Isolation + locked IA doc.
+> Do not add rooms. Do not promote
+> `/server`. Do not mint Studio.
+> Do not change Start order. Resume
+> `.963` stays. Guest path. First set
+> stays ungated. Today stays one
+> Start. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Brand: **Log a set. Offline.**
+
+Lock product truth: three loops
+(LOG · WEEK · GARAGE), existing
+room map, Horizon 0 vs later,
+refuse list. Chip floorplan stays
+[FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md).
+Product IA SoT is
+[IA_SKELETON.md](IA_SKELETON.md).
+
+### Done means
+
+- `docs/IA_SKELETON.md` states the
+  three loops, the room map, Horizon
+  0 vs later, and the refuse list.
+- Isolation tests fail if Today /
+  Train / first-paint chrome import
+  messenger, if Coach reads Garage,
+  if `/server` becomes a tab, or if
+  chat withholds a set. Stop after
+  isolation. v0 catalog labeling is
+  a later PR.
+- `generateWeek` stays the only
+  product week writer.
+- Dual-writer leak documented, not
+  blessed as a join.
+- Zero visual diffs on `/private`,
+  www, and signed-in chrome.
+
+### Refuse
+
+Costume · `/private` restyle · www
+marketing · Patreon Feed · Chat as
+dock tab · Home-as-feed · type-5
+bubble · Discord.com / DMs · empty
+Studio · Message tab · Explore-as-
+shop · `PRIVATE_MODE` flip · promote.
+
+---
+
 ## Frozen plan — `.1048` Open empty load is blank, not 0 (2026-08-26)
 
 > **Frozen.** Implement only this section + root

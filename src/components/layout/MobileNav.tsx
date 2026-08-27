@@ -14,7 +14,7 @@ function pathActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + '/');
 }
 
-/** Shared by all five slots so the fifth is a peer, not a decorated afterthought. */
+/** Shared by routed tabs + Search so Search is a peer, not a decorated afterthought. */
 const tabClass =
   'relative flex flex-1 min-w-0 min-h-[56px] flex-col items-center justify-center gap-[3px] px-1 pb-2.5 pt-2 text-[10px] uppercase tracking-[0.04em] transition-colors';
 

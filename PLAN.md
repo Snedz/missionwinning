@@ -1,46 +1,52 @@
-# PLAN — Superset on a finished session (`.1047`)
+# PLAN — Product IA skeleton (`.1053`)
 
 **Status:** Frozen. One leftover. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-26. **Ship-as:** `.1047`.
-**Base:** master `89437956d39fbd93fc5a6b0bd9640bb7194e80cc` — Session note on a finished session (`.1046`).
-**Do not smash:** Session note `.1046`, Lift note `.1045`, Load % `.1044`, Tempo `.1043`, L/R `.1042`, RIR `.1041`, RPE `.1040`, Set kind `.1039`, Remove lift `.1038`, Add `.1037`, Replace `.1036`, Reorder `.1034`, remove-set, Name `.1007`, Edit sets `.997`, Delete-session `.1003`. Resume `.963` stays. Live pause `.1001` stays on Train. Live superset `.980` stays on Train. Session note `.983` stays. Pin `.996` stays.
+**Frozen:** 2026-08-27. **Ship-as:** `.1053`.
+**Base:** master `895d940daebdf8f10f6a041360d7478f81492a05` — Revert Patreon costume, restore wireframe (`.1052`).
+**Do not smash:** Costume revert `.1052` / `.1050`. Messenger freeze `.752`. Domain boundary C1–C3 / C7. Isolation `src/lib/social/isolation.test.ts`. Athlete-default dock (cold Summary + Search; live Train joins). Today one Start. Guest first set ungated. Resume `.963`. `/private` tight lock. Live www `.696`.
 
 ---
 
 ## The one thing
 
-Optional exercise group (superset) on a finished History session. Live already has `src/lib/workout/superset.ts` / `supersetGroup` / `stripOrphanGroups` / "Superset w/ next" (`.980`). History edit cannot pair or unpair lifts on a finished log. Same finished log. Same id. Pair this lift with the **next**. Unpair (blank) clears this lift's group then `stripOrphanGroups` — an orphan is not a group. One lift / junk indexes empty. Already sharing a group with next → noop. Not a new SetKind. Not marketplace circuits. Does not rewrite sets / notes / duration / name. Save still confirm-gated `decideEditSave`.
+Lock product truth as bones, not lipstick. Tonight's IA is already decided. Do not invent a second product, a sidebar costume, or a Studio.
+
+`.1051` painted Patreon chrome onto the existing IA. Founder reverted it (`.1052`). This slice is **not visual**. Zero CSS / theme / `/private` / www / nav-appearance edits.
 
 ## In / out
 
 **In**
 
-- Pure helper: `src/lib/workout/patchFinishedSuperset.ts` — **exercise-index** helper.
-  - Reuse `stripOrphanGroups` from `src/lib/workout/superset.ts`. Do not rewrite pair-mark grammar.
-  - `decidePatchFinishedSuperset({ draft, exerciseIndex, pair: true | false | 'next' | '' })`:
-    - Missing draft / junk index → empty.
-    - One-lift session → empty (cannot pair).
-    - Last lift + pair-with-next → empty (no next).
-    - `pair` true / `'next'` → share a group id with the next exercise (reuse existing group on either side if present; otherwise mint a short id). Same group already → noop.
-    - `pair` false / `''` / blank → clear this lift's `supersetGroup`, then `stripOrphanGroups`. Already unpaired → noop.
-  - Apply via clone of exercises. Does not rewrite sets / notes / `sessionNote` / duration.
-- `draftsEqual` in `editFinishedSession.ts` must include `supersetGroup` (trimmed / omitted equal) so Save confirms when only pairing changes. `stripDraft` should omit an undefined group and still run `stripOrphanGroups`.
-- `HistorySessionEdit.tsx`: when `editing` and 2+ lifts, outline 44px control per lift. testid `session-history-superset-{exIdx}`. Pair with next when a next lift exists; unpair when grouped. Draft only. Session note `.1046` / lift note `.1045` stay.
-- Save still existing Save → `decideEditSave`.
-- History only. Guest. First set ungated. Today still one Start. Resume `.963` kept.
-- Add `.1047` line to `src/lib/firstSetUngated.ts`.
+- Short freeze (this file + `docs/PLAN.md` pointer).
+- `docs/IA_SKELETON.md` — three loops, existing room map, Horizon 0 vs later, refuse list. Point `FLOW_ARCHITECTURE.md` at it; do not replace the chip floorplan.
+- Isolation: keep `src/lib/social/isolation.test.ts` + `domainBoundary` C1–C3. Close holes:
+  - AppLayout / MobileNav / AppHeader first-paint chrome must not import messenger.
+  - Coach page + coach chat must not read Garage (no shared thread, store, or badge).
+  - Log-path tabs stay `/log` + `/active` only. `/server` stays More → You, never a dock tab.
+  - Chat is never a reason to withhold a set (`logSet` / SetLogRow / firstSetUngated).
+  - `generateWeek` is the only product week writer (`useCoachPlan`).
+  - Stop. v0 catalog labeling is a later PR.
+- Align comments on `primaryNav` / `navConfig` / `moreSheetTiers` / `domainBoundary` with the locked map. Do not add rooms. Do not promote `/server`.
+- Document (do not "fix") that Builder `saveAllProgramSessions` → `savedWorkouts` currently beats Coach on Today's Start order. Not a join mechanic.
 
 **Out**
 
-- Required group / one-lift group / invent a third lift / marketplace circuits / Feed / smash live `.980` / skip confirm
-- Counsel-hold / Mind / `PRIVATE_MODE` flip / promote
-- `localStorage`
-- Reps-only overload / Hevy RPE color / friends Feed
+- Any visual / costume / sidebar / theme change
+- Restyle `/private` or `sites/www`
+- Patreon public creator URL, member Feed, Chats-on-home
+- TrainHeroic Coach Home, Session Comments, Chat as athlete dock tab
+- Hevy Home-as-feed, likes/comments on logs
+- Intercom / Chat Heads / Fitbod overlay / any type-5 bubble on Today or Train
+- Discord.com, DMs, workout auto-post, people rail / Top 8 / `/coaches`
+- Empty Studio, Message tab, Explore-as-shop, shop on Today or `/bundle`
+- Flip `PRIVATE_MODE`, invent traction, promote production
+- Counsel-hold PT / pregnancy / field-test copy
+- Change Start order
 
 ## Accept
 
 ```
-npx tsx --test src/lib/workout/editFinishedSession.test.ts src/lib/firstSetUngated.test.ts src/lib/today/leanDockStart.test.ts src/lib/workout/patchFinishedSuperset.test.ts src/lib/workout/patchFinishedSupersetSurface.test.ts src/lib/workout/patchFinishedSessionNote.test.ts src/lib/workout/patchFinishedSessionNoteSurface.test.ts
+npx tsx --test src/lib/social/isolation.test.ts src/lib/domainBoundary.test.ts src/lib/mobileNavTabs.test.ts src/lib/moreSheetTiers.test.ts src/lib/coach/weekWriter.test.ts src/lib/workout/honorSavedRoutine.test.ts
 npx tsc --noEmit
 npx tsx scripts/check-build-label.mjs
 ```

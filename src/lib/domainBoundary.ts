@@ -11,8 +11,10 @@
  *
  * So social comparison is not an off-brand tone problem, it is an
  * **input-integrity attack on the core algorithm**, and prose cannot fail a build.
- * `docs/IDENTITY_SOCIAL_PLAN.md` states the architecture; this module states it in
- * a form `domainBoundary.test.ts` can check.
+ * `docs/IDENTITY_SOCIAL_PLAN.md` states the standing architecture;
+ * `docs/IA_SKELETON.md` states the three product loops. This module states
+ * the Log↔Social crossing in a form `domainBoundary.test.ts` can check.
+ * Messenger-on-Today is `src/lib/social/isolation.test.ts`.
  *
  * ## Readers and emitters, not import direction
  *

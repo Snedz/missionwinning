@@ -1,12 +1,13 @@
 /**
  * Primary bottom/side tabs only — five Lucide icons.
  * MobileNav/Sidebar import this so they never pull MORE_NAV icons.
- * Wedge: Today · Train · Coach · Fuel · You (Track lives under More / profile).
+ * Registry: Today · Train · Coach · Fuel · You. Track lives under More / profile.
  *
  * PRIMARY_NAV stays the label/icon registry for these five routes — the rail
  * resolves `/profile` through it, so removing an entry here breaks
  * `railGroupsForNav()`. The mobile tab bar is a *subset* of it (below), not a
- * rewrite of it.
+ * rewrite of it. Locked rooms: docs/IA_SKELETON.md — do not add Message,
+ * Coach-the-human, or Studio here.
  */
 import type { LucideIcon } from 'lucide-react';
 import { Dumbbell, Home, Sparkles, User, UtensilsCrossed } from 'lucide-react';
@@ -30,8 +31,10 @@ export const PRIMARY_NAV: PrimaryNavItem[] = [
  * Candidate hrefs the mobile bar may show. Search is not a route.
  *
  * Cold chrome is Summary (`/log`) + Search. Train (`/active`) joins only
- * while a session is live. Coach and Fuel are Search rows — they are still
- * in PRIMARY_NAV so the desktop rail and labels stay one registry.
+ * while a session is live. Coach, Fuel, Builder, Library, and Messenger
+ * (`/server`) are Search / More rows — they stay in PRIMARY_NAV / MORE_NAV
+ * so the desktop rail and labels stay one registry. Never put `/server`
+ * here (IA_SKELETON GARAGE loop).
  */
 export const MOBILE_TAB_HREFS = ['/log', '/active'] as const;
 

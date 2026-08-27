@@ -3,7 +3,7 @@
 **Lane:** Product (plan) · **Horizon:** W for this document; every build phase gated individually below · **Status:** **plan only** — no code, no migrations, no schedules ship with this doc
 **Owns:** the `You` surface, athlete identity, the social boundary, and the contracts that keep the two apart
 **Does not own:** points, tiers, collectible economy, boards, arcade — those are [CLUB_PLAN.md](CLUB_PLAN.md). Read that first; this document never restates its numbers
-**Entry docs:** [CONTEXT.md](../CONTEXT.md) · [ORCHESTRATION.md](../ORCHESTRATION.md) · [vision.md](../vision.md) · [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) · research: [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9
+**Entry docs:** [CONTEXT.md](../CONTEXT.md) · [ORCHESTRATION.md](../ORCHESTRATION.md) · [vision.md](../vision.md) · [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) · [IA_SKELETON.md](IA_SKELETON.md) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) · research: [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9
 
 ---
 

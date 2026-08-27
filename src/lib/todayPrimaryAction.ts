@@ -103,6 +103,9 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
   });
 
   if (trainReady) {
+    // Dual-writer leak: saved notebook (incl. Builder save-all) beats Coach.
+    // Documented in honorSavedRoutine.ts + docs/IA_SKELETON.md §5. Do not
+    // reorder unless a test demands a comment. Not a join mechanic.
     const honored = pickHonoredStart({ saved: savedWorkouts, history });
     if (honored) {
       startWorkout(honored.name, applyDose(honored.exercises), honored.id);

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1052` Revert Patreon costume, restore wireframe (from master `.1051` `49dfe6def778dbc632903f3e12ec27e3400b6658`; stamp stays `.1052`; www + signed-in chrome restored to the `.1050` modernist wireframe). */
-export const APP_BUILD_LABEL = "2026.07-unified.1052";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1053` Product IA skeleton (from master `.1052` `895d940daebdf8f10f6a041360d7478f81492a05`; stamp stays `.1053`; docs + isolation only; no costume). */
+export const APP_BUILD_LABEL = "2026.07-unified.1053";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

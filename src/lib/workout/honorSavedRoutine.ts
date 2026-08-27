@@ -4,6 +4,13 @@
  * `.960`. One named routine they typed, finished, or picked from History.
  * Start uses the notebook. Logs still fill the set-row cite. Empty invents
  * nothing. Does not invent a week, a freestyle session, or a catalog shop.
+ *
+ * Dual-writer leak (documented `.1053`, not a join): Builder
+ * `saveAllProgramSessions` writes program days into `savedWorkouts`.
+ * Today's Start calls `pickHonoredStart` before `loadCoachTodayOptional`,
+ * so a saved notebook beats Coach. Do not bless that as Join. Do not
+ * change Start order unless a test demands a comment.
+ * See docs/IA_SKELETON.md §5.
  */
 
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';

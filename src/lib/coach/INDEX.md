@@ -11,7 +11,7 @@
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only at the set-weight layer; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit` (`loadZone` reaches here from context), `mapToCalendar`. `high` inserts one extra recovery day after the strain rules (same primitive as `strain ≥ 85`)
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
-7. `planEngine.ts` — `generateWeek`, `computeContextHash`
+7. `planEngine.ts` — `generateWeek`, `computeContextHash`. Only product caller: `src/hooks/useCoachPlan.ts` (`weekWriter.test.ts`, docs/IA_SKELETON.md WEEK loop).
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI

@@ -10,6 +10,9 @@
  *   Pillars — Move · Mind · Track · Learn
  *   You     — Profile · Messenger · Account
  *
+ * Messenger (`/server`) is the GARAGE loop door — never a dock tab
+ * (docs/IA_SKELETON.md). Studio is unbuilt. Do not add a Message row.
+ *
  * Quiet foot links stay for legal/meta (not full rows). Bundle is a shop
  * panel in MoreSheet; live checkout stays muted while free-beta is on.
  *

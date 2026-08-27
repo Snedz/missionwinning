@@ -38,6 +38,8 @@
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) | Frozen `.752` messenger (MSN rooms + presence; continues #518) |
+| [IA_SKELETON.md](IA_SKELETON.md) | Locked product IA — three loops, existing rooms, refuse list |
+| [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Chip floorplan — dies, buses, critical path, dual pads |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
@@ -148,6 +150,8 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |
 | [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) | The `You` surface · Athlete Page · the Log↔Social domain boundary and its contracts |
+| [IA_SKELETON.md](IA_SKELETON.md) | Locked product IA — LOG / WEEK / GARAGE loops, existing room map, refuse list |
+| [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Chip floorplan — dies, buses, critical path, dual pads |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
