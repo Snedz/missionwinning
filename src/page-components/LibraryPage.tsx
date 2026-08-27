@@ -311,9 +311,9 @@ export function LibraryPage() {
 
         <p className="text-xs text-muted-foreground">
           {t('libraryShowingCount', {
-            shown: filtered.length,
-            total: visibleCatalog.length,
-            defaultValue: `Showing ${filtered.length} of ${visibleCatalog.length}`,
+            shown: visibleExercises.length,
+            total: filtered.length,
+            defaultValue: `Showing ${visibleExercises.length} of ${filtered.length}`,
           })}
         </p>
       </div>

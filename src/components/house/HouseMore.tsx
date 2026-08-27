@@ -23,7 +23,7 @@ const QUIET = [
   { href: '/track', labelKey: 'navTrack', label: 'Track' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn' },
   { href: '/feedback', labelKey: 'navFeedback', label: 'Feedback' },
-  { href: '/server', labelKey: 'navServer', label: 'Garage' },
+  { href: '/server', labelKey: 'navGarage', label: 'Garage' },
 ] as const;
 
 type Props = {

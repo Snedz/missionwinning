@@ -14,6 +14,7 @@ import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePlannedMissOffer } from '@/hooks/usePlannedMissOffer';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { TodayReentryCard } from '@/components/today/TodayReentryCard';
 import { TodayPlannedMissPrompt } from '@/components/today/TodayPlannedMissPrompt';
@@ -118,6 +119,7 @@ export function TodayDesk() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
+  const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
   const startCoach = useStartCoachSession();
   const [snap, setSnap] = useState<DeskSnap | null>(() =>
     typeof window === 'undefined' ? null : readDeskSnap()
@@ -200,12 +202,12 @@ export function TodayDesk() {
   };
 
   const sessionTitle = hasActiveWorkout
-    ? t('navTrain', { defaultValue: 'Train' })
+    ? liveName || t('navTrain', { defaultValue: 'Train' })
     : copy
       ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
       : t('todayStartCta', { defaultValue: 'Start' });
   const sessionLede = hasActiveWorkout
-    ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
+    ? t('todayStartCta', { defaultValue: 'Start' })
     : copy
       ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
       : t('todayStartCta', { defaultValue: 'Start' });
