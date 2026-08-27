@@ -136,7 +136,7 @@ export function ServerPage() {
 
   if (!state || !channel) {
     return (
-      <div className="p-6">
+      <div className="house-garage p-6">
         <PillarPageHeader
           icon={MessageSquare}
           eyebrow={t('serverEyebrow', { defaultValue: 'Mission Server' })}
@@ -148,7 +148,7 @@ export function ServerPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="house-garage space-y-4">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <PillarPageHeader
           icon={MessageSquare}

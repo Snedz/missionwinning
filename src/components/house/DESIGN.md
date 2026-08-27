@@ -69,6 +69,8 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | You leftover | `.house-profile` | Quiet title stays. Account door is a ghost house button |
 | Fuel leftover | `.house-fuel` | Log stays first paint. Search / barcode / recipes stay in Show all |
 | Quiet More | `.house-move` `.house-mind` `.house-track` `.house-learn` | Quiet title stays. First paint unchanged. Extra tools in house-card Show all |
+| Feedback leftover | `.house-feedback` | Quiet title stays. Form is the first-paint object. One filled submit. Sign-in stays extra. |
+| Garage leftover | `.house-garage` | Quiet foot only. Never a rail. First paint unchanged. |
 | More leftover | `.house-more-panel` | Fuel / You / Account + quiet foot |
 
 ## Rooms (existing engines)

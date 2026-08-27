@@ -77,7 +77,14 @@ More leftovers Move / Mind / Track /
 Learn carry house-move / house-mind /
 house-track / house-learn. First paint
 unchanged; extra tools stay in
-house-card Show all.
+house-card Show all. Feedback leftover
+is `house-feedback`: quiet title stays,
+the form is the first-paint object, one
+filled submit, Sign-in stays extra.
+Garage leftover is `house-garage`: quiet
+foot only, never a rail, first paint
+unchanged. `/feedback` is 200 on this
+host; `/server` still 307 to `/private`.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate
