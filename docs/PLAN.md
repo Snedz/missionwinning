@@ -6,6 +6,71 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1054` v0 catalog labeling (2026-08-27)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1054` — from master
+> `.1053` (`84acabfea483f32d616decc4ce35381ce128125d`
+> — Product IA skeleton).
+> Stamp stays `.1054`. Docs + labels +
+> tests only. No costume. No CSS /
+> theme / `/private` / www /
+> nav-appearance edits. Do not add
+> rooms. Do not add a tab. Do not
+> add a shop. Do not rename
+> `/explore`. Do not change Start
+> order. Resume `.963` stays. Guest
+> path. First set stays ungated.
+> Today stays one Start. Do not
+> merge this PR yourself. Every
+> commit `[skip vercel]`. No
+> Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Brand: **Log a set. Offline.**
+
+Official catalog already exists:
+`/library` + `/builder`. Super
+Bundle deepens pro templates and
+never gates `logSet`. `/explore`
+is places (Decision 009), not a
+shop. `/programs` is education
+outlines, not the training
+catalog. Product-doc SoT is
+[IA_SKELETON.md](IA_SKELETON.md).
+Chip floorplan stays
+[FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md).
+Sequence: catalog paragraph →
+label fix if copy is wrong →
+tests → stop.
+
+### Done means
+
+- `docs/IA_SKELETON.md` has one
+  tight v0-catalog paragraph.
+- INDEX / FLOW point at rooms
+  without inventing a shop.
+- Library + Builder read as the
+  official catalog. Explore is
+  still places-only.
+- No primary-nav href for a shop
+  or `/coaches`. Isolation from
+  `.1053` still passes.
+- Zero visual diffs. No costume.
+  No `/private` restyle. No
+  `PRIVATE_MODE` flip. Live stays
+  `.696`.
+
+### Refuse
+
+Costume · `/private` restyle ·
+Studio · Message tab ·
+Explore-as-shop · education cards
+in Library · `PRIVATE_MODE`
+flip · promote off `.696`.
+
+---
+
 ## Frozen plan — `.1053` Product IA skeleton (2026-08-27)
 
 > **Frozen.** Implement only this section + root
