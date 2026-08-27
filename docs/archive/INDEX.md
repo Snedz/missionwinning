@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1037-for-1054.md](./log/LOG-rotate-1037-for-1054.md) | rotated 2026-08-27 for `.1054` v0 catalog labeling (`.1037`) |
 | [log/LOG-rotate-1036-for-1053.md](./log/LOG-rotate-1036-for-1053.md) | rotated 2026-08-27 for `.1053` Product IA skeleton (`.1036`) |
 | [log/LOG-rotate-1035-for-1052.md](./log/LOG-rotate-1035-for-1052.md) | rotated 2026-08-27 for `.1052` Revert Patreon costume, restore wireframe (`.1035`) |
 | [log/LOG-rotate-1051-for-1052.md](./log/LOG-rotate-1051-for-1052.md) | archived 2026-08-27 for `.1052` revert of squash PR #878 (`.1051`) |

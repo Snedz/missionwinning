@@ -1,7 +1,7 @@
 # Product IA skeleton
 
 **Status:** Locked. CoS freeze. Bones, not lipstick.  
-**Baseline:** web `2026.07-unified.1053`  
+**Baseline:** web `2026.07-unified.1054`  
 **Chip floorplan (not this file):** [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md)
 
 Pitch **Train + Mission Coach**. Free-forever offline logger. Week from **own logs**, no wearable. Today is one Start, not a feed.
@@ -30,6 +30,12 @@ Do not mint Studio. Do not add a Message tab. Do not name a shop Explore.
 
 ---
 
+## v0 catalog
+
+Official training catalog is `/library` + `/builder` — one catalog; Collection later = program/block. Super Bundle deepens pro templates and never gates `logSet`. `/explore` is the places pin-board (Decision 009), not a shop. `/programs` is education outlines, not the training catalog. Third-party SKUs get a new route later.
+
+---
+
 ## Isolation (must fail if broken)
 
 - Today / Train do not import social
@@ -49,4 +55,4 @@ Builder `saveAllProgramSessions` → `savedWorkouts` beats Coach on Today's Star
 
 ## Refuse
 
-No costume. No `/private` restyle. No `PRIVATE_MODE` flip. No promote off `.696`. No Studio, Message tab, or Explore-as-shop. v0 catalog labeling is a later PR.
+No costume. No `/private` restyle. No `PRIVATE_MODE` flip. No promote off `.696`. No Studio, Message tab, or Explore-as-shop.

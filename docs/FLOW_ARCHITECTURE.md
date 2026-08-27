@@ -50,7 +50,7 @@ Cold:  Summary /log │ Search (sheet)
 Live:  Summary /log │ Train /active │ Search (sheet)
 ```
 
-Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREFS` + `resolveMobileTabHrefs`. Coach, Fuel, Builder, Library, and Messenger (`/server`) are Search / More rows, not dock tabs. `PRIMARY_NAV` still registers You (`/profile`) for the rail. See [IA_SKELETON.md](IA_SKELETON.md).
+Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREFS` + `resolveMobileTabHrefs`. Coach, Fuel, Builder, Library, and Messenger (`/server`) are Search / More rows, not dock tabs. Library + Builder is the official training catalog; `/explore` is the places pin-board, not a shop. `PRIMARY_NAV` still registers You (`/profile`) for the rail. See [IA_SKELETON.md](IA_SKELETON.md).
 
 ### Desktop rail
 

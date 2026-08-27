@@ -1,6 +1,7 @@
 /**
- * Search is a field over existing rooms — not a new pillar.
- * Query empty → caller shows tiers. Query set → these matches.
+ * Search is a field over existing rooms — not a new pillar and not a shop.
+ * Library + Builder already are the official catalog. Query empty → caller
+ * shows tiers. Query set → these matches.
  */
 
 import type { SummaryPinId } from '@/lib/today/summaryPins';

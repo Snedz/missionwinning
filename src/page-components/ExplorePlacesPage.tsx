@@ -2,7 +2,8 @@
 /**
  * Page: /explore — optional GPS nearby + free-roam pin board.
  * Quiet door from Account / More. Not Today. Not the log path.
- * See: docs/places/PLAN.md, app/INDEX.md
+ * Not a shop. Not the training catalog (that is /library + /builder).
+ * See: docs/places/PLAN.md, docs/IA_SKELETON.md, app/INDEX.md.
  */
 
 import { useEffect, useMemo, useState } from 'react';
