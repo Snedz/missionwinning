@@ -180,3 +180,7 @@
 .ptn-hairline {
   border-color: var(--ptn-card-border);
 }
+
+.ptn-www-nav {
+  background: transparent;
+}

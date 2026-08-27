@@ -76,27 +76,30 @@ import {
       </div>
     </Section>
 
-    <!-- 04 HISTORY — checkable facts only, no traction. -->
-    <Section id="history">
-      <p class="eyebrow">History</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">The log is the record</h2>
-      <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.6] text-quiet">
-        Sets save on the device the moment you log them. Signal is optional; the log is not.
-      </p>
-      <dl class="mt-10 grid gap-4 sm:grid-cols-2">
-        {STATS.map((s) => (
-          <div class="ptn-card ptn-pad flex flex-col gap-3">
-            <dt class="ptn-name">{s.figure}</dt>
-            <dd class="ptn-quiet">{s.label}</dd>
-          </div>
-        ))}
-      </dl>
-      <figure class="ptn-photo-frame mt-8 ptn-pad" aria-label="History month — waiting for /photo/history-month">
-        <figcaption class="ptn-quiet">
-          History month — honest grey frame until /photo/history-month lands.
-        </figcaption>
-      </figure>
-    </Section>
+    <!-- 04 HISTORY — photograph as ground so composition stays over 35%. -->
+    <section id="history" class="stage on-dark flex min-h-[72svh] flex-col justify-end px-5 pb-14 pt-24 sm:px-8 lg:pb-20">
+      <StagePhoto
+        base="/photo/phone-bench"
+        alt="History month — slot for /photo/history-month. A phone on a bench until that file lands."
+        position="50% 55%"
+        drift
+      />
+      <div class="stage-body mx-auto w-full max-w-6xl">
+        <p class="eyebrow">History</p>
+        <h2 class="display-section mt-4 max-w-[24ch]">The log is the record</h2>
+        <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.5] text-quiet">
+          Sets save on the device the moment you log them. Signal is optional; the log is not.
+        </p>
+        <dl class="mt-10 grid gap-4 sm:grid-cols-2">
+          {STATS.map((s) => (
+            <div class="ptn-card ptn-pad flex flex-col gap-3 ground-paper">
+              <dt class="ptn-name">{s.figure}</dt>
+              <dd class="ptn-quiet">{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
 
     <!-- 05 ADAPT -->
     <Section id="adapt">
