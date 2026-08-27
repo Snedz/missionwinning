@@ -7,8 +7,6 @@ import { useTranslation } from 'react-i18next';
 const ROOM = [
   { href: '/account', labelKey: 'navAccount', label: 'Account' },
   { href: '/profile', labelKey: 'navYou', label: 'You' },
-  { href: '/history', labelKey: 'navHistory', label: 'History' },
-  { href: '/coach', labelKey: 'navCoach', label: 'Coach' },
 ] as const;
 
 export function AccountSidecar() {

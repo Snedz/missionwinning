@@ -67,7 +67,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Plan empty | `.house-empty` + dock | Invite on the sheet; Generate stays one filled action on `/coach` |
 | Builder start | `.house-builder` | Blank workout is the filled action. Saved rows are hairline items. Templates stay in Show all |
 | You leftover | `.house-profile` | Quiet title stays. Account door is a ghost house button |
-| Account leftover | `.house-account` | Quiet title stays. Sign-in / return / prefs stay first paint. Explore, more settings, and help are house-card objects |
+| Account leftover | `.house-account` | Quiet title stays. Sign-in / return / prefs stay first paint. Explore, more settings, and help are house-card objects. Sidecar leftover rooms only (Account / You). Never History or Coach on the right. |
 | Fuel leftover | `.house-fuel` | Log stays first paint. Search / barcode / recipes stay in Show all |
 | Quiet More | `.house-move` `.house-mind` `.house-track` `.house-learn` | Quiet title stays. First paint unchanged. Extra tools in house-card Show all |
 | Feedback leftover | `.house-feedback` | Quiet title stays. Form is the first-paint object. One filled submit. Sign-in stays extra. |

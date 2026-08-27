@@ -71,7 +71,11 @@ in Show all. Account leftover is
 `house-account`: quiet title stays,
 sign-in / return / prefs stay first
 paint, Explore / more settings / help
-are house-card. You leftover is
+are house-card. Sidecar leftover
+rooms are Account / You only —
+never History or Coach on the right.
+`/account` still 307 to `/private`
+on this host. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /
