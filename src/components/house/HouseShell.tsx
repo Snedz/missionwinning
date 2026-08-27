@@ -23,6 +23,7 @@ import { CatalogTabs } from './CatalogTabs';
 import { HouseGuide } from './HouseGuide';
 import { HouseIconRail } from './HouseIconRail';
 import { HouseMore } from './HouseMore';
+import { HousePaneProvider } from './HousePane';
 import { HouseSecondRail } from './HouseSecondRail';
 import {
   isHouseAccountPath,
@@ -71,6 +72,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   return (
     <JourneyGuard>
       <TooltipProvider delayDuration={300}>
+        <HousePaneProvider>
         <CommissioningCeremony />
         <JourneySyncBoot />
         <div
@@ -121,6 +123,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
           <HouseGuide />
           <HouseMore open={moreOpen} onClose={closeMore} />
         </div>
+        </HousePaneProvider>
       </TooltipProvider>
     </JourneyGuard>
   );

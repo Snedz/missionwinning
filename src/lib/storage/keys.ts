@@ -216,6 +216,12 @@ export const STORAGE_KEYS = {
   firstStepsDismissed: 'mw_first_steps_dismissed',
   /** House first-run popup. Checklist is separate and never owns Start. */
   houseGuideDismissed: 'mw_house_guide_dismissed',
+  /** Inferred: they opened the week pane or visited Coach. */
+  houseWeekOpened: 'mw_house_week_opened',
+  /** Inferred: they opened History after a finish. */
+  houseHistoryOpened: 'mw_house_history_opened',
+  /** Collapsed the persistent first-rooms checklist. */
+  houseChecklistCollapsed: 'mw_house_checklist_collapsed',
   /** D13 — last `APP_BUILD_LABEL` the athlete acknowledged in What’s New. */
   whatsNewSeenLabel: 'mw_whats_new_seen_label',
   betaContributor: 'mw_beta_contributor',

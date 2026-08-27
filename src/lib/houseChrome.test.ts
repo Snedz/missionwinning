@@ -121,19 +121,35 @@ test('checklist never owns Start, and house copy is not a pasted brand', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const startAt = src.indexOf('id="today-start"');
   const weekAt = src.indexOf('id="today-week"');
-  const stepsAt = src.indexOf('today-first-steps');
+  const stepsAt = src.indexOf('<HouseFirstRoomsCard');
   assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
-  assert.ok(stepsAt > weekAt, 'checklist sits under This week, not over Start');
+  assert.ok(stepsAt > startAt && stepsAt < weekAt, 'checklist sits under Start, before week');
+  assert.match(src, /snap \?/);
+  assert.doesNotMatch(src, /getFirstSteps|summarizeFirstSteps/);
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
   assert.match(guide, /houseGuideGotIt/);
   assert.match(guide, /today-start-ready/);
-  assert.match(src, /firstStepsCount/);
-  assert.match(src, /summarizeFirstSteps/);
+  assert.match(guide, /onClick=\{dismiss\}/);
+  assert.doesNotMatch(guide, /setStep|railStep|next =/);
+  const card = stripComments(read('src/components/house/HouseFirstRoomsCard.tsx'));
+  const rooms = stripComments(read('src/components/house/houseFirstRooms.ts'));
+  assert.match(card, /firstStepsCount/);
+  assert.match(card, /house-lock-tip/);
+  assert.match(rooms, /houseFirstLogTitle/);
+  assert.match(rooms, /Log a set/);
+  assert.match(rooms, /Open this week/);
+  assert.match(rooms, /Open History after a finish/);
+  const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
+  assert.match(second, /house-second-back/);
+  assert.match(second, /houseWeekPaneTitle/);
+  assert.match(second, /closePane/);
+  const more = stripComments(read('src/components/house/HouseMore.tsx'));
+  assert.match(more, /houseGarageLock/);
   for (const file of [...walkHouse(), 'src/page-components/TodayDesk.tsx']) {
     const text = stripComments(read(file));
     assert.doesNotMatch(
       text,
-      /Welcome to Patreon|Audience|Payouts|Publish page|Dashboard \/ Library/,
+      /Welcome to Patreon|Audience|Payouts|Publish page|Dashboard \/ Library|Ways to earn|Promote your|membership upsell/i,
       file
     );
   }

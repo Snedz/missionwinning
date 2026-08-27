@@ -35,6 +35,21 @@ const FIRST_STEPS_EN: Record<string, string> = {
   houseGuideGotIt: 'Got it',
   houseRoomWeeklyPlan: 'Weekly plan',
   firstStepsCount: '{{done}} of {{total}} complete',
+  houseFirstRoomsTitle: 'Your first rooms',
+  houseFirstLogTitle: 'Log a set',
+  houseFirstLogWhy: 'Type the number. That is the product.',
+  houseFirstWeekTitle: 'Open this week',
+  houseFirstWeekWhy: 'See the week Coach wrote from your logs.',
+  houseFirstHistoryTitle: 'Open History after a finish',
+  houseFirstHistoryWhy: 'After one finish, History is yours.',
+  houseFirstHistoryLock: 'Finish a session first — then History is yours.',
+  houseWeekPaneTitle: 'This week',
+  houseWeekPaneBlurb: 'Coach writes the next session from your logs.',
+  houseWeekPaneToday: 'Today on the canvas',
+  houseWeekPanePlan: 'Weekly plan',
+  houseGarageLock: 'Garage is later — Train and Today come first.',
+  houseGuideCollapse: 'Collapse',
+  houseGuideExpand: 'Expand',
 
   // The six steps. Each `Why` line is load-bearing: it is the difference
   // between a checklist someone finishes and a chore list they dismiss.

@@ -21,11 +21,17 @@ Icon rail 72 + second bar 264
 Start / This week / History /
 Weekly plan. Library: Library /
 Builder. Hover chips: Today,
-Train, Library, You, More. Got it
-coach-mark + checklist under the
-week (N of M, one row open).
-Honest Start (no dummy; lands
-`/active`). More is leftover.
+Train, Library, You, More. One
+Got it mark (dismiss only — no
+popup chain). Persistent
+checklist under Start (Log a set
+→ compose, Open this week →
+back-chevron pane, History after
+a finish — locked with a why-
+tooltip). Ticks from visits, not
+a chore list. Honest Start (no
+dummy; lands `/active`). More is
+leftover. Garage stays locked.
 Engines stay. Zero diffs on
 `/private`, landing, www.
 `[skip vercel]`. No `PRIVATE_MODE`

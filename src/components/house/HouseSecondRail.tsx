@@ -2,13 +2,14 @@
 
 /**
  * Adjacent second bar — left column next to the icon rail.
- * Not HouseMore on the far right. Not a following feed.
+ * Home rooms by default. A deeper step may replace this bar with a
+ * titled back-chevron pane. Not HouseMore on the far right.
  */
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { BookOpen, CalendarDays, Clock, Layers, Map, Play } from 'lucide-react';
+import { BookOpen, CalendarDays, ChevronLeft, Clock, Layers, Map, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   HOUSE_LIBRARY_ROOMS,
@@ -18,6 +19,7 @@ import {
   isHouseTodayFamilyPath,
   isHouseTodayPath,
 } from './houseNav';
+import { useHousePane } from './HousePane';
 
 const TODAY_ICONS = {
   start: Play,
@@ -34,6 +36,7 @@ const LIBRARY_ICONS = {
 export function HouseSecondRail() {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { pane, openPane, closePane } = useHousePane();
   const [hash, setHash] = useState('');
   const catalog = isHouseCatalogPath(pathname);
   const todayFamily = isHouseTodayFamilyPath(pathname);
@@ -46,6 +49,39 @@ export function HouseSecondRail() {
   }, [pathname]);
 
   if (!todayFamily && !catalog) return null;
+
+  if (!catalog && pane === 'week') {
+    const title = t('houseWeekPaneTitle', { defaultValue: 'This week' });
+    return (
+      <nav className="house-second" data-testid="house-second-rail" data-house-pane="week" aria-label={title}>
+        <div className="house-second-pane-head">
+          <button
+            type="button"
+            className="house-second-back"
+            data-testid="house-second-back"
+            aria-label={t('navToday', { defaultValue: 'Today' })}
+            onClick={closePane}
+          >
+            <ChevronLeft className="h-5 w-5" aria-hidden />
+          </button>
+          <div>
+            <h2 className="house-second-pane-title">{title}</h2>
+            <p className="house-second-pane-blurb">
+              {t('houseWeekPaneBlurb', { defaultValue: 'Coach writes the next session from your logs.' })}
+            </p>
+          </div>
+        </div>
+        <div className="house-second-nav">
+          <Link href="/log#today-week" className="house-second-link">
+            {t('houseWeekPaneToday', { defaultValue: 'Today on the canvas' })}
+          </Link>
+          <Link href="/coach" className="house-second-link">
+            {t('houseWeekPanePlan', { defaultValue: 'Weekly plan' })}
+          </Link>
+        </div>
+      </nav>
+    );
+  }
 
   const title = catalog
     ? t('navLibrary', { defaultValue: 'Library' })
@@ -70,6 +106,9 @@ export function HouseSecondRail() {
               className={`house-second-link${on ? ' is-on' : ''}`}
               aria-current={on ? 'page' : undefined}
               data-house-room={row.id}
+              onClick={() => {
+                if (row.id === 'week') openPane('week');
+              }}
             >
               <Icon className="h-4 w-4" aria-hidden />
               {t(row.labelKey, { defaultValue: row.label })}

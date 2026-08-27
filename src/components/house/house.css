@@ -712,7 +712,10 @@
 }
 
 .mw-house .house-check-row > button {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   width: 100%;
   min-height: 0;
   padding: 0;
@@ -725,8 +728,26 @@
   border-radius: 0;
 }
 
+.mw-house .house-check-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mw-house .house-check-mark {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: var(--house-muted);
+}
+
 .mw-house .house-check-row.is-done {
   color: var(--house-muted);
+}
+
+.mw-house .house-check-row.is-done .house-check-mark {
+  color: var(--house-ink);
 }
 
 .mw-house .house-check-why {
@@ -734,6 +755,88 @@
   margin-top: 6px;
   color: var(--house-muted);
   font-size: 13px;
+}
+
+.mw-house .house-lock {
+  position: relative;
+  display: inline-flex;
+}
+
+.mw-house .house-lock-tip {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 80;
+  padding: 8px 10px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 8px;
+}
+
+.mw-house .house-lock:hover .house-lock-tip,
+.mw-house .house-check-row.is-locked:hover .house-lock-tip,
+.mw-house .house-more-locked:hover .house-lock-tip,
+.mw-house .house-more-locked:focus-within .house-lock-tip {
+  opacity: 1;
+}
+
+.mw-house .house-second-pane-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mw-house .house-second-back {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+  border: 0;
+  background: transparent;
+  color: var(--house-ink);
+  cursor: pointer;
+  border-radius: var(--house-pill);
+}
+
+.mw-house .house-second-back:hover {
+  background: var(--house-chip);
+}
+
+.mw-house .house-second-pane-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mw-house .house-second-pane-blurb {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--house-muted);
+}
+
+.mw-house .house-more-locked {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--house-muted);
+  font-size: 13px;
+}
+
+.mw-house .house-first-rooms {
+  margin-top: 18px;
 }
 
 @media (min-width: 723px) {

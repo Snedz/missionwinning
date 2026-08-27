@@ -6,6 +6,7 @@ import { BookOpen, Home, MoreVertical, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
+import { useHousePane } from './HousePane';
 import { HOUSE_RAIL_HREFS, housePathActive } from './houseNav';
 
 type Props = {
@@ -25,6 +26,7 @@ function RailTip({ label, floor }: { label: string; floor?: boolean }) {
 export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: Props) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { closePane } = useHousePane();
   const live = useActiveWorkoutPulse();
   const cls = floor ? 'house-floor' : 'house-rail';
   const todayLabel = t('navToday', { defaultValue: 'Today' });
@@ -61,6 +63,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
             href={HOUSE_RAIL_HREFS.home}
             className="house-rail-mark"
             aria-label={todayLabel}
+            onClick={closePane}
           >
             <BrandMonogram className="h-7 w-7 text-sm" />
             <RailTip label={todayLabel} />
@@ -77,6 +80,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
               aria-label={label}
               aria-current={on ? 'page' : undefined}
               className={`house-rail-btn${plus ? ' house-rail-plus' : ''}${on ? ' is-on' : ''}`}
+              onClick={href === HOUSE_RAIL_HREFS.home ? closePane : undefined}
             >
               <Icon className="h-5 w-5" aria-hidden />
               {href === HOUSE_RAIL_HREFS.train && live ? (

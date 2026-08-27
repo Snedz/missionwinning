@@ -21,8 +21,9 @@ const QUIET = [
   { href: '/track', labelKey: 'navTrack', label: 'Track' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn' },
   { href: '/feedback', labelKey: 'navFeedback', label: 'Feedback' },
-  { href: '/server', labelKey: 'navGarage', label: 'Garage' },
 ] as const;
+
+const LATER = [{ href: '/server', labelKey: 'navGarage', label: 'Garage' }] as const;
 
 type Props = {
   open: boolean;
@@ -57,6 +58,16 @@ export function HouseMore({ open, onClose }: Props) {
             <Link key={row.href} href={row.href} onClick={onClose}>
               {t(row.labelKey, { defaultValue: row.label })}
             </Link>
+          ))}
+          {LATER.map((row) => (
+            <span key={row.href} className="house-more-locked">
+              {t(row.labelKey, { defaultValue: row.label })}
+              <span className="house-lock">
+                <span className="house-lock-tip" role="tooltip">
+                  {t('houseGarageLock', { defaultValue: 'Garage is later — Train and Today come first.' })}
+                </span>
+              </span>
+            </span>
           ))}
         </div>
       </div>
