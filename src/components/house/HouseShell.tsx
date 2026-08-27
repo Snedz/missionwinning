@@ -126,17 +126,29 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
                 moreOpen={moreOpen}
               />
             )}
-            {dock ? <HouseSecondRail dock={dock} /> : null}
-            <div className={`house-stage${compose || train ? ' is-compose' : ''}`}>
-              <main className="house-canvas">
-                <div className={padClass} data-house-transferred={transferred ? '1' : undefined}>
-                  {canvasTitle ? <h1 className="sr-only">{canvasTitle}</h1> : null}
-                  <PageTransition>{children}</PageTransition>
+            {compose ? (
+              <div className="house-stage is-compose">
+                <main className="house-canvas">
+                  <div className={padClass}>
+                    <PageTransition>{children}</PageTransition>
+                  </div>
+                </main>
+                {train ? <TrainSidecar /> : null}
+              </div>
+            ) : (
+              <div className={`house-sheet${dock ? ' is-second' : ''}`}>
+                {dock ? <HouseSecondRail dock={dock} /> : null}
+                <div className="house-stage">
+                  <main className="house-canvas">
+                    <div className={padClass} data-house-transferred={transferred ? '1' : undefined}>
+                      {canvasTitle ? <h1 className="sr-only">{canvasTitle}</h1> : null}
+                      <PageTransition>{children}</PageTransition>
+                    </div>
+                  </main>
+                  {account ? <AccountSidecar /> : null}
                 </div>
-              </main>
-              {train ? <TrainSidecar /> : null}
-              {account ? <AccountSidecar /> : null}
-            </div>
+              </div>
+            )}
           </div>
           <div id={SCREEN_DOCK_HOST_ID} className="house-dock" />
           <div id={CONSENT_BANNER_HOST_ID} className="house-consent" />

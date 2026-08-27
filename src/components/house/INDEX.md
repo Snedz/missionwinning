@@ -4,7 +4,7 @@
 
 | File | Purpose |
 |------|---------|
-| `HouseShell.tsx` | Root signed-in chrome. Journey sync + outbox drain stay mounted. |
+| `HouseShell.tsx` | Root signed-in chrome. Journey sync + outbox drain stay mounted. Desktop wraps second + canvas in `.house-sheet`. |
 | `HouseIconRail.tsx` | Left icon rail (desktop) and floor icons (compact). Account avatar + hover labels. |
 | `HouseSecondRail.tsx` | Left column next to the icon rail (`grid-column: 2`). Home rooms or Library objects. Week pane is the real week + `/coach` (`generateWeek`). Not More. |
 | `HousePane.tsx` | Pane context + visit ticks (week / History). Home click closes the pane. |

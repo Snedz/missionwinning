@@ -15,13 +15,17 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-faint` | `#a1a1aa` | Disabled |
 | `--house-line` | `#e4e4e7` | 1px hairline |
 | `--house-soft` | `#fafafa` | Soft fill |
-| `--house-chip` | `#f4f4f5` | Hover / selected row |
+| `--house-chip` | `#f4f4f5` | Hover fill |
+| `--house-selected` | `#eeeeee` | Selected row / rail mark |
 | `--house-press` | `#18181b` | Primary pill |
 | `--house-press-ink` | `#fafafa` | Text on press |
 | `--house-live` | `#ae1800` | Train pulse only |
 | `--house-radius` | `16px` | Cards |
 | `--house-radius-sm` | `10px` | Inputs / small |
-| `--house-pill` | `999px` | Buttons, second-bar rows, chips |
+| `--house-radius-row` | `12px` | Second-bar rows |
+| `--house-radius-rail` | `8px` | Rail marks, filters, empty CTA |
+| `--house-radius-sheet` | `12px` | White panel wrapping second + canvas |
+| `--house-pill` | `999px` | Primary buttons, plus circle |
 | `--house-rail` | `72px` | Icon column |
 | `--house-second` | `264px` | Adjacent bar |
 | `--house-side` | `300px` | Sidecar |
@@ -37,9 +41,9 @@ Inherited shadcn tokens inside `.mw-house` remap to the same white / zinc / 1rem
 
 ## Layout
 
-Desktop `≥723px`: `grid-template-columns: 72 + second-width + 1fr`. Home and Library set `--house-second-w: 264px`. Train compose is one column. Compact `<723` hides rail and second bar; floor icons stay.
+Desktop `≥723px`: frame is `72 + 1fr` on a grey stage. Second bar and canvas sit in one white `.house-sheet` (`12px` radius, `8px` inset on top/right/bottom, flush to the rail). Home and Library set `--house-second-w: 264px` inside that sheet. Train compose is one column, no sheet. Compact `<723` uses `display: contents` on the sheet so rail and second bar stay hidden; floor icons stay.
 
-Second bar is **column 2**, immediately right of the rail. Never a far-right Home sheet. More leftover may stay a right sheet.
+Second bar is **column 1 of the sheet**, immediately right of the rail. Never a far-right Home sheet. More leftover may stay a right sheet.
 
 ## Motion
 
@@ -49,9 +53,11 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 
 | Piece | Class | Rule |
 |-------|--------|------|
-| Icon rail | `.house-rail` | 48px marks, hover chip to the **right** |
+| Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
+| Train plus | `.house-rail-plus` | Desktop: 40×40 white circle, 1px line, no shadow. Click `/active`. |
 | Hover chip | `.house-rail-tip` | Black, 13px, 8px radius |
-| Second bar | `.house-second` | Kicker + pill rows; pane has back chevron |
+| Sheet | `.house-sheet` | White 12px panel wrapping second + canvas |
+| Second bar | `.house-second` | Kicker + 12px rows, selected `#eee`; pane has back chevron |
 | Card | `.house-card` | Paper, 1px line, 16px radius |
 | Primary | `.house-btn-primary` | Black pill. One filled action |
 | Guide | `.house-guide` | One Got it. No chain |

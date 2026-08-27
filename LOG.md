@@ -34,8 +34,18 @@ Garage) keeps a quiet house
 title. House design system
 (`src/components/house/DESIGN.md`)
 locks white / zinc / 16px / black
-pills / 72+264. Second-bar rows
-stagger 40ms; selected row is ink.
+pills / 72+264. Desktop wraps the
+second bar and canvas in one white
+12px sheet on a grey stage (8px
+inset, flush to the rail). Compact
+unwraps the sheet (`display:
+contents`). Second-bar rows are
+12px, selected `#eee`. Rail
+selected is 48×48 / 8px / `#eee`.
+Train plus is a 40px white circle
+with a 1px line (no shadow); click
+is still `/active`. Library filter
+and empty use house objects.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate

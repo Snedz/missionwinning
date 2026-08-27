@@ -77,12 +77,14 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(shell, /data-house-frame=\{dock \? 'second-left' : 'rail'\}/);
   assert.match(shell, /onOpenHome=\{openHome\}/);
   assert.match(shell, /onOpenLibrary=\{openLibrary\}/);
+  assert.match(shell, /house-sheet/);
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-rail:\s*72px/);
   assert.match(css, /--house-second:\s*264px/);
   assert.match(css, /min-width:\s*723px/);
   assert.match(css, /max-width:\s*722px/);
   assert.match(css, /\.house-second/);
+  assert.match(css, /\.house-sheet/);
   assert.match(css, /\.house-rail-tip/);
   assert.match(css, /font-size:\s*13px/);
   assert.match(css, /rgba\(0,\s*0,\s*0,\s*0\.6\)/);
@@ -93,7 +95,11 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(css, /house-second-in/);
   assert.match(
     css,
-    /grid-template-columns:\s*var\(--house-rail\)\s+var\(--house-second-w\)/
+    /grid-template-columns:\s*var\(--house-rail\)\s+minmax\(0,\s*1fr\)/
+  );
+  assert.match(
+    css,
+    /grid-template-columns:\s*var\(--house-second-w\)\s+minmax\(0,\s*1fr\)/
   );
   assert.match(css, /\.house-frame\.is-second \{[\s\S]*--house-second-w:\s*var\(--house-second\)/);
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
@@ -220,7 +226,8 @@ test('second bar is a left column next to the rail — never a far-right sheet',
     assert.doesNotMatch(block, /position\s*:\s*fixed/);
     assert.doesNotMatch(block, /inset\s*:/);
   }
-  assert.match(css, /\.house-second[\s\S]*grid-column:\s*2/);
+  assert.match(css, /\.house-sheet\.is-second > \.house-stage \{[\s\S]*grid-column:\s*2/);
+  assert.match(css, /\.house-second \{[\s\S]*grid-column:\s*1/);
   const moreCss = [...css.matchAll(/\.mw-house \.house-more-panel\s*\{([^}]+)\}/g)].map((m) => m[1] ?? '');
   assert.ok(moreCss.some((block) => /right\s*:\s*0/.test(block)), 'More leftover may stay a right sheet');
   const rail = stripComments(read('src/components/house/HouseIconRail.tsx'));
@@ -310,6 +317,18 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /--house-rail:\s*72px/);
   assert.match(css, /--house-second:\s*264px/);
   assert.match(css, /--house-radius:\s*16px/);
+  assert.match(css, /--house-radius-row:\s*12px/);
+  assert.match(css, /--house-radius-rail:\s*8px/);
+  assert.match(css, /--house-radius-sheet:\s*12px/);
+  assert.match(css, /--house-selected:\s*#eeeeee/);
   assert.match(css, /--house-live:\s*#ae1800/);
+  assert.match(css, /\.house-rail \.house-rail-plus \{[\s\S]*width:\s*40px/);
+  assert.match(css, /\.house-empty/);
+  assert.match(css, /\.house-filter-bar/);
+  const library = read('src/page-components/LibraryPage.tsx');
+  assert.match(library, /house-empty/);
+  assert.match(library, /house-filter-bar/);
+  assert.match(spec, /--house-radius-sheet/);
+  assert.match(spec, /--house-selected/);
 });
 

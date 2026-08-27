@@ -231,7 +231,7 @@ export function LibraryPage() {
           </ul>
         </div>
       ) : null}
-      <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
+      <div className="house-filter-bar space-y-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -239,13 +239,13 @@ export function LibraryPage() {
               placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
               value={filters.query}
               onChange={(e) => setFilter('query', e.target.value)}
-              className="min-h-[44px] pl-9"
+              className="min-h-[40px] pl-9"
             />
           </div>
           <Button
             type="button"
             variant="outline"
-            className="shrink-0 min-h-[44px] gap-1.5"
+            className="house-filter-btn shrink-0 gap-1.5"
             onClick={() => setFiltersOpen(true)}
           >
             <SlidersHorizontal className="h-4 w-4" />
@@ -510,6 +510,7 @@ export function LibraryPage() {
 
       {filtered.length === 0 && (
         <EmptyState
+          className="house-empty"
           icon={Dumbbell}
           title={t('libraryNoResultsTitle', { defaultValue: 'Nothing matches' })}
           description={t('libraryNoResults', {
