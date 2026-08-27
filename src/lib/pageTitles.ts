@@ -19,6 +19,7 @@ export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: stri
   '/fitness-test': { label: 'Fitness test', labelKey: 'pftPageTitle' },
   '/learn/guide': { label: 'Guidebook', labelKey: 'guidebookTitle' },
   '/server': { label: 'Messenger', labelKey: 'navServer' },
+  '/crew': { label: 'Crew', labelKey: 'navCrew' },
   '/assessments': { label: 'Health screen', labelKey: 'assessTitle' },
 };
 
@@ -40,6 +41,7 @@ export const ROUTE_LABELS: { href: string; label: string; labelKey: string }[] =
   { href: '/history', labelKey: 'navHistory', label: 'History' },
   { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
   { href: '/server', labelKey: 'navServer', label: 'Messenger' },
+  { href: '/crew', labelKey: 'navCrew', label: 'Crew' },
   { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests' },
   { href: '/assessments', labelKey: 'navHealth', label: 'Health screen' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },

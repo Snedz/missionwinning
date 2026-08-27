@@ -73,6 +73,8 @@ Mapped onto existing rooms only — do not mint:
 
 Refuse (do not implement): `/home` following feed · `/explore` creator discovery + Recommendations (MW `/explore` stays places) · chats / notifications on home · public creator page + Publish page · comments, likes, reshares, gifting · paywall / upgrade-to-unlock as identity.
 
+`/crew` is a More → You ops room (charters + founder gate). Not a named athlete room. Not a tab. Never first paint on Today.
+
 ---
 
 ## Known leak (comment only)

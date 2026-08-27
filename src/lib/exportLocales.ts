@@ -38,6 +38,7 @@ import { rewardsStringsFor } from '@/i18n/rewardsLocales';
 import { placesStringsFor } from '@/i18n/placesLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
 import { serverStringsFor } from '@/i18n/serverLocales';
+import { crewStringsFor } from '@/i18n/crewLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
 import type { LocaleNamespace } from '@/i18n/localeExportManifest';
@@ -292,6 +293,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'server',
     filename: 'server.json',
     stringsFor: packWrap(serverStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'crew',
+    filename: 'crew.json',
+    stringsFor: packWrap(crewStringsFor),
     langs: EXPORT_LANGS,
   },
 ];

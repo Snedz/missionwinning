@@ -82,6 +82,7 @@
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
+| `CrewPage.tsx` | `/crew` — crew board + founder gate. More only. Not a rail icon. Not Today. |
 | `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
 | `ExplorePlacesPage.tsx` | `/explore` — places pin-board (Decision 009; quiet; not Today; not a shop) |
 | `PrivacyPage.tsx` | `/privacy` |

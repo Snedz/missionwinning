@@ -51,6 +51,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
+  const crew = pathname === '/crew' || pathname.startsWith('/crew/');
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
 
   const padClass = compose || train
     ? 'house-canvas-pad is-flush'
-    : catalog || account
+    : catalog || account || crew
       ? 'house-canvas-pad is-wide'
       : 'house-canvas-pad';
 

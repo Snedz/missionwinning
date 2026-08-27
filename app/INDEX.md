@@ -52,6 +52,7 @@
 | `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
 | `/programs` | `ProgramsPage.tsx` | Education outlines (ISSA-style merch), not nSuns, not the training catalog. |
 | `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). Signed-in rooms persist. More → You. Not a tab. `robots: noindex` |
+| `/crew` | `CrewPage.tsx` | Crew board + founder gate. More → You. Never a rail icon. Never Today. `robots: noindex` |
 
 ### Outside `(app)` group
 

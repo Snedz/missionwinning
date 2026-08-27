@@ -8,7 +8,7 @@
  *
  *   Wedge   — History · Library · Builder (PAR-Q is coach-generate intake)
  *   Pillars — Move · Mind · Track · Learn
- *   You     — Profile · Messenger · Account
+ *   You     — Profile · Messenger · Crew · Account
  *
  * Library + Builder is the official training catalog (docs/IA_SKELETON.md).
  * `/explore` in the quiet foot is the places pin-board — not a shop.
@@ -63,7 +63,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile', '/server', '/account'],
+    hrefs: ['/profile', '/server', '/crew', '/account'],
   },
 ];
 

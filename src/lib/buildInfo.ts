@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1056` from-scratch Patreon-class signed-in house (from master `.1055` `e44351c3`; stamp stays `.1056`; visual only; do not merge or promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1056";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1057` crew board + founder gate (from house `.1056` `2b609256`; visual only; do not merge or promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1057";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -222,6 +222,18 @@ test('/server is More → You, never rail or tab', () => {
   assert.ok(!tabHrefs.includes('/server'));
 });
 
+test('/crew is More → You, never rail or tab or Today', () => {
+  const railHrefs = RAIL_GROUPS.flatMap((g) => g.hrefs);
+  assert.ok(!railHrefs.includes('/crew'), '/crew must not be a rail href');
+  const house = read('src/components/house/houseNav.ts');
+  assert.ok(house !== null, 'houseNav moved');
+  assert.doesNotMatch(house, /['"]\/crew['"]/, '/crew must not be a house rail href');
+  assert.ok(!MOBILE_TAB_HREFS.includes('/crew' as never));
+  const more = read('src/components/house/HouseMore.tsx');
+  assert.ok(more !== null);
+  assert.match(more, /['"]\/crew['"]/);
+});
+
 test('Coach and Garage do not share a store or badge key', () => {
   assert.notEqual(STORAGE_KEYS.missionServer, STORAGE_KEYS.coachPlan);
   assert.equal(STORAGE_KEYS.missionServer, 'mw_mission_server');

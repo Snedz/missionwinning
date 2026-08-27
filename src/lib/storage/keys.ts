@@ -68,6 +68,8 @@ export const STORAGE_KEYS = {
   athletePrivateNote: 'mw_athlete_private_note',
   /** Mission Server messenger — rooms, messages, local presence. */
   missionServer: 'mw_mission_server',
+  /** Crew board + founder gate. Device-local. More only. */
+  crewBoard: 'mw_crew_board',
   defaultRestSec: 'mw_default_rest_sec',
   /**
    * `.715` / `.995` — last chosen rest per exercise id. A stored number is

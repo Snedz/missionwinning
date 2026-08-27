@@ -6,7 +6,7 @@
 |------|---------|
 | `HouseShell.tsx` | Root signed-in chrome. Journey sync + outbox drain stay mounted. |
 | `HouseIconRail.tsx` | Left icon rail (desktop) and floor icons (compact). Account avatar on the rail. |
-| `HouseMore.tsx` | Rest of the house. Not the WEDGE MoreSheet. `/server` is a quiet foot only. |
+| `HouseMore.tsx` | Rest of the house. Not the WEDGE MoreSheet. `/server` is a quiet foot. `/crew` is a room row. |
 | `houseNav.ts` | Rail hrefs. `/server` is never here. |
 | `house.css` | House visual language, scoped to `.mw-house`. |
 | `TodayDesk` | Lives in `src/page-components/TodayDesk.tsx` — one Start, week as work. |

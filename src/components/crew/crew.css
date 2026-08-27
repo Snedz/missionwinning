@@ -1,0 +1,315 @@
+/**
+ * Crew room — house tokens only. Scoped under .mw-house.
+ * Not a second costume. Not a clinic.
+ */
+
+.mw-house .crew-room {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100%;
+  background-image:
+    linear-gradient(var(--house-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--house-line) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-color: var(--house-soft);
+  padding: 10px 2px 24px;
+}
+
+.mw-house .crew-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--house-paper);
+  border: 1px solid var(--house-line);
+  border-radius: var(--house-radius);
+}
+
+.mw-house .crew-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--house-chip);
+  border-radius: var(--house-pill);
+  white-space: nowrap;
+}
+
+.mw-house .crew-pill.is-hot {
+  background: var(--house-ink);
+  color: var(--house-paper);
+}
+
+.mw-house .crew-pill.is-live {
+  background: var(--house-live);
+  color: var(--house-paper);
+}
+
+.mw-house .crew-pill.is-line {
+  background: transparent;
+  border: 1px solid var(--house-ink);
+}
+
+.mw-house .crew-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 1100px) {
+  .mw-house .crew-body {
+    grid-template-columns: minmax(0, 1.4fr) 320px;
+    align-items: start;
+  }
+}
+
+.mw-house .crew-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 860px) {
+  .mw-house .crew-board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mw-house .crew-seat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 168px;
+  padding: 12px 12px 10px;
+  text-align: left;
+  background: var(--house-paper);
+  border: 1px solid var(--house-line);
+  border-radius: var(--house-radius);
+  color: inherit;
+  cursor: pointer;
+}
+
+.mw-house .crew-seat.is-on {
+  border-color: var(--house-ink);
+}
+
+.mw-house .crew-seat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mw-house .crew-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--house-pill);
+  background: var(--house-chip);
+}
+
+.mw-house .crew-dot.is-on {
+  background: var(--house-ink);
+}
+
+.mw-house .crew-seat h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mw-house .crew-line {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--house-muted);
+}
+
+.mw-house .crew-line strong {
+  display: block;
+  color: var(--house-faint);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mw-house .crew-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 28px;
+  margin-top: auto;
+}
+
+.mw-house .crew-bar {
+  width: 6px;
+  border-radius: var(--house-pill);
+  background: var(--house-chip);
+}
+
+.mw-house .crew-bar.is-on {
+  background: var(--house-ink);
+}
+
+.mw-house .crew-bar.is-live {
+  background: var(--house-live);
+}
+
+.mw-house .crew-editor,
+.mw-house .crew-side > * {
+  background: var(--house-paper);
+  border: 1px solid var(--house-line);
+  border-radius: var(--house-radius);
+  padding: 14px 14px 12px;
+}
+
+.mw-house .crew-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mw-house .crew-kicker {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--house-muted);
+}
+
+.mw-house .crew-editor h2,
+.mw-house .crew-gate h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mw-house .crew-fields {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.mw-house .crew-fields label {
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--house-muted);
+}
+
+.mw-house .crew-fields input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-soft);
+  color: var(--house-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mw-house .crew-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .crew-actions .house-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mw-house .crew-agent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mw-house .crew-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mw-house .crew-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.mw-house .crew-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--house-ink);
+}
+
+.mw-house .crew-note span {
+  color: var(--house-muted);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.mw-house .crew-gate {
+  border-color: var(--house-ink);
+}
+
+.mw-house .crew-hold {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-top: 1px solid var(--house-line);
+}
+
+.mw-house .crew-hold-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mw-house .crew-hold strong {
+  font-size: 13px;
+}
+
+.mw-house .crew-meter {
+  height: 6px;
+  background: var(--house-chip);
+  border-radius: var(--house-pill);
+}
+
+.mw-house .crew-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--house-ink);
+  border-radius: var(--house-pill);
+}
+
+.mw-house .crew-warn {
+  margin: 8px 0 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--house-live);
+}

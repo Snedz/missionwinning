@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1040-for-1057.md](./log/LOG-rotate-1040-for-1057.md) | rotated 2026-08-27 for `.1057` crew board + founder gate (`.1040`) |
 | [log/LOG-rotate-1039-for-1056.md](./log/LOG-rotate-1039-for-1056.md) | rotated 2026-08-27 for `.1056` from-scratch Patreon-class house (`.1039`) |
 | [log/LOG-rotate-1038-for-1055.md](./log/LOG-rotate-1038-for-1055.md) | rotated 2026-08-27 for `.1055` later-door object model + isolation holds (`.1038`) |
 | [log/LOG-rotate-1037-for-1054.md](./log/LOG-rotate-1037-for-1054.md) | rotated 2026-08-27 for `.1054` v0 catalog labeling (`.1037`) |

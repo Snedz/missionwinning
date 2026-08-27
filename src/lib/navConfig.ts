@@ -15,6 +15,7 @@ import {
   PenTool,
   Settings,
   Shield,
+  ShieldCheck,
   Sparkles,
   Trophy,
   Wind,
@@ -154,6 +155,15 @@ export const MORE_NAV: NavLinkItem[] = [
     descriptionKey: 'moreServerDesc',
     description: 'Rooms on this device',
     // More → You only. Never a dock tab. docs/IA_SKELETON.md GARAGE loop.
+  },
+  {
+    href: '/crew',
+    labelKey: 'navCrew',
+    label: 'Crew',
+    icon: ShieldCheck,
+    descriptionKey: 'moreCrewDesc',
+    description: 'Charters and the founder gate',
+    // More → You only. Never a rail icon. Never Today.
   },
   {
     href: '/account',

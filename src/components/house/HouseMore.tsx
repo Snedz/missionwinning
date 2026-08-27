@@ -13,6 +13,7 @@ const ROOMS = [
   { href: '/history', labelKey: 'navHistory', label: 'History' },
   { href: '/coach', labelKey: 'navCoach', label: 'Weekly plan' },
   { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel' },
+  { href: '/crew', labelKey: 'navCrew', label: 'Crew' },
   { href: '/profile', labelKey: 'navYou', label: 'You' },
   { href: '/account', labelKey: 'navAccount', label: 'Account' },
 ] as const;

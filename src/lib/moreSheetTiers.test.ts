@@ -28,7 +28,7 @@ test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   assert.ok(wedge.hrefs.includes('/coach'), 'Coach is Search, not a tab');
   assert.ok(wedge.hrefs.includes('/nutrition'), 'Fuel is Search, not a tab');
   const you = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'you')!;
-  assert.deepEqual([...you.hrefs], ['/profile', '/server', '/account']);
+  assert.deepEqual([...you.hrefs], ['/profile', '/server', '/crew', '/account']);
 });
 
 test('resolved tiers exclude only live tabs', () => {

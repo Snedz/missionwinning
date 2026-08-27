@@ -41,7 +41,7 @@ test('house chrome does not revive the field-manual rail or #885 groups', () => 
 test('icon rail is Today / Train / Library / Account — never /server or a feed', () => {
   assert.deepEqual(Object.values(HOUSE_RAIL_HREFS), ['/log', '/active', '/library', '/account']);
   const nav = stripComments(read('src/components/house/houseNav.ts'));
-  assert.doesNotMatch(nav, /['"]\/server['"]|['"]\/explore['"]|['"]\/coaching['"]/);
+  assert.doesNotMatch(nav, /['"]\/server['"]|['"]\/explore['"]|['"]\/coaching['"]|['"]\/crew['"]/);
 });
 
 test('catalog tabs are Library + Builder only', () => {
@@ -69,7 +69,9 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
   assert.doesNotMatch(more, /WEDGE|Leaderboard|navLeaderboard/);
   assert.match(more, /\/server/);
+  assert.match(more, /\/crew/);
   const rail = stripComments(read('src/components/house/HouseIconRail.tsx'));
+  assert.doesNotMatch(rail, /['"]\/crew['"]/);
   assert.match(rail, /HOUSE_RAIL_HREFS\.account/);
   assert.match(rail, /house-rail-avatar/);
 });

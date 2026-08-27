@@ -80,6 +80,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'app/(app)/coach': 'wedge',
   'app/(app)/coaching': 'surface',
   'app/(app)/cookies': 'surface',
+  'app/(app)/crew': 'surface',
   'app/(app)/dmca': 'surface',
   'app/(app)/explore': 'surface',
   'app/(app)/feedback': 'surface',
@@ -119,6 +120,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/coach': 'wedge',
   'src/lib/compliance': 'surface',
   'src/lib/cryptoCheckout': 'surface',
+  'src/lib/crew': 'surface',
   'src/lib/design': 'surface',
   'src/lib/fuelCoach': 'surface',
   // Development tooling (graph memory of the dev history), not a user surface —
@@ -171,6 +173,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/charts': 'surface',
   'src/components/coach': 'wedge',
   'src/components/crypto': 'surface',
+  'src/components/crew': 'surface',
   'src/components/fitness-test': 'surface',
   'src/components/form': 'surface',
   'src/components/history': 'surface',
