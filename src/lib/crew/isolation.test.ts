@@ -70,13 +70,43 @@ const CLINIC_OR_LAB = [
   /\bSpO2\b/i,
 ];
 
+/**
+ * Charter labels may quote the clip (Tox / Vitals / dose / docking stores).
+ * Those strings live only in seats.ts. Everywhere else they are engines.
+ */
+const CHARTER_FILE = 'src/lib/crew/seats.ts';
+
+const ENGINE_ONLY = [
+  /\btreatment room\b/i,
+  /\bmilo\b/i,
+  /\bmolecule\b/i,
+  /\bbinding score/i,
+  /\bgene sequence/i,
+  /\bcompound\b/i,
+  /\bassay\b/i,
+  /\bsynthesis\b/i,
+  /\bpatient\b/i,
+  /\bclinic\b/i,
+  /\bSCA\b/,
+  /\bLX-7\b/i,
+  /\bGX-\d/i,
+  /\bbpm\b/i,
+  /\bSpO2\b/i,
+];
+
 test('crew files exist and stay product/ops — no clinic or lab chrome', () => {
   assert.ok(CREW_FILES.includes('src/lib/crew/machine.ts'));
   assert.ok(CREW_FILES.includes('src/page-components/CrewPage.tsx'));
+  assert.ok(CREW_FILES.includes(CHARTER_FILE));
+  const seats = read(CHARTER_FILE);
+  assert.match(seats, /never ranks a candidate/);
+  assert.match(seats, /never calls a dose/);
+  assert.match(seats, /never goes without you/);
   const hits: string[] = [];
   for (const file of CREW_FILES) {
     const src = stripComments(read(file));
-    for (const re of CLINIC_OR_LAB) {
+    const list = file === CHARTER_FILE ? ENGINE_ONLY : CLINIC_OR_LAB;
+    for (const re of list) {
       if (re.test(src)) hits.push(`${file} ~ ${re}`);
     }
   }

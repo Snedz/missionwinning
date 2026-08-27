@@ -68,7 +68,7 @@ test('chief flow is assign → owns → stops → sign → vote', () => {
   assert.equal(voteLocked(state.seats[0]), false);
   assert.equal(canVote(state.seats[0]), true);
 
-  const locked = applyCrew(state, { type: 'vote', id: 'desk', vote: 'aye' }, t0 + 5);
+  const locked = applyCrew(state, { type: 'vote', id: 'chem', vote: 'aye' }, t0 + 5);
   assert.equal(locked.seats[1].vote, null);
 
   state = applyCrew(state, { type: 'vote', id: 'scout', vote: 'aye' }, t0 + 6);
@@ -87,18 +87,29 @@ test('6/6 signed unlocks every seat vote', () => {
   }
 });
 
-test('gate holds irreversible kinds and a signature has no undo', () => {
+test('founder canvas stays locked until 6/6; holds stay blocked until that signature', () => {
   let state = emptyCrewState(50);
   const send = state.held.find((h) => h.kind === 'send')!;
   assert.equal(send.held, true);
-  state = applyCrew(state, { type: 'signGate', itemId: send.id }, 51);
+  assert.equal(applyCrew(state, { type: 'signFounder' }, 51), state);
+  assert.equal(applyCrew(state, { type: 'signGate', itemId: send.id }, 51), state);
+
+  for (const id of SEAT_IDS) state = signSeat(state, id, 60);
+  assert.equal(signedCount(state), 6);
+  assert.equal(state.founderSigned, false);
+  assert.equal(applyCrew(state, { type: 'signGate', itemId: send.id }, 70), state);
+
+  state = applyCrew(state, { type: 'signFounder' }, 71);
+  assert.equal(state.founderSigned, true);
+  assert.equal(applyCrew(state, { type: 'signFounder' }, 72), state);
+
+  state = applyCrew(state, { type: 'signGate', itemId: send.id }, 73);
   const signed = state.held.find((h) => h.id === send.id)!;
   assert.equal(signed.signed, true);
   assert.equal(signed.held, false);
   assert.equal(heldCount(state), 3);
-  const again = applyCrew(state, { type: 'signGate', itemId: send.id }, 52);
+  const again = applyCrew(state, { type: 'signGate', itemId: send.id }, 74);
   assert.equal(again, state);
-  assert.equal(again.held.find((h) => h.id === send.id)?.signed, true);
 });
 
 test('hold adds another ops item; junk kinds are ignored', () => {
@@ -116,8 +127,9 @@ test('parse repairs a signed seat that skipped owns/stops and never invents a vo
   const parsed = parseCrewState(
     {
       startedAt: 9,
-      selectedId: 'week',
+      selectedId: 'scribe',
       seats: [{ id: 'scout', signed: true, vote: 'aye' }],
+      founderSigned: true,
       held: [{ id: 'x', kind: 'send', title: 'Send the list email', held: true, signed: true }],
       notes: [{ at: 1, actor: 'CHIEF', text: 'ok' }],
     },
@@ -128,6 +140,7 @@ test('parse repairs a signed seat that skipped owns/stops and never invents a vo
   assert.equal(scout.vote, null);
   assert.equal(parsed.held[0].signed, true);
   assert.equal(parsed.held[0].held, false);
+  assert.equal(parsed.founderSigned, false);
 });
 
 test('local clock and day number do not use toISOString', () => {

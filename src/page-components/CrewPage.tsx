@@ -10,9 +10,11 @@ import {
   allChartersSigned,
   canDefineOwns,
   canDefineStops,
+  canSignFounder,
   canSignRole,
   canVote,
   crewDayNumber,
+  gateUnlocked,
   heldCount,
   localClock,
   selectedSeat,
@@ -47,10 +49,13 @@ function SeatCard({
       data-testid={`crew-seat-${seat.id}`}
     >
       <div className="crew-seat-top">
-        <h3>{seat.name}</h3>
+        <h3>
+          <span className={`crew-go${seat.signed ? ' is-on' : ''}`} aria-hidden />
+          {seat.name}
+        </h3>
         <span className={`crew-pill${seat.signed ? '' : ' is-live'}`}>
           {seat.signed
-            ? t('crewSigned', { defaultValue: 'SIGNED' })
+            ? t('crewSignedCheck', { defaultValue: 'SIGNED ✓' })
             : t('crewUnsigned', { defaultValue: 'UNSIGNED' })}
         </span>
       </div>
@@ -137,11 +142,19 @@ export function CrewPage() {
       <div className="crew-strip" data-testid="crew-strip">
         <span className="crew-pill">{t('crewBrand', { defaultValue: 'House' })}</span>
         <span className="crew-pill">{t('crewRoom', { defaultValue: 'Crew' })}</span>
-        {held > 0 ? (
+        {state && canSignFounder(state) ? (
           <span className="crew-pill is-hot" data-testid="crew-gate-on-you">
             {t('crewGateOnYou', { defaultValue: 'GATE IS ON YOU' })}
           </span>
-        ) : null}
+        ) : state?.founderSigned ? (
+          <span className="crew-pill" data-testid="crew-gate-signed">
+            {t('crewGateSigned', { defaultValue: 'GATE SIGNED' })}
+          </span>
+        ) : (
+          <span className="crew-pill" data-testid="crew-gate-locked">
+            {t('crewGateLocked', { defaultValue: 'GATE LOCKED' })}
+          </span>
+        )}
         <span className="crew-pill is-line">{t('crewGateMark', { defaultValue: 'GATE @founder' })}</span>
         <span className="crew-pill">{t('crewDay', { n: day, defaultValue: `DAY ${day}` })}</span>
         <span className="crew-pill">{t('crewHeld', { n: held, defaultValue: `HELD ${held}` })}</span>
@@ -298,8 +311,35 @@ export function CrewPage() {
 
           <section className="crew-gate" data-testid="crew-gate">
             <p className="crew-kicker">{t('crewGate', { defaultValue: 'Founder gate' })}</p>
-            <h2>{held > 0 ? t('crewGateOnYou', { defaultValue: 'GATE IS ON YOU' }) : t('crewGate', { defaultValue: 'Founder gate' })}</h2>
+            <h2>
+              {canSignFounder(state)
+                ? t('crewGateOnYou', { defaultValue: 'GATE IS ON YOU' })
+                : gateUnlocked(state)
+                  ? t('crewGateSigned', { defaultValue: 'GATE SIGNED' })
+                  : t('crewGateLocked', { defaultValue: 'GATE LOCKED' })}
+            </h2>
             <p className="crew-line">{t('crewIrreversible', { defaultValue: 'send · delete · publish · promote' })}</p>
+            {canSignFounder(state) ? (
+              <div className="crew-canvas" data-testid="crew-signature-canvas">
+                <p className="crew-kicker">{t('crewYourSignature', { defaultValue: 'YOUR SIGNATURE' })}</p>
+                <button
+                  type="button"
+                  className="house-btn house-btn-primary"
+                  onClick={() => run({ type: 'signFounder' })}
+                  data-testid="crew-sign-founder"
+                >
+                  {t('crewSignFounder', { defaultValue: 'Sign the gate' })}
+                </button>
+              </div>
+            ) : gateUnlocked(state) ? (
+              <p className="crew-pill" data-testid="crew-canvas-signed">
+                {t('crewSigned', { defaultValue: 'SIGNED' })}
+              </p>
+            ) : (
+              <p className="crew-line" data-testid="crew-charters-first">
+                {t('crewChartersFirst', { n: signed, defaultValue: `CHARTERS FIRST — ${signed}/6` })}
+              </p>
+            )}
             <p className="crew-kicker" style={{ marginTop: 12 }}>
               {t('crewNeedSign', { n: held, defaultValue: `${held} NEED YOUR SIGNATURE` })}
             </p>
@@ -315,6 +355,7 @@ export function CrewPage() {
                     <button
                       type="button"
                       className="house-btn house-btn-primary"
+                      disabled={!gateUnlocked(state)}
                       onClick={() => run({ type: 'signGate', itemId: item.id })}
                       data-testid={`crew-sign-hold-${item.id}`}
                     >
@@ -331,15 +372,6 @@ export function CrewPage() {
               </div>
             ))}
             <p className="crew-warn">{t('crewNoUndo', { defaultValue: 'NO UNDO — a signature does not reverse' })}</p>
-            <div className="crew-actions" style={{ marginTop: 10 }}>
-              <button
-                type="button"
-                className="house-btn"
-                onClick={() => run({ type: 'hold', kind: 'promote', title: 'Promote www' })}
-              >
-                {t('crewHoldPromote', { defaultValue: 'Hold promote' })}
-              </button>
-            </div>
           </section>
         </aside>
       </div>

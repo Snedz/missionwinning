@@ -42,6 +42,7 @@ export type CrewState = {
   seats: Seat[];
   held: GateItem[];
   notes: CaseNote[];
+  founderSigned: boolean;
 };
 
 export type CrewAction =
@@ -51,6 +52,7 @@ export type CrewAction =
   | { type: 'defineStops'; id: SeatId; stops: string }
   | { type: 'signRole'; id: SeatId }
   | { type: 'vote'; id: SeatId; vote: SeatVote }
+  | { type: 'signFounder' }
   | { type: 'signGate'; itemId: string }
   | { type: 'hold'; kind: GateKind; title: string }
   | { type: 'reset' };
@@ -88,6 +90,7 @@ export function emptyCrewState(now = Date.now()): CrewState {
     selectedId: 'scout',
     seats: SEAT_IDS.map(emptySeat),
     held: seedHolds(),
+    founderSigned: false,
     notes: [
       {
         at: now,
@@ -143,6 +146,14 @@ export function canVote(seat: Seat): boolean {
 
 export function allChartersSigned(state: CrewState): boolean {
   return signedCount(state) === SEAT_IDS.length;
+}
+
+export function canSignFounder(state: CrewState): boolean {
+  return allChartersSigned(state) && !state.founderSigned;
+}
+
+export function gateUnlocked(state: CrewState): boolean {
+  return state.founderSigned && allChartersSigned(state);
 }
 
 export function selectedSeat(state: CrewState): Seat {
@@ -211,9 +222,14 @@ export function applyCrew(state: CrewState, action: CrewAction, now = Date.now()
     return note(patchSeat(state, seat.id, next), now, seat.name.toUpperCase(), `vote ${action.vote}`);
   }
 
+  if (action.type === 'signFounder') {
+    if (!canSignFounder(state)) return state;
+    return note({ ...state, founderSigned: true }, now, 'FOUNDER', 'gate signed — no undo');
+  }
+
   if (action.type === 'signGate') {
     const item = state.held.find((h) => h.id === action.itemId);
-    if (!item || !item.held || item.signed) return state;
+    if (!gateUnlocked(state) || !item || !item.held || item.signed) return state;
     return note(
       {
         ...state,
@@ -301,13 +317,16 @@ export function parseCrewState(raw: unknown, now = Date.now()): CrewState {
       if (notes.length >= NOTE_CAP) break;
     }
   }
-  return {
+  const next: CrewState = {
     startedAt,
     selectedId,
     seats,
     held: held.length > 0 ? held : seedHolds(),
     notes: notes.length > 0 ? notes : fresh.notes,
+    founderSigned: false,
   };
+  next.founderSigned = obj.founderSigned === true && allChartersSigned(next);
+  return next;
 }
 
 /** Local clock HH:MM — local fields only. */

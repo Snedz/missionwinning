@@ -118,11 +118,33 @@
 }
 
 .mw-house .crew-seat h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.mw-house .crew-go {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--house-pill);
+  background: var(--house-chip);
+  flex-shrink: 0;
+}
+
+.mw-house .crew-go.is-on {
+  background: var(--house-ink);
+}
+
+.mw-house .crew-canvas {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px dashed var(--house-ink);
+  background: var(--house-soft);
 }
 
 .mw-house .crew-line {

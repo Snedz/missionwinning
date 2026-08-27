@@ -1,9 +1,9 @@
 /**
- * Six product/ops seats. Owns and stops are Mission Winning work —
- * never chemistry, never a clinic, never a body.
+ * Six seats. Owns and stops are charter labels from the board clip —
+ * structure only. Never an engine. Never live medical data.
  */
 
-export const SEAT_IDS = ['scout', 'desk', 'logger', 'week', 'scribe', 'chief'] as const;
+export const SEAT_IDS = ['scout', 'chem', 'tox', 'vitals', 'scribe', 'chief'] as const;
 export type SeatId = (typeof SEAT_IDS)[number];
 
 export type SeatHint = {
@@ -17,38 +17,38 @@ export const SEAT_HINTS: readonly SeatHint[] = [
   {
     id: 'scout',
     name: 'Scout',
-    owns: 'the literature and the shortlist',
-    stops: 'never invents traction',
+    owns: 'the literature, the shortlist',
+    stops: 'never ranks a candidate',
   },
   {
-    id: 'desk',
-    name: 'Desk',
-    owns: 'Today first paint',
-    stops: 'never puts chat on /log',
+    id: 'chem',
+    name: 'Chem',
+    owns: 'the safety panel, docking stores',
+    stops: 'never calls one safe',
   },
   {
-    id: 'logger',
-    name: 'Logger',
-    owns: 'the Train logger and the first set',
-    stops: 'never gates a set',
+    id: 'tox',
+    name: 'Tox',
+    owns: 'the safety panel, off-target flags',
+    stops: 'never calls a dose',
   },
   {
-    id: 'week',
-    name: 'Week',
-    owns: 'the weekly plan from logs',
-    stops: 'never reads standing',
+    id: 'vitals',
+    name: 'Vitals',
+    owns: 'vitals around the clock',
+    stops: 'never okays the plan',
   },
   {
     id: 'scribe',
     name: 'Scribe',
-    owns: 'evidence and case notes',
-    stops: 'never writes competitor names',
+    owns: 'evidence, raw data, protocol',
+    stops: 'never signs the result',
   },
   {
     id: 'chief',
     name: 'Chief',
-    owns: 'charters and the founder gate',
-    stops: 'never does the work',
+    owns: 'the protocol, the plan, the sign-off',
+    stops: 'never goes without you',
   },
 ];
 
