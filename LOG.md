@@ -16,25 +16,23 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-08-27 — From-scratch Patreon-class signed-in house (`.1056`)
 
 New signed-in website. Not #885.
-Icon rail + Today desk + Train
-compose sidecar + Library tabs +
-Account room. Founder walk on #886:
-honest Start (peekCoachToday is
-window-null on SSR — no dummy
-Train/Start card, Start disabled
-until snap, sync start then
-`/active`), More is the rest of the house
-(not WEDGE), Account avatar on the
-rail, First Steps dismisses below
-Start, live Train is compose +
-sidecar (rest / skip / jot), week
-cells open that day, Library is
-states not a 233-row dump. Engines
-stay: one Start order, logger,
-History edit, `generateWeek`,
-isolation. HomeTodayLean and
-RAIL_GROUPS untouched. Zero diffs
-on `/private`, landing, www.
+Icon rail + adjacent second bar
+(Today: Start / This week /
+History / Weekly plan; Library:
+Library / Builder) + hover labels
++ Got it marks. Honest Start
+(peekCoachToday is window-null on
+SSR — no dummy card, Start
+disabled until snap, then
+`/active`). More is leftover, not
+the Home column. Account avatar on
+the rail. Live Train is compose +
+sidecar. Engines stay: one Start
+order, logger, History edit,
+`generateWeek`, isolation.
+HomeTodayLean and RAIL_GROUPS
+untouched. Zero diffs on
+`/private`, landing, www.
 `[skip vercel]`. No `PRIVATE_MODE`
 flip. No promote. Live www stays `.696`.
 

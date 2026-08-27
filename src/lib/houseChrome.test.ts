@@ -44,11 +44,29 @@ test('icon rail is Today / Train / Library / Account — never /server or a feed
   assert.doesNotMatch(nav, /['"]\/server['"]|['"]\/explore['"]|['"]\/coaching['"]/);
 });
 
-test('catalog tabs are Library + Builder only', () => {
-  const src = read('src/components/house/CatalogTabs.tsx');
-  assert.match(src, /href="\/library"/);
-  assert.match(src, /href="\/builder"/);
-  assert.doesNotMatch(src, /\/explore|\/programs|\/bundle/);
+test('catalog objects live on the left second rail', () => {
+  const src = read('src/components/house/HouseSecondRail.tsx');
+  assert.match(src, /HOUSE_LIBRARY_ROOMS/);
+  assert.match(src, /HOUSE_TODAY_ROOMS/);
+  assert.doesNotMatch(src, /\/explore|\/programs|\/bundle|\/server/);
+  const nav = read('src/components/house/houseNav.ts');
+  assert.match(nav, /href: '\/library'/);
+  assert.match(nav, /href: '\/builder'/);
+  assert.match(nav, /label: 'Weekly plan'/);
+});
+
+test('HouseShell opens a left second bar, not More as the Home pattern', () => {
+  const shell = stripComments(read('src/components/house/HouseShell.tsx'));
+  assert.match(shell, /HouseSecondRail/);
+  assert.match(shell, /HouseGuide/);
+  assert.match(shell, /isHouseSecondRailPath/);
+  const css = read('src/components/house/house.css');
+  assert.match(css, /--house-second:\s*248px/);
+  assert.match(css, /\.house-second/);
+  assert.match(css, /\.house-rail-tip/);
+  const more = stripComments(read('src/components/house/HouseMore.tsx'));
+  assert.doesNotMatch(more, /href: '\/history'/);
+  assert.doesNotMatch(more, /href: '\/coach'/);
 });
 
 test('Today Start is not the SSR dummy and lands on compose', () => {
@@ -86,6 +104,15 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
   const rail = stripComments(read('src/components/house/HouseIconRail.tsx'));
   assert.match(rail, /HOUSE_RAIL_HREFS\.account/);
   assert.match(rail, /house-rail-avatar/);
+  assert.match(rail, /house-rail-tip/);
+});
+
+test('Today first paint is not a First Steps card over Start', () => {
+  const src = stripComments(read('src/page-components/TodayDesk.tsx'));
+  assert.doesNotMatch(src, /firstStepsEyebrow|getFirstSteps/);
+  const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
+  assert.match(guide, /houseGuideGotIt/);
+  assert.match(guide, /today-start-ready/);
 });
 
 test('house.css actually draws a product site, not radius-0 paper rules', () => {

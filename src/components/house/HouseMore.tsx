@@ -10,8 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 const ROOMS = [
-  { href: '/history', labelKey: 'navHistory', label: 'History' },
-  { href: '/coach', labelKey: 'navCoach', label: 'Weekly plan' },
   { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel' },
   { href: '/profile', labelKey: 'navYou', label: 'You' },
   { href: '/account', labelKey: 'navAccount', label: 'Account' },

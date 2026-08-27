@@ -20,11 +20,14 @@ import { recordScreen } from '@/lib/screenTrail';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { AccountSidecar } from './AccountSidecar';
 import { CatalogTabs } from './CatalogTabs';
+import { HouseGuide } from './HouseGuide';
 import { HouseIconRail } from './HouseIconRail';
 import { HouseMore } from './HouseMore';
+import { HouseSecondRail } from './HouseSecondRail';
 import {
   isHouseAccountPath,
   isHouseCatalogPath,
+  isHouseSecondRailPath,
   isHouseTrainPath,
 } from './houseNav';
 import { TrainSidecar } from './TrainSidecar';
@@ -51,6 +54,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
+  const second = !compose && isHouseSecondRailPath(pathname);
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
 
   useEffect(() => {
@@ -97,6 +101,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
             {compose ? null : (
               <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} />
             )}
+            {second ? <HouseSecondRail /> : null}
             <div className={`house-stage${compose || train ? ' is-compose' : ''}`}>
               <main className="house-canvas">
                 <div className={padClass}>
@@ -113,6 +118,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
           {compose ? null : (
             <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} floor />
           )}
+          <HouseGuide />
           <HouseMore open={moreOpen} onClose={closeMore} />
         </div>
       </TooltipProvider>

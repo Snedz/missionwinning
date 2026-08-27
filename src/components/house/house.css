@@ -5,6 +5,7 @@
  */
 
 .mw-house {
+  position: relative;
   --house-paper: #ffffff;
   --house-stage: #f4f4f5;
   --house-ink: #18181b;
@@ -20,6 +21,7 @@
   --house-radius-sm: 10px;
   --house-pill: 999px;
   --house-rail: 72px;
+  --house-second: 248px;
   --house-side: 300px;
   /* Inherited objects (cards, buttons, set table) pick these up. */
   --background: 0 0% 100%;
@@ -72,6 +74,8 @@
   padding: 16px 0 12px;
   border-right: 1px solid var(--house-line);
   background: var(--house-paper);
+  overflow: visible;
+  z-index: 3;
 }
 
 .mw-house .house-rail-top,
@@ -95,6 +99,7 @@
 }
 
 .mw-house .house-rail-mark {
+  position: relative;
   display: flex;
   width: 40px;
   height: 40px;
@@ -106,7 +111,9 @@
 }
 
 .mw-house .house-rail-btn,
-.mw-house .house-rail a.house-rail-btn {
+.mw-house .house-rail a.house-rail-btn,
+.mw-house .house-floor .house-rail-btn {
+  position: relative;
   display: flex;
   width: 44px;
   height: 44px;
@@ -150,6 +157,114 @@
   height: 7px;
   background: var(--house-live);
   border-radius: var(--house-pill);
+}
+
+.mw-house .house-rail-tip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 80;
+  padding: 6px 10px;
+  background: var(--house-ink);
+  color: var(--house-paper);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: var(--house-radius-sm);
+}
+
+.mw-house .house-rail-btn:hover .house-rail-tip,
+.mw-house .house-rail-btn:focus-visible .house-rail-tip,
+.mw-house .house-rail-mark:hover .house-rail-tip,
+.mw-house .house-rail-mark:focus-visible .house-rail-tip {
+  opacity: 1;
+}
+
+.mw-house .house-rail-tip.is-floor {
+  left: 50%;
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+}
+
+.mw-house .house-second {
+  display: none;
+  width: var(--house-second);
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 22px 14px 28px;
+  border-right: 1px solid var(--house-line);
+  background: var(--house-paper);
+}
+
+.mw-house .house-second-kicker {
+  margin: 0 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--house-ink);
+}
+
+.mw-house .house-second-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mw-house .house-second-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  color: var(--house-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--house-radius-sm);
+}
+
+.mw-house .house-second-link.is-on,
+.mw-house .house-second-link:hover {
+  color: var(--house-ink);
+  background: var(--house-chip);
+}
+
+.mw-house .house-guide {
+  position: absolute;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.mw-house .house-guide.is-rail {
+  top: 88px;
+  left: calc(var(--house-rail) + var(--house-second) + 16px);
+}
+
+.mw-house .house-guide.is-start {
+  top: 220px;
+  left: calc(var(--house-rail) + var(--house-second) + 36px);
+}
+
+.mw-house .house-guide-card {
+  position: relative;
+  pointer-events: auto;
+  width: min(320px, calc(100vw - 120px));
+  padding: 18px 18px 16px;
+  background: var(--house-paper);
+  border: 1px solid var(--house-line);
+  border-radius: var(--house-radius);
+}
+
+.mw-house .house-guide-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-height: 36px;
+  padding: 0 10px;
 }
 
 .mw-house .house-stage {
@@ -281,6 +396,11 @@
 
 .mw-house .house-card-hero {
   padding: 20px 22px 18px;
+}
+
+.mw-house #today-start,
+.mw-house #today-week {
+  scroll-margin-top: 24px;
 }
 
 .mw-house .house-week-object .house-day.is-set {
@@ -557,6 +677,10 @@
     display: flex;
   }
 
+  .mw-house .house-second {
+    display: flex;
+  }
+
   .mw-house .house-floor {
     display: none;
   }
@@ -656,6 +780,10 @@
 }
 
 @media (max-width: 767px) {
+  .mw-house .house-guide {
+    display: none;
+  }
+
   .mw-house .house-canvas-pad {
     width: calc(100% - 32px);
     padding: 20px 0 32px;
