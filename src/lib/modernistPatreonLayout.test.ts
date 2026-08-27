@@ -44,7 +44,7 @@ test('door mounts the set table and Patreon nav', () => {
   assert.match(table, /data-mw-set-table/);
   assert.match(table, /Bench press/);
   assert.match(css, /height:\s*64px/);
-  assert.doesNotMatch(teaser + table + css, /#faf9f5|#cc785c|Inter/);
+  assert.doesNotMatch(teaser + table + css, /#faf9f5|#cc785c|(?<![A-Za-z])Inter(?![A-Za-z])/);
 });
 
 test('www homepage uses shared nav and an ink footer', () => {

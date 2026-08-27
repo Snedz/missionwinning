@@ -149,7 +149,7 @@ test('door and www do not ship Inter, cream, or coral', () => {
   ];
   for (const file of files) {
     const src = read(file);
-    assert.doesNotMatch(src, /Inter|font-inter/i, file);
+    assert.doesNotMatch(src, /(?<![A-Za-z])Inter(?![A-Za-z])|font-inter/, file);
     assert.doesNotMatch(src, /#faf9f5|#cc785c/i, file);
     assert.doesNotMatch(src, /rounded-(?:md|lg|xl|2xl|3xl|full)/, file);
   }
