@@ -8,10 +8,19 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export function liveSessionLogs(
   history: readonly CompletedWorkoutLog[] | null | undefined
 ): CompletedWorkoutLog[] {
   if (!Array.isArray(history)) return [];
   return history.filter((log) => Boolean(log) && !log.deletedAt);
+}
+
+/** Local date of a live log. Tombstones have no date here. */
+export function liveLogDateKey(
+  log: Pick<CompletedWorkoutLog, 'completedAt' | 'startedAt' | 'deletedAt'>
+): string {
+  if (log.deletedAt) return '';
+  return localDateKeyFromIso(log.completedAt || log.startedAt);
 }

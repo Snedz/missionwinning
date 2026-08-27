@@ -7,8 +7,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-import { liveSessionLogs } from '@/lib/history/liveLogs';
-import { localDateKeyFromIso } from '@/lib/time/localDate';
+import { liveLogDateKey, liveSessionLogs } from '@/lib/history/liveLogs';
 import { humanizeExerciseId } from '@/lib/workout/customExercise';
 
 export const EXPORT_DIARY_CSV_HEADER =
@@ -95,7 +94,7 @@ function durationCell(
 }
 
 function rowsFromLog(log: CompletedWorkoutLog): ExportDiaryRow[] {
-  const date = localDateKeyFromIso(log.completedAt || log.startedAt) ?? '';
+  const date = liveLogDateKey(log);
   const sessionTitle = textCell(log.sessionTitle);
   const workoutName = textCell(log.workoutName);
   const sessionNote = log.sessionNote;

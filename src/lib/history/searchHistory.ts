@@ -6,8 +6,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-import { liveSessionLogs } from '@/lib/history/liveLogs';
-import { localDateKeyFromIso } from '@/lib/time/localDate';
+import { liveLogDateKey, liveSessionLogs } from '@/lib/history/liveLogs';
 import { humanizeExerciseId } from '@/lib/workout/customExercise';
 
 export type SearchHistoryOpts = {
@@ -34,7 +33,7 @@ export function historySearchHaystack(
   const parts: string[] = [];
   pushHay(parts, log.sessionTitle);
   pushHay(parts, log.workoutName);
-  pushHay(parts, localDateKeyFromIso(log.completedAt || log.startedAt));
+  pushHay(parts, liveLogDateKey(log));
   if (opts?.dateText) pushHay(parts, opts.dateText(log));
   pushHay(parts, log.sessionNote);
   for (const ex of log.exercises ?? []) {

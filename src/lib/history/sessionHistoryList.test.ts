@@ -11,6 +11,8 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
+import { liveLogDateKey } from './liveLogs';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 import {
   listDeletedSessionHistoryRows,
   listSessionHistoryRows,
@@ -124,6 +126,8 @@ test('listSessionHistoryRows keeps store order and drops tombstones', () => {
   assert.deepEqual(liveSessionLogs([newest, tomb, older]).map((l) => l.id), ['new', 'old']);
   assert.deepEqual(liveSessionLogs(null), []);
   assert.deepEqual(liveSessionLogs(undefined), []);
+  assert.equal(liveLogDateKey(newest), localDateKeyFromIso(newest.completedAt));
+  assert.equal(liveLogDateKey(tomb), '');
 });
 
 test('deleted session rows are tombstones only — empty invents nothing', () => {
