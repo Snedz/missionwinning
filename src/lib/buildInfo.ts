@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1047` Superset on a finished session (from master `.1046` `89437956d`; stamp stays `.1047`; Session note `.1046` / Lift note `.1045` / Load % `.1044` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1047";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1048` Open empty load is blank, not 0 (from master `.1047` `48958422c`; stamp stays `.1048`; completed BW `.1025` / History edit empty string `.997` stay). */
+export const APP_BUILD_LABEL = "2026.07-unified.1048";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

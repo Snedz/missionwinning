@@ -26,10 +26,13 @@ import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
+import { formatCompletedWeightCell } from '@/lib/workout/bodyweightLoad';
 import {
-  formatCompletedWeightCell,
-  formatPlusLoadWeightCell,
-} from '@/lib/workout/bodyweightLoad';
+  clampOpenLoadWeight,
+  displayOpenLoadDraft,
+  formatOpenLoadInput,
+  parseOpenLoadInput,
+} from '@/lib/workout/openEmptyLoad';
 import { cn } from '@/lib/utils';
 import type { SetRowType } from '@/types';
 import { formatSetRowDuration, parseDurationSeconds } from '@/lib/workout/setRowType';
@@ -292,27 +295,16 @@ export function SetLogTable({
                               {t('activeSetBodyweight', { defaultValue: 'BW' })}+
                             </span>
                           ) : null}
-                          <input
-                            type="text"
-                            inputMode="decimal"
-                            className={numberInput}
-                            value={input.weight}
-                            aria-label={
+                          <SetRowLoadField
+                            weight={input.weight}
+                            ariaLabel={
                               rowType === 'assisted'
                                 ? t('activeSetAssist', { defaultValue: 'Assist' })
                                 : plusLoad
                                   ? t('activeSetAddedLoad', { defaultValue: 'Load' })
                                   : weightLabel
                             }
-                            onFocus={(e) => e.target.select()}
-                            onChange={(e) => {
-                              const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                              const parsed = parseFloat(cleaned);
-                              onInputChange(
-                                'weight',
-                                Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
-                              );
-                            }}
+                            onChange={(next) => onInputChange('weight', next)}
                           />
                         </div>
                         {rowType === 'weight' && onSetLoadPct ? (
@@ -591,6 +583,52 @@ export function SetLogTable({
       />
     ) : null}
     </div>
+  );
+}
+
+function SetRowLoadField({
+  weight,
+  ariaLabel,
+  onChange,
+}: {
+  weight: number;
+  ariaLabel: string;
+  onChange: (weight: number) => void;
+}) {
+  const [draft, setDraft] = useState(() => formatOpenLoadInput(weight));
+  const [focused, setFocused] = useState(false);
+  useEffect(() => {
+    if (!focused) setDraft(formatOpenLoadInput(weight));
+  }, [weight, focused]);
+  const commit = (raw: string) =>
+    onChange(clampOpenLoadWeight(parseOpenLoadInput(raw)));
+  return (
+    <input
+      type="text"
+      inputMode="decimal"
+      className={numberInput}
+      value={displayOpenLoadDraft({ focused, draft, weight })}
+      aria-label={ariaLabel}
+      data-testid="set-table-open-load"
+      onFocus={(e) => {
+        setFocused(true);
+        e.target.select();
+      }}
+      onChange={(e) => {
+        setDraft(e.target.value);
+        commit(e.target.value);
+      }}
+      onBlur={() => {
+        setFocused(false);
+        commit(draft);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          commit(draft);
+        }
+      }}
+    />
   );
 }
 

@@ -30,6 +30,7 @@ import {
 } from '@/lib/workout/loggerSpeed';
 import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
 import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
+import { formatOpenLoadInput, parseOpenLoadInput } from '@/lib/workout/openEmptyLoad';
 
 /** Progressive-overload strip under the exercise name (last · next · why). */
 export type LogConsoleOverloadCue = {
@@ -366,13 +367,11 @@ export function LogConsole({
                 type="text"
                 inputMode="decimal"
                 enterKeyHint="done"
-                value={weight}
+                value={formatOpenLoadInput(weight)}
                 aria-label={t('activeSetAddedLoad', { defaultValue: 'Load' })}
                 onFocus={(e) => e.target.select()}
                 onChange={(e) => {
-                  const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                  const parsed = parseFloat(cleaned);
-                  onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+                  onWeightChange(Math.min(9999, Math.max(0, parseOpenLoadInput(e.target.value))));
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -431,9 +430,7 @@ export function LogConsole({
             onIncrease={() => onWeightChange(weight + weightStep)}
             onSubmit={onLog}
             onInput={(raw) => {
-              const cleaned = raw.replace(',', '.').replace(/[^0-9.]/g, '');
-              const parsed = parseFloat(cleaned);
-              onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+              onWeightChange(Math.min(9999, Math.max(0, parseOpenLoadInput(raw))));
             }}
           />
         )}
