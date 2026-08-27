@@ -869,6 +869,26 @@
   border-radius: var(--house-pill);
 }
 
+.mw-house .house-builder .house-list {
+  gap: 0;
+}
+
+.mw-house .house-builder .house-item {
+  align-items: stretch;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--house-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.mw-house .house-builder .house-item-body {
+  min-width: 0;
+  flex: 1;
+  padding: 10px 12px;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

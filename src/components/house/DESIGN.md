@@ -65,6 +65,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Catalog row | `.house-item` in `.house-catalog` | Hairline list. Pick mark + name + details |
 | History row | `.house-item` in `.house-history` | Hairline list. Open log; Again / Details ghost |
 | Plan empty | `.house-empty` + dock | Invite on the sheet; Generate stays one filled action on `/coach` |
+| Builder start | `.house-builder` | Blank workout is the filled action. Saved rows are hairline items. Templates stay in Show all |
 | More leftover | `.house-more-panel` | Fuel / You / Account + quiet foot |
 
 ## Rooms (existing engines)

@@ -64,7 +64,11 @@ plan empty is house-empty;
 Generate stays the one filled
 dock on `/coach`. `/history`
 `/library` `/coach` still 307
-to `/private` on this host.
+to `/private` on this host. Builder first
+paint is a flush Blank workout plus
+hairline saved rows; templates stay
+in Show all. Account leftover carries
+`house-account`.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate

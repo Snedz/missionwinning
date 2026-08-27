@@ -346,6 +346,7 @@ export function AccountPage() {
      * Red-action rules on this route are unchanged (magic-link / billing own red).
      */
     <PillarPageShell
+      className="house-account"
       icon={Settings}
       eyebrow={t('accountEyebrow', { defaultValue: 'Account' })}
       title={t('accountTitle', { defaultValue: 'Settings' })}
