@@ -6,7 +6,7 @@
 **Excellence-Override:** Mission Server messenger (MSN rooms)
 **Preview:** `[skip vercel]` on every commit. Hobby quota is burned. Do not flip `PRIVATE_MODE`. Do not promote production.
 
-This is the plan-then-build freeze for this ship. [docs/PLAN.md](PLAN.md) remains the A–I roadmap. Continue [#518](https://github.com/Snedz/missionwinning/pull/518) (`docs/MISSION_SERVER_V1_PLAN.md`, `.726`) — do not restart.
+This is the plan-then-build freeze for this ship. [docs/PLAN.md](PLAN.md) remains the A–I roadmap. Product rooms: [IA_SKELETON.md](IA_SKELETON.md) (GARAGE loop). Continue [#518](https://github.com/Snedz/missionwinning/pull/518) (`docs/MISSION_SERVER_V1_PLAN.md`, `.726`) — do not restart.
 
 ---
 

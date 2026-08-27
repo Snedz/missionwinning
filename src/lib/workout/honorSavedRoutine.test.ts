@@ -340,6 +340,21 @@ describe('honorSavedRoutine refuses shop / generate / silent wipe', () => {
     assert.match(src, /honorCiteStart/);
   });
 
+  it('Builder save-all writes the notebook Start honors — dual-writer leak, not a join', () => {
+    const builder = read('src/page-components/BuilderPage.tsx');
+    assert.match(builder, /saveAllProgramSessions/);
+    assert.match(builder, /addSavedWorkout/);
+    assert.doesNotMatch(builder, /generateWeek\s*\(/);
+    const start = read('src/lib/todayPrimaryAction.ts');
+    const honorAt = start.indexOf('pickHonoredStart(');
+    const coachAt = start.indexOf('loadCoachTodayOptional(');
+    assert.ok(honorAt >= 0 && coachAt > honorAt, 'saved still beats Coach peek');
+    assert.match(start, /Dual-writer leak/);
+    const helper = read('src/lib/workout/honorSavedRoutine.ts');
+    assert.match(helper, /saveAllProgramSessions/);
+    assert.match(helper, /Not a join|not a join/);
+  });
+
   it('Today Start wires saved before coach peek / Just Go', () => {
     const src = read('src/lib/todayPrimaryAction.ts');
     const fn = src.slice(src.indexOf('export async function runTodayPrimaryAction'));

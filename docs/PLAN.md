@@ -6,6 +6,63 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1053` Product IA skeleton (2026-08-27)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1053` — from master
+> `.1052` (`895d940daebdf8f10f6a041360d7478f81492a05`
+> — Revert Patreon costume, restore wireframe).
+> Stamp stays `.1053`. Skeleton only.
+> No costume. No CSS / theme /
+> `/private` / www / nav-appearance
+> edits. Isolation + locked IA doc.
+> Do not add rooms. Do not promote
+> `/server`. Do not mint Studio.
+> Do not change Start order. Resume
+> `.963` stays. Guest path. First set
+> stays ungated. Today stays one
+> Start. Do not merge this PR
+> yourself. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip.
+> No promote. Live www stays `.696`.
+> Brand: **Log a set. Offline.**
+
+CoS freeze. Product IA SoT is
+[IA_SKELETON.md](IA_SKELETON.md).
+Named rooms: Today · Train ·
+Coach (AI) · History · Library.
+Chip floorplan stays
+[FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md).
+Sequence: skeleton doc →
+isolation → stop. v0 catalog
+labeling is a later PR.
+
+### Done means
+
+- `docs/IA_SKELETON.md` matches
+  the CoS box (not a novel).
+- Isolation fails if Today /
+  Train import social, if tabs
+  leave `/log` + `/active`, if
+  Coach reads Garage, or if chat
+  withholds a set.
+- Dual-writer is a comment, not
+  a Start-order change.
+- Zero visual diffs. No costume.
+  No `/private` restyle. No
+  `PRIVATE_MODE` flip. Live stays
+  `.696`.
+
+### Refuse
+
+Costume · `/private` restyle ·
+Studio · Message tab ·
+Explore-as-shop · `PRIVATE_MODE`
+flip · promote off `.696`.
+
+---
+
 ## Frozen plan — `.1048` Open empty load is blank, not 0 (2026-08-26)
 
 > **Frozen.** Implement only this section + root

@@ -7,6 +7,8 @@
 
 This is the **information / navigation flow** of missionwinning.com — not visual tokens ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)) and not build phases ([PLAN.md](PLAN.md)).
 
+**Product rooms:** [IA_SKELETON.md](IA_SKELETON.md) (CoS freeze). This file stays the chip floorplan. The skeleton wins when a costume PR disagrees.
+
 ---
 
 ## 1. Die floorplan
@@ -44,10 +46,11 @@ Agents never flip `PRIVATE_MODE` or invent traction.
 ### Mobile tab bus (highest current)
 
 ```text
-Today /log │ Train /active │ Coach /coach │ Fuel /nutrition │ More (sheet)
+Cold:  Summary /log │ Search (sheet)
+Live:  Summary /log │ Train /active │ Search (sheet)
 ```
 
-Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREFS` + More. `PRIMARY_NAV` still registers You (`/profile`) for the rail.
+Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREFS` + `resolveMobileTabHrefs`. Coach, Fuel, Builder, Library, and Messenger (`/server`) are Search / More rows, not dock tabs. `PRIMARY_NAV` still registers You (`/profile`) for the rail. See [IA_SKELETON.md](IA_SKELETON.md).
 
 ### Desktop rail
 

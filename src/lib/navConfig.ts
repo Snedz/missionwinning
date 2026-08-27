@@ -151,6 +151,7 @@ export const MORE_NAV: NavLinkItem[] = [
     icon: MessageSquare,
     descriptionKey: 'moreServerDesc',
     description: 'Rooms on this device',
+    // More → You only. Never a dock tab. docs/IA_SKELETON.md GARAGE loop.
   },
   {
     href: '/account',
