@@ -75,7 +75,12 @@ are house-card. Sidecar leftover
 rooms are Account / You only —
 never History or Coach on the right.
 `/account` still 307 to `/private`
-on this host. You leftover is
+on this host. Explore leftover
+is `house-explore`: quiet title
+stays, board + pin list stay first
+paint, Add a place is a house-card,
+never a rail, Account still doors
+it. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

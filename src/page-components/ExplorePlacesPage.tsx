@@ -10,8 +10,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPin } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { EXAMPLE_PUBLIC_PLACES } from '@/lib/places/examplePublicPlaces';
 import { addPersonalPlace, loadPlaceDex, tagSessionOnPlace } from '@/lib/places/placeDex';
@@ -82,6 +80,7 @@ export function ExplorePlacesPage() {
 
   return (
     <PillarPageShell
+      className="house-explore"
       icon={MapPin}
       eyebrow={t('exploreEyebrow', { defaultValue: 'Places' })}
       title={t('exploreTitle', { defaultValue: 'Explore' })}
@@ -91,17 +90,23 @@ export function ExplorePlacesPage() {
       })}
       showLegalFooter
     >
-      <p className="text-sm text-muted-foreground">
+      {/* Quiet leftover: board + list stay first paint. Add a place is the write. Never a rail. */}
+      <p className="house-lede">
         {t('exploreNotContested', {
           defaultValue: 'Example parks are a catalog, not a contest. Nothing here is owned.',
         })}
       </p>
 
-      <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="outline" onClick={requestNearby} disabled={gps === 'pending'}>
+      <div className="house-row">
+        <button
+          type="button"
+          className="house-btn house-btn-ghost"
+          onClick={requestNearby}
+          disabled={gps === 'pending'}
+        >
           {t('exploreNearby', { defaultValue: 'Show nearby' })}
-        </Button>
-        <p className="self-center text-xs text-muted-foreground">
+        </button>
+        <p className="house-kicker" style={{ margin: 0 }}>
           {gps === 'on'
             ? t('exploreRoam', { defaultValue: 'Sorted by distance. Pan the list to roam.' })
             : gps === 'denied'
@@ -116,16 +121,16 @@ export function ExplorePlacesPage() {
 
       <PinBoard pins={pins} selectedId={selectedId} onSelect={setSelectedId} />
 
-      <ul className="divide-y-2 divide-border border-2 border-border bg-card">
+      <ul className="house-list">
         {pins.map((pin) => (
-          <li key={pin.id}>
+          <li key={pin.id} className={`house-item${selectedId === pin.id ? ' is-on' : ''}`}>
             <button
               type="button"
               onClick={() => setSelectedId(pin.id)}
-              className="flex min-h-[44px] w-full items-center gap-3 px-4 py-2 text-left hover:bg-muted"
+              className="house-item-body"
             >
-              <span className="flex-1 font-semibold">{pin.name}</span>
-              <span className="text-xs text-muted-foreground">
+              <strong>{pin.name}</strong>
+              <span>
                 {pin.kind === 'personal'
                   ? t('explorePersonal', { defaultValue: 'Yours' })
                   : t('exploreExamplePublic', { defaultValue: 'Example public' })}
@@ -143,7 +148,7 @@ export function ExplorePlacesPage() {
           href={openStreetMapUrl(selected.lat, selected.lng)}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          className="house-btn house-btn-ghost"
         >
           {t('exploreOpenMaps', { defaultValue: 'Open in maps' })}
         </a>
@@ -151,15 +156,15 @@ export function ExplorePlacesPage() {
 
       {selected?.kind === 'personal' ? (
         <div className="space-y-2">
-          <Button
+          <button
             type="button"
-            variant="outline"
+            className="house-btn"
             onClick={tagLast}
             disabled={!lastSessionId}
           >
             {t('exploreTagLastSession', { defaultValue: 'Tag last session here' })}
-          </Button>
-          <p className="text-xs text-muted-foreground">
+          </button>
+          <p className="house-kicker">
             {tagNote ??
               (lastSessionId
                 ? t('exploreTagHint', {
@@ -172,32 +177,35 @@ export function ExplorePlacesPage() {
         </div>
       ) : null}
 
-      <Card className="border-2 border-border bg-card">
-        <CardContent className="space-y-3 pt-6">
-          <p className="font-semibold">{t('exploreAddPlace', { defaultValue: 'Add a place' })}</p>
-          <label className="block text-sm">
-            {t('explorePlaceName', { defaultValue: 'Name' })}
-            <Input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              className="mt-1 border-2"
-            />
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" onClick={() => savePlace(false)} disabled={!newName.trim()}>
-              {t('exploreSavePlace', { defaultValue: 'Save to place-dex' })}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => savePlace(true)}
-              disabled={!newName.trim() || !origin}
-            >
-              {t('exploreUseLocation', { defaultValue: 'Save with my location' })}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-3">
+        <p className="font-semibold">{t('exploreAddPlace', { defaultValue: 'Add a place' })}</p>
+        <label className="block text-sm">
+          {t('explorePlaceName', { defaultValue: 'Name' })}
+          <Input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            className="mt-1"
+          />
+        </label>
+        <div className="house-row">
+          <button
+            type="button"
+            className="house-btn house-btn-primary"
+            onClick={() => savePlace(false)}
+            disabled={!newName.trim()}
+          >
+            {t('exploreSavePlace', { defaultValue: 'Save to place-dex' })}
+          </button>
+          <button
+            type="button"
+            className="house-btn house-btn-ghost"
+            onClick={() => savePlace(true)}
+            disabled={!newName.trim() || !origin}
+          >
+            {t('exploreUseLocation', { defaultValue: 'Save with my location' })}
+          </button>
+        </div>
+      </div>
     </PillarPageShell>
   );
 }
@@ -218,7 +226,7 @@ function PinBoard({
 
   return (
     <div
-      className="relative aspect-[2/1] w-full border-2 border-border bg-muted"
+      className="house-board relative aspect-[2/1] w-full"
       role="img"
       aria-label={t('exploreBoardAria', { defaultValue: 'Place pins on a paper map' })}
     >
@@ -238,10 +246,10 @@ function PinBoard({
             <span
               className={
                 selected
-                  ? 'block h-3 w-3 bg-primary-fill'
+                  ? 'house-pin is-on'
                   : pin.kind === 'personal'
-                    ? 'block h-2.5 w-2.5 bg-foreground'
-                    : 'block h-2.5 w-2.5 bg-muted-foreground'
+                    ? 'house-pin'
+                    : 'house-pin is-faint'
               }
             />
           </button>

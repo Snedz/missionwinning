@@ -83,7 +83,7 @@
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings leftover; sign-in / return / prefs first; Explore / more / help are house-card |
-| `ExplorePlacesPage.tsx` | `/explore` — places pin-board (Decision 009; quiet; not Today; not a shop) |
+| `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |
 | `AccessibilityPage.tsx` | `/accessibility` |
