@@ -806,6 +806,69 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-history .house-list {
+  gap: 0;
+}
+
+.mw-house .house-history .house-item {
+  align-items: stretch;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--house-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.mw-house .house-history .house-item-body {
+  min-width: 0;
+  flex: 1;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mw-house .house-history .house-item-body strong,
+.mw-house .house-history .house-item-body span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mw-house .house-history button[data-testid$='-open'] {
+  min-height: 40px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--house-radius-rail);
+}
+
+.mw-house .house-dock .poster-field {
+  background: var(--house-paper);
+  border-top: 1px solid var(--house-line);
+}
+
+.mw-house .house-dock .poster-kicker {
+  text-transform: none;
+  letter-spacing: -0.011em;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--house-muted);
+}
+
+.mw-house .house-dock .primary-action {
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--house-pill);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

@@ -57,8 +57,14 @@ the filter bar are house-state.
 Compact floor plus matches the
 desktop 40px white circle.
 Library filter and empty stay
-house objects. `/library` still
-307s to `/private` on this host.
+house objects. History first-paint
+rows are house items (open log;
+Again / Details ghost). Weekly
+plan empty is house-empty;
+Generate stays the one filled
+dock on `/coach`. `/history`
+`/library` `/coach` still 307
+to `/private` on this host.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate

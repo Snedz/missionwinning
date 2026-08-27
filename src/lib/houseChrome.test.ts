@@ -334,6 +334,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(library, /house-item-body/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
+  assert.match(css, /\.house-history \.house-item/);
+  assert.match(css, /\.house-dock \.primary-action/);
+  const history = read('src/page-components/HistoryPage.tsx');
+  assert.match(history, /className="house-history"/);
+  assert.match(history, /className="house-list"/);
+  assert.match(history, /house-item-body/);
+  const coach = read('src/page-components/CoachPage.tsx');
+  assert.match(coach, /className="house-plan max-w-2xl pb-24"/);
+  assert.match(coach, /className="house-empty"/);
+  assert.match(coach, /data-testid="coach-generate-dock"/);
+  assert.match(coach, /generate\(\)/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

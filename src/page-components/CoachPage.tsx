@@ -101,7 +101,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
   return (
     <PillarPageShell
-      className="max-w-2xl pb-24"
+      className="house-plan max-w-2xl pb-24"
       icon={Sparkles}
       eyebrow={weekEyebrow}
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
@@ -139,6 +139,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && locked && freeBeta && !needsParq && (
         <>
           <EmptyState
+            className="house-empty"
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachFreeBetaNextWeek', {
@@ -226,6 +227,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && !plan && !locked && !needsParq && (
         <>
           <EmptyState
+            className="house-empty"
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachGenerateEmptyDesc', {

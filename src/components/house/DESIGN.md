@@ -63,6 +63,8 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Guide | `.house-guide` | One Got it. No chain |
 | First rooms | `.house-first-rooms` | N-of-N under Start |
 | Catalog row | `.house-item` in `.house-catalog` | Hairline list. Pick mark + name + details |
+| History row | `.house-item` in `.house-history` | Hairline list. Open log; Again / Details ghost |
+| Plan empty | `.house-empty` + dock | Invite on the sheet; Generate stays one filled action on `/coach` |
 | More leftover | `.house-more-panel` | Fuel / You / Account + quiet foot |
 
 ## Rooms (existing engines)
