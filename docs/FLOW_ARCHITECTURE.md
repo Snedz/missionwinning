@@ -7,7 +7,7 @@
 
 This is the **information / navigation flow** of missionwinning.com — not visual tokens ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)) and not build phases ([PLAN.md](PLAN.md)).
 
-**Product rooms and refuse list:** [IA_SKELETON.md](IA_SKELETON.md) — three loops (LOG · WEEK · GARAGE). This file stays the chip floorplan. When a costume PR disagrees with the room map, the skeleton wins.
+**Product rooms:** [IA_SKELETON.md](IA_SKELETON.md) (CoS freeze). This file stays the chip floorplan. The skeleton wins when a costume PR disagrees.
 
 ---
 

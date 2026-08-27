@@ -28,41 +28,38 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 > No promote. Live www stays `.696`.
 > Brand: **Log a set. Offline.**
 
-Lock product truth: three loops
-(LOG · WEEK · GARAGE), existing
-room map, Horizon 0 vs later,
-refuse list. Chip floorplan stays
-[FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md).
-Product IA SoT is
+CoS freeze. Product IA SoT is
 [IA_SKELETON.md](IA_SKELETON.md).
+Named rooms: Today · Train ·
+Coach (AI) · History · Library.
+Chip floorplan stays
+[FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md).
+Sequence: skeleton doc →
+isolation → stop. v0 catalog
+labeling is a later PR.
 
 ### Done means
 
-- `docs/IA_SKELETON.md` states the
-  three loops, the room map, Horizon
-  0 vs later, and the refuse list.
-- Isolation tests fail if Today /
-  Train / first-paint chrome import
-  messenger, if Coach reads Garage,
-  if `/server` becomes a tab, or if
-  chat withholds a set. Stop after
-  isolation. v0 catalog labeling is
-  a later PR.
-- `generateWeek` stays the only
-  product week writer.
-- Dual-writer leak documented, not
-  blessed as a join.
-- Zero visual diffs on `/private`,
-  www, and signed-in chrome.
+- `docs/IA_SKELETON.md` matches
+  the CoS box (not a novel).
+- Isolation fails if Today /
+  Train import social, if tabs
+  leave `/log` + `/active`, if
+  Coach reads Garage, or if chat
+  withholds a set.
+- Dual-writer is a comment, not
+  a Start-order change.
+- Zero visual diffs. No costume.
+  No `/private` restyle. No
+  `PRIVATE_MODE` flip. Live stays
+  `.696`.
 
 ### Refuse
 
-Costume · `/private` restyle · www
-marketing · Patreon Feed · Chat as
-dock tab · Home-as-feed · type-5
-bubble · Discord.com / DMs · empty
-Studio · Message tab · Explore-as-
-shop · `PRIVATE_MODE` flip · promote.
+Costume · `/private` restyle ·
+Studio · Message tab ·
+Explore-as-shop · `PRIVATE_MODE`
+flip · promote off `.696`.
 
 ---
 

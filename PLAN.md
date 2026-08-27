@@ -15,19 +15,13 @@ Lock product truth as bones, not lipstick. Tonight's IA is already decided. Do n
 
 ## In / out
 
-**In**
+**In** (stop after these)
 
-- Short freeze (this file + `docs/PLAN.md` pointer).
-- `docs/IA_SKELETON.md` — three loops, existing room map, Horizon 0 vs later, refuse list. Point `FLOW_ARCHITECTURE.md` at it; do not replace the chip floorplan.
-- Isolation: keep `src/lib/social/isolation.test.ts` + `domainBoundary` C1–C3. Close holes:
-  - AppLayout / MobileNav / AppHeader first-paint chrome must not import messenger.
-  - Coach page + coach chat must not read Garage (no shared thread, store, or badge).
-  - Log-path tabs stay `/log` + `/active` only. `/server` stays More → You, never a dock tab.
-  - Chat is never a reason to withhold a set (`logSet` / SetLogRow / firstSetUngated).
-  - `generateWeek` is the only product week writer (`useCoachPlan`).
-  - Stop. v0 catalog labeling is a later PR.
-- Align comments on `primaryNav` / `navConfig` / `moreSheetTiers` / `domainBoundary` with the locked map. Do not add rooms. Do not promote `/server`.
-- Document (do not "fix") that Builder `saveAllProgramSessions` → `savedWorkouts` currently beats Coach on Today's Start order. Not a join mechanic.
+1. `docs/IA_SKELETON.md` — CoS freeze. Named rooms: Today · Train · Coach (AI) · History · Library.
+2. Isolation in `src/lib/social/isolation.test.ts`: Today/Train do not import social; tabs = `/log` + `/active`; Coach never reads Garage; chat never withholds a set.
+3. Dual-writer = comment only. Do not change Start order.
+
+v0 catalog labeling is a later PR.
 
 **Out**
 

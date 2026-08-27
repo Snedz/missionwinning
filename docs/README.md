@@ -40,7 +40,7 @@ User guides in plain language (no code paths):
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
 | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Site IA chip floorplan — dies, buses, critical path, dual pads |
-| [IA_SKELETON.md](IA_SKELETON.md) | Locked product IA — three loops, existing rooms, refuse list |
+| [IA_SKELETON.md](IA_SKELETON.md) | CoS freeze — LOG / WEEK / GARAGE; Today · Train · Coach (AI) · History · Library |
 | [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) | Native mobile umbrella — stack, backbone, UX laws, gates |
 | [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — process, standards, problem register |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference only) |

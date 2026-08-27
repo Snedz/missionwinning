@@ -24,26 +24,21 @@ plus the isolation holes that
 still let social ride Today /
 Train / Coach.
 
-**Ship:** skeleton only. No
-costume. `docs/IA_SKELETON.md`
-locks three loops (LOG · WEEK ·
-GARAGE), the existing room map,
-Horizon 0 vs later, and the
-refuse list. Chip floorplan stays
-`FLOW_ARCHITECTURE.md`. Isolation
-keeps `social/isolation.test.ts`
-and domainBoundary C1–C3, and
-now walks AppLayout chrome,
-Coach chat, and the week-writer
-door (`generateWeek` only from
-`useCoachPlan`). `/server` stays
-More → You. Dual-writer leak
-(Builder `saveAllProgramSessions`
-→ `savedWorkouts` beats Coach on
-Today Start) is documented, not
-blessed as Join. Start order
-unchanged. `/private` / www /
-signed-in chrome untouched.
+**Ship:** skeleton only. CoS
+freeze. `docs/IA_SKELETON.md`
+locks LOG · WEEK · GARAGE and
+named rooms Today · Train ·
+Coach (AI) · History · Library.
+Isolation: Today/Train do not
+import social; tabs = `/log` +
+`/active`; Coach never reads
+Garage; chat never withholds a
+set. Dual-writer is a comment,
+not a Start-order change. Stop
+after isolation. v0 catalog
+labeling is later. `/private` /
+www / signed-in chrome
+untouched.
 Guest. First set ungated. Today
 still one Start. Resume `.963`
 kept. `[skip vercel]`. No
