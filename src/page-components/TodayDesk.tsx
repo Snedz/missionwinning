@@ -321,9 +321,14 @@ export function TodayDesk() {
           ))}
         </div>
         {!plan ? (
-          <button type="button" className="house-btn house-btn-primary" style={{ marginTop: 14 }} onClick={() => router.push('/coach')}>
+          <Link
+            href="/coach"
+            className="house-btn"
+            style={{ marginTop: 14 }}
+            data-house-week-writer="generateWeek"
+          >
             {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-          </button>
+          </Link>
         ) : null}
       </section>
       ) : null}

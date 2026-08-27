@@ -126,6 +126,15 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
 });
 
+test('Today desk has one filled action — week generate is a door to /coach', () => {
+  const src = stripComments(read('src/page-components/TodayDesk.tsx'));
+  const primaries = [...src.matchAll(/house-btn-primary/g)];
+  assert.equal(primaries.length, 1, 'Start is the only filled action on Today');
+  assert.match(src, /href="\/coach"/);
+  assert.match(src, /data-house-week-writer="generateWeek"/);
+  assert.doesNotMatch(src, /generateWeek\(/);
+});
+
 test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
   const src = stripComments(read('src/components/house/HouseShell.tsx'));
   assert.match(src, /HouseMore/);

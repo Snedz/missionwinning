@@ -37,7 +37,10 @@ locks white / zinc / 16px / black
 pills / 72+264. Second-bar rows
 stagger 40ms; selected row is ink.
 Coach inner costume eyebrow is
-gone. `/private` / landing / www
+gone. Today has one filled
+action (Start); week generate
+is a door to `/coach`.
+`/private` / landing / www
 untouched. Reduced-motion still
 honoured. One Got it. Checklist
 ticks from visits. Hover chips stay
