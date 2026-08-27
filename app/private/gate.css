@@ -1,8 +1,6 @@
 /**
- * Modernist gate layout — Gate Redesign.dc.html recreated on the repo's classes.
- * Phase 0 shipped this with its own scoped token values; the Phase 1 global swap
- * moved the system into src/index.css, so the `--g-*` names now just alias the
- * global tokens (kept so the gate markup reads as one piece).
+ * Gated door — modernist tokens, Patreon shelves.
+ * `--g-*` aliases global tokens so the markup reads as one piece.
  */
 
 .mw-gate {
@@ -17,6 +15,7 @@
   --g-divider: hsl(var(--border));
   --g-muted: hsl(var(--muted-foreground));
   --g-gutter: clamp(20px, 5vw, 72px);
+  --g-panel: hsl(var(--neutral-900));
 
   background: var(--g-bg);
   color: var(--g-ink);
@@ -26,11 +25,15 @@
 
 .mw-gate a {
   color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 .mw-gate a:hover {
   color: var(--g-accent-700);
+}
+.mw-gate .gate-foot a,
+.mw-gate .gate-invite-copy a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .gate-shell {
@@ -46,22 +49,29 @@
   font-size: 15px;
 }
 
-.gate-header {
+/* Sticky 64px paper nav — Patreon structure, our tokens. */
+.gate-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px;
+  border-bottom: 2px solid var(--g-divider);
+  background: var(--g-bg);
+}
+.gate-nav-inner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 24px;
-  flex-wrap: wrap;
-  max-width: 1120px;
-  width: 100%;
-  box-sizing: border-box;
+  max-width: 1200px;
+  height: 100%;
   margin: 0 auto;
-  padding: 24px var(--g-gutter);
+  padding: 0 var(--g-gutter);
 }
 .gate-brand {
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 .gate-mark {
   width: 32px;
@@ -81,6 +91,55 @@
   font-size: 16px;
   letter-spacing: -0.01em;
 }
+.gate-nav-cluster {
+  display: none;
+  flex: 1;
+  justify-content: center;
+  gap: 28px;
+  font-size: 14px;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .gate-nav-cluster {
+    display: flex;
+  }
+}
+.gate-nav-cluster a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--g-muted);
+}
+.gate-nav-cluster a:hover {
+  color: var(--g-ink);
+}
+.gate-nav-end {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.gate-nav-login {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 24px var(--g-gutter);
+}
+
 .gate-kicker {
   font-size: 13px;
   line-height: 14px;
@@ -98,15 +157,23 @@
   background: var(--g-divider);
 }
 
-.gate-main {
-  flex: 1;
-  max-width: 1120px;
+.gate-hero {
+  display: grid;
+  gap: 48px;
+  max-width: 1200px;
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 84px var(--g-gutter);
+  padding: 80px var(--g-gutter) 96px;
 }
-.gate-col {
+@media (min-width: 960px) {
+  .gate-hero {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 64px;
+  }
+}
+.gate-hero-copy {
   max-width: 640px;
 }
 .gate-h1 {
@@ -114,23 +181,103 @@
   font-size: clamp(42px, 6vw, 76px);
   line-height: 1.06;
   letter-spacing: -0.02em;
-  margin: 0;
-  margin-inline-start: -0.058em; /* optical flush-left for the cap */
+  margin: 16px 0 0;
+  margin-inline-start: -0.058em;
 }
 .gate-h1 span {
   display: block;
+}
+.gate-h2 {
+  font-weight: 800;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 16px 0 0;
+  max-width: 24ch;
 }
 .gate-lede {
   font-size: 17px;
   line-height: 28px;
   max-width: 52ch;
-  margin: 36px 0 0;
+  margin: 24px 0 0;
+}
+
+.gate-shelf {
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 80px var(--g-gutter);
+  border-top: 2px solid var(--g-divider);
+}
+.gate-shelf-card {
+  background: var(--g-surface);
+  border-top: 2px solid var(--g-divider);
+}
+.gate-cards {
+  display: grid;
+  gap: 2px;
+  margin-top: 36px;
+  background: var(--g-divider);
+}
+@media (min-width: 768px) {
+  .gate-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.gate-card {
+  background: var(--g-bg);
+  padding: 32px;
+}
+.gate-card h3 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+.gate-card p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 26px;
+  color: var(--g-muted);
+}
+
+.gate-ink {
+  background: var(--g-panel);
+  color: var(--g-bg);
+  padding: 80px var(--g-gutter);
+}
+.gate-ink .gate-kicker {
+  color: hsl(var(--accent-400));
+}
+.gate-ink .gate-lede {
+  color: color-mix(in srgb, var(--g-bg) 78%, transparent);
+}
+.gate-ink .gate-h2 {
+  max-width: 16ch;
+}
+
+.gate-month {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 36px;
+  max-width: 560px;
+  background: var(--g-divider);
+}
+.gate-month-cell {
+  aspect-ratio: 1;
+  background: var(--g-surface);
+  min-height: 36px;
 }
 
 .gate-section {
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 80px var(--g-gutter);
   border-top: 2px solid var(--g-divider);
-  margin-top: 42px;
-  padding-top: 28px;
 }
 .gate-section .gate-kicker {
   margin: 0 0 14px;
@@ -163,7 +310,6 @@
   color: var(--g-ink);
   caret-color: var(--g-accent);
   background: var(--g-surface);
-  /* 2px rules — design-system radius 0; matches product chrome. */
   border: 2px solid var(--g-divider);
   border-radius: 0;
 }
@@ -189,8 +335,6 @@
   min-width: 240px;
 }
 
-/* 19px/800 label: ≥14pt bold is WCAG "large text", so paper-on-accent (3.78:1)
-   passes AA at 3:1. Do not shrink the label without re-doing that math. */
 .gate-btn {
   display: inline-flex;
   align-items: center;
@@ -207,6 +351,7 @@
   border-radius: 0;
   background: transparent;
   color: var(--g-ink);
+  text-decoration: none;
 }
 .gate-btn:disabled {
   opacity: 0.45;
@@ -230,6 +375,15 @@
 }
 .gate-btn-secondary:active:not(:disabled) {
   background: color-mix(in srgb, var(--g-ink) 14%, transparent);
+}
+.gate-btn-on-ink {
+  margin-top: 28px;
+  border: 2px solid var(--g-bg);
+  color: var(--g-bg);
+}
+.gate-btn-on-ink:hover {
+  background: var(--g-bg);
+  color: var(--g-ink);
 }
 
 .gate-foot {
@@ -292,13 +446,72 @@
   margin-top: 21px;
 }
 
-.gate-footer {
+/* Product set table — Comp B truth, modernist costume. */
+.gate-set {
+  margin: 0;
+  border: 2px solid var(--g-divider);
+  background: var(--g-surface);
+  padding: 24px;
+}
+.gate-set-cap {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.gate-set-kicker {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g-muted);
+  font-feature-settings: 'tnum' 1;
+}
+.gate-set-lift {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.gate-set-target {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g-accent-700);
+  font-feature-settings: 'tnum' 1;
+}
+.gate-set-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.gate-set-table th,
+.gate-set-table td {
+  text-align: start;
+  padding: 10px 8px;
   border-top: 2px solid var(--g-divider);
 }
+.gate-set-table th {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g-muted);
+}
+.gate-set-table td {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.gate-footer {
+  background: var(--g-panel);
+  color: color-mix(in srgb, var(--g-bg) 78%, transparent);
+  border-top: 2px solid var(--g-panel);
+}
 .gate-footer-inner {
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 21px var(--g-gutter);
+  padding: 32px var(--g-gutter);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -306,14 +519,12 @@
   flex-wrap: wrap;
   font-size: 13px;
   line-height: 28px;
-  color: var(--g-muted);
 }
 
-/* AppLegalFooter carries dark-theme utility classes until Phase 1 — re-seat it. */
 .mw-gate .gate-footer-links {
   padding: 0;
   font-size: 13px;
-  color: var(--g-muted);
+  color: inherit;
   text-align: start;
 }
 .mw-gate .gate-footer-links nav {
@@ -323,8 +534,8 @@
   color: inherit;
 }
 .mw-gate .gate-footer-links a:hover {
-  color: var(--g-accent-700);
+  color: var(--g-bg);
 }
 .mw-gate .gate-footer-links span[aria-hidden] {
-  color: var(--g-divider);
+  color: color-mix(in srgb, var(--g-bg) 28%, transparent);
 }

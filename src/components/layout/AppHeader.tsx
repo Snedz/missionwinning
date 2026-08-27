@@ -95,8 +95,8 @@ export function AppHeader({
   );
 
   return (
-    <header className="shrink-0 z-50 border-b-2 border-border bg-background">
-      <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
+    <header className="shrink-0 z-50 h-16 border-b-2 border-border bg-background">
+      <div className="relative z-[1] flex h-full items-center gap-2 px-4">
         {isCompact ? (
           <button
             type="button"

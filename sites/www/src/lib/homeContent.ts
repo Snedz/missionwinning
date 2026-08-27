@@ -113,11 +113,18 @@ export const QUESTIONS = {
 };
 
 export const NAV_LINKS = [
+  { href: '/#logger', label: 'Train' },
   { href: '/#adapt', label: 'Coach' },
-  { href: '/#anywhere', label: 'Anywhere' },
-  { href: '/#free', label: 'Free core' },
-  { href: '/#questions', label: 'Questions' },
+  { href: '/#history', label: 'History' },
+  { href: '/about', label: 'About' },
 ] as const;
+
+/** History shelf — existing lines, composed. No new voice. */
+export const HISTORY = {
+  eyebrow: 'History',
+  heading: STATEMENTS.missed,
+  body: FREE_CORE.rows[0].def,
+} as const;
 
 export const CTA = {
   label: 'Get notified',

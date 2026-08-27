@@ -42,9 +42,10 @@ import CtaSlot from '../components/CtaSlot.astro';
 import StagePhoto from '../components/StagePhoto.astro';
 import LogToPlanDemo from '../components/LogToPlanDemo.astro';
 import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
-import { appUrl } from '../lib/appLinks';
+import WwwNav from '../components/WwwNav.astro';
+import WwwFooter from '../components/WwwFooter.astro';
 import {
-  META, HERO, STATS, STATEMENTS, ADAPT, ANYWHERE, FREE_CORE, QUESTIONS, NAV_LINKS,
+  META, HERO, STATS, STATEMENTS, ADAPT, ANYWHERE, FREE_CORE, QUESTIONS, HISTORY,
 } from '../lib/homeContent';
 
 /*
@@ -60,34 +61,7 @@ import {
   title={META.title}
   description={META.description}
 >
-  <!-- 00 NAV. Sits on the photographic hero, so it starts transparent with paper
-       type and swaps to a paper bar once the hero is behind you. The swap is a
-       class toggled by an IntersectionObserver on a 1px sentinel — no scroll
-       handler, nothing that runs per frame. -->
-  <header
-    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
-    data-nav
-  >
-    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
-      <a href="/" class="flex shrink-0 items-center gap-3">
-        <span
-          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
-          data-nav-mark>MW</span
-        >
-        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
-      </a>
-      <!-- Desktop composition: five links. Compact drops them entirely rather
-           than hiding them behind a menu button — a marketing page is a scroll,
-           and a hamburger on a one-page scroll is chrome pretending to be
-           navigation. -->
-      <nav class="ml-8 hidden items-center gap-6 md:flex">
-        {NAV_LINKS.map((l) => (
-          <a href={l.href} class="text-[15px] font-semibold hover:underline">{l.label}</a>
-        ))}
-      </nav>
-      <CtaSlot variant="quiet" class="ml-auto shrink-0" />
-    </div>
-  </header>
+  <WwwNav />
 
   <main>
     <!-- 01 LOG. The photograph is the ground and the headline is on it. Wave 11
@@ -97,7 +71,7 @@ import {
          down by 80px, which comes straight out of the boundary to the statement
          that follows. `lg:pb-56` pays it back and then some — the rhythm guard
          read 438px against a 540–830 statement band before it did. -->
-    <section class="stage on-dark flex min-h-[92svh] flex-col justify-end px-5 pb-14 pt-32 sm:px-8 lg:pb-56 lg:pt-40">
+    <section id="logger" class="stage on-dark flex min-h-[92svh] flex-col justify-end px-5 pb-14 pt-32 sm:px-8 lg:pb-56 lg:pt-40">
       <StagePhoto
         base="/photo/home-rack"
         alt="A loaded barbell on a home rack"
@@ -247,6 +221,21 @@ import {
         ))}
       </div>
     </Section>
+
+    <!-- History shelf. Existing copy, a month you own — not a feed. Card ground
+         so it does not repeat the questions paper. -->
+    <Section id="history" class="bg-card">
+      <p class="eyebrow">{HISTORY.eyebrow}</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">{HISTORY.heading}</h2>
+      <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.6] text-quiet">
+        {HISTORY.body}
+      </p>
+      <div class="mt-12 grid max-w-xl grid-cols-7 gap-0.5 bg-rule" aria-hidden="true">
+        {Array.from({ length: 35 }, () => (
+          <span class="aspect-square min-h-9 bg-paper"></span>
+        ))}
+      </div>
+    </Section>
   </main>
 
   <!-- 09 START. The page's one red field. poster-FIELD, not poster-close: it
@@ -258,6 +247,8 @@ import {
       <CtaSlot class="mt-10 max-w-[420px]" />
     </div>
   </footer>
+
+  <WwwFooter />
 
   <script>
     /*

@@ -23,10 +23,10 @@ type MarketingNavProps = {
 
 export function MarketingNav({ variant = 'full', className }: MarketingNavProps) {
   const { t } = useTranslation();
-  const navLinks = primaryNavLinks();
+  const gateOn = isClientPrivateGateEnabled();
+  const navLinks = primaryNavLinks({ gated: gateOn });
   const legalLinks =
     footerGroups().find((g) => g.titleKey === 'footerGroupLegal')?.links ?? [];
-  const gateOn = isClientPrivateGateEnabled();
   const ctaHref = gateOn ? '/private' : '/welcome';
   const ctaLabel = gateOn
     ? t('landingNavStartGated', {
@@ -48,45 +48,41 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
           defaultValue: APP_PUBLIC_STATUS_LINE_EN,
         })}
       />
-      <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">
-        <Link href="/" className="flex items-center gap-2.5 min-w-0">
-          <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />
-          <span className="truncate font-display text-lg font-extrabold tracking-[-0.01em] sm:text-xl">
+      <div className="relative z-[1] mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 min-w-0">
+          <BrandMonogram className="h-8 w-8 text-sm" />
+          <span className="truncate font-display text-[15px] font-extrabold tracking-[-0.01em]">
             Mission Winning
           </span>
         </Link>
 
-        <div className="flex items-center gap-6">
-          {/* Real wayfinding from md up. This used to be one `/#coach` anchor,
-              which meant the ~250-page library had no route from the chrome at
-              any width. Below md it moves into PublicNavMenu. */}
-          {variant === 'full' ? (
-            <ul className="hidden items-center gap-6 text-sm md:flex">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {t(link.labelKey, { defaultValue: link.defaultValue })}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <Link
-              href="/"
-              className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground md:inline"
-            >
-              {t('landingNavHome', { defaultValue: 'Home' })}
-            </Link>
-          )}
+        {variant === 'full' ? (
+          <ul className="hidden flex-1 items-center justify-center gap-7 text-sm md:flex">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="inline-flex min-h-[44px] items-center text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t(link.labelKey, { defaultValue: link.defaultValue })}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Link
+            href="/"
+            className="hidden flex-1 text-sm text-muted-foreground transition-colors hover:text-foreground md:inline"
+          >
+            {t('landingNavHome', { defaultValue: 'Home' })}
+          </Link>
+        )}
 
+        <div className="ml-auto flex items-center gap-4">
           {/* A real anchor, not `onClick={router.push}`: these pages are `force-static`,
               so an onClick-only CTA does nothing until React hydrates and crawlers see no
-              link at all. Visible at every width — the primary conversion action must not
-              move a tap deeper on the viewport most visitors arrive on. */}
-          <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-medium">
+              link at all. Quiet in chrome — the page's one red stays on the field. */}
+          <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-semibold">
             <Link href={ctaHref}>{ctaLabel}</Link>
           </Button>
 

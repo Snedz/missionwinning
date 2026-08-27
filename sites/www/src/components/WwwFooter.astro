@@ -1,0 +1,63 @@
+---
+/*
+ * Ink footer after the page's one red close. Product / Company / Legal.
+ * Next routes are absolute — this build is not the app.
+ */
+import { appUrl } from '../lib/appLinks';
+
+const PRODUCT = [
+  { href: appUrl('/active'), label: 'Train' },
+  { href: '/#adapt', label: 'Coach' },
+  { href: '/#history', label: 'History' },
+];
+const COMPANY = [
+  { href: '/about', label: 'About' },
+  { href: appUrl('/press'), label: 'Press' },
+  { href: '/vision', label: 'Vision' },
+];
+const LEGAL = [
+  { href: appUrl('/terms'), label: 'Terms' },
+  { href: appUrl('/privacy'), label: 'Privacy' },
+  { href: appUrl('/usage'), label: 'Usage' },
+  { href: appUrl('/regions'), label: 'Regions' },
+  { href: appUrl('/service-terms'), label: 'Service terms' },
+  { href: appUrl('/dmca'), label: 'DMCA / Copyright' },
+  { href: appUrl('/refunds'), label: 'Refunds' },
+  { href: 'https://github.com/Snedz/missionwinning', label: 'Source' },
+];
+---
+
+<footer class="ground-ink px-5 py-16 sm:px-8">
+  <div class="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <p class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</p>
+      <p class="mt-3 max-w-xs text-[14px] leading-[1.5] text-quiet">
+        Log a set. Offline. Free core forever.
+      </p>
+    </div>
+    <div>
+      <p class="eyebrow mb-3">Product</p>
+      <ul class="space-y-2 text-[14px]">
+        {PRODUCT.map((l) => (
+          <li><a href={l.href} class="text-quiet hover:text-paper">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow mb-3">Company</p>
+      <ul class="space-y-2 text-[14px]">
+        {COMPANY.map((l) => (
+          <li><a href={l.href} class="text-quiet hover:text-paper">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow mb-3">Legal</p>
+      <ul class="space-y-2 text-[14px]">
+        {LEGAL.map((l) => (
+          <li><a href={l.href} class="text-quiet hover:text-paper">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>

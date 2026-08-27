@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1048` Open empty load is blank, not 0 (from master `.1047` `48958422c`; stamp stays `.1048`; completed BW `.1025` / History edit empty string `.997` stay). */
-export const APP_BUILD_LABEL = "2026.07-unified.1048";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1049` Modernist tokens, Patreon layout (from master `.1048` `8763a6e013`; stamp stays `.1049`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1049";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

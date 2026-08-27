@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
+import { GateSetTable } from '@/components/public/GateSetTable';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
 import { confirmPrivateGateCookie } from '@/lib/confirmPrivateGateCookie';
@@ -28,6 +30,13 @@ type Props = {
    */
   walkOpen?: boolean;
 };
+
+const NAV = [
+  { href: '/active', label: 'Train' },
+  { href: '#coach', label: 'Coach' },
+  { href: '#history', label: 'History' },
+  { href: '/about', label: 'About' },
+] as const;
 
 export function PrivateTeaserClient({
   initialInvite = '',
@@ -193,128 +202,180 @@ export function PrivateTeaserClient({
       </p>
     ) : null;
 
+  const doorForms = isInvitee ? (
+    <section className="gate-section" id="door">
+      <p className="gate-kicker">
+        {g('gateInviteEyebrow')}
+      </p>
+      <p className="gate-invite-copy">
+        {g('gateInviteSubtitle')}
+      </p>
+      <form onSubmit={handleSubmit}>
+        {codeField}
+        <div className="gate-actions">
+          <button
+            type="submit"
+            disabled={loading || !password}
+            className="gate-btn gate-btn-primary"
+          >
+            {submitLabel}
+          </button>
+        </div>
+        {errorNode}
+        <p className="gate-foot">
+          {g('gateBetaGuideFoot')}{' '}
+          <Link href="/beta">
+            {g('gateBetaGuide')}
+          </Link>
+          . If you installed the app before the gate, clear site data or reinstall.
+        </p>
+      </form>
+    </section>
+  ) : (
+    <section className="gate-section" id="door">
+      {territory.stance === 'refuse' ? (
+        <div data-mw-territory={territory.reason}>
+          <p className="gate-kicker">
+            {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+          </p>
+          <p className="gate-invite-copy">{territory.message}</p>
+          <p className="gate-foot">
+            <Link href="/regions">
+              {t('infoRegionsNotSupported', {
+                defaultValue: 'Where we do not support the hosted service',
+              })}
+            </Link>
+          </p>
+        </div>
+      ) : (
+        <>
+          <p className="gate-kicker">{g('gateWaitlistTitle')}</p>
+          <LaunchNotifyForm
+            source="launch-waitlist"
+            message="Private gate waitlist"
+            variant="gate"
+          />
+          <p className="gate-foot">{g('gateWaitlistFoot')}</p>
+          {territoryNote}
+        </>
+      )}
+
+      {/* Access code secondary — never competes with Notify me red. */}
+      <details className="gate-details" open={false}>
+        <summary className="gate-details-summary">
+          {g('gateAccessSummary')}
+        </summary>
+        <form onSubmit={handleSubmit}>
+          {codeField}
+          <div className="gate-actions">
+            <button
+              type="submit"
+              disabled={loading || !password}
+              className="gate-btn gate-btn-secondary"
+            >
+              {submitLabel}
+            </button>
+          </div>
+          {errorNode}
+        </form>
+      </details>
+    </section>
+  );
+
   return (
     <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
-      <header className="gate-header">
-        <span className="gate-brand">
-          <span className="gate-mark" data-brand-monogram aria-hidden>
-            MW
+      <header className="gate-nav">
+        <div className="gate-nav-inner">
+          <span className="gate-brand">
+            <BrandMonogram className="h-8 w-8 text-sm" />
+            <span className="gate-brandname">Mission Winning</span>
           </span>
-          <span className="gate-brandname">Mission Winning</span>
-        </span>
-        <p className="gate-kicker">
-          {g('gateEyebrow')}
-        </p>
-      </header>
-      <hr className="gate-rule" />
-
-      {/* Field manual: eyebrow → display → one red (invite = code; cold = notify). */}
-      <main className="gate-main">
-        <div className="gate-col">
-          <h1 className="gate-h1">
-            <span>{g('gateTitle1')}</span>
-            <span>{g('gateTitle2')}</span>
-          </h1>
-          <p className="gate-lede" data-mw-wedge-teaser>
-            {g('gateSubtitle')}
-          </p>
-          {/*
-            The mechanism, on the first screen anyone sees. "Offline" is a word
-            an app with forced sync would also print; this says where the sets go.
-          */}
-          <p className="gate-foot" data-mw-local-first>
-            {g('gateLocalFirst')}
-          </p>
-
-          {isInvitee ? (
-            <section className="gate-section">
-              <p className="gate-kicker">
-                {g('gateInviteEyebrow')}
-              </p>
-              <p className="gate-invite-copy">
-                {g('gateInviteSubtitle')}
-              </p>
-              <form onSubmit={handleSubmit}>
-                {codeField}
-                <div className="gate-actions">
-                  <button
-                    type="submit"
-                    disabled={loading || !password}
-                    className="gate-btn gate-btn-primary"
-                  >
-                    {submitLabel}
-                  </button>
-                </div>
-                {errorNode}
-                <p className="gate-foot">
-                  {g('gateBetaGuideFoot')}{' '}
-                  <Link href="/beta">
-                    {g('gateBetaGuide')}
-                  </Link>
-                  . If you installed the app before the gate, clear site data or reinstall.
-                </p>
-              </form>
-            </section>
-          ) : (
-            <section className="gate-section">
-              {territory.stance === 'refuse' ? (
-                /*
-                 * A named excluded territory. The poster still stands — the
-                 * product exists and the source is public — but we do not ask
-                 * for an address we could only ever ignore. The access-code
-                 * details below stay open, so a hand-picked tester passing
-                 * through is not locked out of their own invite.
-                 */
-                <div data-mw-territory={territory.reason}>
-                  <p className="gate-kicker">
-                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-                  </p>
-                  <p className="gate-invite-copy">{territory.message}</p>
-                  <p className="gate-foot">
-                    <Link href="/regions">
-                      {t('infoRegionsNotSupported', {
-                        defaultValue: 'Where we do not support the hosted service',
-                      })}
-                    </Link>
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <p className="gate-kicker">{g('gateWaitlistTitle')}</p>
-                  <LaunchNotifyForm
-                    source="launch-waitlist"
-                    message="Private gate waitlist"
-                    variant="gate"
-                  />
-                  <p className="gate-foot">{g('gateWaitlistFoot')}</p>
-                  {territoryNote}
-                </>
-              )}
-
-              {/* Access code secondary — never competes with Notify me red. */}
-              <details className="gate-details" open={false}>
-                <summary className="gate-details-summary">
-                  {g('gateAccessSummary')}
-                </summary>
-                <form onSubmit={handleSubmit}>
-                  {codeField}
-                  <div className="gate-actions">
-                    <button
-                      type="submit"
-                      disabled={loading || !password}
-                      className="gate-btn gate-btn-secondary"
-                    >
-                      {submitLabel}
-                    </button>
-                  </div>
-                  {errorNode}
-                </form>
-              </details>
-            </section>
-          )}
-
-          {probeNote}
+          <nav className="gate-nav-cluster" aria-label="Product">
+            {NAV.map((item) => (
+              <Link key={item.href} href={item.href}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="gate-nav-end">
+            <a href="#door" className="gate-nav-login">
+              {g('gateWaitlistTitle')}
+            </a>
+            <a href="#door" className="gate-nav-login">
+              {g('gateAccessSubmit')}
+            </a>
+          </div>
         </div>
+      </header>
+
+      <main>
+        <section className="gate-hero">
+          <div className="gate-hero-copy">
+            <p className="gate-kicker">{g('gateEyebrow')}</p>
+            <h1 className="gate-h1">
+              <span>{g('gateTitle1')}</span>
+              <span>{g('gateTitle2')}</span>
+            </h1>
+            <p className="gate-lede" data-mw-wedge-teaser>
+              {g('gateSubtitle')}
+            </p>
+            <p className="gate-foot" data-mw-local-first>
+              {g('gateLocalFirst')}
+            </p>
+          </div>
+          <GateSetTable />
+        </section>
+
+        <section className="gate-shelf" id="train">
+          <p className="gate-kicker">{g('gateSubtitle')}</p>
+          <h2 className="gate-h2">{g('cineAnywhereTitle')}</h2>
+          <div className="gate-cards">
+            <article className="gate-card">
+              <h3>{g('cineAnywhereKicker')}</h3>
+              <p>{g('cineAnywhereLead')}</p>
+            </article>
+            <article className="gate-card">
+              <h3>{g('cinePublicLine')}</h3>
+              <p>{g('cineLater')}</p>
+            </article>
+            <article className="gate-card">
+              <h3>{g('cineWeekKicker')}</h3>
+              <p>{g('cineWeekLead')}</p>
+            </article>
+          </div>
+        </section>
+
+        <section className="gate-ink" id="today">
+          <p className="gate-kicker">Today</p>
+          <h2 className="gate-h2">{g('cinePublicLine')}</h2>
+          <p className="gate-lede">
+            {g('cineDoorFoot')}
+          </p>
+          <Link href="/active" className="gate-btn gate-btn-on-ink">
+            Start
+          </Link>
+        </section>
+
+        <section className="gate-shelf" id="history">
+          <p className="gate-kicker">History</p>
+          <h2 className="gate-h2">{g('cineLater')}</h2>
+          <div className="gate-month" aria-hidden>
+            {Array.from({ length: 35 }, (_, i) => (
+              <span key={i} className="gate-month-cell" />
+            ))}
+          </div>
+        </section>
+
+        <section className="gate-shelf gate-shelf-card" id="coach">
+          <p className="gate-kicker">{g('cineWeekKicker')}</p>
+          <h2 className="gate-h2">{g('cineWeekTitle')}</h2>
+          <p className="gate-lede">{g('cineWeekLead')}</p>
+          <p className="gate-foot">{g('cineWeekWhy')}</p>
+        </section>
+
+        {doorForms}
+
+        {probeNote}
       </main>
 
       <div className="gate-footer">
