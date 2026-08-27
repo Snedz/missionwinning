@@ -4,10 +4,10 @@
  * Registry: Today · Train · Coach · Fuel · You. Track lives under More / profile.
  *
  * PRIMARY_NAV stays the label/icon registry for these five routes — the rail
- * resolves `/profile` through it, so removing an entry here breaks
- * `railGroupsForNav()`. The mobile tab bar is a *subset* of it (below), not a
- * rewrite of it. Locked rooms: docs/IA_SKELETON.md — do not add Message,
- * Coach-the-human, or Studio here.
+ * resolves `/log` `/active` `/coach` `/profile` through it, so removing an
+ * entry here breaks `railGroupsForNav()` / `railFooterForNav()`. The mobile
+ * tab bar is a *subset* of it (below), not a rewrite of it. Locked rooms:
+ * docs/IA_SKELETON.md — do not add Message, Coach-the-human, or Studio here.
  */
 import type { LucideIcon } from 'lucide-react';
 import { Dumbbell, Home, Sparkles, User, UtensilsCrossed } from 'lucide-react';

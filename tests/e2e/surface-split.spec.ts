@@ -43,15 +43,21 @@ test.describe('Desktop surface @gate', () => {
   test('shell is the rail, not the tab bar', async ({ page }) => {
     await page.goto('/log');
 
-    // The rail carries all thirteen screens, so there is no tab bar and no
-    // More sheet handle in the header.
-    await expect(page.locator('aside').first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /^more$/i })).toHaveCount(0);
+    // Room rail is the left map. More lives in the rail footer, not the header.
+    const rail = page.getByTestId('room-rail');
+    await expect(rail).toBeVisible();
+    for (const name of ['Today', 'Train', 'Coach', 'History', 'Library']) {
+      await expect(rail.getByRole('link', { name })).toBeVisible();
+    }
+    await expect(rail.getByRole('link', { name: /^you$/i })).toBeVisible();
+    await expect(rail.getByRole('button', { name: /^more$/i })).toBeVisible();
+    await expect(rail.getByRole('link', { name: /^message$/i })).toHaveCount(0);
 
     // The brand is a button only on compact — it is the More sheet's handle.
-    // At md+ the mock's header has no menu at all.
+    // At md+ the header has no menu; the rail footer does.
     const brandButton = page.getByRole('button', { name: /mission winning/i });
     await expect(brandButton).toHaveCount(0);
+    await expect(page.locator('header').getByRole('button', { name: /^more$/i })).toHaveCount(0);
   });
 
   test('add exercise is inline, not a sheet', async ({ page }) => {

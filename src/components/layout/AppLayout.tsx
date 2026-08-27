@@ -9,6 +9,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
+/** Static import so the left room rail is in first HTML, not a later chunk. */
+import { Sidebar } from './Sidebar';
 import { CONSENT_BANNER_HOST_ID, SCREEN_DOCK_HOST_ID } from './ScreenDock';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
 import { PageTransition } from '@/components/layout/PageTransition';
@@ -16,10 +18,6 @@ import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { recordScreen } from '@/lib/screenTrail';
 import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
-
-const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
-  ssr: false,
-});
 
 const CommissioningCeremony = dynamic(
   () =>
@@ -64,9 +62,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         >
           <AppHeader onOpenMore={openMore} moreOpen={moreOpen} />
           <div className="flex flex-1 min-h-0">
-            <div className="hidden md:block">
-              <Sidebar />
-            </div>
+            <Sidebar onOpenMore={openMore} />
             {/* No bottom padding for the tab bar any more — the bar and the
                 dock are flex siblings that reserve their own height. */}
             <main className="flex-1 overflow-y-auto">

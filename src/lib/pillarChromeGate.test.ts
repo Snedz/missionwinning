@@ -1,10 +1,9 @@
 /**
  * F-004 — six-pillar chrome stays demoted until first workout.
  *
- * Pure helpers default `hasFirstWorkout` to **true** so inventory guards see the
- * full map. That default is a footgun at the mount sites: omitting the arg
- * re-opens the options wall for I-Day. This guard discovers the call sites and
- * requires they pass the live signal (workout store / `basic.workout`).
+ * The left room rail is Today · Train · Coach · History · Library. Pillars
+ * are not rail rooms. MoreSheet still hides Move · Mind · Track · Learn
+ * until `workoutHistory.length > 0`.
  */
 
 import { test } from 'node:test';
@@ -16,28 +15,16 @@ import { railGroupsForNav } from '@/lib/navConfig';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('railGroupsForNav drops Pillars when hasFirstWorkout is false', () => {
-  const before = railGroupsForNav({ hasFirstWorkout: false });
-  assert.ok(!before.some((g) => g.id === 'pillars'));
-  assert.ok(before.some((g) => g.id === 'mission'));
-  assert.ok(before.some((g) => g.id === 'toolkit'));
-  const hrefs = before.flatMap((g) => g.items.map((i) => i.href));
-  for (const href of ['/nutrition', '/move', '/mind', '/track', '/learn']) {
-    assert.ok(!hrefs.includes(href), `${href} stays off the rail until first workout`);
+const PILLAR_HREFS = ['/nutrition', '/move', '/mind', '/track', '/learn'] as const;
+
+test('room rail never carries Pillars', () => {
+  for (const opts of [{ hasFirstWorkout: false }, { hasFirstWorkout: true }, undefined]) {
+    const hrefs = railGroupsForNav(opts).flatMap((g) => g.items.map((i) => i.href));
+    for (const href of PILLAR_HREFS) {
+      assert.ok(!hrefs.includes(href), `${href} is More, not a rail room`);
+    }
+    assert.ok(!hrefs.includes('/server'), 'Messenger is never a rail href');
   }
-
-  const after = railGroupsForNav({ hasFirstWorkout: true });
-  assert.ok(after.some((g) => g.id === 'pillars'));
-});
-
-test('Sidebar wires hasFirstWorkout into railGroupsForNav', () => {
-  const src = read('src/components/layout/Sidebar.tsx');
-  assert.match(src, /railGroupsForNav\(\{\s*hasFirstWorkout\s*\}\)/);
-  assert.match(
-    src,
-    /workoutHistory\.length/,
-    'gate signal must be first logged workout — do not invent a new flag'
-  );
 });
 
 test('MoreSheet gate signal is workout history length (same as basic.workout)', () => {

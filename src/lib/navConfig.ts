@@ -173,45 +173,34 @@ export type NavSection = {
 };
 
 /**
- * The side rail, grouped Mission / Pillars / Toolkit — the 13 signed-in screens
- * from the Modernist handoff, in its order.
+ * Left room rail — the five named IA rooms, in order.
  *
  * Declared as hrefs rather than duplicated item objects so label and icon keep
- * coming from PRIMARY_NAV / MORE_NAV; two sources for "what is /move called"
- * is how a rail and a menu start disagreeing. `railLabel` overrides only where
- * the handoff names a screen differently from the existing menu entry.
+ * coming from PRIMARY_NAV / MORE_NAV; two sources for "what is /library called"
+ * is how a rail and a menu start disagreeing.
  *
- * Not in the rail and deliberately so: /calculators, /leaderboard, /learn/guide
- * and /bundle live in `MoreSheet`'s QUIET_LINKS. There is no header menu — that
- * comment described one for months after it stopped existing, which is how
- * `/benchmarks` ended up reachable from nowhere. The rail is the 13 screens,
- * not everything that has a route.
+ * Not in the rail and deliberately so: Fuel / Move / Mind / Track / Learn stay
+ * in More until first workout (F-004). Builder / Messenger / Account live in
+ * the More sheet. You is the rail footer, not a sixth room. Messenger
+ * (`/server`) is never a rail href. docs/IA_SKELETON.md.
  */
 const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> = {
-  // The handoff calls this screen "Assess"; the menu entry is "Health screen".
-  '/assessments': { label: 'Assess', labelKey: 'navAssess' },
+  // Room name is Coach. navCoach / packs say "AI weekly plan" — that is the
+  // week screen title, not the rail item. Same override Today already uses.
+  '/coach': { label: 'Coach', labelKey: 'navCoachTab' },
 };
 
 export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: string[] }[] = [
   {
-    id: 'mission',
-    title: 'Mission',
+    id: 'rooms',
+    title: 'Rooms',
     titleKey: 'navGroupMission',
-    hrefs: ['/log', '/active', '/coach', '/history'],
-  },
-  {
-    id: 'pillars',
-    title: 'Pillars',
-    titleKey: 'navGroupPillars',
-    hrefs: ['/nutrition', '/move', '/mind', '/track', '/learn'],
-  },
-  {
-    id: 'toolkit',
-    title: 'Toolkit',
-    titleKey: 'navGroupToolkit',
-    hrefs: ['/library', '/builder', '/profile', '/account'],
+    hrefs: ['/log', '/active', '/coach', '/history', '/library'],
   },
 ];
+
+/** Footer of the rail — You. More is a sheet handle, not a href. */
+export const RAIL_FOOTER_HREFS = ['/profile'] as const;
 
 const NAV_BY_HREF = new Map<string, NavLinkItem>(
   [...PRIMARY_NAV, ...MORE_NAV].map((i) => [i.href, i])
@@ -219,8 +208,9 @@ const NAV_BY_HREF = new Map<string, NavLinkItem>(
 
 export type RailNavOpts = {
   /**
-   * F-004 — when false, drop the Pillars rail group until first logged workout.
-   * Default **true** for inventory/SSR; Sidebar passes the live signal.
+   * F-004 — when false, drop a Pillars rail group if one is re-added.
+   * The room rail itself has no pillars. MoreSheet still gates that tier.
+   * Default **true** for inventory/SSR.
    */
   hasFirstWorkout?: boolean;
 };
@@ -246,6 +236,15 @@ export function railGroupsForNav(opts?: RailNavOpts): NavSection[] {
         }),
     }))
     .filter((group) => group.items.length > 0);
+}
+
+/** You — footer of the room rail. Messenger is not here. */
+export function railFooterForNav(): NavLinkItem[] {
+  return RAIL_FOOTER_HREFS.filter((href) => isPathEnabled(href)).map((href) => {
+    const base = NAV_BY_HREF.get(href);
+    if (!base) throw new Error(`RAIL_FOOTER_HREFS: no nav item for ${href}`);
+    return { ...base };
+  });
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

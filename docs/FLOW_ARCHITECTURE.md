@@ -52,15 +52,14 @@ Live:  Summary /log │ Train /active │ Search (sheet)
 
 Source: [`src/lib/primaryNav.ts`](../src/lib/primaryNav.ts) — `MOBILE_TAB_HREFS` + `resolveMobileTabHrefs`. Coach, Fuel, Builder, Library, and Messenger (`/server`) are Search / More rows, not dock tabs. Library + Builder is the official training catalog; `/explore` is the places pin-board, not a shop. `PRIMARY_NAV` still registers You (`/profile`) for the rail. See [IA_SKELETON.md](IA_SKELETON.md).
 
-### Desktop rail
+### Left room rail
 
-| Group | Routes |
-|-------|--------|
-| Train | `/log` `/active` `/coach` `/history` |
-| Pillars | `/nutrition` `/move` `/mind` `/track` `/learn` |
-| Toolkit | `/assessments` `/library` `/builder` `/profile` |
+| Band | Routes |
+|------|--------|
+| Rooms | `/log` `/active` `/coach` `/history` `/library` |
+| Foot | `/profile` (You) · More sheet (Builder / Messenger / Account) |
 
-Source: [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) `RAIL_GROUPS`.
+Source: [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) `RAIL_GROUPS` + `RAIL_FOOTER_HREFS`. Pillars stay in More until first workout. Messenger is never a rail href.
 
 ### Marketing footer
 
