@@ -15,7 +15,8 @@ const LEAN = 'src/page-components/HomeTodayLean.tsx';
 
 test('Lean first paint does not pull the week strip', () => {
   const lean = read(LEAN);
-  assert.doesNotMatch(lean, /TodayCoachWeekStrip/, 'Cue me isolation: page stays blind');
+  assert.doesNotMatch(lean, /TodayCoachWeekStrip/, 'the strip stays the house, not the desk');
+  assert.match(lean, /<TodayWeekDoor\s*\/>/, 'WEEK is a door on first paint');
   assert.match(lean, /<TodayShowAll\b/, 'the house door is a child, not a second Today');
 });
 

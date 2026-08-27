@@ -30,6 +30,7 @@ import {
   unhideExerciseNow,
 } from '@/lib/workout/hideExercise';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { CatalogLoopTabs } from '@/components/layout/CatalogLoopTabs';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { FilterChip } from '@/components/ui/FilterChip';
@@ -194,6 +195,7 @@ export function LibraryPage() {
         defaultValue: 'Search movements. Filters when you need them.',
       })}
     >
+      <CatalogLoopTabs active="library" />
       <Button
         type="button"
         variant="outline"

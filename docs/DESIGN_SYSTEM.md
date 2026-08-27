@@ -155,9 +155,9 @@ lines at 390px.
 
 ### App navigation (`.140`)
 
-The signed-in rail and mobile tab bar both come from **`railGroupsForNav()`** in `src/lib/navConfig.ts` — the 13 handoff screens grouped **Mission** (Today · Train · Coach · History) / **Pillars** (Fuel · Move · Mind · Track · Learn) / **Toolkit** (Assess · Library · Builder · You), in that order. Groups are declared as hrefs and resolved against `PRIMARY_NAV` + `MORE_NAV`, so label and icon have one definition; parked surfaces are dropped and empty groups disappear.
+The signed-in rail comes from **`railGroupsForNav()`** in `src/lib/navConfig.ts` — named loops **Log** (Today · Train · History) / **Week** (Coach) / **Catalog** (Library · Builder) / **You** (profile · account). Groups are declared as hrefs and resolved against `PRIMARY_NAV` + `MORE_NAV`, so label and icon have one definition; parked surfaces are dropped and empty groups disappear. Pillars and `/server` stay in More.
 
-Anything not one of those 13 screens (`/calculators`, `/leaderboard`, `/learn/guide`, `/bundle`) stays in the header menu — the rail is the screens, not every route.
+Anything not one of those screens (`/calculators`, `/leaderboard`, `/learn/guide`, `/bundle`, pillars) stays in More — the rail teaches the loops, not every route.
 
 - **Rail** (`md:` up): `is-active-row` — accent-100 fill + `inset 3px 0 0` poster. Scrolls; icon-only at 72px where group labels are replaced by a 2px rule.
 - **Tabs** (below `md:`): `is-active-tab` — accent-100 fill + `inset 0 2px 0` poster. Scrolls horizontally at `min-w-[68px]`; Mission first, so the wedge is on screen before any scroll.

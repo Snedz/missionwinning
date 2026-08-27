@@ -173,19 +173,20 @@ export type NavSection = {
 };
 
 /**
- * The side rail, grouped Mission / Pillars / Toolkit — the 13 signed-in screens
- * from the Modernist handoff, in its order.
+ * The side rail names the three loops. Pillars and Garage stay in More.
+ *
+ *   LOG     — Today · Train · History
+ *   WEEK    — Coach (`generateWeek` lives here)
+ *   CATALOG — Library · Builder (official catalog)
+ *   You     — identity drawer, not first paint
  *
  * Declared as hrefs rather than duplicated item objects so label and icon keep
- * coming from PRIMARY_NAV / MORE_NAV; two sources for "what is /move called"
- * is how a rail and a menu start disagreeing. `railLabel` overrides only where
- * the handoff names a screen differently from the existing menu entry.
+ * coming from PRIMARY_NAV / MORE_NAV. `/server` is never a rail href
+ * (docs/IA_SKELETON.md GARAGE). Pillars leave the rail so the house is not
+ * a 13-item inventory. Not the unlabeled 5-item rail (#883).
  *
- * Not in the rail and deliberately so: /calculators, /leaderboard, /learn/guide
- * and /bundle live in `MoreSheet`'s QUIET_LINKS. There is no header menu — that
- * comment described one for months after it stopped existing, which is how
- * `/benchmarks` ended up reachable from nowhere. The rail is the 13 screens,
- * not everything that has a route.
+ * Not in the rail and deliberately so: pillars, /calculators, /leaderboard,
+ * /learn/guide, /bundle, /server. Those live in More. There is no header menu.
  */
 const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> = {
   // The handoff calls this screen "Assess"; the menu entry is "Health screen".
@@ -194,22 +195,28 @@ const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> 
 
 export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: string[] }[] = [
   {
-    id: 'mission',
-    title: 'Mission',
-    titleKey: 'navGroupMission',
-    hrefs: ['/log', '/active', '/coach', '/history'],
+    id: 'log',
+    title: 'Log',
+    titleKey: 'navGroupLog',
+    hrefs: ['/log', '/active', '/history'],
   },
   {
-    id: 'pillars',
-    title: 'Pillars',
-    titleKey: 'navGroupPillars',
-    hrefs: ['/nutrition', '/move', '/mind', '/track', '/learn'],
+    id: 'week',
+    title: 'Week',
+    titleKey: 'navGroupWeek',
+    hrefs: ['/coach'],
   },
   {
-    id: 'toolkit',
-    title: 'Toolkit',
-    titleKey: 'navGroupToolkit',
-    hrefs: ['/library', '/builder', '/profile', '/account'],
+    id: 'catalog',
+    title: 'Catalog',
+    titleKey: 'navGroupCatalog',
+    hrefs: ['/library', '/builder'],
+  },
+  {
+    id: 'you',
+    title: 'You',
+    titleKey: 'navGroupYou',
+    hrefs: ['/profile', '/account'],
   },
 ];
 
@@ -219,33 +226,29 @@ const NAV_BY_HREF = new Map<string, NavLinkItem>(
 
 export type RailNavOpts = {
   /**
-   * F-004 — when false, drop the Pillars rail group until first logged workout.
-   * Default **true** for inventory/SSR; Sidebar passes the live signal.
+   * Kept so existing Sidebar call sites compile. Pillars are no longer
+   * on the rail — F-004 now gates More only (`moreSheetTiersForNav`).
    */
   hasFirstWorkout?: boolean;
 };
 
 /**
  * Rail groups resolved to items, with parked surfaces dropped and any group
- * that empties out removed — same rule the header menu already follows, since
- * a rail entry that 404s is worse than no entry.
+ * that empties out removed — a rail entry that 404s is worse than no entry.
  */
-export function railGroupsForNav(opts?: RailNavOpts): NavSection[] {
-  const revealPillars = opts?.hasFirstWorkout !== false;
-  return RAIL_GROUPS.filter((group) => revealPillars || group.id !== 'pillars')
-    .map((group) => ({
-      id: group.id,
-      title: group.title,
-      titleKey: group.titleKey,
-      items: group.hrefs
-        .filter((href) => isPathEnabled(href))
-        .map((href) => {
-          const base = NAV_BY_HREF.get(href);
-          if (!base) throw new Error(`RAIL_GROUPS: no nav item for ${href}`);
-          return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
-        }),
-    }))
-    .filter((group) => group.items.length > 0);
+export function railGroupsForNav(_opts?: RailNavOpts): NavSection[] {
+  return RAIL_GROUPS.map((group) => ({
+    id: group.id,
+    title: group.title,
+    titleKey: group.titleKey,
+    items: group.hrefs
+      .filter((href) => isPathEnabled(href))
+      .map((href) => {
+        const base = NAV_BY_HREF.get(href);
+        if (!base) throw new Error(`RAIL_GROUPS: no nav item for ${href}`);
+        return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
+      }),
+  })).filter((group) => group.items.length > 0);
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

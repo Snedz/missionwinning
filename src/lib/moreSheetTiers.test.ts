@@ -10,25 +10,29 @@ import {
 } from './moreSheetTiers';
 
 
-test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
+test('More tiers are Log · Week · Catalog · Pillars · You with declared hrefs', () => {
   assert.deepEqual(
     MORE_SHEET_TIER_HREFS.map((t) => t.id),
-    ['wedge', 'pillars', 'you']
+    ['log', 'week', 'catalog', 'pillars', 'you']
   );
-  const wedge = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'wedge')!;
-  assert.ok(wedge.hrefs.includes('/history'));
-  assert.ok(wedge.hrefs.includes('/leaderboard'), 'leaderboard is a Wedge row when surface on');
-  assert.ok(wedge.hrefs.includes('/library'));
-  assert.ok(wedge.hrefs.includes('/builder'));
-  assert.ok(!wedge.hrefs.includes('/assessments'), 'PAR-Q is intake at /coach, not a More row');
+  const log = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'log')!;
+  assert.ok(log.hrefs.includes('/history'));
+  assert.ok(log.hrefs.includes('/active'), 'Train is Search when it is not a live tab');
+  assert.ok(!log.hrefs.includes('/assessments'), 'PAR-Q is intake at /coach, not a More row');
+  const week = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'week')!;
+  assert.deepEqual([...week.hrefs], ['/coach']);
+  const catalog = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'catalog')!;
+  assert.ok(catalog.hrefs.includes('/library'));
+  assert.ok(catalog.hrefs.includes('/builder'));
   const pillars = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'pillars')!;
+  assert.ok(pillars.hrefs.includes('/nutrition'), 'Fuel is Search, not a tab');
   assert.ok(pillars.hrefs.includes('/move'));
   assert.ok(pillars.hrefs.includes('/learn'));
-  assert.ok(wedge.hrefs.includes('/active'), 'Train is Search when it is not a live tab');
-  assert.ok(wedge.hrefs.includes('/coach'), 'Coach is Search, not a tab');
-  assert.ok(wedge.hrefs.includes('/nutrition'), 'Fuel is Search, not a tab');
   const you = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'you')!;
-  assert.deepEqual([...you.hrefs], ['/profile', '/server', '/account']);
+  assert.ok(you.hrefs.includes('/profile'));
+  assert.ok(you.hrefs.includes('/server'));
+  assert.ok(you.hrefs.includes('/account'));
+  assert.ok(you.hrefs.includes('/leaderboard'), 'leaderboard is a You row when surface on');
 });
 
 test('resolved tiers exclude only live tabs', () => {
@@ -60,18 +64,24 @@ test('moreSheetTiersForNav returns non-empty items with labels', () => {
   }
 });
 
-test('F-004: Pillars tier demoted until hasFirstWorkout', () => {
+test('F-004: depth pillars demoted until hasFirstWorkout; Fuel stays', () => {
   const before = moreSheetTiersForNav({ hasFirstWorkout: false });
-  assert.ok(!before.some((t) => t.id === 'pillars'), 'Pillars tier hidden pre-first-workout');
-  assert.ok(before.some((t) => t.id === 'wedge'), 'Wedge rows stay (History/Library/…)');
+  assert.ok(before.some((t) => t.id === 'log'), 'Log rows stay (History/…)');
+  assert.ok(before.some((t) => t.id === 'week'), 'Week row stays (Coach)');
+  assert.ok(before.some((t) => t.id === 'catalog'), 'Catalog rows stay (Library/Builder)');
   assert.ok(before.some((t) => t.id === 'you'), 'You tier stays');
   const rows = moreSheetRowHrefs({ hasFirstWorkout: false });
+  assert.ok(rows.includes('/nutrition'), 'Fuel stays reachable on I-Day');
   for (const href of ['/move', '/mind', '/track', '/learn']) {
     assert.ok(!rows.includes(href), `${href} must not be a More row before first workout`);
   }
 
   const after = moreSheetTiersForNav({ hasFirstWorkout: true });
   assert.ok(after.some((t) => t.id === 'pillars'), 'Pillars return after first workout');
+  const afterRows = moreSheetRowHrefs({ hasFirstWorkout: true });
+  for (const href of ['/nutrition', '/move', '/mind', '/track', '/learn']) {
+    assert.ok(afterRows.includes(href), `${href} returns after first workout`);
+  }
 });
 
 test('quiet foot keeps legal without duplicating full rows', () => {

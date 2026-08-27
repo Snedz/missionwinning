@@ -40,10 +40,10 @@ test('official catalog rooms are Library + Builder', () => {
   assert.match(library.description ?? '', /catalog/i);
   assert.match(builder.description ?? '', /template/i);
 
-  const wedge = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'wedge');
-  assert.ok(wedge, 'Wedge tier drifted');
-  assert.ok(wedge.hrefs.includes('/library'), 'Library is a Search / More row');
-  assert.ok(wedge.hrefs.includes('/builder'), 'Builder is a Search / More row');
+  const catalog = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'catalog');
+  assert.ok(catalog, 'Catalog tier drifted');
+  assert.ok(catalog.hrefs.includes('/library'), 'Library is a Search / More row');
+  assert.ok(catalog.hrefs.includes('/builder'), 'Builder is a Search / More row');
 });
 
 test('primary nav and dock do not grow a shop or /coaches', () => {

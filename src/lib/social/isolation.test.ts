@@ -65,6 +65,16 @@ const TODAY_TRAIN_ENTRIES = [
 ];
 
 /**
+ * Third LOG room — private diary. Chat on History would be a feed on
+ * the log path with a different door. Discover history/ rather than
+ * listing widgets.
+ */
+const HISTORY_ENTRIES = [
+  'src/page-components/HistoryPage.tsx',
+  ...walk('src/components/history'),
+];
+
+/**
  * Chrome that wraps every signed-in paint, including Today and Train.
  * A ChatWindow here is a type-5 bubble on the log path.
  */
@@ -183,6 +193,24 @@ test('isolation scan includes HomePage, ActiveWorkoutPage, today/, and first-pai
   assert.ok(
     COACH_CHAT_ENTRIES.some((f) => f.startsWith('src/components/coach/')),
     'coach/ widgets must be discovered, not listed'
+  );
+});
+
+test('History (third LOG room) does not import social', () => {
+  const { seen, offenders } = isolationHits(HISTORY_ENTRIES);
+  assert.ok(
+    seen.size >= 3,
+    `History isolation scan only reached ${seen.size} files — HistoryPage / history/ drifted`
+  );
+  assert.deepEqual(
+    offenders,
+    [],
+    `History is the diary. Chat here is a feed on the log path.\n${offenders.join('\n')}`
+  );
+  assert.ok(HISTORY_ENTRIES.includes('src/page-components/HistoryPage.tsx'));
+  assert.ok(
+    HISTORY_ENTRIES.some((f) => f.startsWith('src/components/history/')),
+    'history/ widgets must be discovered, not listed'
   );
 });
 

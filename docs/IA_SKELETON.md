@@ -1,7 +1,7 @@
 # Product IA skeleton
 
 **Status:** Locked. CoS freeze. Bones, not lipstick.  
-**Baseline:** web `2026.07-unified.1055`  
+**Baseline:** web `2026.07-unified.1056`  
 **Chip floorplan (not this file):** [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md)
 
 Pitch **Train + Mission Coach**. Free-forever offline logger. Week from **own logs**, no wearable. Today is one Start, not a feed.
@@ -17,6 +17,8 @@ This file is the product-doc source of truth. Do not enlarge it.
 **WEEK.** Own logs → `/coach` is the only week writer (`generateWeek`). Never a purchased Team calendar.
 
 **GARAGE.** `/server` is More → You → Messenger. Never a dock tab. Never first paint on Today or Train. Coach chat stays on `/coach` and does not share a thread, store, or badge with Garage.
+
+Signed-in chrome names LOG / WEEK / CATALOG on the rail. Garage stays the You drawer. Today carries a Week door to `/coach`, not a dashboard.
 
 ---
 

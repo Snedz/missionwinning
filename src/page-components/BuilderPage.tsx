@@ -45,6 +45,7 @@ import { SaveHonoredRoutineDoor } from "@/components/workout/SaveHonoredRoutineD
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
+import { CatalogLoopTabs } from "@/components/layout/CatalogLoopTabs";
 import { reorderDraftExercises } from "@/lib/builderDraft";
 import { EmptyState } from "@/components/ui/EmptyState";
 import {
@@ -261,6 +262,7 @@ export function BuilderPage() {
       })}
       showLegalFooter
     >
+      <CatalogLoopTabs active="builder" />
       {/* Field manual: step rail is wayfinding only — no red here. */}
       <div className="flex flex-wrap items-center gap-2 text-sm" role="navigation" aria-label="Builder steps">
         {stepLabels.map((label, i) => {
