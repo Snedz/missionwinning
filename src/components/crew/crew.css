@@ -137,7 +137,30 @@
 }
 
 .mw-house .crew-go.is-on {
-  background: var(--house-ink);
+  background: var(--house-go);
+}
+
+.mw-house .crew-check {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--house-paper);
+  background: var(--house-go);
+  border-radius: var(--house-pill);
+}
+
+.mw-house .crew-pill.is-go {
+  background: var(--house-go);
+  color: var(--house-paper);
+}
+
+.mw-house .crew-seat.is-signed {
+  border-color: var(--house-go);
 }
 
 .mw-house .crew-canvas {

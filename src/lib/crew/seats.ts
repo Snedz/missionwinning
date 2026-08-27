@@ -16,37 +16,37 @@ export type SeatHint = {
 export const SEAT_HINTS: readonly SeatHint[] = [
   {
     id: 'scout',
-    name: 'Scout',
+    name: 'SCOUT',
     owns: 'the literature, the shortlist',
     stops: 'never ranks a candidate',
   },
   {
     id: 'chem',
-    name: 'Chem',
+    name: 'CHEM',
     owns: 'the safety panel, docking stores',
     stops: 'never calls one safe',
   },
   {
     id: 'tox',
-    name: 'Tox',
+    name: 'TOX',
     owns: 'the safety panel, off-target flags',
     stops: 'never calls a dose',
   },
   {
     id: 'vitals',
-    name: 'Vitals',
+    name: 'VITALS',
     owns: 'vitals around the clock',
     stops: 'never okays the plan',
   },
   {
     id: 'scribe',
-    name: 'Scribe',
+    name: 'SCRIBE',
     owns: 'evidence, raw data, protocol',
     stops: 'never signs the result',
   },
   {
     id: 'chief',
-    name: 'Chief',
+    name: 'CHIEF',
     owns: 'the protocol, the plan, the sign-off',
     stops: 'never goes without you',
   },

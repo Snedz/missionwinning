@@ -11,6 +11,7 @@ import {
   emptyCrewState,
   heldCount,
   localClock,
+  nextUnsigned,
   parseCrewState,
   signedCount,
   voteLocked,
@@ -73,6 +74,25 @@ test('chief flow is assign → owns → stops → sign → vote', () => {
 
   state = applyCrew(state, { type: 'vote', id: 'scout', vote: 'aye' }, t0 + 6);
   assert.equal(state.seats[0].vote, 'aye');
+});
+
+test('signNext walks seats in order and stamps clip charters', () => {
+  let state = emptyCrewState(30);
+  assert.equal(nextUnsigned(state)?.id, 'scout');
+  state = applyCrew(state, { type: 'signNext' }, 31);
+  assert.equal(signedCount(state), 1);
+  assert.equal(state.seats[0].signed, true);
+  assert.equal(state.seats[0].owns, 'the literature, the shortlist');
+  assert.equal(state.seats[0].stops, 'never ranks a candidate');
+  assert.equal(nextUnsigned(state)?.id, 'chem');
+  assert.match(state.notes[0].text, /signed SCOUT/);
+  state = applyCrew(state, { type: 'signNext' }, 32);
+  assert.equal(state.seats[1].name, 'CHEM');
+  assert.equal(nextUnsigned(state)?.id, 'tox');
+  for (let i = 0; i < 4; i++) state = applyCrew(state, { type: 'signNext' }, 33 + i);
+  assert.equal(signedCount(state), 6);
+  assert.equal(nextUnsigned(state), null);
+  assert.equal(applyCrew(state, { type: 'signNext' }, 40), state);
 });
 
 test('6/6 signed unlocks every seat vote', () => {

@@ -51,6 +51,7 @@ export type CrewAction =
   | { type: 'defineOwns'; id: SeatId; owns: string }
   | { type: 'defineStops'; id: SeatId; stops: string }
   | { type: 'signRole'; id: SeatId }
+  | { type: 'signNext' }
   | { type: 'vote'; id: SeatId; vote: SeatVote }
   | { type: 'signFounder' }
   | { type: 'signGate'; itemId: string }
@@ -160,6 +161,23 @@ export function selectedSeat(state: CrewState): Seat {
   return state.seats.find((s) => s.id === state.selectedId) ?? state.seats[0];
 }
 
+export function nextUnsigned(state: CrewState): Seat | null {
+  return state.seats.find((s) => !s.signed) ?? null;
+}
+
+function stampSigned(seat: Seat): Seat {
+  const hint = seatHint(seat.id);
+  return {
+    ...seat,
+    assigned: true,
+    owns: seat.ownsSet && seat.owns.trim() ? seat.owns : hint.owns,
+    stops: seat.stopsSet && seat.stops.trim() ? seat.stops : hint.stops,
+    ownsSet: true,
+    stopsSet: true,
+    signed: true,
+  };
+}
+
 function patchSeat(state: CrewState, id: SeatId, next: Seat): CrewState {
   return {
     ...state,
@@ -209,7 +227,14 @@ export function applyCrew(state: CrewState, action: CrewAction, now = Date.now()
   if (action.type === 'signRole') {
     const seat = state.seats.find((s) => s.id === action.id);
     if (!seat || !canSignRole(seat)) return state;
-    const next = { ...seat, signed: true };
+    const next = stampSigned(seat);
+    return note(patchSeat(state, seat.id, next), now, 'CHIEF', `signed ${seat.name} — vote unlocked`);
+  }
+
+  if (action.type === 'signNext') {
+    const seat = nextUnsigned(state);
+    if (!seat) return state;
+    const next = stampSigned(seat);
     return note(patchSeat(state, seat.id, next), now, 'CHIEF', `signed ${seat.name} — vote unlocked`);
   }
 
