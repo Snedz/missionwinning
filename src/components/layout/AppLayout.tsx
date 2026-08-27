@@ -17,9 +17,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { recordScreen } from '@/lib/screenTrail';
 import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
 
-const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
-  ssr: false,
-});
+const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })));
 
 const CommissioningCeremony = dynamic(
   () =>
@@ -64,9 +62,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         >
           <AppHeader onOpenMore={openMore} moreOpen={moreOpen} />
           <div className="flex flex-1 min-h-0">
-            <div className="hidden md:block">
-              <Sidebar />
-            </div>
+            <Sidebar onOpenMore={openMore} />
             {/* No bottom padding for the tab bar any more — the bar and the
                 dock are flex siblings that reserve their own height. */}
             <main className="flex-1 overflow-y-auto">

@@ -58,7 +58,7 @@ export function AppHeader({
    * The brand block is a *button* only on compact, where it is the handle for
    * the More sheet — the sheet that answers "where is everything" when there is
    * no rail. The desktop handoff's header has neither: no chevron, no menu,
-   * because the sidebar already lists all thirteen screens. So desktop renders
+   * because the room rail already lists the five rooms plus You / More. So desktop renders
    * the same brand as plain content.
    */
   const brand = (

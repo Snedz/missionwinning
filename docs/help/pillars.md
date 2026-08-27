@@ -1,6 +1,6 @@
 # The six pillars
 
-Mission Winning organizes health into six pillars. The bottom nav highlights the ones you use most; others live under **You** (Profile) or deep links from Today.
+Mission Winning organizes health into six pillars. The left rail is Today · Train · Coach · History · Library. Other pillars live under **More** or **You** (Profile).
 
 ## Train
 

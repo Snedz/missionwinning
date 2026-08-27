@@ -1,7 +1,7 @@
 # Product IA skeleton
 
 **Status:** Locked. CoS freeze. Bones, not lipstick.  
-**Baseline:** web `2026.07-unified.1055`  
+**Baseline:** web `2026.07-unified.1056`  
 **Chip floorplan (not this file):** [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md)
 
 Pitch **Train + Mission Coach**. Free-forever offline logger. Week from **own logs**, no wearable. Today is one Start, not a feed.
@@ -24,7 +24,7 @@ This file is the product-doc source of truth. Do not enlarge it.
 
 Today · Train · Coach (AI) · History · Library.
 
-Proto-shell already exists: cold dock = Summary + Search; live Train joins; Builder / Library / Server live in More. That is athlete-default TIERING, not a second product.
+Left room rail = Today · Train · Coach (AI) · History · Library. You + More sit in the rail foot. Cold dock = Summary + Search; live Train joins. Builder / Messenger live in More. That is athlete-default TIERING, not a second product.
 
 Do not mint Studio. Do not add a Message tab. Do not name a shop Explore.
 

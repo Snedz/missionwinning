@@ -8,8 +8,8 @@
  * Each is responsive within its own band; this is the line between them.
  *
  * 767px is not a new number — it is the underside of Tailwind's `md`, already
- * the boundary the shell uses: `Sidebar` is `hidden md:block` and `MobileNav`
- * is `md:hidden`. One line, so the two designs cannot overlap or leave a gap.
+ * the boundary the shell uses: the room rail is persistent; `MobileNav` is
+ * `md:hidden`. One line, so the two designs cannot overlap or leave a gap.
  *
  * **Use this to choose a branch, never to render both and hide one.** Two
  * copies in the DOM is how `first-90`'s `.primary-action` count breaks — it

@@ -72,6 +72,7 @@ const FIRST_PAINT_CHROME = [
   'src/components/layout/AppLayout.tsx',
   'src/components/layout/MobileNav.tsx',
   'src/components/layout/AppHeader.tsx',
+  'src/components/layout/Sidebar.tsx',
 ] as const;
 
 /**
@@ -179,6 +180,7 @@ test('isolation scan includes HomePage, ActiveWorkoutPage, today/, and first-pai
     'today/ widgets must be discovered, not listed'
   );
   assert.ok(FIRST_PAINT_CHROME.includes('src/components/layout/AppLayout.tsx'));
+  assert.ok(FIRST_PAINT_CHROME.includes('src/components/layout/Sidebar.tsx'));
   assert.ok(COACH_CHAT_ENTRIES.includes('src/page-components/CoachPage.tsx'));
   assert.ok(
     COACH_CHAT_ENTRIES.some((f) => f.startsWith('src/components/coach/')),
