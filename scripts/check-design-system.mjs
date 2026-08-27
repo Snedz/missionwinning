@@ -114,12 +114,6 @@ export const ALLOWLIST = [
     why: 'The press kit’s `COLORS` table. The literals *are* the content — a press page that showed its swatches via var() would document nothing.',
     fixWhen: 'Never, though the values must be checked against `index.css` whenever the palette moves.',
   },
-  {
-    file: 'src/styles/patreonTokens.css',
-    rules: ['off-palette-colour', 'raw-border-radius'],
-    why: 'Closed Patreon-costume token sheet (`.1051`). Hex / rgba / 8px / 12px are the DevTools freeze in docs/DESIGN_PATREON.md. Components must use `.ptn-*` classes, not a second copy of these literals. Scoped under `.ptn` so `/private` and modernist `:root` do not inherit.',
-    fixWhen: 'If the founder retires the costume, delete this file and the allowlist row together. Do not fold these values into src/index.css — that file is still the modernist pin for token-sync.',
-  },
 ];
 
 /** `file → Set(rule ids)`. Per-rule, not per-file: PressPage may hold raw swatches, but it may not grow a glow. */

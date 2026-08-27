@@ -8,17 +8,12 @@ When adding a doc:
 2. List it below
 3. Prefer updating links over stub files (AGENTS.md convention)
 
-## Wireframe snapshots
-
-| Path | Note |
-|------|------|
-| [www-wireframe-1050/](./www-wireframe-1050/) | `sites/www` at `.1050` modernist paper/ink/Archivo. Live costume is [DESIGN_PATREON.md](../DESIGN_PATREON.md). Wireframe sheet stays [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md). |
-
 ## Archived (Wave 9)
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-1035-for-1051.md](./log/LOG-rotate-1035-for-1051.md) | rotated 2026-08-27 for `.1051` Patreon costume (`.1035`) |
+| [log/LOG-rotate-1035-for-1052.md](./log/LOG-rotate-1035-for-1052.md) | rotated 2026-08-27 for `.1052` Revert Patreon costume, restore wireframe (`.1035`) |
+| [log/LOG-rotate-1051-for-1052.md](./log/LOG-rotate-1051-for-1052.md) | archived 2026-08-27 for `.1052` revert of squash PR #878 (`.1051`) |
 | [log/LOG-rotate-1034-for-1050.md](./log/LOG-rotate-1034-for-1050.md) | rotated 2026-08-27 for `.1050` Revert modernist Patreon door (`.1034`) |
 | [log/LOG-rotate-1049-for-1050.md](./log/LOG-rotate-1049-for-1050.md) | archived 2026-08-27 for `.1050` revert of squash PR #875 (`.1049`) |
 | [log/LOG-rotate-1033-for-1048.md](./log/LOG-rotate-1033-for-1048.md) | rotated 2026-08-26 for `.1048` Open empty load is blank, not 0 (`.1033`) |

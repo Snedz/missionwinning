@@ -345,28 +345,6 @@ export function AccountPage() {
      * utility briefing, not a card wall. Owner tools stay reachably grouped.
      * Red-action rules on this route are unchanged (magic-link / billing own red).
      */
-    <div className="ptn md:flex md:items-start md:gap-8">
-      <nav
-        aria-label={t('accountTitle', { defaultValue: 'Settings' })}
-        className="ptn-settings-nav mb-8 hidden shrink-0 md:block"
-      >
-        <a href="#account-profile" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-row-active">
-          {t('navYou', { defaultValue: 'Profile' })}
-        </a>
-        <a href="#account-account" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-quiet">
-          {t('navAccount', { defaultValue: 'Account' })}
-        </a>
-        <a href="#account-privacy" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-quiet">
-          {t('infoPrivacyTitle', { defaultValue: 'Privacy' })}
-        </a>
-        <a href="#account-units" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-quiet">
-          {t('units', { defaultValue: 'Units' })}
-        </a>
-        <a href="#import" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-quiet">
-          {t('exportData', { defaultValue: 'Export' })}
-        </a>
-      </nav>
-      <div className="min-w-0 flex-1">
     <PillarPageShell
       icon={Settings}
       eyebrow={t('accountEyebrow', { defaultValue: 'Account' })}
@@ -388,8 +366,6 @@ export function AccountPage() {
         {t('accountPrimaryHint', { defaultValue: 'What you need day to day' })}
       </p>
 
-      <div id="account-profile" className="scroll-mt-4">
-      <div id="account-account">
       <ProfileAccountCard
         email={email}
         ownerTools={ownerTools}
@@ -397,8 +373,6 @@ export function AccountPage() {
         authError={authError}
         missionId={missionId}
       />
-      </div>
-      </div>
 
       <ProfileTransparencyCard />
 
@@ -418,7 +392,6 @@ export function AccountPage() {
         onChangeDayReviewHour={changeDayReviewHour}
       />
 
-      <div id="account-units" className="scroll-mt-4">
       <ProfilePreferencesCard
         units={units}
         onSaveUnits={saveUnits}
@@ -426,7 +399,6 @@ export function AccountPage() {
         onGoalsChange={setGoals}
         onSaveGoals={saveGoals}
       />
-      </div>
 
       <HomeGymKitCard />
 
@@ -502,9 +474,7 @@ export function AccountPage() {
 
           <ProfileWhatsNewCard />
 
-          <div id="account-privacy" className="scroll-mt-4">
           <ProfilePrivacyCard />
-          </div>
 
           <SyncStatusRow />
 
@@ -538,7 +508,5 @@ export function AccountPage() {
         </CardContent>
       </Card>
     </PillarPageShell>
-      </div>
-    </div>
   );
 }

@@ -18,7 +18,6 @@
 | **Mission Server** | [`social/`](social/INDEX.md), `socialSync.ts` | Local-first Garage + signed-in persist via outbox |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |
 | **Build / public stamp** | `buildInfo.ts`, `buildInfo.test.ts` | Internal `APP_BUILD_LABEL` vs athlete `Alpha 0.1.0` |
-| **Patreon costume holds** | `patreonChromeHold.test.ts` | Wireframe DESIGN_SYSTEM.md intact; tight lock unstyled; Today still one Start |
 | **Mission Coach (daily)** | `coachDailyServer.ts` | LLM daily insight API — not weekly plan |
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Mission Coach (chat)** | `coachChatServer.ts`, `coach/agent/` | Premium chat — local RAG + ReAct; never vendor Collections — [coach/agent/INDEX.md](coach/agent/INDEX.md) |
