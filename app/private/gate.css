@@ -49,19 +49,26 @@
   font-size: 15px;
 }
 
-/* Sticky 64px paper nav — Patreon structure, our tokens. */
+/* Sticky 64px chrome over the hero — left cluster / center wordmark / one CTA. */
 .gate-nav {
   position: sticky;
   top: 0;
   z-index: 40;
   height: 64px;
+  margin-bottom: -64px;
   border-bottom: 2px solid var(--g-divider);
   background: var(--g-bg);
+  color: var(--g-ink);
+}
+.gate-nav[data-over-hero='1'] {
+  background: transparent;
+  color: var(--g-bg);
+  border-bottom-color: color-mix(in srgb, var(--g-bg) 24%, transparent);
 }
 .gate-nav-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 24px;
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
@@ -70,6 +77,7 @@
 .gate-brand {
   display: inline-flex;
   align-items: center;
+  justify-self: center;
   gap: 12px;
   min-width: 0;
 }
@@ -86,6 +94,10 @@
   font-size: 13px;
   letter-spacing: -0.04em;
 }
+.gate-nav[data-over-hero='1'] .gate-mark {
+  background: var(--g-bg);
+  color: var(--g-ink);
+}
 .gate-brandname {
   font-weight: 800;
   font-size: 16px;
@@ -93,8 +105,7 @@
 }
 .gate-nav-cluster {
   display: none;
-  flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 28px;
   font-size: 14px;
   font-weight: 600;
@@ -110,21 +121,41 @@
   align-items: center;
   color: var(--g-muted);
 }
-.gate-nav-cluster a:hover {
-  color: var(--g-ink);
+.gate-nav[data-over-hero='1'] .gate-nav-cluster a {
+  color: color-mix(in srgb, var(--g-bg) 78%, transparent);
+}
+.gate-nav-cluster a:hover,
+.gate-nav[data-over-hero='1'] .gate-nav-cluster a:hover {
+  color: inherit;
 }
 .gate-nav-end {
-  margin-inline-start: auto;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 16px;
 }
 .gate-nav-login {
-  display: inline-flex;
+  display: none;
   align-items: center;
   min-height: 44px;
   font-size: 14px;
   font-weight: 600;
+}
+@media (min-width: 768px) {
+  .gate-nav-login {
+    display: inline-flex;
+  }
+}
+.gate-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid currentColor;
+  border-radius: 0;
 }
 
 .gate-header {
@@ -158,34 +189,47 @@
 }
 
 .gate-hero {
-  display: grid;
-  gap: 48px;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  margin: 0 auto;
-  padding: 80px var(--g-gutter) 96px;
+  padding: 112px var(--g-gutter) 64px;
+  background: var(--g-panel);
+  color: var(--g-bg);
 }
-@media (min-width: 960px) {
-  .gate-hero {
-    grid-template-columns: 1fr 1fr;
-    align-items: end;
-    gap: 64px;
-  }
+.gate-hero .gate-kicker {
+  color: hsl(var(--accent-400));
+}
+.gate-hero .gate-lede,
+.gate-hero .gate-foot {
+  color: color-mix(in srgb, var(--g-bg) 78%, transparent);
 }
 .gate-hero-copy {
-  max-width: 640px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
 }
 .gate-h1 {
   font-weight: 800;
-  font-size: clamp(42px, 6vw, 76px);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  margin: 16px 0 0;
+  font-size: clamp(3.25rem, 11vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 20px 0 0;
   margin-inline-start: -0.058em;
 }
 .gate-h1 span {
   display: block;
+}
+.gate-credit {
+  margin: 28px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' 1;
+  color: var(--g-bg);
 }
 .gate-h2 {
   font-weight: 800;
@@ -202,50 +246,60 @@
   margin: 24px 0 0;
 }
 
-.gate-shelf {
-  max-width: 1200px;
+.gate-band {
   width: 100%;
   box-sizing: border-box;
-  margin: 0 auto;
   padding: 80px var(--g-gutter);
-  border-top: 2px solid var(--g-divider);
+  background: var(--g-bg);
 }
-.gate-shelf-card {
+.gate-band > *:not(.gate-split) {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.gate-band-surface {
   background: var(--g-surface);
-  border-top: 2px solid var(--g-divider);
 }
-.gate-cards {
+.gate-split {
   display: grid;
-  gap: 2px;
-  margin-top: 36px;
-  background: var(--g-divider);
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-@media (min-width: 768px) {
-  .gate-cards {
-    grid-template-columns: repeat(3, 1fr);
+@media (min-width: 960px) {
+  .gate-split {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 64px;
   }
 }
-.gate-card {
-  background: var(--g-bg);
-  padding: 32px;
+.gate-phone {
+  border: 2px solid var(--g-divider);
+  background: var(--g-surface);
+  padding: 16px;
 }
-.gate-card h3 {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  margin: 0 0 12px;
-}
-.gate-card p {
-  margin: 0;
-  font-size: 15.5px;
-  line-height: 26px;
+.gate-phone-bezel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' 1;
   color: var(--g-muted);
+}
+.gate-phone .gate-set {
+  border-color: var(--g-divider);
 }
 
 .gate-ink {
   background: var(--g-panel);
   color: var(--g-bg);
   padding: 80px var(--g-gutter);
+}
+.gate-ink-inner {
+  max-width: 1200px;
+  margin-inline: auto;
 }
 .gate-ink .gate-kicker {
   color: hsl(var(--accent-400));
@@ -272,12 +326,14 @@
 }
 
 .gate-section {
-  max-width: 1200px;
   width: 100%;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0;
   padding: 80px var(--g-gutter);
-  border-top: 2px solid var(--g-divider);
+}
+.gate-section > * {
+  max-width: 1200px;
+  margin-inline: auto;
 }
 .gate-section .gate-kicker {
   margin: 0 0 14px;

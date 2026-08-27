@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
 import { PublicSiteFooter } from '@/components/public/PublicSiteFooter';
@@ -91,15 +90,8 @@ export function PublicPageShell({
         className="sticky top-0 z-50 border-b-2 border-border bg-background"
       >
         <PublicStatusBar />
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
-          <Link href="/" className="flex shrink-0 min-w-0 items-center gap-2.5">
-            <BrandMonogram className="h-8 w-8 text-sm" />
-            <span className="truncate font-display text-[15px] font-extrabold tracking-[-0.01em]">
-              Mission Winning
-            </span>
-          </Link>
-
-          <ul className="hidden flex-1 items-center justify-center gap-7 text-sm md:flex">
+        <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-5">
+          <ul className="hidden items-center justify-start gap-7 text-sm md:flex" data-mw-nav-cluster>
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -111,10 +103,16 @@ export function PublicPageShell({
               </li>
             ))}
           </ul>
-          <div className="ml-auto flex items-center gap-4">
+          <Link
+            href="/"
+            className="justify-self-center font-display text-[15px] font-extrabold tracking-[-0.01em]"
+          >
+            Mission Winning
+          </Link>
+          <div className="flex items-center justify-end gap-4">
             <Link
               href={chromeCtaHref}
-              className="hidden min-h-[44px] items-center text-sm font-semibold text-foreground transition-colors hover:text-primary md:inline-flex"
+              className="hidden min-h-[44px] items-center border-2 border-foreground px-4 text-sm font-semibold md:inline-flex"
             >
               {chromeCtaLabel}
             </Link>

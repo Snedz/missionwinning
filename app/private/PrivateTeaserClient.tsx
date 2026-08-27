@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import { BrandMonogram } from '@/components/brand/BrandMonogram';
+import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { GateSetTable } from '@/components/public/GateSetTable';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
@@ -58,6 +57,8 @@ export function PrivateTeaserClient({
   const [error, setError] = useState('');
   const [sessionUnlocking, setSessionUnlocking] = useState(!walkOpen);
   const [territory, setTerritory] = useState<WaitlistTerritory>({ stance: 'capture' });
+  const [overHero, setOverHero] = useState(true);
+  const heroRef = useRef<HTMLElement | null>(null);
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
   // Bounded + fail-open: code-only invitees must reach the access-code form.
@@ -109,6 +110,18 @@ export function PrivateTeaserClient({
       cancelled = true;
     };
   }, [isInvitee]);
+
+  // Sticky chrome sits on the ink hero, then swaps to paper once the hero leaves.
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setOverHero(entry.isIntersecting),
+      { rootMargin: '-64px 0px 0px 0px', threshold: 0 },
+    );
+    io.observe(hero);
+    return () => io.disconnect();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,7 +216,7 @@ export function PrivateTeaserClient({
     ) : null;
 
   const doorForms = isInvitee ? (
-    <section className="gate-section" id="door">
+    <section className="gate-section gate-band-surface" id="door">
       <p className="gate-kicker">
         {g('gateInviteEyebrow')}
       </p>
@@ -232,7 +245,7 @@ export function PrivateTeaserClient({
       </form>
     </section>
   ) : (
-    <section className="gate-section" id="door">
+    <section className="gate-section gate-band-surface" id="door">
       {territory.stance === 'refuse' ? (
         <div data-mw-territory={territory.reason}>
           <p className="gate-kicker">
@@ -284,32 +297,39 @@ export function PrivateTeaserClient({
 
   return (
     <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
-      <header className="gate-nav">
+      <header className="gate-nav" data-over-hero={overHero ? '1' : '0'}>
         <div className="gate-nav-inner">
-          <span className="gate-brand">
-            <BrandMonogram className="h-8 w-8 text-sm" />
-            <span className="gate-brandname">Mission Winning</span>
-          </span>
-          <nav className="gate-nav-cluster" aria-label="Product">
+          <nav className="gate-nav-cluster" aria-label="Product" data-mw-nav-cluster>
             {NAV.map((item) => (
               <Link key={item.href} href={item.href}>
                 {item.label}
               </Link>
             ))}
           </nav>
+          <span className="gate-brand">
+            <span className="gate-brandname">Mission Winning</span>
+          </span>
           <div className="gate-nav-end">
-            <a href="#door" className="gate-nav-login">
-              {g('gateWaitlistTitle')}
-            </a>
-            <a href="#door" className="gate-nav-login">
-              {g('gateAccessSubmit')}
-            </a>
+            {isInvitee ? (
+              <a href="#door" className="gate-nav-cta">
+                {g('gateAccessSubmit')}
+              </a>
+            ) : (
+              <>
+                <a href="#door" className="gate-nav-login">
+                  {g('gateAccessSummary')}
+                </a>
+                <a href="#door" className="gate-nav-cta">
+                  {g('gateWaitlistTitle')}
+                </a>
+              </>
+            )}
           </div>
         </div>
       </header>
 
       <main>
-        <section className="gate-hero">
+        <section className="gate-hero" id="hero" ref={heroRef}>
           <div className="gate-hero-copy">
             <p className="gate-kicker">{g('gateEyebrow')}</p>
             <h1 className="gate-h1">
@@ -319,44 +339,31 @@ export function PrivateTeaserClient({
             <p className="gate-lede" data-mw-wedge-teaser>
               {g('gateSubtitle')}
             </p>
+            <p className="gate-credit">Bench press · 185 × 5</p>
             <p className="gate-foot" data-mw-local-first>
               {g('gateLocalFirst')}
             </p>
           </div>
-          <GateSetTable />
         </section>
 
-        <section className="gate-shelf" id="train">
-          <p className="gate-kicker">{g('gateSubtitle')}</p>
-          <h2 className="gate-h2">{g('cineAnywhereTitle')}</h2>
-          <div className="gate-cards">
-            <article className="gate-card">
-              <h3>{g('cineAnywhereKicker')}</h3>
-              <p>{g('cineAnywhereLead')}</p>
-            </article>
-            <article className="gate-card">
-              <h3>{g('cinePublicLine')}</h3>
-              <p>{g('cineLater')}</p>
-            </article>
-            <article className="gate-card">
-              <h3>{g('cineWeekKicker')}</h3>
-              <p>{g('cineWeekLead')}</p>
-            </article>
+        <section className="gate-band" id="train">
+          <div className="gate-split">
+            <div>
+              <p className="gate-kicker">{g('cineAnywhereKicker')}</p>
+              <h2 className="gate-h2">{g('cineAnywhereTitle')}</h2>
+              <p className="gate-lede">{g('cineAnywhereLead')}</p>
+            </div>
+            <div className="gate-phone">
+              <p className="gate-phone-bezel">
+                <span>Train</span>
+                <span>Log set</span>
+              </p>
+              <GateSetTable />
+            </div>
           </div>
         </section>
 
-        <section className="gate-ink" id="today">
-          <p className="gate-kicker">Today</p>
-          <h2 className="gate-h2">{g('cinePublicLine')}</h2>
-          <p className="gate-lede">
-            {g('cineDoorFoot')}
-          </p>
-          <Link href="/active" className="gate-btn gate-btn-on-ink">
-            Start
-          </Link>
-        </section>
-
-        <section className="gate-shelf" id="history">
+        <section className="gate-band gate-band-surface" id="history">
           <p className="gate-kicker">History</p>
           <h2 className="gate-h2">{g('cineLater')}</h2>
           <div className="gate-month" aria-hidden>
@@ -366,7 +373,18 @@ export function PrivateTeaserClient({
           </div>
         </section>
 
-        <section className="gate-shelf gate-shelf-card" id="coach">
+        <section className="gate-ink" id="today">
+          <div className="gate-ink-inner">
+            <p className="gate-kicker">Today</p>
+            <h2 className="gate-h2">{g('cinePublicLine')}</h2>
+            <p className="gate-lede">{g('cineDoorFoot')}</p>
+            <Link href="/active" className="gate-btn gate-btn-on-ink">
+              Start
+            </Link>
+          </div>
+        </section>
+
+        <section className="gate-band" id="coach">
           <p className="gate-kicker">{g('cineWeekKicker')}</p>
           <h2 className="gate-h2">{g('cineWeekTitle')}</h2>
           <p className="gate-lede">{g('cineWeekLead')}</p>
@@ -378,14 +396,7 @@ export function PrivateTeaserClient({
         {probeNote}
       </main>
 
-      <div className="gate-footer">
-        <div className="gate-footer-inner">
-          <span>
-            {g('gateFooterTagline')}
-          </span>
-          <AppLegalFooter className="gate-footer-links" />
-        </div>
-      </div>
+      <MarketingFooter />
     </div>
   );
 }

@@ -40,7 +40,7 @@ www argument order stays log → adapt → anywhere → free → start ([DESIGN_
 
 | Surface | File | Job |
 |---|---|---|
-| Live gated door (prod `/` → 307) | `app/private/*` | Tight lock: Free · Log a set. / Offline. · No account. No wearable. · Get notified · Enter with code. Patreon nav + set-log table as hero + shelves. Forms stay on this page. |
+| Live gated door (prod `/` → 307) | `app/private/*` | Tight lock: Free · Log a set. / Offline. · No account. No wearable. · Get notified · Enter with code. Left-cluster nav over a full-bleed ink hero + one-idea bands. Forms stay on this page. |
 | Astro marketing www | `sites/www/src/pages/index.astro` | Same tokens; 9-section composition stops reading as a wireframe. Shared `WwwNav` / ink footer. |
 | Cookie / gate-off `/` | `LandingPage.tsx` | Stays `.696`. Not this pass. |
 | App chrome | `AppLayout` · `AppHeader` · `Sidebar` · `MobileNav` | 64px paper header. Rail and tabs keep working. Today still one Start. |
@@ -51,23 +51,23 @@ www argument order stays log → adapt → anywhere → free → start ([DESIGN_
 
 ## 4. Patreon analog (structure, not brand)
 
-**Nav (sticky, 64px, paper or on-dark over a photo):**
+**Nav (sticky, 64px, over the hero, then paper):**
 
-- Left: MW monogram + Mission Winning
-- Cluster: Train · Coach · History · About
-- Right: Log in (text) + Get notified / Enter with code (quiet in chrome; the page’s one red stays the notify submit or the poster close)
+- Left cluster: Train · Coach · History · About
+- Center wordmark: Mission Winning
+- Right: secondary text + one primary CTA (Enter with code / Get notified). Radius 0, 2px rule — not a pill. The page’s one red stays the notify submit or the poster close.
 
-**Shelves (full-bleed, not a left-aligned form in a gray sea):**
+**Bands (full-bleed, one idea + one verb each):**
 
-1. Hero — display “Log a set. Offline.” + one sentence + **set-log table** (product truth)
-2. Three feature cards — offline logger · logs stay yours · Mission Coach from logs
-3. Ink band — Today with exactly one Start
-4. History — a month you own (calendar/file), not a feed
-5. Coach — weekly plan from logs, no wearable pitch
+1. Hero — full-bleed ink field, enormous flush-left “Log a set. / Offline.” + product credit. Photography only if it is already in the repo (none on the door — `public/photo/` is still a slot).
+2. Train — paper, 50/50 copy + set-log table as a phone mockup
+3. History — surface, a month you own (calendar/file), not a feed
+4. Today — ink, exactly one Start → `/active`
+5. Coach — paper, weekly plan from logs, no wearable pitch
 6. Door / close — Get notified + Enter with code (gated) or the existing red poster close (www)
-7. Ink footer — Product / Company / Legal. Line: free core forever. Existing legal URLs stay.
+7. Ink footer — Product / Company / Legal columns we already have. Line: free core forever.
 
-Pacing: paper → card → ink → paper → (one red field) → ink footer. Do not repeat the same surface twice in a row.
+Pacing: ink → paper → surface → ink → paper → surface → ink footer. Do not repeat the same surface twice in a row. Poster red ≤1 field (www close). No feature-card trio. No creator carousel.
 
 ---
 

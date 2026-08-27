@@ -187,6 +187,7 @@ import {
          the page still spends exactly one red control. -->
     <section id="free" class="ground-ink px-5 py-section sm:px-8 lg:py-section-lg">
       <div class="mx-auto max-w-6xl">
+        <span id="history" class="sr-only">{HISTORY.eyebrow}</span>
         <p class="eyebrow">{FREE_CORE.eyebrow}</p>
         <h2 class="display-section mt-4 max-w-[24ch]">{FREE_CORE.heading}</h2>
         <dl class="mt-10 divide-y-2 divide-rule border-y-2 border-rule">
@@ -222,33 +223,21 @@ import {
       </div>
     </Section>
 
-    <!-- History shelf. Existing copy, a month you own — not a feed. Card ground
-         so it does not repeat the questions paper. -->
-    <Section id="history" class="bg-card">
-      <p class="eyebrow">{HISTORY.eyebrow}</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">{HISTORY.heading}</h2>
-      <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.6] text-quiet">
-        {HISTORY.body}
-      </p>
-      <div class="mt-12 grid max-w-xl grid-cols-7 gap-0.5 bg-rule" aria-hidden="true">
-        {Array.from({ length: 35 }, () => (
-          <span class="aspect-square min-h-9 bg-paper"></span>
-        ))}
-      </div>
-    </Section>
   </main>
 
   <!-- 09 START. The page's one red field. poster-FIELD, not poster-close: it
        carries a 13px reassurance line, and paper on #ec3013 is 4.19:1 — fine
-       for display, short of the 4.5:1 small text needs. --primary is 6.5:1. -->
-  <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
-    <div class="mx-auto max-w-6xl">
-      <p class="display-statement wipe"><span>{STATEMENTS.close}</span></p>
-      <CtaSlot class="mt-10 max-w-[420px]" />
+       for display, short of the 4.5:1 small text needs. --primary is 6.5:1.
+       Legal columns nest in the same footer so rhythm sees one close scope. -->
+  <footer>
+    <div class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="display-statement wipe"><span>{STATEMENTS.close}</span></p>
+        <CtaSlot class="mt-10 max-w-[420px]" />
+      </div>
     </div>
+    <WwwFooter nested />
   </footer>
-
-  <WwwFooter />
 
   <script>
     /*

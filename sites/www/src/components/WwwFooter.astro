@@ -2,8 +2,18 @@
 /*
  * Ink footer after the page's one red close. Product / Company / Legal.
  * Next routes are absolute — this build is not the app.
+ *
+ * `nested` renders a div so the homepage can keep poster-close + legal
+ * columns in one <footer> — two body-level footers break www-rhythm.
  */
 import { appUrl } from '../lib/appLinks';
+
+interface Props {
+  nested?: boolean;
+}
+
+const { nested = false } = Astro.props;
+const Tag = nested ? 'div' : 'footer';
 
 const PRODUCT = [
   { href: appUrl('/active'), label: 'Train' },
@@ -27,7 +37,7 @@ const LEGAL = [
 ];
 ---
 
-<footer class="ground-ink px-5 py-16 sm:px-8">
+<Tag class="ground-ink px-5 py-8 sm:px-8">
   <div class="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
     <div>
       <p class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</p>
@@ -60,4 +70,4 @@ const LEGAL = [
       </ul>
     </div>
   </div>
-</footer>
+</Tag>

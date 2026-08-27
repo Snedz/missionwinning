@@ -41,18 +41,27 @@ test('door mounts the set table and Patreon nav', () => {
   const css = read('app/private/gate.css');
   assert.match(teaser, /GateSetTable/);
   assert.match(teaser, /gate-nav/);
+  assert.match(teaser, /data-mw-nav-cluster/);
+  assert.match(teaser, /gate-nav-cta/);
+  assert.match(teaser, /gate-phone/);
   assert.match(table, /data-mw-set-table/);
   assert.match(table, /Bench press/);
   assert.match(css, /height:\s*64px/);
+  assert.match(css, /grid-template-columns:\s*1fr auto 1fr/);
+  assert.match(css, /min-height:\s*100svh/);
+  assert.doesNotMatch(teaser, /gate-cards/);
   assert.doesNotMatch(teaser + table + css, /#faf9f5|#cc785c|(?<![A-Za-z])Inter(?![A-Za-z])/);
 });
 
 test('www homepage uses shared nav and an ink footer', () => {
   const index = read('sites/www/src/pages/index.astro');
+  const nav = read('sites/www/src/components/WwwNav.astro');
   assert.match(index, /WwwNav/);
   assert.match(index, /WwwFooter/);
   assert.match(index, /id="logger"/);
   assert.match(index, /id="history"/);
+  assert.match(nav, /grid-cols-\[1fr_auto_1fr\]/);
+  assert.match(nav, /data-mw-nav-cluster/);
   assert.doesNotMatch(index, /CinematicWww/);
 });
 

@@ -24,21 +24,26 @@ Tokens stay. Layout was the wireframe.
 **Ship:** unsigned Patreon structure
 on Mission Winning paper / ink /
 Archivo / radius 0. Live door
-`/private` is 64px sticky nav
-(Train / Coach / History / About),
-set-log table as hero, shelves, ink
-Today with one Start → `/active`,
-honest empty month, Coach from logs.
-Tight-lock copy and forms stay on
-this page. Notify me is the one red.
-www Astro shares `WwwNav` /
-`WwwFooter`; 9-section argument
-order stays; History shelf uses
-existing lines; `LogToPlanDemo` is
-a SET / KG / REPS table. App header
-is 64px paper. Public SEO nav is the
-same cluster with real hrefs. Settings
-stay `/account`. No Inter. No cream.
+`/private` is sticky chrome *over*
+a full-bleed ink hero: left Train /
+Coach / History / About, center
+wordmark, right Enter with code +
+Get notified (2px, radius 0). Hero
+is enormous flush-left “Log a set. /
+Offline.” plus a product credit —
+no stock photo (`public/photo/` is
+still a slot). After: paper 50/50
+logger mockup, surface History,
+ink Today (one Start → `/active`),
+paper Coach, surface door forms,
+ink legal columns. No feature-card
+trio. No feed. Tight-lock copy and
+forms stay on this page. Notify me
+is the one red. www Astro shares
+`WwwNav` / `WwwFooter`; 9-section
+argument order stays. App header
+is 64px paper. Settings stay
+`/account`. No Inter. No cream.
 No coral. No `CinematicWww` first
 paint. Cookie `/` stays `.696`.
 Guest. First set ungated. Today

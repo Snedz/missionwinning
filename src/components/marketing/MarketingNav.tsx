@@ -2,9 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
@@ -48,16 +46,9 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
           defaultValue: APP_PUBLIC_STATUS_LINE_EN,
         })}
       />
-      <div className="relative z-[1] mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5 min-w-0">
-          <BrandMonogram className="h-8 w-8 text-sm" />
-          <span className="truncate font-display text-[15px] font-extrabold tracking-[-0.01em]">
-            Mission Winning
-          </span>
-        </Link>
-
+      <div className="relative z-[1] mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-5">
         {variant === 'full' ? (
-          <ul className="hidden flex-1 items-center justify-center gap-7 text-sm md:flex">
+          <ul className="hidden items-center justify-start gap-7 text-sm md:flex" data-mw-nav-cluster>
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -70,21 +61,26 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
             ))}
           </ul>
         ) : (
-          <Link
-            href="/"
-            className="hidden flex-1 text-sm text-muted-foreground transition-colors hover:text-foreground md:inline"
-          >
-            {t('landingNavHome', { defaultValue: 'Home' })}
-          </Link>
+          <span />
         )}
 
-        <div className="ml-auto flex items-center gap-4">
+        <Link
+          href="/"
+          className="justify-self-center font-display text-[15px] font-extrabold tracking-[-0.01em]"
+        >
+          Mission Winning
+        </Link>
+
+        <div className="flex items-center justify-end gap-4">
           {/* A real anchor, not `onClick={router.push}`: these pages are `force-static`,
               so an onClick-only CTA does nothing until React hydrates and crawlers see no
               link at all. Quiet in chrome — the page's one red stays on the field. */}
-          <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-semibold">
-            <Link href={ctaHref}>{ctaLabel}</Link>
-          </Button>
+          <Link
+            href={ctaHref}
+            className="inline-flex min-h-[44px] items-center border-2 border-foreground px-4 text-sm font-semibold"
+          >
+            {ctaLabel}
+          </Link>
 
           <PublicNavMenu
             links={navLinks.map((l) => ({
