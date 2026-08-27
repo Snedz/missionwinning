@@ -32,7 +32,10 @@ tooltip). Ticks from visits, not
 a chore list. Honest Start (no
 dummy; lands `/active`). More is
 leftover. Garage stays locked.
-Engines stay. Zero diffs on
+Short eased motion on hover
+chips, second-rail pane, checklist
+fold, Got it (respects reduced
+motion). Engines stay. Zero diffs on
 `/private`, landing, www.
 `[skip vercel]`. No `PRIVATE_MODE`
 flip. No promote. Live www stays `.696`.

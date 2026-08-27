@@ -90,46 +90,48 @@ export function HouseFirstRoomsCard({ loggedSet, hasFinish, onLogSet }: Props) {
           total: progress.total,
         })}
       </p>
-      {collapsed ? null : (
-        <div className="house-check">
-          {rooms.map((row) => {
-            const open = row.key === expandedKey;
-            return (
-              <div
-                key={row.key}
-                className={`house-check-row${row.done ? ' is-done' : ''}${open ? ' is-open' : ''}${row.locked ? ' is-locked' : ''}`}
-                data-testid="house-check-row"
-                data-house-step={row.key}
-              >
-                <button type="button" aria-expanded={open} onClick={() => runRow(row)}>
-                  <span className="house-check-copy">
-                    <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
-                    {open ? (
-                      <span className="house-check-why">{t(row.whyKey, { defaultValue: row.why })}</span>
-                    ) : null}
-                  </span>
-                  <span className="house-check-mark">
-                    {row.done ? (
-                      <Check className="h-4 w-4" aria-hidden />
-                    ) : row.locked ? (
-                      <span className="house-lock">
-                        <Ban className="h-4 w-4" aria-hidden />
-                        <span className="house-lock-tip" role="tooltip">
-                          {t(row.lockWhyKey ?? 'houseFirstHistoryLock', {
-                            defaultValue: row.lockWhy ?? 'Finish a session first — then History is yours.',
-                          })}
-                        </span>
+      <div className={`house-check-fold${collapsed ? ' is-closed' : ''}`}>
+        <div className="house-check-fold-inner">
+          <div className="house-check">
+            {rooms.map((row) => {
+              const open = row.key === expandedKey;
+              return (
+                <div
+                  key={row.key}
+                  className={`house-check-row${row.done ? ' is-done' : ''}${open ? ' is-open' : ''}${row.locked ? ' is-locked' : ''}`}
+                  data-testid="house-check-row"
+                  data-house-step={row.key}
+                >
+                  <button type="button" aria-expanded={open} onClick={() => runRow(row)}>
+                    <span className="house-check-copy">
+                      <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
+                      <span className="house-check-why">
+                        <span>{t(row.whyKey, { defaultValue: row.why })}</span>
                       </span>
-                    ) : (
-                      <ChevronRight className="h-4 w-4" aria-hidden />
-                    )}
-                  </span>
-                </button>
-              </div>
-            );
-          })}
+                    </span>
+                    <span className="house-check-mark">
+                      {row.done ? (
+                        <Check className="h-4 w-4" aria-hidden />
+                      ) : row.locked ? (
+                        <span className="house-lock">
+                          <Ban className="h-4 w-4" aria-hidden />
+                          <span className="house-lock-tip" role="tooltip">
+                            {t(row.lockWhyKey ?? 'houseFirstHistoryLock', {
+                              defaultValue: row.lockWhy ?? 'Finish a session first — then History is yours.',
+                            })}
+                          </span>
+                        </span>
+                      ) : (
+                        <ChevronRight className="h-4 w-4" aria-hidden />
+                      )}
+                    </span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }

@@ -50,71 +50,80 @@ export function HouseSecondRail() {
 
   if (!todayFamily && !catalog) return null;
 
-  if (!catalog && pane === 'week') {
-    const title = t('houseWeekPaneTitle', { defaultValue: 'This week' });
-    return (
-      <nav className="house-second" data-testid="house-second-rail" data-house-pane="week" aria-label={title}>
-        <div className="house-second-pane-head">
-          <button
-            type="button"
-            className="house-second-back"
-            data-testid="house-second-back"
-            aria-label={t('navToday', { defaultValue: 'Today' })}
-            onClick={closePane}
-          >
-            <ChevronLeft className="h-5 w-5" aria-hidden />
-          </button>
-          <div>
-            <h2 className="house-second-pane-title">{title}</h2>
-            <p className="house-second-pane-blurb">
-              {t('houseWeekPaneBlurb', { defaultValue: 'Coach writes the next session from your logs.' })}
-            </p>
-          </div>
-        </div>
-        <div className="house-second-nav">
-          <Link href="/log#today-week" className="house-second-link">
-            {t('houseWeekPaneToday', { defaultValue: 'Today on the canvas' })}
-          </Link>
-          <Link href="/coach" className="house-second-link">
-            {t('houseWeekPanePlan', { defaultValue: 'Weekly plan' })}
-          </Link>
-        </div>
-      </nav>
-    );
-  }
-
-  const title = catalog
-    ? t('navLibrary', { defaultValue: 'Library' })
-    : t('navToday', { defaultValue: 'Today' });
+  const weekPane = !catalog && pane === 'week';
+  const title = weekPane
+    ? t('houseWeekPaneTitle', { defaultValue: 'This week' })
+    : catalog
+      ? t('navLibrary', { defaultValue: 'Library' })
+      : t('navToday', { defaultValue: 'Today' });
   const rooms = catalog ? HOUSE_LIBRARY_ROOMS : HOUSE_TODAY_ROOMS;
 
   return (
-    <nav className="house-second" data-testid="house-second-rail" aria-label={title}>
-      <p className="house-second-kicker">{title}</p>
-      <div className="house-second-nav">
-        {rooms.map((row) => {
-          const href = 'hash' in row ? houseRoomHref(row.href, row.hash) : row.href;
-          const Icon =
-            row.id in TODAY_ICONS
-              ? TODAY_ICONS[row.id as keyof typeof TODAY_ICONS]
-              : LIBRARY_ICONS[row.id as keyof typeof LIBRARY_ICONS];
-          const on = roomIsOn(pathname, hash, row);
-          return (
-            <Link
-              key={row.id}
-              href={href}
-              className={`house-second-link${on ? ' is-on' : ''}`}
-              aria-current={on ? 'page' : undefined}
-              data-house-room={row.id}
-              onClick={() => {
-                if (row.id === 'week') openPane('week');
-              }}
-            >
-              <Icon className="h-4 w-4" aria-hidden />
-              {t(row.labelKey, { defaultValue: row.label })}
-            </Link>
-          );
-        })}
+    <nav
+      className={`house-second${weekPane ? ' is-pane' : ''}`}
+      data-testid="house-second-rail"
+      data-house-pane={weekPane ? 'week' : undefined}
+      aria-label={title}
+    >
+      <div className="house-second-body" key={weekPane ? 'week' : catalog ? 'library' : 'today'}>
+        {weekPane ? (
+          <>
+            <div className="house-second-pane-head">
+              <button
+                type="button"
+                className="house-second-back"
+                data-testid="house-second-back"
+                aria-label={t('navToday', { defaultValue: 'Today' })}
+                onClick={closePane}
+              >
+                <ChevronLeft className="h-5 w-5" aria-hidden />
+              </button>
+              <div>
+                <h2 className="house-second-pane-title">{title}</h2>
+                <p className="house-second-pane-blurb">
+                  {t('houseWeekPaneBlurb', { defaultValue: 'Coach writes the next session from your logs.' })}
+                </p>
+              </div>
+            </div>
+            <div className="house-second-nav">
+              <Link href="/log#today-week" className="house-second-link">
+                {t('houseWeekPaneToday', { defaultValue: 'Today on the canvas' })}
+              </Link>
+              <Link href="/coach" className="house-second-link">
+                {t('houseWeekPanePlan', { defaultValue: 'Weekly plan' })}
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="house-second-kicker">{title}</p>
+            <div className="house-second-nav">
+              {rooms.map((row) => {
+                const href = 'hash' in row ? houseRoomHref(row.href, row.hash) : row.href;
+                const Icon =
+                  row.id in TODAY_ICONS
+                    ? TODAY_ICONS[row.id as keyof typeof TODAY_ICONS]
+                    : LIBRARY_ICONS[row.id as keyof typeof LIBRARY_ICONS];
+                const on = roomIsOn(pathname, hash, row);
+                return (
+                  <Link
+                    key={row.id}
+                    href={href}
+                    className={`house-second-link${on ? ' is-on' : ''}`}
+                    aria-current={on ? 'page' : undefined}
+                    data-house-room={row.id}
+                    onClick={() => {
+                      if (row.id === 'week') openPane('week');
+                    }}
+                  >
+                    <Icon className="h-4 w-4" aria-hidden />
+                    {t(row.labelKey, { defaultValue: row.label })}
+                  </Link>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </nav>
   );

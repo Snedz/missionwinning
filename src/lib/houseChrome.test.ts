@@ -69,6 +69,11 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(css, /\.house-rail-tip/);
   assert.match(css, /font-size:\s*13px/);
   assert.match(css, /rgba\(0,\s*0,\s*0,\s*0\.6\)/);
+  assert.match(css, /--house-ease:\s*cubic-bezier/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /house-pane-in/);
+  assert.match(css, /house-guide-in/);
+  assert.match(css, /house-second-in/);
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
   assert.doesNotMatch(more, /href: '\/history'/);
   assert.doesNotMatch(more, /href: '\/coach'/);

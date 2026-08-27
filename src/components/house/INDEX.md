@@ -13,7 +13,7 @@
 | `houseFirstRooms.ts` | Inferred ticks + lock for the three first rooms. |
 | `HouseMore.tsx` | Compact leftover. Not the Home second bar. Garage is locked with a why-tooltip. |
 | `houseNav.ts` | Rail hrefs + Today/Library rooms. `/server` is never here. |
-| `house.css` | House visual language, scoped to `.mw-house`. |
+| `house.css` | House visual language + short eased motion, scoped to `.mw-house`. |
 | `TodayDesk` | Lives in `src/page-components/TodayDesk.tsx` — one Start, week as work. |
 | `CatalogTabs.tsx` | Library + Builder object tabs. |
 | `TrainComposeEmpty.tsx` | Cold `/active` canvas. Same start engines as ActiveEmptyState. |
