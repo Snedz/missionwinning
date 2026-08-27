@@ -115,7 +115,9 @@
 | [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) | Design excellence OS — emotion arc, quality bars, D0–D3 waves |
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** |
 | [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow |
-| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
+| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Modernist wireframe tokens (paper/ink/Archivo) — do not overwrite |
+| [DESIGN_PATREON.md](DESIGN_PATREON.md) | Live Patreon-costume tokens for www + signed-in chrome (`.1051`) |
+| [DESIGN_PATREON_PLAN.md](DESIGN_PATREON_PLAN.md) | Surfaces and holds for the costume ship |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
 
