@@ -13,6 +13,7 @@ import {
   HOUSE_MORE_ROOMS,
   HOUSE_RAIL_HREFS,
   HOUSE_TODAY_ROOMS,
+  houseCanvasTitle,
   houseSecondDockForPath,
 } from '@/components/house/houseNav';
 
@@ -92,8 +93,9 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(css, /house-second-in/);
   assert.match(
     css,
-    /\.house-frame\.is-second \{[\s\S]*grid-template-columns:\s*var\(--house-rail\)\s+var\(--house-second\)/
+    /grid-template-columns:\s*var\(--house-rail\)\s+var\(--house-second-w\)/
   );
+  assert.match(css, /\.house-frame\.is-second \{[\s\S]*--house-second-w:\s*var\(--house-second\)/);
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
   assert.doesNotMatch(more, /href: '\/history'/);
   assert.doesNotMatch(more, /href: '\/coach'/);
@@ -251,9 +253,33 @@ test('Home and Library docks transfer the real rooms, Start composes', () => {
   assert.equal(houseSecondDockForPath('/active'), null);
   assert.equal(houseSecondDockForPath('/nutrition'), null);
   assert.equal(houseSecondDockForPath('/account'), null);
+  assert.equal(houseCanvasTitle('/history'), 'History');
+  assert.equal(houseCanvasTitle('/coach'), 'Weekly plan');
+  assert.equal(houseCanvasTitle('/library'), 'Library');
+  assert.equal(houseCanvasTitle('/builder'), 'Builder');
+  assert.equal(houseCanvasTitle('/log'), 'Today');
+  assert.equal(houseCanvasTitle('/active'), null);
+  assert.equal(houseCanvasTitle('/nutrition'), null);
   const refused = [...HOUSE_TODAY_ROOMS, ...HOUSE_LIBRARY_ROOMS, ...HOUSE_MORE_ROOMS, ...HOUSE_MORE_QUIET]
     .map((row) => row.href)
     .join(' ');
   assert.doesNotMatch(refused, /\/crew|\/explore|\/coaching/);
+});
+
+test('transferred rooms drop the old pillar costume, leftover rooms keep a quiet title', () => {
+  const header = read('src/components/layout/PillarPageHeader.tsx');
+  assert.match(header, /data-house-costume="pillar-header"/);
+  const shell = stripComments(read('src/components/house/HouseShell.tsx'));
+  assert.match(shell, /is-transferred/);
+  assert.match(shell, /data-house-transferred/);
+  assert.match(shell, /houseCanvasTitle/);
+  assert.match(shell, /sr-only/);
+  assert.doesNotMatch(shell, /CatalogTabs/);
+  const css = read('src/components/house/house.css');
+  assert.match(css, /data-house-costume=['"]pillar-header['"]/);
+  assert.match(css, /\.is-transferred/);
+  assert.match(css, /house-canvas-in/);
+  assert.match(css, /--house-second-w/);
+  assert.match(css, /animation-delay:\s*0ms/);
 });
 

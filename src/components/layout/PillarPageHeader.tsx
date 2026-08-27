@@ -34,7 +34,10 @@ export function PillarPageHeader({
   className,
 }: PillarPageHeaderProps) {
   return (
-    <div className={cn('space-y-2', className)}>
+    <div
+      data-house-costume="pillar-header"
+      className={cn('pillar-page-header space-y-2', className)}
+    >
       {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       <h1 className="flex items-center gap-3 display-section text-foreground">
         <Icon

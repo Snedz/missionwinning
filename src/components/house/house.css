@@ -62,6 +62,7 @@
 }
 
 .mw-house .house-frame {
+  --house-second-w: 0px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   height: 100%;
@@ -184,9 +185,9 @@
   position: absolute;
   left: calc(100% + 8px);
   top: 50%;
-  transform: translateY(-50%) translateX(-6px);
+  transform: translateY(-50%) translateX(-8px);
   z-index: 80;
-  padding: 6px 10px;
+  padding: 7px 11px;
   background: #000000;
   color: #ffffff;
   font-size: 13px;
@@ -197,8 +198,8 @@
   opacity: 0;
   border-radius: 8px;
   transition:
-    opacity var(--house-dur) var(--house-ease),
-    transform var(--house-dur) var(--house-ease);
+    opacity 140ms var(--house-ease),
+    transform 220ms var(--house-ease);
 }
 
 .mw-house .house-rail-btn:hover .house-rail-tip,
@@ -223,12 +224,14 @@
 
 .mw-house .house-second {
   display: none;
-  width: var(--house-second);
+  width: 100%;
+  min-width: 0;
   flex-shrink: 0;
   flex-direction: column;
   padding: 20px 12px 28px;
   border-right: 0;
   background: #ffffff;
+  overflow: hidden;
   grid-column: 2;
 }
 
@@ -266,7 +269,12 @@
   border-radius: var(--house-pill);
   transition:
     color var(--house-dur) var(--house-ease),
-    background-color var(--house-dur) var(--house-ease);
+    background-color var(--house-dur) var(--house-ease),
+    transform 120ms var(--house-ease);
+}
+
+.mw-house .house-second-link:active {
+  transform: scale(0.98);
 }
 
 .mw-house .house-second-link svg {
@@ -377,6 +385,27 @@
   max-width: none;
   margin: 0;
   padding: 0 0 96px;
+}
+
+.mw-house .house-canvas-pad.is-transferred .stagger-group > .stagger-enter:first-child:has([data-house-costume='pillar-header']) {
+  display: none;
+}
+
+.mw-house .house-canvas-pad.is-transferred [data-house-costume='pillar-header'] {
+  display: none;
+}
+
+.mw-house .house-canvas-pad:not(.is-transferred):not(.is-flush) [data-house-costume='pillar-header'] .eyebrow {
+  display: none;
+}
+
+.mw-house .house-canvas-pad:not(.is-transferred):not(.is-flush) [data-house-costume='pillar-header'] h1 svg {
+  display: none;
+}
+
+.mw-house .house-canvas-pad:not(.is-transferred):not(.is-flush) [data-house-costume='pillar-header'] h1 {
+  font-size: 28px;
+  letter-spacing: -0.03em;
 }
 
 .mw-house .house-sidecar {
@@ -540,14 +569,6 @@
 .mw-house .house-compose-empty,
 .mw-house .house-compose-live {
   padding: 28px 32px 48px;
-}
-
-.mw-house .house-catalog-head {
-  margin-bottom: 8px;
-}
-
-.mw-house .house-catalog-head .house-title {
-  margin-bottom: 18px;
 }
 
 .mw-house .house-catalog > *:first-child {
@@ -972,11 +993,17 @@
 
 @media (min-width: 723px) {
   .mw-house .house-frame {
-    grid-template-columns: var(--house-rail) minmax(0, 1fr);
+    grid-template-columns: var(--house-rail) var(--house-second-w) minmax(0, 1fr);
+    transition: grid-template-columns var(--house-dur-slow) var(--house-ease);
   }
 
   .mw-house .house-frame.is-second {
-    grid-template-columns: var(--house-rail) var(--house-second) minmax(0, 1fr);
+    --house-second-w: var(--house-second);
+  }
+
+  .mw-house .house-frame.is-compose {
+    grid-template-columns: minmax(0, 1fr);
+    transition: none;
   }
 
   .mw-house .house-rail {
@@ -990,13 +1017,12 @@
     animation: house-second-in var(--house-dur-slow) var(--house-ease);
   }
 
-  .mw-house .house-frame > .house-stage,
-  .mw-house .house-frame.is-compose > .house-stage {
-    grid-column: 2;
+  .mw-house .house-frame:not(.is-compose) > .house-stage {
+    grid-column: 3;
   }
 
-  .mw-house .house-frame.is-second > .house-stage {
-    grid-column: 3;
+  .mw-house .house-frame.is-compose > .house-stage {
+    grid-column: 1;
   }
 
   .mw-house .house-floor {
@@ -1024,6 +1050,28 @@
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+@keyframes house-canvas-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mw-house .page-enter {
+  animation: house-canvas-in var(--house-dur-slow) var(--house-ease) both;
+}
+
+.mw-house .stagger-enter {
+  animation-name: house-canvas-in;
+  animation-duration: var(--house-dur-slow);
+  animation-timing-function: var(--house-ease);
+  animation-delay: 0ms !important;
 }
 
 @keyframes house-guide-in {
@@ -1166,8 +1214,11 @@
   }
 
   .mw-house .house-frame,
-  .mw-house .house-frame.is-second {
+  .mw-house .house-frame.is-second,
+  .mw-house .house-frame.is-compose {
+    --house-second-w: 0px;
     grid-template-columns: minmax(0, 1fr);
+    transition: none;
   }
 
   .mw-house .house-rail,

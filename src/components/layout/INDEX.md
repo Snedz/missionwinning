@@ -14,7 +14,7 @@
 | `MoreSheet.tsx` | Search sheet: catalog field + pin-from-row for Fuel/Coach/Train + What’s New + First Steps |
 | `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
 | `PillarPageShell.tsx` | Standard pillar page wrapper |
-| `PillarPageHeader.tsx` | Pillar title + actions |
+| `PillarPageHeader.tsx` | Pillar title + actions. `data-house-costume="pillar-header"` so the house can hide it on transferred rooms. |
 | `InfoPageShell.tsx` | Legal/marketing pages |
 | `InfoPageFooter.tsx` | Info footer links |
 | `AppLegalFooter.tsx` | In-app legal links + public version stamp (`Alpha 0.1.0`) + Changelog |

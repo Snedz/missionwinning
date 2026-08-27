@@ -23,12 +23,17 @@ Start in that bar is one click
 to `/active` compose. This week
 pane shows the real week and
 doors `generateWeek` on `/coach`
-only. History and Weekly plan
-are the real rooms. More is
-leftover (Fuel / You / Account
-+ quiet Move / Mind / Track /
-Learn / Feedback / Garage).
-One Got it. Checklist ticks
+only. History / Weekly plan /
+Library / Builder are the real
+rooms and drop the old pillar
+title once the second bar names
+them. More leftover (Fuel / You
+/ Account + quiet Move / Mind /
+Track / Learn / Feedback /
+Garage) keeps a quiet house
+title. Clip-class fade-up and
+column-width ease; reduced-motion
+off. One Got it. Checklist ticks
 from visits. Hover chips stay
 to the right of each rail icon.
 `[skip vercel]`. No

@@ -98,3 +98,14 @@ export function houseSecondDockForPath(pathname: string): HouseSecondDock | null
 export function houseRoomHref(href: string, hash?: string): string {
   return hash ? `${href}#${hash}` : href;
 }
+
+/** Visible room name for the second bar; canvas keeps a screen-reader title. */
+export function houseCanvasTitle(pathname: string): string | null {
+  if (isHouseTrainPath(pathname)) return null;
+  if (pathname === '/history' || pathname.startsWith('/history/')) return 'History';
+  if (pathname === '/coach' || pathname.startsWith('/coach/')) return 'Weekly plan';
+  if (pathname === '/library') return 'Library';
+  if (pathname.startsWith('/builder')) return 'Builder';
+  if (isHouseTodayPath(pathname)) return 'Today';
+  return null;
+}
