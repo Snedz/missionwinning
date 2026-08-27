@@ -16,7 +16,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { supabase, signOut } from '@/lib/supabase';
 import {
   clearAthleteLocalState,
@@ -340,10 +339,10 @@ export function AccountPage() {
 
   return (
     /*
-     * Field manual on Account: day-one stack stays open (sign-in · return channel ·
-     * prefs). Secondary cards collapse under "More settings" so the page is a
-     * utility briefing, not a card wall. Owner tools stay reachably grouped.
-     * Red-action rules on this route are unchanged (magic-link / billing own red).
+     * House leftover on Account: day-one stack stays open (sign-in · return
+     * channel · prefs). Explore, more settings, and help are house-card objects.
+     * Owner tools stay reachably grouped. Red-action rules on this route are
+     * unchanged (magic-link / billing own red).
      */
     <PillarPageShell
       className="house-account"
@@ -363,10 +362,6 @@ export function AccountPage() {
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
-      <p className="eyebrow text-primary -mt-2">
-        {t('accountPrimaryHint', { defaultValue: 'What you need day to day' })}
-      </p>
-
       <ProfileAccountCard
         email={email}
         ownerTools={ownerTools}
@@ -409,24 +404,19 @@ export function AccountPage() {
 
       <ProfileFeedbackCard />
 
-      <Card className="border-2 border-border bg-card">
-        <CardContent className="space-y-2 pt-6">
-          <p className="font-semibold">
-            {t('accountExploreTitle', { defaultValue: 'Explore places' })}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {t('accountExploreLead', {
-              defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
-            })}
-          </p>
-          <Link
-            href="/explore"
-            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
-          >
-            {t('accountExploreCta', { defaultValue: 'Open Explore' })}
-          </Link>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-2">
+        <p className="font-semibold">
+          {t('accountExploreTitle', { defaultValue: 'Explore places' })}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          {t('accountExploreLead', {
+            defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
+          })}
+        </p>
+        <Link href="/explore" className="house-btn house-btn-ghost">
+          {t('accountExploreCta', { defaultValue: 'Open Explore' })}
+        </Link>
+      </div>
 
       <ProfilePremiumCard
         premium={premium}
@@ -443,7 +433,7 @@ export function AccountPage() {
        * logging speed, and a migrant arriving with a CSV in hand had no path.
        * I-Day and the Active empty state now link straight here.
        */}
-      <details className="group border-2 border-border bg-card" open={importDeepLink}>
+      <details className="house-card group" open={importDeepLink}>
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('accountMoreSettings', { defaultValue: 'More settings' })}
         </summary>
@@ -488,7 +478,7 @@ export function AccountPage() {
       </details>
 
       {ownerTools ? (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             {t('accountOwnerSection', { defaultValue: 'Owner tools' })}
           </summary>
@@ -500,14 +490,12 @@ export function AccountPage() {
         </details>
       ) : null}
 
-      <Card className="border-2 border-border bg-card">
-        <CardContent className="pt-6">
-          <p className="eyebrow mb-3 text-muted-foreground">
-            {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
-          </p>
-          <LegalNav />
-        </CardContent>
-      </Card>
+      <div className="house-card">
+        <p className="house-kicker">
+          {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
+        </p>
+        <LegalNav />
+      </div>
     </PillarPageShell>
   );
 }

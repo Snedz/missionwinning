@@ -67,8 +67,11 @@ dock on `/coach`. `/history`
 to `/private` on this host. Builder first
 paint is a flush Blank workout plus
 hairline saved rows; templates stay
-in Show all. Account leftover carries
-`house-account`. You leftover is
+in Show all. Account leftover is
+`house-account`: quiet title stays,
+sign-in / return / prefs stay first
+paint, Explore / more settings / help
+are house-card. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

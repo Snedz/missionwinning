@@ -893,6 +893,17 @@
   border-color: var(--house-line);
 }
 
+.mw-house .house-account .bg-card {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  box-shadow: none;
+  border-radius: var(--house-radius);
+}
+
+.mw-house .house-account details.house-card {
+  padding: 0;
+}
+
 .mw-house .house-fuel #fuel-log {
   scroll-margin-top: 24px;
 }
