@@ -328,6 +328,12 @@ test('house design system is the signed-in token table', () => {
   const library = read('src/page-components/LibraryPage.tsx');
   assert.match(library, /house-empty/);
   assert.match(library, /house-filter-bar/);
+  assert.match(library, /className="house-list"/);
+  assert.match(library, /className="house-item"/);
+  assert.match(library, /house-item-pick/);
+  assert.match(library, /house-item-body/);
+  assert.match(css, /\.house-catalog \.house-item-pick/);
+  assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

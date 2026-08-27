@@ -272,36 +272,36 @@ export function LibraryPage() {
         {activeFilterCount > 0 && (
           <div className="flex flex-wrap gap-1.5 items-center">
             {filters.muscle && (
-              <FilterChip active onClick={() => setFilter('muscle', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('muscle', '')}>
                 {filters.muscle} <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.equipment && (
-              <FilterChip active onClick={() => setFilter('equipment', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('equipment', '')}>
                 {t(EQUIP_LABELS[filters.equipment] ?? 'libraryEquipAll')}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.level && (
-              <FilterChip active onClick={() => setFilter('level', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('level', '')}>
                 {t(LEVEL_LABELS[filters.level] ?? 'libraryLevelAll')}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.tag && (
-              <FilterChip active onClick={() => setFilter('tag', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('tag', '')}>
                 {PROGRAM_TAG_LABELS[filters.tag]} <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.pattern && (
-              <FilterChip active onClick={() => setFilter('pattern', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('pattern', '')}>
                 {PATTERN_FILTER_LABELS[filters.pattern]}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             <button
               type="button"
-              className="text-xs text-muted-foreground underline"
+              className="house-btn house-btn-ghost"
               onClick={clearFilters}
             >
               {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
@@ -440,19 +440,14 @@ export function LibraryPage() {
         </DialogContent>
       </Dialog>
 
-      <ul data-testid="library-exercise-list">
+      <ul className="house-list" data-testid="library-exercise-list">
         {visibleExercises.map((ex) => {
           const isPicked = pickedIds.includes(ex.id);
           return (
-            <li key={ex.id} className="flex items-stretch border-t border-border">
+            <li key={ex.id} className="house-item">
               <button
                 type="button"
-                className={cn(
-                  'flex h-[52px] w-[52px] shrink-0 items-center justify-center border-r border-border',
-                  isPicked
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-background text-muted-foreground'
-                )}
+                className={`house-item-pick${isPicked ? ' is-on' : ''}`}
                 aria-pressed={isPicked}
                 aria-label={
                   isPicked
@@ -466,19 +461,18 @@ export function LibraryPage() {
               <button
                 type="button"
                 data-testid="library-exercise-row"
-                className="min-h-[52px] min-w-0 flex-1 px-3 py-2 text-left"
+                className="house-item-body"
                 onClick={() => setDetailId(ex.id)}
               >
-                <p className="truncate text-[15px] font-semibold">{ex.name}</p>
-                <p className="truncate text-xs text-muted-foreground">
+                <strong>{ex.name}</strong>
+                <span>
                   {ex.muscleGroups.join(' · ')}
                   {ex.equipment ? ` · ${ex.equipment}` : ''}
-                </p>
+                </span>
               </button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="min-h-[52px] shrink-0 text-xs"
+              <button
+                type="button"
+                className="house-btn house-btn-ghost"
                 aria-label={t('libraryViewDetailsFor', {
                   name: ex.name,
                   defaultValue: `View details for ${ex.name}`,
@@ -486,7 +480,7 @@ export function LibraryPage() {
                 onClick={() => setDetailId(ex.id)}
               >
                 {t('libraryViewDetails', { defaultValue: 'View details' })}
-              </Button>
+              </button>
             </li>
           );
         })}
@@ -494,17 +488,16 @@ export function LibraryPage() {
 
       {filtered.length > visibleCount ? (
         <div className="flex justify-center pt-2">
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="min-h-[44px]"
+            className="house-btn"
             onClick={() => setVisibleCount((n) => n + 16)}
           >
             {t('libraryLoadMore', {
               remaining: filtered.length - visibleCount,
               defaultValue: `Load more (${filtered.length - visibleCount} left)`,
             })}
-          </Button>
+          </button>
         </div>
       ) : null}
 
@@ -521,7 +514,7 @@ export function LibraryPage() {
         />
       )}
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="library-show-all"

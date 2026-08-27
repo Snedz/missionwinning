@@ -51,8 +51,14 @@ H1). Start hero is flush, not a
 nested paper card. First rooms
 stay one object. Compact still
 shows the Today title. Library
-filter and empty use house
-objects.
+catalog rows are house items
+(hairline pick list); chips in
+the filter bar are house-state.
+Compact floor plus matches the
+desktop 40px white circle.
+Library filter and empty stay
+house objects. `/library` still
+307s to `/private` on this host.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate

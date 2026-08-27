@@ -54,7 +54,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Piece | Class | Rule |
 |-------|--------|------|
 | Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
-| Train plus | `.house-rail-plus` | Desktop: 40×40 white circle, 1px line, no shadow. Click `/active`. |
+| Train plus | `.house-rail-plus` | 40×40 white circle, 1px line, no shadow (desktop rail and compact floor). Click `/active`. |
 | Hover chip | `.house-rail-tip` | Black, 13px, 8px radius |
 | Sheet | `.house-sheet` | White 12px panel wrapping second + canvas |
 | Second bar | `.house-second` | Kicker + 12px rows, selected `#eee`; pane has back chevron |
@@ -62,6 +62,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Primary | `.house-btn-primary` | Black pill. One filled action |
 | Guide | `.house-guide` | One Got it. No chain |
 | First rooms | `.house-first-rooms` | N-of-N under Start |
+| Catalog row | `.house-item` in `.house-catalog` | Hairline list. Pick mark + name + details |
 | More leftover | `.house-more-panel` | Fuel / You / Account + quiet foot |
 
 ## Rooms (existing engines)
