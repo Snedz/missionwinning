@@ -1,0 +1,61 @@
+---
+/*
+ * Unsigned Patreon chrome: left Train/Coach/History/About, center wordmark,
+ * right Log in + Get notified pills. Shared by every marketing page except
+ * /start (conversion stays wordmark + pills only).
+ */
+import CtaSlot from './CtaSlot.astro';
+import { appUrl } from '../lib/appLinks';
+import { NAV_LINKS } from '../lib/homeContent';
+
+interface Props {
+  terminal?: boolean;
+}
+
+const { terminal = false } = Astro.props;
+const loginHref = appUrl('/welcome');
+---
+
+<header
+  class="ptn-www-nav on-dark ptn-on-dark fixed inset-x-0 top-0 z-50 border-b border-transparent"
+  data-nav
+>
+  <div
+    class="mx-auto grid w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-5 py-3 sm:px-8"
+  >
+    <nav class="hidden items-center gap-5 md:flex" aria-label="Site">
+      {
+        NAV_LINKS.map((l) => (
+          <a href={l.href} class="ptn-rail hover:underline">
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a href="/" class="ptn-rail tracking-[0.12em]">MISSION WINNING</a>
+    <div class="flex items-center justify-end gap-2">
+      <a class="ptn-pill ptn-pill-ghost" href={loginHref}>Log in</a>
+      <CtaSlot variant="quiet" terminal={terminal} />
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const hero = document.querySelector<HTMLElement>('main > section');
+  if (nav && hero) {
+    const onDark = () => {
+      nav.classList.add('on-dark', 'ptn-on-dark');
+      nav.classList.remove('bg-paper', 'border-rule');
+      nav.classList.add('border-transparent');
+    };
+    const onPaper = () => {
+      nav.classList.remove('on-dark', 'ptn-on-dark', 'border-transparent');
+      nav.classList.add('bg-paper', 'border-rule');
+    };
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? onDark() : onPaper()), {
+      rootMargin: '-72px 0px 0px 0px',
+      threshold: 0,
+    }).observe(hero);
+  }
+</script>

@@ -16,6 +16,7 @@ import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { recordScreen } from '@/lib/screenTrail';
 import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
+import '@/styles/patreonTokens.css';
 
 const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
   ssr: false,
@@ -59,7 +60,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <CommissioningCeremony />
         <JourneySyncBoot />
         <div
-          className="flex flex-col h-screen overflow-hidden bg-background"
+          className="ptn flex flex-col h-screen overflow-hidden bg-background"
           style={keyboardOverlap > 0 ? { paddingBottom: keyboardOverlap } : undefined}
         >
           <AppHeader onOpenMore={openMore} moreOpen={moreOpen} />
@@ -70,7 +71,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             {/* No bottom padding for the tab bar any more — the bar and the
                 dock are flex siblings that reserve their own height. */}
             <main className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl px-4 py-5 md:px-8 md:py-6">
+              <div className="mx-auto max-w-lg px-4 py-5 md:ptn-desktop-main md:px-8 md:py-6">
                 <PageTransition>{children}</PageTransition>
               </div>
             </main>

@@ -159,6 +159,12 @@
   max-width: var(--ptn-main);
 }
 
+@media (min-width: 768px) {
+  .ptn-desktop-main {
+    max-width: var(--ptn-main);
+  }
+}
+
 .ptn-card-measure {
   max-width: var(--ptn-card-width);
 }
@@ -169,4 +175,8 @@
 
 .ptn-gap {
   margin-block: var(--ptn-gap);
+}
+
+.ptn-hairline {
+  border-color: var(--ptn-card-border);
 }

@@ -6,29 +6,15 @@
  * This file is an index only. No host flip. No _redirects.
  */
 import Base from '../layouts/Base.astro';
-import CtaSlot from '../components/CtaSlot.astro';
+import PtnNav from '../components/PtnNav.astro';
+import PtnClose from '../components/PtnClose.astro';
 import StagePhoto from '../components/StagePhoto.astro';
 import { appUrl } from '../lib/appLinks';
 import { META, HERO, STORIES } from '../lib/compareContent';
 ---
 
 <Base title={META.title} description={META.description}>
-  <header
-    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
-    data-nav
-  >
-    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
-      <a href="/" class="flex shrink-0 items-center gap-3">
-        <span
-          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
-          data-nav-mark>MW</span
-        >
-        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
-      </a>
-      <a href="/" class="hidden text-[15px] font-semibold hover:underline md:inline">Homepage</a>
-      <CtaSlot variant="quiet" terminal class="ml-auto shrink-0" />
-    </div>
-  </header>
+  <PtnNav terminal />
 
   <main>
     <section
@@ -67,10 +53,5 @@ import { META, HERO, STORIES } from '../lib/compareContent';
     </div>
   </main>
 
-  <footer class="poster-field px-5 py-statement sm:px-8">
-    <div class="mx-auto max-w-6xl">
-      <p class="display-statement wipe"><span>Start with one set.</span></p>
-      <CtaSlot terminal class="mt-10 max-w-[420px]" />
-    </div>
-  </footer>
+  <PtnClose line="Start with one set." />
 </Base>

@@ -58,7 +58,7 @@ export function MobileNav({
      */
     <nav
       aria-label="Primary"
-      className="md:hidden shrink-0 z-50 border-t-2 border-border bg-background pb-[env(safe-area-inset-bottom)]"
+      className="ptn md:hidden shrink-0 z-50 border-t border-border bg-background pb-[env(safe-area-inset-bottom)]"
     >
       <div className="flex items-stretch">
         {tabs.map(({ href, labelKey, label, icon: Icon }) => {
