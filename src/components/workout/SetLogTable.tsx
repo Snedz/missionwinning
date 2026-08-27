@@ -26,10 +26,7 @@ import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
-import {
-  formatCompletedWeightCell,
-  formatPlusLoadWeightCell,
-} from '@/lib/workout/bodyweightLoad';
+import { formatCompletedWeightCell } from '@/lib/workout/bodyweightLoad';
 import {
   clampOpenLoadWeight,
   displayOpenLoadDraft,
