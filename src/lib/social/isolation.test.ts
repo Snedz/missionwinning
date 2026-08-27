@@ -18,6 +18,7 @@ import { LOGGER_FILES, reaches } from '@/lib/domainBoundary';
 import { MOBILE_TAB_HREFS, resolveMobileTabHrefs } from '@/lib/primaryNav';
 import { RAIL_GROUPS } from '@/lib/navConfig';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { HOUSE_MORE_QUIET, HOUSE_RAIL_HREFS } from '@/components/house/houseNav';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 
@@ -215,9 +216,14 @@ test('log-path tabs stay /log + /active only', () => {
 test('/server is More → You, never rail or tab', () => {
   const railHrefs = RAIL_GROUPS.flatMap((g) => g.hrefs);
   assert.ok(!railHrefs.includes('/server'), '/server must not be a rail href');
-  const house = read('src/components/house/houseNav.ts');
-  assert.ok(house !== null, 'houseNav moved');
-  assert.doesNotMatch(house, /['"]\/server['"]/, '/server must not be a house rail href');
+  assert.ok(
+    !(Object.values(HOUSE_RAIL_HREFS) as string[]).includes('/server'),
+    '/server must not be a house rail href'
+  );
+  assert.ok(
+    HOUSE_MORE_QUIET.some((row) => row.href === '/server'),
+    '/server stays a quiet More leftover'
+  );
   const tabHrefs: readonly string[] = MOBILE_TAB_HREFS;
   assert.ok(!tabHrefs.includes('/server'));
 });

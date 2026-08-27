@@ -26,9 +26,10 @@ import { HouseMore } from './HouseMore';
 import { HousePaneProvider } from './HousePane';
 import { HouseSecondRail } from './HouseSecondRail';
 import {
+  HOUSE_RAIL_HREFS,
+  houseSecondDockForPath,
   isHouseAccountPath,
   isHouseCatalogPath,
-  isHouseSecondRailPath,
   isHouseTrainPath,
 } from './houseNav';
 import { TrainSidecar } from './TrainSidecar';
@@ -50,12 +51,20 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const openMore = useCallback(() => setMoreOpen(true), []);
   const closeMore = useCallback(() => setMoreOpen(false), []);
+  const openHome = useCallback(() => {
+    setMoreOpen(false);
+    router.push(HOUSE_RAIL_HREFS.home);
+  }, [router]);
+  const openLibrary = useCallback(() => {
+    setMoreOpen(false);
+    router.push(HOUSE_RAIL_HREFS.library);
+  }, [router]);
   const keyboardOverlap = useVisualViewportKeyboardOverlap();
   const train = isHouseTrainPath(pathname);
   const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
-  const second = !compose && isHouseSecondRailPath(pathname);
+  const dock = !compose ? houseSecondDockForPath(pathname) : null;
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
 
   useEffect(() => {
@@ -99,11 +108,20 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           ) : null}
-          <div className={`house-frame${compose ? ' is-compose' : ''}`} style={{ flex: 1, minHeight: 0 }}>
+          <div
+            className={`house-frame${dock ? ' is-second' : ''}${compose ? ' is-compose' : ''}`}
+            data-house-frame={dock ? 'second-left' : 'rail'}
+            style={{ flex: 1, minHeight: 0 }}
+          >
             {compose ? null : (
-              <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} />
+              <HouseIconRail
+                onOpenMore={openMore}
+                onOpenHome={openHome}
+                onOpenLibrary={openLibrary}
+                moreOpen={moreOpen}
+              />
             )}
-            {second ? <HouseSecondRail /> : null}
+            {dock ? <HouseSecondRail dock={dock} /> : null}
             <div className={`house-stage${compose || train ? ' is-compose' : ''}`}>
               <main className="house-canvas">
                 <div className={padClass}>
@@ -118,7 +136,13 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
           <div id={SCREEN_DOCK_HOST_ID} className="house-dock" />
           <div id={CONSENT_BANNER_HOST_ID} className="house-consent" />
           {compose ? null : (
-            <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} floor />
+            <HouseIconRail
+              onOpenMore={openMore}
+              onOpenHome={openHome}
+              onOpenLibrary={openLibrary}
+              moreOpen={moreOpen}
+              floor
+            />
           )}
           <HouseGuide />
           <HouseMore open={moreOpen} onClose={closeMore} />

@@ -62,10 +62,15 @@
 }
 
 .mw-house .house-frame {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   height: 100%;
   min-height: 0;
   background: var(--house-paper);
+}
+
+.mw-house .house-frame > .house-stage {
+  grid-column: 1;
 }
 
 .mw-house .house-rail {
@@ -79,6 +84,7 @@
   background: #ffffff;
   overflow: visible;
   z-index: 3;
+  grid-column: 1;
 }
 
 .mw-house .house-rail-top,
@@ -223,10 +229,14 @@
   padding: 20px 12px 28px;
   border-right: 0;
   background: #ffffff;
+  grid-column: 2;
 }
 
 .mw-house .house-second-kicker {
-  display: none;
+  margin: 0 12px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--house-ink);
 }
 
 .mw-house .house-second-body {
@@ -339,6 +349,7 @@
   min-width: 0;
   min-height: 0;
   background: var(--house-stage);
+  grid-column: 1;
 }
 
 .mw-house .house-stage.is-compose {
@@ -936,14 +947,56 @@
   margin-top: 18px;
 }
 
+.mw-house .house-second-week {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 14px;
+}
+
+.mw-house .house-second-week-day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 12px;
+  color: var(--house-muted);
+  font-size: 13px;
+}
+
+.mw-house .house-second-week-day.is-today,
+.mw-house .house-second-week-day.is-set {
+  color: var(--house-ink);
+}
+
 @media (min-width: 723px) {
+  .mw-house .house-frame {
+    grid-template-columns: var(--house-rail) minmax(0, 1fr);
+  }
+
+  .mw-house .house-frame.is-second {
+    grid-template-columns: var(--house-rail) var(--house-second) minmax(0, 1fr);
+  }
+
   .mw-house .house-rail {
     display: flex;
+    grid-column: 1;
   }
 
   .mw-house .house-second {
     display: flex;
+    grid-column: 2;
     animation: house-second-in var(--house-dur-slow) var(--house-ease);
+  }
+
+  .mw-house .house-frame > .house-stage,
+  .mw-house .house-frame.is-compose > .house-stage {
+    grid-column: 2;
+  }
+
+  .mw-house .house-frame.is-second > .house-stage {
+    grid-column: 3;
   }
 
   .mw-house .house-floor {
@@ -1112,8 +1165,19 @@
     display: none;
   }
 
+  .mw-house .house-frame,
+  .mw-house .house-frame.is-second {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mw-house .house-rail,
   .mw-house .house-second {
     display: none;
+  }
+
+  .mw-house .house-frame > .house-stage,
+  .mw-house .house-frame.is-second > .house-stage {
+    grid-column: 1;
   }
 
   .mw-house .house-canvas-pad {

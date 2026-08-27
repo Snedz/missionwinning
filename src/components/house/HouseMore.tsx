@@ -1,29 +1,14 @@
 'use client';
 
 /**
- * Rest of the house — not the old WEDGE / Pillars / Toolkit sheet.
+ * Rest of the house — leftover rooms, not the Home second bar.
  * /server stays a quiet foot link, never a rail icon.
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
-
-const ROOMS = [
-  { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel' },
-  { href: '/profile', labelKey: 'navYou', label: 'You' },
-  { href: '/account', labelKey: 'navAccount', label: 'Account' },
-] as const;
-
-const QUIET = [
-  { href: '/move', labelKey: 'navMove', label: 'Move' },
-  { href: '/mind', labelKey: 'navMind', label: 'Mind' },
-  { href: '/track', labelKey: 'navTrack', label: 'Track' },
-  { href: '/learn', labelKey: 'navLearn', label: 'Learn' },
-  { href: '/feedback', labelKey: 'navFeedback', label: 'Feedback' },
-] as const;
-
-const LATER = [{ href: '/server', labelKey: 'navGarage', label: 'Garage' }] as const;
+import { HOUSE_MORE_QUIET, HOUSE_MORE_ROOMS } from './houseNav';
 
 type Props = {
   open: boolean;
@@ -47,27 +32,17 @@ export function HouseMore({ open, onClose }: Props) {
           </button>
         </div>
         <nav className="house-side-nav" style={{ marginTop: 16 }}>
-          {ROOMS.map((row) => (
+          {HOUSE_MORE_ROOMS.map((row) => (
             <Link key={row.href} href={row.href} className="house-side-link" onClick={onClose}>
               {t(row.labelKey, { defaultValue: row.label })}
             </Link>
           ))}
         </nav>
         <div className="house-more-quiet">
-          {QUIET.map((row) => (
+          {HOUSE_MORE_QUIET.map((row) => (
             <Link key={row.href} href={row.href} onClick={onClose}>
               {t(row.labelKey, { defaultValue: row.label })}
             </Link>
-          ))}
-          {LATER.map((row) => (
-            <span key={row.href} className="house-more-locked">
-              {t(row.labelKey, { defaultValue: row.label })}
-              <span className="house-lock">
-                <span className="house-lock-tip" role="tooltip">
-                  {t('houseGarageLock', { defaultValue: 'Garage is later — Train and Today come first.' })}
-                </span>
-              </span>
-            </span>
           ))}
         </div>
       </div>
