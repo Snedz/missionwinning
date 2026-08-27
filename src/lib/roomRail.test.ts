@@ -72,7 +72,13 @@ test('rail never carries Message, Messenger, Studio, or Explore', () => {
 
 test('signed-in shell mounts a visible left room rail', () => {
   const layout = read('src/components/layout/AppLayout.tsx');
+  assert.match(layout, /import \{ Sidebar \} from '\.\/Sidebar'/);
   assert.match(layout, /<Sidebar/);
+  assert.doesNotMatch(
+    layout,
+    /dynamic\(\(\) => import\('\.\/Sidebar'/,
+    'Sidebar must be a static import — a dynamic chunk is how the rail fails to paint'
+  );
   assert.doesNotMatch(
     layout,
     /hidden md:block[\s\S]{0,80}<Sidebar/,

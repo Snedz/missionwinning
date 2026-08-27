@@ -37,7 +37,7 @@ costume. No `/private` restyle.
 Today still one Start. PINNED +
 day strip stay. Isolation from
 `.1053` still holds. Guest.
-First set ungated. `[skip vercel]`.
+First set ungated. Preview.
 No `PRIVATE_MODE` flip. No
 production promote. Live www
 stays `.696`. `#876` stays

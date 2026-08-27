@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
+import { Sidebar } from './Sidebar';
 import { CONSENT_BANNER_HOST_ID, SCREEN_DOCK_HOST_ID } from './ScreenDock';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
 import { PageTransition } from '@/components/layout/PageTransition';
@@ -16,8 +17,6 @@ import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { recordScreen } from '@/lib/screenTrail';
 import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
-
-const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })));
 
 const CommissioningCeremony = dynamic(
   () =>
