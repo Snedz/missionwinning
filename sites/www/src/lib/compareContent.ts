@@ -17,4 +17,7 @@ export const HERO = {
   body: 'We do not publish named rival pages in the product tree. The logger stays free. Mission Coach writes the week from your sets.',
 };
 
-export const STORIES = [] as const;
+type CompareStory = { path: `/${string}`; title: string; subtitle: string };
+
+/** Empty until a founder GTM exception republishes named stories. */
+export const STORIES: readonly CompareStory[] = [];

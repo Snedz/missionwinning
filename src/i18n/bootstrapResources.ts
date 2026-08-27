@@ -17,6 +17,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   infoSkipToday: 'Skip to Today',
   navToday: 'Today',
   navTrain: 'Train',
+  navCoachTab: 'Coach',
   navFuel: 'Fuel',
   navTrack: 'Track',
   navYou: 'You',

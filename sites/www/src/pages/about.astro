@@ -9,27 +9,13 @@
 import Base from '../layouts/Base.astro';
 import CtaSlot from '../components/CtaSlot.astro';
 import StagePhoto from '../components/StagePhoto.astro';
-import { appUrl } from '../lib/appLinks';
+import WwwNav from '../components/WwwNav.astro';
+import WwwFooter from '../components/WwwFooter.astro';
 import { META, HERO, SECTIONS } from '../lib/aboutContent';
 ---
 
 <Base title={META.title} description={META.description}>
-  <header
-    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
-    data-nav
-  >
-    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
-      <a href="/" class="flex shrink-0 items-center gap-3">
-        <span
-          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
-          data-nav-mark>MW</span
-        >
-        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
-      </a>
-      <a href="/" class="hidden text-[15px] font-semibold hover:underline md:inline">Homepage</a>
-      <CtaSlot variant="quiet" terminal class="ml-auto shrink-0" />
-    </div>
-  </header>
+  <WwwNav />
 
   <main>
     <section
@@ -91,14 +77,7 @@ import { META, HERO, SECTIONS } from '../lib/aboutContent';
     </div>
   </footer>
 
-  <div class="ground-ink px-5 py-6 sm:px-8">
-    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2">
-      <p class="eyebrow">&copy; Mission Winning</p>
-      <a href="/" class="eyebrow underline">Homepage</a>
-      <a href={appUrl('/privacy')} class="eyebrow underline">Privacy</a>
-      <a href={appUrl('/terms')} class="eyebrow underline">Terms</a>
-    </div>
-  </div>
+  <WwwFooter />
 </Base>
 
 <script>
