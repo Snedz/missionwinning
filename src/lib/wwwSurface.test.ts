@@ -219,10 +219,9 @@ test('/about is additive Astro and does not steal the Next host', () => {
    * www.missionwinning.com, the ~250 SEO URLs, and Next /about.
    */
   const page = read('sites/www/src/pages/about.astro');
-  const chrome = [page, read('sites/www/src/components/WwwNav.astro')].join('\n');
   const copy = [page, read('sites/www/src/lib/aboutContent.ts')].join('\n');
   assert.match(page, /\bterminal\b/, '/about must terminate at the private gate');
-  assert.match(chrome, /href="\/"/, '/about must link to the homepage');
+  assert.match(page, /href="\/"/, '/about must link to the homepage');
   assert.ok(
     existsSync(path.join(root, 'src/page-components/AboutPage.tsx')),
     'Next /about stays — this loop does not move the SEO URL'
@@ -250,10 +249,9 @@ test('/vision is additive Astro and does not steal the Next host', () => {
    * www.missionwinning.com and Next /vision.
    */
   const page = read('sites/www/src/pages/vision.astro');
-  const chrome = [page, read('sites/www/src/components/WwwNav.astro')].join('\n');
   const copy = [page, read('sites/www/src/lib/visionContent.ts')].join('\n');
   assert.match(page, /\bterminal\b/, '/vision must terminate at the private gate');
-  assert.match(chrome, /href="\/"/, '/vision must link to the homepage');
+  assert.match(page, /href="\/"/, '/vision must link to the homepage');
   assert.ok(
     existsSync(path.join(root, 'src/page-components/VisionPage.tsx')),
     'Next /vision stays — this loop does not move the SEO URL'

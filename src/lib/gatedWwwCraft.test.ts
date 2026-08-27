@@ -47,11 +47,6 @@ test('tight lock is hero + notify + enter-with-code', () => {
   assert.match(src, /gateAccessSummary/);
   assert.doesNotMatch(src, /CinematicLogger|www-cine-set|id="anywhere"|id="week"/);
   assert.doesNotMatch(src, /TARGET · Squat|Miss\.|Travel\.|Band\./);
-  assert.match(src, /data-mw-set-table|GateSetTable/);
-  assert.match(src, /gate-nav/);
-  assert.match(src, /id="history"/);
-  assert.match(src, /id="coach"/);
-  assert.match(src, /id="door"/);
 });
 
 test('door forms stay on the teaser; Notify me is the one red', () => {
@@ -136,21 +131,4 @@ test('tight lock does not invent traction or mount a feed', () => {
   const landing = read('src/page-components/LandingPage.tsx');
   assert.doesNotMatch(teaser, /athletes signed|10,?000|users and counting/i);
   assert.doesNotMatch(home + landing, /app\/feed|href=["']\/feed["']/);
-});
-
-test('door and www do not ship Inter, cream, or coral', () => {
-  const files = [
-    'app/private/PrivateTeaserClient.tsx',
-    'app/private/gate.css',
-    'src/components/public/GateSetTable.tsx',
-    'sites/www/src/pages/index.astro',
-    'sites/www/src/components/WwwNav.astro',
-    'sites/www/src/lib/homeContent.ts',
-  ];
-  for (const file of files) {
-    const src = read(file);
-    assert.doesNotMatch(src, /(?<![A-Za-z])Inter(?![A-Za-z])|font-inter/, file);
-    assert.doesNotMatch(src, /#faf9f5|#cc785c/i, file);
-    assert.doesNotMatch(src, /rounded-(?:md|lg|xl|2xl|3xl|full)/, file);
-  }
 });

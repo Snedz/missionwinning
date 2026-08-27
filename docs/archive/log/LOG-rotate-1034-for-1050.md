@@ -1,4 +1,4 @@
-# Rotated from LOG.md for `.1049` (Modernist tokens, Patreon layout)
+# Rotated from LOG.md for `.1050` (Revert modernist Patreon door)
 
 ## 2026-08-26 — Reorder lifts on this finished session (`.1034`)
 
@@ -33,4 +33,4 @@ Label `2026.07-unified.1034` (from
 master `.1033` / `51e4df41c`). Stamp
 stays `.1034`. Live www stays `.696`.
 
-Rotated LOG oldest → [LOG-rotate-1019-for-1034.md](./LOG-rotate-1019-for-1034.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1019-for-1034.md](docs/archive/log/LOG-rotate-1019-for-1034.md).

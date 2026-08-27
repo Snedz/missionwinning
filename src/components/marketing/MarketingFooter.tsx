@@ -29,10 +29,10 @@ function FooterColumn({
           font-medium tracking-wide` this used to carry — that spelling appeared in 12
           files and put two different eyebrows on the landing page at once. */}
       <p className="eyebrow mb-3">{title}</p>
-      <ul className="space-y-2 text-sm text-neutral-300">
+      <ul className="space-y-2 text-sm text-muted-foreground">
         {links.map((link) => (
           <li key={link.href + link.labelKey}>
-            <Link href={link.href} className="transition-colors hover:text-neutral-100">
+            <Link href={link.href} className="transition-colors hover:text-foreground">
               {t(link.labelKey, { defaultValue: link.defaultValue })}
             </Link>
           </li>
@@ -52,7 +52,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
   const groups = footerGroups();
 
   return (
-    <footer className={cn('bg-neutral-900 text-neutral-100', className)}>
+    <footer className={cn('border-t-2 border-border', className)}>
       <div className="mx-auto max-w-6xl px-5 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -62,10 +62,10 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
                 Mission Winning
               </span>
             </Link>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-300">
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {t(FOOTER_TAGLINE_KEY, { defaultValue: FOOTER_TAGLINE_DEFAULT })}
             </p>
-            <p className="mt-4 text-xs text-neutral-400">
+            <p className="mt-4 text-xs text-muted-foreground">
               © {year} Mission Winning
             </p>
             <LocaleCountryControl className="mt-4 max-w-xs" />
@@ -81,7 +81,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
           ))}
         </div>
       </div>
-      <div className="border-t-2 border-neutral-800 px-5 py-4"><p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-neutral-400">
+      <div className="border-t-2 border-border px-5 py-4"><p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground">
         {t(FOOTER_DISCLAIMER_KEY, { defaultValue: FOOTER_DISCLAIMER_DEFAULT })}
         </p>
       </div>

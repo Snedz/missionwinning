@@ -25,7 +25,7 @@ export function PublicSiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-neutral-900 text-neutral-100">
+    <footer className="border-t-2 border-border">
       <div className="mx-auto max-w-6xl px-5 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -33,19 +33,19 @@ export function PublicSiteFooter() {
               <BrandMonogram />
               <span className="text-base font-semibold tracking-tight">Mission Winning</span>
             </Link>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-300">
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {FOOTER_TAGLINE_DEFAULT}
             </p>
-            <p className="mt-4 text-xs text-neutral-400">© {year} Mission Winning</p>
+            <p className="mt-4 text-xs text-muted-foreground">© {year} Mission Winning</p>
           </div>
 
           {groups.map((group) => (
             <div key={group.titleKey}>
               <p className="eyebrow mb-3">{group.titleDefault}</p>
-              <ul className="space-y-2 text-sm text-neutral-300">
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 {group.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="transition-colors hover:text-neutral-100">
+                    <Link href={link.href} className="transition-colors hover:text-foreground">
                       {link.defaultValue}
                     </Link>
                   </li>
@@ -55,8 +55,8 @@ export function PublicSiteFooter() {
           ))}
         </div>
       </div>
-      <div className="border-t-2 border-neutral-800 px-5 py-4">
-        <p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-neutral-400">
+      <div className="border-t-2 border-border px-5 py-4">
+        <p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground">
           {FOOTER_DISCLAIMER_DEFAULT}
         </p>
       </div>

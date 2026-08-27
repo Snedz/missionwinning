@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1049` Modernist tokens, Patreon layout (from master `.1048` `8763a6e013`; stamp stays `.1049`). */
-export const APP_BUILD_LABEL = "2026.07-unified.1049";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1050` Revert modernist Patreon door (from master `.1049` `dbf3bd340`; stamp stays `.1050`; `/private` + www restored to the `.1048` tight lock). */
+export const APP_BUILD_LABEL = "2026.07-unified.1050";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

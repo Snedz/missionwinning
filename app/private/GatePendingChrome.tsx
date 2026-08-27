@@ -23,15 +23,16 @@ export function GatePendingChrome({
       data-mw-invitee={isInvitee ? '1' : '0'}
       data-mw-gate-pending="1"
     >
-      <header className="gate-nav" data-over-hero="0">
-        <div className="gate-nav-inner">
-          <span />
-          <span className="gate-brand">
-            <span className="gate-brandname">Mission Winning</span>
+      <header className="gate-header">
+        <span className="gate-brand">
+          <span className="gate-mark" data-brand-monogram aria-hidden>
+            MW
           </span>
-          <p className="gate-kicker justify-self-end">{GATED_WWW_HONESTY.gateEyebrow}</p>
-        </div>
+          <span className="gate-brandname">Mission Winning</span>
+        </span>
+        <p className="gate-kicker">{GATED_WWW_HONESTY.gateEyebrow}</p>
       </header>
+      <hr className="gate-rule" />
       <main
         className="gate-center"
         style={{ flex: 1, display: 'flex' }}

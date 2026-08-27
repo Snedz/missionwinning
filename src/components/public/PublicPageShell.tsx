@@ -1,9 +1,9 @@
 import Link from 'next/link';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
 import { PublicSiteFooter } from '@/components/public/PublicSiteFooter';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
-import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 
 /**
  * The chrome for every public SEO surface — exercises, hubs, compare, paths.
@@ -68,12 +68,9 @@ export function PublicPageShell({
   children,
 }: PublicPageShellProps) {
   const width = WIDTH_CLASS[maxWidth];
-  const gateOn = isPrivateModeEnabled();
-  const navLinks = primaryNavLinks({ gated: gateOn });
+  const navLinks = primaryNavLinks();
   const legalLinks =
     footerGroups().find((g) => g.titleKey === 'footerGroupLegal')?.links ?? [];
-  const chromeCtaHref = gateOn ? '/private' : ctaHref;
-  const chromeCtaLabel = gateOn ? 'Enter with code' : ctaLabel;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -90,37 +87,39 @@ export function PublicPageShell({
         className="sticky top-0 z-50 border-b-2 border-border bg-background"
       >
         <PublicStatusBar />
-        <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-5">
-          <ul className="hidden items-center justify-start gap-7 text-sm md:flex" data-mw-nav-cluster>
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="inline-flex min-h-[44px] items-center text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {link.defaultValue}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/"
-            className="justify-self-center font-display text-[15px] font-extrabold tracking-[-0.01em]"
-          >
-            Mission Winning
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-5 sm:h-16">
+          <Link href="/" className="flex min-w-0 items-center gap-2.5">
+            <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />
+            <span className="truncate font-display text-lg font-extrabold tracking-[-0.01em] sm:text-xl">
+              Mission Winning
+            </span>
           </Link>
-          <div className="flex items-center justify-end gap-4">
+
+          <div className="flex items-center gap-6">
+            {/* Real navigation from md up — the old chrome had none at any width. */}
+            <ul className="hidden items-center gap-6 text-sm md:flex">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.defaultValue}
+                  </Link>
+                </li>
+              ))}
+            </ul>
             <Link
-              href={chromeCtaHref}
-              className="hidden min-h-[44px] items-center border-2 border-foreground px-4 text-sm font-semibold md:inline-flex"
+              href={ctaHref}
+              className="hidden text-sm font-semibold text-foreground transition-colors hover:text-primary md:inline"
             >
-              {chromeCtaLabel}
+              {ctaLabel}
             </Link>
             <PublicNavMenu
               links={navLinks}
               legalLinks={legalLinks}
-              ctaHref={chromeCtaHref}
-              ctaLabel={chromeCtaLabel}
+              ctaHref={ctaHref}
+              ctaLabel={ctaLabel}
             />
           </div>
         </div>

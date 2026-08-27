@@ -90,7 +90,7 @@ it('sign-in path asks the storage planner instead of always merge+push', () => {
 it('adopt path never clears the workout store', () => {
   const src = readFileSync(join(import.meta.dirname, 'journeySync.ts'), 'utf8');
   const adopt = src.slice(src.indexOf("plan === 'adopt-guest-sans-health'"));
-  const next = adopt.search(/\n {2}if \(plan ===|\n {2}if \(profile\)/);
+  const next = adopt.search(/\n  if \(plan ===|\n  if \(profile\)/);
   const block = next === -1 ? adopt : adopt.slice(0, next);
   assert.doesNotMatch(
     block,

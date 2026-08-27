@@ -56,7 +56,7 @@
 | **Site flow / IA (chip floorplan)** | [docs/FLOW_ARCHITECTURE.md](docs/FLOW_ARCHITECTURE.md) — dies, buses, critical path, dual pads | Landing redesigns; “everything hub”; conflating `/coach` with `/coaching` |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
-| Design research / system | [docs/DESIGN.md](docs/DESIGN.md) (layout freeze `.1049`) · [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | Coral/cream/Inter clones; inventing tokens |
+| Design research / system | [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | — |
 | **UI excellence / brand program** | [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) (craft waves D0–D3) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [docs/ADAPTIVE_LAYOUT.md](docs/ADAPTIVE_LAYOUT.md) + [apps/android/UX.md](apps/android/UX.md) | Landing teardown / new pillars in Horizon 0; old chat plans |
 | **Free-first beta (LLC wait)** | [docs/FREE_BETA.md](docs/FREE_BETA.md) + [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) §1d | Showing Bundle/checkout while FREE_BETA on |
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |

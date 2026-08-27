@@ -7,7 +7,7 @@
 | File | Purpose |
 |------|---------|
 | `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). |
-| `AppHeader.tsx` | 64px paper top bar, title from navConfig |
+| `AppHeader.tsx` | Top bar, title from navConfig |
 | `Sidebar.tsx` | Desktop nav; athlete chip is public version |
 | `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height |
 | `MoreSheet.tsx` | Search sheet: catalog field + pin-from-row for Fuel/Coach/Train + What’s New + First Steps |

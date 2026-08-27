@@ -366,7 +366,6 @@ export function AccountPage() {
         {t('accountPrimaryHint', { defaultValue: 'What you need day to day' })}
       </p>
 
-      <p className="eyebrow">Account</p>
       <ProfileAccountCard
         email={email}
         ownerTools={ownerTools}
@@ -393,7 +392,6 @@ export function AccountPage() {
         onChangeDayReviewHour={changeDayReviewHour}
       />
 
-      <p className="eyebrow">Units</p>
       <ProfilePreferencesCard
         units={units}
         onSaveUnits={saveUnits}
@@ -476,14 +474,12 @@ export function AccountPage() {
 
           <ProfileWhatsNewCard />
 
-          <p className="eyebrow">Privacy</p>
           <ProfilePrivacyCard />
 
           <SyncStatusRow />
 
           <ProfileBackupCard />
 
-          <p className="eyebrow">Export</p>
           <div id="import" className="scroll-mt-4">
             <ProfileImportCard />
           </div>

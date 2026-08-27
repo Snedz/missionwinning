@@ -10,6 +10,7 @@ import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet'
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { SessionCheckInSheet } from '@/components/workout/SessionCheckInSheet';
 import { HardSessionWarningSheet } from '@/components/workout/HardSessionWarningSheet';
+import { getExerciseById } from '@/data/exercises';
 import { resolveExercise } from '@/lib/workout/customExercise';
 import type { Debrief } from '@/lib/coach/debrief';
 import type { FormGuide } from '@/types/formGuide';
