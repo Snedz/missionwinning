@@ -3,8 +3,11 @@
  * Today as a working desk — one live session object + this week's work.
  * Not HomeTodayLean. Not a following feed. Not the #885 card stack.
  *
- * One storage snapshot owns the Start card so the title cannot flip
- * Full Body Strength → Just Go after hydration.
+ * First paint must not show SSR_ACTION. peekCoachToday() returns null
+ * on the server (`typeof window === 'undefined'`). useState lazy init
+ * does not re-run on hydrate, so snap stayed null and the hero painted
+ * Train / Start / Start with seven Rest cells until useLayoutEffect.
+ * Do not guess-lock copy. Do not make the dummy Start clickable.
  */
 
 import Link from 'next/link';
@@ -47,15 +50,6 @@ import { getFirstSteps } from '@/lib/journey/firstSteps';
 import { FIRST_STEPS_DISMISS_KEY, isFirstStepsDismissed } from '@/lib/today/firstStepsDismissed';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
 
-const SSR_ACTION: JourneyAction = {
-  label: 'Start',
-  description: '',
-  href: '/active',
-  phase: 'i-day',
-  stepLabel: '',
-  progressPct: 0,
-};
-
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
 
 type DeskSnap = {
@@ -66,15 +60,6 @@ type DeskSnap = {
   copy: JustGoHeroCopy | null;
   stepsHidden: boolean;
 };
-
-async function startWorkoutFromStore(
-  name: string,
-  exercises: { exerciseId: string; sets: { reps: number; weight: number }[] }[],
-  workoutId?: string
-) {
-  const { useWorkoutStore } = await import('@/store/workoutStore');
-  useWorkoutStore.getState().startWorkout(name, exercises, workoutId);
-}
 
 function readDeskSnap(): DeskSnap {
   const workoutHistory = readWorkoutHistoryFromStorage();
@@ -120,26 +105,18 @@ export function TodayDesk() {
   const { t, i18n } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
+  const startLive = useWorkoutStore((s) => s.startWorkout);
   const startCoach = useStartCoachSession();
-  const [snap, setSnap] = useState<DeskSnap | null>(() =>
-    typeof window === 'undefined' ? null : readDeskSnap()
-  );
+  const [snap, setSnap] = useState<DeskSnap | null>(null);
   const plannedMiss = usePlannedMissOffer(
     snap?.journey.phase ?? getDefaultJourneyState().phase,
     hasActiveWorkout
   );
-  const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const first = readDeskSnap();
-    return computeReentry(first.history, Date.now(), first.plan);
-  });
+  const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
 
   const refresh = useCallback(() => {
     const next = readDeskSnap();
-    setSnap((prev) => {
-      if (!prev) return next;
-      return { ...next, copy: prev.copy, action: prev.action };
-    });
+    setSnap(next);
     setReentry(computeReentry(next.history, Date.now(), next.plan));
   }, []);
 
@@ -164,11 +141,12 @@ export function TodayDesk() {
 
   const history = snap?.history ?? [];
   const plan = snap?.plan ?? null;
-  const action = snap?.action ?? SSR_ACTION;
+  const action = snap?.action ?? null;
   const journey = snap?.journey ?? getDefaultJourneyState();
   const copy = snap?.copy ?? null;
 
   const handleStart = () => {
+    if (!snap || !action) return;
     void (async () => {
       const liveHistory = readWorkoutHistoryFromStorage();
       const savedWorkouts = readSavedWorkoutsFromStorage();
@@ -194,10 +172,16 @@ export function TodayDesk() {
         includeBasicJustGo: false,
         includeColdStart: true,
         doseScale: liveReentry.show ? liveReentry.doseScale : 1,
-        startWorkout: (name, exercises, workoutId) =>
-          startWorkoutFromStore(name, exercises, workoutId),
-        navigate: (href) => router.push(href),
+        startWorkout: (name, exercises, workoutId) => {
+          startLive(name, exercises, workoutId);
+        },
+        navigate: (href) => {
+          router.push(href);
+        },
       });
+      if (useWorkoutStore.getState().activeWorkout) {
+        router.push('/active');
+      }
     })();
   };
 
@@ -259,7 +243,14 @@ export function TodayDesk() {
       <p className="house-kicker">{todayLabel}</p>
       <h1 className="house-title">{t('navToday', { defaultValue: 'Today' })}</h1>
 
-      <section className="house-card house-card-hero" style={{ marginTop: 20 }}>
+      <section
+        className="house-card house-card-hero"
+        style={{ marginTop: 20 }}
+        aria-busy={snap ? undefined : true}
+        data-testid={snap ? 'today-start-ready' : 'today-start-pending'}
+      >
+        {snap ? (
+          <>
         <p className="house-kicker">
           {copy
             ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
@@ -269,8 +260,15 @@ export function TodayDesk() {
           {sessionTitle}
         </h2>
         <p className="house-lede">{sessionLede}</p>
-        <div className="house-row" style={{ marginTop: 18 }}>
-          <button type="button" className="house-btn house-btn-primary" onClick={handleStart}>
+          </>
+        ) : null}
+        <div className="house-row" style={{ marginTop: snap ? 18 : 0 }}>
+          <button
+            type="button"
+            className="house-btn house-btn-primary"
+            onClick={handleStart}
+            disabled={!snap}
+          >
             {startLabel}
           </button>
         </div>
@@ -291,6 +289,7 @@ export function TodayDesk() {
         ) : null}
       </section>
 
+      {snap ? (
       <section className="house-week-object" style={{ marginTop: 22 }}>
         <div className="house-row" style={{ marginBottom: 12 }}>
           <h2 className="house-side-title" style={{ margin: 0 }}>
@@ -323,6 +322,7 @@ export function TodayDesk() {
           </button>
         ) : null}
       </section>
+      ) : null}
 
       {showSteps ? (
         <section className="house-card" style={{ marginTop: 22 }}>

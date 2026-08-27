@@ -19,8 +19,11 @@ New signed-in website. Not #885.
 Icon rail + Today desk + Train
 compose sidecar + Library tabs +
 Account room. Founder walk on #886:
-honest Start (no Full Body→Just Go
-flip), More is the rest of the house
+honest Start (peekCoachToday is
+window-null on SSR — no dummy
+Train/Start card, Start disabled
+until snap, sync start then
+`/active`), More is the rest of the house
 (not WEDGE), Account avatar on the
 rail, First Steps dismisses below
 Start, live Train is compose +

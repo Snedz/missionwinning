@@ -51,6 +51,20 @@ test('catalog tabs are Library + Builder only', () => {
   assert.doesNotMatch(src, /\/explore|\/programs|\/bundle/);
 });
 
+test('Today Start is not the SSR dummy and lands on compose', () => {
+  const src = stripComments(read('src/page-components/TodayDesk.tsx'));
+  assert.doesNotMatch(src, /SSR_ACTION/);
+  assert.doesNotMatch(src, /startWorkoutFromStore/);
+  assert.doesNotMatch(src, /copy:\s*prev\.copy/);
+  assert.match(src, /if \(!snap \|\| !action\) return/);
+  assert.match(src, /disabled=\{!snap\}/);
+  assert.match(src, /today-start-pending/);
+  assert.match(src, /startLive\(/);
+  assert.match(src, /router\.push\('\/active'\)/);
+  const peek = read('src/lib/coach/peekCoachToday.ts');
+  assert.match(peek, /typeof window === 'undefined'/);
+});
+
 test('Today desk keeps Start order engines', () => {
   const src = read('src/page-components/TodayDesk.tsx');
   assert.match(src, /pickHonoredStart/);
