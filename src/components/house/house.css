@@ -889,6 +889,14 @@
   padding: 10px 12px;
 }
 
+.mw-house .house-profile [data-athlete-block] {
+  border-color: var(--house-line);
+}
+
+.mw-house .house-fuel #fuel-log {
+  scroll-margin-top: 24px;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

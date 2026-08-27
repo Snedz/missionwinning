@@ -98,6 +98,7 @@ export function ProfilePage() {
 
   return (
     <PillarPageShell
+      className="house-profile"
       icon={User}
       eyebrow={t('profileEyebrow', { defaultValue: 'You' })}
       title={
@@ -154,7 +155,7 @@ export function ProfilePage() {
         <p className="pt-2" data-athlete-block>
           <Link
             href="/account"
-            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            className="house-btn house-btn-ghost"
           >
             {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
           </Link>

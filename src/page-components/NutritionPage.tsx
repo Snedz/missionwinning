@@ -460,7 +460,7 @@ export function NutritionPage() {
 
   return (
     <PillarPageShell
-      className="max-w-3xl pb-8"
+      className="house-fuel max-w-3xl pb-8"
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'Nutrition' })}
@@ -469,7 +469,7 @@ export function NutritionPage() {
       })}
       headerActions={
         fuelStreak > 0 ? (
-          <span className="shrink-0 border-2 border-border bg-muted px-3 py-1 text-xs font-semibold tabular-nums text-foreground">
+          <span className="house-kicker shrink-0 tabular-nums">
             {t('fuelLogStreak', {
               count: fuelStreak,
               defaultValue: `${fuelStreak}-day log streak`,
@@ -542,7 +542,7 @@ export function NutritionPage() {
         }}
       />
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
         </summary>

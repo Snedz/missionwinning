@@ -353,6 +353,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-builder \.house-item/);
   const account = read('src/page-components/AccountPage.tsx');
   assert.match(account, /className="house-account"/);
+  const profile = read('src/page-components/ProfilePage.tsx');
+  assert.match(profile, /className="house-profile"/);
+  assert.match(profile, /house-btn house-btn-ghost/);
+  const fuel = read('src/page-components/NutritionPage.tsx');
+  assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
+  assert.match(fuel, /id="fuel-log"/);
+  assert.match(fuel, /className="house-card group"/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

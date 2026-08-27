@@ -68,7 +68,11 @@ to `/private` on this host. Builder first
 paint is a flush Blank workout plus
 hairline saved rows; templates stay
 in Show all. Account leftover carries
-`house-account`.
+`house-account`. You leftover is
+`house-profile` (Account door is a
+ghost house button). Fuel leftover
+is `house-fuel` (log first; search /
+barcode / recipes in Show all).
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate
