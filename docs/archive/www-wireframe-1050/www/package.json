@@ -1,0 +1,23 @@
+{
+  "name": "@missionwinning/www",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node ./scripts/check-alias-imports.mjs && astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "check": "node ./scripts/check-alias-imports.mjs && astro check && node ../../scripts/www-class-contract.mjs && node ../../scripts/www-link-contract.mjs && node ../../scripts/www-bundle-budget.mjs && node ../../scripts/www-rhythm.mjs && node ../../scripts/www-composition.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

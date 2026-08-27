@@ -50,20 +50,14 @@ const reassurance = gated
 {
   variant === 'primary' ? (
     <div class={className}>
-      <a class="primary-action" href={href}>
+      <a class="ptn-pill ptn-pill-solid" href={href}>
         {label}
-        <span aria-hidden="true">&rarr;</span>
       </a>
       <p class="eyebrow mt-3">{reassurance}</p>
     </div>
   ) : (
-    /* The quiet variant exists so the nav can repeat the action without
-       spending the page's one red control on chrome. 2px ink border, never a
-       hairline, never a second red. */
-    <a
-      class={`inline-flex min-h-[44px] items-center border-2 border-ink px-4 text-[15px] font-semibold ${className}`}
-      href={href}
-    >
+    /* Ghost pill — nav and mid-page repeats. Solid black is the primary. */
+    <a class={`ptn-pill ptn-pill-ghost ${className}`} href={href}>
       {label}
     </a>
   )

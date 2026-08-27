@@ -19,9 +19,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    <!-- Paper, not white. The browser paints this before first paint, and the
-         default #fff flashes against #f3f2f2 on every navigation. -->
-    <meta name="theme-color" content="#f3f2f2" />
+    <!-- Page white on the Patreon costume. The browser paints this before
+         first paint; a token would resolve to nothing in the address bar. -->
+    <meta name="theme-color" content="#ffffff" />
 
     <!-- Same marks as the app: one brand, two surfaces. Both are copied rather
          than linked because this site deploys to a different host — a relative
@@ -47,7 +47,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
   </head>
-  <body>
+  <body class="ptn">
     <slot />
   </body>
 </html>

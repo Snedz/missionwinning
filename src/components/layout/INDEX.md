@@ -6,10 +6,10 @@
 
 | File | Purpose |
 |------|---------|
-| `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). |
-| `AppHeader.tsx` | Top bar, title from navConfig |
-| `Sidebar.tsx` | Desktop nav; athlete chip is public version |
-| `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height |
+| `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). Imports Patreon tokens (`.ptn`). Desktop main width is `.ptn-main-col` (not `md:ptn-*`). |
+| `AppHeader.tsx` | Compact brand + More; desktop page title (wordmark lives on the studio rail) |
+| `Sidebar.tsx` | Dual rail: 72px icons + 264px studio labels (Today / Train / Coach / History / Library / Account) |
+| `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height. Cold: Summary + Search. |
 | `MoreSheet.tsx` | Search sheet: catalog field + pin-from-row for Fuel/Coach/Train + What’s New + First Steps |
 | `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
 | `PillarPageShell.tsx` | Standard pillar page wrapper |

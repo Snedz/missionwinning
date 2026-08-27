@@ -17,4 +17,4 @@ export const HERO = {
   body: 'We do not publish named rival pages in the product tree. The logger stays free. Mission Coach writes the week from your sets.',
 };
 
-export const STORIES = [] as const;
+export const STORIES: readonly { path: `/${string}`; title: string; subtitle: string }[] = [];

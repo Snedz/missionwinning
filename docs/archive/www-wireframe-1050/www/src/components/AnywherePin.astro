@@ -1,0 +1,92 @@
+---
+/*
+ * Movement 2 — Scroll. Five 100svh chapters, sticky HUD, no library.
+ *
+ * Concept 02 pinned one stage and swapped grounds with an observer. That
+ * needs JS for the photographs to change, and without it the reader sees
+ * only the first frame. Here each chapter IS its own full-bleed plate, so
+ * JS-off still walks five places. The HUD is `position: sticky` and does
+ * not change — that it does not change is the argument. The observer only
+ * fills the progress ticks.
+ *
+ * Compact hides the HUD (the week was already on the first screen) so the
+ * type is not covered. Archivo only; flush-left ghost type on the plates
+ * (`text-center` is banned). No Lenis.
+ */
+import StagePhoto from './StagePhoto.astro';
+import { BASE_WEEK, CHAPTERS, PIN } from '../lib/weekContent';
+---
+
+<section class="pin" aria-labelledby="pin-kicker">
+  <div class="pin-chrome">
+    <aside class="pin-hud">
+      <p id="pin-kicker" class="eyebrow">{PIN.kicker}</p>
+      <ol class="pin-hud-week" aria-label="This week's days">
+        {
+          BASE_WEEK.map((d) => (
+            <li>
+              <span>{d.d}</span>
+              <span>{d.label}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="eyebrow pin-hud-foot">{PIN.foot}</p>
+      <div class="pin-ticks" aria-hidden="true">
+        {
+          CHAPTERS.map((_, i) => (
+            <b data-t={String(i)} data-on={i === 0 ? '' : undefined} />
+          ))
+        }
+      </div>
+    </aside>
+  </div>
+
+  {
+    CHAPTERS.map((ch, i) => (
+      <article
+        class={ch.photo ? 'pin-chapter stage on-dark' : 'pin-chapter pin-chapter-plate on-dark'}
+        data-chapter={String(i)}
+        aria-labelledby={`pin-ch-${i}`}
+      >
+        {ch.photo ? (
+          <StagePhoto base={ch.photo} alt={ch.alt ?? ''} position={ch.position} />
+        ) : (
+          <p class="pin-ghost" aria-hidden="true">
+            {ch.place}
+          </p>
+        )}
+        <div class="pin-copy stage-body">
+          <p class="eyebrow">
+            {ch.time} · {ch.place}
+          </p>
+          <h3 id={`pin-ch-${i}`} class="display-section mt-3 max-w-[16ch]">
+            {ch.line}
+          </h3>
+          <p class="pin-note">{ch.note}</p>
+        </div>
+      </article>
+    ))
+  }
+</section>
+
+<script>
+  const pin = document.querySelector('.pin');
+  if (pin && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const chapters = [...pin.querySelectorAll('[data-chapter]')];
+    const ticks = [...pin.querySelectorAll('[data-t]')];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const target = e.target;
+          if (!(target instanceof HTMLElement)) continue;
+          const i = Number(target.dataset.chapter);
+          ticks.forEach((t, ti) => t.toggleAttribute('data-on', ti <= i));
+        }
+      },
+      { rootMargin: '-40% 0px -40% 0px', threshold: 0 },
+    );
+    chapters.forEach((c) => io.observe(c));
+  }
+</script>
