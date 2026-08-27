@@ -266,7 +266,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {plan && !locked && (
         <div className="space-y-5">
           <div>
-            <p className="eyebrow mb-3 text-primary">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
               <p className="mt-3 text-sm text-muted-foreground" data-testid="coach-week-dose">

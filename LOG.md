@@ -31,10 +31,16 @@ them. More leftover (Fuel / You
 / Account + quiet Move / Mind /
 Track / Learn / Feedback /
 Garage) keeps a quiet house
-title. Clip-class fade-up and
-column-width ease; reduced-motion
-off. One Got it. Checklist ticks
-from visits. Hover chips stay
+title. House design system
+(`src/components/house/DESIGN.md`)
+locks white / zinc / 16px / black
+pills / 72+264. Second-bar rows
+stagger 40ms; selected row is ink.
+Coach inner costume eyebrow is
+gone. `/private` / landing / www
+untouched. Reduced-motion still
+honoured. One Got it. Checklist
+ticks from visits. Hover chips stay
 to the right of each rail icon.
 `[skip vercel]`. No
 `PRIVATE_MODE` flip. No promote.

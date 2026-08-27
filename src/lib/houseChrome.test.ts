@@ -280,6 +280,27 @@ test('transferred rooms drop the old pillar costume, leftover rooms keep a quiet
   assert.match(css, /\.is-transferred/);
   assert.match(css, /house-canvas-in/);
   assert.match(css, /--house-second-w/);
-  assert.match(css, /animation-delay:\s*0ms/);
+  assert.match(css, /\.house-second-nav \.house-second-link:nth-child\(2\) \{[\s\S]*animation-delay:\s*40ms/);
+  assert.match(css, /\.is-transferred \.eyebrow/);
+  const coach = read('src/page-components/CoachPage.tsx');
+  assert.doesNotMatch(coach, /eyebrow mb-3 text-primary/);
+  assert.match(coach, /generate\(/);
+});
+
+test('house design system is the signed-in token table', () => {
+  const spec = read('src/components/house/DESIGN.md');
+  assert.match(spec, /--house-rail/);
+  assert.match(spec, /72px/);
+  assert.match(spec, /264px/);
+  assert.match(spec, /--house-press/);
+  assert.match(spec, /Train pulse only/);
+  assert.doesNotMatch(spec, /Welcome to Patreon|Oracle|Ways to earn|Audience|Publish page/i);
+  const index = read('src/components/house/INDEX.md');
+  assert.match(index, /DESIGN\.md/);
+  const css = read('src/components/house/house.css');
+  assert.match(css, /--house-rail:\s*72px/);
+  assert.match(css, /--house-second:\s*264px/);
+  assert.match(css, /--house-radius:\s*16px/);
+  assert.match(css, /--house-live:\s*#ae1800/);
 });
 
