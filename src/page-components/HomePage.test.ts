@@ -2,13 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-test('Today first paint is Lean Summary with the phone measure', () => {
+test('Today first paint is the house desk, not Lean or the #885 rail', () => {
   const home = readFileSync('src/page-components/HomePage.tsx', 'utf8');
-  assert.match(home, /<HomeTodayLean\s*\/>/);
-  const lean = readFileSync('src/page-components/HomeTodayLean.tsx', 'utf8');
-  assert.match(
-    lean,
-    /max-w-lg md:max-w-none/,
-    'Summary must lift the phone cap at md+ like the retired loading shell'
-  );
+  assert.match(home, /<TodayDesk\s*\/>/);
+  assert.doesNotMatch(home, /HomeTodayLean/);
+  const desk = readFileSync('src/page-components/TodayDesk.tsx', 'utf8');
+  assert.match(desk, /runTodayPrimaryAction\(/);
+  assert.match(desk, /includeColdStart:\s*true/);
+  assert.doesNotMatch(desk, /from '@\/components\/today\/TodaySummaryPins'/);
+  assert.doesNotMatch(desk, /from '@\/components\/today\/TodayQuietWeekStrip'/);
+  assert.doesNotMatch(desk, /from '@\/page-components\/HomeTodayLean'/);
 });

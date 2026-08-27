@@ -1,13 +1,13 @@
-import { AppLayout } from '@/components/layout/AppLayout';
+import { HouseShell } from '@/components/house/HouseShell';
 
 /**
- * App shell layout. Client-only auth/journey — no force-dynamic so Next can
- * stream/static-shell where possible (Lighthouse / cold path).
+ * Signed-in product house. Client-only auth/journey — no force-dynamic so Next
+ * can stream/static-shell where possible (Lighthouse / cold path).
  */
 export default function AppGroupLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AppLayout>{children}</AppLayout>;
+  return <HouseShell>{children}</HouseShell>;
 }

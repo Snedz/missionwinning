@@ -56,12 +56,14 @@ const CHAT_ROOTS = ['src/lib/social/', 'src/components/social/'] as const;
  */
 const FIRST_PAINT_DOORS = ['src/lib/socialSync.ts'] as const;
 
-/** Page trees that own LOG first paint. HomePage walks HomeTodayLean. */
+/** Page trees that own LOG first paint. HomePage walks TodayDesk. */
 const TODAY_TRAIN_ENTRIES = [
   'src/page-components/HomePage.tsx',
+  'src/page-components/TodayDesk.tsx',
   'src/page-components/ActiveWorkoutPage.tsx',
   ...LOGGER_FILES,
   ...walk('src/components/today'),
+  ...walk('src/components/house').filter((f) => !f.endsWith('HouseShell.tsx')),
 ];
 
 /**
@@ -69,9 +71,8 @@ const TODAY_TRAIN_ENTRIES = [
  * A ChatWindow here is a type-5 bubble on the log path.
  */
 const FIRST_PAINT_CHROME = [
-  'src/components/layout/AppLayout.tsx',
-  'src/components/layout/MobileNav.tsx',
-  'src/components/layout/AppHeader.tsx',
+  'src/components/house/HouseShell.tsx',
+  'src/components/house/HouseIconRail.tsx',
 ] as const;
 
 /**
@@ -136,7 +137,7 @@ test('first-paint chrome does not import messenger', () => {
   assert.deepEqual(
     offenders,
     [],
-    `AppLayout wraps Today and Train. A messenger import here is a bubble on the log path.\n${offenders.join('\n')}`
+    `HouseShell wraps Today and Train. A messenger import here is a bubble on the log path.\n${offenders.join('\n')}`
   );
   const ui = /ChatWindow|BuddyList|MessageComposer|PresenceControl|CoachChatPanel|from ['"]@\/components\/social/;
   for (const file of FIRST_PAINT_CHROME) {
@@ -147,11 +148,11 @@ test('first-paint chrome does not import messenger', () => {
 });
 
 test('outbox drain is a door, not a Today chat widget', () => {
-  const chain = reaches('src/components/layout/AppLayout.tsx', CHAT_ROOTS, read, {
+  const chain = reaches('src/components/house/HouseShell.tsx', CHAT_ROOTS, read, {
     allow: FIRST_PAINT_DOORS,
   });
   assert.equal(chain, null, 'socialSync must stay terminal or the outbox looks like a chat bubble');
-  const withoutDoor = reaches('src/components/layout/AppLayout.tsx', CHAT_ROOTS, read);
+  const withoutDoor = reaches('src/components/house/HouseShell.tsx', CHAT_ROOTS, read);
   assert.ok(
     withoutDoor?.some((p) => p.includes('socialSync') || p.includes('social/')),
     'sanity: without the door the walk still reaches social — the door is doing work'
@@ -178,7 +179,7 @@ test('isolation scan includes HomePage, ActiveWorkoutPage, today/, and first-pai
     TODAY_TRAIN_ENTRIES.some((f) => f.startsWith('src/components/today/')),
     'today/ widgets must be discovered, not listed'
   );
-  assert.ok(FIRST_PAINT_CHROME.includes('src/components/layout/AppLayout.tsx'));
+  assert.ok(FIRST_PAINT_CHROME.includes('src/components/house/HouseShell.tsx'));
   assert.ok(COACH_CHAT_ENTRIES.includes('src/page-components/CoachPage.tsx'));
   assert.ok(
     COACH_CHAT_ENTRIES.some((f) => f.startsWith('src/components/coach/')),
@@ -214,6 +215,9 @@ test('log-path tabs stay /log + /active only', () => {
 test('/server is More → You, never rail or tab', () => {
   const railHrefs = RAIL_GROUPS.flatMap((g) => g.hrefs);
   assert.ok(!railHrefs.includes('/server'), '/server must not be a rail href');
+  const house = read('src/components/house/houseNav.ts');
+  assert.ok(house !== null, 'houseNav moved');
+  assert.doesNotMatch(house, /['"]\/server['"]/, '/server must not be a house rail href');
   const tabHrefs: readonly string[] = MOBILE_TAB_HREFS;
   assert.ok(!tabHrefs.includes('/server'));
 });

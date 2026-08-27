@@ -13,7 +13,8 @@
 
 | File | Route |
 |------|-------|
-| `HomePage.tsx` | `/log` (Today) | Summary first paint in every phase — date, pins, one Start |
+| `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. |
+| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
 

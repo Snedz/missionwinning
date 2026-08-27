@@ -190,9 +190,14 @@ describe('week-1 activation contract after composure (.404)', () => {
       path.join(root, 'src/page-components/HomeTodayDashboard.tsx'),
       'utf8'
     );
+    const desk = readFileSync(
+      path.join(root, 'src/page-components/TodayDesk.tsx'),
+      'utf8'
+    );
     assert.match(card, /completedSessions/);
     assert.match(hero, /completedSessions/);
     assert.match(lean, /completedSessions=\{workoutHistory\.length\}/);
     assert.match(dash, /completedSessions=\{workoutHistory\.length\}/);
+    assert.match(desk, /completedSessions:\s*workoutHistory\.length/);
   });
 });

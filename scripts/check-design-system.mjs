@@ -109,6 +109,12 @@ export const ALLOWLIST = [
     fixWhen: 'Never, while the card is canvas-rendered. The cross-check is what keeps the copy honest.',
   },
   {
+    file: 'src/components/house/house.css',
+    rules: ['off-palette-colour', 'raw-border-radius', 'second-typeface'],
+    why: 'Founder override: signed-in product house is a new website, not the paper/ink field-manual. Tokens stay scoped to `.mw-house` so /private, landing, and www are untouched.',
+    fixWhen: 'If the house is rejected or folded back into the field-manual tokens, delete this file and the exemption with it.',
+  },
+  {
     file: 'src/page-components/PressPage.tsx',
     rules: ['off-palette-colour'],
     why: 'The press kit’s `COLORS` table. The literals *are* the content — a press page that showed its swatches via var() would document nothing.',
