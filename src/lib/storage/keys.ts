@@ -214,7 +214,7 @@ export const STORAGE_KEYS = {
   /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */
   betaBannerDismissed: 'mw_beta_banner_dismissed',
   firstStepsDismissed: 'mw_first_steps_dismissed',
-  /** House first-run Got it marks — not the First Steps card. */
+  /** House first-run popup. Checklist is separate and never owns Start. */
   houseGuideDismissed: 'mw_house_guide_dismissed',
   /** D13 — last `APP_BUILD_LABEL` the athlete acknowledged in What’s New. */
   whatsNewSeenLabel: 'mw_whats_new_seen_label',

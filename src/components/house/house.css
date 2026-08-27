@@ -21,7 +21,7 @@
   --house-radius-sm: 10px;
   --house-pill: 999px;
   --house-rail: 72px;
-  --house-second: 248px;
+  --house-second: 15rem;
   --house-side: 300px;
   /* Inherited objects (cards, buttons, set table) pick these up. */
   --background: 0 0% 100%;

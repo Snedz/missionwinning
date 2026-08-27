@@ -26,12 +26,12 @@ const FIRST_STEPS_EN: Record<string, string> = {
   firstStepsSheetIntro:
     'None of these are required — the logger and your weekly plan work without any of them. They are the parts of the app most people never find.',
 
-  houseGuideRailTitle: 'Today is a desk',
-  houseGuideRailBody:
-    'Start, this week, History, and Weekly plan live here — next to the icons, not in More.',
-  houseGuideStartTitle: "Start today's session",
-  houseGuideStartBody: 'One tap opens the live Train canvas.',
-  houseGuideGotIt: 'Got it',
+  houseGuideRailTitle: 'Your week lives here',
+  houseGuideRailBody: 'Start, this week, History, and Weekly plan sit next to the icons.',
+  houseGuideStartTitle: 'Start the session',
+  houseGuideStartBody: 'One tap opens Train.',
+  houseGuideContinue: 'Continue',
+  houseGuideClose: 'Close',
 
   // The six steps. Each `Why` line is load-bearing: it is the difference
   // between a checklist someone finishes and a chore list they dismiss.

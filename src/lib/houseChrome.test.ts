@@ -61,9 +61,10 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(shell, /HouseGuide/);
   assert.match(shell, /isHouseSecondRailPath/);
   const css = read('src/components/house/house.css');
-  assert.match(css, /--house-second:\s*248px/);
+  assert.match(css, /--house-second:/);
   assert.match(css, /\.house-second/);
   assert.match(css, /\.house-rail-tip/);
+  assert.doesNotMatch(css, /264px/);
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
   assert.doesNotMatch(more, /href: '\/history'/);
   assert.doesNotMatch(more, /href: '\/coach'/);
@@ -107,12 +108,25 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
   assert.match(rail, /house-rail-tip/);
 });
 
-test('Today first paint is not a First Steps card over Start', () => {
+test('checklist never owns Start, and house copy is not a pasted brand', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
-  assert.doesNotMatch(src, /firstStepsEyebrow|getFirstSteps/);
+  const startAt = src.indexOf('id="today-start"');
+  const weekAt = src.indexOf('id="today-week"');
+  const stepsAt = src.indexOf('today-first-steps');
+  assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
+  assert.ok(stepsAt > weekAt, 'checklist sits under This week, not over Start');
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
-  assert.match(guide, /houseGuideGotIt/);
+  assert.match(guide, /houseGuideContinue|houseGuideClose/);
   assert.match(guide, /today-start-ready/);
+  for (const file of [...walkHouse(), 'src/page-components/TodayDesk.tsx']) {
+    const text = stripComments(read(file));
+    assert.doesNotMatch(
+      text,
+      /Welcome to Patreon|Audience|Payouts|Publish page|Dashboard \/ Library/,
+      file
+    );
+    assert.doesNotMatch(text, /Got it/, file);
+  }
 });
 
 test('house.css actually draws a product site, not radius-0 paper rules', () => {

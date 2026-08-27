@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * First-run coach-marks. Patreon Welcome / Got it — not a First Steps
- * card that owns first paint over Start.
+ * First-run popup. Points at the second bar, then Start.
+ * Not a card that owns first paint. Checklist lives under This week.
  */
 
 import { useEffect, useState } from 'react';
@@ -41,15 +41,18 @@ export function HouseGuide() {
 
   const railStep = step === 'rail';
   const title = railStep
-    ? t('houseGuideRailTitle', { defaultValue: 'Today is a desk' })
-    : t('houseGuideStartTitle', { defaultValue: "Start today's session" });
+    ? t('houseGuideRailTitle', { defaultValue: 'Your week lives here' })
+    : t('houseGuideStartTitle', { defaultValue: 'Start the session' });
   const body = railStep
     ? t('houseGuideRailBody', {
-        defaultValue: 'Start, this week, History, and Weekly plan live here — next to the icons, not in More.',
+        defaultValue: 'Start, this week, History, and Weekly plan sit next to the icons.',
       })
     : t('houseGuideStartBody', {
-        defaultValue: 'One tap opens the live Train canvas.',
+        defaultValue: 'One tap opens Train.',
       });
+  const cta = railStep
+    ? t('houseGuideContinue', { defaultValue: 'Continue' })
+    : t('houseGuideClose', { defaultValue: 'Close' });
 
   const dismiss = () => {
     writeRaw(STORAGE_KEYS.houseGuideDismissed, '1');
@@ -76,7 +79,7 @@ export function HouseGuide() {
         <button
           type="button"
           className="house-btn house-btn-ghost house-guide-x"
-          aria-label={t('firstStepsDismissToMore', { defaultValue: 'Hide from Today — keep it under More' })}
+          aria-label={t('houseGuideClose', { defaultValue: 'Close' })}
           onClick={dismiss}
         >
           <X className="h-4 w-4" aria-hidden />
@@ -88,7 +91,7 @@ export function HouseGuide() {
           {body}
         </p>
         <button type="button" className="house-btn house-btn-primary" style={{ marginTop: 16 }} onClick={next}>
-          {t('houseGuideGotIt', { defaultValue: 'Got it' })}
+          {cta}
         </button>
       </div>
     </div>

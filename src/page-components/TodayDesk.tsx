@@ -13,6 +13,7 @@
 import Link from 'next/link';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePlannedMissOffer } from '@/hooks/usePlannedMissOffer';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
@@ -40,11 +41,13 @@ import {
 import type { CompletedWorkoutLog } from '@/types';
 import { runTodayPrimaryAction, isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readRaw } from '@/lib/storage/safeStorage';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
+import { getFirstSteps } from '@/lib/journey/firstSteps';
+import { FIRST_STEPS_DISMISS_KEY, isFirstStepsDismissed } from '@/lib/today/firstStepsDismissed';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -55,6 +58,7 @@ type DeskSnap = {
   action: JourneyAction;
   journey: JourneyState;
   copy: JustGoHeroCopy | null;
+  stepsHidden: boolean;
 };
 
 function readDeskSnap(): DeskSnap {
@@ -92,6 +96,7 @@ function readDeskSnap(): DeskSnap {
     action,
     journey,
     copy,
+    stepsHidden: isFirstStepsDismissed(),
   };
 }
 
@@ -209,6 +214,8 @@ export function TodayDesk() {
     .sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1))
     .slice(0, 3);
 
+  const steps = getFirstSteps(journey, { completedSessions: history.length });
+  const showSteps = snap ? !snap.stepsHidden && steps.some((s) => !s.done) : false;
   const reentryShowing =
     reentry &&
     reentryCardMayMount({
@@ -316,6 +323,39 @@ export function TodayDesk() {
           </button>
         ) : null}
       </section>
+      ) : null}
+
+      {showSteps ? (
+        <section className="house-card" style={{ marginTop: 22 }} data-testid="today-first-steps">
+          <div className="house-row">
+            <h2 className="house-side-title" style={{ margin: 0 }}>
+              {t('firstStepsEyebrow', { defaultValue: 'Your first steps' })}
+            </h2>
+            <button
+              type="button"
+              className="house-btn house-btn-ghost"
+              aria-label={t('firstStepsDismissToMore', { defaultValue: 'Hide from Today — keep it under More' })}
+              onClick={() => {
+                writeRaw(FIRST_STEPS_DISMISS_KEY, '1');
+                setSnap((prev) => (prev ? { ...prev, stepsHidden: true } : prev));
+              }}
+            >
+              <X className="h-4 w-4" aria-hidden />
+            </button>
+          </div>
+          <div className="house-check">
+            {steps.slice(0, 3).map((step) => (
+              <Link key={step.key} href={step.href}>
+                <span>
+                  <strong>{t(step.titleKey, { defaultValue: step.title })}</strong>
+                  <span style={{ display: 'block', color: 'var(--house-muted)', fontSize: 13 }}>
+                    {t(step.whyKey, { defaultValue: step.why })}
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
       ) : null}
 
       {recent.length > 0 ? (

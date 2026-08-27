@@ -7,7 +7,7 @@
 | `HouseShell.tsx` | Root signed-in chrome. Journey sync + outbox drain stay mounted. |
 | `HouseIconRail.tsx` | Left icon rail (desktop) and floor icons (compact). Account avatar + hover labels. |
 | `HouseSecondRail.tsx` | Adjacent left column: Today rooms or Library objects. Not More. |
-| `HouseGuide.tsx` | First-run Got it marks on the second rail and Start. |
+| `HouseGuide.tsx` | First-run popup on the second bar, then Start. |
 | `HouseMore.tsx` | Compact leftover. Not the Home second bar. `/server` is a quiet foot only. |
 | `houseNav.ts` | Rail hrefs + Today/Library rooms. `/server` is never here. |
 | `house.css` | House visual language, scoped to `.mw-house`. |
