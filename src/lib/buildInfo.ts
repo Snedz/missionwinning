@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1054` v0 catalog labeling (from master `.1053` `84acabfea483f32d616decc4ce35381ce128125d`; stamp stays `.1054`; docs + labels + tests only; no costume). */
-export const APP_BUILD_LABEL = "2026.07-unified.1054";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1055` later-door object model + isolation holds (from master `.1054` `20b996709ba3bda351e8e17227d704d0762c86f6`; stamp stays `.1055`; docs + cite existing isolation; no costume). */
+export const APP_BUILD_LABEL = "2026.07-unified.1055";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

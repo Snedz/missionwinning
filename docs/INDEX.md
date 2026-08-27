@@ -38,7 +38,7 @@
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) | Frozen `.752` messenger (MSN rooms + presence; continues #518) |
-| [IA_SKELETON.md](IA_SKELETON.md) | CoS freeze — LOG / WEEK / GARAGE; Today · Train · Coach (AI) · History · Library. Official catalog = Library + Builder; `/explore` is places |
+| [IA_SKELETON.md](IA_SKELETON.md) | CoS freeze — LOG / WEEK / GARAGE; Today · Train · Coach (AI) · History · Library. Official catalog = Library + Builder; later-door object model; `/explore` is places |
 | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Chip floorplan — dies, buses, critical path, dual pads |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |

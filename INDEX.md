@@ -54,7 +54,7 @@
 | **Accelerator apps (Jul–Aug 2026)** | Stub [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md); paste answers local-only — [docs/applications/README.md](docs/applications/README.md); full sprint in mission-ops | Fabricating traction; committing paste packs or full accelerator answers |
 | Journey UX (I-Day → Commissioned) | [docs/JOURNEY.md](docs/JOURNEY.md) | Build phases in [docs/PLAN.md](docs/PLAN.md) (different “phase”) |
 | **Site flow / IA (chip floorplan)** | [docs/FLOW_ARCHITECTURE.md](docs/FLOW_ARCHITECTURE.md) — dies, buses, critical path, dual pads | Landing redesigns; “everything hub”; conflating `/coach` with `/coaching` |
-| **Product IA (locked rooms)** | [docs/IA_SKELETON.md](docs/IA_SKELETON.md) — CoS freeze: LOG / WEEK / GARAGE; named rooms Today · Train · Coach (AI) · History · Library. Official catalog = Library + Builder. `/explore` is places, not a shop. | Costume / Studio / Message tab / Explore-as-shop; promoting `/server` to a tab |
+| **Product IA (locked rooms)** | [docs/IA_SKELETON.md](docs/IA_SKELETON.md) — CoS freeze: LOG / WEEK / GARAGE; named rooms Today · Train · Coach (AI) · History · Library. Official catalog = Library + Builder. Later-door object model. `/explore` is places, not a shop. | Costume / Studio / Message tab / Explore-as-shop; promoting `/server` to a tab; member loop |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
 | Design research / system | [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | — |
