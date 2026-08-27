@@ -18,6 +18,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1035-for-1051.md](./log/LOG-rotate-1035-for-1051.md) | rotated 2026-08-27 for `.1051` Patreon costume (`.1035`) |
 | [log/LOG-rotate-1034-for-1050.md](./log/LOG-rotate-1034-for-1050.md) | rotated 2026-08-27 for `.1050` Revert modernist Patreon door (`.1034`) |
 | [log/LOG-rotate-1049-for-1050.md](./log/LOG-rotate-1049-for-1050.md) | archived 2026-08-27 for `.1050` revert of squash PR #875 (`.1049`) |
 | [log/LOG-rotate-1033-for-1048.md](./log/LOG-rotate-1033-for-1048.md) | rotated 2026-08-26 for `.1048` Open empty load is blank, not 0 (`.1033`) |
