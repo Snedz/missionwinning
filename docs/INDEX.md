@@ -118,6 +118,7 @@
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Modernist wireframe tokens (paper/ink/Archivo) — do not overwrite |
 | [DESIGN_PATREON.md](DESIGN_PATREON.md) | Live Patreon-costume tokens for www + signed-in chrome (`.1051`) |
 | [DESIGN_PATREON_PLAN.md](DESIGN_PATREON_PLAN.md) | Surfaces and holds for the costume ship |
+| [IMAGINE_PROMPTS.md](IMAGINE_PROMPTS.md) | Imagine 2.0 slots for hero / hero-2 / history-month / coach-week / login-empty |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
 
