@@ -58,7 +58,20 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /shouldRepeatLastOnToday/);
   assert.match(src, /runTodayPrimaryAction/);
   assert.match(src, /includeColdStart:\s*true/);
-  assert.match(src, /doseScale:\s*reentry\?\.show\s*\?\s*reentry\.doseScale\s*:\s*1/);
+  assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
+});
+
+test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
+  const src = stripComments(read('src/components/house/HouseShell.tsx'));
+  assert.match(src, /HouseMore/);
+  assert.doesNotMatch(src, /MoreSheet/);
+  assert.match(src, /const compose = train/);
+  const more = stripComments(read('src/components/house/HouseMore.tsx'));
+  assert.doesNotMatch(more, /WEDGE|Leaderboard|navLeaderboard/);
+  assert.match(more, /\/server/);
+  const rail = stripComments(read('src/components/house/HouseIconRail.tsx'));
+  assert.match(rail, /HOUSE_RAIL_HREFS\.account/);
+  assert.match(rail, /house-rail-avatar/);
 });
 
 test('house.css actually draws a product site, not radius-0 paper rules', () => {

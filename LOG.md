@@ -18,10 +18,19 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 New signed-in website. Not #885.
 Icon rail + Today desk + Train
 compose sidecar + Library tabs +
-Account room. Engines stay: one
-Start order, logger, History edit,
-`generateWeek`, isolation. HomeTodayLean
-and RAIL_GROUPS untouched. Zero diffs
+Account room. Founder walk on #886:
+honest Start (no Full Body→Just Go
+flip), More is the rest of the house
+(not WEDGE), Account avatar on the
+rail, First Steps dismisses below
+Start, live Train is compose +
+sidecar (rest / skip / jot), week
+cells open that day, Library is
+states not a 233-row dump. Engines
+stay: one Start order, logger,
+History edit, `generateWeek`,
+isolation. HomeTodayLean and
+RAIL_GROUPS untouched. Zero diffs
 on `/private`, landing, www.
 `[skip vercel]`. No `PRIVATE_MODE`
 flip. No promote. Live www stays `.696`.

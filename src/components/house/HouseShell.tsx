@@ -15,12 +15,13 @@ import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { CONSENT_BANNER_HOST_ID, SCREEN_DOCK_HOST_ID } from '@/components/layout/ScreenDock';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
 import { recordScreen } from '@/lib/screenTrail';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { AccountSidecar } from './AccountSidecar';
 import { CatalogTabs } from './CatalogTabs';
 import { HouseIconRail } from './HouseIconRail';
+import { HouseMore } from './HouseMore';
 import {
   isHouseAccountPath,
   isHouseCatalogPath,
@@ -37,9 +38,6 @@ const CommissioningCeremony = dynamic(
   { ssr: false }
 );
 
-const MoreSheet = dynamic(() => import('@/components/layout/MoreSheet').then((m) => ({ default: m.MoreSheet })), {
-  ssr: false,
-});
 
 export function HouseShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -49,11 +47,11 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const openMore = useCallback(() => setMoreOpen(true), []);
   const closeMore = useCallback(() => setMoreOpen(false), []);
   const keyboardOverlap = useVisualViewportKeyboardOverlap();
-  const live = useActiveWorkoutPulse();
-  const compose = isHouseTrainPath(pathname) && live;
+  const train = isHouseTrainPath(pathname);
+  const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
-  const train = isHouseTrainPath(pathname);
+  const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
 
   useEffect(() => {
     setMoreOpen(false);
@@ -85,7 +83,9 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
               >
                 <X className="h-5 w-5" aria-hidden />
               </button>
-              <span className="house-saved">Saved</span>
+              <span className="house-saved">
+                {liveName ? `${liveName} · Saved` : 'Saved'}
+              </span>
               <div className="house-compose-bar-end">
                 <button type="button" className="house-btn" onClick={openMore}>
                   {t('navMore', { defaultValue: 'More' })}
@@ -113,7 +113,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
           {compose ? null : (
             <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} floor />
           )}
-          <MoreSheet open={moreOpen} onClose={closeMore} />
+          <HouseMore open={moreOpen} onClose={closeMore} />
         </div>
       </TooltipProvider>
     </JourneyGuard>

@@ -38,6 +38,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
       icon: BookOpen,
     },
   ];
+  const accountOn = housePathActive(pathname, HOUSE_RAIL_HREFS.account);
 
   return (
     <nav aria-label={t('navToday', { defaultValue: 'Today' })} className={cls}>
@@ -71,18 +72,16 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
             </Link>
           );
         })}
-        {floor ? (
-          <Link
-            href={HOUSE_RAIL_HREFS.account}
-            aria-label={t('navAccount', { defaultValue: 'Account' })}
-            aria-current={housePathActive(pathname, HOUSE_RAIL_HREFS.account) ? 'page' : undefined}
-            className={`house-rail-btn${housePathActive(pathname, HOUSE_RAIL_HREFS.account) ? ' is-on' : ''}`}
-          >
-            <span className="house-rail-avatar" aria-hidden>
-              M
-            </span>
-          </Link>
-        ) : null}
+        <Link
+          href={HOUSE_RAIL_HREFS.account}
+          aria-label={t('navAccount', { defaultValue: 'Account' })}
+          aria-current={accountOn ? 'page' : undefined}
+          className={`house-rail-btn${accountOn ? ' is-on' : ''}`}
+        >
+          <span className="house-rail-avatar" aria-hidden>
+            M
+          </span>
+        </Link>
         <button
           type="button"
           className={`house-rail-btn${moreOpen ? ' is-on' : ''}`}
@@ -93,20 +92,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
           <MoreVertical className="h-5 w-5" aria-hidden />
         </button>
       </div>
-      {!floor && (
-        <div className="house-rail-end">
-          <Link
-            href={HOUSE_RAIL_HREFS.account}
-            aria-label={t('navAccount', { defaultValue: 'Account' })}
-            aria-current={housePathActive(pathname, HOUSE_RAIL_HREFS.account) ? 'page' : undefined}
-            className={`house-rail-btn${housePathActive(pathname, HOUSE_RAIL_HREFS.account) ? ' is-on' : ''}`}
-          >
-            <span className="house-rail-avatar" aria-hidden>
-              M
-            </span>
-          </Link>
-        </div>
-      )}
+      {!floor && <div className="house-rail-end" />}
     </nav>
   );
 }

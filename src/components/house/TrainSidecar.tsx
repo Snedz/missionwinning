@@ -29,7 +29,7 @@ export function TrainSidecar() {
   }
 
   return (
-    <aside className="house-sidecar is-open" aria-label={t('navTrain', { defaultValue: 'Train' })}>
+    <aside className="house-sidecar is-open" data-testid="train-sidecar" aria-label={t('navTrain', { defaultValue: 'Train' })}>
       <h2 className="house-side-title">{t('navTrain', { defaultValue: 'Train' })}</h2>
       <p className="house-kicker">{workout.workoutName}</p>
       <p className="house-lede" style={{ marginTop: 0 }}>
@@ -38,7 +38,10 @@ export function TrainSidecar() {
           ? ` · ${t('activeRestTitle', { defaultValue: 'Rest' })} ${restLeft}s`
           : ''}
       </p>
-      <div className="house-list" style={{ marginTop: 18 }}>
+      <p className="house-kicker" style={{ marginTop: 22 }}>
+        {t('activeRestTitle', { defaultValue: 'Rest' })}
+      </p>
+      <div className="house-list" style={{ marginTop: 8 }}>
         {REST.map((sec) => (
           <button
             key={sec}
@@ -49,12 +52,15 @@ export function TrainSidecar() {
             <strong>{t('activeStartRest', { defaultValue: '{{seconds}}s Rest', seconds: String(sec) })}</strong>
           </button>
         ))}
-        {restOn ? (
-          <button type="button" className="house-btn" onClick={() => stopRest()}>
-            {t('activeRestSkip', { defaultValue: 'Skip' })}
-          </button>
-        ) : null}
       </div>
+      <button
+        type="button"
+        className="house-btn"
+        style={{ marginTop: 12, width: '100%' }}
+        onClick={() => stopRest()}
+      >
+        {t('activeRestSkip', { defaultValue: 'Skip' })}
+      </button>
       <label className="house-kicker" style={{ display: 'block', marginTop: 22 }}>
         {t('sessionJotLabel', { defaultValue: 'Notes' })}
         <textarea
@@ -63,6 +69,7 @@ export function TrainSidecar() {
           maxLength={500}
           value={workout.sessionNote ?? ''}
           onChange={(e) => setNote(e.target.value)}
+          placeholder={t('sessionJotLabel', { defaultValue: 'Notes' })}
         />
       </label>
       <div style={{ marginTop: 20 }}>

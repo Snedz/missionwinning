@@ -28,7 +28,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
+import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
@@ -700,7 +700,7 @@ export function ActiveWorkoutPage() {
         ? previewJustGoForEquipment(equipment)
         : null;
     return (
-      <ActiveEmptyState
+      <TrainComposeEmpty
         onStart={handleEmptyStart}
         onPreviewStart={preview ? handlePreviewStart : undefined}
         previewName={preview?.name}
@@ -742,7 +742,7 @@ export function ActiveWorkoutPage() {
   });
 
   return (
-    <div className={`space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
+    <div className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
         completedSets={completedSets}

@@ -104,7 +104,7 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
       assert.match(src, /runTodayPrimaryAction\(/, rel);
       assert.match(
         src,
-        /doseScale:\s*reentry\?\.show\s*\?\s*reentry\.doseScale\s*:\s*1/,
+        /doseScale:\s*(?:liveReentry|reentry\?)\.show\s*\?\s*(?:liveReentry|reentry)\.doseScale\s*:\s*1/,
         `${rel} must ease Just Go when re-entry shows (criterion 4)`
       );
     }

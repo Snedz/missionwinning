@@ -279,6 +279,97 @@
   border-radius: var(--house-radius);
 }
 
+.mw-house .house-card-hero {
+  padding: 20px 22px 18px;
+}
+
+.mw-house .house-week-object .house-day.is-set {
+  background: var(--house-soft);
+}
+
+.mw-house .house-more {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.mw-house .house-more-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(24 24 27 / 0.28);
+  cursor: pointer;
+}
+
+.mw-house .house-more-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(360px, 92vw);
+  padding: 22px 20px 32px;
+  background: var(--house-paper);
+  border-left: 1px solid var(--house-line);
+  overflow: auto;
+}
+
+.mw-house .house-more-quiet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--house-line);
+}
+
+.mw-house .house-more-quiet a {
+  color: var(--house-muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.mw-house .house-compose-empty,
+.mw-house .house-compose-live {
+  padding: 28px 32px 48px;
+}
+
+.mw-house .house-catalog-head {
+  margin-bottom: 8px;
+}
+
+.mw-house .house-catalog-head .house-title {
+  margin-bottom: 18px;
+}
+
+.mw-house .house-catalog > *:first-child {
+  display: none;
+}
+
+.mw-house .house-catalog-states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-state {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--house-pill);
+}
+
+.mw-house .house-state.is-on {
+  background: var(--house-press);
+  border-color: var(--house-press);
+  color: var(--house-press-ink);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

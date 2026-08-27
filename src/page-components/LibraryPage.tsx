@@ -95,7 +95,7 @@ export function LibraryPage() {
   const [catalogRevision, setCatalogRevision] = useState(0);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [muscleQuery, setMuscleQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(48);
+  const [visibleCount, setVisibleCount] = useState(8);
   /** Craft-index studio: multi-select for freestyle session build. */
   const [pickedIds, setPickedIds] = useState<string[]>([]);
   const pickMode = pickedIds.length > 0;
@@ -144,7 +144,7 @@ export function LibraryPage() {
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
-    setVisibleCount(48);
+    setVisibleCount(8);
   };
 
   const activeFilterCount = [
@@ -157,7 +157,7 @@ export function LibraryPage() {
 
   const clearFilters = () => {
     setFilters({ ...DEFAULT_LIBRARY_FILTERS, query: filters.query });
-    setVisibleCount(48);
+    setVisibleCount(8);
   };
 
   const visibleExercises = filtered.slice(0, visibleCount);
@@ -193,16 +193,8 @@ export function LibraryPage() {
       subtitle={t('librarySubtitleBrief', {
         defaultValue: 'Search movements. Filters when you need them.',
       })}
+      className="house-catalog"
     >
-      <Button
-        type="button"
-        variant="outline"
-        className="mb-3 w-full min-h-[44px] tap-target"
-        data-testid="library-merge-open"
-        onClick={() => setMergeOpen(true)}
-      >
-        {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
-      </Button>
       {hiddenRows.length > 0 ? (
         <div
           className="mb-3 space-y-2 border-2 border-border p-3"
@@ -262,6 +254,19 @@ export function LibraryPage() {
               <span className="tabular-nums text-primary">({activeFilterCount})</span>
             )}
           </Button>
+        </div>
+
+        <div className="house-catalog-states" data-testid="library-states">
+          {allMuscles.slice(0, 8).map((m) => (
+            <button
+              key={m}
+              type="button"
+              className={`house-state${filters.muscle === m ? ' is-on' : ''}`}
+              onClick={() => setFilter('muscle', filters.muscle === m ? '' : m)}
+            >
+              {m}
+            </button>
+          ))}
         </div>
 
         {activeFilterCount > 0 && (
@@ -493,7 +498,7 @@ export function LibraryPage() {
             type="button"
             variant="outline"
             className="min-h-[44px]"
-            onClick={() => setVisibleCount((n) => n + 48)}
+            onClick={() => setVisibleCount((n) => n + 16)}
           >
             {t('libraryLoadMore', {
               remaining: filtered.length - visibleCount,
@@ -523,6 +528,15 @@ export function LibraryPage() {
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
         <div className="space-y-4 border-t-2 border-border p-4">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="library-merge-open"
+            onClick={() => setMergeOpen(true)}
+          >
+            {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
+          </Button>
           <p className="text-xs text-muted-foreground">
             <Link href="/log" className="underline underline-offset-2 hover:text-foreground">
               {t('libraryTodayHub', { defaultValue: 'Today' })}

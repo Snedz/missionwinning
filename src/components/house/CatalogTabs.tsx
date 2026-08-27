@@ -11,7 +11,9 @@ export function CatalogTabs() {
   const builderOn = pathname === '/builder' || pathname.startsWith('/builder/');
 
   return (
-    <div className="house-tabs" role="tablist" aria-label={t('navLibrary', { defaultValue: 'Library' })}>
+    <div className="house-catalog-head">
+      <h1 className="house-title">{t('navLibrary', { defaultValue: 'Library' })}</h1>
+      <div className="house-tabs" role="tablist" aria-label={t('navLibrary', { defaultValue: 'Library' })}>
       <Link
         href="/library"
         role="tab"
@@ -28,6 +30,7 @@ export function CatalogTabs() {
       >
         {t('navBuilder', { defaultValue: 'Builder' })}
       </Link>
+    </div>
     </div>
   );
 }
