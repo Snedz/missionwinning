@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * First-run popup. Points at the second bar, then Start.
- * Not a card that owns first paint. Checklist lives under This week.
+ * First-run coach-mark. Pointer + title + body + Got it + X.
+ * Checklist lives under This week and never owns Start.
  */
 
 import { useEffect, useState } from 'react';
@@ -50,9 +50,6 @@ export function HouseGuide() {
     : t('houseGuideStartBody', {
         defaultValue: 'One tap opens Train.',
       });
-  const cta = railStep
-    ? t('houseGuideContinue', { defaultValue: 'Continue' })
-    : t('houseGuideClose', { defaultValue: 'Close' });
 
   const dismiss = () => {
     writeRaw(STORAGE_KEYS.houseGuideDismissed, '1');
@@ -91,7 +88,7 @@ export function HouseGuide() {
           {body}
         </p>
         <button type="button" className="house-btn house-btn-primary" style={{ marginTop: 16 }} onClick={next}>
-          {cta}
+          {t('houseGuideGotIt', { defaultValue: 'Got it' })}
         </button>
       </div>
     </div>

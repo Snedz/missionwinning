@@ -46,7 +46,7 @@ import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
-import { getFirstSteps } from '@/lib/journey/firstSteps';
+import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import { FIRST_STEPS_DISMISS_KEY, isFirstStepsDismissed } from '@/lib/today/firstStepsDismissed';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
 
@@ -113,6 +113,7 @@ export function TodayDesk() {
     hasActiveWorkout
   );
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+  const [openStep, setOpenStep] = useState<string | null>(null);
 
   const refresh = useCallback(() => {
     const next = readDeskSnap();
@@ -215,7 +216,9 @@ export function TodayDesk() {
     .slice(0, 3);
 
   const steps = getFirstSteps(journey, { completedSessions: history.length });
+  const stepProgress = summarizeFirstSteps(steps);
   const showSteps = snap ? !snap.stepsHidden && steps.some((s) => !s.done) : false;
+  const expandedKey = openStep ?? stepProgress.next?.key ?? steps[0]?.key ?? null;
   const reentryShowing =
     reentry &&
     reentryCardMayMount({
@@ -343,17 +346,35 @@ export function TodayDesk() {
               <X className="h-4 w-4" aria-hidden />
             </button>
           </div>
+          <p className="house-check-progress">
+            {t('firstStepsCount', {
+              defaultValue: '{{done}} of {{total}} complete',
+              done: stepProgress.done,
+              total: stepProgress.total,
+            })}
+          </p>
           <div className="house-check">
-            {steps.slice(0, 3).map((step) => (
-              <Link key={step.key} href={step.href}>
-                <span>
-                  <strong>{t(step.titleKey, { defaultValue: step.title })}</strong>
-                  <span style={{ display: 'block', color: 'var(--house-muted)', fontSize: 13 }}>
-                    {t(step.whyKey, { defaultValue: step.why })}
-                  </span>
-                </span>
-              </Link>
-            ))}
+            {steps.map((step) => {
+              const open = step.key === expandedKey;
+              return (
+                <div
+                  key={step.key}
+                  className={`house-check-row${step.done ? ' is-done' : ''}${open ? ' is-open' : ''}`}
+                >
+                  <button type="button" aria-expanded={open} onClick={() => setOpenStep(step.key)}>
+                    <strong>{t(step.titleKey, { defaultValue: step.title })}</strong>
+                  </button>
+                  {open ? (
+                    <>
+                      <span className="house-check-why">{t(step.whyKey, { defaultValue: step.why })}</span>
+                      <Link href={step.href} className="house-btn" style={{ marginTop: 10, alignSelf: 'flex-start' }}>
+                        {t('todayStartCta', { defaultValue: 'Start' })}
+                      </Link>
+                    </>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         </section>
       ) : null}

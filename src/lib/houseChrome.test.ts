@@ -61,10 +61,14 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(shell, /HouseGuide/);
   assert.match(shell, /isHouseSecondRailPath/);
   const css = read('src/components/house/house.css');
-  assert.match(css, /--house-second:/);
+  assert.match(css, /--house-rail:\s*72px/);
+  assert.match(css, /--house-second:\s*264px/);
+  assert.match(css, /min-width:\s*723px/);
+  assert.match(css, /max-width:\s*722px/);
   assert.match(css, /\.house-second/);
   assert.match(css, /\.house-rail-tip/);
-  assert.doesNotMatch(css, /264px/);
+  assert.match(css, /font-size:\s*13px/);
+  assert.match(css, /rgba\(0,\s*0,\s*0,\s*0\.6\)/);
   const more = stripComments(read('src/components/house/HouseMore.tsx'));
   assert.doesNotMatch(more, /href: '\/history'/);
   assert.doesNotMatch(more, /href: '\/coach'/);
@@ -106,6 +110,11 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
   assert.match(rail, /HOUSE_RAIL_HREFS\.account/);
   assert.match(rail, /house-rail-avatar/);
   assert.match(rail, /house-rail-tip/);
+  assert.match(rail, /defaultValue: 'You'/);
+  assert.match(rail, /defaultValue: 'Today'/);
+  assert.match(rail, /defaultValue: 'Train'/);
+  assert.match(rail, /defaultValue: 'Library'/);
+  assert.match(rail, /defaultValue: 'More'/);
 });
 
 test('checklist never owns Start, and house copy is not a pasted brand', () => {
@@ -116,8 +125,10 @@ test('checklist never owns Start, and house copy is not a pasted brand', () => {
   assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
   assert.ok(stepsAt > weekAt, 'checklist sits under This week, not over Start');
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
-  assert.match(guide, /houseGuideContinue|houseGuideClose/);
+  assert.match(guide, /houseGuideGotIt/);
   assert.match(guide, /today-start-ready/);
+  assert.match(src, /firstStepsCount/);
+  assert.match(src, /summarizeFirstSteps/);
   for (const file of [...walkHouse(), 'src/page-components/TodayDesk.tsx']) {
     const text = stripComments(read(file));
     assert.doesNotMatch(
@@ -125,7 +136,6 @@ test('checklist never owns Start, and house copy is not a pasted brand', () => {
       /Welcome to Patreon|Audience|Payouts|Publish page|Dashboard \/ Library/,
       file
     );
-    assert.doesNotMatch(text, /Got it/, file);
   }
 });
 

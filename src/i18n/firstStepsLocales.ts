@@ -32,7 +32,9 @@ const FIRST_STEPS_EN: Record<string, string> = {
   houseGuideStartBody: 'One tap opens Train.',
   houseGuideContinue: 'Continue',
   houseGuideClose: 'Close',
+  houseGuideGotIt: 'Got it',
   houseRoomWeeklyPlan: 'Weekly plan',
+  firstStepsCount: '{{done}} of {{total}} complete',
 
   // The six steps. Each `Why` line is load-bearing: it is the difference
   // between a checklist someone finishes and a chore list they dismiss.

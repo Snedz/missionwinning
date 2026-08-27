@@ -21,7 +21,7 @@
   --house-radius-sm: 10px;
   --house-pill: 999px;
   --house-rail: 72px;
-  --house-second: 15rem;
+  --house-second: 264px;
   --house-side: 300px;
   /* Inherited objects (cards, buttons, set table) pick these up. */
   --background: 0 0% 100%;
@@ -70,10 +70,10 @@
   width: var(--house-rail);
   flex-shrink: 0;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 16px 0 12px;
-  border-right: 1px solid var(--house-line);
-  background: var(--house-paper);
+  border-right: 0;
+  background: #ffffff;
   overflow: visible;
   z-index: 3;
 }
@@ -83,8 +83,9 @@
 .mw-house .house-rail-end {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;
+  padding-left: 12px;
+  gap: 8px;
 }
 
 .mw-house .house-rail-mid {
@@ -101,8 +102,8 @@
 .mw-house .house-rail-mark {
   position: relative;
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   color: var(--house-ink);
@@ -115,8 +116,8 @@
 .mw-house .house-floor .house-rail-btn {
   position: relative;
   display: flex;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   align-items: center;
   justify-content: center;
   color: var(--house-muted);
@@ -161,20 +162,20 @@
 
 .mw-house .house-rail-tip {
   position: absolute;
-  left: calc(100% + 10px);
+  left: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
   z-index: 80;
   padding: 6px 10px;
-  background: var(--house-ink);
-  color: var(--house-paper);
-  font-size: 12px;
-  font-weight: 600;
+  background: #000000;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
   line-height: 1;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  border-radius: var(--house-radius-sm);
+  border-radius: 8px;
 }
 
 .mw-house .house-rail-btn:hover .house-rail-tip,
@@ -196,16 +197,13 @@
   width: var(--house-second);
   flex-shrink: 0;
   flex-direction: column;
-  padding: 22px 14px 28px;
-  border-right: 1px solid var(--house-line);
-  background: var(--house-paper);
+  padding: 20px 12px 28px;
+  border-right: 0;
+  background: #ffffff;
 }
 
 .mw-house .house-second-kicker {
-  margin: 0 10px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--house-ink);
+  display: none;
 }
 
 .mw-house .house-second-nav {
@@ -218,18 +216,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   min-height: 40px;
   padding: 8px 12px;
-  color: var(--house-muted);
+  color: rgba(0, 0, 0, 0.6);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 600;
-  border-radius: var(--house-radius-sm);
+  font-weight: 550;
+  border-radius: var(--house-pill);
 }
 
 .mw-house .house-second-link.is-on,
 .mw-house .house-second-link:hover {
-  color: var(--house-ink);
+  color: rgba(0, 0, 0, 0.85);
   background: var(--house-chip);
 }
 
@@ -254,9 +253,32 @@
   pointer-events: auto;
   width: min(320px, calc(100vw - 120px));
   padding: 18px 18px 16px;
-  background: var(--house-paper);
+  background: #ffffff;
   border: 1px solid var(--house-line);
-  border-radius: var(--house-radius);
+  border-radius: 12px;
+}
+
+.mw-house .house-guide-card::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 28px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #ffffff;
+}
+
+.mw-house .house-guide-card::after {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 27px;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-right-color: var(--house-line);
+  z-index: -1;
 }
 
 .mw-house .house-guide-x {
@@ -668,11 +690,53 @@
   text-decoration: none;
 }
 
-.mw-house .house-check a:last-child {
+.mw-house .house-check a:last-child,
+.mw-house .house-check button:last-child {
   border-bottom: 0;
 }
 
-@media (min-width: 768px) {
+.mw-house .house-check-progress {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--house-muted);
+}
+
+.mw-house .house-check-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--house-line);
+}
+
+.mw-house .house-check-row > button {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.mw-house .house-check-row.is-done {
+  color: var(--house-muted);
+}
+
+.mw-house .house-check-why {
+  display: block;
+  margin-top: 6px;
+  color: var(--house-muted);
+  font-size: 13px;
+}
+
+@media (min-width: 723px) {
   .mw-house .house-rail {
     display: flex;
   }
@@ -684,7 +748,9 @@
   .mw-house .house-floor {
     display: none;
   }
+}
 
+@media (min-width: 768px) {
   .mw-house .house-sidecar.is-open {
     display: block;
   }
@@ -779,8 +845,12 @@
   box-shadow: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 722px) {
   .mw-house .house-guide {
+    display: none;
+  }
+
+  .mw-house .house-second {
     display: none;
   }
 

@@ -16,17 +16,17 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-08-27 — From-scratch signed-in house (`.1056`)
 
 New signed-in website. Not #885.
-Icon rail + adjacent second bar
-(Today: Start / This week /
-History / Weekly plan; Library:
-Library / Builder) + hover labels
-+ first-run popup. Checklist sits
-under This week — never over
-Start. Honest Start (no dummy
-card; lands `/active`). More is
-leftover, not the Home column.
-Reference behavior, not a pasted
-brand. Engines stay. Zero diffs on
+Icon rail 72 + second bar 264
+(hides under 723). Home rooms:
+Start / This week / History /
+Weekly plan. Library: Library /
+Builder. Hover chips: Today,
+Train, Library, You, More. Got it
+coach-mark + checklist under the
+week (N of M, one row open).
+Honest Start (no dummy; lands
+`/active`). More is leftover.
+Engines stay. Zero diffs on
 `/private`, landing, www.
 `[skip vercel]`. No `PRIVATE_MODE`
 flip. No promote. Live www stays `.696`.

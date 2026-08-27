@@ -30,7 +30,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
   const todayLabel = t('navToday', { defaultValue: 'Today' });
   const trainLabel = t('navTrain', { defaultValue: 'Train' });
   const libraryLabel = t('navLibrary', { defaultValue: 'Library' });
-  const accountLabel = t('navAccount', { defaultValue: 'Account' });
+  const youLabel = t('navYou', { defaultValue: 'You' });
   const moreLabel = t('navMore', { defaultValue: 'More' });
 
   const items = [
@@ -88,14 +88,14 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
         })}
         <Link
           href={HOUSE_RAIL_HREFS.account}
-          aria-label={accountLabel}
+          aria-label={youLabel}
           aria-current={accountOn ? 'page' : undefined}
           className={`house-rail-btn${accountOn ? ' is-on' : ''}`}
         >
           <span className="house-rail-avatar" aria-hidden>
             M
           </span>
-          <RailTip label={accountLabel} floor={floor} />
+          <RailTip label={youLabel} floor={floor} />
         </Link>
         <button
           type="button"
