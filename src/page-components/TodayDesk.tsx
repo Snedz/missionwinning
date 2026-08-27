@@ -241,7 +241,6 @@ export function TodayDesk() {
       <section
         id="today-start"
         className="house-card house-card-hero"
-        style={{ marginTop: 20 }}
         aria-busy={snap ? undefined : true}
         data-testid={snap ? 'today-start-ready' : 'today-start-pending'}
       >

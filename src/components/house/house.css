@@ -693,6 +693,10 @@
   border-radius: var(--house-radius-rail);
 }
 
+.mw-house .house-filter-bar button {
+  border-radius: var(--house-radius-rail);
+}
+
 .mw-house .house-empty {
   display: flex;
   flex-direction: column;
@@ -1188,6 +1192,23 @@
 
   .mw-house .house-floor {
     display: none;
+  }
+
+  /* Second bar names the room. Date stays. Session is the work. */
+  .mw-house .house-sheet [data-house-desk='today'] > h1.house-title {
+    display: none;
+  }
+
+  .mw-house .house-sheet .house-card-hero {
+    margin-top: 8px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 8px 0 20px;
+  }
+
+  .mw-house .house-canvas-pad.is-transferred {
+    padding: 28px 0 56px;
   }
 }
 

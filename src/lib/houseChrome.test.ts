@@ -332,3 +332,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /--house-selected/);
 });
 
+test('on the sheet, Today starts with the session — one Start, no nested hero card', () => {
+  const css = read('src/components/house/house.css');
+  assert.match(css, /data-house-desk=['"]today['"]/);
+  assert.match(css, /\.house-sheet \.house-card-hero \{[\s\S]*background:\s*transparent/);
+  assert.doesNotMatch(css, /\.house-sheet \.house-first-rooms \{[\s\S]*background:\s*transparent/);
+  const desk = stripComments(read('src/page-components/TodayDesk.tsx'));
+  assert.match(desk, /<h1 className="house-title">/);
+  const primaries = [...desk.matchAll(/house-btn-primary/g)];
+  assert.equal(primaries.length, 1, 'Start stays the only filled action');
+  assert.match(desk, /router\.push\('\/active'\)/);
+  const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
+  assert.match(second, /row\.id === 'start'\) return false/);
+});
+

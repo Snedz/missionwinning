@@ -70,6 +70,8 @@ Today Start → `/active`. This week pane shows the real week; `generateWeek` wr
 
 Transferred rooms hide `data-house-costume="pillar-header"`. The second bar names the room. Canvas keeps an `sr-only` title.
 
+On the desktop sheet, Today does not repeat a “Today” H1. The date kicker stays. The canvas then starts with the session (kicker + title + one Start). The Start hero is flush on the sheet, not a nested paper card. First rooms stay one object. Compact `<723` still shows the Today title because the second bar is hidden.
+
 ## Do not
 
 Mint Studio. Put chat or a bell on Today. Make Today a feed. Gate `logSet`. Restyle `/private`, landing, or www. Ship a licensed display face. Use poster red except the Train pulse.

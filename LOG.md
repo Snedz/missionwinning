@@ -44,8 +44,15 @@ contents`). Second-bar rows are
 selected is 48×48 / 8px / `#eee`.
 Train plus is a 40px white circle
 with a 1px line (no shadow); click
-is still `/active`. Library filter
-and empty use house objects.
+is still `/active`. On the sheet,
+Today starts with the session
+(date stays; no second Today
+H1). Start hero is flush, not a
+nested paper card. First rooms
+stay one object. Compact still
+shows the Today title. Library
+filter and empty use house
+objects.
 Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate
