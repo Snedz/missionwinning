@@ -14,7 +14,7 @@ export const HOUSE_TODAY_ROOMS = [
   { href: '/log', hash: 'today-start', id: 'start', labelKey: 'todayStartCta', label: 'Start' },
   { href: '/log', hash: 'today-week', id: 'week', labelKey: 'todayWeekRecapTitle', label: 'This week' },
   { href: '/history', id: 'history', labelKey: 'navHistory', label: 'History' },
-  { href: '/coach', id: 'plan', labelKey: 'navCoach', label: 'Weekly plan' },
+  { href: '/coach', id: 'plan', labelKey: 'houseRoomWeeklyPlan', label: 'Weekly plan' },
 ] as const;
 
 export const HOUSE_LIBRARY_ROOMS = [
