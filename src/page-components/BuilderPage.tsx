@@ -1,7 +1,8 @@
 'use client';
 /**
- * Page: /builder — workout templates
- * See: app/INDEX.md, src/page-components/INDEX.md
+ * Page: /builder — official catalog write side (templates).
+ * Super Bundle deepens pro templates and never gates logSet.
+ * See docs/IA_SKELETON.md, app/INDEX.md.
  */
 
 import { useState, useEffect } from "react";

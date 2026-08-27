@@ -1,46 +1,41 @@
-# PLAN — Product IA skeleton (`.1053`)
+# PLAN — v0 catalog labeling (`.1054`)
 
 **Status:** Frozen. One leftover. **Horizon 0.** Wedge: Train + Coach.
-**Frozen:** 2026-08-27. **Ship-as:** `.1053`.
-**Base:** master `895d940daebdf8f10f6a041360d7478f81492a05` — Revert Patreon costume, restore wireframe (`.1052`).
-**Do not smash:** Costume revert `.1052` / `.1050`. Messenger freeze `.752`. Domain boundary C1–C3 / C7. Isolation `src/lib/social/isolation.test.ts`. Athlete-default dock (cold Summary + Search; live Train joins). Today one Start. Guest first set ungated. Resume `.963`. `/private` tight lock. Live www `.696`.
+**Frozen:** 2026-08-27. **Ship-as:** `.1054`.
+**Base:** master `84acabfea483f32d616decc4ce35381ce128125d` — Product IA skeleton (`.1053`).
+**Do not smash:** Isolation `.1053`. Costume revert `.1052` / `.1050`. Messenger freeze `.752`. Domain boundary C1–C3 / C7. Isolation `src/lib/social/isolation.test.ts`. Athlete-default dock (cold Summary + Search; live Train joins). Today one Start. Guest first set ungated. Resume `.963`. `/private` tight lock. Live www `.696`.
 
 ---
 
 ## The one thing
 
-Lock product truth as bones, not lipstick. Tonight's IA is already decided. Do not invent a second product, a sidebar costume, or a Studio.
+Name the official training catalog that already exists. It is `/library` + `/builder`. Super Bundle deepens pro templates and never gates `logSet`. `/explore` stays the places pin-board (Decision 009). `/programs` stays education outlines. No new room. No new tab. No shop.
 
-`.1051` painted Patreon chrome onto the existing IA. Founder reverted it (`.1052`). This slice is **not visual**. Zero CSS / theme / `/private` / www / nav-appearance edits.
+This slice is **not visual**. Zero CSS / theme / `/private` / www / nav-appearance edits. Docs + labels + tests only.
 
 ## In / out
 
 **In** (stop after these)
 
-1. `docs/IA_SKELETON.md` — CoS freeze. Named rooms: Today · Train · Coach (AI) · History · Library.
-2. Isolation in `src/lib/social/isolation.test.ts`: Today/Train do not import social; tabs = `/log` + `/active`; Coach never reads Garage; chat never withholds a set.
-3. Dual-writer = comment only. Do not change Start order.
-
-v0 catalog labeling is a later PR.
+1. `docs/IA_SKELETON.md` — one tight v0-catalog paragraph. Do not enlarge the novel.
+2. Point INDEX / FLOW if they already name rooms.
+3. If More / Search / Library / Builder copy implies a missing shop or calls the training catalog Explore, fix the LABEL so Library + Builder read as the official catalog.
+4. Tests: `/explore` is still places-only (keep the Today ban). No new primary-nav href for a shop or `/coaches`. Isolation from `.1053` still passes.
 
 **Out**
 
-- Any visual / costume / sidebar / theme change
-- Restyle `/private` or `sites/www`
-- Patreon public creator URL, member Feed, Chats-on-home
-- TrainHeroic Coach Home, Session Comments, Chat as athlete dock tab
-- Hevy Home-as-feed, likes/comments on logs
-- Intercom / Chat Heads / Fitbod overlay / any type-5 bubble on Today or Train
-- Discord.com, DMs, workout auto-post, people rail / Top 8 / `/coaches`
-- Empty Studio, Message tab, Explore-as-shop, shop on Today or `/bundle`
+- Costume / sidebar / theme / `/private` / www
+- Message tab, Studio, people rail, `/coaches`
+- Shop on Today or `/bundle`
+- Renaming `/explore` or dumping education cards into Library
+- Changing Start order / dual-writer behavior
 - Flip `PRIVATE_MODE`, invent traction, promote production
 - Counsel-hold PT / pregnancy / field-test copy
-- Change Start order
 
 ## Accept
 
 ```
-npx tsx --test src/lib/social/isolation.test.ts src/lib/domainBoundary.test.ts src/lib/mobileNavTabs.test.ts src/lib/moreSheetTiers.test.ts src/lib/coach/weekWriter.test.ts src/lib/workout/honorSavedRoutine.test.ts
+npx tsx --test src/lib/catalogLabeling.test.ts src/lib/places/exploreNotOnToday.test.ts src/lib/social/isolation.test.ts src/lib/domainBoundary.test.ts src/lib/mobileNavTabs.test.ts src/lib/moreSheetTiers.test.ts
 npx tsc --noEmit
 npx tsx scripts/check-build-label.mjs
 ```

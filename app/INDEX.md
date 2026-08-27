@@ -26,9 +26,9 @@
 
 | URL | Page component |
 |-----|----------------|
-| `/builder` | `BuilderPage.tsx` |
+| `/builder` | `BuilderPage.tsx` — write side of the official training catalog (templates). Not a shop. |
 | `/coach` | `CoachPage.tsx` — **Mission Coach** (AI weekly plan) |
-| `/library` | `LibraryPage.tsx` |
+| `/library` | `LibraryPage.tsx` — official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
 | `/history` | `HistoryPage.tsx` |
 | `/leaderboard` | `LeaderboardPage.tsx` |
 | `/benchmarks` | `BenchmarksPage.tsx` |
@@ -49,6 +49,8 @@
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
+| `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
+| `/programs` | `ProgramsPage.tsx` | Education outlines (ISSA-style merch), not nSuns, not the training catalog. |
 | `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). Signed-in rooms persist. More → You. Not a tab. `robots: noindex` |
 
 ### Outside `(app)` group

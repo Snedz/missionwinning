@@ -1,7 +1,8 @@
 'use client';
 /**
- * Page: /programs — program listing
- * See: app/INDEX.md, src/page-components/INDEX.md
+ * Page: /programs — education outlines (ISSA-style merch).
+ * Not nSuns. Not the training catalog (/library + /builder).
+ * See: docs/IA_SKELETON.md, app/INDEX.md.
  */
 
 import Link from 'next/link';

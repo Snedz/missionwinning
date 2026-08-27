@@ -77,7 +77,8 @@ export const MORE_NAV: NavLinkItem[] = [
     label: 'Builder',
     icon: PenTool,
     descriptionKey: 'moreBuilderDesc',
-    description: 'Build workouts',
+    // Official catalog write side — not a shop. docs/IA_SKELETON.md v0 catalog.
+    description: 'Official templates',
   },
   {
     href: '/track',
@@ -93,7 +94,8 @@ export const MORE_NAV: NavLinkItem[] = [
     label: 'Library',
     icon: Dumbbell,
     descriptionKey: 'moreLibraryDesc',
-    description: 'Exercise catalog',
+    // Official training catalog — not Explore, not /programs. docs/IA_SKELETON.md.
+    description: 'Official exercise catalog',
   },
   {
     href: '/history',

@@ -1,7 +1,7 @@
 'use client';
 /**
- * Page: /library — exercise catalog
- * See: app/INDEX.md, src/page-components/INDEX.md
+ * Page: /library — official exercise catalog (with /builder).
+ * Not Explore. Not /programs. See docs/IA_SKELETON.md, app/INDEX.md.
  */
 
 import Link from 'next/link';
