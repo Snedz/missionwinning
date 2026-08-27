@@ -69,6 +69,8 @@ test('house.css actually draws a product site, not radius-0 paper rules', () => 
   assert.match(css, /#ffffff/);
   assert.match(css, /--radius:\s*1rem/);
   assert.match(css, /--background:\s*0 0% 100%/);
+  assert.match(css, /\.house-btn[\s\S]*flex-shrink:\s*0/);
+  assert.match(css, /\.house-btn[\s\S]*white-space:\s*nowrap/);
   assert.doesNotMatch(css, /border:\s*2px/);
   assert.doesNotMatch(css, /\.mw-house \* \{[\s\S]*border-radius:\s*0/);
 });
