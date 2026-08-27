@@ -40,7 +40,7 @@ export function ActiveReadinessDeltaStrip({
 
   return (
     <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
-      <span className="font-medium text-muted-foreground">
+      <span className="font-semibold text-muted-foreground">
         {t('sessionReadinessDelta', {
           defaultValue: 'Readiness {{from}} → {{to}}',
           from: readinessBefore,
@@ -50,7 +50,7 @@ export function ActiveReadinessDeltaStrip({
       {shouldShowVolumeTrimOffer(offerVolumeTrim, hasPlan) ? (
         <button
           type="button"
-          className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
+          className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-semibold hover:border-primary hover:text-foreground"
           onClick={() => {
             const next = onReduceVolume();
             const copy = volumeTrimToastCopy(volumeTrimToastKind(!!next));

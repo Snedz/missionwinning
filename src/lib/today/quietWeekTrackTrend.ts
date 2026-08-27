@@ -7,10 +7,9 @@
 
 import type { BodyMetricEntry, BodyMetricKey } from '@/lib/bodyMetrics';
 import { entryHasLoggedNumber } from '@/lib/quietTrack';
+import { isLocalDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 import type { UnitsPref } from '@/lib/units';
 import { kgToDisplay } from '@/lib/units';
-
-const LOCAL_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Weight first, then tape. Body fat is not tape — skip it on the strip. */
 export const STRIP_TREND_METRICS = [
@@ -36,8 +35,9 @@ export type QuietWeekTrackTrendInput = {
 };
 
 function localDate(raw: string | undefined): string {
-  const date = String(raw ?? '').slice(0, 10);
-  return LOCAL_DATE.test(date) ? date : '';
+  const value = String(raw ?? '').trim();
+  if (isLocalDateKey(value)) return value;
+  return localDateKeyFromIso(value);
 }
 
 function loggedValue(

@@ -118,7 +118,7 @@ describe('templateFromCompletedLog (K7)', () => {
       'utf8'
     );
     assert.match(src, /logFromTrainJournalId|templateFromCompletedLog/);
-    assert.match(src, /historyTrainAgain/);
+    assert.match(src, /historyRepeatSession|historyTrainAgain/);
   });
 });
 

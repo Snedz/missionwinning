@@ -14,6 +14,8 @@ import type { CompletedWorkoutLog } from '@/types';
 import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 
+export { liveSessionLogs } from '@/lib/history/liveLogs';
+
 export type SessionHistoryRow = {
   id: string;
   title: string;
@@ -82,12 +84,6 @@ export function listSessionHistoryRows(
     if (row) rows.push(row);
   }
   return rows;
-}
-
-export function liveSessionLogs(
-  history: readonly CompletedWorkoutLog[]
-): CompletedWorkoutLog[] {
-  return history.filter((log) => !log.deletedAt);
 }
 
 /** Tombstone matching the live row shape. Live rows are not this. */

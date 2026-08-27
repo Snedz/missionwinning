@@ -4,24 +4,26 @@
 
 ## Read order
 
-1. `sessionHistoryList.ts` — the first-paint scan (date · title/muscles · set count)
-2. `searchHistory.ts` — find a past session (`.1008`); empty query invents nothing
-3. `exportDiary.ts` — export this diary (`.1011`); empty invents nothing
-4. `importDiary.ts` — import that file back (`.1013`); confirm-gated; empty invents nothing
-5. `exportSession.ts` — this session as a file they own (`.1016`); empty / tomb invents nothing
-6. `monthTheyOwn.ts` — tap a live day (`.1018`); empty-day log (`.1028`); tombs out; start-from never erases the month
-7. `exportMonth.ts` — this month as a file they own (`.1029`); empty / junk invents nothing
-8. `thisMonthCalendar.ts` — This month on the calendar (`.1031`); empty / junk invents nothing; already-this-month is noop
-9. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
-10. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
-11. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
-12. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
+1. `liveLogs.ts` — live workout logs; tombs out. One filter.
+2. `sessionHistoryList.ts` — the first-paint scan (date · title/muscles · set count)
+3. `searchHistory.ts` — find a past session (`.1008`); empty query invents nothing
+4. `exportDiary.ts` — export this diary (`.1011`); empty invents nothing
+5. `importDiary.ts` — import that file back (`.1013`); confirm-gated; empty invents nothing
+6. `exportSession.ts` — this session as a file they own (`.1016`); empty / tomb invents nothing
+7. `monthTheyOwn.ts` — tap a live day (`.1018`); empty-day log (`.1028`); tombs out; start-from never erases the month
+8. `exportMonth.ts` — this month as a file they own (`.1029`); empty / junk invents nothing
+9. `thisMonthCalendar.ts` — This month on the calendar (`.1031`); empty / junk invents nothing; already-this-month is noop
+10. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
+11. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
+12. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
+13. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 
 | File | Concern |
 |------|---------|
-| `sessionHistoryList.ts` | Row projection for the one true list (`.720`). Fold-from-date (`.1005`) does not hide a row. Tombstones are a separate restore list (`.1006`). Untitled row title is the date (`.1007`). |
+| `liveLogs.ts` | Live workout logs — tombs out. Export / import / search / month / Today highlights import this; they do not restate the filter. |
+| `sessionHistoryList.ts` | Row projection for the one true list (`.720`). Fold-from-date (`.1005`) does not hide a row. Tombstones are a separate restore list (`.1006`). Untitled row title is the date (`.1007`). Re-exports `liveSessionLogs`. |
 | `searchHistory.ts` | Find a past session (`.1008`). Empty query invents nothing. Title / template / date / lift / note. Tombs stay out. |
 | `exportDiary.ts` | Export this diary (`.1011`). Honest logged fields. Tombs stay out. Start-from does not shrink the file. Empty invents nothing. |
 | `importDiary.ts` | Our export comes back (`.1013`). Confirm-gated merge of the file export wrote. Empty invents nothing. |

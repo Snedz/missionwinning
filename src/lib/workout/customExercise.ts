@@ -7,6 +7,7 @@
  */
 
 import { EXERCISES, getExerciseById } from '@/data/exercises';
+import { asAuthUserId } from '@/lib/authUserId';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import type { Exercise } from '@/types';
@@ -45,10 +46,6 @@ export function isCustomExerciseId(id: string): boolean {
   return id.startsWith(CUSTOM_ID_PREFIX);
 }
 
-function looksLikeUuid(raw: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(raw);
-}
-
 /** Leftover id → readable name. A uuid leftover is just Custom. */
 export function humanizeExerciseId(id: string): string {
   const trimmed = String(id ?? '').trim();
@@ -56,7 +53,7 @@ export function humanizeExerciseId(id: string): string {
   const body = trimmed.startsWith(CUSTOM_ID_PREFIX)
     ? trimmed.slice(CUSTOM_ID_PREFIX.length)
     : trimmed;
-  if (!body || looksLikeUuid(body)) return 'Custom';
+  if (!body || asAuthUserId(body)) return 'Custom';
   const spaced = body.replace(/[-_]+/g, ' ').trim();
   return spaced || 'Custom';
 }

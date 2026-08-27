@@ -7,7 +7,7 @@
   "activeCopyLast": "复制最后一个",
   "activeEmptyExercises": "添加上面的练习以开始记录集合。",
   "activeFormGuide": "表格指南",
-  "activeLastPerformance": "最后：{{reps}} × {{weight}}",
+  "activeLastPerformance": "最后：{{line}}",
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeNoWorkoutDesc": "从今天开始快速锻炼或从构建器启动保存的例程。",
   "activeNothingLogged": "没有记录任何内容",

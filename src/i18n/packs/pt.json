@@ -12,7 +12,7 @@
   "activeFormGuide": "Guia de formulário",
   "activeIncreaseReps": "Aumente as repetições",
   "activeIncreaseWeight": "Aumentar peso",
-  "activeLastPerformance": "Último: {{reps}} × {{weight}}",
+  "activeLastPerformance": "Último: {{line}}",
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeLogSet": "Conjunto de registros",
   "activeNoWorkoutDesc": "Comece um treino rápido hoje ou inicie uma rotina salva no construtor.",

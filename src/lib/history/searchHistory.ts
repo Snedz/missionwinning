@@ -6,6 +6,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
+import { liveSessionLogs } from '@/lib/history/liveLogs';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { humanizeExerciseId } from '@/lib/workout/customExercise';
 
@@ -13,13 +14,6 @@ export type SearchHistoryOpts = {
   dateText?: (log: CompletedWorkoutLog) => string | undefined;
   liftName?: (exerciseId: string) => string | undefined;
 };
-
-function liveRows(
-  rows: readonly CompletedWorkoutLog[] | null | undefined
-): CompletedWorkoutLog[] {
-  if (!Array.isArray(rows)) return [];
-  return rows.filter((log) => Boolean(log) && !log.deletedAt);
-}
 
 function normalizeQuery(value: unknown): string {
   if (typeof value !== 'string') return '';
@@ -58,7 +52,7 @@ export function decideSearchHistory(input: {
   dateText?: (log: CompletedWorkoutLog) => string | undefined;
   liftName?: (exerciseId: string) => string | undefined;
 }): CompletedWorkoutLog[] {
-  const live = liveRows(input.rows);
+  const live = liveSessionLogs(input.rows);
   const q = normalizeQuery(input.query);
   if (!q) return live;
   return live.filter((log) =>

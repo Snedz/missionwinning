@@ -7,6 +7,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
+import { liveSessionLogs } from '@/lib/history/liveLogs';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { humanizeExerciseId } from '@/lib/workout/customExercise';
 
@@ -39,13 +40,6 @@ export type ExportDiaryDecision =
       json: string;
       count: number;
     };
-
-function liveLogs(
-  rows: readonly CompletedWorkoutLog[] | null | undefined
-): CompletedWorkoutLog[] {
-  if (!Array.isArray(rows)) return [];
-  return rows.filter((log) => Boolean(log) && !log.deletedAt);
-}
 
 function textCell(value: unknown): string {
   if (typeof value !== 'string') return '';
@@ -161,7 +155,7 @@ function toCsv(rows: readonly ExportDiaryRow[]): string {
 export function decideExportDiary(
   logs: readonly CompletedWorkoutLog[] | null | undefined
 ): ExportDiaryDecision {
-  const live = liveLogs(logs);
+  const live = liveSessionLogs(logs);
   const rows: ExportDiaryRow[] = [];
   for (const item of live) {
     rows.push(...rowsFromLog(item));

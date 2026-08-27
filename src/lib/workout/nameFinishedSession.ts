@@ -48,7 +48,7 @@ export function normalizeSessionTitle(value: unknown): string | undefined {
 
 /** Title they named, or the date. Never invents a nickname. */
 export function historySessionLabel(
-  log: Pick<CompletedWorkoutLog, 'sessionTitle' | 'completedAt' | 'startedAt'>,
+  log: Pick<CompletedWorkoutLog, 'sessionTitle' | 'completedAt' | 'startedAt' | 'deletedAt'>,
   dateText?: string
 ): string {
   const title = normalizeSessionTitle(log.sessionTitle);

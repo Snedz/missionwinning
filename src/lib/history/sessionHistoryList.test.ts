@@ -122,6 +122,8 @@ test('listSessionHistoryRows keeps store order and drops tombstones', () => {
   );
   assert.equal(rows[1]?.setCount, 1);
   assert.deepEqual(liveSessionLogs([newest, tomb, older]).map((l) => l.id), ['new', 'old']);
+  assert.deepEqual(liveSessionLogs(null), []);
+  assert.deepEqual(liveSessionLogs(undefined), []);
 });
 
 test('deleted session rows are tombstones only — empty invents nothing', () => {
