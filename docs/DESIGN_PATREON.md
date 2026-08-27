@@ -65,6 +65,7 @@ No poster red on this costume. No pastel shelf hue. No second accent.
 |-------|------|
 | Icon rail | 72px |
 | Studio rail | ~264px |
+| Settings inner nav | 200px (not a third studio rail) |
 | Main column | ~926px |
 | Cards | 648px |
 | Inner pad | 40px |

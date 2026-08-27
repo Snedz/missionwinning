@@ -155,11 +155,19 @@
   width: var(--ptn-studio-rail);
 }
 
-.ptn-main {
-  max-width: var(--ptn-main);
+/* Inner settings list — not a third 264px studio rail inside the main column. */
+.ptn-settings-nav {
+  width: 200px;
+}
+
+.ptn-main,
+.ptn-main-col {
+  max-width: 32rem;
 }
 
 @media (min-width: 768px) {
+  .ptn-main,
+  .ptn-main-col,
   .ptn-desktop-main {
     max-width: var(--ptn-main);
   }

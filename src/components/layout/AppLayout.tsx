@@ -71,7 +71,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             {/* No bottom padding for the tab bar any more — the bar and the
                 dock are flex siblings that reserve their own height. */}
             <main className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-lg px-4 py-5 md:ptn-desktop-main md:px-8 md:py-6">
+              {/*
+                `ptn-main-col` owns max-width (32rem compact / 926px md+).
+                Do not write `md:ptn-*` — Tailwind prefixes a different class
+                name, and `max-w-lg` then wins at every breakpoint (`.160` / `.1051`).
+              */}
+              <div className="mx-auto w-full px-4 py-5 ptn-main-col md:px-8 md:py-6">
                 <PageTransition>{children}</PageTransition>
               </div>
             </main>

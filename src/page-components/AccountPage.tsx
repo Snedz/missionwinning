@@ -345,10 +345,10 @@ export function AccountPage() {
      * utility briefing, not a card wall. Owner tools stay reachably grouped.
      * Red-action rules on this route are unchanged (magic-link / billing own red).
      */
-    <div className="ptn md:flex md:gap-10">
+    <div className="ptn md:flex md:items-start md:gap-8">
       <nav
         aria-label={t('accountTitle', { defaultValue: 'Settings' })}
-        className="ptn-studio-rail mb-8 hidden shrink-0 md:block"
+        className="ptn-settings-nav mb-8 hidden shrink-0 md:block"
       >
         <a href="#account-profile" className="ptn-rail flex min-h-[44px] items-center px-3 ptn-row-active">
           {t('navYou', { defaultValue: 'Profile' })}

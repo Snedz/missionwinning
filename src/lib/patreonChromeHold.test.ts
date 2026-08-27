@@ -77,6 +77,26 @@ test('Today stays one Start and is not a feed', () => {
   assert.match(lean, /JourneyHero/, 'lean still docks the one Start');
 });
 
+test('AppLayout desktop width is a real class, not a Tailwind-prefixed ghost', () => {
+  const src = read('src/components/layout/AppLayout.tsx');
+  const css = read('src/styles/patreonTokens.css');
+  assert.doesNotMatch(src, /className="[^"]*md:ptn-/);
+  assert.match(src, /ptn-main-col/);
+  assert.match(css, /\.ptn-main-col/);
+  assert.match(css, /--ptn-main:\s*926px/);
+});
+
+test('Account settings nav is not a third studio rail', () => {
+  const src = read('src/page-components/AccountPage.tsx');
+  assert.match(src, /ptn-settings-nav/);
+  assert.doesNotMatch(src, /ptn-studio-rail/);
+  assert.match(src, /#account-profile/);
+  assert.match(src, /#account-account/);
+  assert.match(src, /#account-privacy/);
+  assert.match(src, /#account-units/);
+  assert.match(src, /#import/);
+});
+
 test('www still reads homeContent — no invented traction', () => {
   const home = read('sites/www/src/lib/homeContent.ts');
   assert.match(home, /Log a set\./);

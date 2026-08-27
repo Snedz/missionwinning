@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). Imports Patreon tokens (`.ptn`). |
+| `AppLayout.tsx` | Main app chrome + journey sync. Pads the shell by visualViewport keyboard overlap so Log set stays above the keys (G5). Imports Patreon tokens (`.ptn`). Desktop main width is `.ptn-main-col` (not `md:ptn-*`). |
 | `AppHeader.tsx` | Compact brand + More; desktop page title (wordmark lives on the studio rail) |
 | `Sidebar.tsx` | Dual rail: 72px icons + 264px studio labels (Today / Train / Coach / History / Library / Account) |
 | `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height. Cold: Summary + Search. |
