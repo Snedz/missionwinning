@@ -8,6 +8,12 @@ When adding a doc:
 2. List it below
 3. Prefer updating links over stub files (AGENTS.md convention)
 
+## Wireframe snapshots
+
+| Path | Note |
+|------|------|
+| [www-wireframe-1050/](./www-wireframe-1050/) | `sites/www` at `.1050` modernist paper/ink/Archivo. Live costume is [DESIGN_PATREON.md](../DESIGN_PATREON.md). Wireframe sheet stays [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md). |
+
 ## Archived (Wave 9)
 
 | File | Absorbed by / note |

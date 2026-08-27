@@ -1,0 +1,172 @@
+---
+/*
+ * `/week` — three concepts, one scroll, A1 language.
+ *
+ * `.644` designed The Week, Anywhere and Field Manual as three *architectures*
+ * that share nothing, because the eight-variant board had shared a DOM and
+ * frozen the original wireframe into every option. Combining them is not
+ * putting three skins on one template. It is one continuous-scroll landing
+ * whose three movements keep their verbs:
+ *
+ *   01  press   — the product is the first screen (log a set; the week is
+ *                 already on it). Consequences of a broken week sit on the
+ *                 same photographic ground.
+ *   02  scroll  — one session relocates through five places; the plan in the
+ *                 corner does not change.
+ *   03  look up — a contents page and `<details>`. No JavaScript.
+ *
+ * The homepage at `/` stays the A1 modernist page `index.astro` already is.
+ * This route is additive: a dedicated landing in the same language, with
+ * CTA discipline (Wave 11 §11.4) — one action, terminal at the private gate,
+ * and a real link home. `CtaSlot` with `terminal` points at INVITE_URL;
+ * the wordmark points at `/`.
+ *
+ * Ground plan, sourced from Wave 11 §11.3 (0–6 changes, one contrasting
+ * field): photographic at the top, photographic/typographic through the pin,
+ * paper for the manual, red at the close. No ink field — the pin is the dark
+ * contrast.
+ */
+import Base from '../layouts/Base.astro';
+import CtaSlot from '../components/CtaSlot.astro';
+import StagePhoto from '../components/StagePhoto.astro';
+import LogToPlanDemo from '../components/LogToPlanDemo.astro';
+import WeekBreak from '../components/WeekBreak.astro';
+import AnywherePin from '../components/AnywherePin.astro';
+import FieldManual from '../components/FieldManual.astro';
+import { appUrl } from '../lib/appLinks';
+import { META, BASE_WEEK, CLOSE, COLOPHON } from '../lib/weekContent';
+---
+
+<Base title={META.title} description={META.description}>
+  <header
+    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
+    data-nav
+  >
+    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
+      <a href="/" class="flex shrink-0 items-center gap-3">
+        <span
+          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+          data-nav-mark>MW</span
+        >
+        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+      </a>
+      <a href="/" class="hidden text-[15px] font-semibold hover:underline md:inline">Homepage</a>
+      <CtaSlot variant="quiet" terminal class="ml-auto shrink-0" />
+    </div>
+  </header>
+
+  <main>
+    <!-- 01 THE WEEK. Photograph as ground, instrument on it. Concept 01 had
+         no headline and no photograph; A1 puts type over a picture (Wave 11
+         §11.3) and keeps the verb: press, don't read a pitch. The week is on
+         the first screen so the page cannot read as a logger widget with the
+         argument below the fold. -->
+    <section
+      class="stage on-dark flex min-h-[92svh] flex-col justify-end px-5 pb-14 pt-32 sm:px-8 lg:pb-24 lg:pt-40"
+    >
+      <StagePhoto base="/photo/home-rack" alt="A loaded barbell on a home rack" position="52% 38%" />
+      <div class="stage-body mx-auto w-full max-w-6xl">
+        <p class="eyebrow eyebrow-live">Mission Coach · live</p>
+        <h1 class="display-hero-www rise mt-5 max-w-[14ch]">
+          <span>Tell it what you did.</span>
+        </h1>
+        <p class="mt-6 max-w-[52ch] text-[19px] leading-[1.5] text-quiet">
+          The first screen is the product. Log a set; the week is already on the
+          right. Nothing here came from a questionnaire.
+        </p>
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-8">
+          <div class="ground-paper">
+            <LogToPlanDemo terminal />
+          </div>
+          <div class="ground-paper flex flex-col border-2 border-rule bg-card p-5">
+            <p class="eyebrow">This week · written from your log</p>
+            <ol class="mt-4 grid flex-1 grid-cols-7 gap-0.5 border-2 border-rule bg-rule">
+              {BASE_WEEK.map((d) => (
+                <li class="flex flex-col gap-1 bg-paper px-2 py-3">
+                  <span class="eyebrow">{d.d}</span>
+                  <span
+                    class={`text-[12px] font-semibold leading-tight ${
+                      d.kind === 'rest' ? 'text-quiet' : 'text-ink'
+                    }`}
+                  >
+                    {d.label}
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <p class="eyebrow mt-4">Finish the session and next week is rewritten from it.</p>
+          </div>
+        </div>
+
+        <div class="ground-paper mt-14">
+          <WeekBreak />
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 ANYWHERE. One <section> so the pin is one movement, not five
+         templates. Five full-bleed chapters + sticky HUD; no Lenis. -->
+    <section class="on-dark" id="anywhere">
+      <AnywherePin />
+    </section>
+
+    <!-- 03 FIELD MANUAL. Paper. Hub-and-spoke. Zero JS. -->
+    <section class="px-5 py-section sm:px-8 lg:py-section-lg" id="manual">
+      <div class="mx-auto max-w-6xl">
+        <FieldManual />
+      </div>
+    </section>
+  </main>
+
+  <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg" id="close">
+    <div class="mx-auto max-w-6xl">
+      <p class="eyebrow">{CLOSE.eyebrow}</p>
+      <p class="display-statement mt-4 wipe"><span>{CLOSE.statement}</span></p>
+      <p class="mt-6 max-w-[52ch] text-[17px] leading-[1.55]">{CLOSE.body}</p>
+      <CtaSlot terminal class="mt-10 max-w-[420px]" />
+    </div>
+  </footer>
+
+  <div class="ground-ink px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2">
+      <p class="eyebrow">&copy; Mission Winning</p>
+      <a href="/" class="eyebrow underline">Homepage</a>
+      <a href={appUrl('/privacy')} class="eyebrow underline">Privacy</a>
+      <a href={appUrl('/terms')} class="eyebrow underline">Terms</a>
+    </div>
+    <p class="mx-auto mt-6 max-w-6xl text-[12px] leading-[1.7]">
+      <b class="font-semibold">About these numbers.</b>
+      {COLOPHON.numbers}
+      {' '}
+      <b class="font-semibold">On the plates.</b>
+      {COLOPHON.plates}
+      {' '}
+      <b class="font-semibold">JavaScript.</b>
+      {COLOPHON.js}
+      {' '}
+      <b class="font-semibold">Boundary.</b>
+      {COLOPHON.boundary}
+    </p>
+  </div>
+</Base>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const hero = document.querySelector<HTMLElement>('main > section');
+  if (nav && hero) {
+    const onDark = () => {
+      nav.classList.add('on-dark');
+      nav.classList.remove('bg-paper', 'border-rule');
+      nav.classList.add('border-transparent');
+    };
+    const onPaper = () => {
+      nav.classList.remove('on-dark', 'border-transparent');
+      nav.classList.add('bg-paper', 'border-rule');
+    };
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? onDark() : onPaper()), {
+      rootMargin: '-72px 0px 0px 0px',
+      threshold: 0,
+    }).observe(hero);
+  }
+</script>

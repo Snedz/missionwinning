@@ -1,0 +1,70 @@
+---
+/*
+ * The one action, repeated. One slot, one shape, one position — the verb
+ * switches on a build flag rather than the page being rewritten at flip.
+ *
+ * Wave 10 §10.6: all four reference sites repeat a single CTA shape and change
+ * only the verb (a bodyweight coach app runs "Start now / Start your plan now / Got It Now
+ * / Start your transformation" as the same pill and arrow). This mirrors the
+ * app's `.primary-action` — 52px, 19px/800, flush left, poster red.
+ *
+ * Gate semantics follow src/lib/privateGate.ts: unset means GATED in a
+ * production build. The default is the honest one — while PRIVATE_MODE is on,
+ * `Start free` would send a visitor to a redirect.
+ */
+import { INVITE_URL, START_URL } from '../lib/appLinks';
+
+interface Props {
+  variant?: 'primary' | 'quiet';
+  /**
+   * The last hop. `/start` sets this; every other page routes through it.
+   *
+   * Wave 11 §11.4: a dedicated page's job is one action, and a homepage that
+   * hands off to it keeps the funnel one verb wide. Without this the two pages
+   * would either both terminate (two capture points, two things to maintain)
+   * or `/start` would link to itself.
+   */
+  terminal?: boolean;
+  class?: string;
+}
+
+const { variant = 'primary', terminal = false, class: className = '' } = Astro.props;
+
+const gated = import.meta.env.PUBLIC_PRIVATE_MODE !== 'false';
+
+const label = gated ? 'Get notified' : 'Start free — no account';
+// The terminal targets live in ../lib/appLinks — the gated branch used to be
+// `/#invite` against a fragment that exists nowhere, and the flipped branch
+// `/welcome` against a route this build does not emit. See that file for why
+// they are absolute.
+const href = terminal ? (gated ? INVITE_URL : START_URL) : '/start';
+
+// A reassurance line under the button, not buried in a paragraph — a team-training app's
+// "14-Day Free Trial. No Credit Card Required." move. The copy is already
+// written; it was just in the wrong place.
+const reassurance = gated
+  ? 'One email when Alpha is public. Logger stays free forever.'
+  : 'Under three minutes to your first logged set. Nothing to install, nothing to pay.';
+---
+
+{
+  variant === 'primary' ? (
+    <div class={className}>
+      <a class="primary-action" href={href}>
+        {label}
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+      <p class="eyebrow mt-3">{reassurance}</p>
+    </div>
+  ) : (
+    /* The quiet variant exists so the nav can repeat the action without
+       spending the page's one red control on chrome. 2px ink border, never a
+       hairline, never a second red. */
+    <a
+      class={`inline-flex min-h-[44px] items-center border-2 border-ink px-4 text-[15px] font-semibold ${className}`}
+      href={href}
+    >
+      {label}
+    </a>
+  )
+}
