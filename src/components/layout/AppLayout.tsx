@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
+/** Static import so the left room rail is in first HTML, not a later chunk. */
 import { Sidebar } from './Sidebar';
 import { CONSENT_BANNER_HOST_ID, SCREEN_DOCK_HOST_ID } from './ScreenDock';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
