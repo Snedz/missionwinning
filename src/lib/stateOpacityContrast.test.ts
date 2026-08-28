@@ -205,7 +205,7 @@ test('the two components this was written about are fixed, not exempted', () => 
   // means the state stopped being visible at all.
   assert.match(
     card,
-    /status === 'missed' && '[^']*border/,
+    /status === 'missed' && 'is-missed'/,
     'the missed card no longer carries a visible treatment'
   );
   assert.match(

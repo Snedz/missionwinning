@@ -7,9 +7,6 @@
 import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { PlanSession } from '@/lib/coach/types';
 import {
   buildSessionRationale,
@@ -21,11 +18,11 @@ import { cn } from '@/lib/utils';
 type Props = {
   session: PlanSession;
   className?: string;
-  /** Marks the card for today — 2px red top rule (no elevation; radius 0 system). */
+  /** Marks the card for today — 2px ink top rule (no elevation). */
   isToday?: boolean;
   /**
    * D12 — filled Start only on the one boss session (today, or next upcoming
-   * when today is rest). Other days stay outline so `/coach` is not a red farm.
+   * when today is rest). Other days stay ghost so `/coach` is not a farm.
    */
   isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
@@ -65,14 +62,14 @@ export function PlanSessionCard({
   };
 
   return (
-    <Card
+    <div
       className={cn(
-        'content-card',
+        'house-card house-session',
         // Done is the surface fill; the amber border was a status hue in a
-        // one-colour system. Today is the only marked treatment: a 2px primary
-        // top rule — no shadow (Modernist has none).
-        session.status === 'done' && 'bg-card',
-        isToday && 'border-t-2 border-t-primary',
+        // one-colour system. Today is the only marked treatment: a 2px ink
+        // top rule — no shadow (house has none).
+        session.status === 'done' && 'is-done',
+        isToday && 'is-today',
         /*
          * `.240` — de-emphasised by border, never by opacity.
          *
@@ -91,145 +88,145 @@ export function PlanSessionCard({
          * border is what every other card on this grid already draws, so it
          * said "missed" in a language the screen was using for "normal".
          *
-         * What `.256` keeps is the part neither border does — the **Badge**
+         * What `.256` keeps is the part neither border does — the status word
          * below. Both fixes were still visual-only; opacity and a border are
          * equally nothing to a screen reader, and `WeekStrip` had said it in
          * words the whole time.
          */
-        session.status === 'missed' && 'border-2 border-dashed border-border bg-transparent',
+        session.status === 'missed' && 'is-missed',
         className
       )}
     >
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <CardTitle className="text-base">{session.name}</CardTitle>
-            <p className="text-xs text-muted-foreground mt-1">
-              {t('coachEstMinutes', {
-                defaultValue: '{{minutes}} min',
-                minutes: session.estMinutes,
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="house-session-name">{session.name}</p>
+          <p className="house-lede">
+            {t('coachEstMinutes', {
+              defaultValue: '{{minutes}} min',
+              minutes: session.estMinutes,
+            })}
+          </p>
+        </div>
+        {session.status === 'swapped' && (
+          <p className="house-kicker">
+            {t('coachSessionSwapped', { defaultValue: 'Adapted' })}
+          </p>
+        )}
+        {/*
+          The status was carried by opacity alone, which is nothing at all to a
+          screen reader — "missed" was visual-only on the card, while
+          `WeekStrip` has said it in words (`coachSessionMissed`) since it was
+          written. Same key, so this costs no translation.
+        */}
+        {session.status === 'missed' && (
+          <p className="house-kicker">
+            {t('coachSessionMissed', { defaultValue: 'Missed' })}
+          </p>
+        )}
+      </div>
+      <div className="house-session-groups">
+        {session.focusGroups.slice(0, 4).map((mg) => (
+          <span key={mg} className="house-state">
+            {mg}
+          </span>
+        ))}
+      </div>
+      {sessionRationale ? (
+        /*
+         * Quiet inset on the boss card — ink primary edge (not poster) so it
+         * does not compete with Start. No eyebrow: the input label alone
+         * carries the log cite (Design polish on `.699`). Empty history is
+         * one compact line (F-025), not three invented labels.
+         */
+        <div
+          className="house-session-rationale space-y-1.5 border-s-[3px] border-s-primary"
+          data-testid="coach-session-rationale"
+          data-rationale-kind={sessionRationale.kind}
+        >
+          {sessionRationale.kind === 'session-empty' ? (
+            <p className="house-lede">
+              {t(sessionRationale.compactKey, {
+                defaultValue: sessionRationale.compactDefault,
               })}
             </p>
-          </div>
-          {session.status === 'swapped' && (
-            <Badge variant="secondary" className="text-[10px]">
-              {t('coachSessionSwapped', { defaultValue: 'Adapted' })}
-            </Badge>
-          )}
-          {/*
-            The status was carried by opacity alone, which is nothing at all to a
-            screen reader — "missed" was visual-only on the card, while
-            `WeekStrip` has said it in words (`coachSessionMissed`) since it was
-            written. Same key, so this costs no translation.
-          */}
-          {session.status === 'missed' && (
-            <Badge variant="secondary" className="text-[10px]">
-              {t('coachSessionMissed', { defaultValue: 'Missed' })}
-            </Badge>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-1 pt-1">
-          {session.focusGroups.slice(0, 4).map((mg) => (
-            <Badge key={mg} variant="muscle" className="text-[10px]">
-              {mg}
-            </Badge>
-          ))}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {sessionRationale ? (
-          /*
-           * Quiet inset on the boss card — ink primary edge (not poster) so it
-           * does not compete with Start. No eyebrow: the input label alone
-           * carries the log cite (Design polish on `.699`). Empty history is
-           * one compact line (F-025), not three invented labels.
-           */
-          <div
-            className="space-y-1.5 border-s-[3px] border-s-primary bg-muted px-3 py-2"
-            data-testid="coach-session-rationale"
-            data-rationale-kind={sessionRationale.kind}
-          >
-            {sessionRationale.kind === 'session-empty' ? (
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {t(sessionRationale.compactKey, {
-                  defaultValue: sessionRationale.compactDefault,
+          ) : (
+            <>
+              <p className="house-lede">
+                <span className="house-session-rationale-label">
+                  {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
+                  {': '}
+                </span>
+                {t(sessionRationale.inputKey, {
+                  ...sessionRationale.inputParams,
+                  defaultValue: sessionRationale.inputDefault,
                 })}
               </p>
-            ) : (
-              <>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  <span className="font-medium text-foreground">
-                    {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
-                    {': '}
-                  </span>
-                  {t(sessionRationale.inputKey, {
-                    ...sessionRationale.inputParams,
-                    defaultValue: sessionRationale.inputDefault,
-                  })}
-                </p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  <span className="font-medium text-foreground">
-                    {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
-                    {': '}
-                  </span>
-                  {t(sessionRationale.ruleKey, {
-                    defaultValue: sessionRationale.ruleDefault,
-                  })}
-                </p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  <span className="font-medium text-foreground">
-                    {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
-                    {': '}
-                  </span>
-                  {t(sessionRationale.effectKey, {
-                    ...sessionRationale.effectParams,
-                    defaultValue: sessionRationale.effectDefault,
-                  })}
-                </p>
-              </>
-            )}
-          </div>
-        ) : null}
-        <ul className="space-y-2 text-sm">
-          {session.exercises.map((ex) => (
-            <PlanExerciseLine
-              key={ex.exerciseId}
-              ex={ex}
-              unit={unit}
-              onSwap={
-                onSwapExercise
-                  ? (toId) => onSwapExercise(ex.exerciseId, toId)
-                  : undefined
-              }
-            />
-          ))}
-        </ul>
-        {session.status !== 'done' && (
-          <div className="space-y-2">
-            {/*
-              D12 — one red Start on the week grid: only today.
-              Other days stay outline so zero-state `/coach` is not a farm of
-              primary fills (was cap 4 = every card + Regenerate).
-            */}
-            <Button
-              className={primary ? 'w-full primary-action' : 'w-full'}
-              variant={primary ? 'default' : 'outline'}
-              onClick={start}
+              <p className="house-lede">
+                <span className="house-session-rationale-label">
+                  {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
+                  {': '}
+                </span>
+                {t(sessionRationale.ruleKey, {
+                  defaultValue: sessionRationale.ruleDefault,
+                })}
+              </p>
+              <p className="house-lede">
+                <span className="house-session-rationale-label">
+                  {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
+                  {': '}
+                </span>
+                {t(sessionRationale.effectKey, {
+                  ...sessionRationale.effectParams,
+                  defaultValue: sessionRationale.effectDefault,
+                })}
+              </p>
+            </>
+          )}
+        </div>
+      ) : null}
+      <ul className="house-session-lifts">
+        {session.exercises.map((ex) => (
+          <PlanExerciseLine
+            key={ex.exerciseId}
+            ex={ex}
+            unit={unit}
+            onSwap={
+              onSwapExercise
+                ? (toId) => onSwapExercise(ex.exerciseId, toId)
+                : undefined
+            }
+          />
+        ))}
+      </ul>
+      {session.status !== 'done' && (
+        <div className="house-session-actions">
+          {/*
+            D12 — one filled Start on the week grid: only today.
+            Other days stay ghost so `/coach` is not a farm of
+            primary fills (was cap 4 = every card + Regenerate).
+          */}
+          <button
+            type="button"
+            className={
+              primary
+                ? 'house-btn house-btn-primary primary-action min-h-[44px] w-full tap-target'
+                : 'house-btn house-btn-ghost min-h-[44px] w-full tap-target'
+            }
+            onClick={start}
+          >
+            {t('coachStartSession', { defaultValue: 'Start this session' })}
+          </button>
+          {onAdjust ? (
+            <button
+              type="button"
+              className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
+              onClick={onAdjust}
             >
-              {t('coachStartSession', { defaultValue: 'Start this session' })}
-            </Button>
-            {onAdjust ? (
-              <button
-                type="button"
-                className="w-full text-sm text-primary min-h-[44px] hover:underline"
-                onClick={onAdjust}
-              >
-                {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
-              </button>
-            ) : null}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+            </button>
+          ) : null}
+        </div>
+      )}
+    </div>
   );
 }

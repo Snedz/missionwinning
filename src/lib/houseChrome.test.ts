@@ -486,6 +486,22 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(weekDose, /text-muted-foreground/);
   assert.match(css, /\.house-week-dose \{[^}]*font-size:\s*14px/);
   assert.match(spec, /Coach week dose is house leftover/);
+  const sessionCard = read('src/components/coach/PlanSessionCard.tsx');
+  assert.match(sessionCard, /house-card house-session/);
+  assert.match(
+    sessionCard,
+    /house-btn house-btn-primary primary-action min-h-\[44px\] w-full tap-target/
+  );
+  assert.match(sessionCard, /house-btn house-btn-ghost min-h-\[44px\] w-full tap-target/);
+  assert.match(sessionCard, /house-state/);
+  assert.match(sessionCard, /border-s-primary/);
+  assert.doesNotMatch(sessionCard, /content-card/);
+  assert.doesNotMatch(sessionCard, /<Card[\s>]/);
+  assert.doesNotMatch(sessionCard, /<Badge[\s>]/);
+  assert.doesNotMatch(sessionCard, /<Button[\s>]/);
+  assert.doesNotMatch(sessionCard, /accent-poster/);
+  assert.match(css, /\.house-session \{[^}]*padding:\s*16px 18px/);
+  assert.match(spec, /Coach session card is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);

@@ -11,7 +11,7 @@
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
 | `WeekStrip.tsx` | Week navigation on Coach page |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today — dose + compact adapt (G6). No second red. |
-| `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust); `.932` / `.699` boss-card why-this-session (cite or honest empty) |
+| `PlanSessionCard.tsx` | Session card is house leftover. Boss Start is the one filled action; other days stay ghost. Why-this-session cite or honest empty. |
 | `CoachNextDayCite.tsx` | Quiet next-day cite is house leftover. Ghost Start — never a second filled action. Honest empty when the diary is thin. |
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`); passes session rationale hints and garage `onSwapExercise` |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |

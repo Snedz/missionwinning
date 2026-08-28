@@ -1443,6 +1443,62 @@
   font-size: 13px;
 }
 
+.mw-house .house-session {
+  padding: 16px 18px;
+}
+
+.mw-house .house-session.is-today {
+  border-top: 2px solid var(--house-ink);
+}
+
+.mw-house .house-session.is-missed {
+  border-style: dashed;
+  background: transparent;
+}
+
+.mw-house .house-session-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-session .house-lede {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.mw-house .house-session-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.mw-house .house-session-rationale {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  background: var(--house-soft);
+}
+
+.mw-house .house-session-rationale-label {
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-session-lifts {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mw-house .house-session-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }
