@@ -956,6 +956,16 @@
   background: var(--house-faint);
 }
 
+.mw-house .house-assess details.house-card {
+  padding: 0;
+}
+
+.mw-house .house-assess input {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+}
+
 .mw-house .house-fuel #fuel-log {
   scroll-margin-top: 24px;
 }

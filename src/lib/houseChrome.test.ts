@@ -411,6 +411,15 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Feedback leftover/);
   assert.match(spec, /Garage leftover/);
   assert.match(spec, /Explore leftover/);
+  const assess = read('src/page-components/AssessmentsPage.tsx');
+  assert.match(assess, /className="house-assess"/);
+  assert.match(assess, /house-btn house-btn-primary primary-action/);
+  assert.match(assess, /className="house-card space-y-4"/);
+  assert.match(assess, /scoreParqAnswers/);
+  assert.match(assess, /startWorkout\(/);
+  assert.doesNotMatch(assess, /content-card/);
+  assert.match(css, /\.house-assess/);
+  assert.match(spec, /Assessment leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

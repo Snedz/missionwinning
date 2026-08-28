@@ -80,7 +80,11 @@ is `house-explore`: quiet title
 stays, board + pin list stay first
 paint, Add a place is a house-card,
 never a rail, Account still doors
-it. You leftover is
+it. Assessment leftover is
+`house-assess`: form is the first-paint
+object, one filled submit, stage
+prompts stay in Show all, Sign-in
+stays extra. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

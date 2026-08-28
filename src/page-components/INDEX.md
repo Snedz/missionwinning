@@ -91,7 +91,7 @@
 | `DmcaPage.tsx` | `/dmca` |
 | `RefundsPage.tsx` | `/refunds` |
 | `FeedbackPage.tsx` | `/feedback` |
-| `AssessmentsPage.tsx` | `/assessments` |
+| `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |
 | `CalculatorsPage.tsx` | `/calculators` |
 | `BetaStartPage.tsx` | `/beta` |
 | `AuthCallbackPage.tsx` | **Removed** — OAuth is `app/auth/callback/route.ts` |
