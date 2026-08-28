@@ -156,6 +156,7 @@ Repeat last set is house-btn, not filled.
 Pin and Note are house-field.
 Exercise more is a house leftover:
 ghost more, house-card overflow.
+Add-exercise search is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
