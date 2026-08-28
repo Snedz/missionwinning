@@ -1,84 +1,81 @@
 'use client';
 /**
- * Page: /dmca — DMCA / copyright notice channel
+ * Page: /dmca — leftover DMCA / copyright notice channel.
+ * Quiet Account / legal door. Never a rail.
  * See: app/INDEX.md, src/page-components/INDEX.md, docs/LEGAL_SAFETY.md
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Copyright } from 'lucide-react';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { infoEnFloor } from '@/i18n/infoEnFloor';
 
-const DMCA_NOTICE_LIS = [
-  'infoDmcaNoticeLi1',
-  'infoDmcaNoticeLi2',
-  'infoDmcaNoticeLi3',
-  'infoDmcaNoticeLi4',
-  'infoDmcaNoticeLi5',
-  'infoDmcaNoticeLi6',
+const DMCA_SECTIONS = [
+  { id: 'agent', key: 'infoDmcaAgent', bodyKey: 'infoDmcaAgentBody' },
+  {
+    id: 'notice',
+    key: 'infoDmcaNotice',
+    listKeys: [
+      'infoDmcaNoticeLi1',
+      'infoDmcaNoticeLi2',
+      'infoDmcaNoticeLi3',
+      'infoDmcaNoticeLi4',
+      'infoDmcaNoticeLi5',
+      'infoDmcaNoticeLi6',
+    ],
+  },
+  { id: 'counter', key: 'infoDmcaCounter', bodyKey: 'infoDmcaCounterBody' },
 ] as const;
 
 export function DmcaPage() {
   const { t } = useTranslation();
 
-  const jumpLinks = [
-    { id: 'agent', label: t('infoDmcaAgent', { defaultValue: 'Designated agent' }) },
-    { id: 'notice', label: t('infoDmcaNotice', { defaultValue: 'What your notice must include' }) },
-    { id: 'counter', label: t('infoDmcaCounter', { defaultValue: 'Counter-notice' }) },
-  ];
-
   return (
     <InfoPageShell
+      className="house-dmca"
       icon={Copyright}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
-      title={t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
+      title={t('infoDmcaTitle', { defaultValue: infoEnFloor('infoDmcaTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
+      variant="sections"
       showLegalFooter
-      jumpLinks={jumpLinks}
     >
-      <p className="text-muted-foreground">
-        {t('infoDmcaIntro', {
-          defaultValue:
-            'Mission Winning respects intellectual property. If you believe material on our service infringes your copyright, send a notice that complies with 17 U.S.C. §512 to our designated agent.',
-        })}
-      </p>
-
-      <InfoSection id="agent" title={t('infoDmcaAgent', { defaultValue: 'Designated agent' })}>
-        <p className="text-muted-foreground">
-          {t('infoDmcaAgentBody', {
-            defaultValue:
-              'Agent (interim until copyright.gov listing is published): Mission Winning LLC, Attn: DMCA Agent, support@missionwinning.com. Postal address: to be published on this page after the Copyright Office designation is filed. Subject line: DMCA Notice.',
-          })}
+      {/* Quiet leftover: intro + jump chips + sections. Legal copy unchanged. */}
+      <section className="house-card space-y-3">
+        <p className="text-sm text-muted-foreground">
+          {t('infoDmcaIntro', { defaultValue: infoEnFloor('infoDmcaIntro') })}
         </p>
-      </InfoSection>
+      </section>
 
-      <InfoSection
-        id="notice"
-        title={t('infoDmcaNotice', { defaultValue: 'What your notice must include' })}
-      >
-        <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-          {DMCA_NOTICE_LIS.map((liKey) => (
-            <li key={liKey}>{t(liKey, { defaultValue: infoEnFloor(liKey) })}</li>
-          ))}
-        </ul>
-      </InfoSection>
+      <nav className="house-dmca-jump" aria-label={t('infoDmcaTitle', { defaultValue: infoEnFloor('infoDmcaTitle') })}>
+        {DMCA_SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} className="house-state">
+            {t(s.key, { defaultValue: infoEnFloor(s.key) })}
+          </a>
+        ))}
+      </nav>
 
-      <InfoSection id="counter" title={t('infoDmcaCounter', { defaultValue: 'Counter-notice' })}>
-        <p className="text-muted-foreground">
-          {t('infoDmcaCounterBody', {
-            defaultValue:
-              'If your material was removed and you believe it was a mistake or misidentification, you may send a counter-notice to the same agent with the elements required by 17 U.S.C. §512(g). We may restore material consistent with the statute.',
-          })}
-        </p>
-      </InfoSection>
+      {DMCA_SECTIONS.map((section) => (
+        <section key={section.id} id={section.id} className="house-card space-y-3">
+          <h2 className="font-semibold">{t(section.key, { defaultValue: infoEnFloor(section.key) })}</h2>
+          {'listKeys' in section ? (
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+              {section.listKeys.map((li) => (
+                <li key={li}>{t(li, { defaultValue: infoEnFloor(li) })}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
+            </p>
+          )}
+        </section>
+      ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoDmcaFoot', {
-          defaultValue:
-            'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
-        })}{' '}
-        <Link href="/terms" className="text-primary hover:underline">
+        {t('infoDmcaFoot', { defaultValue: infoEnFloor('infoDmcaFoot') })}{' '}
+        <Link href="/terms" className="underline underline-offset-2">
           {t('termsOfService', { defaultValue: 'Terms of Service' })}
         </Link>
       </p>
