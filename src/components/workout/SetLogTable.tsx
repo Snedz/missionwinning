@@ -116,10 +116,8 @@ type Props = {
 
 const cell = 'px-1.5 py-1.5 align-middle';
 
-/** 2px rules and radius 0 come from the system. ≥44px taps. Width follows the column. */
-const numberInput =
-  'h-11 min-h-[44px] w-full min-w-0 border-2 border-border bg-background px-1 text-center text-sm font-semibold tabular-nums ' +
-  'focus:outline-none focus:ring-2 focus:ring-ring';
+/** House number cell on live compose. ≥44px taps. Width follows the column. */
+const numberInput = 'house-num min-h-[44px] w-full min-w-0 tap-target';
 
 export function SetLogTable({
   sets,

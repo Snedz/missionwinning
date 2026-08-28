@@ -664,6 +664,27 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-compose-live .house-num {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  text-align: center;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mw-house .house-compose-live .house-num:focus,
+.mw-house .house-compose-live .house-num:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
 .mw-house .house-catalog .font-mono {
   font-family: inherit;
   font-size: 13px;

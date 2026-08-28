@@ -587,13 +587,21 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /In-set cues are a kicker/);
   const setTable = read('src/components/workout/SetLogTable.tsx');
   assert.match(setTable, /house-state min-h-\[44px\] tap-target/);
+  assert.match(setTable, /house-num min-h-\[44px\] w-full min-w-0 tap-target/);
   assert.match(setTable, /data-testid="set-table-log-set"/);
   assert.match(setTable, /bg-\[hsl\(var\(--accent-poster\)\)\]/);
+  assert.doesNotMatch(setTable, /border-2 border-border/);
+  assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(
     setTable.slice(setTable.indexOf('function SetRowTagChips')),
     /accent-poster/
   );
   assert.match(css, /\.house-compose-live \.house-state\.is-on \{[^}]*--house-selected/);
+  assert.match(css, /\.house-compose-live \.house-num \{[^}]*--house-line/);
+  assert.match(
+    css,
+    /\.house-compose-live \.house-num:focus,\s*\.mw-house \.house-compose-live \.house-num:focus-visible \{[^}]*box-shadow:\s*none/
+  );
   const footer = read('src/components/workout/ActiveExerciseFooter.tsx');
   assert.match(footer, /house-state min-h-\[44px\] tap-target/);
   assert.match(footer, /className="house-btn min-h-\[44px\] tap-target"/);
@@ -609,6 +617,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Kind chips are house-state/);
   assert.match(spec, /Add Set is house-btn/);
   assert.match(spec, /Rest lanes are house-state/);
+  assert.match(spec, /Number cells are house-num/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
