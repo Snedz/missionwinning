@@ -27,7 +27,8 @@ test('inline add exercise and form guide CTAs meet sheet language', () => {
   assert.doesNotMatch(inline, /hover:bg-accent-100/);
 
   const form = readFileSync(join(root, 'src/components/form/FormGuideSheet.tsx'), 'utf8');
-  assert.match(form, /primary-action/);
+  assert.match(form, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.doesNotMatch(form, /primary-action|bg-primary-fill/);
 
   const foot = readFileSync(
     join(root, 'src/components/workout/ActiveExerciseFooter.tsx'),

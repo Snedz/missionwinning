@@ -770,6 +770,14 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(swapSheet, /house-btn-primary/);
   assert.match(css, /\.house-btn:disabled[\s\S]*?--house-faint/);
   assert.match(spec, /Swap confirm is house-btn, not filled/);
+  const formGuide = read('src/components/form/FormGuideSheet.tsx');
+  assert.match(formGuide, /data-testid="form-guide-got-it"/);
+  assert.match(formGuide, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.match(formGuide, /house-btn house-btn-ghost/);
+  assert.doesNotMatch(formGuide, /primary-action/);
+  assert.doesNotMatch(formGuide, /bg-primary-fill/);
+  assert.doesNotMatch(formGuide, /house-btn-primary/);
+  assert.match(spec, /Form guide confirm is house-btn, not filled/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

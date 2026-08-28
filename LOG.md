@@ -151,6 +151,7 @@ Skip this exercise is house-btn hold,
 not filled. Swap is house-btn ghost,
 not filled. Swap confirm is house-btn, not filled.
 Form guide is house-btn ghost.
+Form guide confirm is house-btn, not filled.
 Repeat last set is house-btn, not filled.
 Pin and Note are house-field.
 Exercise more is a house leftover:

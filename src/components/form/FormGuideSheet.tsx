@@ -50,7 +50,8 @@ export function FormGuideSheet({
           <button
             type="button"
             onClick={onClose}
-            className="primary-action w-full min-h-[52px] tap-target bg-primary-fill text-[17px] font-semibold text-white transition-colors hover:bg-primary-fill-hover"
+            data-testid="form-guide-got-it"
+            className="house-btn min-h-[52px] w-full tap-target"
           >
             {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>
@@ -58,7 +59,7 @@ export function FormGuideSheet({
             <Link
               href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
               onClick={onClose}
-              className="flex w-full min-h-[44px] items-center justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             >
               {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
             </Link>
