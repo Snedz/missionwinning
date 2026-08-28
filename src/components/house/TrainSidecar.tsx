@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -72,11 +71,6 @@ export function TrainSidecar() {
           placeholder={t('sessionJotLabel', { defaultValue: 'Notes' })}
         />
       </label>
-      <div style={{ marginTop: 20 }}>
-        <Link href="/history" className="house-btn">
-          {t('navHistory', { defaultValue: 'History' })}
-        </Link>
-      </div>
     </aside>
   );
 }

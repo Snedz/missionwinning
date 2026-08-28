@@ -383,6 +383,13 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(sidecar, /href: '\/history'/);
   assert.doesNotMatch(sidecar, /href: '\/coach'/);
   assert.doesNotMatch(sidecar, /href: '\/server'/);
+  const trainSide = stripComments(read('src/components/house/TrainSidecar.tsx'));
+  assert.match(trainSide, /house-sidecar/);
+  assert.match(trainSide, /startRest/);
+  assert.doesNotMatch(trainSide, /href: '\/history'/);
+  assert.doesNotMatch(trainSide, /href: '\/coach'/);
+  assert.doesNotMatch(trainSide, /href: '\/server'/);
+  assert.match(spec, /History stays on Home/);
   const profile = read('src/page-components/ProfilePage.tsx');
   assert.match(profile, /className="house-profile"/);
   assert.match(profile, /house-btn house-btn-ghost/);
