@@ -24,6 +24,8 @@ test('session sheets use primary-action + border-border skip (not ink cage)', ()
   assert.doesNotMatch(checkIn, /border-foreground tap-target/);
 
   const add = readFileSync(join(root, 'src/components/workout/AddExerciseSheet.tsx'), 'utf8');
-  assert.match(add, /primary-action/);
+  assert.match(add, /house-btn min-h-\[52px\] w-full tap-target/);
   assert.match(add, /tap-target/);
+  assert.doesNotMatch(add, /primary-action/);
+  assert.doesNotMatch(add, /<Button/);
 });
