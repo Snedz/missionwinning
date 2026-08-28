@@ -161,6 +161,7 @@ This-movement history is house leftover:
 Close is house-btn; rows are house-movement-row.
 Extra set cells are house-num.
 Plate skip is house-btn.
+Next-cite Skip is house-btn.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

@@ -692,6 +692,14 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-compose-live select\.house-num \{[^}]*padding-inline:\s*6px/);
   assert.match(spec, /Extra set cells are house-num/);
   assert.match(spec, /Plate skip is house-btn/);
+  const nextCite = read('src/components/workout/SetLogNextCite.tsx');
+  assert.match(nextCite, /data-testid="set-table-next-cite-skip"/);
+  assert.match(nextCite, /house-btn min-h-\[44px\] shrink-0 tap-target/);
+  assert.doesNotMatch(nextCite, /border-2/);
+  assert.doesNotMatch(nextCite, /hover:bg-muted/);
+  assert.doesNotMatch(nextCite, /house-btn-primary/);
+  assert.doesNotMatch(stripComments(nextCite), /accent-poster/);
+  assert.match(spec, /Next-cite Skip is house-btn/);
   const sessionChrome = read('src/components/workout/ActiveSessionChrome.tsx');
   assert.match(sessionChrome, /data-testid="active-finish"/);
   assert.match(sessionChrome, /className="house-btn min-h-\[44px\] shrink-0 tap-target"/);

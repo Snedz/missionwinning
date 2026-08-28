@@ -43,7 +43,7 @@ export function SetLogNextCite({ target, provenance, onSkip }: Props) {
         type="button"
         onClick={onSkip}
         data-testid="set-table-next-cite-skip"
-        className="min-h-[44px] shrink-0 border-2 border-border px-2 text-[11px] font-semibold text-foreground tap-target hover:bg-muted"
+        className="house-btn min-h-[44px] shrink-0 tap-target"
       >
         {t('activeNextCiteSkip', { defaultValue: 'Skip' })}
       </button>
