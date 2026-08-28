@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { HeartPulse } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { isWearablesPubliclyEnabled } from '@/lib/wearables/flags';
 import {
   connectHeartRateMonitor,
@@ -58,15 +57,15 @@ export function LiveHeartRate() {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 border-2 border-border bg-card px-3 py-2">
-      <HeartPulse className="h-4 w-4 text-primary shrink-0" aria-hidden />
+    <div className="house-live-hr" data-testid="live-heart-rate">
+      <HeartPulse className="h-4 w-4 shrink-0" aria-hidden />
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium text-foreground">
+        <div>
           {bpm != null
             ? t('liveHrBpm', { bpm, defaultValue: `${bpm} BPM` })
             : t('liveHrIdle', { defaultValue: 'Heart rate' })}
         </div>
-        <div className="text-[11px] text-muted-foreground truncate">
+        <div className="house-kicker truncate">
           {!supported
             ? t('liveHrUnsupported', {
                 defaultValue: 'Bluetooth HR needs Chrome or another browser with Web Bluetooth.',
@@ -77,17 +76,25 @@ export function LiveHeartRate() {
                   defaultValue: 'Optional Polar / Wahoo chest strap — not used in Mission Score.',
                 })}
         </div>
-        {error && <div className="text-[11px] text-destructive mt-0.5">{error}</div>}
+        {error && <div className="house-kicker mt-0.5">{error}</div>}
       </div>
       {supported &&
         (deviceName ? (
-          <Button type="button" size="sm" variant="ghost" className="min-h-[44px] tap-target" onClick={disconnect}>
+          <button
+            type="button"
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+            onClick={disconnect}
+          >
             {t('liveHrDisconnect', { defaultValue: 'Disconnect' })}
-          </Button>
+          </button>
         ) : (
-          <Button type="button" size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => void connect()}>
+          <button
+            type="button"
+            className="house-btn min-h-[44px] tap-target"
+            onClick={() => void connect()}
+          >
             {t('liveHrConnect', { defaultValue: 'Connect HR' })}
-          </Button>
+          </button>
         ))}
     </div>
   );

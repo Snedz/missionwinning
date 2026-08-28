@@ -24,25 +24,21 @@ export function SessionJotField({ value, onChange }: Props) {
   const firstLine = value.split('\n').find((l) => l.trim().length > 0)?.trim() ?? '';
 
   return (
-    <div className="border-2 border-border" data-testid="session-notes">
+    <div className="house-jot" data-testid="session-notes">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex min-h-[44px] w-full items-center gap-2 px-3 py-2 text-left"
+        className="house-btn house-btn-ghost min-h-[44px] tap-target"
       >
-        <PenLine className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {t('sessionJotLabel', { defaultValue: 'Notes' })}
-        </span>
+        <PenLine className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        {t('sessionJotLabel', { defaultValue: 'Notes' })}
         {!open && firstLine ? (
-          <span className="min-w-0 flex-1 truncate text-xs italic text-foreground">
-            {firstLine}
-          </span>
+          <span className="min-w-0 flex-1 truncate text-xs italic">{firstLine}</span>
         ) : null}
       </button>
       {open ? (
-        <div className="px-3 pb-3">
+        <div>
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -52,9 +48,9 @@ export function SessionJotField({ value, onChange }: Props) {
             placeholder={t('sessionJotPlaceholder', {
               defaultValue: 'Add notes if you have more to record.',
             })}
-            className="w-full border-2 border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="house-field min-h-[44px] tap-target"
           />
-          <p className="mt-1 text-[11px] text-muted-foreground">
+          <p className="house-kicker mt-1">
             {t('sessionJotPrivacy', {
               defaultValue: 'Stays with this session on this device.',
             })}

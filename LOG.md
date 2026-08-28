@@ -166,6 +166,9 @@ Set options is a house leftover:
 ghost more, house-card overflow.
 Reorder handle is a house leftover:
 ghost house-btn grip and arrows.
+Show-all extras are house leftover.
+Session notes are house-field.
+Heart rate is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

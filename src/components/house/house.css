@@ -666,6 +666,21 @@
   padding: 0;
 }
 
+.mw-house .house-compose-live .house-show-all-body {
+  border-top: 1px solid var(--house-line);
+}
+
+.mw-house .house-compose-live .house-jot .house-field {
+  margin-top: 8px;
+}
+
+.mw-house .house-compose-live .house-live-hr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
 .mw-house .house-compose-chrome {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

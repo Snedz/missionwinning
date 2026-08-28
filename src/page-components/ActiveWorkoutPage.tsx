@@ -905,7 +905,7 @@ export function ActiveWorkoutPage() {
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
-        <div className="space-y-4 border-t border-border p-4">
+        <div className="house-show-all-body space-y-4 p-4">
           <LiveHeartRate />
           <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
           <ActiveReadinessDeltaStrip
