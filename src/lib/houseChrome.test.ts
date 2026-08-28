@@ -393,6 +393,16 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryHidden, /uppercase tracking/);
   assert.match(css, /\.house-catalog \.house-library-hidden \.house-item \{[^}]*--house-line/);
   assert.match(spec, /Library hidden is house leftover/);
+  const librarySearch = library.slice(
+    library.indexOf('house-filter-bar'),
+    library.indexOf('library-states')
+  );
+  assert.match(librarySearch, /house-field house-library-search min-h-\[44px\]/);
+  assert.match(librarySearch, /type="search"/);
+  assert.match(librarySearch, /data-testid="library-search"/);
+  assert.doesNotMatch(librarySearch, /<Input[\s>]/);
+  assert.match(css, /\.house-catalog \.house-filter-bar \.house-field \{[^}]*--house-line/);
+  assert.match(spec, /Library search is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);

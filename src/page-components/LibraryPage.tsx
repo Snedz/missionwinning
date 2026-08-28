@@ -12,7 +12,6 @@ import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Check, Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -229,11 +228,13 @@ export function LibraryPage() {
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
+            <input
+              type="search"
+              className="house-field house-library-search min-h-[44px]"
               placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
               value={filters.query}
               onChange={(e) => setFilter('query', e.target.value)}
-              className="min-h-[40px] pl-9"
+              data-testid="library-search"
             />
           </div>
           <button
