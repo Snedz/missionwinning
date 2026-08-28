@@ -761,6 +761,15 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-compose-live .house-set-head {
+  border-bottom: 1px solid var(--house-line);
+  color: var(--house-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  text-transform: none;
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

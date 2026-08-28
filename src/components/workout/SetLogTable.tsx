@@ -175,7 +175,7 @@ export function SetLogTable({
         <col className="w-[26%]" />
       </colgroup>
       <thead>
-        <tr className="border-b-2 border-border text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+        <tr className="house-set-head">
           <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>

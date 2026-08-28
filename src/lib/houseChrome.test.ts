@@ -638,6 +638,12 @@ test('house design system is the signed-in token table', () => {
   assert.match(setTable, /house-num min-h-\[44px\] w-full min-w-0 tap-target/);
   assert.match(setTable, /data-testid="set-table-log-set"/);
   assert.match(setTable, /bg-\[hsl\(var\(--accent-poster\)\)\]/);
+  const setHead = setTable.slice(setTable.indexOf('<thead>'), setTable.indexOf('</thead>'));
+  assert.match(setHead, /house-set-head/);
+  assert.doesNotMatch(setHead, /border-b-2/);
+  assert.doesNotMatch(setHead, /uppercase/);
+  assert.match(css, /\.house-compose-live \.house-set-head \{[^}]*text-transform:\s*none/);
+  assert.match(spec, /Set table head is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(
