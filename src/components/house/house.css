@@ -706,6 +706,10 @@
   border-top: 1px solid var(--house-line);
 }
 
+.mw-house .house-compose-live .house-readiness {
+  padding: 4px 0;
+}
+
 .mw-house .house-compose-live .house-jot .house-field {
   margin-top: 8px;
 }

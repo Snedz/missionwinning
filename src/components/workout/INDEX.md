@@ -35,6 +35,7 @@
 | `ExerciseNoteField.tsx` | This-session note on the open lift. Last History is not a pin (`.748` / `.996`). |
 | `ExercisePinnedNoteField.tsx` | Pinned reminder on the open lift. Returns next session. Not History (`.996`). |
 | `SessionJotField.tsx` | Optional private session notes — live Show all + close receipt (`.982`). Empty invents nothing. |
+| `ActiveReadinessDeltaStrip.tsx` | Post-check-in readiness delta in Show all (`.432`). Readiness extra is house leftover. Hidden until a real before/after. |
 | `WorkoutVictorySheet.tsx` | Post-workout close receipt — stats + lift table + notes + Next on first paint. Feel, share, rewards, debrief in Show all (`.956` / `.982`). Outline **Save as routine** (`.960`). Outline **Start this again** (`.991`) |
 | `SaveHonoredRoutineDoor.tsx` | Confirm-gated save / replace for a named routine (`.960`). Not the Today red Start |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |

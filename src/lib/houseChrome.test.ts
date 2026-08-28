@@ -912,6 +912,17 @@ test('house design system is the signed-in token table', () => {
     /\.house-history \.house-num,\s*\.mw-house \.house-compose-live \.house-num \{[^}]*--house-line/
   );
   assert.match(spec, /Load-% cell is house-num/);
+  const readiness = read('src/components/workout/ActiveReadinessDeltaStrip.tsx');
+  assert.match(readiness, /data-testid="active-readiness-delta"/);
+  assert.match(readiness, /house-readiness/);
+  assert.match(readiness, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.match(readiness, /shouldShowReadinessDelta/);
+  assert.doesNotMatch(readiness, /border-2/);
+  assert.doesNotMatch(readiness, /hover:border-primary/);
+  assert.doesNotMatch(readiness, /house-btn-primary/);
+  assert.doesNotMatch(readiness, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-readiness \{[^}]*padding/);
+  assert.match(spec, /Readiness extra is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
