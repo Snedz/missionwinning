@@ -187,6 +187,7 @@ Check-in scale is house leftover.
 Hard-session confirm is house leftover.
 Overlay header is house leftover.
 Swap sheet is house leftover.
+Movement history sheet is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

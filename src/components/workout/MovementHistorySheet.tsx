@@ -40,6 +40,7 @@ export function MovementHistorySheet({
       open={open}
       onClose={onClose}
       size="sm"
+      className="mw-house house-movement-sheet"
       eyebrow={t('activeMovementHistoryEyebrow', { defaultValue: 'History' })}
       title={exerciseName}
       bodyClassName="p-4"

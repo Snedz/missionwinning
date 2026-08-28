@@ -935,6 +935,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Overlay header is house leftover/);
   const movementHistory = read('src/components/workout/MovementHistorySheet.tsx');
   assert.match(movementHistory, /data-testid="movement-history-close"/);
+  assert.match(movementHistory, /mw-house house-movement-sheet/);
   assert.match(movementHistory, /house-btn min-h-\[52px\] w-full tap-target/);
   assert.match(movementHistory, /house-movement-row/);
   assert.doesNotMatch(movementHistory, /<Button/);
@@ -943,6 +944,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(movementHistory, /house-btn-primary/);
   assert.match(css, /\.house-movement-row \{[^}]*--house-line/);
   assert.match(spec, /This-movement history is house leftover/);
+  assert.match(spec, /Movement history sheet is house leftover/);
   const setOptions = read('src/components/workout/ActiveSetOptionsMenu.tsx');
   assert.match(setOptions, /data-testid="active-set-options"/);
   assert.match(setOptions, /house-btn house-btn-ghost/);
