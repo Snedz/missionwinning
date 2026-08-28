@@ -216,6 +216,7 @@ Library showing count is house leftover.
 Coach session card is house leftover.
 Coach session lift is house leftover.
 Coach live voice is house leftover.
+Coach adapt banner is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

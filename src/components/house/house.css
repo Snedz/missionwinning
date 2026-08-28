@@ -1578,6 +1578,30 @@
   min-width: 72px;
 }
 
+.mw-house .house-adapt {
+  border-left: 3px solid var(--house-ink);
+  background: var(--house-soft);
+  padding: 12px 16px;
+}
+
+.mw-house .house-adapt-compact {
+  padding: 8px 12px;
+}
+
+.mw-house .house-adapt .house-kicker {
+  margin: 0 0 6px;
+}
+
+.mw-house .house-adapt .house-lede {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.mw-house .house-adapt-label {
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

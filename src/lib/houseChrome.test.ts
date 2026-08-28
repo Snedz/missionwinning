@@ -527,6 +527,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(liveVoice, /accent-poster/);
   assert.match(css, /\.house-live-talk \{[^}]*min-height:\s*72px/);
   assert.match(spec, /Coach live voice is house leftover/);
+  const adaptBanner = read('src/components/coach/CoachAdaptBanner.tsx');
+  const adaptWrap = adaptBanner.slice(
+    Math.max(0, adaptBanner.indexOf('coach-adapt-banner') - 160),
+    adaptBanner.indexOf('coach-adapt-banner') + 80
+  );
+  assert.match(adaptWrap, /house-adapt/);
+  assert.match(adaptWrap, /house-kicker/);
+  assert.doesNotMatch(adaptWrap, /accent-poster/);
+  assert.doesNotMatch(adaptWrap, /eyebrow/);
+  assert.doesNotMatch(adaptBanner, /uppercase tracking/);
+  assert.match(css, /\.house-adapt \{[^}]*--house-ink/);
+  assert.match(spec, /Coach adapt banner is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);
