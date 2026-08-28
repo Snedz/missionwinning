@@ -445,6 +445,31 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(generateDock, /uppercase tracking/);
   assert.match(css, /\.house-generate-dock \.house-lede \{[^}]*font-size:\s*14px/);
   assert.match(spec, /Coach generate dock is house leftover/);
+  const nextDayCite = read('src/components/coach/CoachNextDayCite.tsx');
+  const nextDayEmpty = nextDayCite.slice(
+    Math.max(0, nextDayCite.indexOf('if (!cite)') - 40),
+    nextDayCite.indexOf('const canStartLogs')
+  );
+  assert.match(nextDayEmpty, /house-card house-next-day/);
+  assert.match(nextDayEmpty, /house-kicker/);
+  assert.match(nextDayEmpty, /house-lede/);
+  assert.match(nextDayEmpty, /data-testid="coach-next-day-empty"/);
+  assert.doesNotMatch(nextDayEmpty, /border-2/);
+  assert.doesNotMatch(nextDayEmpty, /eyebrow/);
+  const nextDayFilledAt = nextDayCite.indexOf('house-next-day-name');
+  const nextDayFilled = nextDayCite.slice(
+    Math.max(0, nextDayCite.lastIndexOf('house-card house-next-day', nextDayFilledAt) - 40),
+    nextDayCite.indexOf('coach-next-day-start') + 80
+  );
+  assert.match(nextDayFilled, /house-card house-next-day/);
+  assert.match(nextDayFilled, /house-btn house-btn-ghost min-h-\[44px\] w-full tap-target/);
+  assert.doesNotMatch(nextDayFilled, /house-btn-primary/);
+  assert.doesNotMatch(nextDayFilled, /primary-action/);
+  assert.doesNotMatch(nextDayFilled, /<Button[\s>]/);
+  assert.doesNotMatch(nextDayFilled, /border-2/);
+  assert.doesNotMatch(nextDayFilled, /eyebrow/);
+  assert.match(css, /\.house-next-day \{[^}]*padding:\s*16px 18px/);
+  assert.match(spec, /Coach next-day cite is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);

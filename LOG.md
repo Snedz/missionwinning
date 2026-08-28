@@ -210,6 +210,7 @@ Library search is house leftover.
 History search is house leftover.
 Builder Show all extras is house leftover.
 Coach generate dock is house leftover.
+Coach next-day cite is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

@@ -1409,6 +1409,30 @@
   font-size: 14px;
 }
 
+.mw-house .house-next-day {
+  padding: 16px 18px;
+}
+
+.mw-house .house-next-day .house-lede {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+.mw-house .house-next-day-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-next-day-intensity {
+  font-variant-numeric: tabular-nums;
+}
+
+.mw-house .house-next-day .house-btn {
+  margin-top: 12px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

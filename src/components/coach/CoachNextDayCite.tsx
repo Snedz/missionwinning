@@ -2,12 +2,11 @@
 
 /**
  * Quiet next-day cite on Coach (boss-adjacent / Show all).
- * Outline Start — never a second Today red action.
+ * House leftover. Ghost Start — never a second filled action.
  */
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -41,14 +40,14 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   if (!cite) {
     return (
       <div
-        className="border-2 border-border bg-card px-4 py-3"
+        className="house-card house-next-day"
         data-testid="coach-next-day"
         data-next-day-source="empty"
       >
-        <p className="eyebrow text-[10px] text-muted-foreground">
+        <p className="house-kicker">
           {t('coachNextDayEyebrow', { defaultValue: 'Next day' })}
         </p>
-        <p className="mt-1 text-sm text-muted-foreground" data-testid="coach-next-day-empty">
+        <p className="house-lede" data-testid="coach-next-day-empty">
           {t('coachNextDayEmpty', {
             defaultValue: 'Not enough logs yet — keep logging.',
           })}
@@ -83,35 +82,31 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
 
   return (
     <div
-      className="border-2 border-border bg-card px-4 py-3"
+      className="house-card house-next-day"
       data-testid="coach-next-day"
       data-next-day-source={cite ? cite.source : 'empty'}
     >
-      <p className="eyebrow text-[10px] text-muted-foreground">
+      <p className="house-kicker">
         {t('coachNextDayEyebrow', { defaultValue: 'Next day' })}
       </p>
-      <p className="mt-1 text-base font-semibold" data-testid="coach-next-day-name">
+      <p className="house-next-day-name" data-testid="coach-next-day-name">
         {cite.name}
       </p>
-      <p className="mt-0.5 text-xs text-muted-foreground">
+      <p className="house-lede">
         {cite.source === 'plan'
           ? t('coachNextDayFromPlan', { defaultValue: "From this week's plan" })
           : t('coachNextDayFromLogs', { defaultValue: 'From your logs' })}
       </p>
       {cite.intensity ? (
-        <p
-          className="mt-0.5 text-xs tabular-nums text-muted-foreground"
-          data-testid="coach-next-day-intensity"
-        >
+        <p className="house-lede house-next-day-intensity" data-testid="coach-next-day-intensity">
           {cite.intensity}
         </p>
       ) : null}
       <CoachLogCite className="mt-1" />
       {showStart ? (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          className="mt-3 w-full min-h-[44px]"
+          className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
           onClick={start}
           data-testid="coach-next-day-start"
         >
@@ -122,7 +117,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
                   honored?.source === 'saved' ? honored.routine.name : cite.name,
                 defaultValue: 'Start {{name}}',
               })}
-        </Button>
+        </button>
       ) : null}
     </div>
   );

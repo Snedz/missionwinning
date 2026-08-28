@@ -12,7 +12,7 @@
 | `WeekStrip.tsx` | Week navigation on Coach page |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today — dose + compact adapt (G6). No second red. |
 | `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust); `.932` / `.699` boss-card why-this-session (cite or honest empty) |
-| `CoachNextDayCite.tsx` | Quiet next-day cite + outline Start (`.955`) — logs template or live plan; honest empty when the diary is thin (`.964`); never a second Today red |
+| `CoachNextDayCite.tsx` | Quiet next-day cite is house leftover. Ghost Start — never a second filled action. Honest empty when the diary is thin. |
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`); passes session rationale hints and garage `onSwapExercise` |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |
 | `CoachManageSheet.tsx` | D12 manage week: adjust · schedule · regenerate · ask |
