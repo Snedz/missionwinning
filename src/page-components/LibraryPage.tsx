@@ -196,14 +196,9 @@ export function LibraryPage() {
       className="house-catalog"
     >
       {hiddenRows.length > 0 ? (
-        <div
-          className="mb-3 space-y-2 border-2 border-border p-3"
-          data-testid="library-hidden"
-        >
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            {t('libraryHidden', { defaultValue: 'Hidden' })}
-          </p>
-          <p className="text-xs text-muted-foreground">
+        <div className="house-card house-library-hidden mb-3 space-y-2" data-testid="library-hidden">
+          <p className="house-kicker">{t('libraryHidden', { defaultValue: 'Hidden' })}</p>
+          <p className="house-lede">
             {t('libraryHiddenDesc', {
               defaultValue: 'Hidden names stay off Add and search. History stays.',
             })}
@@ -212,20 +207,19 @@ export function LibraryPage() {
             {hiddenRows.map((row) => (
               <li
                 key={row.id}
-                className="flex min-h-[44px] items-center justify-between gap-2"
+                className="house-item house-library-hidden-row flex items-center justify-between gap-2"
               >
-                <span className="text-sm font-semibold">{row.name}</span>
-                <Button
+                <span className="min-w-0 font-medium">{row.name}</span>
+                <button
                   type="button"
-                  variant="outline"
-                  className="min-h-[44px] shrink-0 tap-target"
+                  className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target"
                   data-testid="library-unhide"
                   onClick={() => {
                     if (unhideExerciseNow(row.id)) bumpHide();
                   }}
                 >
                   {t('libraryUnhide', { defaultValue: 'Unhide' })}
-                </Button>
+                </button>
               </li>
             ))}
           </ul>

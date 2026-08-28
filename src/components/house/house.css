@@ -1237,6 +1237,20 @@
   background: transparent;
 }
 
+.mw-house .house-catalog .house-library-hidden .house-item {
+  align-items: center;
+  min-height: 52px;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  border-radius: var(--house-radius-row);
+  background: var(--house-paper);
+}
+
+.mw-house .house-catalog .house-library-hidden .house-lede {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
 .mw-house .house-catalog .house-item-pick {
   display: flex;
   width: 48px;
