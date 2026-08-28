@@ -147,6 +147,8 @@ Finish is house-btn, not filled.
 Session more is a house leftover:
 ghost more, house-card overflow.
 Plates / tip stay in overflow.
+Skip this exercise is house-btn hold,
+not filled.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

@@ -46,6 +46,9 @@ export type HoldToConfirmButtonProps = {
   icon?: ReactNode;
   /** Extra aria hint; defaults include hold instruction. */
   holdHint?: string;
+  /** Signed-in house leftover — skips field-manual button variants. */
+  chrome?: 'house';
+  'data-testid'?: string;
 };
 
 export function HoldToConfirmButton({
@@ -58,6 +61,8 @@ export function HoldToConfirmButton({
   className,
   icon,
   holdHint,
+  chrome,
+  'data-testid': dataTestId,
 }: HoldToConfirmButtonProps) {
   const { t } = useTranslation();
   const reactId = useId();
@@ -174,11 +179,14 @@ export function HoldToConfirmButton({
       type="button"
       id={reactId}
       disabled={disabled}
+      data-testid={dataTestId}
       aria-label={`${label}. ${hint}`}
       aria-pressed={holding || armed}
       aria-busy={holding}
       className={cn(
-        buttonVariants({ variant, size: icon ? 'icon' : size }),
+        chrome === 'house'
+          ? 'house-btn min-h-[44px] tap-target'
+          : buttonVariants({ variant, size: icon ? 'icon' : size }),
         'relative isolate select-none touch-none',
         icon && 'shrink-0',
         armed && 'ring-2 ring-destructive',
@@ -210,7 +218,11 @@ export function HoldToConfirmButton({
         aria-hidden
         className={cn(
           'pointer-events-none absolute inset-[2px] rounded-[inherit]',
-          variant === 'destructive' ? 'bg-destructive' : 'bg-background'
+          chrome === 'house'
+            ? 'bg-[var(--house-chip)]'
+            : variant === 'destructive'
+              ? 'bg-destructive'
+              : 'bg-background'
         )}
       />
       <span className="relative z-10 inline-flex items-center justify-center gap-2">

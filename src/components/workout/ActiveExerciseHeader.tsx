@@ -235,9 +235,9 @@ export function ActiveExerciseHeader({
 
       {shouldShowSessionSkip({ skippedThisSession: skipped }) && (
         <HoldToConfirmButton
-          variant="outline"
-          size="sm"
+          chrome="house"
           className="w-fit justify-start"
+          data-testid="active-skip-exercise"
           label={t('activeSkipThisExerciseHold', {
             defaultValue: 'Skip this exercise — this session',
           })}

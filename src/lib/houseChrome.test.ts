@@ -682,6 +682,16 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-session-more \{[^}]*--house-radius-sm/);
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
+  const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
+  const skipBlock = skipHeader.slice(
+    skipHeader.indexOf('shouldShowSessionSkip({'),
+    skipHeader.indexOf('hasCompleted && !skipped')
+  );
+  assert.match(skipBlock, /HoldToConfirmButton/);
+  assert.match(skipBlock, /chrome="house"/);
+  assert.match(skipBlock, /data-testid="active-skip-exercise"/);
+  assert.doesNotMatch(skipBlock, /variant="outline"/);
+  assert.match(spec, /Skip this exercise is house-btn hold/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
