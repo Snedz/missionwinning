@@ -539,6 +539,21 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(adaptBanner, /uppercase tracking/);
   assert.match(css, /\.house-adapt \{[^}]*--house-ink/);
   assert.match(spec, /Coach adapt banner is house leftover/);
+  const coachExtras = coach.slice(
+    coach.lastIndexOf('<details', coach.indexOf('coach-show-all')),
+    coach.indexOf('<CoachLoadBand') + 40
+  );
+  assert.match(coachExtras, /house-card group/);
+  assert.match(coachExtras, /house-show-all-body/);
+  assert.match(coachExtras, /CoachVoiceCard/);
+  assert.match(coachExtras, /CoachLoadBand/);
+  assert.match(coachExtras, /CoachLogCite/);
+  assert.match(coachExtras, /CoachManageSheet/);
+  assert.doesNotMatch(coachExtras, /content-card/);
+  assert.doesNotMatch(coachExtras, /border-t-2/);
+  assert.doesNotMatch(coachExtras, /border-2/);
+  assert.match(css, /\.house-plan \.house-show-all-body \{[^}]*--house-line/);
+  assert.match(spec, /Coach Show all extras is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);

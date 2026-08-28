@@ -1602,6 +1602,10 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-plan .house-show-all-body {
+  border-top: 1px solid var(--house-line);
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

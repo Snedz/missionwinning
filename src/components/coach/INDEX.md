@@ -17,7 +17,7 @@
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`); passes session rationale hints and garage `onSwapExercise` |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |
 | `CoachManageSheet.tsx` | D12 manage week: adjust · schedule · regenerate · ask |
-| `CoachVoiceCard.tsx` | Weekly voice briefing display |
+| `CoachVoiceCard.tsx` | Weekly voice briefing — Show all internal. Fold chrome is house leftover. |
 | `AdjustSessionSheet.tsx` | Free offline adjust chips (time / BW / avoid) |
 | `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
 | `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |

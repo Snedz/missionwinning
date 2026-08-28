@@ -341,14 +341,14 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }}
           />
 
-          <details className="group border-2 border-border bg-card">
+          <details className="house-card group">
             <summary
               className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
               data-testid="coach-show-all"
             >
               {t('todayShowAll', { defaultValue: 'Show all' })}
             </summary>
-            <div className="space-y-4 border-t-2 border-border p-4">
+            <div className="house-show-all-body space-y-4 p-4">
               <CoachLogCite emphasis />
               <CoachAdaptBanner
                 plan={plan}
