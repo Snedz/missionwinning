@@ -778,6 +778,21 @@
   padding: 12px 16px;
 }
 
+.mw-house .house-swap-option {
+  width: 100%;
+  height: auto;
+  min-height: 44px;
+  padding: 10px 12px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  white-space: normal;
+}
+
+.mw-house .house-swap-option.is-on {
+  background: var(--house-selected);
+}
+
 .mw-house .house-compose-live .house-exercise-more-foot {
   margin-top: 4px;
   padding-top: 8px;

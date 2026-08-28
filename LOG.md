@@ -178,6 +178,7 @@ Readiness extra is house leftover.
 Warmup toggle is house leftover.
 Set side is house-num.
 Form guide body is house leftover.
+Garage swap is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
