@@ -793,6 +793,38 @@
   background: var(--house-selected);
 }
 
+.mw-house.house-checkin .house-checkin-scale {
+  display: flex;
+  border: 1px solid var(--house-line);
+}
+
+.mw-house.house-checkin .house-checkin-tick {
+  flex: 1;
+  border: 0;
+  border-right: 1px solid var(--house-line);
+  background: transparent;
+  color: var(--house-muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.mw-house.house-checkin .house-checkin-tick:last-child {
+  border-right: 0;
+}
+
+.mw-house.house-checkin .house-checkin-tick:hover,
+.mw-house.house-checkin .house-checkin-tick:focus-visible {
+  background: var(--house-chip);
+}
+
+.mw-house.house-checkin .house-checkin-tick.is-on {
+  background: var(--house-press);
+  color: var(--house-press-ink);
+}
+
 .mw-house .house-compose-live .house-exercise-head {
   padding: 12px 12px 8px;
 }

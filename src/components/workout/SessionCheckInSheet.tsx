@@ -56,7 +56,7 @@ function QuickRow({
         A tag or a fill inside a sheet needs a rule, not a tint.
       */}
       <div
-        className="flex border-2 border-border divide-x divide-border"
+        className="house-checkin-scale"
         role="group"
         aria-label={label}
       >
@@ -71,10 +71,8 @@ function QuickRow({
                two are the same control implemented twice (`.178`, recorded not
                fixed: extracting it is a refactor, painting one of them a
                different colour from the other is a defect). Save is house-btn. */
-            className={`flex-1 min-h-[44px] tap-target text-sm font-semibold tabular-nums transition-colors ${
-              value >= n
-                ? 'bg-foreground text-background'
-                : 'text-muted-foreground hover:bg-muted'
+            className={`house-checkin-tick min-h-[44px] tap-target ${
+              value >= n ? 'is-on' : ''
             }`}
           >
             {n}

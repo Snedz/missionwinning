@@ -182,6 +182,7 @@ Garage swap is house leftover.
 Exercise head is house leftover.
 Add-exercise sheet is house leftover.
 Check-in confirm is house leftover.
+Check-in scale is house leftover.
 Hard-session confirm is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
