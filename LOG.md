@@ -176,6 +176,7 @@ house-btn ghost, not filled.
 Load-% cell is house-num.
 Readiness extra is house leftover.
 Warmup toggle is house leftover.
+Set side is house-num.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

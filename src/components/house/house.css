@@ -804,6 +804,7 @@
   box-shadow: none;
 }
 
+.mw-house .house-history select.house-num,
 .mw-house .house-compose-live select.house-num {
   padding-inline: 6px;
   cursor: pointer;

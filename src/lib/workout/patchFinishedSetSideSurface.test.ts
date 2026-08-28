@@ -58,8 +58,9 @@ describe('patch finished set side surface lock (.1042)', () => {
     assert.doesNotMatch(helper, /from ['"]@\/store\/workoutStore['"]/);
     const select = read('src/components/workout/SetSideSelect.tsx');
     assert.match(select, /min-h-\[44px\]/);
-    assert.match(select, /border-border/);
-    assert.match(select, /bg-background/);
+    assert.match(select, /house-num/);
+    assert.doesNotMatch(select, /border-2/);
+    assert.doesNotMatch(select, /focus:ring-2/);
     assert.match(select, /SET_SIDES/);
     assert.match(select, /activeSetSideL/);
     assert.match(select, /activeSetSideR/);
