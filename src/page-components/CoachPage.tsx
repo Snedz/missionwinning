@@ -147,11 +147,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             })}
           />
           <ScreenDock>
-            <div className="poster-field px-4 pb-4 pt-3.5">
-              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {weekEyebrow}
-              </p>
-              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+            <div className="house-generate-dock">
+              <p className="house-kicker">{weekEyebrow}</p>
+              <p className="house-lede">
                 {t('coachFreeBetaNextWeek', {
                   defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
                 })}
@@ -159,7 +157,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <button
                 type="button"
                 onClick={() => generate()}
-                className="primary-action min-h-[52px] w-full text-[19px]"
+                className="house-btn house-btn-primary primary-action min-h-[52px] w-full tap-target"
               >
                 <span className="flex-1 text-start">
                   {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
@@ -215,7 +213,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       )}
 
       {/* Field manual 1A: EmptyState is invite only (outline CTAs demoted by design).
-          Boss Generate docks in poster-field — same chrome as Active empty Start. */}
+          Generate dock is house leftover — one filled action on /coach. */}
       {!loading && !plan && !locked && needsParq && (
         <ParqIntakeCard
           onDone={() => {
@@ -238,11 +236,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           />
           <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
           <ScreenDock>
-            <div className="poster-field px-4 pb-4 pt-3.5">
-              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {weekEyebrow}
-              </p>
-              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+            <div className="house-generate-dock">
+              <p className="house-kicker">{weekEyebrow}</p>
+              <p className="house-lede">
                 {t('coachGenerateEmptyDesc', {
                   defaultValue: freeBeta
                     ? 'One week from your logs. Free every week — no wearable.'
@@ -252,7 +248,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <button
                 type="button"
                 onClick={() => generate()}
-                className="primary-action min-h-[52px] w-full text-[19px]"
+                className="house-btn house-btn-primary primary-action min-h-[52px] w-full tap-target"
                 data-testid="coach-generate-dock"
               >
                 <span className="flex-1 text-start">

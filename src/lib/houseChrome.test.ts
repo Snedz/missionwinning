@@ -432,6 +432,19 @@ test('house design system is the signed-in token table', () => {
   assert.match(coach, /className="house-empty"/);
   assert.match(coach, /data-testid="coach-generate-dock"/);
   assert.match(coach, /generate\(\)/);
+  const generateDock = coach.slice(
+    Math.max(0, coach.indexOf('house-generate-dock') - 80),
+    coach.indexOf('coach-generate-dock') + 80
+  );
+  assert.match(generateDock, /house-generate-dock/);
+  assert.match(generateDock, /house-kicker/);
+  assert.match(generateDock, /house-lede/);
+  assert.match(generateDock, /house-btn house-btn-primary primary-action min-h-\[52px\] w-full tap-target/);
+  assert.doesNotMatch(generateDock, /poster-field/);
+  assert.doesNotMatch(generateDock, /poster-kicker/);
+  assert.doesNotMatch(generateDock, /uppercase tracking/);
+  assert.match(css, /\.house-generate-dock \.house-lede \{[^}]*font-size:\s*14px/);
+  assert.match(spec, /Coach generate dock is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);
