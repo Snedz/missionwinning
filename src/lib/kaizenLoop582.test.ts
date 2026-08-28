@@ -37,7 +37,8 @@ test('Library detail overlay is not given button min-h; nav chips tap-target', (
     src,
     /AdaptiveOverlay[\s\S]{0,80}size="sm"[\s\S]{0,40}className="min-h-\[44px\] tap-target"/
   );
-  assert.match(src, /min-h-\[44px\] min-w-\[44px\] border-2 px-2 tap-target/);
+  assert.match(src, /house-btn house-btn-ghost min-h-\[44px\] min-w-\[44px\] tap-target/);
+  assert.doesNotMatch(src, /border-2 px-2 tap-target/);
 });
 
 test('File upload remove control is 44px', () => {

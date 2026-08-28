@@ -35,7 +35,8 @@ describe('hide exercise from library surface lock (.1004)', () => {
     const hideAt = detail.indexOf('library-hide');
     const hideBtn = detail.slice(Math.max(0, hideAt - 280), hideAt + 80);
     assert.match(hideBtn, /min-h-\[44px\]/);
-    assert.match(hideBtn, /variant="outline"/);
+    assert.match(hideBtn, /house-btn house-btn-ghost/);
+    assert.doesNotMatch(hideBtn, /variant="outline"/);
     assert.doesNotMatch(hideBtn, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(detail, /upsertCustomExercise|exercise-picker-use-name/);
     assert.doesNotMatch(detail, /looksLike|fuzzy|autoHide/);

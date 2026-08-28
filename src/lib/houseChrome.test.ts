@@ -366,6 +366,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryFilterSheet, /primary-action/);
   assert.match(css, /\.mw-house\.house-library-filters \.house-state\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Library Filters sheet is house leftover/);
+  const libraryDetail = read('src/components/library/LibraryDetailSheet.tsx');
+  assert.match(libraryDetail, /mw-house house-library-detail/);
+  assert.match(libraryDetail, /house-btn house-btn-primary min-h-\[52px\] w-full tap-target/);
+  assert.match(libraryDetail, /house-btn house-btn-ghost min-h-\[44px\] w-full tap-target/);
+  assert.match(libraryDetail, /data-testid="library-hide"/);
+  assert.doesNotMatch(libraryDetail, /<Button[\s>]/);
+  assert.doesNotMatch(libraryDetail, /<Badge/);
+  assert.doesNotMatch(libraryDetail, /border-2/);
+  assert.doesNotMatch(libraryDetail, /uppercase tracking/);
+  assert.doesNotMatch(libraryDetail, /primary-action/);
+  assert.match(spec, /Library detail is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);
