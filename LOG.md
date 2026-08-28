@@ -107,6 +107,9 @@ stay first paint, table is a house
 object, never a rail. Privacy leftover is
 `house-privacy`: jump chips are house-state,
 sections are house-card, never a rail,
+legal copy unchanged. Terms leftover is
+`house-terms`: jump chips are house-state,
+sections are house-card, never a rail,
 legal copy unchanged. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px

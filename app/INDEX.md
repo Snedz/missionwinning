@@ -45,7 +45,7 @@
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
 | `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
-| `/terms` | `TermsPage.tsx` | Terms of use |
+| `/terms` | `TermsPage.tsx` | Leftover terms. Jump chips + house-card sections. Never a rail. |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |

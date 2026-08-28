@@ -87,7 +87,7 @@
 | `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
 | `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
 | `AccessibilityPage.tsx` | `/accessibility` |
-| `TermsPage.tsx` | `/terms` |
+| `TermsPage.tsx` | `/terms` — leftover terms; jump chips + house-card sections. Never a rail. |
 | `DmcaPage.tsx` | `/dmca` |
 | `RefundsPage.tsx` | `/refunds` |
 | `HelpPage.tsx` | `/help` — leftover FAQ; hairline items. Never a rail. |

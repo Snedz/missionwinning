@@ -512,6 +512,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(moreNav, /['"]\/privacy['"]/);
   assert.match(css, /\.house-privacy/);
   assert.match(spec, /Privacy leftover/);
+  const terms = read('src/page-components/TermsPage.tsx');
+  assert.match(terms, /className="house-terms"/);
+  assert.match(terms, /className="house-card space-y-3"/);
+  assert.match(terms, /house-terms-jump/);
+  assert.match(terms, /infoEnFloor/);
+  assert.match(terms, /TERM_SECTIONS/);
+  assert.match(terms, /eu-consumers/);
+  assert.doesNotMatch(terms, /InfoSection/);
+  assert.doesNotMatch(moreNav, /['"]\/terms['"]/);
+  assert.match(css, /\.house-terms/);
+  assert.match(spec, /Terms leftover/);
   const composeLive = read('src/page-components/ActiveWorkoutPage.tsx');
   assert.match(composeLive, /house-compose-live/);
   assert.match(composeLive, /className="house-lede"/);
