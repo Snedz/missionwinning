@@ -770,6 +770,14 @@
   text-transform: none;
 }
 
+.mw-house .house-compose-live .house-set-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  text-transform: none;
+  color: var(--house-muted);
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

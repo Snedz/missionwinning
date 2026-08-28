@@ -254,7 +254,7 @@ export function SetLogTable({
                 )}
                 {side ? (
                   <span
-                    className="ms-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+                    className="house-set-kicker ms-1"
                     data-testid="set-table-side"
                   >
                     {t(setSideLabelKey(side), { defaultValue: setSideDefaultLabel(side) })}
@@ -808,9 +808,7 @@ function SetRowWorkClock({
         defaultValue: '{{kind}} {{clock}}',
       })}
     >
-      <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-        {kindLabel}
-      </span>
+      <span className="house-set-kicker">{kindLabel}</span>
       <span
         className="font-extrabold tabular-nums text-foreground"
         data-testid="set-row-work-clock-digits"

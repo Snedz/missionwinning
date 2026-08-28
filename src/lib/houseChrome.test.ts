@@ -644,6 +644,20 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(setHead, /uppercase/);
   assert.match(css, /\.house-compose-live \.house-set-head \{[^}]*text-transform:\s*none/);
   assert.match(spec, /Set table head is house leftover/);
+  const setSideKicker = setTable.slice(
+    setTable.indexOf('data-testid="set-table-side"') - 160,
+    setTable.indexOf('data-testid="set-table-side"') + 80
+  );
+  assert.match(setSideKicker, /house-set-kicker/);
+  assert.doesNotMatch(setSideKicker, /uppercase/);
+  const workClock = setTable.slice(
+    setTable.indexOf('data-testid="set-row-work-clock"'),
+    setTable.indexOf('data-testid="set-row-work-clock-digits"')
+  );
+  assert.match(workClock, /house-set-kicker/);
+  assert.doesNotMatch(workClock, /uppercase/);
+  assert.match(css, /\.house-compose-live \.house-set-kicker \{[^}]*text-transform:\s*none/);
+  assert.match(spec, /Set row kicker is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(
