@@ -162,6 +162,8 @@ Close is house-btn; rows are house-movement-row.
 Extra set cells are house-num.
 Plate skip is house-btn.
 Next-cite Skip is house-btn.
+Set options is a house leftover:
+ghost more, house-card overflow.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

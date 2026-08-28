@@ -715,7 +715,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-compose-chrome \{[^}]*--house-line/);
   assert.match(
     css,
-    /\.house-session-more,\s*\.mw-house \.house-compose-live \.house-exercise-more \{[^}]*--house-radius-sm/
+    /\.house-session-more,\s*\.mw-house \.house-compose-live \.house-exercise-more,\s*\.mw-house \.house-compose-live \.house-set-options \{[^}]*--house-radius-sm/
   );
   assert.match(css, /\.house-exercise-more-foot \{[^}]*--house-line/);
   assert.match(spec, /Finish is house-btn, not filled/);
@@ -831,6 +831,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(movementHistory, /house-btn-primary/);
   assert.match(css, /\.house-movement-row \{[^}]*--house-line/);
   assert.match(spec, /This-movement history is house leftover/);
+  const setOptions = read('src/components/workout/ActiveSetOptionsMenu.tsx');
+  assert.match(setOptions, /data-testid="active-set-options"/);
+  assert.match(setOptions, /house-btn house-btn-ghost/);
+  assert.match(setOptions, /house-card house-set-options/);
+  assert.match(setOptions, /shouldShowApplyTargetsMenuitem/);
+  assert.match(setOptions, /shouldShowRemoveSetMenuitem/);
+  assert.doesNotMatch(setOptions, /<Button/);
+  assert.doesNotMatch(setOptions, /border-2/);
+  assert.doesNotMatch(setOptions, /hover:bg-muted/);
+  assert.doesNotMatch(setOptions, /text-primary/);
+  assert.doesNotMatch(setOptions, /house-btn-primary/);
+  assert.match(spec, /Set options is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

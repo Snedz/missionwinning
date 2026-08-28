@@ -672,7 +672,8 @@
 }
 
 .mw-house .house-compose-live .house-session-more,
-.mw-house .house-compose-live .house-exercise-more {
+.mw-house .house-compose-live .house-exercise-more,
+.mw-house .house-compose-live .house-set-options {
   padding: 8px;
   border-radius: var(--house-radius-sm);
 }
