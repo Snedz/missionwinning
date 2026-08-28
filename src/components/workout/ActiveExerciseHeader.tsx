@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
@@ -244,15 +243,14 @@ export function ActiveExerciseHeader({
       )}
 
       {hasCompleted && !skipped && (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
-          className="min-h-[44px] w-fit"
+          className="house-btn min-h-[44px] w-fit tap-target"
+          data-testid="active-repeat-last"
           onClick={onRepeatLast}
         >
           {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
-        </Button>
+        </button>
       )}
 
       <SessionSwapSheet

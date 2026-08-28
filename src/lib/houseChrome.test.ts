@@ -716,6 +716,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Skip this exercise is house-btn hold/);
   assert.match(spec, /Swap is house-btn ghost/);
   assert.match(spec, /Form guide is house-btn ghost/);
+  const repeatBlock = skipHeader.slice(
+    skipHeader.indexOf('{hasCompleted && !skipped && ('),
+    skipHeader.indexOf('<SessionSwapSheet')
+  );
+  assert.match(repeatBlock, /data-testid="active-repeat-last"/);
+  assert.match(repeatBlock, /house-btn min-h-\[44px\] w-fit tap-target/);
+  assert.match(repeatBlock, /activeRepeatLast/);
+  assert.doesNotMatch(repeatBlock, /<Button/);
+  assert.doesNotMatch(repeatBlock, /variant="outline"/);
+  assert.doesNotMatch(repeatBlock, /house-btn-primary/);
+  assert.match(spec, /Repeat last set is house-btn, not filled/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
