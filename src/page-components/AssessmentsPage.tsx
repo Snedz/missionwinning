@@ -15,6 +15,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { persistParqScreen, scoreParqAnswers } from '@/lib/journey/parqIntake';
+import { assessmentsEnFloor } from '@/i18n/assessmentsLocales';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -238,7 +239,9 @@ export function AssessmentsPage() {
           {questions.map((item) => (
             <div key={item.key} className="space-y-1">
               <div className="text-sm font-semibold">
-                {t(`assessQ_${item.key}`, { defaultValue: item.key })}
+                {t(`assessQ_${item.key}`, {
+                  defaultValue: assessmentsEnFloor(`assessQ_${item.key}`),
+                })}
               </div>
               <div className="flex gap-2 flex-wrap">
                 {[

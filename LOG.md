@@ -82,8 +82,9 @@ paint, Add a place is a house-card,
 never a rail, Account still doors
 it. Assessment leftover is
 `house-assess`: form is the first-paint
-object, one filled submit, stage
-prompts stay in Show all, Sign-in
+object, one filled submit, question
+labels use EN floors on first paint,
+stage prompts stay in Show all, Sign-in
 stays extra. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`;
 quiet foot stays muted. You leftover is

@@ -421,6 +421,8 @@ test('house design system is the signed-in token table', () => {
   assert.match(assess, /className="house-card space-y-4"/);
   assert.match(assess, /scoreParqAnswers/);
   assert.match(assess, /startWorkout\(/);
+  assert.match(assess, /assessmentsEnFloor/);
+  assert.doesNotMatch(assess, /defaultValue: item\.key/);
   assert.doesNotMatch(assess, /content-card/);
   assert.match(css, /\.house-assess/);
   assert.match(spec, /Assessment leftover/);

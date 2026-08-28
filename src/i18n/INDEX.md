@@ -58,7 +58,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `trackLocales.ts` | Track |
 | `benchmarksLocales.ts` | Benchmarks |
 | `activeWorkoutLocales.ts` | Active workout logger |
-| `assessmentsLocales.ts` | PAR-Q |
+| `assessmentsLocales.ts` | PAR-Q + `assessmentsEnFloor()` for first paint |
 | `calculatorsLocales.ts` | Calculators |
 | `fitnessTestLocales.ts` | PFT |
 | `programsLocales.ts` | Programs |
