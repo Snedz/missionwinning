@@ -103,7 +103,9 @@ ink, not `#eee`. Train compose leftover:
 empty is house-lede, Add exercise is
 house-btn, extras in house-card Show
 all, Log set stays filled and ungated.
-Train sidecar leftover is rest /
+In-set cues are a house kicker plus
+ghost hide / Learn door — never a
+second filled action. Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
 `house-profile` (Account door is a

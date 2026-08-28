@@ -479,7 +479,15 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(composeLive, /border-y-2 border-border/);
   assert.doesNotMatch(composeLive, /<Button[\s>]/);
   assert.match(css, /\.house-compose-live details\.house-card/);
+  const cues = read('src/components/workout/InSetCueList.tsx');
+  assert.match(cues, /house-kicker/);
+  assert.match(cues, /house-btn house-btn-ghost/);
+  assert.match(cues, /data-testid="in-set-cues-skip"/);
+  assert.match(cues, /data-testid="in-set-cues-more"/);
+  assert.doesNotMatch(cues, /border-2 border-border/);
+  assert.doesNotMatch(cues, /primary-action/);
   assert.match(spec, /Train compose/);
+  assert.match(spec, /In-set cues are a kicker/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
