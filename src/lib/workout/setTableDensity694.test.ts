@@ -107,13 +107,17 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   assert.doesNotMatch(src, /accent-poster/);
 });
 
-test('LastSetGhostButton: outline one-tap; never poster-red', () => {
+test('LastSetGhostButton: house leftover one-tap; never poster-red', () => {
   const src = workout('LastSetGhostButton.tsx');
   assert.match(src, /data-testid="last-set-ghost"/);
+  assert.match(src, /house-btn house-btn-ghost house-last-ghost/);
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /tap-target/);
+  assert.doesNotMatch(src, /border-2/);
+  assert.doesNotMatch(src, /hover:bg-muted/);
   assert.doesNotMatch(src, /primary-action/);
   assert.doesNotMatch(src, /accent-poster/);
+  assert.doesNotMatch(src, /house-btn-primary/);
 });
 
 test('LogConsole and SetLogTable mount the last-set ghost', () => {

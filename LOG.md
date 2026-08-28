@@ -171,6 +171,8 @@ Session notes are house-field.
 Heart rate is house leftover.
 Rest dock is house leftover.
 Skip is house-btn, not filled.
+Last-set ghost is a house leftover:
+house-btn ghost, not filled.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

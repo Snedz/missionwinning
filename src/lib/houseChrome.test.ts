@@ -888,6 +888,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(reorder, /house-btn-primary/);
   assert.match(css, /\.house-compose-live \.house-reorder \{[^}]*padding-inline:\s*0/);
   assert.match(spec, /Reorder handle is house leftover/);
+  const lastGhost = read('src/components/workout/LastSetGhostButton.tsx');
+  assert.match(lastGhost, /data-testid="last-set-ghost"/);
+  assert.match(lastGhost, /house-btn house-btn-ghost house-last-ghost/);
+  assert.match(lastGhost, /shouldOfferLastSetGhost/);
+  assert.doesNotMatch(lastGhost, /border-2/);
+  assert.doesNotMatch(lastGhost, /hover:bg-muted/);
+  assert.doesNotMatch(lastGhost, /house-btn-primary/);
+  assert.doesNotMatch(lastGhost, /primary-action/);
+  assert.doesNotMatch(lastGhost, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-last-ghost \{[^}]*flex-start/);
+  assert.match(spec, /Last-set ghost is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

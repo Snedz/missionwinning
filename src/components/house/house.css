@@ -735,6 +735,12 @@
   padding-inline: 0;
 }
 
+.mw-house .house-compose-live .house-last-ghost {
+  width: 100%;
+  justify-content: flex-start;
+  font-variant-numeric: tabular-nums;
+}
+
 .mw-house .house-compose-live .house-exercise-more-foot {
   margin-top: 4px;
   padding-top: 8px;
