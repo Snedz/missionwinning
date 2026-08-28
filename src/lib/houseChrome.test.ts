@@ -812,6 +812,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
   assert.match(spec, /Session more hold is house leftover/);
+  const cueMe = read('src/components/speech/ActiveTrainCues.tsx');
+  assert.match(cueMe, /house-btn house-btn-ghost min-h-\[44px\] w-full justify-start tap-target/);
+  assert.match(cueMe, /data-testid="active-cue-me"/);
+  assert.doesNotMatch(cueMe, /<Button[\s>]/);
+  assert.doesNotMatch(cueMe, /border-2/);
+  assert.doesNotMatch(cueMe, /variant="outline"/);
+  assert.match(spec, /Cue me is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
   assert.match(skipHeader, /house-exercise-head/);
   assert.match(skipHeader, /house-exercise-title/);
