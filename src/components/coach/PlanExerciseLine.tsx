@@ -48,24 +48,24 @@ export function PlanExerciseLine({ ex, unit, compact = false, onSwap }: Props) {
   const why = coachWhyLine(ex.whyKey, t);
 
   return (
-    <li className={compact ? '' : 'border-b border-border pb-2 last:border-0'}>
-      <div className={compact ? 'text-sm tabular-nums' : 'flex items-start justify-between gap-2'}>
-        <div className={compact ? undefined : 'font-semibold min-w-0'}>
+    <li className={compact ? 'house-session-lift is-compact' : 'house-session-lift'}>
+      <div className={compact ? 'house-session-lift-row is-compact' : 'house-session-lift-row'}>
+        <div className={compact ? 'house-session-lift-name is-compact' : 'house-session-lift-name'}>
           {name} — {ex.sets}×{ex.reps}
           {load}
         </div>
         {showSwap ? (
           <button
             type="button"
-            className="shrink-0 min-h-[44px] px-2 text-sm text-primary hover:underline"
+            className="house-btn house-btn-ghost house-session-lift-swap min-h-[44px] tap-target"
             onClick={() => setSwapOpen(true)}
           >
             {t('activeSwap', { defaultValue: 'Swap' })}
           </button>
         ) : null}
       </div>
-      {!compact && why ? <p className="text-xs text-muted-foreground mt-0.5">{why}</p> : null}
-      {compact && why ? <p className="text-[11px] text-muted-foreground">{why}</p> : null}
+      {!compact && why ? <p className="house-lede">{why}</p> : null}
+      {compact && why ? <p className="house-lede">{why}</p> : null}
       {showSwap ? (
         <AdaptiveOverlay
           open={swapOpen}
