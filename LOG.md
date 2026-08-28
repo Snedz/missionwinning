@@ -208,6 +208,7 @@ Library detail is house leftover.
 Library hidden is house leftover.
 Library search is house leftover.
 History search is house leftover.
+Builder Show all extras is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

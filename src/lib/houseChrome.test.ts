@@ -437,6 +437,23 @@ test('house design system is the signed-in token table', () => {
   assert.match(builder, /house-btn-primary primary-action/);
   assert.match(builder, /startBlank/);
   assert.match(builder, /house-empty/);
+  const builderExtras = builder.slice(
+    Math.max(0, builder.indexOf('builder-show-all') - 80),
+    builder.indexOf('step === 2')
+  );
+  assert.match(builderExtras, /house-show-all-body/);
+  assert.match(builderExtras, /ProgramTemplatesPanel/);
+  assert.match(builderExtras, /house-kicker/);
+  assert.match(builderExtras, /house-lede/);
+  assert.match(builderExtras, /house-state/);
+  assert.match(builderExtras, /data-testid="builder-show-all"/);
+  assert.doesNotMatch(builderExtras, /content-card/);
+  assert.doesNotMatch(builderExtras, /border-t-2/);
+  assert.doesNotMatch(builderExtras, /border-2/);
+  assert.doesNotMatch(builderExtras, /<Badge/);
+  assert.doesNotMatch(builderExtras, /<Layers/);
+  assert.match(css, /\.house-builder \.house-show-all-body \{[^}]*--house-line/);
+  assert.match(spec, /Builder Show all extras is house leftover/);
   assert.match(css, /\.house-builder \.house-item/);
   const account = read('src/page-components/AccountPage.tsx');
   assert.match(account, /className="house-account"/);

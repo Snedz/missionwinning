@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from "next/dynamic";
-import { Layers, PenTool, ChevronRight } from "lucide-react";
+import { PenTool, ChevronRight } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
 
@@ -356,24 +356,16 @@ export function BuilderPage() {
             >
               {t('todayShowAll', { defaultValue: 'Show all' })}
             </summary>
-            <div className="space-y-4 border-t-2 border-border p-4">
-          <section
-            id="program-templates"
-            className="content-card space-y-4 border-2 border-border p-5 md:p-6"
-          >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="flex items-center gap-2 text-xl font-extrabold">
-            <Layers className="h-6 w-6 text-primary" aria-hidden />
-            {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
-          </h3>
-          <Badge variant="secondary">
-            {t('builderProgramCount', {
-              count: FREE_TEMPLATE_PROGRAM_COUNT,
-              defaultValue: '{{count}} programs',
-            })}
-          </Badge>
-        </div>
-        <p className="text-xs text-muted-foreground">
+            <div className="house-show-all-body space-y-4 p-4">
+          <section id="program-templates" className="space-y-4">
+        <p className="house-kicker">{t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}</p>
+        <p className="house-lede">
+          {t('builderProgramCount', {
+            count: FREE_TEMPLATE_PROGRAM_COUNT,
+            defaultValue: '{{count}} programs',
+          })}
+        </p>
+        <p className="house-lede">
           {t('builderTemplatesFoot', {
             defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
           })}

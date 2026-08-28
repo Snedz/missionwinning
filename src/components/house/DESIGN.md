@@ -66,7 +66,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Catalog row | `.house-item` in `.house-catalog` | Hairline list. Pick mark + name + details. Library Filters is house leftover. Library Filters sheet is house leftover. Library detail is house leftover. Library hidden is house leftover. Library search is house leftover. |
 | History row | `.house-item` in `.house-history` | Hairline list. Open log; Again / Details ghost. History tools are house leftover. History search is house leftover. |
 | Plan empty | `.house-empty` + dock | Invite on the sheet; Generate stays one filled action on `/coach` |
-| Builder start | `.house-builder` | Blank workout is the filled action. Saved rows are hairline items. Templates stay in Show all |
+| Builder start | `.house-builder` | Blank workout is the filled action. Saved rows are hairline items. Templates stay in Show all. Builder Show all extras is house leftover. ProgramTemplatesPanel internals stay. |
 | You leftover | `.house-profile` | Quiet title stays. Account door is a ghost house button |
 | Account leftover | `.house-account` | Quiet title stays. Sign-in / return / prefs stay first paint. Explore, more settings, and help are house-card objects. Sidecar leftover rooms only (Account / You). Never History or Coach on the right. |
 | Fuel leftover | `.house-fuel` | Log stays first paint. Search / barcode / recipes stay in Show all |
