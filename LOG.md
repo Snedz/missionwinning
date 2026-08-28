@@ -149,7 +149,7 @@ ghost more, house-card overflow.
 Plates / tip stay in overflow.
 Skip this exercise is house-btn hold,
 not filled. Swap is house-btn ghost,
-not filled.
+not filled. Form guide is house-btn ghost.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

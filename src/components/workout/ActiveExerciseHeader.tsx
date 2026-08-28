@@ -153,16 +153,15 @@ export function ActiveExerciseHeader({
         </CardTitle>
         <div className="flex shrink-0 items-center gap-0.5">
           {hasFormGuide && (
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
-              className="h-11 w-11 tap-target text-primary"
+              className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
+              data-testid="active-form-guide"
               aria-label={t('activeFormGuide', { defaultValue: 'Form guide' })}
               onClick={onFormGuide}
             >
               <Info className="h-5 w-5" />
-            </Button>
+            </button>
           )}
           {shouldShowExerciseSwapMenuitem(hasCompleted, swapOptionCount, skipped) && (
             <button

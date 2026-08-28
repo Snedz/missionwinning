@@ -683,6 +683,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
+  const formBlock = skipHeader.slice(
+    skipHeader.indexOf('{hasFormGuide && ('),
+    skipHeader.indexOf('{shouldShowExerciseSwapMenuitem(')
+  );
+  assert.match(formBlock, /house-btn house-btn-ghost/);
+  assert.match(formBlock, /data-testid="active-form-guide"/);
+  assert.match(formBlock, /onFormGuide/);
+  assert.doesNotMatch(formBlock, /<Button/);
+  assert.doesNotMatch(formBlock, /variant="ghost"/);
+  assert.doesNotMatch(formBlock, /house-btn-primary/);
+  assert.doesNotMatch(formBlock, /text-primary/);
   const swapBlock = skipHeader.slice(
     skipHeader.indexOf('{shouldShowExerciseSwapMenuitem('),
     skipHeader.indexOf('<ActiveExerciseMoreMenu')
@@ -704,6 +715,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(skipBlock, /variant="outline"/);
   assert.match(spec, /Skip this exercise is house-btn hold/);
   assert.match(spec, /Swap is house-btn ghost/);
+  assert.match(spec, /Form guide is house-btn ghost/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
