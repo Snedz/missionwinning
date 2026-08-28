@@ -760,6 +760,7 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-history .house-num,
 .mw-house .house-compose-live .house-num {
   min-height: 44px;
   padding: 0 4px;
@@ -774,6 +775,8 @@
   font-variant-numeric: tabular-nums;
 }
 
+.mw-house .house-history .house-num:focus,
+.mw-house .house-history .house-num:focus-visible,
 .mw-house .house-compose-live .house-num:focus,
 .mw-house .house-compose-live .house-num:focus-visible {
   border: 1px solid var(--house-ink);

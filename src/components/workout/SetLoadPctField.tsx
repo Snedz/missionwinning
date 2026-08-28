@@ -71,8 +71,7 @@ export function SetLoadPctField({
         }
       }}
       className={cn(
-        'h-11 min-h-[44px] w-[4.75rem] border-2 border-border bg-background px-1.5 text-center text-[11px] font-semibold tabular-nums tap-target',
-        'focus:outline-none focus:ring-2 focus:ring-ring',
+        'house-num h-11 min-h-[44px] w-[4.75rem] tap-target',
         className
       )}
     />

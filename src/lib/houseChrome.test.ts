@@ -899,6 +899,19 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(lastGhost, /accent-poster/);
   assert.match(css, /\.house-compose-live \.house-last-ghost \{[^}]*flex-start/);
   assert.match(spec, /Last-set ghost is house leftover/);
+  const loadPct = read('src/components/workout/SetLoadPctField.tsx');
+  assert.match(loadPct, /data-testid=\{testId\}/);
+  assert.match(loadPct, /house-num h-11 min-h-\[44px\] w-\[4\.75rem\] tap-target/);
+  assert.match(loadPct, /parseOptionalLoadPct/);
+  assert.doesNotMatch(loadPct, /border-2/);
+  assert.doesNotMatch(loadPct, /focus:ring-2/);
+  assert.doesNotMatch(loadPct, /house-btn-primary/);
+  assert.doesNotMatch(loadPct, /accent-poster/);
+  assert.match(
+    css,
+    /\.house-history \.house-num,\s*\.mw-house \.house-compose-live \.house-num \{[^}]*--house-line/
+  );
+  assert.match(spec, /Load-% cell is house-num/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
