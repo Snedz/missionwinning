@@ -89,7 +89,11 @@ stays extra. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
 muted rows; current leftover is
-ink, not `#eee`. You leftover is
+ink, not `#eee`. Train compose leftover:
+empty is house-lede, Add exercise is
+house-btn, extras in house-card Show
+all, Log set stays filled and ungated.
+You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

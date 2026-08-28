@@ -27,7 +27,6 @@ import {
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
@@ -767,7 +766,7 @@ export function ActiveWorkoutPage() {
         /* Was the logger's own dashed box — the system has no dashed borders
            and nothing centred. Two rules, flush left, like every other empty
            state since `.150`. */
-        <p className="border-y-2 border-border py-6 text-[15px] leading-relaxed text-muted-foreground">
+        <p className="house-lede">
           {t('activeEmptyExercises', {
             defaultValue: 'Add an exercise to begin logging sets.',
           })}
@@ -868,15 +867,14 @@ export function ActiveWorkoutPage() {
       )}
 
         {isCompact && (
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="min-h-[44px] w-full justify-start border-2"
+            className="house-btn min-h-[44px] w-full justify-start"
             onClick={() => setAddExerciseOpen(true)}
           >
             <Plus className="h-4 w-4 me-2" aria-hidden />
             {t('activeAddExerciseTitle', { defaultValue: 'Add exercise' })}
-          </Button>
+          </button>
         )}
 
         {/*
@@ -900,14 +898,14 @@ export function ActiveWorkoutPage() {
           />
         )}
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="active-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
-        <div className="space-y-4 border-t-2 border-border p-4">
+        <div className="space-y-4 border-t border-border p-4">
           <LiveHeartRate />
           <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
           <ActiveReadinessDeltaStrip

@@ -654,6 +654,10 @@
   padding: 28px 32px 48px;
 }
 
+.mw-house .house-compose-live details.house-card {
+  padding: 0;
+}
+
 .mw-house .house-catalog .font-mono {
   font-family: inherit;
   font-size: 13px;

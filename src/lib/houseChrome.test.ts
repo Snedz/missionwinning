@@ -435,6 +435,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(assess, /content-card/);
   assert.match(css, /\.house-assess/);
   assert.match(spec, /Assessment leftover/);
+  const composeLive = read('src/page-components/ActiveWorkoutPage.tsx');
+  assert.match(composeLive, /house-compose-live/);
+  assert.match(composeLive, /className="house-lede"/);
+  assert.match(composeLive, /className="house-btn min-h-\[44px\] w-full justify-start"/);
+  assert.match(composeLive, /className="house-card group"/);
+  assert.match(composeLive, /data-testid="active-show-all"/);
+  assert.match(composeLive, /onLogSet=\{/);
+  assert.doesNotMatch(composeLive, /border-y-2 border-border/);
+  assert.doesNotMatch(composeLive, /<Button[\s>]/);
+  assert.match(css, /\.house-compose-live details\.house-card/);
+  assert.match(spec, /Train compose/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
