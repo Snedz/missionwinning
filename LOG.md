@@ -151,6 +151,7 @@ Skip this exercise is house-btn hold,
 not filled. Swap is house-btn ghost,
 not filled. Form guide is house-btn ghost.
 Repeat last set is house-btn, not filled.
+Pin and Note are house-field.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

@@ -727,6 +727,22 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(repeatBlock, /variant="outline"/);
   assert.doesNotMatch(repeatBlock, /house-btn-primary/);
   assert.match(spec, /Repeat last set is house-btn, not filled/);
+  const pinField = read('src/components/workout/ExercisePinnedNoteField.tsx');
+  const noteField = read('src/components/workout/ExerciseNoteField.tsx');
+  assert.match(pinField, /house-field min-h-\[44px\]/);
+  assert.match(pinField, /data-testid="exercise-pin"/);
+  assert.doesNotMatch(pinField, /border-2/);
+  assert.doesNotMatch(pinField, /focus:ring-2/);
+  assert.match(noteField, /house-field min-h-\[44px\]/);
+  assert.match(noteField, /data-testid="exercise-note"/);
+  assert.doesNotMatch(noteField, /border-2/);
+  assert.doesNotMatch(noteField, /focus:ring-2/);
+  assert.match(css, /\.house-compose-live \.house-field \{[^}]*--house-line/);
+  assert.match(
+    css,
+    /\.house-compose-live \.house-field:focus,\s*\.mw-house \.house-compose-live \.house-field:focus-visible \{[^}]*box-shadow:\s*none/
+  );
+  assert.match(spec, /Pin and Note are house-field/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
