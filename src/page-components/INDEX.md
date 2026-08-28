@@ -90,6 +90,7 @@
 | `TermsPage.tsx` | `/terms` |
 | `DmcaPage.tsx` | `/dmca` |
 | `RefundsPage.tsx` | `/refunds` |
+| `HelpPage.tsx` | `/help` — leftover FAQ; hairline items. Never a rail. |
 | `FeedbackPage.tsx` | `/feedback` |
 | `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |
 | `CalculatorsPage.tsx` | `/calculators` — leftover tools; 1RM / macros / plates first; premium in Show all. Account More-settings door. Never a rail. |
