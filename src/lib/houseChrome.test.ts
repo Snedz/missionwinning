@@ -492,6 +492,16 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(moreNav, /['"]\/help['"]/);
   assert.match(css, /\.house-help/);
   assert.match(spec, /Help leftover/);
+  const cookies = read('src/page-components/CookiesPage.tsx');
+  assert.match(cookies, /className="house-cookies"/);
+  assert.match(cookies, /className="house-card space-y-3"/);
+  assert.match(cookies, /STORAGE_INVENTORY/);
+  assert.match(cookies, /scrollable-region-focusable/);
+  assert.doesNotMatch(cookies, /InfoSection/);
+  assert.doesNotMatch(cookies, /border-b-2/);
+  assert.doesNotMatch(moreNav, /['"]\/cookies['"]/);
+  assert.match(css, /\.house-cookies/);
+  assert.match(spec, /Cookies leftover/);
   const composeLive = read('src/page-components/ActiveWorkoutPage.tsx');
   assert.match(composeLive, /house-compose-live/);
   assert.match(composeLive, /className="house-lede"/);

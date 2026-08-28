@@ -1089,6 +1089,15 @@
   background: transparent;
 }
 
+.mw-house .house-cookies table {
+  border-collapse: collapse;
+}
+
+.mw-house .house-cookies th,
+.mw-house .house-cookies td {
+  border-bottom: 1px solid var(--house-line);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

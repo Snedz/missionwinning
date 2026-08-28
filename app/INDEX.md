@@ -43,7 +43,7 @@
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
-| `/cookies` | `CookiesPage.tsx` | Cookie & device-storage inventory (data: `src/lib/cookiePolicy.ts`) |
+| `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
 | `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
 | `/terms` | `TermsPage.tsx` | Terms of use |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |

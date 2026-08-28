@@ -101,7 +101,10 @@ chips are house-state, Unlock / price stay
 in Show all, never a rail, not a shop.
 Help leftover is `house-help`: FAQ is
 the first-paint object, hairline items,
-never a rail. More leftover Fuel / You / Account
+never a rail. Cookies leftover is
+`house-cookies`: overview + inventory
+stay first paint, table is a house
+object, never a rail. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
 muted rows; current leftover is

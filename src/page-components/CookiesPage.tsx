@@ -1,6 +1,7 @@
 'use client';
 /**
- * Page: /cookies — cookie & device-storage policy
+ * Page: /cookies — leftover cookie & device-storage inventory.
+ * Quiet Account / legal door. Never a rail.
  * See: app/INDEX.md, src/page-components/INDEX.md
  *
  * Renders `STORAGE_INVENTORY` (src/lib/cookiePolicy.ts) — data, not prose, so
@@ -11,7 +12,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Cookie } from 'lucide-react';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { PRIVACY_DISPLAY_DATE } from '@/lib/privacyConsent';
 import { STORAGE_INVENTORY, type StorageCategory, type StorageEntryKind } from '@/lib/cookiePolicy';
 
@@ -30,20 +31,23 @@ export function CookiesPage() {
 
   return (
     <InfoPageShell
+      className="house-cookies"
       icon={Cookie}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoCookiesTitle', { defaultValue: 'Cookies & device storage' })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
       showLegalFooter
     >
-      <InfoSection id="overview" title={t('infoCookiesOverview', { defaultValue: 'Overview' })}>
-        <p className="text-muted-foreground">
+      {/* Quiet leftover: overview + inventory stay first paint. */}
+      <section id="overview" className="house-card space-y-3">
+        <h2 className="font-semibold">{t('infoCookiesOverview', { defaultValue: 'Overview' })}</h2>
+        <p className="text-sm text-muted-foreground">
           {t('infoCookiesOverviewBody', {
             defaultValue:
               'Mission Winning stores as little as possible in your browser, and nothing for advertising. Sign-in uses strictly necessary httpOnly cookies; your app data lives in local storage on your device and leaves it only when you sign in to sync. This page lists every cookie and storage key we set.',
           })}
         </p>
-        <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+        <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
           <li>
             {t('infoCookiesNoAdsLi', {
               defaultValue:
@@ -69,9 +73,12 @@ export function CookiesPage() {
             })}
           </li>
         </ul>
-      </InfoSection>
+      </section>
 
-      <InfoSection id="inventory" title={t('infoCookiesInventory', { defaultValue: 'Full inventory' })}>
+      <section id="inventory" className="house-card space-y-3">
+        <h2 className="font-semibold">
+          {t('infoCookiesInventory', { defaultValue: 'Full inventory' })}
+        </h2>
         {/* A horizontal-scroll region must be keyboard-reachable (axe
             scrollable-region-focusable): tabIndex puts it in the tab order so
             arrow keys can pan the table without a pointer. */}
@@ -84,7 +91,7 @@ export function CookiesPage() {
         >
           <table className="w-full min-w-[640px] text-left text-xs">
             <thead>
-              <tr className="border-b-2 border-border text-muted-foreground">
+              <tr className="text-muted-foreground">
                 <th scope="col" className="py-2 pr-3 font-semibold">
                   {t('infoCookiesColName', { defaultValue: 'Name' })}
                 </th>
@@ -104,8 +111,8 @@ export function CookiesPage() {
             </thead>
             <tbody>
               {STORAGE_INVENTORY.map((entry) => (
-                <tr key={entry.name} className="border-b-2 border-border align-top">
-                  <td className="py-2 pr-3 whitespace-nowrap text-foreground">{entry.name}</td>
+                <tr key={entry.name} className="align-top">
+                  <td className="py-2 pr-3 whitespace-nowrap">{entry.name}</td>
                   <td className="py-2 pr-3 whitespace-nowrap text-muted-foreground">
                     {kindLabel[entry.kind]}
                   </td>
@@ -119,7 +126,7 @@ export function CookiesPage() {
             </tbody>
           </table>
         </div>
-      </InfoSection>
+      </section>
     </InfoPageShell>
   );
 }

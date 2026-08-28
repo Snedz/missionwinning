@@ -79,6 +79,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Human coaching leftover | `.house-coaching` | Quiet title stays. Form is the first-paint object. One filled submit. Never a rail. Not Mission Coach. Not a shop. |
 | Programs leftover | `.house-programs` | Quiet title stays. Education outlines first. Chips are house-state. Unlock / price stay in Show all. Never a rail. Not the training catalog. Not a shop. |
 | Help leftover | `.house-help` | Quiet title stays. FAQ is the first-paint object. Hairline items. Never a rail. Free logger stays ungated. |
+| Cookies leftover | `.house-cookies` | Quiet title stays. Overview + inventory stay first paint. Table is a house object. Never a rail. Legal copy unchanged. |
 | More leftover | `.house-more-panel` | Fuel / You / Account as 12px rows, selected `#eee`. Quiet foot is stacked 13px muted rows; current leftover is ink, not `#eee`. |
 
 ## Rooms (existing engines)
