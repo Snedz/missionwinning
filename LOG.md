@@ -152,6 +152,8 @@ not filled. Swap is house-btn ghost,
 not filled. Form guide is house-btn ghost.
 Repeat last set is house-btn, not filled.
 Pin and Note are house-field.
+Exercise more is a house leftover:
+ghost more, house-card overflow.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

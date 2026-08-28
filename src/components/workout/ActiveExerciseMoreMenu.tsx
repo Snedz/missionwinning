@@ -8,7 +8,6 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { MoreVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import {
   shouldShowSupersetLinkMenuitem,
@@ -66,17 +65,16 @@ export function ActiveExerciseMoreMenu({
 
   return (
     <div className="relative">
-      <Button
+      <button
         type="button"
-        variant="ghost"
-        size="icon"
-        className="h-11 w-11 tap-target"
+        className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
+        data-testid="active-exercise-more"
         aria-label={t('activeExerciseMore', { defaultValue: 'More actions' })}
         aria-expanded={open}
         onClick={() => onOpenChange(!open)}
       >
         <MoreVertical className="h-5 w-5" />
-      </Button>
+      </button>
       {open && (
         <>
           <button
@@ -85,12 +83,12 @@ export function ActiveExerciseMoreMenu({
             aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
             onClick={() => onOpenChange(false)}
           />
-          <div className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1">
+          <div className="house-card house-exercise-more absolute end-0 top-full z-50 mt-1 min-w-[11rem]">
             <div role="menu">
               <Link
                 href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
                 role="menuitem"
-                className="flex min-h-[44px] items-center px-3 text-sm hover:bg-muted"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => onOpenChange(false)}
               >
                 {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
@@ -99,7 +97,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                  className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                   onClick={() => {
                     onToggleSuperset();
                     onOpenChange(false);
@@ -112,7 +110,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                  className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                   onClick={() => {
                     onUnlinkSuperset();
                     onOpenChange(false);
@@ -124,7 +122,7 @@ export function ActiveExerciseMoreMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => {
                   onToggleNote();
                   onOpenChange(false);
@@ -140,7 +138,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                  className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                   onClick={() => {
                     onToggleSwap();
                     onOpenChange(false);
@@ -152,7 +150,7 @@ export function ActiveExerciseMoreMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => {
                   onToggleE1rm();
                   onOpenChange(false);
@@ -166,7 +164,7 @@ export function ActiveExerciseMoreMenu({
                 type="button"
                 role="menuitem"
                 data-testid="active-hide-from-library"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => {
                   if (hidden) unhideExerciseNow(exerciseId);
                   else hideExerciseNow(exerciseId, { live: [{ exerciseId }] });
@@ -178,11 +176,10 @@ export function ActiveExerciseMoreMenu({
                   : t('libraryHideFromLibrary', { defaultValue: 'Hide from library' })}
               </button>
             </div>
-            <div className="border-t-2 border-border px-1 pt-1 space-y-1">
+            <div className="house-exercise-more-foot space-y-1">
               {!skippedThisSession && (
                 <HoldToConfirmButton
-                  variant="outline"
-                  size="sm"
+                  chrome="house"
                   className="w-full justify-start"
                   label={t('activeSkipThisExerciseHold', {
                     defaultValue: 'Skip this exercise — this session',
@@ -194,7 +191,7 @@ export function ActiveExerciseMoreMenu({
                 />
               )}
               <HoldToConfirmButton
-                size="sm"
+                chrome="house"
                 className="w-full justify-start"
                 label={
                   hasCompletedSet

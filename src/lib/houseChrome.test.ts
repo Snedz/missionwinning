@@ -679,7 +679,11 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(sessionChrome, /<Button[\s>]/);
   assert.doesNotMatch(sessionChrome, /variant="outline"/);
   assert.match(css, /\.house-compose-chrome \{[^}]*--house-line/);
-  assert.match(css, /\.house-session-more \{[^}]*--house-radius-sm/);
+  assert.match(
+    css,
+    /\.house-session-more,\s*\.mw-house \.house-compose-live \.house-exercise-more \{[^}]*--house-radius-sm/
+  );
+  assert.match(css, /\.house-exercise-more-foot \{[^}]*--house-line/);
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
@@ -743,6 +747,19 @@ test('house design system is the signed-in token table', () => {
     /\.house-compose-live \.house-field:focus,\s*\.mw-house \.house-compose-live \.house-field:focus-visible \{[^}]*box-shadow:\s*none/
   );
   assert.match(spec, /Pin and Note are house-field/);
+  const exerciseMore = read('src/components/workout/ActiveExerciseMoreMenu.tsx');
+  assert.match(exerciseMore, /data-testid="active-exercise-more"/);
+  assert.match(exerciseMore, /house-btn house-btn-ghost/);
+  assert.match(exerciseMore, /house-card house-exercise-more/);
+  assert.match(exerciseMore, /house-exercise-more-foot/);
+  assert.match(exerciseMore, /chrome="house"/);
+  assert.match(exerciseMore, /data-testid="active-hide-from-library"/);
+  assert.match(exerciseMore, /role="menu"/);
+  assert.doesNotMatch(exerciseMore, /<Button/);
+  assert.doesNotMatch(exerciseMore, /border-2/);
+  assert.doesNotMatch(exerciseMore, /hover:bg-muted/);
+  assert.doesNotMatch(exerciseMore, /house-btn-primary/);
+  assert.match(spec, /Exercise more is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

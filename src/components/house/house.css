@@ -663,9 +663,16 @@
   background: var(--house-paper);
 }
 
-.mw-house .house-compose-live .house-session-more {
+.mw-house .house-compose-live .house-session-more,
+.mw-house .house-compose-live .house-exercise-more {
   padding: 8px;
   border-radius: var(--house-radius-sm);
+}
+
+.mw-house .house-compose-live .house-exercise-more-foot {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--house-line);
 }
 
 .mw-house .house-compose-live .house-state.is-on {
