@@ -47,7 +47,7 @@
 | `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
 | `/terms` | `TermsPage.tsx` | Leftover terms. Jump chips + house-card sections. Never a rail. |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
-| `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
+| `/refunds` | `RefundsPage.tsx` | Leftover refunds — jump chips + house-card sections. Never a rail. |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 | `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |

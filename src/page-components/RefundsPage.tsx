@@ -1,107 +1,77 @@
 'use client';
 /**
- * Page: /refunds — refund & cancellation policy
+ * Page: /refunds — leftover refund & cancellation policy.
+ * Quiet Account / legal door. Never a rail.
  * See: docs/PAY_READY_LEGAL.md, docs/LEGAL_SAFETY.md
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Receipt } from 'lucide-react';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 import { isFreeBeta } from '@/lib/freeBeta';
+
+const REFUND_SECTIONS = [
+  { id: 'subscriptions', key: 'infoRefundsSubs', bodyKey: 'infoRefundsSubsBody' },
+  { id: 'lifetime', key: 'infoRefundsLifetime', bodyKey: 'infoRefundsLifetimeBody' },
+  { id: 'how', key: 'infoRefundsHow', bodyKey: 'infoRefundsHowBody' },
+  { id: 'abuse', key: 'infoRefundsAbuse', bodyKey: 'infoRefundsAbuseBody' },
+] as const;
 
 export function RefundsPage() {
   const { t } = useTranslation();
   const freeBeta = isFreeBeta();
 
-  const jumpLinks = [
-    { id: 'subscriptions', label: t('infoRefundsSubs', { defaultValue: 'Subscriptions' }) },
-    { id: 'lifetime', label: t('infoRefundsLifetime', { defaultValue: 'Lifetime / USDC' }) },
-    { id: 'how', label: t('infoRefundsHow', { defaultValue: 'How to request' }) },
-    { id: 'abuse', label: t('infoRefundsAbuse', { defaultValue: 'Abuse & chargebacks' }) },
-  ];
-
   return (
     <InfoPageShell
+      className="house-refunds"
       icon={Receipt}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
-      title={t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
+      title={t('infoRefundsTitle', { defaultValue: infoEnFloor('infoRefundsTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
+      variant="sections"
       showLegalFooter
-      jumpLinks={jumpLinks}
     >
-      <p className="text-muted-foreground">
-        {freeBeta
-          ? t('infoRefundsIntroOpenBeta', {
-              defaultValue:
-                'The free logger never needs a refund. Paid Super Bundle checkout is not live during this Alpha, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
-            })
-          : t('infoRefundsIntro', {
-              defaultValue:
-                'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
-            })}
-      </p>
-
-      <InfoSection
-        id="subscriptions"
-        title={t('infoRefundsSubs', { defaultValue: 'Subscriptions' })}
-      >
-        <p className="text-muted-foreground">
-          {t('infoRefundsSubsBody', {
-            defaultValue:
-              'When you have a paid Super Bundle subscription: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime via the billing portal shown after checkout (when card payments are enabled) to stop future charges; access continues through the paid period already billed.',
-          })}
+      {/* Quiet leftover: intro + jump chips + sections. Legal copy unchanged. */}
+      <section className="house-card space-y-3">
+        <p className="text-sm text-muted-foreground">
+          {freeBeta
+            ? t('infoRefundsIntroOpenBeta', { defaultValue: infoEnFloor('infoRefundsIntroOpenBeta') })
+            : t('infoRefundsIntro', { defaultValue: infoEnFloor('infoRefundsIntro') })}
         </p>
-      </InfoSection>
+      </section>
 
-      <InfoSection
-        id="lifetime"
-        title={t('infoRefundsLifetime', { defaultValue: 'Lifetime / USDC' })}
-      >
-        <p className="text-muted-foreground">
-          {t('infoRefundsLifetimeBody', {
-            defaultValue:
-              'Lifetime (card or Phantom USDC): request a refund within 14 days of purchase if you have not meaningfully used premium features, by emailing support@missionwinning.com. After 14 days, lifetime purchases are non-refundable. Phantom/USDC refunds are processed manually by support — there is no automated on-chain reverse transfer yet.',
-          })}
-        </p>
-      </InfoSection>
+      <nav className="house-refunds-jump" aria-label={t('infoRefundsTitle', { defaultValue: infoEnFloor('infoRefundsTitle') })}>
+        {REFUND_SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} className="house-state">
+            {t(s.key, { defaultValue: infoEnFloor(s.key) })}
+          </a>
+        ))}
+      </nav>
 
-      <InfoSection id="how" title={t('infoRefundsHow', { defaultValue: 'How to request' })}>
-        <p className="text-muted-foreground">
-          {t('infoRefundsHowBody', {
-            defaultValue:
-              'If you made a paid purchase, email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method. We aim to respond within a few business days.',
-          })}
-        </p>
-      </InfoSection>
-
-      <InfoSection
-        id="abuse"
-        title={t('infoRefundsAbuse', { defaultValue: 'Abuse & chargebacks' })}
-      >
-        <p className="text-muted-foreground">
-          {t('infoRefundsAbuseBody', {
-            defaultValue:
-              'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination.',
-          })}
-        </p>
-      </InfoSection>
+      {REFUND_SECTIONS.map((section) => (
+        <section key={section.id} id={section.id} className="house-card space-y-3">
+          <h2 className="font-semibold">{t(section.key, { defaultValue: infoEnFloor(section.key) })}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
+          </p>
+        </section>
+      ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoRefundsFoot', {
-          defaultValue: 'See also',
-        })}{' '}
-        <Link href="/terms" className="text-primary hover:underline">
+        {t('infoRefundsFoot', { defaultValue: infoEnFloor('infoRefundsFoot') })}{' '}
+        <Link href="/terms" className="underline underline-offset-2">
           {t('termsOfService', { defaultValue: 'Terms of Service' })}
         </Link>
         {' · '}
-        <Link href="/privacy" className="text-primary hover:underline">
+        <Link href="/privacy" className="underline underline-offset-2">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
         {!freeBeta && (
           <>
             {' · '}
-            <Link href="/bundle" className="text-primary hover:underline">
+            <Link href="/bundle" className="underline underline-offset-2">
               {t('footerProductBundle', { defaultValue: 'Super Bundle' })}
             </Link>
           </>

@@ -110,6 +110,9 @@ sections are house-card, never a rail,
 legal copy unchanged. Terms leftover is
 `house-terms`: jump chips are house-state,
 sections are house-card, never a rail,
+legal copy unchanged. Refunds leftover is
+`house-refunds`: jump chips are house-state,
+sections are house-card, never a rail,
 legal copy unchanged. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
