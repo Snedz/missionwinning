@@ -990,6 +990,43 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-calc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  height: auto;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+}
+
+.mw-house .house-calc [role='tab'] {
+  min-height: 36px;
+  box-shadow: none;
+}
+
+.mw-house .house-calc [role='tab'][data-state='active'] {
+  background: var(--house-press);
+  border-color: var(--house-press);
+  color: var(--house-press-ink);
+}
+
+.mw-house .house-calc .house-card {
+  padding: 16px;
+}
+
+.mw-house .house-calc input {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+}
+
+.mw-house .house-calc .text-poster,
+.mw-house .house-calc .fitness-text-gradient {
+  color: var(--house-ink);
+  background: none;
+}
+
 .mw-house .house-fuel #fuel-log {
   scroll-margin-top: 24px;
 }

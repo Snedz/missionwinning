@@ -85,7 +85,14 @@ it. Assessment leftover is
 object, one filled submit, question
 labels use EN floors on first paint,
 stage prompts stay in Show all, Sign-in
-stays extra. More leftover Fuel / You / Account
+stays extra. Calculator leftover is
+`house-calc`: 1RM / macros / plates
+stay first paint, chips are
+house-state, tools sit in
+house-card, premium stays in Show
+all, Sign-in stays extra, never a
+rail, Account More settings still
+doors it. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
 muted rows; current leftover is

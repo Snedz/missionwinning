@@ -442,6 +442,20 @@ export function AccountPage() {
 
           <ProfileAssessmentCard />
 
+          <div className="house-card space-y-2">
+            <p className="font-semibold">
+              {t('calcTitle', { defaultValue: 'Calculators' })}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {t('calcSubtitleBrief', {
+                defaultValue: '1RM, macros, plates — free tools, no account required.',
+              })}
+            </p>
+            <Link href="/calculators" className="house-btn house-btn-ghost">
+              {t('calcTitle', { defaultValue: 'Calculators' })}
+            </Link>
+          </div>
+
           <ProfileBetaJourneyCard
             funnel={funnel}
             email={email}

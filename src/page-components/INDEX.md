@@ -92,7 +92,7 @@
 | `RefundsPage.tsx` | `/refunds` |
 | `FeedbackPage.tsx` | `/feedback` |
 | `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |
-| `CalculatorsPage.tsx` | `/calculators` |
+| `CalculatorsPage.tsx` | `/calculators` — leftover tools; 1RM / macros / plates first; premium in Show all. Account More-settings door. Never a rail. |
 | `BetaStartPage.tsx` | `/beta` |
 | `AuthCallbackPage.tsx` | **Removed** — OAuth is `app/auth/callback/route.ts` |
 | `YouthConsentConfirmPage.tsx` | `/youth/consent/confirm` |

@@ -1,6 +1,7 @@
 'use client';
 /**
- * Page: /calculators — 1RM, macros, plates
+ * Page: /calculators — leftover 1RM / macros / plates tools.
+ * Quiet Account More-settings door. Never a rail. Not a shop.
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
@@ -8,7 +9,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Calculator } from 'lucide-react';
-import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -25,6 +25,7 @@ export function CalculatorsPage() {
 
   return (
     <PillarPageShell
+      className="house-calc"
       icon={Calculator}
       eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })}
       title={t('calcTitle', { defaultValue: 'Calculators' })}
@@ -33,37 +34,37 @@ export function CalculatorsPage() {
       })}
       showLegalFooter
     >
-      {/* Field manual: tabs + tool first; premium upsell folded. */}
+      {/* Quiet leftover: the tool is the first-paint object. Premium stays extra. */}
       <Tabs defaultValue="1rm" className="w-full">
-        <TabsList className="grid grid-cols-3 h-auto p-1 w-full sm:w-auto">
-          <TabsTrigger value="1rm" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
+        <TabsList className="house-calc-tabs">
+          <TabsTrigger value="1rm" className="house-state">
             {t('calcTab1rm', { defaultValue: '1RM' })}
           </TabsTrigger>
-          <TabsTrigger value="macros" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
+          <TabsTrigger value="macros" className="house-state">
             {t('calcTabMacros', { defaultValue: 'Macros' })}
           </TabsTrigger>
-          <TabsTrigger value="plates" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
+          <TabsTrigger value="plates" className="house-state">
             {t('calcTabPlates', { defaultValue: 'Plates' })}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="1rm" className="mt-4 space-y-4">
-          <Card className="content-card">
+          <div className="house-card">
             <OneRmCalculator onE1rmChange={setE1rm} />
-          </Card>
+          </div>
           <MacroCalculatorActions e1rm={e1rm} />
         </TabsContent>
 
         <TabsContent value="macros" className="mt-4">
-          <Card className="content-card">
+          <div className="house-card">
             <MacroCalculator />
-          </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="plates" className="mt-4">
-          <Card className="content-card">
+          <div className="house-card">
             <PlateCalculatorPanel />
-          </Card>
+          </div>
         </TabsContent>
       </Tabs>
 
@@ -74,11 +75,11 @@ export function CalculatorsPage() {
       </p>
 
       {!freeBeta && (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
             {t('calcMorePremium', { defaultValue: 'Premium calculator depth' })}
           </summary>
-          <div className="flex flex-col gap-4 border-t-2 border-border p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 border-t border-border p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
               <p className="font-semibold">
                 {t('calcPremiumTitle', { defaultValue: 'Premium calculators' })}
@@ -88,7 +89,7 @@ export function CalculatorsPage() {
                   defaultValue:
                     'Super Bundle unlocks periodization blocks, contest prep macros, and client tools that sync to your log.',
                 })}{' '}
-                <Link href="/bundle" className="text-primary underline underline-offset-2">
+                <Link href="/bundle" className="underline underline-offset-2">
                   {t('calcPremiumLink', { defaultValue: 'View bundle' })}
                 </Link>
               </p>
