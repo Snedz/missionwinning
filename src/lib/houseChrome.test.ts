@@ -411,6 +411,20 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryShowing, /text-muted-foreground/);
   assert.match(css, /\.house-catalog \.house-library-showing \{[^}]*font-size:\s*13px/);
   assert.match(spec, /Library showing count is house leftover/);
+  const libraryPick = library.slice(
+    library.indexOf('className="house-pick-bar"'),
+    library.indexOf('library-merge-dialog')
+  );
+  assert.match(libraryPick, /house-pick-bar/);
+  assert.match(libraryPick, /house-kicker/);
+  assert.match(libraryPick, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.match(libraryPick, /house-btn house-btn-primary primary-action min-h-\[44px\] tap-target/);
+  assert.doesNotMatch(libraryPick, /<Button[\s>]/);
+  assert.doesNotMatch(libraryPick, /uppercase tracking/);
+  assert.doesNotMatch(libraryPick, /border-t-2/);
+  assert.doesNotMatch(libraryPick, /border-2/);
+  assert.match(css, /\.house-pick-bar \{[^}]*--house-line/);
+  assert.match(spec, /Library pick bar is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);

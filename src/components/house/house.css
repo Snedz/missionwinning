@@ -1678,6 +1678,30 @@
   color: var(--house-paper);
 }
 
+.mw-house .house-pick-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  border-top: 1px solid var(--house-line);
+  background: var(--house-paper);
+  padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+}
+
+.mw-house .house-pick-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.mw-house .house-pick-bar .house-kicker {
+  margin: 0;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

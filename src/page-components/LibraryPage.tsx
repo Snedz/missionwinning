@@ -625,12 +625,13 @@ export function LibraryPage() {
 
       {pickMode && (
         <div
-          className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-border bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          className="house-pick-bar"
           role="region"
           aria-label={t('libraryPickBar', { defaultValue: 'Session pick bar' })}
+          data-testid="library-pick-bar"
         >
-          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="house-pick-bar-row">
+            <p className="house-kicker">
               {t('libraryPickedCount', {
                 count: pickedIds.length,
                 max: LIBRARY_PICK_MAX,
@@ -638,18 +639,16 @@ export function LibraryPage() {
               })}
             </p>
             <div className="flex gap-2">
-              <Button
+              <button
                 type="button"
-                variant="outline"
-                className="min-h-[44px] border-2"
+                className="house-btn house-btn-ghost min-h-[44px] tap-target"
                 onClick={() => setPickedIds([])}
               >
                 {t('libraryClearPick', { defaultValue: 'Clear' })}
-              </Button>
-              <Button
+              </button>
+              <button
                 type="button"
-                variant="default"
-                className="min-h-[44px]"
+                className="house-btn house-btn-primary primary-action min-h-[44px] tap-target"
                 onClick={trainPicked}
               >
                 {activeWorkout
@@ -661,7 +660,7 @@ export function LibraryPage() {
                       count: pickedIds.length,
                       defaultValue: `Train selected (${pickedIds.length})`,
                     })}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
