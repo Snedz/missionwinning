@@ -70,7 +70,7 @@ export function ActiveSessionChrome({
         ].join(' ')}
       >
         {/* Name + compact clock. No Live session eyebrow — the name is the
-            session. Log set is the one red under load; Finish stays outline. */}
+            session. Log set is the one filled action; Finish is house-btn. */}
         <div className="flex min-w-0 flex-nowrap items-center gap-2">
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
@@ -111,15 +111,15 @@ export function ActiveSessionChrome({
             </p>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-11 min-h-[44px] shrink-0 gap-1 border-2 border-foreground px-3 tap-target"
+          <button
+            type="button"
+            className="house-btn min-h-[44px] shrink-0 tap-target"
+            data-testid="active-finish"
             onClick={onFinish}
           >
-            <Check className="h-4 w-4" />
+            <Check className="h-4 w-4 me-1" aria-hidden />
             {t('activeFinish', { defaultValue: 'Finish' })}
-          </Button>
+          </button>
 
           <div className="relative shrink-0">
             <Button

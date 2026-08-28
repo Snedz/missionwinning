@@ -666,6 +666,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Add Set is house-btn/);
   assert.match(spec, /Rest lanes are house-state/);
   assert.match(spec, /Number cells are house-num/);
+  const sessionChrome = read('src/components/workout/ActiveSessionChrome.tsx');
+  assert.match(sessionChrome, /data-testid="active-finish"/);
+  assert.match(sessionChrome, /className="house-btn min-h-\[44px\] shrink-0 tap-target"/);
+  assert.doesNotMatch(sessionChrome, /house-btn-primary/);
+  assert.doesNotMatch(sessionChrome, /border-2 border-foreground/);
+  assert.doesNotMatch(sessionChrome, /variant="outline"/);
+  assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

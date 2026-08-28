@@ -143,6 +143,7 @@ house-state; selected `#eee`; Log set
 stays the filled ungated action. Add Set
 is house-btn. Rest lanes are house-state;
 selected `#eee`. Number cells are house-num.
+Finish is house-btn, not filled.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
