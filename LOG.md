@@ -196,6 +196,7 @@ Set row kicker is house leftover.
 Logged check is house leftover.
 Completed row is house leftover.
 Plus-load prefix is house leftover.
+Kind badge is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

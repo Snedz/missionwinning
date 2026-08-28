@@ -681,6 +681,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(plusLoadPrefix, /house-set-kicker/);
   assert.doesNotMatch(plusLoadPrefix, /uppercase/);
   assert.match(spec, /Plus-load prefix is house leftover/);
+  const kindBadge = setTable.slice(
+    setTable.indexOf("kind !== 'normal'"),
+    setTable.indexOf('setKindLabelKey(kind)')
+  );
+  assert.match(kindBadge, /house-set-kicker/);
+  assert.doesNotMatch(kindBadge, /uppercase/);
+  assert.match(spec, /Kind badge is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(

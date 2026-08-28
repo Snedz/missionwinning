@@ -482,7 +482,7 @@ export function SetLogTable({
                     ) : kind !== 'normal' ? (
                       <Badge
                         variant="outline"
-                        className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
+                        className={cn('house-set-kicker', setKindBadgeClass(kind))}
                       >
                         {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
                       </Badge>
