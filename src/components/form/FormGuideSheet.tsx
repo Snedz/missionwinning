@@ -9,7 +9,6 @@ import {
   formGuideStillUrl,
   resolveFormGuideMediaMode,
 } from '@/lib/formGuideMedia';
-import { cn } from '@/lib/utils';
 
 interface FormGuideSheetProps {
   exerciseName: string;
@@ -81,10 +80,7 @@ export function FormGuideSheet({
 
           {guide.readyPosition && (
             <section>
-              <h3 className={cn(
-                'text-sm font-semibold uppercase tracking-wide mb-2',
-                guide.militaryStyle ? 'text-status-warn' : 'text-primary'
-              )}>
+              <h3 className="house-form-section">
                 {guide.militaryStyle
                   ? t('formGuideReadyPosition', { defaultValue: 'Ready position' })
                   : guide.readyPosition}
@@ -102,7 +98,7 @@ export function FormGuideSheet({
           )}
           {guide.breathing && (
             <section className="house-card house-form-breath">
-              <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('breath', { defaultValue: 'Breath' })}</h3>
+              <h3 className="house-form-section">{t('breath', { defaultValue: 'Breath' })}</h3>
               <p>{guide.breathing}</p>
             </section>
           )}
@@ -202,16 +198,11 @@ function GuideSection({
 }) {
   return (
     <section>
-      <h3 className={cn(
-        'text-sm font-semibold uppercase tracking-wide mb-2',
-        variant === 'error' ? 'text-destructive' : 'text-foreground'
-      )}>
-        {title}
-      </h3>
+      <h3 className="house-form-section">{title}</h3>
       <ul className="space-y-2">
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-base">
-            <span className="text-primary shrink-0">{variant === 'error' ? '✗' : '·'}</span>
+            <span className="house-form-mark">{variant === 'error' ? '✗' : '·'}</span>
             <span>{item}</span>
           </li>
         ))}

@@ -190,6 +190,7 @@ Swap sheet is house leftover.
 Movement history sheet is house leftover.
 Overlay footer is house leftover.
 Overlay panel is house leftover.
+Form guide sections is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
