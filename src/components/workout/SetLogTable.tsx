@@ -363,7 +363,7 @@ export function SetLogTable({
                         type="button"
                         onClick={() => onRemovePlannedSet(setIdx)}
                         data-testid="set-table-remove-warmup"
-                        className="mt-1 min-h-[44px] w-full tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                        className="house-btn house-btn-ghost mt-1 min-h-[44px] w-full tap-target"
                       >
                         {t('activeRemoveSet', { defaultValue: 'Remove set' })}
                       </button>
@@ -425,7 +425,7 @@ export function SetLogTable({
                         type="button"
                         onClick={() => onRemovePlannedSet(setIdx)}
                         data-testid="set-table-remove-warmup"
-                        className="ms-auto mt-1 min-h-[44px] tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                        className="house-btn house-btn-ghost ms-auto mt-1 min-h-[44px] tap-target"
                       >
                         {t('activeRemoveSet', { defaultValue: 'Remove set' })}
                       </button>
@@ -509,7 +509,7 @@ export function SetLogTable({
                             key={r}
                             type="button"
                             onClick={() => onRate(setIdx, r)}
-                            className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
+                            className="house-state min-h-[44px] tap-target"
                           >
                             {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
                           </button>
@@ -759,8 +759,7 @@ function SetRowWorkClock({
   onStop?: () => void;
 }) {
   const { t } = useTranslation();
-  const chip =
-    'min-h-[44px] min-w-[44px] border-2 border-border px-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground tap-target hover:bg-muted';
+  const chip = 'house-state min-h-[44px] tap-target';
 
   if (!kind) {
     return (
@@ -871,10 +870,8 @@ function SetRowTagChips({
           data-testid={`set-table-tag-${tag}`}
           onClick={() => onPick(tag)}
           className={cn(
-            'min-h-[44px] min-w-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] tap-target',
-            kind === tag
-              ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
-              : 'border-border text-muted-foreground hover:bg-muted'
+            'house-state min-h-[44px] tap-target',
+            kind === tag && 'is-on'
           )}
         >
           {t(setKindLabelKey(tag), { defaultValue: setKindDefaultLabel(tag) })}

@@ -511,6 +511,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(cues, /primary-action/);
   assert.match(spec, /Train compose/);
   assert.match(spec, /In-set cues are a kicker/);
+  const setTable = read('src/components/workout/SetLogTable.tsx');
+  assert.match(setTable, /house-state min-h-\[44px\] tap-target/);
+  assert.match(setTable, /data-testid="set-table-log-set"/);
+  assert.match(setTable, /bg-\[hsl\(var\(--accent-poster\)\)\]/);
+  assert.doesNotMatch(
+    setTable.slice(setTable.indexOf('function SetRowTagChips')),
+    /accent-poster/
+  );
+  assert.match(css, /\.house-compose-live \.house-state\.is-on \{[^}]*--house-selected/);
+  const footer = read('src/components/workout/ActiveExerciseFooter.tsx');
+  assert.match(footer, /house-state min-h-\[44px\] tap-target/);
+  assert.match(spec, /Kind chips are house-state/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

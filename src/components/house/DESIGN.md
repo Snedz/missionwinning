@@ -62,7 +62,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Primary | `.house-btn-primary` | Black pill. One filled action |
 | Guide | `.house-guide` | One Got it. No chain |
 | First rooms | `.house-first-rooms` | N-of-N under Start |
-| Train compose | `.house-compose-live` | Log set stays the filled action. Empty is house-lede. Add exercise is house-btn. Extras in house-card Show all. In-set cues are a kicker + ghost hide / Learn door. Sidecar leftover is rest / skip / notes. History stays on Home. |
+| Train compose | `.house-compose-live` | Log set stays the filled action. Empty is house-lede. Add exercise is house-btn. Extras in house-card Show all. In-set cues are a kicker + ghost hide / Learn door. Kind chips are house-state; selected `#eee`. Sidecar leftover is rest / skip / notes. History stays on Home. |
 | Catalog row | `.house-item` in `.house-catalog` | Hairline list. Pick mark + name + details |
 | History row | `.house-item` in `.house-history` | Hairline list. Open log; Again / Details ghost |
 | Plan empty | `.house-empty` + dock | Invite on the sheet; Generate stays one filled action on `/coach` |

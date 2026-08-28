@@ -142,10 +142,8 @@ export function ActiveExerciseFooter({
               aria-pressed={activeSetKind === k}
               onClick={() => onSetKindChange(k)}
               className={cn(
-                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
-                activeSetKind === k
-                  ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
-                  : 'border-border text-muted-foreground hover:bg-muted'
+                'house-state min-h-[44px] tap-target',
+                activeSetKind === k && 'is-on'
               )}
             >
               {t(setKindLabelKey(k), {
@@ -169,10 +167,8 @@ export function ActiveExerciseFooter({
               aria-pressed={activeSetSide === s}
               onClick={() => onSetSideChange(activeSetSide === s ? undefined : s)}
               className={cn(
-                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
-                activeSetSide === s
-                  ? 'border-border bg-muted text-foreground'
-                  : 'border-border text-muted-foreground hover:bg-muted'
+                'house-state min-h-[44px] tap-target',
+                activeSetSide === s && 'is-on'
               )}
             >
               {t(setSideLabelKey(s), { defaultValue: setSideDefaultLabel(s) })}
