@@ -35,11 +35,7 @@ export function SetRirSelect({
       data-testid={testId}
       value={rir === undefined ? '' : String(rir)}
       onChange={(e) => onRateRir(parseOptionalRir(e.target.value))}
-      className={cn(
-        'h-11 min-h-[44px] min-w-[44px] border-2 border-border bg-background px-1.5 text-[11px] font-semibold tabular-nums tap-target',
-        'focus:outline-none focus:ring-2 focus:ring-ring',
-        className
-      )}
+      className={cn('house-num min-h-[44px] min-w-[44px] tap-target', className)}
     >
       <option value="">{label}</option>
       {RIR_VALUES.map((n) => (

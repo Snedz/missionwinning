@@ -717,6 +717,11 @@
   box-shadow: none;
 }
 
+.mw-house .house-compose-live select.house-num {
+  padding-inline: 6px;
+  cursor: pointer;
+}
+
 .mw-house .house-compose-live .house-field {
   min-height: 44px;
   width: 100%;

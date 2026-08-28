@@ -61,7 +61,7 @@ export function SetLogPlateLine({
               onBarWeightChange(Math.min(200, parsed));
             }
           }}
-          className="h-11 min-h-[44px] w-12 min-w-[44px] border-2 border-border bg-background px-1 text-center text-[11px] font-semibold tabular-nums text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          className="house-num min-h-[44px] w-12 min-w-[44px] tap-target"
         />
         <span className="ms-1">{`+ ${platesLine}`}</span>
       </div>
@@ -69,7 +69,7 @@ export function SetLogPlateLine({
         type="button"
         onClick={onSkip}
         data-testid="set-table-plates-skip"
-        className="min-h-[44px] shrink-0 border-2 border-border px-2 text-[11px] font-semibold text-foreground tap-target hover:bg-muted"
+        className="house-btn min-h-[44px] shrink-0 tap-target"
       >
         {t('activePlateSkip', { defaultValue: 'Skip' })}
       </button>
