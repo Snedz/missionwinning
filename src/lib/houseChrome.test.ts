@@ -674,6 +674,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-compose-live tr\.house-set-done \{[^}]*--house-soft/);
   assert.match(css, /\.house-compose-live \.house-set-done-mark \{[^}]*--house-ink/);
   assert.match(spec, /Completed row is house leftover/);
+  const plusLoadPrefix = setTable.slice(
+    setTable.indexOf('{plusLoad ? ('),
+    setTable.indexOf('<SetRowLoadField')
+  );
+  assert.match(plusLoadPrefix, /house-set-kicker/);
+  assert.doesNotMatch(plusLoadPrefix, /uppercase/);
+  assert.match(spec, /Plus-load prefix is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(

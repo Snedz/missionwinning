@@ -289,7 +289,7 @@ export function SetLogTable({
                       <td className={cell}>
                         <div className="flex items-center gap-1">
                           {plusLoad ? (
-                            <span className="shrink-0 text-[11px] font-semibold uppercase text-muted-foreground">
+                            <span className="house-set-kicker shrink-0">
                               {t('activeSetBodyweight', { defaultValue: 'BW' })}+
                             </span>
                           ) : null}
