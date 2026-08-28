@@ -149,7 +149,8 @@ ghost more, house-card overflow.
 Plates / tip stay in overflow.
 Skip this exercise is house-btn hold,
 not filled. Swap is house-btn ghost,
-not filled. Form guide is house-btn ghost.
+not filled. Swap confirm is house-btn, not filled.
+Form guide is house-btn ghost.
 Repeat last set is house-btn, not filled.
 Pin and Note are house-field.
 Exercise more is a house leftover:

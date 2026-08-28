@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { Button } from '@/components/ui/button';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { GarageSwapList } from '@/components/workout/GarageSwapList';
 import type { Exercise } from '@/types';
@@ -46,10 +45,9 @@ export function SessionSwapSheet({
       title={t('activeSwapThisSessionTitle', { defaultValue: 'Swap this exercise' })}
       bodyClassName="p-4"
       footer={
-        <Button
+        <button
           type="button"
-          variant="default"
-          className="w-full min-h-[52px] tap-target"
+          className="house-btn min-h-[52px] w-full tap-target"
           disabled={!canConfirm}
           data-testid="session-swap-confirm"
           aria-label={t('activeSwapConfirm', { defaultValue: 'Swap this session' })}
@@ -60,7 +58,7 @@ export function SessionSwapSheet({
           }}
         >
           {t('activeSwapConfirm', { defaultValue: 'Swap this session' })}
-        </Button>
+        </button>
       }
     >
       <div className="space-y-4">

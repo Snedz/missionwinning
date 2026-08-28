@@ -760,6 +760,16 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(exerciseMore, /hover:bg-muted/);
   assert.doesNotMatch(exerciseMore, /house-btn-primary/);
   assert.match(spec, /Exercise more is house leftover/);
+  const swapSheet = read('src/components/workout/SessionSwapSheet.tsx');
+  assert.match(swapSheet, /data-testid="session-swap-confirm"/);
+  assert.match(swapSheet, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.match(swapSheet, /disabled=\{!canConfirm\}/);
+  assert.doesNotMatch(swapSheet, /<Button/);
+  assert.doesNotMatch(swapSheet, /variant="default"/);
+  assert.doesNotMatch(swapSheet, /primary-action/);
+  assert.doesNotMatch(swapSheet, /house-btn-primary/);
+  assert.match(css, /\.house-btn:disabled[\s\S]*?--house-faint/);
+  assert.match(spec, /Swap confirm is house-btn, not filled/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

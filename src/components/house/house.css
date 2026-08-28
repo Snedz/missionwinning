@@ -566,6 +566,14 @@
   background: transparent;
 }
 
+.mw-house .house-btn:disabled,
+.mw-house a.house-btn:disabled,
+.mw-house button.house-btn:disabled {
+  color: var(--house-faint);
+  cursor: default;
+  transform: none;
+}
+
 .mw-house .house-card {
   background: var(--house-paper);
   border: 1px solid var(--house-line);
