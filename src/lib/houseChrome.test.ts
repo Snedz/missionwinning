@@ -923,6 +923,19 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(readiness, /accent-poster/);
   assert.match(css, /\.house-compose-live \.house-readiness \{[^}]*padding/);
   assert.match(spec, /Readiness extra is house leftover/);
+  const warmupToggle = setTable.slice(
+    setTable.indexOf('data-testid="set-table-warmup-toggle"'),
+    setTable.indexOf('data-testid="set-table-warmup-toggle"') + 520
+  );
+  assert.match(warmupToggle, /house-btn house-btn-ghost house-warmup-toggle/);
+  assert.match(warmupToggle, /min-h-\[44px\]/);
+  assert.match(warmupToggle, /tap-target/);
+  assert.doesNotMatch(warmupToggle, /hover:bg-muted/);
+  assert.doesNotMatch(warmupToggle, /border-2/);
+  assert.doesNotMatch(warmupToggle, /house-btn-primary/);
+  assert.doesNotMatch(warmupToggle, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-warmup-toggle \{[^}]*padding-inline:\s*0/);
+  assert.match(spec, /Warmup toggle is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });

@@ -245,7 +245,7 @@ export function SetLogTable({
                         ? t('activeToggleWorkAria', { defaultValue: 'Mark as work set' })
                         : t('activeToggleWarmupAria', { defaultValue: 'Mark as warmup' })
                     }
-                    className="flex h-11 min-h-[44px] min-w-[44px] items-center justify-start font-extrabold tabular-nums tap-target hover:bg-muted"
+                    className="house-btn house-btn-ghost house-warmup-toggle h-11 min-h-[44px] min-w-[44px] justify-start font-extrabold tabular-nums tap-target"
                   >
                     {ordinalLabels?.[setIdx] ?? (pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1)}
                   </button>
