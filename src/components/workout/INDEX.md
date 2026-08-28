@@ -12,7 +12,7 @@
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx, reorder `.998`). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove/Hide from library. Skip / swap are **this session** (`.959`). Hide from library does not remove the live card (`.1004`). Open lift shows short written cues (`.973`). Tap the name for prior sessions of that lift (`.993`). Work vs warmup rest on the open lift (`.995`). Their note + pin on the open lift (`.996`). Drag the name row to reorder (`.998`). Quiet diary PR on the live set (`.999`). Group of two or more is one round (`.980` / concern `.979`). Free warmup batch from the working weight (`.984` / stamp `.985`). |
-| `ActiveExerciseHeader.tsx` | Title, menus, next line, e1RM. Name opens this-movement history (`.993`). Grip reorders the live list (`.998`). |
+| `ActiveExerciseHeader.tsx` | Title, menus, next line, e1RM. Name opens this-movement history (`.993`). Grip reorders the live list (`.998`). Swap is house-btn ghost. Skip this exercise is house-btn hold. |
 | `ExerciseReorderHandle.tsx` | Drag handle + up/down on the name row (`.998`). Tap the name still opens history. |
 | `MovementHistorySheet.tsx` | Prior sessions of the open lift — their diary. Empty invents nothing. Not a chart (`.993`). |
 | `InSetCueList.tsx` | Short setup / execute on the open live exercise. Optional still. Hide never blocks Log set (`.973`). Quiet link to Learn when they want more than a rack card (`.978`) |

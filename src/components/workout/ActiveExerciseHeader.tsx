@@ -165,15 +165,14 @@ export function ActiveExerciseHeader({
             </Button>
           )}
           {shouldShowExerciseSwapMenuitem(hasCompleted, swapOptionCount, skipped) && (
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="sm"
-              className="min-h-[44px] px-2 text-sm text-primary"
+              className="house-btn house-btn-ghost min-h-[44px] tap-target"
+              data-testid="active-swap-exercise"
               onClick={onToggleSwap}
             >
               {t('activeSwap', { defaultValue: 'Swap' })}
-            </Button>
+            </button>
           )}
           <ActiveExerciseMoreMenu
             open={menuOpen}

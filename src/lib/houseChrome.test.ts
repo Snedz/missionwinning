@@ -683,6 +683,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
+  const swapBlock = skipHeader.slice(
+    skipHeader.indexOf('{shouldShowExerciseSwapMenuitem('),
+    skipHeader.indexOf('<ActiveExerciseMoreMenu')
+  );
+  assert.match(swapBlock, /house-btn house-btn-ghost/);
+  assert.match(swapBlock, /data-testid="active-swap-exercise"/);
+  assert.match(swapBlock, /onToggleSwap/);
+  assert.doesNotMatch(swapBlock, /<Button/);
+  assert.doesNotMatch(swapBlock, /variant="ghost"/);
+  assert.doesNotMatch(swapBlock, /house-btn-primary/);
+  assert.doesNotMatch(swapBlock, /text-primary/);
   const skipBlock = skipHeader.slice(
     skipHeader.indexOf('shouldShowSessionSkip({'),
     skipHeader.indexOf('hasCompleted && !skipped')
@@ -692,6 +703,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(skipBlock, /data-testid="active-skip-exercise"/);
   assert.doesNotMatch(skipBlock, /variant="outline"/);
   assert.match(spec, /Skip this exercise is house-btn hold/);
+  assert.match(spec, /Swap is house-btn ghost/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
