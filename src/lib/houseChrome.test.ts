@@ -834,6 +834,9 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(plateLoader, /from '@\/components\/ui\/card'/);
   assert.match(css, /\.mw-house \.house-plates \.house-state\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Plate loader is house leftover/);
+  const plateSheet = read('src/components/workout/PlateCalculatorSheet.tsx');
+  assert.match(plateSheet, /mw-house house-plates-sheet/);
+  assert.match(plateSheet, /PlateCalculatorPanel/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
   assert.match(skipHeader, /house-exercise-head/);
   assert.match(skipHeader, /house-exercise-title/);

@@ -21,6 +21,7 @@ export function PlateCalculatorSheet({ open, onClose, initialTarget, onApplyTarg
       size="sm"
       eyebrow={t('activePlateCalcTitle', { defaultValue: 'Plate calculator' })}
       title={t('activePlateCalcSubtitle', { defaultValue: 'Load the bar' })}
+      className="mw-house house-plates-sheet"
       bodyClassName="p-5"
     >
       <PlateCalculatorPanel
