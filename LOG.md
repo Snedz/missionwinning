@@ -144,6 +144,9 @@ stays the filled ungated action. Add Set
 is house-btn. Rest lanes are house-state;
 selected `#eee`. Number cells are house-num.
 Finish is house-btn, not filled.
+Session more is a house leftover:
+ghost more, house-card overflow.
+Plates / tip stay in overflow.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

@@ -658,6 +658,16 @@
   padding: 0;
 }
 
+.mw-house .house-compose-chrome {
+  border-bottom: 1px solid var(--house-line);
+  background: var(--house-paper);
+}
+
+.mw-house .house-compose-live .house-session-more {
+  padding: 8px;
+  border-radius: var(--house-radius-sm);
+}
+
 .mw-house .house-compose-live .house-state.is-on {
   background: var(--house-selected);
   border-color: var(--house-line);

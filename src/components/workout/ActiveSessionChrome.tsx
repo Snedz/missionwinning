@@ -8,7 +8,6 @@
 import { useState } from 'react';
 import { Check, MoreVertical, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveTrainCues } from '@/components/speech/ActiveTrainCues';
 import { formatDuration } from '@/lib/utils';
@@ -62,13 +61,7 @@ export function ActiveSessionChrome({
         });
 
   return (
-      <div
-        className={[
-          'sticky top-0 z-30 -mx-1 px-1 py-2',
-          'bg-background',
-          'border-b-2 border-border',
-        ].join(' ')}
-      >
+      <div className="house-compose-chrome sticky top-0 z-30 -mx-1 px-1 py-2">
         {/* Name + compact clock. No Live session eyebrow — the name is the
             session. Log set is the one filled action; Finish is house-btn. */}
         <div className="flex min-w-0 flex-nowrap items-center gap-2">
@@ -122,17 +115,16 @@ export function ActiveSessionChrome({
           </button>
 
           <div className="relative shrink-0">
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
-              className="h-11 w-11 tap-target"
+              className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
+              data-testid="active-session-more"
               aria-label={t('activeSessionMore', { defaultValue: 'More session actions' })}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
             >
               <MoreVertical className="h-5 w-5" />
-            </Button>
+            </button>
             {menuOpen && (
               <>
                 <button
@@ -145,17 +137,13 @@ export function ActiveSessionChrome({
                 {/* Not role=menu — HoldToConfirm is a button with aria-busy,
                     which axe aria-required-children rejects as a menuitem child.
                     Single destructive action: plain disclosure panel. */}
-                <div
-                  className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
-                >
-                  <p className="px-2 py-1.5 text-[11px] leading-snug text-muted-foreground">
+                <div className="house-card house-session-more absolute end-0 top-full z-50 mt-1 min-w-[11rem]">
+                  <p className="house-kicker px-2 py-1.5">
                     {coachTip}
                   </p>
-                  <Button
+                  <button
                     type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start min-h-[44px] tap-target"
+                    className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                     onClick={() => {
                       setMenuOpen(false);
                       onOpenPlateCalc();
@@ -163,7 +151,7 @@ export function ActiveSessionChrome({
                   >
                     <Scale className="h-4 w-4 me-2" aria-hidden />
                     {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-                  </Button>
+                  </button>
                   <div className="px-1 py-1">
                     <ActiveTrainCues
                       restTimerActive={restTimerActive}
@@ -174,11 +162,9 @@ export function ActiveSessionChrome({
                     />
                   </div>
                   {onLogPastSession ? (
-                    <Button
+                    <button
                       type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start min-h-[44px] tap-target"
+                      className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                       data-testid="session-train-backfill"
                       onClick={() => {
                         setMenuOpen(false);
@@ -186,7 +172,7 @@ export function ActiveSessionChrome({
                       }}
                     >
                       {t('historyBackfill', { defaultValue: 'Log a past session' })}
-                    </Button>
+                    </button>
                   ) : null}
                   {onTakeOtherSession ? (
                     <HoldToConfirmButton
