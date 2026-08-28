@@ -343,6 +343,15 @@ test('house design system is the signed-in token table', () => {
   assert.match(library, /className="house-item"/);
   assert.match(library, /house-item-pick/);
   assert.match(library, /house-item-body/);
+  const libraryFilters = library.slice(
+    Math.max(0, library.indexOf('library-filters-open') - 240),
+    library.indexOf('library-filters-open') + 240
+  );
+  assert.match(libraryFilters, /house-btn house-btn-ghost house-filter-btn shrink-0 gap-1.5 tap-target/);
+  assert.match(libraryFilters, /data-testid="library-filters-open"/);
+  assert.doesNotMatch(libraryFilters, /<Button[\s>]/);
+  assert.doesNotMatch(libraryFilters, /variant="outline"/);
+  assert.match(spec, /Library Filters is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);

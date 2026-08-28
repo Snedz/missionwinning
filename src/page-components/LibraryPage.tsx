@@ -242,10 +242,10 @@ export function LibraryPage() {
               className="min-h-[40px] pl-9"
             />
           </div>
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="house-filter-btn shrink-0 gap-1.5"
+            className="house-btn house-btn-ghost house-filter-btn shrink-0 gap-1.5 tap-target"
+            data-testid="library-filters-open"
             onClick={() => setFiltersOpen(true)}
           >
             <SlidersHorizontal className="h-4 w-4" />
@@ -253,7 +253,7 @@ export function LibraryPage() {
             {activeFilterCount > 0 && (
               <span className="tabular-nums text-primary">({activeFilterCount})</span>
             )}
-          </Button>
+          </button>
         </div>
 
         <div className="house-catalog-states" data-testid="library-states">
