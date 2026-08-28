@@ -9,7 +9,6 @@
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
@@ -327,11 +326,8 @@ export function ActiveExerciseCard({
   });
 
   return (
-    <Card
-      className={cn(
-        'content-card',
-        ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
-      )}
+    <div
+      className={cn('house-exercise-card', ssLabel && 'is-paired')}
       data-exercise-id={exercise.id}
       data-ex-idx={exIdx}
       data-testid="active-exercise-card"
@@ -369,7 +365,7 @@ export function ActiveExerciseCard({
         exIdx={exIdx}
       />
       {skipped ? null : (
-      <CardContent className="min-w-0 space-y-2 p-3 pt-0">
+      <div className="house-exercise-body min-w-0 space-y-2">
         {showInSetCues ? (
           <InSetCueList
             lines={inSetCues.lines}
@@ -474,8 +470,8 @@ export function ActiveExerciseCard({
           showAddWarmups={showAddWarmups}
           onAddWarmups={onAddWarmups}
         />
-      </CardContent>
+      </div>
       )}
-    </Card>
+    </div>
   );
 }

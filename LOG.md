@@ -179,6 +179,7 @@ Warmup toggle is house leftover.
 Set side is house-num.
 Form guide body is house leftover.
 Garage swap is house leftover.
+Exercise card is house leftover.
 Exercise head is house leftover.
 Add-exercise sheet is house leftover.
 Check-in confirm is house leftover.

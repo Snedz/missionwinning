@@ -842,6 +842,18 @@
   padding: 2px 8px;
 }
 
+.mw-house .house-compose-live .house-exercise-card {
+  background: var(--house-paper);
+}
+
+.mw-house .house-compose-live .house-exercise-card.is-paired {
+  border-inline-start: 3px solid var(--house-line);
+}
+
+.mw-house .house-compose-live .house-exercise-body {
+  padding: 0 12px 12px;
+}
+
 .mw-house .house-compose-live .house-exercise-more-foot {
   margin-top: 4px;
   padding-top: 8px;
