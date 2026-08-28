@@ -1,15 +1,13 @@
 'use client';
 /**
- * Page: /coaching — human coaching leads (not AI)
- * See: app/INDEX.md, src/page-components/INDEX.md
+ * Page: /coaching — human 1:1 lead form (not Mission Coach).
+ * Quiet leftover. Never a rail. See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { submitLead } from '@/lib/supabase';
 
@@ -47,8 +45,35 @@ export function CoachingPage() {
     }
   };
 
+  if (submitted) {
+    return (
+      <InfoPageShell
+        className="house-coaching"
+        icon={Users}
+        eyebrow={t('coachingEyebrow', { defaultValue: 'Coaching' })}
+        title={t('infoCoachingReceived', { defaultValue: 'Received.' })}
+        subtitle={t('infoCoachingThanks', {
+          defaultValue:
+            'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
+        })}
+        variant="sections"
+      >
+        <div className="house-card space-y-4 text-center">
+          <button
+            type="button"
+            className="house-btn house-btn-primary primary-action min-h-[52px] tap-target"
+            onClick={() => router.push('/log')}
+          >
+            {t('infoBackToday', { defaultValue: 'Back to Today' })}
+          </button>
+        </div>
+      </InfoPageShell>
+    );
+  }
+
   return (
     <InfoPageShell
+      className="house-coaching"
       icon={Users}
       eyebrow={t('coachingEyebrow', { defaultValue: 'Coaching' })}
       title={t('infoCoachingTitle', { defaultValue: 'A coach in your corner' })}
@@ -58,80 +83,53 @@ export function CoachingPage() {
       variant="sections"
       showLegalFooter
     >
-      {submitted ? (
-        <Card className="content-card">
-          <CardContent className="p-8 text-center">
-            <h2 className="font-display mb-2 text-2xl font-semibold uppercase">
-              {t('infoCoachingReceived', { defaultValue: 'Received.' })}
-            </h2>
-            <p className="mb-6 text-sm text-muted-foreground">
-              {/* Was "we reply personally, usually within 48 hours" — there is no queue,
-                  notification or SLA behind this form, so that was a promise the code
-                  could not keep. Say what actually happens instead. */}
-              {t('infoCoachingThanks', {
-                defaultValue:
-                  'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
-              })}
-            </p>
-            <Button
-              variant="default"
-              className="primary-action min-h-[52px] tap-target"
-              onClick={() => router.push('/log')}
-            >
-              {t('infoBackToday', { defaultValue: 'Back to Today' })}
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <form className="content-card space-y-4 p-6 sm:p-8" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <input
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="tap-target min-h-[44px] border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-              placeholder={t('infoCoachingName', { defaultValue: 'Name' })}
-              aria-label={t('infoCoachingName', { defaultValue: 'Name' })}
-            />
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="tap-target min-h-[44px] border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-              placeholder={t('infoCoachingEmail', { defaultValue: 'Email' })}
-              aria-label={t('infoCoachingEmail', { defaultValue: 'Email' })}
-            />
-          </div>
-          <textarea
+      {/* Quiet leftover: form is the first-paint object. Never Mission Coach. */}
+      <form className="house-card space-y-4" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <input
             required
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="h-32 w-full border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-            placeholder={t('infoCoachingGoalsPlaceholder', {
-              defaultValue: "Your goals, your current training, and what you'd want from a coach…",
-            })}
-            aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="tap-target min-h-[44px] px-4 py-3 text-sm"
+            placeholder={t('infoCoachingName', { defaultValue: 'Name' })}
+            aria-label={t('infoCoachingName', { defaultValue: 'Name' })}
           />
-          {error && <p className="text-sm font-semibold text-primary">{error}</p>}
-          <Button
-            type="submit"
-            size="lg"
-            variant="default"
-            className="primary-action w-full min-h-[52px] tap-target"
-            disabled={loading}
-          >
-            {loading
-              ? t('infoCoachingSending', { defaultValue: 'Sending…' })
-              : t('infoCoachingSubmit', { defaultValue: 'Join the coaching interest list' })}
-          </Button>
-          <p className="text-center text-[11px] text-muted-foreground">
-            {t('infoCoachingFoot', {
-              defaultValue: "Free to join. We'll only email you about coaching.",
-            })}
-          </p>
-        </form>
-      )}
+          <input
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="tap-target min-h-[44px] px-4 py-3 text-sm"
+            placeholder={t('infoCoachingEmail', { defaultValue: 'Email' })}
+            aria-label={t('infoCoachingEmail', { defaultValue: 'Email' })}
+          />
+        </div>
+        <textarea
+          required
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="h-32 w-full px-4 py-3 text-sm"
+          placeholder={t('infoCoachingGoalsPlaceholder', {
+            defaultValue: "Your goals, your current training, and what you'd want from a coach…",
+          })}
+          aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
+        />
+        {error ? <p className="text-sm font-semibold">{error}</p> : null}
+        <button
+          type="submit"
+          className="house-btn house-btn-primary primary-action w-full min-h-[52px] tap-target"
+          disabled={loading}
+        >
+          {loading
+            ? t('infoCoachingSending', { defaultValue: 'Sending…' })
+            : t('infoCoachingSubmit', { defaultValue: 'Join the coaching interest list' })}
+        </button>
+        <p className="text-center text-[11px] text-muted-foreground">
+          {t('infoCoachingFoot', {
+            defaultValue: "Free to join. We'll only email you about coaching.",
+          })}
+        </p>
+      </form>
 
       <p className="text-center text-xs leading-relaxed text-muted-foreground">
         {t('infoCoachingDisclaimer', {

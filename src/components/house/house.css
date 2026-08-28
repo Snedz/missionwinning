@@ -1045,6 +1045,23 @@
   border-color: var(--house-ink);
 }
 
+.mw-house .house-coaching form.house-card {
+  max-width: 40rem;
+}
+
+.mw-house .house-coaching input,
+.mw-house .house-coaching textarea {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+}
+
+.mw-house .house-coaching input:focus,
+.mw-house .house-coaching textarea:focus {
+  border-color: var(--house-ink);
+  outline: none;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

@@ -41,7 +41,7 @@
 | `/mind` | `MindPage.tsx` | Mind & recovery |
 | `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
-| `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
+| `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
 | `/cookies` | `CookiesPage.tsx` | Cookie & device-storage inventory (data: `src/lib/cookiePolicy.ts`) |
 | `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |

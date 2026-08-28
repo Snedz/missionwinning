@@ -92,7 +92,10 @@ house-state, tools sit in
 house-card, premium stays in Show
 all, Sign-in stays extra, never a
 rail, Account More settings still
-doors it. More leftover Fuel / You / Account
+doors it. Human coaching leftover is
+`house-coaching`: form is the first-paint
+object, one filled submit, never a
+rail, not Mission Coach. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
 muted rows; current leftover is

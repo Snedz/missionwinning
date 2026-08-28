@@ -34,7 +34,7 @@
 | File | Route | Notes |
 |------|-------|-------|
 | `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; house in Show all |
-| `CoachingPage.tsx` | `/coaching` | **Human** lead form — not AI Coach |
+| `CoachingPage.tsx` | `/coaching` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 
 ### Fuel / Move / Mind / Track / Learn
 
