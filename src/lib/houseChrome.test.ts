@@ -842,10 +842,16 @@ test('house design system is the signed-in token table', () => {
   assert.match(formGuide, /data-testid="form-guide-got-it"/);
   assert.match(formGuide, /house-btn min-h-\[52px\] w-full tap-target/);
   assert.match(formGuide, /house-btn house-btn-ghost/);
+  assert.match(formGuide, /mw-house house-form-guide/);
+  assert.match(formGuide, /house-card house-form-figure/);
+  assert.match(formGuide, /house-card house-form-breath/);
   assert.doesNotMatch(formGuide, /primary-action/);
   assert.doesNotMatch(formGuide, /bg-primary-fill/);
   assert.doesNotMatch(formGuide, /house-btn-primary/);
+  assert.doesNotMatch(formGuide, /border-2/);
+  assert.match(css, /\.mw-house\.house-form-guide \.house-form-figure \{[^}]*padding:\s*0/);
   assert.match(spec, /Form guide confirm is house-btn, not filled/);
+  assert.match(spec, /Form guide body is house leftover/);
   const inlineAdd = read('src/components/workout/ActiveInlineAddExercise.tsx');
   assert.match(inlineAdd, /house-add-exercise/);
   assert.match(inlineAdd, /house-btn min-h-\[44px\] tap-target/);

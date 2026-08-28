@@ -43,6 +43,7 @@ export function FormGuideSheet({
       open={open}
       onClose={onClose}
       size="sm"
+      className="mw-house house-form-guide"
       eyebrow={t('formGuideTitle', { defaultValue: 'Form guide' })}
       title={exerciseName}
       footer={
@@ -67,7 +68,7 @@ export function FormGuideSheet({
         </div>
       }
     >
-        <div className="p-5 space-y-5 text-[17px] leading-relaxed">
+        <div className="house-form-guide-body p-5 space-y-5 text-[17px] leading-relaxed">
           {guide.mediaUrl && (
             <FormGuideMedia
               url={guide.mediaUrl}
@@ -100,7 +101,7 @@ export function FormGuideSheet({
             <GuideSection title={t('avoid', { defaultValue: 'Avoid' })} items={guide.commonErrors} variant="error" />
           )}
           {guide.breathing && (
-            <section className="border-2 border-border px-4 py-3">
+            <section className="house-card house-form-breath">
               <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('breath', { defaultValue: 'Breath' })}</h3>
               <p>{guide.breathing}</p>
             </section>
@@ -136,7 +137,7 @@ function FormGuideMedia({
 
   if (mode === 'video-autoplay') {
     return (
-      <figure className="overflow-hidden border-2 border-border bg-card">
+      <figure className="house-card house-form-figure">
         {/*
           Autoplay muted loop — mid-set teaching must not require a play tap.
           Controls stay for pause / scrub; reduced motion uses the still path.
@@ -162,7 +163,7 @@ function FormGuideMedia({
             label={t('formGuideCaptionsTrack', { defaultValue: 'Captions' })}
           />
         </video>
-        <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
+        <figcaption className="house-form-figure-cap">
           {caption ?? defaultCaption}
         </figcaption>
       </figure>
@@ -171,7 +172,7 @@ function FormGuideMedia({
 
   const stillSrc = formGuideStillUrl({ mediaType: type, url, poster });
   return (
-    <figure className="overflow-hidden border-2 border-border bg-card">
+    <figure className="house-card house-form-figure">
       {/* Form Index posters + legacy SVG under /public — plain img is intentional. */}
       <img
         src={stillSrc}
@@ -183,7 +184,7 @@ function FormGuideMedia({
         decoding="async"
         className="mx-auto w-full max-h-80 object-contain bg-background"
       />
-      <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
+      <figcaption className="house-form-figure-cap">
         {caption ?? defaultCaption}
       </figcaption>
     </figure>

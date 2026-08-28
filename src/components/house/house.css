@@ -761,6 +761,23 @@
   background: var(--house-selected);
 }
 
+.mw-house.house-form-guide .house-form-figure {
+  overflow: hidden;
+  padding: 0;
+}
+
+.mw-house.house-form-guide .house-form-figure-cap {
+  border-top: 1px solid var(--house-line);
+  padding: 6px 12px;
+  text-align: center;
+  color: var(--house-muted);
+  font-size: 12px;
+}
+
+.mw-house.house-form-guide .house-form-breath {
+  padding: 12px 16px;
+}
+
 .mw-house .house-compose-live .house-exercise-more-foot {
   margin-top: 4px;
   padding-top: 8px;
