@@ -6,6 +6,7 @@
  */
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { HOUSE_MORE_QUIET, HOUSE_MORE_ROOMS } from './houseNav';
@@ -17,6 +18,7 @@ type Props = {
 
 export function HouseMore({ open, onClose }: Props) {
   const { t } = useTranslation();
+  const pathname = usePathname();
   if (!open) return null;
 
   return (
@@ -32,11 +34,19 @@ export function HouseMore({ open, onClose }: Props) {
           </button>
         </div>
         <nav className="house-side-nav" style={{ marginTop: 16 }}>
-          {HOUSE_MORE_ROOMS.map((row) => (
-            <Link key={row.href} href={row.href} className="house-side-link" onClick={onClose}>
-              {t(row.labelKey, { defaultValue: row.label })}
-            </Link>
-          ))}
+          {HOUSE_MORE_ROOMS.map((row) => {
+            const on = pathname === row.href || pathname.startsWith(`${row.href}/`);
+            return (
+              <Link
+                key={row.href}
+                href={row.href}
+                className={`house-side-link${on ? ' is-on' : ''}`}
+                onClick={onClose}
+              >
+                {t(row.labelKey, { defaultValue: row.label })}
+              </Link>
+            );
+          })}
         </nav>
         <div className="house-more-quiet">
           {HOUSE_MORE_QUIET.map((row) => (

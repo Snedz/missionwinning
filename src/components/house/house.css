@@ -1126,17 +1126,30 @@
   align-items: center;
   min-height: 40px;
   padding: 8px 12px;
-  color: var(--house-muted);
+  color: rgba(0, 0, 0, 0.6);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 600;
-  border-radius: var(--house-radius-sm);
+  font-weight: 550;
+  border-radius: var(--house-radius-row);
+  transition:
+    color var(--house-dur) var(--house-ease),
+    background-color var(--house-dur) var(--house-ease),
+    transform 120ms var(--house-ease);
 }
 
-.mw-house .house-side-link.is-on,
+.mw-house .house-side-link:active {
+  transform: scale(0.98);
+}
+
 .mw-house .house-side-link:hover {
-  color: var(--house-ink);
+  color: rgba(0, 0, 0, 0.85);
   background: var(--house-chip);
+}
+
+.mw-house .house-side-link.is-on {
+  color: var(--house-ink);
+  background: var(--house-selected);
+  font-weight: 600;
 }
 
 .mw-house .house-side-title {

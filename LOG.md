@@ -84,7 +84,9 @@ it. Assessment leftover is
 `house-assess`: form is the first-paint
 object, one filled submit, stage
 prompts stay in Show all, Sign-in
-stays extra. You leftover is
+stays extra. More leftover Fuel / You / Account
+are 12px rows, selected `#eee`;
+quiet foot stays muted. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

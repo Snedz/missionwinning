@@ -106,6 +106,9 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.doesNotMatch(more, /href: '\/history'/);
   assert.doesNotMatch(more, /href: '\/coach'/);
   assert.doesNotMatch(more, /href: '\/active'/);
+  assert.match(more, /house-side-link\$\{on \? ' is-on' : ''\}/);
+  assert.match(css, /\.house-side-link \{[\s\S]*--house-radius-row/);
+  assert.match(css, /\.house-side-link\.is-on \{[\s\S]*--house-selected/);
 });
 
 test('Today Start is not the SSR dummy and lands on compose', () => {
@@ -364,6 +367,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(account, /<Card[\s>]/);
   assert.match(css, /\.house-account \.bg-card/);
   assert.match(spec, /Account leftover/);
+  assert.match(spec, /12px rows, selected `#eee`/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));
   assert.match(sidecar, /href: '\/account'/);
   assert.match(sidecar, /href: '\/profile'/);
