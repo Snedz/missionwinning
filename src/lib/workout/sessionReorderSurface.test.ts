@@ -20,6 +20,9 @@ describe('live session reorder surface lock (.998)', () => {
     const handle = read('src/components/workout/ExerciseReorderHandle.tsx');
     assert.match(handle, /data-testid="exercise-reorder-handle"/);
     assert.match(handle, /min-h-\[44px\]/);
+    assert.match(handle, /house-btn house-btn-ghost house-reorder/);
+    assert.doesNotMatch(handle, /<Button/);
+    assert.doesNotMatch(handle, /variant="ghost"/);
     assert.doesNotMatch(handle, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(handle, BANNED);
     assert.doesNotMatch(handle, FEED);

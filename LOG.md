@@ -164,6 +164,8 @@ Plate skip is house-btn.
 Next-cite Skip is house-btn.
 Set options is a house leftover:
 ghost more, house-card overflow.
+Reorder handle is a house leftover:
+ghost house-btn grip and arrows.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

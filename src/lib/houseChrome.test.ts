@@ -843,6 +843,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(setOptions, /text-primary/);
   assert.doesNotMatch(setOptions, /house-btn-primary/);
   assert.match(spec, /Set options is house leftover/);
+  const reorder = read('src/components/workout/ExerciseReorderHandle.tsx');
+  assert.match(reorder, /data-testid="exercise-reorder-handle"/);
+  assert.match(reorder, /data-testid="exercise-reorder-up"/);
+  assert.match(reorder, /data-testid="exercise-reorder-down"/);
+  assert.match(reorder, /house-btn house-btn-ghost house-reorder/);
+  assert.doesNotMatch(reorder, /<Button/);
+  assert.doesNotMatch(reorder, /variant="ghost"/);
+  assert.doesNotMatch(reorder, /text-muted-foreground/);
+  assert.doesNotMatch(reorder, /house-btn-primary/);
+  assert.match(css, /\.house-compose-live \.house-reorder \{[^}]*padding-inline:\s*0/);
+  assert.match(spec, /Reorder handle is house leftover/);
   assert.match(spec, /--house-radius-sheet/);
   assert.match(spec, /--house-selected/);
 });
