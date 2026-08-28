@@ -806,6 +806,19 @@
   padding: 16px;
 }
 
+.mw-house.house-overlay-panel {
+  background: var(--house-paper);
+  border-top: 1px solid var(--house-line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (min-width: 768px) {
+  .mw-house.house-overlay-panel {
+    border: 1px solid var(--house-line);
+    padding-bottom: 0;
+  }
+}
+
 .mw-house.house-form-guide .house-form-figure {
   overflow: hidden;
   padding: 0;

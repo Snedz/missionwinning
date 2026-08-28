@@ -157,16 +157,19 @@ export function AdaptiveOverlay({
         aria-labelledby={hideHeader && !title ? undefined : titleId}
         className={cn(
           'relative w-full max-h-[min(88vh,100dvh)] overflow-hidden flex flex-col',
-          'bg-card',
-          /* Compact sheet chrome. The 2px ink rule is the whole top edge — it
-             is what says "sheet" now that the drag pill is gone, and it reads
-             at arm's length where a 30%-alpha pill did not. */
-          'border-t-2 border-foreground pb-[env(safe-area-inset-bottom)]',
           'animate-in slide-in-from-bottom duration-[250ms] ease-[cubic-bezier(.22,1,.36,1)]',
-          /* Medium+ dialog chrome */
-          'md:border-2 md:pb-0 md:max-h-[85vh]',
-          'md:animate-in md:fade-in md:zoom-in-95 md:slide-in-from-bottom-0',
+          'md:animate-in md:fade-in md:zoom-in-95 md:slide-in-from-bottom-0 md:max-h-[85vh]',
           SIZE_MAX[size],
+          isHouse
+            ? 'house-overlay-panel'
+            : [
+                'bg-card',
+                /* Compact sheet chrome. The 2px ink rule is the whole top edge —
+                   it is what says "sheet" now that the drag pill is gone, and it
+                   reads at arm's length where a 30%-alpha pill did not. */
+                'border-t-2 border-foreground pb-[env(safe-area-inset-bottom)]',
+                'md:border-2 md:pb-0',
+              ],
           className
         )}
       >
