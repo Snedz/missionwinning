@@ -1606,6 +1606,78 @@
   border-top: 1px solid var(--house-line);
 }
 
+.mw-house .house-week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mw-house .house-week-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 72px;
+  padding: 8px 4px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  text-align: center;
+}
+
+.mw-house .house-week-cell.is-today {
+  border-color: var(--house-ink);
+  background: var(--house-selected);
+}
+
+.mw-house .house-week-cell.is-done {
+  background: var(--house-ink);
+  color: var(--house-paper);
+  border-color: var(--house-ink);
+}
+
+.mw-house .house-week-cell.is-missed,
+.mw-house .house-week-cell.is-rest {
+  background: transparent;
+}
+
+.mw-house .house-week-cell-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--house-muted);
+}
+
+.mw-house .house-week-cell.is-done .house-week-cell-name {
+  color: var(--house-paper);
+}
+
+.mw-house .house-week-check,
+.mw-house .house-week-glyph {
+  width: 14px;
+  height: 14px;
+  margin-top: 4px;
+  color: var(--house-ink);
+}
+
+.mw-house .house-week-cell.is-done .house-week-check {
+  color: var(--house-paper);
+}
+
+.mw-house .house-week-glyph.is-missed,
+.mw-house .house-week-cell-mark.is-missed {
+  color: var(--house-muted);
+  text-decoration: line-through;
+}
+
+.mw-house .house-week-cell-mark {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--house-muted);
+}
+
+.mw-house .house-week-cell.is-done .house-week-cell-mark {
+  color: var(--house-paper);
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

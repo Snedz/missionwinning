@@ -218,6 +218,7 @@ Coach session lift is house leftover.
 Coach live voice is house leftover.
 Coach adapt banner is house leftover.
 Coach Show all extras is house leftover.
+Coach week strip is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
