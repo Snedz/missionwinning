@@ -491,6 +491,42 @@
   display: none;
 }
 
+.mw-house .house-rest-dock {
+  border-top: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+}
+
+.mw-house .house-rest-clock {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.mw-house .house-rest-track {
+  height: 2px;
+  width: 100%;
+  background: var(--house-chip);
+}
+
+.mw-house .house-rest-meter {
+  height: 6px;
+  flex: 1;
+  overflow: hidden;
+  background: var(--house-chip);
+}
+
+.mw-house .house-rest-fill {
+  height: 100%;
+  background: var(--house-ink);
+  transform-origin: left;
+}
+
+.mw-house .house-rest-dock .house-kicker {
+  margin: 0;
+}
+
 .mw-house .house-floor {
   display: flex;
   align-items: stretch;

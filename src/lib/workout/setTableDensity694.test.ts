@@ -94,8 +94,9 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   const src = workout('RestTimerBar.tsx');
   assert.match(src, /data-testid="rest-skip"/);
   assert.match(src, /min-h-\[44px\]/);
-  assert.match(src, /finalSeconds &&/);
-  assert.match(src, /bg-accent-400/);
+  assert.match(src, /finalSeconds/);
+  assert.match(src, /house-rest-fill/);
+  assert.doesNotMatch(src, /bg-accent-400/);
   // Ambient running chrome — ticking clock + depleting fill while remaining > 0.
   assert.match(src, /data-rest-running/);
   assert.match(src, /data-rest-remaining/);

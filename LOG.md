@@ -169,6 +169,8 @@ ghost house-btn grip and arrows.
 Show-all extras are house leftover.
 Session notes are house-field.
 Heart rate is house leftover.
+Rest dock is house leftover.
+Skip is house-btn, not filled.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
