@@ -761,6 +761,44 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-overlay-head {
+  border-bottom: 1px solid var(--house-line);
+  background: var(--house-paper);
+  padding: 16px;
+}
+
+.mw-house .house-overlay-kicker {
+  margin-bottom: 4px;
+  color: var(--house-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+}
+
+.mw-house .house-overlay-title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: inherit;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.mw-house .house-overlay-close {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+}
+
+.mw-house .house-overlay-close:hover,
+.mw-house .house-overlay-close:focus-visible {
+  background: var(--house-chip);
+}
+
 .mw-house.house-form-guide .house-form-figure {
   overflow: hidden;
   padding: 0;

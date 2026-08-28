@@ -128,6 +128,12 @@ export function AdaptiveOverlay({
 
   if (!open || !mounted) return null;
 
+  /**
+   * House leftover: header + close transfer only when the caller already
+   * marked the panel `.mw-house`. Every other AdaptiveOverlay stays field-manual.
+   */
+  const isHouse = /\bmw-house\b/.test(className ?? '');
+
   const overlay = (
     <div
       className={cn(
@@ -165,17 +171,34 @@ export function AdaptiveOverlay({
         )}
       >
         {!hideHeader && (
-          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b-2 border-border bg-card p-4">
+          <div
+            className={cn(
+              'sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3',
+              isHouse
+                ? 'house-overlay-head'
+                : 'border-b-2 border-border bg-card p-4'
+            )}
+          >
             <div className="min-w-0">
               {eyebrow ? (
-                <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                <div
+                  className={
+                    isHouse
+                      ? 'house-overlay-kicker'
+                      : 'mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground'
+                  }
+                >
                   {eyebrow}
                 </div>
               ) : null}
               {title != null ? (
                 <h2
                   id={titleId}
-                  className="truncate text-[22px] font-extrabold leading-tight tracking-[-0.01em]"
+                  className={
+                    isHouse
+                      ? 'house-overlay-title'
+                      : 'truncate text-[22px] font-extrabold leading-tight tracking-[-0.01em]'
+                  }
                 >
                   {title}
                 </h2>
@@ -189,7 +212,11 @@ export function AdaptiveOverlay({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="flex h-11 w-11 shrink-0 items-center justify-center border-2 border-border transition-colors hover:bg-muted"
+              className={
+                isHouse
+                  ? 'house-btn house-btn-ghost house-overlay-close'
+                  : 'flex h-11 w-11 shrink-0 items-center justify-center border-2 border-border transition-colors hover:bg-muted'
+              }
               aria-label="Close"
             >
               <X className="h-5 w-5" />

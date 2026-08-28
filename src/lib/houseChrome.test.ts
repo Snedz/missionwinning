@@ -919,6 +919,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(hardWarn, /primary-action/);
   assert.doesNotMatch(hardWarn, /house-btn-primary/);
   assert.match(spec, /Hard-session confirm is house leftover/);
+  const overlay = read('src/components/ui/AdaptiveOverlay.tsx');
+  assert.match(overlay, /\/\\bmw-house\\b\/\.test\(className/);
+  assert.match(overlay, /house-overlay-head/);
+  assert.match(overlay, /house-overlay-kicker/);
+  assert.match(overlay, /house-overlay-title/);
+  assert.match(overlay, /house-btn house-btn-ghost house-overlay-close/);
+  assert.match(overlay, /border-b-2 border-border bg-card p-4/);
+  assert.match(overlay, /hover:bg-muted/);
+  assert.doesNotMatch(overlay, /house-btn-primary/);
+  assert.match(css, /\.mw-house \.house-overlay-head \{[^}]*--house-line/);
+  assert.match(css, /\.mw-house \.house-overlay-close \{[^}]*padding:\s*0/);
+  assert.match(spec, /Overlay header is house leftover/);
   const movementHistory = read('src/components/workout/MovementHistorySheet.tsx');
   assert.match(movementHistory, /data-testid="movement-history-close"/);
   assert.match(movementHistory, /house-btn min-h-\[52px\] w-full tap-target/);
