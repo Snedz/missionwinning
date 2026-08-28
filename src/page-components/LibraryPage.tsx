@@ -32,7 +32,7 @@ import {
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { FilterChip } from '@/components/ui/FilterChip';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
@@ -318,127 +318,128 @@ export function LibraryPage() {
         </p>
       </div>
 
-      <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('libraryFilters', { defaultValue: 'Filters' })}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterMuscle', { defaultValue: 'Muscle' })}
-              </p>
-              <Input
-                type="search"
-                value={muscleQuery}
-                onChange={(e) => setMuscleQuery(e.target.value)}
-                placeholder={t('libraryMuscleSearch', { defaultValue: 'Search muscles…' })}
-              />
-              <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
-                <FilterChip active={!filters.muscle} onClick={() => setFilter('muscle', '')}>
-                  {t('libraryEquipAll', { defaultValue: 'All' })}
-                </FilterChip>
-                {muscleOptions.map((m) => (
-                  <FilterChip
-                    key={m}
-                    active={filters.muscle === m}
-                    onClick={() => setFilter('muscle', m)}
-                  >
-                    {m}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterPattern', { defaultValue: 'Pattern' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {PATTERN_FILTER_CHIPS.map((p) => (
-                  <FilterChip
-                    key={p || 'all-pattern'}
-                    active={filters.pattern === p}
-                    onClick={() => setFilter('pattern', p)}
-                  >
-                    {p
-                      ? PATTERN_FILTER_LABELS[p]
-                      : t('libraryPatternAll', { defaultValue: 'All' })}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterEquipment', { defaultValue: 'Equipment' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {EQUIP_CHIPS.map((e) => (
-                  <FilterChip
-                    key={e || 'all-equip'}
-                    active={filters.equipment === e}
-                    onClick={() => setFilter('equipment', e)}
-                  >
-                    {t(EQUIP_LABELS[e])}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterLevel', { defaultValue: 'Level' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {LEVEL_CHIPS.map((l) => (
-                  <FilterChip
-                    key={l || 'all-level'}
-                    active={filters.level === l}
-                    onClick={() => setFilter('level', l)}
-                  >
-                    {t(LEVEL_LABELS[l])}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterTag', { defaultValue: 'Goal' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {TAG_CHIPS.map((tag) => (
-                  <FilterChip
-                    key={tag || 'all-tag'}
-                    active={filters.tag === tag}
-                    onClick={() => setFilter('tag', tag)}
-                  >
-                    {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <Button
-                variant="outline"
-                className="min-h-[44px] flex-1 tap-target"
-                onClick={clearFilters}
+      <AdaptiveOverlay
+        open={filtersOpen}
+        onClose={() => setFiltersOpen(false)}
+        size="sm"
+        className="mw-house house-library-filters"
+        title={t('libraryFilters', { defaultValue: 'Filters' })}
+        bodyClassName="space-y-4 p-5"
+        footer={
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="house-btn house-btn-ghost min-h-[44px] flex-1 tap-target"
+              onClick={clearFilters}
+            >
+              {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
+            </button>
+            <button
+              type="button"
+              className="house-btn min-h-[44px] flex-1 tap-target"
+              onClick={() => setFiltersOpen(false)}
+            >
+              {t('libraryApplyFilters', { defaultValue: 'Done' })}
+            </button>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterMuscle', { defaultValue: 'Muscle' })}</p>
+            <input
+              type="search"
+              className="house-field"
+              value={muscleQuery}
+              onChange={(e) => setMuscleQuery(e.target.value)}
+              placeholder={t('libraryMuscleSearch', { defaultValue: 'Search muscles…' })}
+            />
+            <div className="flex max-h-40 flex-wrap gap-2 overflow-y-auto">
+              <button
+                type="button"
+                className={cn('house-state tap-target', !filters.muscle && 'is-on')}
+                onClick={() => setFilter('muscle', '')}
               >
-                {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
-              </Button>
-              <Button
-                variant="default"
-                className="primary-action min-h-[44px] flex-1 tap-target"
-                onClick={() => setFiltersOpen(false)}
-              >
-                {t('libraryApplyFilters', { defaultValue: 'Done' })}
-              </Button>
+                {t('libraryEquipAll', { defaultValue: 'All' })}
+              </button>
+              {muscleOptions.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={cn('house-state tap-target', filters.muscle === m && 'is-on')}
+                  onClick={() => setFilter('muscle', m)}
+                >
+                  {m}
+                </button>
+              ))}
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterPattern', { defaultValue: 'Pattern' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {PATTERN_FILTER_CHIPS.map((p) => (
+                <button
+                  key={p || 'all-pattern'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.pattern === p && 'is-on')}
+                  onClick={() => setFilter('pattern', p)}
+                >
+                  {p ? PATTERN_FILTER_LABELS[p] : t('libraryPatternAll', { defaultValue: 'All' })}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterEquipment', { defaultValue: 'Equipment' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {EQUIP_CHIPS.map((e) => (
+                <button
+                  key={e || 'all-equip'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.equipment === e && 'is-on')}
+                  onClick={() => setFilter('equipment', e)}
+                >
+                  {t(EQUIP_LABELS[e])}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterLevel', { defaultValue: 'Level' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {LEVEL_CHIPS.map((l) => (
+                <button
+                  key={l || 'all-level'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.level === l && 'is-on')}
+                  onClick={() => setFilter('level', l)}
+                >
+                  {t(LEVEL_LABELS[l])}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterTag', { defaultValue: 'Goal' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {TAG_CHIPS.map((tag) => (
+                <button
+                  key={tag || 'all-tag'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.tag === tag && 'is-on')}
+                  onClick={() => setFilter('tag', tag)}
+                >
+                  {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AdaptiveOverlay>
 
       <ul className="house-list" data-testid="library-exercise-list">
         {visibleExercises.map((ex) => {

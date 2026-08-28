@@ -352,6 +352,20 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryFilters, /<Button[\s>]/);
   assert.doesNotMatch(libraryFilters, /variant="outline"/);
   assert.match(spec, /Library Filters is house leftover/);
+  assert.match(library, /mw-house house-library-filters/);
+  const libraryFilterSheet = library.slice(
+    library.indexOf('house-library-filters'),
+    library.indexOf('</AdaptiveOverlay>')
+  );
+  assert.match(libraryFilterSheet, /house-state tap-target/);
+  assert.match(libraryFilterSheet, /house-btn house-btn-ghost min-h-\[44px\] flex-1 tap-target/);
+  assert.match(libraryFilterSheet, /house-btn min-h-\[44px\] flex-1 tap-target/);
+  assert.doesNotMatch(libraryFilterSheet, /FilterChip/);
+  assert.doesNotMatch(libraryFilterSheet, /uppercase tracking/);
+  assert.doesNotMatch(libraryFilterSheet, /<Button[\s>]/);
+  assert.doesNotMatch(libraryFilterSheet, /primary-action/);
+  assert.match(css, /\.mw-house\.house-library-filters \.house-state\.is-on \{[^}]*--house-selected/);
+  assert.match(spec, /Library Filters sheet is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);

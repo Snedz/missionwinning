@@ -1133,6 +1133,24 @@
   border-radius: var(--house-radius-rail);
 }
 
+.mw-house.house-library-filters .house-state.is-on {
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
+}
+
+.mw-house.house-library-filters .house-field {
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
 .mw-house .house-filter-bar button {
   border-radius: var(--house-radius-rail);
 }
