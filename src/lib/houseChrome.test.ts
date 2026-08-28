@@ -403,6 +403,14 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(librarySearch, /<Input[\s>]/);
   assert.match(css, /\.house-catalog \.house-filter-bar \.house-field \{[^}]*--house-line/);
   assert.match(spec, /Library search is house leftover/);
+  const libraryShowing = library.slice(
+    Math.max(0, library.indexOf('libraryShowingCount') - 80),
+    library.indexOf('libraryShowingCount') + 40
+  );
+  assert.match(libraryShowing, /house-lede house-library-showing/);
+  assert.doesNotMatch(libraryShowing, /text-muted-foreground/);
+  assert.match(css, /\.house-catalog \.house-library-showing \{[^}]*font-size:\s*13px/);
+  assert.match(spec, /Library showing count is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);

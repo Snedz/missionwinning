@@ -304,7 +304,7 @@ export function LibraryPage() {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground">
+        <p className="house-lede house-library-showing">
           {t('libraryShowingCount', {
             shown: visibleExercises.length,
             total: filtered.length,

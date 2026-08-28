@@ -1438,6 +1438,11 @@
   font-size: 14px;
 }
 
+.mw-house .house-catalog .house-library-showing {
+  margin: 0;
+  font-size: 13px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }
