@@ -888,6 +888,14 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(addSheet, /primary-action/);
   assert.doesNotMatch(addSheet, /house-btn-primary/);
   assert.match(spec, /Add-exercise sheet is house leftover/);
+  const checkIn = read('src/components/workout/SessionCheckInSheet.tsx');
+  assert.match(checkIn, /mw-house house-checkin/);
+  assert.match(checkIn, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.match(checkIn, /house-btn house-btn-ghost min-h-\[52px\] w-full tap-target/);
+  assert.doesNotMatch(checkIn, /<Button/);
+  assert.doesNotMatch(checkIn, /primary-action/);
+  assert.doesNotMatch(checkIn, /house-btn-primary/);
+  assert.match(spec, /Check-in confirm is house leftover/);
   const movementHistory = read('src/components/workout/MovementHistorySheet.tsx');
   assert.match(movementHistory, /data-testid="movement-history-close"/);
   assert.match(movementHistory, /house-btn min-h-\[52px\] w-full tap-target/);

@@ -8,7 +8,6 @@
 import { localDateKey } from '@/lib/time/localDate';
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import {
   getTodayCheckIn,
@@ -71,8 +70,7 @@ function QuickRow({
             /* `.241` — ink fill, not red, matching `DailyCheckIn`'s scale. The
                two are the same control implemented twice (`.178`, recorded not
                fixed: extracting it is a refactor, painting one of them a
-               different colour from the other is a defect). Red belongs to this
-               sheet's Save. */
+               different colour from the other is a defect). Save is house-btn. */
             className={`flex-1 min-h-[44px] tap-target text-sm font-semibold tabular-nums transition-colors ${
               value >= n
                 ? 'bg-foreground text-background'
@@ -129,6 +127,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       open={open}
       onClose={skip}
       size="sm"
+      className="mw-house house-checkin"
       titleId={titleId}
       eyebrow={t('sessionCheckInEyebrow', { defaultValue: 'Before you train' })}
       title={t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
@@ -136,22 +135,20 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       bodyClassName="p-5 space-y-4"
       footer={
         <div className="flex flex-col gap-2">
-          <Button
+          <button
             type="button"
-            variant="default"
-            className="primary-action w-full min-h-[52px] tap-target"
+            className="house-btn min-h-[52px] w-full tap-target"
             onClick={save}
           >
             {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[52px] border-2 border-border tap-target"
+            className="house-btn house-btn-ghost min-h-[52px] w-full tap-target"
             onClick={skip}
           >
             {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
-          </Button>
+          </button>
         </div>
       }
     >
