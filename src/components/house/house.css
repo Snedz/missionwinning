@@ -1537,6 +1537,47 @@
   flex-shrink: 0;
 }
 
+.mw-house .house-live-voice .house-lede {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.mw-house .house-live-status {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-live-reply {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-ink);
+}
+
+.mw-house .house-live-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mw-house .house-live-talk {
+  flex: 1;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 72px;
+  font-size: 16px;
+}
+
+.mw-house .house-live-talk.is-on {
+  background: var(--house-selected);
+}
+
+.mw-house .house-live-end {
+  min-height: 72px;
+  min-width: 72px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

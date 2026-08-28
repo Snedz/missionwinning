@@ -8,7 +8,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mic } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
 import type { PlanSession } from '@/lib/coach/types';
 import {
@@ -333,31 +332,31 @@ export function CoachLiveVoice({
     <section
       id="coach-live"
       data-testid="coach-live-voice"
-      className={cn('border-2 border-border bg-card p-4 space-y-3', className)}
+      className={cn('house-card house-live-voice', className)}
       aria-busy={phase === 'thinking'}
     >
-      <p className="eyebrow text-primary">{t('coachLiveTitle', { defaultValue: 'Talk to your coach' })}</p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-kicker">{t('coachLiveTitle', { defaultValue: 'Talk to your coach' })}</p>
+      <p className="house-lede">
         {t('coachLiveLead', {
           defaultValue: 'Signed in and online — speak, then hear the answer. Same coach as chat.',
         })}
       </p>
-      <p className="text-base font-semibold text-foreground" role="status">
+      <p className="house-live-status" role="status">
         {error ?? status}
       </p>
       {heard ? (
-        <p className="text-sm text-muted-foreground" data-testid="coach-live-heard">
+        <p className="house-lede" data-testid="coach-live-heard">
           {heard}
         </p>
       ) : null}
       {lastCoach && phase !== 'listening' ? (
-        <p className="text-sm leading-relaxed text-foreground" data-testid="coach-live-reply">
+        <p className="house-live-reply" data-testid="coach-live-reply">
           {lastCoach.content}
         </p>
       ) : null}
 
       {access === 'live' && !canListen ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="house-lede">
           {t('coachLiveNoMic', {
             defaultValue: 'This browser cannot hear you — type in chat below.',
           })}
@@ -365,13 +364,13 @@ export function CoachLiveVoice({
       ) : null}
 
       {access === 'live' && canListen ? (
-        <div className="flex gap-2">
+        <div className="house-live-actions">
           <button
             type="button"
             ref={talkRef}
             className={cn(
-              'primary-action min-h-[72px] flex-1 text-[19px]',
-              phase === 'listening' && 'bg-primary-fill'
+              'house-btn house-live-talk min-h-[72px] tap-target',
+              phase === 'listening' && 'is-on'
             )}
             data-testid="coach-live-talk"
             aria-pressed={phase === 'listening'}
@@ -390,16 +389,15 @@ export function CoachLiveVoice({
             </span>
           </button>
           {inSession ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="min-h-[72px] min-w-[72px] px-4"
+              className="house-btn house-btn-ghost house-live-end min-h-[72px] tap-target"
               data-testid="coach-live-end"
               aria-label={t('coachLiveEndAria', { defaultValue: 'End the voice conversation' })}
               onClick={endSession}
             >
               {t('coachLiveEnd', { defaultValue: 'End' })}
-            </Button>
+            </button>
           ) : null}
         </div>
       ) : null}

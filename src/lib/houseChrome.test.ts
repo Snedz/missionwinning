@@ -510,6 +510,23 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(sessionLift, /accent-poster/);
   assert.match(css, /\.house-session-lift \{[^}]*--house-line/);
   assert.match(spec, /Coach session lift is house leftover/);
+  const liveVoice = read('src/components/coach/CoachLiveVoice.tsx');
+  const liveWrap = liveVoice.slice(
+    Math.max(0, liveVoice.indexOf('coach-live-voice') - 80),
+    liveVoice.indexOf('coach-live-talk') + 80
+  );
+  assert.match(liveWrap, /house-card house-live-voice/);
+  assert.match(liveWrap, /house-kicker/);
+  assert.match(liveWrap, /house-lede/);
+  assert.match(liveWrap, /house-btn house-live-talk min-h-\[72px\] tap-target/);
+  assert.doesNotMatch(liveWrap, /primary-action/);
+  assert.doesNotMatch(liveWrap, /house-btn-primary/);
+  assert.doesNotMatch(liveWrap, /eyebrow text-primary/);
+  assert.doesNotMatch(liveWrap, /border-2/);
+  assert.doesNotMatch(liveWrap, /<Button[\s>]/);
+  assert.doesNotMatch(liveVoice, /accent-poster/);
+  assert.match(css, /\.house-live-talk \{[^}]*min-height:\s*72px/);
+  assert.match(spec, /Coach live voice is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);
