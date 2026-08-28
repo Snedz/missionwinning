@@ -476,120 +476,108 @@ export function HistoryPage() {
             actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
             href="/log"
           />
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="mt-3 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-3 min-h-[44px] w-full tap-target"
             data-testid="session-history-backfill-open"
             onClick={openBackfill}
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-merge-open"
             onClick={openMerge}
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-start-from-open"
             onClick={openStartFrom}
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-export-open"
             onClick={openExport}
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-import-open"
             onClick={openImport}
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
-          </Button>
+          </button>
           {deletedHistory.length > 0 ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="mt-2 w-full min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
               data-testid="session-history-restore-open"
               onClick={openRestore}
             >
               {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
-            </Button>
+            </button>
           ) : null}
         </div>
       ) : (
         <div className="space-y-3">
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-backfill-open"
             onClick={openBackfill}
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-merge-open"
             onClick={openMerge}
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-start-from-open"
             onClick={openStartFrom}
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-export-open"
             onClick={openExport}
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-import-open"
             onClick={openImport}
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
-          </Button>
+          </button>
           {deletedHistory.length > 0 ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="w-full min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
               data-testid="session-history-restore-open"
               onClick={openRestore}
             >
               {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
-            </Button>
+            </button>
           ) : null}
           <div className="house-filter-bar">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">

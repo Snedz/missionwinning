@@ -351,6 +351,12 @@ test('house design system is the signed-in token table', () => {
   assert.match(history, /className="house-history"/);
   assert.match(history, /className="house-list"/);
   assert.match(history, /house-item-body/);
+  const historyFirst = history.slice(0, history.indexOf('history-show-all'));
+  assert.match(historyFirst, /house-btn house-btn-ghost min-h-\[44px\] w-full tap-target/);
+  assert.match(historyFirst, /data-testid="session-history-backfill-open"/);
+  assert.doesNotMatch(historyFirst, /<Button[\s>]/);
+  assert.doesNotMatch(historyFirst, /variant="outline"/);
+  assert.match(spec, /History tools are house leftover/);
   const coach = read('src/page-components/CoachPage.tsx');
   assert.match(coach, /className="house-plan max-w-2xl pb-24"/);
   assert.match(coach, /className="house-empty"/);
