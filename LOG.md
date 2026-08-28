@@ -125,7 +125,9 @@ In-set cues are a house kicker plus
 ghost hide / Learn door — never a
 second filled action. Kind chips are
 house-state; selected `#eee`; Log set
-stays the filled ungated action. Train sidecar leftover is rest /
+stays the filled ungated action. Add Set
+is house-btn. Rest lanes are house-state;
+selected `#eee`. Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
 `house-profile` (Account door is a
