@@ -1138,6 +1138,16 @@
   scroll-margin-top: 24px;
 }
 
+.mw-house .house-usage-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-usage .house-card {
+  scroll-margin-top: 24px;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

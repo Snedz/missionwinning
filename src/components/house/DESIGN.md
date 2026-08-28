@@ -84,6 +84,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Terms leftover | `.house-terms` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |
 | Refunds leftover | `.house-refunds` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |
 | DMCA leftover | `.house-dmca` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |
+| Usage leftover | `.house-usage` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |
 | More leftover | `.house-more-panel` | Fuel / You / Account as 12px rows, selected `#eee`. Quiet foot is stacked 13px muted rows; current leftover is ink, not `#eee`. |
 
 ## Rooms (existing engines)
