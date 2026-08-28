@@ -49,6 +49,7 @@
 | `/dmca` | `DmcaPage.tsx` | Leftover DMCA — jump chips + house-card sections. Never a rail. |
 | `/refunds` | `RefundsPage.tsx` | Leftover refunds — jump chips + house-card sections. Never a rail. |
 | `/usage` | `UsagePolicyPage.tsx` | Leftover usage — jump chips + house-card sections. Never a rail. |
+| `/regions` | `SupportedRegionsPage.tsx` | Leftover regions — jump chips + house-card sections. Never a rail. |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 | `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |

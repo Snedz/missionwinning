@@ -119,6 +119,9 @@ sections are house-card, never a rail,
 legal copy unchanged. Usage leftover is
 `house-usage`: jump chips are house-state,
 sections are house-card, never a rail,
+legal copy unchanged. Regions leftover is
+`house-regions`: jump chips are house-state,
+sections are house-card, never a rail,
 legal copy unchanged. More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
