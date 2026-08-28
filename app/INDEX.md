@@ -44,7 +44,7 @@
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
-| `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
+| `/accessibility` | `AccessibilityPage.tsx` | Leftover accessibility — jump chips + house-card sections. Never a rail. |
 | `/terms` | `TermsPage.tsx` | Leftover terms. Jump chips + house-card sections. Never a rail. |
 | `/dmca` | `DmcaPage.tsx` | Leftover DMCA — jump chips + house-card sections. Never a rail. |
 | `/refunds` | `RefundsPage.tsx` | Leftover refunds — jump chips + house-card sections. Never a rail. |

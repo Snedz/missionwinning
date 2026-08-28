@@ -86,7 +86,7 @@
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
 | `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
 | `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
-| `AccessibilityPage.tsx` | `/accessibility` |
+| `AccessibilityPage.tsx` | `/accessibility` — leftover accessibility; jump chips + house-card sections. Never a rail. |
 | `TermsPage.tsx` | `/terms` — leftover terms; jump chips + house-card sections. Never a rail. |
 | `DmcaPage.tsx` | `/dmca` — leftover DMCA; jump chips + house-card sections. Never a rail. |
 | `RefundsPage.tsx` | `/refunds` — leftover refunds; jump chips + house-card sections. Never a rail. |
