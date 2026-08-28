@@ -1188,6 +1188,25 @@
   font-size: 14px;
 }
 
+.mw-house .house-history .house-filter-bar .house-field {
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
+.mw-house .house-history .house-filter-bar .house-field:focus,
+.mw-house .house-history .house-filter-bar .house-field:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
 .mw-house .house-catalog .house-filter-bar .house-field:focus,
 .mw-house .house-catalog .house-filter-bar .house-field:focus-visible {
   border: 1px solid var(--house-ink);

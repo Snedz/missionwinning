@@ -91,7 +91,6 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, localMonthKey, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
@@ -581,7 +580,7 @@ export function HistoryPage() {
           ) : null}
           <div className="house-filter-bar">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Input
+            <input
               type="search"
               data-testid="session-history-search"
               value={nameQuery}
@@ -589,7 +588,7 @@ export function HistoryPage() {
               placeholder={t('historySearchPlaceholder', {
                 defaultValue: 'Search sessions (name, date, lift)…',
               })}
-              className="sm:flex-1 min-h-[40px]"
+              className="house-field house-history-search sm:flex-1 min-h-[44px]"
               aria-label={t('historySearchPlaceholder', {
                 defaultValue: 'Search sessions (name, date, lift)…',
               })}
