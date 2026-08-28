@@ -77,6 +77,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Assessment leftover | `.house-assess` | Quiet title stays. Form is the first-paint object. One filled submit. Question labels use EN floors on first paint. Stage prompts stay in Show all. Sign-in stays extra. Never a rail. Account More settings still doors it. |
 | Calculator leftover | `.house-calc` | Quiet title stays. 1RM / macros / plates stay first paint. Chips are house-state. Tools sit in house-card. Premium stays in Show all. Sign-in stays extra. Never a rail. Not a shop. Account More settings still doors it. |
 | Human coaching leftover | `.house-coaching` | Quiet title stays. Form is the first-paint object. One filled submit. Never a rail. Not Mission Coach. Not a shop. |
+| Programs leftover | `.house-programs` | Quiet title stays. Education outlines first. Chips are house-state. Unlock / price stay in Show all. Never a rail. Not the training catalog. Not a shop. |
 | More leftover | `.house-more-panel` | Fuel / You / Account as 12px rows, selected `#eee`. Quiet foot is stacked 13px muted rows; current leftover is ink, not `#eee`. |
 
 ## Rooms (existing engines)

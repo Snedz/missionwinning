@@ -1062,6 +1062,12 @@
   outline: none;
 }
 
+.mw-house .house-programs .house-card details.house-card {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

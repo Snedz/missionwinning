@@ -95,7 +95,11 @@ rail, Account More settings still
 doors it. Human coaching leftover is
 `house-coaching`: form is the first-paint
 object, one filled submit, never a
-rail, not Mission Coach. More leftover Fuel / You / Account
+rail, not Mission Coach. Programs leftover is
+`house-programs`: education outlines first,
+chips are house-state, Unlock / price stay
+in Show all, never a rail, not a shop.
+More leftover Fuel / You / Account
 are 12px rows, selected `#eee`.
 Quiet More foot is stacked 13px
 muted rows; current leftover is

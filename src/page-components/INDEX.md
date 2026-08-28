@@ -61,7 +61,7 @@
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
 | `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |
 | `ExerciseEquipmentHubPage.tsx` | `/exercises/equipment/[slug]` |
-| `ProgramsPage.tsx` | `/programs` | Education outlines — not the training catalog, not a shop |
+| `ProgramsPage.tsx` | `/programs` | Leftover education outlines; Unlock / price in Show all. Never a rail. Not a shop. |
 | `AboutPage.tsx` | `/about` |
 | `ChangelogPage.tsx` | `/changelog` — athlete release notes |
 | `PressPage.tsx` | `/press` — brand & media kit |
