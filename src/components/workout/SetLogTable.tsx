@@ -408,7 +408,7 @@ export function SetLogTable({
                   <td className={cn(cell, 'text-end')}>
                     {completed ? (
                       <Check
-                        className="ms-auto h-4 w-4 shrink-0 text-primary"
+                        className="house-set-check ms-auto h-4 w-4 shrink-0"
                         aria-hidden
                         data-testid="set-table-logged-check"
                       />

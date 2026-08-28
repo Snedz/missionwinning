@@ -778,6 +778,10 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live .house-set-check {
+  color: var(--house-ink);
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

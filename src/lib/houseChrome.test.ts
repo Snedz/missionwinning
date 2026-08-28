@@ -658,6 +658,15 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(workClock, /uppercase/);
   assert.match(css, /\.house-compose-live \.house-set-kicker \{[^}]*text-transform:\s*none/);
   assert.match(spec, /Set row kicker is house leftover/);
+  const loggedCheck = setTable.slice(
+    setTable.indexOf('data-testid="set-table-logged-check"') - 200,
+    setTable.indexOf('data-testid="set-table-logged-check"') + 80
+  );
+  assert.match(loggedCheck, /house-set-check/);
+  assert.doesNotMatch(loggedCheck, /text-primary/);
+  assert.doesNotMatch(loggedCheck, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-set-check \{[^}]*--house-ink/);
+  assert.match(spec, /Logged check is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(
