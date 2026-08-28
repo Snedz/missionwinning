@@ -79,7 +79,7 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /accent-poster/);
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /set-table-logged-check/);
-  assert.match(src, /border-s-primary|border-s-\[3px\]/);
+  assert.match(src, /house-set-done-mark|border-s-primary|border-s-\[3px\]/);
   assert.match(src, /set-table-prev/);
   assert.match(src, /data-prev-anchor/);
   assert.match(src, /set-table-rate/);

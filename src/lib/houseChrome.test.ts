@@ -667,6 +667,13 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(loggedCheck, /accent-poster/);
   assert.match(css, /\.house-compose-live \.house-set-check \{[^}]*--house-ink/);
   assert.match(spec, /Logged check is house leftover/);
+  assert.match(setTable, /house-set-done/);
+  assert.match(setTable, /house-set-done-mark/);
+  assert.doesNotMatch(setTable, /bg-muted\/40/);
+  assert.doesNotMatch(setTable, /border-s-primary/);
+  assert.match(css, /\.house-compose-live tr\.house-set-done \{[^}]*--house-soft/);
+  assert.match(css, /\.house-compose-live \.house-set-done-mark \{[^}]*--house-ink/);
+  assert.match(spec, /Completed row is house leftover/);
   assert.doesNotMatch(setTable, /border-2 border-border/);
   assert.doesNotMatch(setTable, /focus:ring-2/);
   assert.doesNotMatch(

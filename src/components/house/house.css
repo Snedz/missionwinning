@@ -782,6 +782,15 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-compose-live tr.house-set-done {
+  background: var(--house-soft);
+  color: var(--house-ink);
+}
+
+.mw-house .house-compose-live .house-set-done-mark {
+  border-inline-start: 3px solid var(--house-ink);
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

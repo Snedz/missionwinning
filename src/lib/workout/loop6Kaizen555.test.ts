@@ -8,7 +8,7 @@ const root = join(import.meta.dirname, '..', '..', '..');
 test('SetLogTable completed rows mirror compact SetLogRow cues', () => {
   const src = readFileSync(join(root, 'src/components/workout/SetLogTable.tsx'), 'utf8');
   assert.match(src, /data-set-complete/);
-  assert.match(src, /border-s-primary|border-s-\[3px\]/);
+  assert.match(src, /house-set-done-mark|border-s-primary|border-s-\[3px\]/);
   assert.match(src, /set-table-logged-check/);
   assert.match(src, /primary-action/);
   assert.match(src, /min-h-\[44px\]/);

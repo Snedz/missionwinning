@@ -221,7 +221,7 @@ export function SetLogTable({
               className={cn(
                 !completed && 'border-b border-border',
                 isActive && 'is-active-row',
-                completed && !isActive && 'bg-muted/40 text-foreground',
+                completed && !isActive && 'house-set-done',
                 !completed && !isActive && 'text-muted-foreground'
               )}
             >
@@ -231,7 +231,7 @@ export function SetLogTable({
                   cell,
                   'text-start',
                   isActive || completed ? 'font-extrabold' : 'font-normal',
-                  completed && !isActive && 'border-s-[3px] border-s-primary'
+                  completed && !isActive && 'house-set-done-mark'
                 )}
               >
                 {isActive && onToggleWarmup ? (
@@ -455,7 +455,7 @@ export function SetLogTable({
               </tr>
             ) : null}
             {completed ? (
-              <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+              <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                 <td
                   colSpan={5}
                   className={cn(cell, 'min-w-0')}
@@ -552,7 +552,7 @@ export function SetLogTable({
                 bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
               });
               return (
-                <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+                <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                   <td colSpan={5} className={cn(cell, 'min-w-0')}>
                     <SetLogNextCite
                       target={parts.target}

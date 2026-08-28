@@ -194,6 +194,7 @@ Form guide sections is house leftover.
 Set table head is house leftover.
 Set row kicker is house leftover.
 Logged check is house leftover.
+Completed row is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
