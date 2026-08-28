@@ -33,7 +33,7 @@
 
 | File | Route | Notes |
 |------|-------|-------|
-| `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; generate dock is house leftover. Voice/LoadBand/LogCite/Manage stay in Show all. |
+| `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; generate dock, next-day cite, and week dose are house leftovers. Voice/LoadBand/LogCite/Manage stay in Show all. |
 | `CoachingPage.tsx` | `/coaching` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 
 ### Fuel / Move / Mind / Track / Learn

@@ -470,6 +470,14 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(nextDayFilled, /eyebrow/);
   assert.match(css, /\.house-next-day \{[^}]*padding:\s*16px 18px/);
   assert.match(spec, /Coach next-day cite is house leftover/);
+  const weekDose = coach.slice(
+    Math.max(0, coach.indexOf('coach-week-dose') - 80),
+    coach.indexOf('coach-week-dose') + 40
+  );
+  assert.match(weekDose, /house-lede house-week-dose/);
+  assert.doesNotMatch(weekDose, /text-muted-foreground/);
+  assert.match(css, /\.house-week-dose \{[^}]*font-size:\s*14px/);
+  assert.match(spec, /Coach week dose is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
   assert.match(builder, /className="house-builder"/);
   assert.match(builder, /house-btn-primary primary-action/);

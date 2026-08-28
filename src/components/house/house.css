@@ -1433,6 +1433,11 @@
   margin-top: 12px;
 }
 
+.mw-house .house-week-dose {
+  margin: 12px 0 0;
+  font-size: 14px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

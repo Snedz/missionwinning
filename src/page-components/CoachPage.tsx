@@ -266,7 +266,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           <div>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
-              <p className="mt-3 text-sm text-muted-foreground" data-testid="coach-week-dose">
+              <p className="house-lede house-week-dose" data-testid="coach-week-dose">
                 {t('coachWeekDose', {
                   count: weekDose.sessionCount,
                   intent: t(doseIntentKey, { defaultValue: doseIntentDefault }),
