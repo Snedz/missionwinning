@@ -793,6 +793,23 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-compose-live .house-exercise-head {
+  padding: 12px 12px 8px;
+}
+
+.mw-house .house-compose-live .house-exercise-title {
+  margin: 0;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.mw-house .house-compose-live .house-exercise-mark {
+  font-size: 10px;
+  min-height: 0;
+  padding: 2px 8px;
+}
+
 .mw-house .house-compose-live .house-exercise-more-foot {
   margin-top: 4px;
   padding-top: 8px;

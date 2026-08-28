@@ -8,8 +8,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { CardHeader, CardTitle } from '@/components/ui/card';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
 import { ExerciseReorderHandle } from '@/components/workout/ExerciseReorderHandle';
@@ -110,9 +108,9 @@ export function ActiveExerciseHeader({
   };
 
   return (
-    <CardHeader className="p-3 pb-2 space-y-2">
+    <div className="house-exercise-head space-y-2">
       <div className="flex items-start gap-2">
-        <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
+        <h3 className="house-exercise-title flex flex-wrap items-center gap-2 min-w-0 flex-1">
           {canReorder && onReorder ? (
             <ExerciseReorderHandle
               name={exercise.name}
@@ -135,21 +133,19 @@ export function ActiveExerciseHeader({
             {exercise.name}
           </button>
           {ssLabel && (
-            <Badge variant="outline" className="text-[10px]">
-              {ssLabel}
-            </Badge>
+            <span className="house-state house-exercise-mark">{ssLabel}</span>
           )}
           {shouldShowLoadPctChip(exLog.loadPct, exLog.sets) && (
-            <Badge variant="outline" className="text-[10px] tabular-nums">
+            <span className="house-state house-exercise-mark tabular-nums">
               {t('activeLoadPctChip', {
                 pct: exLog.loadPct,
                 weight: firstWeightedLoad(exLog.sets),
                 unit: unitLabel,
                 defaultValue: '{{pct}}% · {{weight}} {{unit}}',
               })}
-            </Badge>
+            </span>
           )}
-        </CardTitle>
+        </h3>
         <div className="flex shrink-0 items-center gap-0.5">
           {hasFormGuide && (
             <button
@@ -267,6 +263,6 @@ export function ActiveExerciseHeader({
         rows={historyRows}
         rowType={resolveSetRowType(exercise)}
       />
-    </CardHeader>
+    </div>
   );
 }

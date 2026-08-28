@@ -755,6 +755,14 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
+  assert.match(skipHeader, /house-exercise-head/);
+  assert.match(skipHeader, /house-exercise-title/);
+  assert.doesNotMatch(skipHeader, /CardHeader|CardTitle/);
+  assert.doesNotMatch(skipHeader, /<Badge/);
+  assert.doesNotMatch(skipHeader, /from '@\/components\/ui\/badge'/);
+  assert.doesNotMatch(skipHeader, /from '@\/components\/ui\/card'/);
+  assert.match(css, /\.house-compose-live \.house-exercise-head \{[^}]*padding/);
+  assert.match(spec, /Exercise head is house leftover/);
   const formBlock = skipHeader.slice(
     skipHeader.indexOf('{hasFormGuide && ('),
     skipHeader.indexOf('{shouldShowExerciseSwapMenuitem(')
