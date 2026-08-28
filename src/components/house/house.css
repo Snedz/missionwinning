@@ -1443,6 +1443,63 @@
   background: none;
 }
 
+.mw-house .house-plates .house-num {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  text-align: start;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mw-house .house-plates .house-num:focus,
+.mw-house .house-plates .house-num:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
+.mw-house .house-plates .house-state.is-on {
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
+}
+
+.mw-house .house-plates-stack {
+  padding: 16px;
+}
+
+.mw-house .house-plates-disc {
+  display: inline-flex;
+  height: 52px;
+  min-width: 52px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border: 1px solid var(--house-ink);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mw-house .house-plates-disc.is-heavy {
+  background: var(--house-ink);
+  color: var(--house-paper);
+}
+
+.mw-house .house-plates-short {
+  color: var(--house-ink);
+}
+
 .mw-house .house-fuel #fuel-log {
   scroll-margin-top: 24px;
 }
