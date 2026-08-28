@@ -84,7 +84,7 @@
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings leftover; sign-in / return / prefs first; Explore / more / help are house-card |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
-| `PrivacyPage.tsx` | `/privacy` |
+| `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
 | `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
 | `AccessibilityPage.tsx` | `/accessibility` |
 | `TermsPage.tsx` | `/terms` |

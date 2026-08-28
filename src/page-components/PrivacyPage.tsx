@@ -1,12 +1,13 @@
 'use client';
 /**
- * Page: /privacy — privacy policy
+ * Page: /privacy — leftover privacy policy.
+ * Quiet Account / legal door. Never a rail.
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { infoEnFloor } from '@/i18n/infoEnFloor';
 import { PRIVACY_DISPLAY_DATE } from '@/lib/privacyConsent';
 
@@ -98,45 +99,47 @@ const PRIVACY_SECTIONS = [
 export function PrivacyPage() {
   const { t } = useTranslation();
 
-  const jumpLinks = PRIVACY_SECTIONS.map((s) => ({
-    id: s.id,
-    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
-  }));
-
   return (
     <InfoPageShell
+      className="house-privacy"
       icon={Shield}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
+      variant="sections"
       showLegalFooter
-      jumpLinks={jumpLinks}
     >
+      {/* Quiet leftover: jump chips + sections. Legal copy unchanged. */}
+      <nav className="house-privacy-jump" aria-label={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}>
+        {PRIVACY_SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} className="house-state">
+            {t(s.key, { defaultValue: infoEnFloor(s.key) })}
+          </a>
+        ))}
+      </nav>
+
       {PRIVACY_SECTIONS.map((section) => (
-        <InfoSection
-          key={section.id}
-          id={section.id}
-          title={t(section.key, { defaultValue: infoEnFloor(section.key) })}
-        >
+        <section key={section.id} id={section.id} className="house-card space-y-3">
+          <h2 className="font-semibold">{t(section.key, { defaultValue: infoEnFloor(section.key) })}</h2>
           {'listKeys' in section ? (
-            <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
               {section.listKeys.map((liKey) => (
                 <li key={liKey}>{t(liKey, { defaultValue: infoEnFloor(liKey) })}</li>
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
               {section.id === 'regions' && (
                 <span className="mt-2 block">
-                  <a href="/regions" className="text-primary underline-offset-2 hover:underline">
+                  <a href="/regions" className="underline underline-offset-2">
                     {t('infoPrivacyRegionsLink', { defaultValue: 'Where we offer the service' })}
                   </a>
                 </span>
               )}
             </p>
           )}
-        </InfoSection>
+        </section>
       ))}
 
       <p className="text-xs text-muted-foreground pt-2">

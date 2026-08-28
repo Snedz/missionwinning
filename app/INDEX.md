@@ -42,7 +42,7 @@
 | `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
-| `/privacy` | `PrivacyPage.tsx` | Privacy policy |
+| `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
 | `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
 | `/terms` | `TermsPage.tsx` | Terms of use |

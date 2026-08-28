@@ -1098,6 +1098,16 @@
   border-bottom: 1px solid var(--house-line);
 }
 
+.mw-house .house-privacy-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-privacy .house-card {
+  scroll-margin-top: 24px;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;
