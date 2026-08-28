@@ -970,6 +970,15 @@
   border-radius: var(--house-radius-sm);
 }
 
+.mw-house .house-movement-row .house-set-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  text-transform: none;
+  color: var(--house-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .mw-house .house-compose-live .house-state.is-on {
   background: var(--house-selected);
   border-color: var(--house-line);

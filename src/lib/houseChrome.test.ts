@@ -1004,6 +1004,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(movementHistory, /mw-house house-movement-sheet/);
   assert.match(movementHistory, /house-btn min-h-\[52px\] w-full tap-target/);
   assert.match(movementHistory, /house-movement-row/);
+  assert.match(movementHistory, /house-set-kicker/);
+  assert.doesNotMatch(movementHistory, /uppercase tracking-wider/);
+  assert.match(css, /\.house-movement-row \.house-set-kicker \{[^}]*text-transform:\s*none/);
+  assert.match(spec, /Movement history date is house leftover/);
   assert.doesNotMatch(movementHistory, /<Button/);
   assert.doesNotMatch(movementHistory, /variant="outline"/);
   assert.doesNotMatch(movementHistory, /border-2/);

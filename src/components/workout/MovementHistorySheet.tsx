@@ -71,7 +71,7 @@ export function MovementHistorySheet({
                 className="house-movement-row space-y-1"
               >
                 {row.dateKey ? (
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground tabular-nums">
+                  <p className="house-set-kicker">
                     {formatLocalDateKey(row.dateKey, i18n.language)}
                   </p>
                 ) : null}
