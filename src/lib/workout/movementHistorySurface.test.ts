@@ -29,7 +29,11 @@ describe('movement history surface lock (.993 / .1012)', () => {
     assert.match(sheet, /No prior sessions yet — log this one/);
     assert.match(sheet, /data-testid="movement-history-row"/);
     assert.match(sheet, /data-testid="movement-history-close"/);
-    assert.match(sheet, /variant="outline"/);
+    assert.match(sheet, /house-btn min-h-\[52px\] w-full tap-target/);
+    assert.match(sheet, /house-movement-row/);
+    assert.doesNotMatch(sheet, /<Button/);
+    assert.doesNotMatch(sheet, /variant="outline"/);
+    assert.doesNotMatch(sheet, /border-2/);
     assert.match(sheet, /isShortMovementHistory/);
     assert.doesNotMatch(sheet, /primary-action|Start workout|decideStartAgain|libraryTrainThis/);
     assert.doesNotMatch(sheet, BANNED);

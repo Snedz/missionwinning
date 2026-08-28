@@ -7,7 +7,6 @@
 
 import { useTranslation } from 'react-i18next';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { Button } from '@/components/ui/button';
 import { formatLocalDateKey } from '@/lib/time/localDate';
 import {
   formatMovementHistorySets,
@@ -45,15 +44,14 @@ export function MovementHistorySheet({
       title={exerciseName}
       bodyClassName="p-4"
       footer={
-        <Button
+        <button
           type="button"
-          variant="outline"
-          className="w-full min-h-[52px] tap-target"
+          className="house-btn min-h-[52px] w-full tap-target"
           data-testid="movement-history-close"
           onClick={onClose}
         >
           {t('activeMovementHistoryClose', { defaultValue: 'Close' })}
-        </Button>
+        </button>
       }
     >
       <div data-testid="movement-history-sheet" data-short={short ? 'true' : 'false'}>
@@ -69,7 +67,7 @@ export function MovementHistorySheet({
               <li
                 key={row.sessionId}
                 data-testid="movement-history-row"
-                className="border-2 border-border bg-card p-3 space-y-1"
+                className="house-movement-row space-y-1"
               >
                 {row.dateKey ? (
                   <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground tabular-nums">

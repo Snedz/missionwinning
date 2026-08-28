@@ -157,6 +157,8 @@ Pin and Note are house-field.
 Exercise more is a house leftover:
 ghost more, house-card overflow.
 Add-exercise search is house leftover.
+This-movement history is house leftover:
+Close is house-btn; rows are house-movement-row.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

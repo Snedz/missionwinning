@@ -683,6 +683,13 @@
   border-top: 1px solid var(--house-line);
 }
 
+.mw-house .house-movement-row {
+  padding: 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  border-radius: var(--house-radius-sm);
+}
+
 .mw-house .house-compose-live .house-state.is-on {
   background: var(--house-selected);
   border-color: var(--house-line);
