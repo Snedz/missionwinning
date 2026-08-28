@@ -791,6 +791,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(sessionChrome, /house-btn house-btn-ghost/);
   assert.match(sessionChrome, /house-card house-session-more/);
   assert.match(sessionChrome, /HoldToConfirmButton/);
+  const sessionHolds = sessionChrome.slice(sessionChrome.indexOf('onTakeOtherSession'));
+  assert.match(sessionHolds, /chrome="house"/);
+  assert.equal(
+    (sessionHolds.match(/chrome="house"/g) ?? []).length,
+    2,
+    'Session more holds are house leftover (.1057)'
+  );
   assert.match(sessionChrome, /data-testid="session-train-backfill"/);
   assert.doesNotMatch(sessionChrome, /house-btn-primary/);
   assert.doesNotMatch(sessionChrome, /border-2/);
@@ -804,6 +811,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-exercise-more-foot \{[^}]*--house-line/);
   assert.match(spec, /Finish is house-btn, not filled/);
   assert.match(spec, /Session more is house leftover/);
+  assert.match(spec, /Session more hold is house leftover/);
   const skipHeader = read('src/components/workout/ActiveExerciseHeader.tsx');
   assert.match(skipHeader, /house-exercise-head/);
   assert.match(skipHeader, /house-exercise-title/);

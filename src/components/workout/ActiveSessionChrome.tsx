@@ -176,7 +176,7 @@ export function ActiveSessionChrome({
                   ) : null}
                   {onTakeOtherSession ? (
                     <HoldToConfirmButton
-                      size="sm"
+                      chrome="house"
                       className="w-full justify-start"
                       label={t('openSessionTakeOther', {
                         defaultValue: 'Continue the other session',
@@ -188,7 +188,7 @@ export function ActiveSessionChrome({
                     />
                   ) : null}
                   <HoldToConfirmButton
-                    size="sm"
+                    chrome="house"
                     className="w-full justify-start"
                     label={t('activeDiscardWorkout', { defaultValue: 'Discard workout' })}
                     onConfirm={() => {

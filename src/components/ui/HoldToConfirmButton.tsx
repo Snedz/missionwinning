@@ -228,7 +228,13 @@ export function HoldToConfirmButton({
       <span className="relative z-10 inline-flex items-center justify-center gap-2">
         {icon ?? label}
         {armed && !icon ? (
-          <span className="text-[10px] uppercase tracking-wide">again</span>
+          <span
+            className={
+              chrome === 'house' ? 'house-set-kicker' : 'text-[10px] uppercase tracking-wide'
+            }
+          >
+            again
+          </span>
         ) : null}
       </span>
     </button>
