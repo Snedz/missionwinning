@@ -74,7 +74,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Garage leftover | `.house-garage` | Quiet foot only. Never a rail. First paint unchanged. |
 | Explore leftover | `.house-explore` | Quiet title stays. Board + pin list stay first paint. Add a place is a house-card. Never a rail. Account still doors it. Not a shop. |
 | Assessment leftover | `.house-assess` | Quiet title stays. Form is the first-paint object. One filled submit. Question labels use EN floors on first paint. Stage prompts stay in Show all. Sign-in stays extra. Never a rail. Account More settings still doors it. |
-| More leftover | `.house-more-panel` | Fuel / You / Account as 12px rows, selected `#eee`. Quiet foot stays muted. |
+| More leftover | `.house-more-panel` | Fuel / You / Account as 12px rows, selected `#eee`. Quiet foot is stacked 13px muted rows; current leftover is ink, not `#eee`. |
 
 ## Rooms (existing engines)
 

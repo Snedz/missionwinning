@@ -86,8 +86,10 @@ object, one filled submit, question
 labels use EN floors on first paint,
 stage prompts stay in Show all, Sign-in
 stays extra. More leftover Fuel / You / Account
-are 12px rows, selected `#eee`;
-quiet foot stays muted. You leftover is
+are 12px rows, selected `#eee`.
+Quiet More foot is stacked 13px
+muted rows; current leftover is
+ink, not `#eee`. You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /

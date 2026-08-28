@@ -49,11 +49,19 @@ export function HouseMore({ open, onClose }: Props) {
           })}
         </nav>
         <div className="house-more-quiet">
-          {HOUSE_MORE_QUIET.map((row) => (
-            <Link key={row.href} href={row.href} onClick={onClose}>
-              {t(row.labelKey, { defaultValue: row.label })}
-            </Link>
-          ))}
+          {HOUSE_MORE_QUIET.map((row) => {
+            const on = pathname === row.href || pathname.startsWith(`${row.href}/`);
+            return (
+              <Link
+                key={row.href}
+                href={row.href}
+                className={on ? 'is-on' : undefined}
+                onClick={onClose}
+              >
+                {t(row.labelKey, { defaultValue: row.label })}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
