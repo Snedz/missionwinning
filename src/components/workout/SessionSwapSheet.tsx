@@ -41,6 +41,7 @@ export function SessionSwapSheet({
       open={open}
       onClose={onClose}
       size="sm"
+      className="mw-house house-swap-sheet"
       eyebrow={t('activeSwapThisSessionEyebrow', { defaultValue: 'This session' })}
       title={t('activeSwapThisSessionTitle', { defaultValue: 'Swap this exercise' })}
       bodyClassName="p-4"
