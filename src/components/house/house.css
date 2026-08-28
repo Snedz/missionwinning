@@ -799,6 +799,13 @@
   background: var(--house-chip);
 }
 
+.mw-house .house-overlay-foot {
+  flex-shrink: 0;
+  border-top: 1px solid var(--house-line);
+  background: var(--house-paper);
+  padding: 16px;
+}
+
 .mw-house.house-form-guide .house-form-figure {
   overflow: hidden;
   padding: 0;

@@ -238,7 +238,15 @@ export function AdaptiveOverlay({
           {children}
         </div>
         {footer ? (
-          <div className="shrink-0 border-t-2 border-border bg-card p-4">{footer}</div>
+          <div
+            className={
+              isHouse
+                ? 'house-overlay-foot'
+                : 'shrink-0 border-t-2 border-border bg-card p-4'
+            }
+          >
+            {footer}
+          </div>
         ) : null}
       </div>
     </div>
