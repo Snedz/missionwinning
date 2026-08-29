@@ -7,7 +7,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
@@ -67,10 +67,13 @@ const PATH_ICONS: Record<string, LucideIcon> = {
   'home-gym-budget': Home,
 };
 
-export function LearnPage() {
+type LearnPageProps = {
+  initialPath?: string;
+};
+
+export function LearnPage({ initialPath }: LearnPageProps = {}) {
   const { t } = useTranslation();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { premium } = usePremium();
   const freeBeta = isFreeBeta();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
@@ -88,14 +91,17 @@ export function LearnPage() {
   const seoPathConsumed = useRef(false);
   useEffect(() => {
     if (seoPathConsumed.current) return;
-    const id = parseSeoLearnPathParam(searchParams, FREE_PATH_IDS);
+    const id = parseSeoLearnPathParam(
+      initialPath != null && initialPath !== '' ? `path=${initialPath}` : null,
+      FREE_PATH_IDS
+    );
     if (!id) return;
     seoPathConsumed.current = true;
     setExpandedPath(id);
     router.replace(`/learn${stripSeoLearnPathFromSearch(window.location.search)}`, {
       scroll: false,
     });
-  }, [searchParams, router]);
+  }, [initialPath, router]);
 
   const filteredPaths = useMemo(() => {
     const q = pathQuery.trim().toLowerCase();

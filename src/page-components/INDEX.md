@@ -45,7 +45,7 @@
 | `MovePage.tsx` | `/move` — Move first paint is house leftover (static page; `?collection=` / `?flow=` server-resolved; not useSearchParams skeleton). Quiet rest-day walk / easy log first paint (`.969`); quiet log and flow list are house leftovers. Extra tools in Show all |
 | `MindPage.tsx` | `/mind` — Mind first paint is house leftover (static page; `?collection=` server-resolved; not useSearchParams skeleton). First paint is check-in + breathe; both are house leftovers. Sessions in Show all |
 | `TrackPage.tsx` | `/track` | Track first paint is house leftover (static page, not RouteLoading). First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
-| `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |
+| `LearnPage.tsx` | `/learn` — Learn first paint is house leftover (static page; `?path=` server-resolved; not RouteLoading). First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more. Guide / course stay parked. |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |

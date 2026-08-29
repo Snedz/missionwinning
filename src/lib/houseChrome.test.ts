@@ -749,6 +749,11 @@ test('house design system is the signed-in token table', () => {
   assert.match(mindRoute, /import \{ MindPage \}/);
   assert.match(mindRoute, /initialCollection/);
   assert.match(spec, /Mind first paint is house leftover/);
+  const learnRoute = stripComments(read('app/(app)/learn/page.tsx'));
+  assert.doesNotMatch(learnRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(learnRoute, /import \{ LearnPage \}/);
+  assert.match(learnRoute, /initialPath/);
+  assert.match(spec, /Learn first paint is house leftover/);
   assert.match(spec, /12px rows, selected `#eee`/);
   assert.match(spec, /stacked 13px muted rows/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));
