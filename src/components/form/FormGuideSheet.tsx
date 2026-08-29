@@ -206,7 +206,7 @@ function GuideSection({
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-base">
             <span className="house-form-mark">{variant === 'error' ? '✗' : '·'}</span>
-            <span>{item}</span>
+            <span className="house-lede">{item}</span>
           </li>
         ))}
       </ul>

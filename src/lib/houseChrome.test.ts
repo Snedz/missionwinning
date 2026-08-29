@@ -1574,6 +1574,17 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Merge-exercises dialog is house leftover/);
   assert.match(spec, /Form guide body is house leftover/);
   assert.match(spec, /Form guide sections is house leftover/);
+  const sectionItemCite = formGuide.slice(
+    formGuide.indexOf('{item}</span>') - 80,
+    formGuide.indexOf('{item}</span>') + 16
+  );
+  assert.match(sectionItemCite, /house-lede/);
+  assert.doesNotMatch(sectionItemCite, /text-muted-foreground/);
+  assert.match(spec, /Form guide section items is house leftover/);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide li \.house-lede \{[^}]*--house-muted/
+  );
   assert.match(spec, /Form guide breath cite is house leftover/);
   assert.match(
     css,

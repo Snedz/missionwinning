@@ -953,6 +953,13 @@
   color: var(--house-ink);
 }
 
+.mw-house.house-form-guide li .house-lede {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house.house-form-guide .house-lede {
   margin: 0;
   font-size: inherit;
