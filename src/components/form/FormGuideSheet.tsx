@@ -163,7 +163,7 @@ function FormGuideMedia({
           />
         </video>
         <figcaption className="house-form-figure-cap">
-          {caption ?? defaultCaption}
+          <span className="house-lede">{caption ?? defaultCaption}</span>
         </figcaption>
       </figure>
     );
@@ -184,7 +184,7 @@ function FormGuideMedia({
         className="mx-auto w-full max-h-80 object-contain bg-background"
       />
       <figcaption className="house-form-figure-cap">
-        {caption ?? defaultCaption}
+        <span className="house-lede">{caption ?? defaultCaption}</span>
       </figcaption>
     </figure>
   );

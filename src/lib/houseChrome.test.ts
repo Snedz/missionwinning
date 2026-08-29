@@ -1581,6 +1581,23 @@ test('house design system is the signed-in token table', () => {
   assert.match(sectionItemCite, /house-lede/);
   assert.doesNotMatch(sectionItemCite, /text-muted-foreground/);
   assert.match(spec, /Form guide section items is house leftover/);
+  assert.match(spec, /Form guide figure caption is house leftover/);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide \.house-form-figure-cap \.house-lede \{[^}]*--house-muted/
+  );
+  let capFrom = 0;
+  let capCount = 0;
+  while (true) {
+    const capAt = formGuide.indexOf('className="house-form-figure-cap"', capFrom);
+    if (capAt < 0) break;
+    const capCite = formGuide.slice(capAt, capAt + 180);
+    assert.match(capCite, /house-lede/);
+    assert.doesNotMatch(capCite, /text-muted-foreground/);
+    capCount += 1;
+    capFrom = capAt + 1;
+  }
+  assert.equal(capCount, 2);
   assert.match(
     css,
     /\.mw-house\.house-form-guide li \.house-lede \{[^}]*--house-muted/
