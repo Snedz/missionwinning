@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-cue-mark` + `--house-ink`. Walk next.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-cue-mark` + `--house-ink`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), `.house-cue-mark` color rgb(24, 24, 27), Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
