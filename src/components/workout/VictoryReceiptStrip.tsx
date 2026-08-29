@@ -23,7 +23,7 @@ type Props = {
 };
 
 const headCell =
-  'py-1.5 pe-2 text-start text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground';
+  'house-lede house-victory-receipt-head py-1.5 pe-2 text-start font-semibold';
 
 function SetDeltaCell({
   set,
