@@ -5,20 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-referral-signin-hint-cite
-done_means: Account first-paint referral sign-in hint cite is house leftover, not text-muted. Sign in stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountReferralSignInHintCite.test.ts
+ticket: leftover-account-feedback-body-cite
+done_means: Account first-paint feedback body cite is house leftover, not text-muted. Send stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountFeedbackBodyCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Referral sign-in hint --house-muted 14px. Sign in stays.
+Honesty was red (3 fail / 1 pass). Chrome.
 
 ## decisions
 
-- One leftover: Account first-paint referral sign-in hint cite is house leftover.
-- Feedback body cite stays later.
-- Sign in stays. Do not restyle to house-btn-primary.
+- One leftover: Account first-paint feedback body cite is house leftover.
+- Reminders inner ul stays later.
+- Send stays outline. Do not restyle to house-btn-primary.
+- FeedbackSheet stays.
 - Identity number select stays border-2.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.

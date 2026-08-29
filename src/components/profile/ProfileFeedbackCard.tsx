@@ -36,7 +36,7 @@ export function ProfileFeedbackCard() {
         <MessageSquare className="h-4 w-4" aria-hidden="true" />
         {t('feedbackCardTitle', { defaultValue: 'Tell us what broke' })}
       </h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-feedback-cite" data-testid="account-feedback-cite">
         {t('feedbackCardLead', {
           defaultValue:
             'A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.',
