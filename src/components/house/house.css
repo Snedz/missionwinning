@@ -1213,6 +1213,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-picker-selected.house-lede {
+  margin: 0;
+  font-size: 12px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-add-exercise .house-btn {
   margin-top: 12px;
 }

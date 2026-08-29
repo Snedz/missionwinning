@@ -92,7 +92,7 @@ export function ExercisePicker({
         autoComplete="off"
       />
       {selected && !query && (
-        <p className="text-xs text-muted-foreground">
+        <p className="house-lede house-picker-selected">
           {t('exercisePickerSelected', {
             name: selected.name,
             defaultValue: `Selected: ${selected.name}`,
