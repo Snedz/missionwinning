@@ -84,6 +84,7 @@
 | `ProfilePage.tsx` | `/profile` — You leftover; first paint is house leftover (static import, no `RouteLoading`). Identity / kit first; Account door is house-btn ghost |
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings leftover; first paint is house leftover (static import, no `RouteLoading` / `useSearchParams`). Sign-in / return / prefs first; Explore / more / help are house-card |
+| `UnderTheHoodPage.tsx` | `/account/under-the-hood` — Under the Hood first paint is house leftover (static page, not RouteLoading). Weights / downloads stay. |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
 | `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
 | `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |

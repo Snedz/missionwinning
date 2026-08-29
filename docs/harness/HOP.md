@@ -5,9 +5,9 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-track-first-paint
-done_means: Track first paint is house leftover (title + weight / tape), not RouteLoading. Walks / GPS stay parked.
-accept: npx tsx --test src/lib/trackFirstPaintHonesty.test.ts
+ticket: leftover-hood-first-paint
+done_means: Under the Hood first paint is house leftover (title + weights), not RouteLoading. Do not invent room chrome.
+accept: npx tsx --test src/lib/hoodFirstPaintHonesty.test.ts
 test_written: yes
 
 ## progress
@@ -17,5 +17,5 @@ Accept green. Walk next.
 
 ## decisions
 
-- Route leftover only. Do not restart Track metrics / walks chrome.
+- Route leftover only. Do not restyle WeightsPanel / downloads.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

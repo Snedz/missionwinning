@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Track first paint is house leftover
+`loadCoachTodayOptional`. Under the Hood first paint is house leftover
+(title + weights — not RouteLoading).
+Track first paint is house leftover
 (title + weight / tape — not RouteLoading).
 Fuel first paint is house leftover
 (title + notepad / today log / remaining — not
