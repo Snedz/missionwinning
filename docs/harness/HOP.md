@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-sync-status-row
-done_means: Account more-settings sync status row is house leftover, not border-2 bg-card. Retry stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountSyncStatusRow.test.ts
+ticket: leftover-account-founder-status-board
+done_means: Account owner-tools founder status board is house leftover, not Card content-card. Cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountFounderStatusBoard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 2 pass — no Card import already). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Sync status row is 1px house-card.
+Honesty was red (3 fail / 1 pass). Chrome. Accept next.
 
 ## decisions
 
-- One leftover: Account more-settings sync status row frame is house leftover.
-- Not first paint (More settings). Unmounts when nothing is queued and storage is fine.
-- Do not restyle Retry.
+- One leftover: Account owner-tools founder status board frame is house leftover.
+- Not first paint. Owner tools only. Guest walk unmounts it.
+- Do not restyle cites or the ops command pre.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.

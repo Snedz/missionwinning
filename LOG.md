@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Account owner-tools founder status board is house leftover.
 Account more-settings sync status row is house leftover.
 Account more-settings import card is house leftover.
 Account more-settings backup card is house leftover.
