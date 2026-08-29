@@ -92,7 +92,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 
 ## Rooms (existing engines)
 
-Today Start → `/active`. This week pane shows the real week; `generateWeek` writes only on `/coach`. History and Weekly plan are the real pages. Library \| Builder. Leaderboard first paint is house leftover. Benchmarks first paint is house leftover. Super Bundle first paint is house leftover. Move first paint is house leftover. Mind first paint is house leftover. Learn first paint is house leftover. Guidebook first paint is house leftover. Guide chapter first paint is house leftover. More leftover: Fuel, You, Account, Move, Mind, Track, Learn, Feedback, Garage. `/server` is quiet More only.
+Today Start → `/active`. This week pane shows the real week; `generateWeek` writes only on `/coach`. History and Weekly plan are the real pages. Library \| Builder. Leaderboard first paint is house leftover. Benchmarks first paint is house leftover. Super Bundle first paint is house leftover. Move first paint is house leftover. Mind first paint is house leftover. Learn first paint is house leftover. Guidebook first paint is house leftover. Guide chapter first paint is house leftover. Course first paint is house leftover. More leftover: Fuel, You, Account, Move, Mind, Track, Learn, Feedback, Garage. `/server` is quiet More only.
 
 Transferred rooms hide `data-house-costume="pillar-header"`. The second bar names the room. Canvas keeps an `sr-only` title.
 
