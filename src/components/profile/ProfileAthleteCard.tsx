@@ -218,7 +218,10 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
         </div>
 
         <details className="group house-athlete-edit" data-testid="athlete-card-edit">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-athlete-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-card-edit-summary"
+          >
             {t('athleteCardEdit', { defaultValue: 'Edit card' })}
           </summary>
           <div className="mt-3 space-y-4">

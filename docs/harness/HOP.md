@@ -5,19 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-identity-edit-summary
-done_means: You identity Edit summary cite is house leftover, not text-muted. Number select stays border-2. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youIdentityEditSummaryCite.test.ts
+ticket: leftover-you-athlete-edit-summary
+done_means: You athlete card Edit summary cite is house leftover, not text-muted. Preview double-rule stays border-2. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youAthleteEditSummaryCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Edit summary --house-muted 14px. Number select stays border-2.
+Honesty was red (3 fail / 1 pass). Chrome next.
 
 ## decisions
 
-- One leftover: You identity Edit summary cite is house leftover.
-- Number select stays border-2. Do not leftover the select.
+- One leftover: You athlete card Edit summary cite is house leftover.
+- Table / private note summaries stay later.
+- Preview double-rule border-2 stays.
+- Number select stays border-2.
 - Language select stays border-2.
 - What’s New inner border-t-2 stays later.
 - Do not rewrite shared ExercisePicker.
