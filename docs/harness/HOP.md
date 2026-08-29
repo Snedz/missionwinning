@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-builder-group-loading
-done_means: Nav to /builder does not paint the app-group Loading skeleton. Segment loading is house leftover, not SkeletonCard and not a page import. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary. ProgramTemplatesPanel internals stay parked.
-accept: npx tsx --test src/lib/builder/builderGroupLoading.test.ts
+ticket: leftover-history-first-paint-skeleton
+done_means: History first paint is house leftover, not Loading sessions. Empty still waits for persist hydrate. Calendar / charts / posters stay parked. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/history/historyFirstPaintSkeleton.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red. Accept green. Walked Home left Start → `/active` (Log set `rgb(24, 24, 27)`). Then Today close → Library rail → Builder second bar → `/builder`. First `/builder` tick was house leftover, not `Loading…`.
+Honesty first. History still paints SkeletonBlock Loading sessions before hydrate.
 
 ## decisions
 
-- One leftover: /builder nav is not group Loading.
+- One leftover: History first paint is not Loading sessions.
 - Do not restyle Finish / Skip / Swap / Form guide / Repeat*.
-- Do not invent rooms. ProgramTemplatesPanel internals stay parked.
+- Do not invent rooms. Calendar / charts / posters stay parked.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

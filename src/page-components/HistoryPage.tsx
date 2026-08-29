@@ -460,7 +460,7 @@ export function HistoryPage() {
       })}
     >
       {!hasHydrated ? (
-        <SkeletonBlock className="h-32" label="Loading sessions" />
+        <div className="house-empty" aria-busy="true" data-testid="history-first-paint" />
       ) : liveHistory.length === 0 ? (
         <div data-testid="session-history-empty">
           <EmptyState
