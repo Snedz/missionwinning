@@ -1515,7 +1515,9 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(garageSwap, /house-btn-primary/);
   assert.doesNotMatch(garageSwap, /accent-poster/);
   assert.match(css, /\.mw-house \.house-swap-option \{[^}]*flex-direction:\s*column/);
+  assert.match(css, /\.mw-house \.house-swap-option \.house-lede \{[^}]*--house-muted/);
   assert.match(spec, /Garage swap is house leftover/);
+  assert.match(spec, /Swap garage cues is house leftover/);
   const formGuide = read('src/components/form/FormGuideSheet.tsx');
   assert.match(formGuide, /data-testid="form-guide-got-it"/);
   assert.match(formGuide, /house-btn min-h-\[52px\] w-full tap-target/);

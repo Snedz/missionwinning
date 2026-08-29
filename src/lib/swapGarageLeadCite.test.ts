@@ -29,12 +29,14 @@ test('Swap garage lead cite is house leftover, not text-muted', () => {
   assert.match(list, /className="mw-house space-y-3"/);
 });
 
-test('garage option row cues stay text-muted (not this leftover)', () => {
+test('garage option row cues leftover ships separately (house-lede, not muted)', () => {
   const list = read('src/components/workout/GarageSwapList.tsx');
-  const cuesStart = list.indexOf('ex.cues');
+  const needle = '{ex.cues}</span>';
+  const cuesStart = list.indexOf(needle);
   assert.ok(cuesStart >= 0, 'missing option-row cues');
-  const cues = list.slice(cuesStart, cuesStart + 200);
-  assert.match(cues, /text-xs text-muted-foreground/);
+  const cues = list.slice(Math.max(0, cuesStart - 80), cuesStart + needle.length);
+  assert.match(cues, /house-lede/);
+  assert.doesNotMatch(cues, /text-muted-foreground/);
 });
 
 test('session-swap-confirm slice never house-btn-primary', () => {

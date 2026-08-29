@@ -973,6 +973,13 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-swap-option .house-lede {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--house-muted);
+}
+
 .mw-house.house-checkin .house-checkin-scale {
   display: flex;
   border: 1px solid var(--house-line);

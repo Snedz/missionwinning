@@ -40,7 +40,7 @@ export function GarageSwapList({ options, onChoose, selectedId }: Props) {
             >
               <span className="font-semibold">{ex.name}</span>
               {ex.cues ? (
-                <span className="text-xs text-muted-foreground">{ex.cues}</span>
+                <span className="house-lede">{ex.cues}</span>
               ) : null}
             </button>
           </li>
