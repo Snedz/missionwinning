@@ -223,7 +223,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
           </summary>
           <div className="mt-3 space-y-4">
             <fieldset className="space-y-2">
-              <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <legend className="house-athlete-frame-legend" data-testid="athlete-card-frame-legend">
                 {t('athleteCardFrame', { defaultValue: 'Frame' })}
               </legend>
               <div className="flex flex-wrap gap-2">

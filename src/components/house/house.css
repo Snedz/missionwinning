@@ -1855,6 +1855,15 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-athlete-frame-legend {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-table-cite {
   margin: 0 0 16px;
   font-size: 14px;
