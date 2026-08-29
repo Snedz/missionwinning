@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red. Accept next. Walk next.
+Honesty was red. Accept green. Walked `/active` → `/log`. First tick was the Today desk + `[data-testid="today-start-cta"]` `href="/active"`, not `Loading…`.
 
 ## decisions
 
