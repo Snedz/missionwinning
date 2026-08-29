@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 2 pass). Chrome: drop text-xs; `.house-set-table .house-set-log` is 12px. LogConsole stays 19px.
+Honesty was red (3 fail / 2 pass). Chrome: drop text-xs; `.house-set-table .house-set-log` is 12px. LogConsole stays 19px. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27) 12px without text-xs, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
