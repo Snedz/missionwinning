@@ -1904,6 +1904,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-note-saved {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);

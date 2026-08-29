@@ -65,7 +65,7 @@ export function AthletePrivateNoteCard() {
           </span>
         </div>
         {saved && (
-          <p className="mt-2 text-sm text-muted-foreground" role="status">
+          <p className="house-note-saved" data-testid="athlete-private-note-saved" role="status">
             {t('athletePrivateNoteSaved', { defaultValue: 'Saved on this device only.' })}
           </p>
         )}
