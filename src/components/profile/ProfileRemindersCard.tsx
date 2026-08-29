@@ -52,7 +52,7 @@ export function ProfileRemindersCard({
         <h3 className="text-2xl font-semibold leading-none tracking-tight">
           {t('remindersTitle', { defaultValue: 'Training reminders' })}
         </h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-reminders-cite" data-testid="account-reminders-cite">
           {t('remindersPushUnavailable', {
             defaultValue:
               'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
