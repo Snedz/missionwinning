@@ -5,27 +5,25 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-under-the-hood-week4-card
-done_means: Under the Hood week-4 diagnostic card is house leftover, not Card + border-2. Cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountUnderTheHoodCard.test.ts
+ticket: leftover-you-identity-edit-signature-cites
+done_means: You identity Edit / signature cites is house leftover, not border-t-2 / text-muted. Number select stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youIdentityEditCites.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Week-4 card unmounted on `/account/under-the-hood` (unused). Weights still first paint.
+Honesty was red (4 fail / 1 pass). Chrome. Accept pending.
 
 ## decisions
 
-- One leftover: UnderTheHoodCard frame is house leftover (not Card + border-2).
-- Unused on live `/account/under-the-hood` (page first paint already leftover). Walk extra may be unmounted.
-- Keep EN floors and “This install only — not a live user count. We do not invent traction.”
-- Do not invent traction numbers.
-- Do not remount the unused card onto the page.
+- One leftover: You identity Edit disclosure + signature cites are house leftover.
+- Number select border-2 stays (inner editor).
+- Goals textarea stays later.
+- Do not restyle Save to house-btn-primary.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
 - Do not restyle shared EmptyState.
 - Do not restyle Finish / Skip / Swap / Form guide / Repeat*.
-- You identity Edit / signature cites and goals textarea stay later.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

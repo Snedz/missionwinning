@@ -140,7 +140,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         </p>
 
         {sig ? (
-          <p className="text-sm leading-relaxed text-muted-foreground" data-testid="athlete-signature">
+          <p className="house-identity-cite" data-testid="athlete-signature">
             {t('careerSignature', {
               sessions: n(sig.sessions),
               bestWeek: n(sig.bestWeek),
@@ -149,7 +149,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             })}
           </p>
         ) : (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="house-identity-cite">
             {t('athleteIdentityNoStart', {
               defaultValue: 'Your first logged session starts the record.',
             })}
@@ -157,7 +157,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         )}
 
         {career.firstSessionOn && (
-          <p className="text-xs text-muted-foreground">
+          <p className="house-identity-cite">
             {t('athleteIdentitySince', {
               date: formatLocalDateKey(career.firstSessionOn, i18n.language),
               defaultValue: `Training here since ${formatLocalDateKey(career.firstSessionOn, i18n.language)}`,
@@ -165,7 +165,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
           </p>
         )}
 
-        <details className="group border-t-2 border-border pt-4">
+        <details className="group house-identity-edit" data-testid="athlete-identity-edit">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             {t('athleteIdentityEdit', { defaultValue: 'Edit call sign' })}
           </summary>

@@ -1822,6 +1822,19 @@
   border-color: var(--house-line);
 }
 
+.mw-house .house-profile .house-identity-cite {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
+.mw-house .house-profile .house-identity-edit {
+  margin-top: 16px;
+  border-top: 1px solid var(--house-line);
+  padding-top: 16px;
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);
