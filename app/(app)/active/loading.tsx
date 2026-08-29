@@ -1,9 +1,8 @@
-import { ActiveWorkoutPage } from '@/page-components/ActiveWorkoutPage';
-
 /**
  * Client nav must not fall through to the app-group loading
- * boundary. First paint stays the compose page.
+ * boundary. Keep this file light — a page import suspends and
+ * the group skeleton wins.
  */
 export default function ActiveLoading() {
-  return <ActiveWorkoutPage />;
+  return <div className="house-compose-live space-y-4" aria-busy="true" />;
 }

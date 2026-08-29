@@ -21,7 +21,8 @@ test('/active segment loading is the compose page — not group SkeletonCard', (
   const rel = 'app/(app)/active/loading.tsx';
   assert.ok(existsSync(path.join(root, rel)), 'missing app/(app)/active/loading.tsx');
   const src = read(rel);
-  assert.match(src, /ActiveWorkoutPage/);
+  assert.match(src, /house-compose-live/);
+  assert.doesNotMatch(src, /ActiveWorkoutPage/);
   assert.doesNotMatch(src, /SkeletonCard|Skeleton /);
   assert.doesNotMatch(src, /Loading…|Loading\.\.\./);
   const group = read('app/(app)/loading.tsx');

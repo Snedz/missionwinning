@@ -145,8 +145,8 @@ test('/active first paint is a compose table, never Restoring as the product', (
   assert.doesNotMatch(route, /dynamic\(|RouteLoading/);
   assert.match(route, /import \{ ActiveWorkoutPage \}/);
   const activeLoading = stripComments(read('app/(app)/active/loading.tsx'));
-  assert.match(activeLoading, /ActiveWorkoutPage/);
-  assert.doesNotMatch(activeLoading, /SkeletonCard|Loading…/);
+  assert.match(activeLoading, /house-compose-live/);
+  assert.doesNotMatch(activeLoading, /ActiveWorkoutPage|SkeletonCard|Loading…/);
   const active = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
   assert.doesNotMatch(active, /Restoring session|activeLoadingSession|ActiveEmptyState/);
   assert.match(active, /useLayoutEffect/);

@@ -17,7 +17,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 `/active` client nav is not
 group Loading. Segment loading
-is the compose page.
+is house compose leftover.
 First-rooms Log a set navigates
 from first paint (`href="/active"`).
 Compact hero Start navigates

@@ -6,7 +6,7 @@ template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
 ticket: leftover-active-group-loading
-done_means: Client nav to /active does not paint the app-group Loading skeleton. Segment loading is the compose page, not SkeletonCard. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+done_means: Client nav to /active does not paint the app-group Loading skeleton. Segment loading is house compose leftover, not SkeletonCard and not a page import. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
 accept: npx tsx --test src/lib/workout/activeGroupLoading.test.ts
 test_written: yes
 
