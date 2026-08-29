@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-explore-places-body-cite
-done_means: Account first-paint Explore places body cite is house leftover, not text-muted. Open Explore stays ghost. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountExplorePlacesBodyCite.test.ts
+ticket: leftover-account-signin-hint-cite
+done_means: Account first-paint sign-in hint cite is house leftover, not text-muted. Sign-in panel stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountSignInHintCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Explore places body cite --house-muted 14px. Open Explore stays ghost.
+Honesty was red (3 fail / 1 pass). Chrome next.
 
 ## decisions
 
-- One leftover: Account first-paint Explore places body cite is house leftover.
-- Open Explore stays ghost. Do not restyle to house-btn-primary.
+- One leftover: Account first-paint sign-in hint cite is house leftover.
+- Sign-in panel stays. Do not leftover SignInPanel. Do not restyle to house-btn-primary.
 - Language select stays border-2.
 - Identity number select stays border-2.
 - Do not rewrite shared ExercisePicker.

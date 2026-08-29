@@ -131,7 +131,7 @@ export function ProfileAccountCard({
             <p className="font-semibold mb-1 text-sm">
               {t('signInOptional', { defaultValue: 'Sign in optional — progress stays on this device.' })}
             </p>
-            <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+            <p className="house-signin-hint" data-testid="account-signin-hint">
               {t('cloudSyncPending', {
                 defaultValue: 'Sign in to sync journey across devices',
               })}
