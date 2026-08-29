@@ -34,7 +34,7 @@
 
 | File | Route | Notes |
 |------|-------|-------|
-| `CoachPage.tsx` | `/coach` | Coach first paint is house leftover. Weekly AI plan — first paint is this week’s session; generate dock, next-day cite, week dose, week strip, and Show all fold chrome are house leftovers. Landing WeekStrip stays field-manual. Voice/LoadBand/LogCite/Manage internals stay. |
+| `CoachPage.tsx` | `/coach` | Coach first paint is house leftover. Weekly AI plan — first paint is this week’s session; generate dock, next-day cite, week dose, week strip, and Show all fold chrome are house leftovers. Coach Show-all door is house leftover. Landing WeekStrip stays field-manual. Voice/LoadBand/LogCite/Manage internals stay. |
 | `CoachingPage.tsx` | `/coaching` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 
 ### Fuel / Move / Mind / Track / Learn

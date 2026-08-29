@@ -77,6 +77,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `planVoiceServer.test.ts` | Malformed LLM → rules fallback |
 | `coachGroupLoading.test.ts` | `/coach` client nav is not group Loading; segment loading is house leftover (`.1058`) |
 | `coachFirstPaintSkeleton.test.ts` | Coach first paint is not a plan skeleton; generate still waits until !loading (`.1058`) |
+| `coachShowAllDoor.test.ts` | Coach Show-all door is house leftover (`.1058`) |
 
 ## UI & integration (not in this folder)
 
