@@ -40,7 +40,8 @@
 | `/move` | `MovePage.tsx` — Move first paint is house leftover (static page; `?collection=` / `?flow=` server-resolved; not useSearchParams skeleton). Quiet rest-day walk / easy log (`.969`). |
 | `/mind` | `MindPage.tsx` — Mind first paint is house leftover (static page; `?collection=` server-resolved; not useSearchParams skeleton). |
 | `/learn` | `LearnPage.tsx` — Learn first paint is house leftover (static page; `?path=` server-resolved; not RouteLoading). Quiet Learn first-success intro (`.978`); catalog in Show more. Guide / course stay parked. |
-| `/learn/guide` | `GuidebookIndexPage.tsx` — Guidebook first paint is house leftover (static page; title + chapter list, not RouteLoading). Course / chapter stay parked. |
+| `/learn/guide` | `GuidebookIndexPage.tsx` — Guidebook first paint is house leftover (static page; title + chapter list, not RouteLoading). |
+| `/learn/guide/[chapterId]` | `GuidebookChapterPage.tsx` — Guide chapter first paint is house leftover (static page; title + body, not RouteLoading). Course stays parked. |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
