@@ -5,21 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-athlete-backdrop-legend
-done_means: You athlete card backdrop legend cite is house leftover, not text-muted. Backdrop buttons stay outline. Badges legend stays later. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youAthleteBackdropLegendCite.test.ts
+ticket: leftover-you-kit-summary-cite
+done_means: You kit summary cite is house leftover, not text-muted. Kit buttons stay outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youKitSummaryCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Backdrop legend cite --house-muted 13px uppercase. Backdrop buttons stay outline.
+Honesty was red (3 fail / 1 pass). Chrome next.
 
 ## decisions
 
-- One leftover: You athlete card backdrop legend cite is house leftover.
-- Badges legend stays later.
-- Backdrop buttons stay outline / selected. Do not restyle to house-btn-primary.
-- Preview double-rule border-2 stays.
+- One leftover: You kit summary cite is house leftover.
+- Kit buttons stay outline / selected. Do not restyle to house-btn-primary.
+- Athlete card badges legend stays later.
 - Language select stays border-2.
 - Identity number select stays border-2.
 - Do not rewrite shared ExercisePicker.

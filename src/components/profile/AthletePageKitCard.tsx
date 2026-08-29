@@ -58,7 +58,10 @@ export function AthletePageKitCard() {
   return (
     <div className="house-card space-y-3" data-testid="athlete-page-kit-card">
         <details className="group">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-kit-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-kit-summary"
+          >
             {t('athleteKitTitle', { defaultValue: 'Page kit' })}
           </summary>
           <div className="mt-3">

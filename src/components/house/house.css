@@ -1944,6 +1944,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-kit-summary {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-share-cite {
   margin: 0;
   font-size: 14px;
