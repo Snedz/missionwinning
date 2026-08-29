@@ -1,6 +1,6 @@
 /**
- * Check-in lead cite is house leftover — house-lede, not text-muted.
- * Scale / confirm stay. Confirm stays outline. Portals stay mw-house.
+ * Check-in scale hints is house leftover — house-lede, not text-muted.
+ * Scale control / ticks / confirm stay. Confirm stays outline. Portals stay mw-house.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,24 +17,35 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-test('Check-in lead cite is house leftover, not text-muted', () => {
-  const sheet = read('src/components/workout/SessionCheckInSheet.tsx');
-  const needle = 'sessionCheckInLead';
+function sliceScaleHints(sheet: string): string {
+  const needle = '{lowHint}';
   const start = sheet.indexOf(needle);
-  assert.ok(start >= 0, `missing ${needle}`);
-  const cite = sheet.slice(Math.max(0, start - 160), start + 80);
-  assert.match(cite, /house-lede/);
-  assert.doesNotMatch(cite, /text-muted-foreground/);
+  assert.ok(start >= 0, 'missing scale low/high hints');
+  return sheet.slice(Math.max(0, start - 160), start + 80);
+}
+
+test('Check-in scale hints is house leftover, not text-muted', () => {
+  const sheet = read('src/components/workout/SessionCheckInSheet.tsx');
+  const hints = sliceScaleHints(sheet);
+  assert.match(hints, /house-lede/);
+  assert.doesNotMatch(hints, /text-muted-foreground/);
   assert.match(sheet, /className="mw-house house-checkin"/);
 });
 
-test('check-in scale hints are house leftover (sibling leftover)', () => {
+test('check-in scale value cite stays house leftover (not this leftover)', () => {
   const sheet = read('src/components/workout/SessionCheckInSheet.tsx');
-  const hintsStart = sheet.indexOf('{lowHint}');
-  assert.ok(hintsStart >= 0, 'missing scale low/high hints');
-  const hints = sheet.slice(Math.max(0, hintsStart - 160), hintsStart + 80);
-  assert.match(hints, /text-\[10px\] house-lede/);
-  assert.doesNotMatch(hints, /text-muted-foreground/);
+  const needle = '{value}/5';
+  const start = sheet.indexOf(needle);
+  assert.ok(start >= 0, `missing ${needle}`);
+  const cite = sheet.slice(Math.max(0, start - 160), start + 40);
+  assert.match(cite, /house-lede/);
+  assert.doesNotMatch(cite, /text-muted-foreground/);
+});
+
+test('check-in scale control stays house-checkin-scale (not this leftover)', () => {
+  const sheet = read('src/components/workout/SessionCheckInSheet.tsx');
+  assert.match(sheet, /className="house-checkin-scale"/);
+  assert.match(sheet, /house-checkin-tick/);
 });
 
 test('check-in confirm never house-btn-primary', () => {
@@ -46,7 +57,7 @@ test('check-in confirm never house-btn-primary', () => {
   assert.match(save, /house-btn min-h-\[52px\]/);
 });
 
-test('house leftover rule paints check-in lead cite with --house-muted', () => {
+test('house leftover rule paints check-in scale hints with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
@@ -56,9 +67,9 @@ test('house leftover rule paints check-in lead cite with --house-muted', () => {
   );
 });
 
-test('DESIGN names Check-in lead cite is house leftover', () => {
+test('DESIGN names Check-in scale hints is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Check-in lead cite is house leftover/);
+  assert.match(spec, /Check-in scale hints is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {

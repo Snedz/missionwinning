@@ -32,12 +32,13 @@ test('Check-in scale value cite is house leftover, not text-muted', () => {
   assert.match(sheet, /className="mw-house house-checkin"/);
 });
 
-test('check-in scale hints stay text-muted (not this leftover)', () => {
+test('check-in scale hints are house leftover (sibling leftover)', () => {
   const sheet = read('src/components/workout/SessionCheckInSheet.tsx');
   const hintsStart = sheet.indexOf('{lowHint}');
   assert.ok(hintsStart >= 0, 'missing scale low/high hints');
   const hints = sheet.slice(Math.max(0, hintsStart - 160), hintsStart + 80);
-  assert.match(hints, /text-\[10px\] text-muted-foreground/);
+  assert.match(hints, /text-\[10px\] house-lede/);
+  assert.doesNotMatch(hints, /text-muted-foreground/);
 });
 
 test('check-in scale control stays house-checkin-scale (not this leftover)', () => {

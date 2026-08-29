@@ -79,7 +79,7 @@ function QuickRow({
           </button>
         ))}
       </div>
-      <div className="flex justify-between text-[10px] text-muted-foreground">
+      <div className="flex justify-between text-[10px] house-lede">
         <span>{lowHint}</span>
         <span>{highHint}</span>
       </div>
