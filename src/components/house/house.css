@@ -2023,6 +2023,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-note-summary {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-note-count {
   font-size: 13px;
   line-height: 1.45;

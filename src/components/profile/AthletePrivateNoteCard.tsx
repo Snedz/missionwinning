@@ -32,7 +32,10 @@ export function AthletePrivateNoteCard() {
   return (
     <div className="house-card space-y-3" data-testid="athlete-private-note">
         <details className="group">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-note-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-private-note-summary"
+          >
             {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
           </summary>
           <div className="mt-3">
