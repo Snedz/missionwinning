@@ -5,19 +5,18 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-kit-locked-cite
-done_means: You kit locked cite is house leftover, not text-muted. Kit buttons stay outline. Saved cite stays later. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youKitLockedCite.test.ts
+ticket: leftover-you-kit-saved-cite
+done_means: You kit saved cite is house leftover, not text-muted. Kit buttons stay outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youKitSavedCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Kit locked cite --house-muted 13px. Kit buttons stay outline.
+Honesty was red (3 fail / 1 pass). Chrome next.
 
 ## decisions
 
-- One leftover: You kit locked cite is house leftover.
-- You kit saved cite stays later.
+- One leftover: You kit saved cite is house leftover.
 - Kit buttons stay outline / selected. Do not restyle to house-btn-primary.
 - Language select stays border-2.
 - Identity number select stays border-2.

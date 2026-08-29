@@ -102,7 +102,7 @@ export function AthletePageKitCard() {
         </div>
 
         {saved && (
-          <p className="mt-3 text-sm text-muted-foreground" role="status">
+          <p className="house-kit-saved" data-testid="athlete-kit-saved" role="status">
             {t('athleteKitSaved', { defaultValue: 'Layout saved on this device.' })}
           </p>
         )}
