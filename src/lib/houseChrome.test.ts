@@ -124,11 +124,10 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.doesNotMatch(src, /SSR_ACTION/);
   assert.doesNotMatch(src, /startWorkoutFromStore/);
   assert.doesNotMatch(src, /copy:\s*prev\.copy/);
-  assert.doesNotMatch(src, /if \(!snap \|\| !action\) return/);
+  assert.match(src, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
   assert.doesNotMatch(src, /disabled=\{!snap\}/);
   assert.doesNotMatch(src, /startEmptyWorkout|startEmpty\(/);
-  assert.match(src, /previewJustGoForEquipment/);
-  assert.match(src, /startLive\(preview\.name, preview\.exercises\)/);
+  assert.match(src, /writeTodayComposeSession\(\)/);
   assert.match(src, /today-start-pending/);
   assert.match(src, /justGoTitle/);
   assert.match(src, /<HouseFirstRoomsCard/);
@@ -139,15 +138,20 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.match(peek, /typeof window === 'undefined'/);
 });
 
-test('/active after hydrate is a Just Go table, never Restoring as the product', () => {
+test('/active first paint is a compose table, never Restoring as the product', () => {
   const empty = stripComments(read('src/components/house/TrainComposeEmpty.tsx'));
   assert.doesNotMatch(empty, /Restoring session|activeLoadingSession|Reading the last workout/);
   assert.match(empty, /aria-busy=\{hydrated \? undefined : true\}/);
   const active = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
+  assert.match(active, /useLayoutEffect/);
+  assert.match(active, /writeTodayComposeSession\(\)/);
+  assert.match(active, /paintTodayComposeWorkout/);
   assert.match(active, /await reconcileOpenSession/);
   assert.match(active, /pendingRemoteOpenSession\) return/);
   assert.match(active, /parseSeoExerciseParam\(searchParams\)/);
   assert.match(active, /previewJustGoForEquipment/);
+  const layout = active.slice(active.indexOf('useLayoutEffect(() =>'), active.indexOf('useEffect(() => {'));
+  assert.doesNotMatch(layout, /hasHydrated/);
   const emptyStart = active.slice(
     active.indexOf('const handleEmptyStart'),
     active.indexOf('const handlePreviewStart')
@@ -283,6 +287,10 @@ test('Home and Library docks transfer the real rooms, Start composes', () => {
     ]
   );
   assert.equal(HOUSE_TODAY_ROOMS[0]?.kind, 'compose');
+  const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
+  assert.match(second, /writeTodayComposeSession\(\)/);
+  assert.match(second, /row\.id === 'start'/);
+  assert.match(second, /preventDefault/);
   assert.deepEqual(
     HOUSE_LIBRARY_ROOMS.map((row) => row.href),
     ['/library', '/builder']

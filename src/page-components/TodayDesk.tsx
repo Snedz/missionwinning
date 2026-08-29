@@ -6,8 +6,9 @@
  * First paint must stay as dense as the Thursday #888 walk: Just Go
  * hero, first rooms, and the week strip. peekCoachToday() is null on
  * the server — do not hide the desk until snap. Start always lands
- * `/active` with a Just Go table, not an empty Quick Workout. The live
- * engine runs when snap is ready.
+ * `/active` with a Just Go table (last loads). Start writes the
+ * session before Train opens. The live engine still runs when snap
+ * is ready.
  */
 
 import Link from 'next/link';
@@ -43,8 +44,8 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
-import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { HouseFirstRoomsCard } from '@/components/house/HouseFirstRoomsCard';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
@@ -143,13 +144,9 @@ export function TodayDesk() {
   const copy = snap?.copy ?? null;
 
   const handleStart = () => {
-    if (!snap || !action) {
-      const equipment = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
-      const preview = previewJustGoForEquipment(equipment);
-      startLive(preview.name, preview.exercises);
-      router.push('/active');
-      return;
-    }
+    writeTodayComposeSession();
+    router.push('/active');
+    if (!snap || !action) return;
     void (async () => {
       const liveHistory = readWorkoutHistoryFromStorage();
       const savedWorkouts = readSavedWorkoutsFromStorage();

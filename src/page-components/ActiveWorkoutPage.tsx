@@ -5,7 +5,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { parseGoalPresetId } from '@/lib/journeyGoals';
 import { readRaw } from '@/lib/storage/safeStorage';
@@ -101,6 +101,10 @@ import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClock';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
+import {
+  paintTodayComposeWorkout,
+  writeTodayComposeSession,
+} from '@/lib/workout/writeTodayComposeSession';
 import { track } from '@/lib/analytics';
 import type { SetKind } from '@/types';
 
@@ -168,11 +172,15 @@ export function ActiveWorkoutPage() {
   }, []);
 
   /**
-   * After persist + reconcile, an empty `/active` is still a compose.
-   * Seed Just Go so the set table is the product — never Restoring
-   * session as the only content. Do not race SEO `?exercise=` or a
-   * pending remote open. handleEmptyStart stays freestyle empty.
+   * Hydrate must not block the compose canvas. Write today's session
+   * before paint. Reconcile may adopt a remote later; do not wait
+   * for it to show a set table. handleEmptyStart stays freestyle empty.
    */
+  useLayoutEffect(() => {
+    if (parseSeoExerciseParam(searchParams)) return;
+    writeTodayComposeSession();
+  }, [searchParams]);
+
   useEffect(() => {
     if (!hasHydrated) return;
     let cancelled = false;
@@ -182,14 +190,12 @@ export function ActiveWorkoutPage() {
       const store = useWorkoutStore.getState();
       if (store.activeWorkout || store.pendingRemoteOpenSession) return;
       if (parseSeoExerciseParam(searchParams)) return;
-      const equipment = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
-      const preview = previewJustGoForEquipment(equipment);
-      startWorkout(preview.name, preview.exercises);
+      writeTodayComposeSession();
     })();
     return () => {
       cancelled = true;
     };
-  }, [hasHydrated, searchParams, startWorkout]);
+  }, [hasHydrated, searchParams]);
 
   /**
    * Flow-2 — SEO `/exercises/[id]` lands here with `?exercise=`. After persist
@@ -454,7 +460,11 @@ export function ActiveWorkoutPage() {
   });
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
-    const exLog = activeWorkout?.exercises[exIdx];
+    if (!useWorkoutStore.getState().activeWorkout) {
+      writeTodayComposeSession();
+    }
+    const live = useWorkoutStore.getState().activeWorkout;
+    const exLog = live?.exercises[exIdx];
     const set = exLog?.sets[setIdx];
     const payload = resolveLogSetPayload({
       exerciseId: exLog?.exerciseId,
@@ -710,7 +720,7 @@ export function ActiveWorkoutPage() {
     });
   };
 
-  if (!activeWorkout) {
+  if (!activeWorkout && victoryOpen) {
     const emptyStart = resolveActiveEmptyStart(workoutHistory, savedWorkouts);
     const equipment = hasHydrated ? readRaw(STORAGE_KEYS.equipment) : null;
     const preview =
@@ -738,12 +748,14 @@ export function ActiveWorkoutPage() {
     );
   }
 
+  const session = activeWorkout ?? paintTodayComposeWorkout();
+
   const { completed: completedSets, total: totalSets, hardCount } = sessionSetStats(
-    activeWorkout.exercises
+    session.exercises
   );
   const nextCue = (() => {
     if (!nextSet) return null;
-    const exLog = activeWorkout.exercises[nextSet.exIdx];
+    const exLog = session.exercises[nextSet.exIdx];
     if (!exLog) return null;
     const set = exLog.sets[nextSet.setIdx];
     const dial = getSetInput(nextSet.exIdx, nextSet.setIdx, set?.reps ?? 10, set?.weight ?? 0);
@@ -762,12 +774,12 @@ export function ActiveWorkoutPage() {
   return (
     <div className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
       <ActiveSessionChrome
-        workoutName={activeWorkout.workoutName}
+        workoutName={session.workoutName}
         completedSets={completedSets}
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
-        sessionClockPaused={isSessionClockPaused(readSessionClock(activeWorkout))}
+        sessionClockPaused={isSessionClockPaused(readSessionClock(session))}
         onToggleSessionClock={toggleSessionClock}
         restTimerActive={restTimerActive}
         nextCue={nextCue}
@@ -781,7 +793,7 @@ export function ActiveWorkoutPage() {
         onLogPastSession={() => router.push('/history?backfill=1')}
       />
 
-      {!activeSessionHasExercises(activeWorkout.exercises) ? (
+      {!activeSessionHasExercises(session.exercises) ? (
         /* Was the logger's own dashed box — the system has no dashed borders
            and nothing centred. Two rules, flush left, like every other empty
            state since `.150`. */
@@ -792,7 +804,7 @@ export function ActiveWorkoutPage() {
         </p>
       ) : (
         <ActiveExerciseList
-          exercises={activeWorkout.exercises}
+          exercises={session.exercises}
           workoutHistory={workoutHistory}
           units={units}
           unitLabel={unitLabel}
@@ -858,7 +870,7 @@ export function ActiveWorkoutPage() {
           onSetSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
           onOpenPlates={() => setPlateCalcOpen(true)}
           onAddWarmups={(exIdx) => {
-            const ex = activeWorkout.exercises[exIdx];
+            const ex = session.exercises[exIdx];
             if (!ex) return;
             const live = nextSet?.exIdx === exIdx ? nextSet.setIdx : null;
             const liveSet = live != null ? ex.sets[live] : undefined;
@@ -926,7 +938,7 @@ export function ActiveWorkoutPage() {
         </summary>
         <div className="house-show-all-body space-y-4 p-4">
           <LiveHeartRate />
-          <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
+          <SessionJotField value={session.sessionNote ?? ''} onChange={setSessionNote} />
           <ActiveReadinessDeltaStrip
             readinessBefore={readinessBefore}
             readinessAfter={readinessAfter}
@@ -1003,7 +1015,7 @@ export function ActiveWorkoutPage() {
         plateCalcOpen={plateCalcOpen}
         onClosePlateCalc={() => setPlateCalcOpen(false)}
         nextSet={nextSet}
-        exercises={activeWorkout.exercises}
+        exercises={session.exercises}
         resolveInput={getSetInput}
         onApplyPlateWeight={(exIdx, setIdx, weight) => {
           for (const p of patchesForPlateWeight(weight)) {

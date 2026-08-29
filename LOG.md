@@ -286,11 +286,14 @@ host; `/server` still 307 to `/private`.
 Today first paint stays the
 Thursday desk (Just Go, first
 rooms, week strip) — never hide
-them until snap. Start before
-snap seeds Just Go, not an empty
-Quick Workout. `/active` after
-hydrate is the Just Go table +
-Log set, never Restoring session
+them until snap. Start on `/log`
+writes today's session (Just Go
+with last loads) before Train
+opens — second-bar Start writes
+too. `/active` first paint is
+add-exercise + a set row + Log
+set; hydrate does not own the
+canvas. Never Restoring session
 as the product. handleEmptyStart
 stays freestyle empty. Coach inner costume eyebrow is
 gone. Today has one filled

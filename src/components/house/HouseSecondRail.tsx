@@ -8,7 +8,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { BookOpen, CalendarDays, ChevronLeft, Clock, Layers, Map, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { loadPlan } from '@/lib/coach/storage';
@@ -21,6 +21,7 @@ import {
   type HouseSecondDock,
 } from './houseNav';
 import { useHousePane } from './HousePane';
+import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 
 const TODAY_ICONS = {
   start: Play,
@@ -42,6 +43,7 @@ type Props = {
 
 export function HouseSecondRail({ dock }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const { t } = useTranslation();
   const { pane, openPane, closePane } = useHousePane();
   const [hash, setHash] = useState('');
@@ -92,7 +94,13 @@ export function HouseSecondRail({ dock }: Props) {
                     className={`house-second-link${on ? ' is-on' : ''}`}
                     aria-current={on ? 'page' : undefined}
                     data-house-room={row.id}
-                    onClick={() => {
+                    onClick={(e) => {
+                      if (row.id === 'start') {
+                        e.preventDefault();
+                        writeTodayComposeSession();
+                        router.push('/active');
+                        return;
+                      }
                       if (weekClick) openPane('week');
                     }}
                   >
