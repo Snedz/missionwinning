@@ -2231,6 +2231,37 @@
   box-shadow: none;
 }
 
+.mw-house .house-learn .house-learn-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mw-house .house-learn .house-learn-intro .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-learn .house-learn-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-learn .house-learn-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mw-house .house-learn .house-learn-points .house-lede {
+  padding-left: 12px;
+  border-left: 1px solid var(--house-line);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

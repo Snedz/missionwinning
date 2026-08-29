@@ -727,6 +727,18 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-track \.house-state\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Track first-paint metrics is house leftover/);
   assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);
+  const learnIntro = read('src/components/learn/QuietLearnIntroCard.tsx');
+  assert.match(learnIntro, /house-card house-learn-intro/);
+  assert.match(learnIntro, /house-learn-name/);
+  assert.match(learnIntro, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.match(learnIntro, /data-testid="quiet-learn-intro"/);
+  assert.doesNotMatch(learnIntro, /<Button[\s>]/);
+  assert.doesNotMatch(learnIntro, /border-2/);
+  assert.doesNotMatch(learnIntro, /uppercase tracking/);
+  assert.doesNotMatch(learnIntro, /house-btn-primary/);
+  assert.doesNotMatch(learnIntro, /primary-action/);
+  assert.match(css, /\.house-learn \.house-learn-points \.house-lede \{[^}]*--house-line/);
+  assert.match(spec, /Learn first-paint intro is house leftover/);
   assert.match(read('src/page-components/LearnCoursePage.tsx'), /className="house-learn"/);
   const feedback = read('src/page-components/FeedbackPage.tsx');
   assert.match(feedback, /className="house-feedback"/);

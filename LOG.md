@@ -226,6 +226,7 @@ Today Start quiet offers are house leftover.
 Move first-paint flow list is house leftover.
 Track first-paint metrics is house leftover.
 Mind first-paint check-in is house leftover.
+Learn first-paint intro is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
@@ -248,8 +249,10 @@ all). Mind first-paint check-in is
 house leftover (Save is house-btn-primary,
 not `--accent-poster`; scale ticks are
 ink, not red; Behavior strip / breathe
-/ sessions stay). Learn first paint
-unchanged; extra tools stay in
+/ sessions stay). Learn first-paint
+intro is house leftover (doors are
+house-btn, not filled; other paths
+stay Show all). Extra tools stay in
 house-card Show all. Feedback leftover
 is `house-feedback`: quiet title stays,
 the form is the first-paint object, one

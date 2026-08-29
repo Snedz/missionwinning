@@ -7,7 +7,6 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { BookOpen } from 'lucide-react';
 import type { LearnPath } from '@/data/learnPaths';
@@ -26,6 +25,7 @@ export function QuietLearnIntroCard({ paths }: Props) {
     return (
       <div data-testid="quiet-learn-intro">
         <EmptyState
+          className="house-empty"
           icon={BookOpen}
           title={t('quietLearnEmpty', {
             defaultValue: 'No first-success intro yet.',
@@ -39,37 +39,40 @@ export function QuietLearnIntroCard({ paths }: Props) {
   }
 
   return (
-    <div
+    <section
       data-testid="quiet-learn-intro"
-      className="border-2 border-border bg-card px-4 py-4 space-y-3"
+      className="house-card house-learn-intro"
     >
-      <div className="space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-          {t('quietLearnEyebrow', { defaultValue: 'First success' })}
-        </p>
-        <h2 className="text-lg font-semibold text-foreground">{lesson.title}</h2>
-        <p className="text-sm leading-relaxed text-muted-foreground">{lesson.summary}</p>
-      </div>
-      <ul className="space-y-1">
+      <p className="house-kicker">
+        {t('quietLearnEyebrow', { defaultValue: 'First success' })}
+      </p>
+      <h2 className="house-learn-name">{lesson.title}</h2>
+      <p className="house-lede">{lesson.summary}</p>
+      <ul className="house-learn-points">
         {lesson.keyPoints.map((point) => (
-          <li key={point} className="flex gap-2 text-sm text-muted-foreground">
-            <span className="shrink-0 text-foreground">·</span>
-            <span>{point}</span>
+          <li key={point} className="house-lede">
+            {point}
           </li>
         ))}
       </ul>
-      <div className="flex flex-wrap gap-2 pt-1">
+      <div className="house-row">
         {lesson.actionHref && lesson.actionLabel ? (
-          <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
-            <Link href={lesson.actionHref}>{lesson.actionLabel}</Link>
-          </Button>
+          <Link
+            href={lesson.actionHref}
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+          >
+            {lesson.actionLabel}
+          </Link>
         ) : null}
         {snap.coachHref && snap.coachLabel ? (
-          <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
-            <Link href={snap.coachHref}>{snap.coachLabel}</Link>
-          </Button>
+          <Link
+            href={snap.coachHref}
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+          >
+            {snap.coachLabel}
+          </Link>
         ) : null}
       </div>
-    </div>
+    </section>
   );
 }
