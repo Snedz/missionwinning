@@ -1037,6 +1037,13 @@
   padding: 12px 12px 8px;
 }
 
+.mw-house .house-compose-live .house-exercise-head .house-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-exercise-title {
   margin: 0;
   font: inherit;

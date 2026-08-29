@@ -221,7 +221,7 @@ export function ActiveExerciseHeader({
       )}
 
       {skipped ? (
-        <p className="text-sm text-muted-foreground" data-testid="session-skipped-exercise">
+        <p className="house-lede" data-testid="session-skipped-exercise">
           {t('activeSkippedThisSession', { defaultValue: 'Skipped this session' })}
         </p>
       ) : null}

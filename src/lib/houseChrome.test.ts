@@ -1427,6 +1427,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(skipHeader, /from '@\/components\/ui\/card'/);
   assert.match(css, /\.house-compose-live \.house-exercise-head \{[^}]*padding/);
   assert.match(spec, /Exercise head is house leftover/);
+  const skippedCite = skipHeader.slice(
+    skipHeader.indexOf('data-testid="session-skipped-exercise"') - 180,
+    skipHeader.indexOf('data-testid="session-skipped-exercise"') + 80
+  );
+  assert.match(skippedCite, /house-lede/);
+  assert.doesNotMatch(skippedCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-exercise-head \.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Skipped-this-session cite is house leftover/);
   const exerciseCard = read('src/components/workout/ActiveExerciseCard.tsx');
   assert.match(exerciseCard, /house-exercise-card/);
   assert.match(exerciseCard, /data-testid="active-exercise-card"/);
