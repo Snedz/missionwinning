@@ -1,6 +1,6 @@
 /**
- * Victory volume unit cite is house leftover — house-lede, not text-muted.
- * Stats labels leftover stays. vs-last leftover stays. Receipt stays muted.
+ * Victory receipt lead is house leftover — house-lede, not text-muted.
+ * Receipt table / description stay muted. Stats leftovers stay.
  * Next stays filled on Victory. Log set stays filled on compose.
  */
 import { test } from 'node:test';
@@ -24,36 +24,39 @@ function sliceAround(src: string, needle: string): string {
   return src.slice(Math.max(0, start - 180), start + 40);
 }
 
-test('Victory volume unit cite is house leftover, not text-muted', () => {
+test('Victory receipt lead is house leftover, not text-muted', () => {
+  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  const needle = 'victoryReceiptLabel';
+  const start = receipt.lastIndexOf(needle);
+  assert.ok(start >= 0, `missing ${needle}`);
+  const lead = receipt.slice(Math.max(0, start - 180), start + 40);
+  assert.match(lead, /house-lede house-victory-receipt-lead/);
+  assert.doesNotMatch(lead, /text-muted-foreground/);
+});
+
+test('receipt section carries mw-house house-victory-receipt', () => {
+  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  assert.match(receipt, /mw-house house-victory-receipt/);
+});
+
+test('receipt table / description stay parked (not this leftover)', () => {
+  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  const headStart = receipt.indexOf('const headCell');
+  assert.ok(headStart >= 0, 'missing headCell');
+  assert.match(receipt.slice(headStart, headStart + 160), /text-muted-foreground/);
+  const prev = sliceAround(receipt, 'data-testid="victory-prev"');
+  assert.match(prev, /text-muted-foreground/);
+
+  const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  const descNeedle = 'text-sm leading-relaxed text-muted-foreground';
+  assert.ok(sheet.includes(descNeedle), 'missing Victory description muted');
+});
+
+test('volume unit leftover stays (not this leftover)', () => {
   const stats = read('src/components/workout/VictoryStatsStrip.tsx');
   const unit = sliceAround(stats, '{volume.unit}');
-  assert.match(unit, /house-lede house-victory-volume-unit/);
+  assert.match(unit, /house-lede/);
   assert.doesNotMatch(unit, /text-muted-foreground/);
-});
-
-test('stats labels leftover stays (not this leftover)', () => {
-  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  for (const key of ['victoryDuration', 'victoryVolume', 'victorySets'] as const) {
-    const slice = sliceAround(stats, key);
-    assert.match(slice, /house-lede house-victory-stat-label/, key);
-    assert.doesNotMatch(slice, /text-muted-foreground/, key);
-  }
-});
-
-test('vs-last leftover stays (not this leftover)', () => {
-  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  const cite = sliceAround(stats, 'data-testid="victory-vs-last"');
-  assert.match(cite, /house-lede/);
-  assert.doesNotMatch(cite, /text-muted-foreground/);
-});
-
-test('receipt lead leftover ships separately (house-lede, not muted)', () => {
-  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
-  const start = receipt.lastIndexOf('victoryReceiptLabel');
-  assert.ok(start >= 0, 'missing victoryReceiptLabel');
-  const lead = receipt.slice(Math.max(0, start - 180), start + 40);
-  assert.match(lead, /house-lede/);
-  assert.doesNotMatch(lead, /text-muted-foreground/);
 });
 
 test('Next stays the filled press on Victory', () => {
@@ -67,19 +70,19 @@ test('Log set stays the sole filled press on compose', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints Victory volume unit with --house-muted', () => {
+test('house leftover rule paints Victory receipt lead with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house\.house-victory \.house-victory-volume-unit\.house-lede \{[^}]*--house-muted/
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-lead\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Victory volume unit is house leftover', () => {
+test('DESIGN names Victory receipt lead is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Victory volume unit is house leftover/);
+  assert.match(spec, /Victory receipt lead is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {

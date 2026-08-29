@@ -1114,6 +1114,13 @@
   color: var(--house-muted);
 }
 
+.mw-house.house-victory-receipt .house-victory-receipt-lead.house-lede {
+  margin: 0;
+  font-size: 12px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-exercise-title {
   margin: 0;
   font: inherit;

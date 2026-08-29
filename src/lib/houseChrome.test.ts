@@ -1277,6 +1277,20 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house\.house-victory \.house-victory-volume-unit\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Victory volume unit is house leftover/);
+  const victoryReceipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  assert.match(victoryReceipt, /mw-house house-victory-receipt/);
+  const receiptLeadStart = victoryReceipt.lastIndexOf('victoryReceiptLabel');
+  const receiptLead = victoryReceipt.slice(
+    Math.max(0, receiptLeadStart - 180),
+    receiptLeadStart + 40
+  );
+  assert.match(receiptLead, /house-lede house-victory-receipt-lead/);
+  assert.doesNotMatch(receiptLead, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-lead\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt lead is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),

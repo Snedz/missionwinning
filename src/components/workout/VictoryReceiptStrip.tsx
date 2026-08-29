@@ -64,12 +64,12 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
 
   return (
     <section
-      className="space-y-4 border-t-2 border-border pt-3"
+      className="mw-house house-victory-receipt space-y-4 border-t-2 border-border pt-3"
       aria-label={t('victoryReceiptLabel', { defaultValue: 'This session' })}
       data-testid="victory-receipt"
     >
       <div className="flex items-baseline justify-between gap-2 px-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="house-lede house-victory-receipt-lead font-semibold">
           {t('victoryReceiptLabel', { defaultValue: 'This session' })}
         </p>
         <div className="flex items-center gap-3">
