@@ -2100,6 +2100,47 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-fuel .house-fuel-macro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-macro .house-kicker {
+  margin: 0 0 6px;
+}
+
+.mw-house .house-fuel .house-fuel-macro .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-fuel .house-fuel-macro-num {
+  margin: 0;
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-macro-num .house-lede {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mw-house .house-fuel .house-fuel-macro-dot {
+  margin: 0 6px;
+  color: var(--house-line);
+}
+
+.mw-house .house-fuel .house-fuel-macro-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .mw-house .house-feedback form.house-card {
   max-width: 40rem;
 }

@@ -707,6 +707,18 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-fuel \.house-fuel-today \{[^}]*--house-/);
   assert.match(css, /\.house-fuel \.house-fuel-meal \{[^}]*--house-line/);
   assert.match(spec, /Fuel first-paint today log is house leftover/);
+  const macro = read('src/components/nutrition/FuelMacroOverview.tsx');
+  assert.match(macro, /house-card house-fuel-macro/);
+  assert.match(macro, /house-fuel-macro-num/);
+  assert.match(macro, /house-kicker/);
+  assert.match(macro, /data-testid="fuel-macro"/);
+  assert.doesNotMatch(macro, /<Card[\s>]/);
+  assert.doesNotMatch(macro, /uppercase tracking/);
+  assert.doesNotMatch(macro, /text-primary/);
+  assert.doesNotMatch(macro, /house-btn-primary/);
+  assert.doesNotMatch(macro, /primary-action/);
+  assert.match(css, /\.house-fuel \.house-fuel-macro \{[^}]*--house-ink/);
+  assert.match(spec, /Fuel first-paint remaining is house leftover/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
   const moveFlows = move.slice(
