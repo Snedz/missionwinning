@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome.
+Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Note counter cite --house-muted 13px tabular-nums. Save stays outline. Saved cite stays later.
 
 ## decisions
 
