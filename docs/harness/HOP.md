@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-set-table` + 14px on `.house-compose-live`.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-set-table` + 14px on `.house-compose-live`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), table .house-set-table 14px without text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
