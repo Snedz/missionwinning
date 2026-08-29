@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (missing session-title / house-title). Chrome is a house title. Walk next.
+Walked 1280: left Start href=/active (72+264) → /active Log set rgb(24, 24, 27). Finish/Skip/Swap/Form guide never house-btn-primary. session-title is h1.house-title, 32px / 700, no font-display.
 
 ## decisions
 
