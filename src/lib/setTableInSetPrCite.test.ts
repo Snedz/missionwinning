@@ -1,7 +1,7 @@
 /**
- * Set-table RPE cite is house leftover — house-lede, not text-muted.
- * vs-last / e1RM / next-target / load-% stay parked. in-set PR leftover ships separately.
- * Chips / RPE10 stay. Log set stays filled.
+ * Set-table in-set PR cite is house leftover — house-lede, not text-muted.
+ * vs-last / e1RM / next-target / load-% stay parked. RPE cite leftover stays.
+ * Chips / RPE10 stay. Log set stays filled. Copy stays.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,13 +18,6 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-function sliceRpeCite(table: string): string {
-  const needle = 'rpeLabelKey(set.rpe)';
-  const start = table.indexOf(needle);
-  assert.ok(start >= 0, 'missing completed-set RPE cite');
-  return table.slice(Math.max(0, start - 120), start + needle.length);
-}
-
 function sliceInSetPr(table: string): string {
   const needle = 'data-testid="set-table-in-set-pr"';
   const start = table.indexOf(needle);
@@ -32,13 +25,27 @@ function sliceInSetPr(table: string): string {
   return table.slice(Math.max(0, start - 180), start + 40);
 }
 
-test('Set-table RPE cite is house leftover, not text-muted', () => {
+function sliceRpeCite(table: string): string {
+  const needle = 'rpeLabelKey(set.rpe)';
+  const start = table.indexOf(needle);
+  assert.ok(start >= 0, 'missing completed-set RPE cite');
+  return table.slice(Math.max(0, start - 120), start + needle.length);
+}
+
+test('Set-table in-set PR cite is house leftover, not text-muted', () => {
+  const table = read('src/components/workout/SetLogTable.tsx');
+  const cite = sliceInSetPr(table);
+  assert.match(cite, /house-lede/);
+  assert.doesNotMatch(cite, /text-muted-foreground/);
+  assert.match(cite, /min-h-\[44px\]/);
+  assert.match(table, /house-set-rate/);
+});
+
+test('set-table RPE cite leftover stays (not this leftover)', () => {
   const table = read('src/components/workout/SetLogTable.tsx');
   const cite = sliceRpeCite(table);
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
-  assert.match(table, /data-testid="set-table-rate"/);
-  assert.match(table, /house-set-rate/);
 });
 
 test('after-set cites stay parked (not this leftover)', () => {
@@ -67,20 +74,13 @@ test('after-set cites stay parked (not this leftover)', () => {
   assert.match(loadPct, /text-muted-foreground/);
 });
 
-test('in-set PR leftover ships separately (house-lede, not muted)', () => {
-  const table = read('src/components/workout/SetLogTable.tsx');
-  const pr = sliceInSetPr(table);
-  assert.match(pr, /house-lede/);
-  assert.doesNotMatch(pr, /text-muted-foreground/);
-});
-
 test('Log set stays the sole filled press', () => {
   const table = read('src/components/workout/SetLogTable.tsx');
   const logSet = sliceFromTestId(table, 'set-table-log-set');
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints set-table RPE cite with --house-muted', () => {
+test('house leftover rule paints set-table in-set PR cite with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
@@ -90,9 +90,9 @@ test('house leftover rule paints set-table RPE cite with --house-muted', () => {
   );
 });
 
-test('DESIGN names Set-table RPE cite is house leftover', () => {
+test('DESIGN names Set-table in-set PR cite is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Set-table RPE cite is house leftover/);
+  assert.match(spec, /Set-table in-set PR cite is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {

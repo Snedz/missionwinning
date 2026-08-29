@@ -1203,6 +1203,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(setTable, /house-set-rate/);
   assert.match(css, /\.mw-house \.house-set-rate \.house-lede \{[^}]*--house-muted/);
   assert.match(spec, /Set-table RPE cite is house leftover/);
+  const inSetPrCite = setTable.slice(
+    setTable.indexOf('data-testid="set-table-in-set-pr"') - 180,
+    setTable.indexOf('data-testid="set-table-in-set-pr"') + 40
+  );
+  assert.match(inSetPrCite, /house-lede/);
+  assert.doesNotMatch(inSetPrCite, /text-muted-foreground/);
+  assert.match(spec, /Set-table in-set PR cite is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),

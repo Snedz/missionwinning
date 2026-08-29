@@ -489,7 +489,7 @@ export function SetLogTable({
                     ) : null}
                     {inSetPr ? (
                       <span
-                        className="inline-flex min-h-[44px] items-center gap-1 text-[11px] text-muted-foreground"
+                        className="house-lede inline-flex min-h-[44px] items-center gap-1"
                         data-testid="set-table-in-set-pr"
                         aria-label={t('activeInSetPrAria', {
                           kinds: inSetPr,
