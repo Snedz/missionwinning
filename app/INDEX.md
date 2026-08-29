@@ -16,7 +16,7 @@
 | URL | Nav label | Page component |
 |-----|-----------|----------------|
 | `/log` | Today | `HomePage.tsx` |
-| `/active` | Train | `ActiveWorkoutPage.tsx` |
+| `/active` | Train | `ActiveWorkoutPage.tsx` — segment `loading.tsx` is the compose page, not group Loading |
 | `/nutrition` | Fuel | `NutritionPage.tsx` — Fuel first paint is house leftover (static import, no `RouteLoading`) |
 | `/track` | Track | `TrackPage.tsx` — Track first paint is house leftover (static import, no `RouteLoading`). Quiet Track weight / tape (`.975`); walks / GPS in Show more |
 | `/profile` | You | `ProfilePage.tsx` — You leftover; first paint is house leftover (static import, no `RouteLoading`) |

@@ -126,6 +126,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeLogSetWithoutPersist.test.ts` | `/active` first paint Log set does not wait on persist; `composeNextSet` owns nextSet (`.1058`) |
 | `activeSidecarWithoutPersist.test.ts` | `/active` first paint sidecar does not wait on persist; `composeSidecarWorkout` owns the session name (`.1058`) |
 | `activeFormSwapSheets.test.ts` | Form / Swap sheets open on click from first paint; overlay has no mount wait (`.1058`) |
+| `activeGroupLoading.test.ts` | `/active` client nav is not group Loading; segment loading is the compose page (`.1058`) |
 | `formGuideSwapPortalHouse.test.ts` | Form guide + Swap portaled overlay root carries `mw-house` (`.1058`) |
 | `mergeExercisesDialogHouse.test.ts` | Merge-exercises Radix DialogContent carries `mw-house` (`.1058`) |
 | `openEmptyLoad.test.ts` | Open empty load is blank, not 0; store stays 0; focused draft keeps `0.` / `2.5` (`.1048`) |
