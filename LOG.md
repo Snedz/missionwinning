@@ -31,7 +31,10 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Log set stays filled
+`loadCoachTodayOptional`. History
+day first paint is house leftover
+(date + that day's rows). Calendar
+/ charts stay parked. Log set stays filled
 `primary-action` / `--accent-poster`
 (house press `rgb(24, 24, 27)`),
 ungated. Restoring session is not
