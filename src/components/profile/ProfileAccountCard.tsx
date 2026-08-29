@@ -131,7 +131,7 @@ export function ProfileAccountCard({
             </p>
           </>
         ) : (
-          <div className="border-2 border-border bg-card p-4">
+          <div className="house-account-signin" data-testid="account-signin-block">
             <p className="font-semibold mb-1 text-sm">
               {t('signInOptional', { defaultValue: 'Sign in optional — progress stays on this device.' })}
             </p>

@@ -1829,6 +1829,13 @@
   border-radius: var(--house-radius);
 }
 
+.mw-house .house-account .house-account-signin {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  padding: 16px;
+  border-radius: var(--house-radius);
+}
+
 .mw-house .house-account details.house-card {
   padding: 0;
 }
