@@ -1,7 +1,7 @@
 /**
- * Movement-history empty cite is house leftover — house-lede, not text-muted.
- * Sheet chrome / list rows / copy stay. Close stays outline. Log set stays filled.
- * After-set cites stay parked.
+ * Movement-history list-row cites are house leftover — house-lede, not text-muted.
+ * Empty cite leftover stays. Sheet chrome / Close / copy stay. Close stays outline.
+ * Log set stays filled. After-set cites stay parked.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,6 +18,20 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
+function sliceWorkoutNameCite(sheet: string): string {
+  const needle = '{row.workoutName}</p>';
+  const start = sheet.indexOf(needle);
+  assert.ok(start >= 0, 'missing workoutName subtitle cite');
+  return sheet.slice(Math.max(0, start - 80), start + needle.length);
+}
+
+function sliceSetsCite(sheet: string): string {
+  const needle = 'formatMovementHistorySets(row.sets, rowType)';
+  const start = sheet.indexOf(needle);
+  assert.ok(start >= 0, 'missing sets line cite');
+  return sheet.slice(Math.max(0, start - 120), start + 40);
+}
+
 function sliceEmptyCite(sheet: string): string {
   const needle = 'data-testid="movement-history-empty"';
   const start = sheet.indexOf(needle);
@@ -25,12 +39,22 @@ function sliceEmptyCite(sheet: string): string {
   return sheet.slice(Math.max(0, start - 220), start + 80);
 }
 
-test('Movement-history empty cite is house leftover, not text-muted', () => {
+test('Movement-history list-row cites are house leftover, not text-muted', () => {
+  const sheet = read('src/components/workout/MovementHistorySheet.tsx');
+  const workoutName = sliceWorkoutNameCite(sheet);
+  assert.match(workoutName, /house-lede/);
+  assert.doesNotMatch(workoutName, /text-muted-foreground/);
+  const sets = sliceSetsCite(sheet);
+  assert.match(sets, /house-lede/);
+  assert.doesNotMatch(sets, /text-muted-foreground/);
+  assert.match(sheet, /className="mw-house house-movement-sheet"/);
+});
+
+test('movement-history empty cite leftover stays (not this leftover)', () => {
   const sheet = read('src/components/workout/MovementHistorySheet.tsx');
   const cite = sliceEmptyCite(sheet);
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
-  assert.match(sheet, /className="mw-house house-movement-sheet"/);
   assert.match(sheet, /No prior sessions yet — log this one/);
 });
 
@@ -60,7 +84,7 @@ test('Log set stays the sole filled press', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints movement-history empty cite with --house-muted', () => {
+test('house leftover rule paints movement-history list-row cites with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
@@ -70,9 +94,9 @@ test('house leftover rule paints movement-history empty cite with --house-muted'
   );
 });
 
-test('DESIGN names Movement-history empty cite is house leftover', () => {
+test('DESIGN names Movement-history list-row cites is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Movement-history empty cite is house leftover/);
+  assert.match(spec, /Movement-history list-row cites is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
