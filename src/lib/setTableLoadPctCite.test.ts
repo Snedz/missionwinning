@@ -1,6 +1,6 @@
 /**
- * Set-table next-cite line is house leftover — house-lede, not text-muted.
- * Skip stays outline. vs-last leftover stays. load-% stays parked.
+ * Set-table load-% cite is house leftover — house-lede, not text-muted.
+ * Load-% cell stays house-num. next-cite leftover stays.
  * Log set stays filled. Finish / Skip / Swap / Form guide stay outline.
  */
 import { test } from 'node:test';
@@ -18,33 +18,31 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-test('Set-table next-cite line is house leftover, not text-muted', () => {
-  const next = read('src/components/workout/SetLogNextCite.tsx');
-  const needle = 'data-testid="set-table-next-cite-line"';
-  const start = next.indexOf(needle);
+test('Set-table load-% cite is house leftover, not text-muted', () => {
+  const table = read('src/components/workout/SetLogTable.tsx');
+  const needle = 'data-testid="set-table-load-pct-cite"';
+  const start = table.indexOf(needle);
   assert.ok(start >= 0, `missing ${needle}`);
-  const cite = next.slice(Math.max(0, start - 180), start + 40);
+  const cite = table.slice(Math.max(0, start - 180), start + 40);
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
-test('next-cite Skip stays outline, never house-btn-primary', () => {
-  const skip = sliceFromTestId(
-    read('src/components/workout/SetLogNextCite.tsx'),
-    'set-table-next-cite-skip'
-  );
-  assert.doesNotMatch(skip, /house-btn-primary/);
-  assert.match(skip, /house-btn/);
+test('load-% cell stays house-num (not this leftover)', () => {
+  const table = read('src/components/workout/SetLogTable.tsx');
+  const cell = sliceFromTestId(table, 'set-table-load-pct');
+  assert.match(cell, /numberInput/);
+  assert.doesNotMatch(cell, /house-lede/);
 });
 
-test('load-% leftover ships separately (house-lede, not muted)', () => {
-  const table = read('src/components/workout/SetLogTable.tsx');
-  const pctNeedle = 'data-testid="set-table-load-pct-cite"';
-  const pctStart = table.indexOf(pctNeedle);
-  assert.ok(pctStart >= 0, `missing ${pctNeedle}`);
-  const loadPct = table.slice(Math.max(0, pctStart - 180), pctStart + 40);
-  assert.match(loadPct, /house-lede/);
-  assert.doesNotMatch(loadPct, /text-muted-foreground/);
+test('next-cite leftover stays (not this leftover)', () => {
+  const next = read('src/components/workout/SetLogNextCite.tsx');
+  const needle = 'data-testid="set-table-next-cite-line"';
+  const start = next.indexOf(needle);
+  assert.ok(start >= 0, `missing ${needle}`);
+  const nextLine = next.slice(Math.max(0, start - 180), start + 40);
+  assert.match(nextLine, /house-lede/);
+  assert.doesNotMatch(nextLine, /text-muted-foreground/);
 });
 
 test('Log set stays the sole filled press', () => {
@@ -53,19 +51,19 @@ test('Log set stays the sole filled press', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints set-table next-cite with --house-muted', () => {
+test('house leftover rule paints set-table load-% cite with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-next-cite\.house-lede \{[^}]*--house-muted/
+    /\.mw-house \.house-compose-live \.house-load-pct\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Set-table next-cite is house leftover', () => {
+test('DESIGN names Set-table load-% cite is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Set-table next-cite is house leftover/);
+  assert.match(spec, /Set-table load-% cite is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {

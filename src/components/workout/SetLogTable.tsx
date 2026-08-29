@@ -740,7 +740,7 @@ function SetRowPercentCite({
   if (!token) return null;
   return (
     <span
-      className="ms-1 text-[11px] font-semibold tabular-nums text-muted-foreground"
+      className="ms-1 house-lede house-load-pct font-semibold tabular-nums"
       data-testid="set-table-load-pct-cite"
     >
       {token}

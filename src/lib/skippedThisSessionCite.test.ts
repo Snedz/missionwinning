@@ -67,7 +67,8 @@ test('after-set cites stay parked (not this leftover)', () => {
   const pctStart = table.indexOf(pctNeedle);
   assert.ok(pctStart >= 0, `missing ${pctNeedle}`);
   const loadPct = table.slice(Math.max(0, pctStart - 180), pctStart + 40);
-  assert.match(loadPct, /text-muted-foreground/);
+  assert.match(loadPct, /house-lede/);
+  assert.doesNotMatch(loadPct, /text-muted-foreground/);
 });
 
 test('Skip this exercise stays outline, never house-btn-primary', () => {
