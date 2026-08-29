@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-goals-textarea
-done_means: Account first-paint goals textarea is house leftover, not border-2. Save stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountGoalsTextarea.test.ts
+ticket: leftover-you-athlete-edit-signature-cites
+done_means: You athlete card Edit / signature cites is house leftover, not border-t-2 / text-muted. Preview double-rule stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youAthleteEditCites.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Goals textarea house-field 1px --house-line. Save stays outline.
+Honesty was red (4 fail / 1 pass). Chrome. Accept pending.
 
 ## decisions
 
-- One leftover: Account first-paint goals textarea is house leftover (house-field, not border-2).
-- Save stays outline. Do not restyle to house-btn-primary.
-- Hint cite stays.
+- One leftover: You athlete card Edit disclosure + signature cites are house leftover.
+- Preview double-rule border-2 stays (cosmetic frame option).
+- Frame / backdrop buttons stay outline.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.

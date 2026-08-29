@@ -172,7 +172,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
       </p>
       <p className="mt-2 text-xl font-extrabold tracking-tight">{previewTitle}</p>
       {sig ? (
-        <p className="mt-1 text-sm text-muted-foreground" data-testid="athlete-card-signature">
+        <p className="house-athlete-cite" data-testid="athlete-card-signature">
           {t('careerSignature', {
             sessions: n(sig.sessions),
             bestWeek: n(sig.bestWeek),
@@ -181,7 +181,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
           })}
         </p>
       ) : (
-        <p className="mt-1 text-sm text-muted-foreground" data-testid="athlete-card-signature">
+        <p className="house-athlete-cite" data-testid="athlete-card-signature">
           {t('athleteCardPreviewEmpty', {
             defaultValue: 'Log a session and the card fills from your record.',
           })}
@@ -217,7 +217,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
           )}
         </div>
 
-        <details className="group border-t-2 border-border pt-4">
+        <details className="group house-athlete-edit" data-testid="athlete-card-edit">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             {t('athleteCardEdit', { defaultValue: 'Edit card' })}
           </summary>
