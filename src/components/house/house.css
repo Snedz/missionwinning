@@ -1849,6 +1849,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-identity-saved {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-athlete-cite {
   margin: 4px 0 0;
   font-size: 14px;

@@ -235,7 +235,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             )}
 
             {saved && (
-              <p className="text-sm text-muted-foreground" role="status">
+              <p className="house-identity-saved" data-testid="athlete-identity-saved" role="status">
                 {t('athleteIdentitySaved', { defaultValue: 'Saved on this device.' })}
               </p>
             )}
