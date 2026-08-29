@@ -1,6 +1,6 @@
 /**
  * Hard-session lead cite is house leftover — house-lede, not text-muted.
- * Stop / clinician stay. Confirm stays outline. Portals stay mw-house.
+ * Stop stays. Confirm stays outline. Portals stay mw-house.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -26,17 +26,6 @@ test('Hard-session lead cite is house leftover, not text-muted', () => {
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
   assert.match(sheet, /className="mw-house house-hard-session"/);
-});
-
-test('hard-session clinician stays text-muted (not this leftover)', () => {
-  const sheet = read('src/components/workout/HardSessionWarningSheet.tsx');
-  const clinicianStart = sheet.indexOf('hardSessionClinician');
-  assert.ok(clinicianStart >= 0, 'missing hardSessionClinician');
-  const clinician = sheet.slice(
-    Math.max(0, clinicianStart - 160),
-    clinicianStart + 80
-  );
-  assert.match(clinician, /text-sm text-muted-foreground leading-relaxed/);
 });
 
 test('hard-session confirm never house-btn-primary', () => {

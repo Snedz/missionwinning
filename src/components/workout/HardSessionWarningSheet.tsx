@@ -82,7 +82,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
             'If this is an emergency, call local emergency services — not this app.',
         })}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionClinician', {
           defaultValue:
             'Talk with a clinician before max-effort tests if you have a heart, breathing, or other health condition, or if you are unsure.',
