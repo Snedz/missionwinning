@@ -1985,6 +1985,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-account .house-language-switcher-cite {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-account .house-goals-cite {
   margin: 0;
   font-size: 13px;

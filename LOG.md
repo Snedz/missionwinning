@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Account first-paint language switcher cite is house leftover.
 Account first-paint visibility body cite is house leftover.
 Account first-paint reminders kinds list is house leftover.
 Account first-paint feedback body cite is house leftover.
