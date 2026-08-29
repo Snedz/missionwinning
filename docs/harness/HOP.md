@@ -5,21 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-reminders-card
-done_means: Account first-paint reminders card is house leftover, not Card. Toggles, day-review row, and muted cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountRemindersCard.test.ts
+ticket: leftover-account-home-gym-kit
+done_means: Account first-paint home gym kit is house leftover, not Card. Item toggles stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountHomeGymKit.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: reminders card is house-card, not Card. Toggles, day-review row, muted cites stay. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), reminders card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: home gym kit is house-card, not Card. Item toggles stay.
 
 ## decisions
 
-- One leftover: Account first-paint reminders card frame is house leftover.
-- Do not restyle On/Off toggles.
-- Do not restyle ProfileDayReviewRow.
-- Do not restyle muted cites or kinds list this hop.
+- One leftover: Account first-paint home gym kit frame is house leftover.
+- Do not restyle item toggles.
+- Do not restyle muted body cite this hop.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
