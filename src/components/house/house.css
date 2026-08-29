@@ -1702,6 +1702,10 @@
   margin: 0;
 }
 
+.mw-house .house-catalog .house-show-all-body {
+  border-top: 1px solid var(--house-line);
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

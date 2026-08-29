@@ -220,6 +220,7 @@ Coach adapt banner is house leftover.
 Coach Show all extras is house leftover.
 Coach week strip is house leftover.
 Library pick bar is house leftover.
+Library Show all extras is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

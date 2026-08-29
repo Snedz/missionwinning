@@ -425,6 +425,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryPick, /border-2/);
   assert.match(css, /\.house-pick-bar \{[^}]*--house-line/);
   assert.match(spec, /Library pick bar is house leftover/);
+  const libraryExtras = library.slice(
+    library.lastIndexOf('<details', library.indexOf('library-show-all')),
+    library.indexOf('library-merge-open') + 200
+  );
+  assert.match(libraryExtras, /house-card group/);
+  assert.match(libraryExtras, /house-show-all-body/);
+  assert.match(libraryExtras, /data-testid="library-show-all"/);
+  assert.match(libraryExtras, /library-merge-open/);
+  assert.doesNotMatch(libraryExtras, /border-t-2/);
+  assert.doesNotMatch(libraryExtras, /border-2/);
+  assert.match(css, /\.house-catalog \.house-show-all-body \{[^}]*--house-line/);
+  assert.match(spec, /Library Show all extras is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);
