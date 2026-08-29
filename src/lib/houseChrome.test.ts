@@ -1449,6 +1449,17 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house \.house-compose-live \.house-next-target\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Live-row next-target cite is house leftover/);
+  const e1rmCite = skipHeader.slice(
+    skipHeader.indexOf('data-testid="session-e1rm"'),
+    skipHeader.indexOf('data-testid="session-e1rm"') + 220
+  );
+  assert.match(e1rmCite, /house-lede house-session-e1rm/);
+  assert.doesNotMatch(e1rmCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-session-e1rm\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Session e1RM cite is house leftover/);
   const exerciseCard = read('src/components/workout/ActiveExerciseCard.tsx');
   assert.match(exerciseCard, /house-exercise-card/);
   assert.match(exerciseCard, /data-testid="active-exercise-card"/);

@@ -57,7 +57,8 @@ test('after-set next-cite / e1RM / vs-last stay parked (not this leftover)', () 
 
   const header = read('src/components/workout/ActiveExerciseHeader.tsx');
   const e1rm = sliceFromTestId(header, 'session-e1rm');
-  assert.match(e1rm, /text-muted-foreground/);
+  assert.match(e1rm, /house-lede/);
+  assert.doesNotMatch(e1rm, /text-muted-foreground/);
 
   const table = read('src/components/workout/SetLogTable.tsx');
   const vsNeedle = 'data-testid="set-table-vs-last"';

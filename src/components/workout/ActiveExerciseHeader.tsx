@@ -209,7 +209,7 @@ export function ActiveExerciseHeader({
       {showE1rm && sessionE1rm && (
         <p
           data-testid="session-e1rm"
-          className="text-[11px] tabular-nums text-muted-foreground"
+          className="house-lede house-session-e1rm tabular-nums"
           aria-label={t('activeE1rmAria', { defaultValue: SESSION_E1RM_COPY.aria })}
         >
           {t('activeE1rmLine', {
