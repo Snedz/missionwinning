@@ -222,7 +222,7 @@ export function SetLogTable({
                 !completed && 'house-set-line',
                 isActive && 'is-active-row',
                 completed && !isActive && 'house-set-done',
-                !completed && !isActive && 'text-muted-foreground'
+                !completed && !isActive && 'house-set-wait'
               )}
             >
               <th

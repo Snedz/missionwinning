@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Upcoming set row is house leftover.
 Set row hairline is house leftover.
 Prev cite is house leftover.
 First-rooms History navigates
