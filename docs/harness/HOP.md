@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-whats-new-card
-done_means: Account more-settings What’s New card is house leftover, not Card. Open / First Steps stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountWhatsNewCard.test.ts
+ticket: leftover-account-privacy-card
+done_means: Account more-settings privacy card is house leftover, not Card. Analytics toggles / policy link stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountPrivacyCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. What’s New card is 1px house-card.
+Honesty was red (3 fail / 1 pass). Chrome. Accept next.
 
 ## decisions
 
-- One leftover: Account more-settings What’s New card frame is house leftover.
-- Not first paint (More settings). WhatsNewSheet internals stay.
-- Do not restyle What’s new / Show First Steps again.
+- One leftover: Account more-settings privacy card frame is house leftover.
+- Not first paint (More settings). Toggles and policy link stay.
+- Do not restyle Keep analytics off / Allow product analytics.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
