@@ -70,7 +70,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
           ? t('hardSessionStopPregnancy', { defaultValue: stopLine })
           : t('hardSessionStop', { defaultValue: stopLine })}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionNotCare', {
           defaultValue:
             'This app is not medical care and cannot prevent a medical emergency.',

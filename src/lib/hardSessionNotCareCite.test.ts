@@ -1,6 +1,6 @@
 /**
- * Hard-session lead cite is house leftover — house-lede, not text-muted.
- * Stop / clinician stay. Confirm stays outline. Portals stay mw-house.
+ * Hard-session not-care cite is house leftover — house-lede, not text-muted.
+ * Stop / emergency / clinician stay. Confirm stays outline. Portals stay mw-house.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,9 +17,9 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-test('Hard-session lead cite is house leftover, not text-muted', () => {
+test('Hard-session not-care cite is house leftover, not text-muted', () => {
   const sheet = read('src/components/workout/HardSessionWarningSheet.tsx');
-  const needle = 'hardSessionLead';
+  const needle = 'hardSessionNotCare';
   const start = sheet.indexOf(needle);
   assert.ok(start >= 0, `missing ${needle}`);
   const cite = sheet.slice(Math.max(0, start - 160), start + 80);
@@ -48,7 +48,7 @@ test('hard-session confirm never house-btn-primary', () => {
   assert.match(cont, /house-btn min-h-\[52px\]/);
 });
 
-test('house leftover rule paints hard-session lead cite with --house-muted', () => {
+test('house leftover rule paints hard-session not-care cite with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
@@ -58,9 +58,9 @@ test('house leftover rule paints hard-session lead cite with --house-muted', () 
   );
 });
 
-test('DESIGN names Hard-session lead cite is house leftover', () => {
+test('DESIGN names Hard-session not-care cite is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Hard-session lead cite is house leftover/);
+  assert.match(spec, /Hard-session not-care cite is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
