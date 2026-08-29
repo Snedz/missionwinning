@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-account-signin` + 1px `--house-line`. SignInPanel internals stay. Outer Account Card stays.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-account-signin` + 1px `--house-line`. SignInPanel internals stay. Outer Account Card stays. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), sign-in block 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
