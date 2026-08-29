@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 4 pass). Chrome. Accept pass. Walk pending.
+Honesty was red (3 fail / 4 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → tap lift name (Push-ups). MovementHistorySheet empty cite (`No prior sessions yet — log this one`) house-lede --house-muted rgb(113,113,122). Log set rgb(24,24,27). Close / Finish / Skip / Swap stay outline. Copy untouched. Sheet chrome / list rows untouched.
+
+Next leftover: movement-history list-row cites (workoutName subtitle + sets line still text-muted-foreground). Same leftover pattern. After-set cites (next-target / e1RM / vs-last / load-%) stay parked. Do not restyle the empty cite or Log set. Not You chrome.
 
 ## decisions
 
