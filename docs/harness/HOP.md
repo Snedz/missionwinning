@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (missing house-set-line). Chrome is house leftover. Walk next.
+Walked 1280: left Start href=/active (72+264) → /active Log set rgb(24, 24, 27). Finish/Skip/Swap/Form guide never house-btn-primary. Incomplete row is house-set-line, border rgb(228, 228, 231).
 
 ## decisions
 
