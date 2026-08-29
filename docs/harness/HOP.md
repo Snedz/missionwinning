@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-import-card
-done_means: Account more-settings import card is house leftover, not Card. Export / drop / confirm stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountImportCard.test.ts
+ticket: leftover-account-sync-status-row
+done_means: Account more-settings sync status row is house leftover, not border-2 bg-card. Retry stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountSyncStatusRow.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Import card is 1px house-card (`#import` opens More settings).
+Honesty was red (2 fail / 2 pass — no Card import already). Chrome. Accept next.
 
 ## decisions
 
-- One leftover: Account more-settings import card frame is house leftover.
-- Not first paint (More settings). `#import` deep-link stays. FileDropZone internals stay.
-- Do not restyle export / import / confirm buttons.
+- One leftover: Account more-settings sync status row frame is house leftover.
+- Not first paint (More settings). Unmounts when nothing is queued and storage is fine.
+- Do not restyle Retry.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
