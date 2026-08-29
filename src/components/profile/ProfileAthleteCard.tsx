@@ -293,7 +293,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
                 ? t('athleteCardSharing', { defaultValue: 'Preparing…' })
                 : t('athleteCardShare', { defaultValue: 'Share your card' })}
             </Button>
-            <p className="text-xs text-muted-foreground">
+            <p className="house-athlete-privacy" data-testid="athlete-card-privacy">
               {t('athleteCardPrivacy', {
                 defaultValue:
                   'Rendered on this device and shared only if you send it. Nothing is uploaded.',

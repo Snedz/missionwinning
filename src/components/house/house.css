@@ -1848,6 +1848,13 @@
   padding-top: 16px;
 }
 
+.mw-house .house-profile .house-athlete-privacy {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-table-cite {
   margin: 0 0 16px;
   font-size: 14px;
