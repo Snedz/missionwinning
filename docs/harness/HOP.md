@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: drop `text-sm`, `font-size: 14px` on `.house-cue-line`. Walk next.
+Honesty was red (3 fail / 1 pass). Chrome: drop `text-sm`, `font-size: 14px` on `.house-cue-line`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), `.house-cue-line` 14px without text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
