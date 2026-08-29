@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 1 pass). Chrome: first-rooms Week is href=/log#today-week; pane open stays click enhancement.
+Honesty was red (2 fail / 1 pass). Chrome: first-rooms Week is href=/log#today-week; pane open stays click enhancement. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), Week A href=/log#today-week, click lands /log#today-week with week pane, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
