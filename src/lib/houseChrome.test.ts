@@ -1210,6 +1210,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(inSetPrCite, /house-lede/);
   assert.doesNotMatch(inSetPrCite, /text-muted-foreground/);
   assert.match(spec, /Set-table in-set PR cite is house leftover/);
+  const vsLastCite = setTable.slice(
+    setTable.indexOf('data-testid="set-table-vs-last"') - 180,
+    setTable.indexOf('data-testid="set-table-vs-last"') + 40
+  );
+  assert.match(vsLastCite, /house-lede/);
+  assert.doesNotMatch(vsLastCite, /text-muted-foreground/);
+  assert.match(spec, /Set-table vs-last cite is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),

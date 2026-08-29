@@ -464,7 +464,7 @@ export function SetLogTable({
                   <div className="flex min-w-0 flex-wrap items-center justify-end gap-1">
                     {vsLast ? (
                       <span
-                        className="text-[11px] tabular-nums text-muted-foreground"
+                        className="tabular-nums house-lede"
                         data-testid="set-table-vs-last"
                         aria-label={t('activeVsLastAria', {
                           delta: vsLast,

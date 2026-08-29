@@ -59,7 +59,8 @@ test('after-set next-cite / vs-last stay parked (not this leftover)', () => {
   const vsStart = table.indexOf(vsNeedle);
   assert.ok(vsStart >= 0, `missing ${vsNeedle}`);
   const vsLast = table.slice(Math.max(0, vsStart - 180), vsStart + 40);
-  assert.match(vsLast, /text-muted-foreground/);
+  assert.match(vsLast, /house-lede/);
+  assert.doesNotMatch(vsLast, /text-muted-foreground/);
 });
 
 test('Log set stays the sole filled press', () => {
