@@ -1855,6 +1855,15 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-table-dt {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-table-row {
   border-top: 1px solid var(--house-line);
   padding-top: 12px;

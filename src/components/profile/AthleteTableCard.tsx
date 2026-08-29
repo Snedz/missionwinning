@@ -117,7 +117,7 @@ export function AthleteTableCard() {
                 key={rowId}
                 className="house-table-row grid gap-1 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
               >
-                <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                <dt className="house-table-dt" data-testid="athlete-table-dt">
                   {t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
                 </dt>
                 <dd className="text-sm font-semibold text-foreground">{pickText(rowId)}</dd>
