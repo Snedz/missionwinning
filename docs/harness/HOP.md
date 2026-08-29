@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty test written first. Accept next.
+Honesty test first (red 2 / green 1). Chrome. Accept green (`npx tsx --test src/lib/workout/formGuideSwapPortalHouse.test.ts` + houseChrome / context / log). Walk Home left bar → Start → `/active`. Overlay root source carries `mw-house`. Form guide / Swap confirm stay unfilled. Persist hydrate did not settle in this walk so the sheets did not mount — leftover is the portal class, not a new room.
 
 ## decisions
 
