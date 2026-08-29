@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Session title is a house title.
 Session clock cite is house leftover.
 Kind chip row is house leftover.
 Upcoming set row is house leftover.
