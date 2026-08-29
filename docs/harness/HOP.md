@@ -5,19 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-visibility-report-row
-done_means: Visibility first-paint report row is house leftover, not Card border-2. Status cites and downloads stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/visibilityReportRow.test.ts
+ticket: leftover-account-pregnancy-card
+done_means: Account more-settings pregnancy card is house leftover, not Card content-card. Select and cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountPregnancyCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: visibility report row is house-card, not Card border-2. Status cites and downloads stay. Walk 1280: /log → Start → /active → History → /account/transparency. House 72+264, Log set rgb(24, 24, 27), report row DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Chrome in. Accept pending walk.
 
 ## decisions
 
-- One leftover: Visibility first-paint report row frame is house leftover.
-- Do not restyle status cites, reason text, or downloads.
+- One leftover: Account more-settings pregnancy card frame is house leftover.
+- Not first paint (More settings). Select border-2 stays.
+- Do not restyle the select or muted cites.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
