@@ -726,6 +726,10 @@
   background: var(--house-paper);
 }
 
+.mw-house .house-compose-live .house-session-clock {
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-session-more,
 .mw-house .house-compose-live .house-exercise-more,
 .mw-house .house-compose-live .house-set-options {

@@ -69,7 +69,7 @@ export function ActiveSessionChrome({
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}
             </h1>
-            <p className="mt-0.5 flex min-w-0 items-center gap-1 truncate text-[11px] tabular-nums text-muted-foreground">
+            <p className="house-session-clock mt-0.5 flex min-w-0 items-center gap-1 truncate text-[11px] tabular-nums">
               <button
                 type="button"
                 data-testid="session-clock-toggle"
