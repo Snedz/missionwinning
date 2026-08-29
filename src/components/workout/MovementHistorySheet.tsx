@@ -57,7 +57,7 @@ export function MovementHistorySheet({
     >
       <div data-testid="movement-history-sheet" data-short={short ? 'true' : 'false'}>
         {empty ? (
-          <p className="text-sm text-muted-foreground" data-testid="movement-history-empty">
+          <p className="text-sm house-lede" data-testid="movement-history-empty">
             {t('activeMovementHistoryEmpty', {
               defaultValue: 'No prior sessions yet — log this one',
             })}
