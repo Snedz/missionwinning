@@ -54,7 +54,7 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
       <ul className="space-y-1">
         {lines.map((line) => (
           <li key={line} className="house-cue-line flex gap-2 text-sm">
-            <span className="shrink-0 text-foreground">·</span>
+            <span className="house-cue-mark shrink-0">·</span>
             <span>{line}</span>
           </li>
         ))}
