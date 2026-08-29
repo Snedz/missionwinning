@@ -1527,6 +1527,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.mw-house\.house-form-guide \.house-form-figure \{[^}]*padding:\s*0/);
   assert.match(css, /\.mw-house\.house-form-guide \.house-form-section \{[^}]*text-transform:\s*none/);
   assert.match(spec, /Form guide confirm is house-btn, not filled/);
+  assert.match(spec, /Form guide \+ Swap portal is house leftover/);
   assert.match(spec, /Form guide body is house leftover/);
   assert.match(spec, /Form guide sections is house leftover/);
   const inlineAdd = read('src/components/workout/ActiveInlineAddExercise.tsx');
