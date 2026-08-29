@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Chrome in. Accept pending walk.
+Honesty was red (3 fail / 1 pass). Chrome: premium card is house-card, not Card content-card. Billing / Explore stay. isFreeBeta() still returns null. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), premium card unmounted (free-beta expected), Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
