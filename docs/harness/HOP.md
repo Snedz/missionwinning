@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red. Accept next. Walk next.
+Honesty was red. Accept green. Walked compact 390 I-Day → `/log` → `[data-testid="today-start-cta"]` (`href="/active"`, left Start hidden). Landed `/active` set table. Log set `rgb(24, 24, 27)`. Finish / Skip / Swap / Form unfilled `rgb(244, 244, 245)`.
 
 ## decisions
 
