@@ -13,7 +13,7 @@ test_written: yes
 ## progress
 
 Honesty test written first (2 red / 1 already green). Route is a static import.
-Accept green. Walk next.
+Accept green. Walk: `/account/under-the-hood` HTML has Under the Hood; no "Loading Under the Hood". WeightsPanel internals stay. Do not invent room chrome.
 
 ## decisions
 
