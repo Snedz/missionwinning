@@ -33,7 +33,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { loadOperatorName, saveOperatorName } from '@/lib/leaderboard/computeLocalStats';
@@ -126,8 +125,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
      * display title, signature. Editors live under a disclosure so the page
      * reads as authored identity, not a settings form. Save stays outline (0 red).
      */
-    <Card className="border-2 border-border bg-card" data-testid="athlete-identity-card">
-      <CardContent className="space-y-3 pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-identity-card">
         <p className="eyebrow text-primary">
           {t('athleteIdentityTitle', { defaultValue: 'Call sign' })}
         </p>
@@ -235,7 +233,6 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             )}
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

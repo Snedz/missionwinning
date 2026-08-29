@@ -5,19 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-garage-board
-done_means: Garage first-paint board is house leftover, not border-2 / border-border. BuddyList / ChatWindow internals stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/garageBoard.test.ts
+ticket: leftover-you-identity-card
+done_means: You first-paint identity card is house leftover, not Card border-2 / border-border. Edit disclosure internals stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youIdentityCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-garage-board` + 1px `--house-line`. Rail split is house-garage-rail. BuddyList / ChatWindow stay. Walk 1280: /log → Start → /active → History. House 72+264, Log set rgb(24, 24, 27), Garage board 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: identity card is house-card, not Card border-2. Edit internals stay.
 
 ## decisions
 
-- One leftover: Garage first-paint board is house leftover (1px `--house-line`).
-- Do not restyle BuddyList / ChatWindow / PresenceControl internals.
+- One leftover: You first-paint identity card frame is house leftover.
+- Do not restyle Edit call sign internals.
+- Do not restyle signature / since cites this hop.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
