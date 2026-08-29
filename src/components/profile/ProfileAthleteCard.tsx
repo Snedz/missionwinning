@@ -264,7 +264,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
 
             {owned.length > 0 && (
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <legend className="house-athlete-badges-legend" data-testid="athlete-card-badges-legend">
                   {t('athleteCardBadges', {
                     slots,
                     defaultValue: `Badges — pick up to ${slots}`,
