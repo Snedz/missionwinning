@@ -12,7 +12,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Share2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { summarizeRewards, ownedBadgeDefs } from '@/lib/rewards/summary';
@@ -200,8 +199,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
   );
 
   return (
-    <Card className="bg-card" data-testid="athlete-card-editor">
-      <CardContent className="space-y-4 pt-6">
+    <div className="house-card space-y-4" data-testid="athlete-card-editor">
         <p className="eyebrow text-primary">
           {t('athleteCardTitle', { defaultValue: 'Your card' })}
         </p>
@@ -303,7 +301,6 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
             </p>
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }
