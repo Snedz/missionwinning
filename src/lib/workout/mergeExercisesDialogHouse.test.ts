@@ -19,6 +19,22 @@ test('both merge DialogContent nodes carry mw-house', () => {
   }
 });
 
+test('History and Library merge shells carry mw-house on Radix Content', () => {
+  const history = read('src/page-components/HistoryPage.tsx');
+  const hist = history.slice(
+    history.indexOf('data-testid="session-history-merge-dialog"') - 180,
+    history.indexOf('data-testid="session-history-merge-dialog"') + 80
+  );
+  assert.match(hist, /mw-house house-overlay-panel/);
+
+  const library = read('src/page-components/LibraryPage.tsx');
+  const lib = library.slice(
+    library.indexOf('data-testid="library-merge-dialog"') - 180,
+    library.indexOf('data-testid="library-merge-dialog"') + 80
+  );
+  assert.match(lib, /mw-house house-overlay-panel/);
+});
+
 test('merge confirm is house-btn, never house-btn-primary', () => {
   const src = read('src/components/history/HistoryMergeExercises.tsx');
   const needle = 'data-testid="session-history-merge-confirm"';

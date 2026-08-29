@@ -1217,7 +1217,7 @@ export function HistoryPage() {
 
       <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
         <DialogContent
-          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          className="mw-house house-overlay-panel max-w-lg max-h-[85vh] overflow-y-auto"
           data-testid="session-history-merge-dialog"
         >
           <DialogHeader>

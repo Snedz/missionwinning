@@ -668,7 +668,7 @@ export function LibraryPage() {
 
       <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
         <DialogContent
-          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          className="mw-house house-overlay-panel max-w-lg max-h-[85vh] overflow-y-auto"
           data-testid="library-merge-dialog"
         >
           <DialogHeader>
