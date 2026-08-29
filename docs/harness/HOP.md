@@ -5,20 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-athlete-edit-signature-cites
-done_means: You athlete card Edit / signature cites is house leftover, not border-t-2 / text-muted. Preview double-rule stays. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youAthleteEditCites.test.ts
+ticket: leftover-you-table-edit-row-hairlines
+done_means: You table Edit / row hairlines is house leftover, not border-t-2. Selects stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youTableEditHairlines.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (4 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. /profile athlete signature --house-muted; Edit hairline. Preview double-rule unmounted (default frame).
+Honesty was red (4 fail / 1 pass). Chrome. Accept pending.
 
 ## decisions
 
-- One leftover: You athlete card Edit disclosure + signature cites are house leftover.
-- Preview double-rule border-2 stays (cosmetic frame option).
-- Frame / backdrop buttons stay outline.
+- One leftover: You table Edit disclosure + display row hairlines are house leftover.
+- Selects stay. Save stays outline.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.

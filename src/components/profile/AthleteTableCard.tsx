@@ -115,7 +115,7 @@ export function AthleteTableCard() {
             return (
               <div
                 key={rowId}
-                className="grid gap-1 border-t-2 border-border pt-3 first:border-t-0 first:pt-0 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
+                className="house-table-row grid gap-1 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
               >
                 <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
                   {t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
@@ -126,7 +126,7 @@ export function AthleteTableCard() {
           })}
         </dl>
 
-        <details className="group mt-5 border-t-2 border-border pt-4">
+        <details className="group house-table-edit" data-testid="athlete-table-edit">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             {t('athleteTableEdit', { defaultValue: 'Edit table' })}
           </summary>

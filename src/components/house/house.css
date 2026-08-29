@@ -1848,6 +1848,22 @@
   padding-top: 16px;
 }
 
+.mw-house .house-profile .house-table-row {
+  border-top: 1px solid var(--house-line);
+  padding-top: 12px;
+}
+
+.mw-house .house-profile .house-table-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.mw-house .house-profile .house-table-edit {
+  margin-top: 20px;
+  border-top: 1px solid var(--house-line);
+  padding-top: 16px;
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);
