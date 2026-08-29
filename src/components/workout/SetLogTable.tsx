@@ -267,7 +267,7 @@ export function SetLogTable({
                   cell,
                   prevLabels[setIdx]
                     ? 'font-semibold text-foreground'
-                    : 'text-muted-foreground'
+                    : 'house-set-prev'
                 )}
                 data-testid="set-table-prev"
                 data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
