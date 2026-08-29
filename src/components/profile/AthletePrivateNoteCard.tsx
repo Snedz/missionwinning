@@ -36,7 +36,7 @@ export function AthletePrivateNoteCard() {
             {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
           </summary>
           <div className="mt-3">
-        <p className="mb-3 text-sm text-muted-foreground">
+        <p className="house-note-cite" data-testid="athlete-private-note-cite">
           {t('athletePrivateNoteBody', {
             defaultValue: 'For you only on this device. Never on share cards or public pages.',
           })}

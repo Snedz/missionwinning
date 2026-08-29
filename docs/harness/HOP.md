@@ -5,19 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-share-body-cite
-done_means: You share body cite is house leftover, not text-muted. Share button stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youShareBodyCite.test.ts
+ticket: leftover-you-private-note-body-cite
+done_means: You private note body cite is house leftover, not text-muted. Save stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youPrivateNoteBodyCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. /profile share cite --house-muted. Share button stays outline.
+Honesty was red (3 fail / 1 pass). Chrome. Accept pending.
 
 ## decisions
 
-- One leftover: You share body cite is house leftover.
-- Share button stays outline. Do not restyle to house-btn-primary.
+- One leftover: You private note body cite is house leftover.
+- Counter / saved cites stay later.
+- Save stays outline. Do not restyle to house-btn-primary.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
