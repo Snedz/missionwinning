@@ -352,7 +352,7 @@ export function SetLogTable({
                       type="button"
                       onClick={onLog}
                       data-testid="set-table-log-set"
-                      className="house-btn house-btn-primary house-set-log primary-action min-h-[44px] w-full tap-target px-1.5 py-1.5 leading-tight"
+                      className="house-btn house-btn-primary house-set-log primary-action min-h-[44px] w-full tap-target px-1.5 py-1.5"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
