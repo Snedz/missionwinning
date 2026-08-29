@@ -17,7 +17,6 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileSpreadsheet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileDropZone } from '@/components/ui/FileDropZone';
 import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
@@ -163,13 +162,10 @@ export function ProfileImportCard() {
   }, [busy, failRead, pendingText, t, toast]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          {t('csvImportTitle', { defaultValue: 'Your training history' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="house-card space-y-3" data-testid="account-import-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('csvImportTitle', { defaultValue: 'Your training history' })}
+      </h3>
         <p className="text-sm text-muted-foreground">
           {t('csvImportSubtitle', {
             defaultValue:
@@ -319,7 +315,6 @@ export function ProfileImportCard() {
             </div>
           </div>
         ) : null}
-      </CardContent>
-    </Card>
+    </div>
   );
 }
