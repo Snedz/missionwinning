@@ -42,5 +42,6 @@
 | `daySessionCountSurface.test.ts` | Count on History DayCell; dumbbell stays; Today one Start; This month/Copy/Move/Repeat/empty-day/month-file stay (`.1032`) |
 | `monthSessionCount.test.ts` | Month count: junk/empty invents nothing; two sessions one day apply 2; tomb ignored; startFrom does not shrink (`.1033`) |
 | `monthSessionCountSurface.test.ts` | Count on History calendar footer; training-days stay; Today one Start; day-cell/This month/Copy/Move/Repeat/empty-day/month-file stay (`.1033`) |
+| `historyGroupLoading.test.ts` | `/history` client nav is not group Loading; segment loading is house leftover (`.1058`) |
 
 Day replay (`HistoryDayPage`) and charts (`historyAnalytics.ts`) live elsewhere.
