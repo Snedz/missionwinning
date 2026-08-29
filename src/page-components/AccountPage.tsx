@@ -415,7 +415,7 @@ export function AccountPage({ initialAuthError }: AccountPageProps = {}) {
         <p className="font-semibold">
           {t('accountExploreTitle', { defaultValue: 'Explore places' })}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-explore-cite" data-testid="account-explore-cite">
           {t('accountExploreLead', {
             defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
           })}
