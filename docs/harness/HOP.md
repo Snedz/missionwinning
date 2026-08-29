@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: table card is house-card, not Card. Row hairlines and Edit internals stay.
+Honesty was red (3 fail / 1 pass). Chrome: table card is house-card, not Card. Row hairlines and Edit internals stay. Walk 1280: /log → Start → /active → History → /profile. House 72+264, Log set rgb(24, 24, 27), table card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
