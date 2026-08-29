@@ -38,7 +38,7 @@
 | URL | Page component | Notes |
 |-----|----------------|-------|
 | `/move` | `MovePage.tsx` — Move first paint is house leftover (static page; `?collection=` / `?flow=` server-resolved; not useSearchParams skeleton). Quiet rest-day walk / easy log (`.969`). |
-| `/mind` | `MindPage.tsx` | Mind & recovery |
+| `/mind` | `MindPage.tsx` — Mind first paint is house leftover (static page; `?collection=` server-resolved; not useSearchParams skeleton). |
 | `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
