@@ -15,6 +15,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Coach first paint is not a
+plan skeleton. House leftover
+until !loading. Generate still
+waits. Voice extras stay parked.
 History first paint is not
 Loading sessions. House leftover
 until persist hydrate. Empty
