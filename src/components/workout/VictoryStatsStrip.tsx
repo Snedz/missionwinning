@@ -77,7 +77,7 @@ export function VictoryStatsStrip({
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
           {volume.value}
-          <span className="ms-1 text-xs font-semibold text-muted-foreground">{volume.unit}</span>
+          <span className="ms-1 house-lede house-victory-volume-unit font-semibold">{volume.unit}</span>
         </p>
         <VsLastLine>{volumeDelta}</VsLastLine>
       </div>

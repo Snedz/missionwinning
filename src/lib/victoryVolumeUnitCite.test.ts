@@ -1,6 +1,6 @@
 /**
- * Victory stats labels are house leftover — house-lede, not text-muted.
- * vs-last leftover stays. Volume unit / receipt stay muted.
+ * Victory volume unit cite is house leftover — house-lede, not text-muted.
+ * Stats labels leftover stays. vs-last leftover stays. Receipt stays muted.
  * Next stays filled on Victory. Log set stays filled on compose.
  */
 import { test } from 'node:test';
@@ -24,7 +24,14 @@ function sliceAround(src: string, needle: string): string {
   return src.slice(Math.max(0, start - 180), start + 40);
 }
 
-test('Victory stats labels are house leftover, not text-muted', () => {
+test('Victory volume unit cite is house leftover, not text-muted', () => {
+  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
+  const unit = sliceAround(stats, '{volume.unit}');
+  assert.match(unit, /house-lede house-victory-volume-unit/);
+  assert.doesNotMatch(unit, /text-muted-foreground/);
+});
+
+test('stats labels leftover stays (not this leftover)', () => {
   const stats = read('src/components/workout/VictoryStatsStrip.tsx');
   for (const key of ['victoryDuration', 'victoryVolume', 'victorySets'] as const) {
     const slice = sliceAround(stats, key);
@@ -40,12 +47,7 @@ test('vs-last leftover stays (not this leftover)', () => {
   assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
-test('volume unit leftover ships separately (house-lede, not muted)', () => {
-  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  const unit = sliceAround(stats, '{volume.unit}');
-  assert.match(unit, /house-lede/);
-  assert.doesNotMatch(unit, /text-muted-foreground/);
-
+test('receipt stays parked (not this leftover)', () => {
   const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
   assert.match(receipt, /text-muted-foreground/);
 });
@@ -61,19 +63,19 @@ test('Log set stays the sole filled press on compose', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints Victory stats labels with --house-muted', () => {
+test('house leftover rule paints Victory volume unit with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house\.house-victory \.house-victory-stat-label\.house-lede \{[^}]*--house-muted/
+    /\.mw-house\.house-victory \.house-victory-volume-unit\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Victory stats labels is house leftover', () => {
+test('DESIGN names Victory volume unit is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Victory stats labels is house leftover/);
+  assert.match(spec, /Victory volume unit is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
