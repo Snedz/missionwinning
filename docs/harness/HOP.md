@@ -5,18 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-log-group-loading
-done_means: Nav to /log does not paint the app-group Loading skeleton. Segment loading is house leftover, not SkeletonCard and not a page import. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/today/logGroupLoading.test.ts
+ticket: leftover-library-group-loading
+done_means: Nav to /library does not paint the app-group Loading skeleton. Segment loading is house leftover, not SkeletonCard and not a page import. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/libraryGroupLoading.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red. Accept green. Walked `/active` → `/log`. First tick was the Today desk + `[data-testid="today-start-cta"]` `href="/active"`, not `Loading…`.
+Honesty first. File missing is red.
 
 ## decisions
 
-- One leftover: /log nav is not group Loading.
+- One leftover: /library nav is not group Loading.
 - Do not restyle Finish / Skip / Swap / Form guide / Repeat*.
 - Do not invent rooms. Calendar / charts / posters stay parked.
+- Fuel / Mind / Learn / Track / Move chrome not restarted.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

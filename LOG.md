@@ -15,6 +15,9 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+`/library` client nav is not
+group Loading. Segment loading
+is house leftover.
 `/log` client nav is not
 group Loading. Segment loading
 is house leftover.
