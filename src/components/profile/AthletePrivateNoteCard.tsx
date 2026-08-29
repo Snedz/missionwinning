@@ -8,7 +8,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   loadPrivateNote,
@@ -31,8 +30,7 @@ export function AthletePrivateNoteCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-private-note">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-private-note">
         <details className="group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
@@ -72,7 +70,6 @@ export function AthletePrivateNoteCard() {
         )}
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+You first-paint private note card is house leftover.
 You first-paint kit card is house leftover.
 Account first-paint premium card is house leftover.
 Account first-paint feedback card is house leftover.
