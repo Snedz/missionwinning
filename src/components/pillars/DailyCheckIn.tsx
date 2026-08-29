@@ -2,8 +2,6 @@
 import { useTranslation } from 'react-i18next';
 
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { logPillarWin } from '@/lib/pillarLog';
 import {
   getTodayCheckIn,
@@ -32,27 +30,21 @@ function RatingRow({
 }) {
   return (
     <div>
-      <div className="text-sm mb-2 flex justify-between">
-        <span>{label}</span>
-        <span className="text-muted-foreground tabular-nums">{value}/5</span>
+      <div className="house-row">
+        <span className="house-kicker">{label}</span>
+        <span className="house-lede tabular-nums">{value}/5</span>
       </div>
-      <div className="flex gap-1">
+      <div className="house-checkin-scale">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value >= n}
-            /* `.241` — ink fill, not red. Five filled segments per scale × three
-               scales put fifteen red controls on `/mind`, which is most of why
-               that route measured 51 against a one-red-action rule. A rating is a
-               value, not the thing to do next; the ink fill is `WeekStrip`'s
-               "done" treatment and leaves red for Save. `font-semibold` because
-               Archivo has no 500. */
-            className={`min-h-[44px] flex-1 py-2 text-sm font-semibold tabular-nums transition-colors ${
-              value >= n
-                ? 'bg-foreground text-background'
-                : 'bg-card text-muted-foreground hover:bg-muted'
+            /* `.241` — ink fill, not red. A rating is a value, not the next
+               action; Save stays the one filled house button. */
+            className={`house-checkin-tick min-h-[44px] tap-target${
+              value >= n ? ' is-on' : ''
             }`}
           >
             {n}
@@ -126,17 +118,17 @@ export function DailyCheckIn() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('mindCheckInTitle', { defaultValue: 'Daily Check-In' })}</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          {t('mindCheckInSubtitle', {
-            defaultValue:
-              'Sleep, mood, stress, energy, soreness — 1 (low) to 5 (great). Feeds readiness on Today and Active. Free for all.',
-          })}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <section className="house-card house-checkin">
+      <h2 className="house-checkin-name">
+        {t('mindCheckInTitle', { defaultValue: 'Daily Check-In' })}
+      </h2>
+      <p className="house-lede">
+        {t('mindCheckInSubtitle', {
+          defaultValue:
+            'Sleep, mood, stress, energy, soreness — 1 (low) to 5 (great). Feeds readiness on Today and Active. Free for all.',
+        })}
+      </p>
+      <div className="house-checkin-body">
         <RatingRow label={t('mindCheckInSleep', { defaultValue: 'Sleep quality last night' })} value={sleep} onChange={setSleep} />
         <RatingRow label={t('mindCheckInMood', { defaultValue: 'Mood today' })} value={mood} onChange={setMood} />
         <RatingRow label={t('mindCheckInStress', { defaultValue: 'Stress level' })} value={stress} onChange={setStress} />
@@ -144,26 +136,30 @@ export function DailyCheckIn() {
         <RatingRow label={t('mindCheckInSoreness', { defaultValue: 'Muscle soreness' })} value={soreness} onChange={setSoreness} />
         <BehaviorStrip value={behaviors} onChange={setBehaviors} />
         <div>
-          <label htmlFor="daily-checkin-note" className="text-sm">
+          <label htmlFor="daily-checkin-note" className="house-kicker">
             {t('mindCheckInNoteLabel', { defaultValue: 'Optional note' })}
           </label>
           <textarea
             id="daily-checkin-note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="w-full mt-1 min-h-[60px] rounded-none border border-border bg-background px-3 py-2 text-sm"
+            className="house-field"
             placeholder={t('mindCheckInNotePlaceholder', {
               defaultValue: 'One line — what helped or what you need tomorrow',
             })}
           />
         </div>
-        <Button variant="default" className="min-h-[44px] w-full" onClick={handleSave}>
+        <button
+          type="button"
+          className="house-btn house-btn-primary min-h-[44px] w-full tap-target"
+          onClick={handleSave}
+        >
           {saved
             ? t('mindCheckInUpdate', { defaultValue: "Update Today's Check-In" })
             : t('mindCheckInSave', { defaultValue: 'Save Check-In' })}
-        </Button>
+        </button>
         {saved && (
-          <p className="text-xs text-primary text-center">
+          <p className="house-lede">
             {t('mindCheckInSaved', {
               defaultValue: 'Saved for today — adjusts readiness (within honest bounds).',
             })}
@@ -172,10 +168,8 @@ export function DailyCheckIn() {
         {/* Regularity, not a duration, and never a debt figure we cannot
             honestly measure. Silent only until the first bed time is logged;
             after that it counts up to the five nights the band needs. */}
-        {consistency && (
-          <p className="text-xs leading-relaxed text-muted-foreground">{consistency}</p>
-        )}
-      </CardContent>
-    </Card>
+        {consistency && <p className="house-lede">{consistency}</p>}
+      </div>
+    </section>
   );
 }

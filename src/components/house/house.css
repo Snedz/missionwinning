@@ -2161,6 +2161,76 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-mind .house-checkin {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mw-house .house-mind .house-checkin-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-mind .house-checkin .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-mind .house-checkin-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mw-house .house-mind .house-checkin-scale {
+  display: flex;
+  border: 1px solid var(--house-line);
+}
+
+.mw-house .house-mind .house-checkin-tick {
+  flex: 1;
+  border: 0;
+  border-right: 1px solid var(--house-line);
+  background: transparent;
+  color: var(--house-muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.mw-house .house-mind .house-checkin-tick:last-child {
+  border-right: 0;
+}
+
+.mw-house .house-mind .house-checkin-tick.is-on {
+  background: var(--house-press);
+  color: var(--house-press-ink);
+}
+
+.mw-house .house-mind .house-field {
+  min-height: 60px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
+.mw-house .house-mind .house-field:focus,
+.mw-house .house-mind .house-field:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;
