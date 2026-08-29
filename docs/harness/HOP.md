@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pending.
+Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Week-4 card unmounted on `/account/under-the-hood` (unused). Weights still first paint.
 
 ## decisions
 
