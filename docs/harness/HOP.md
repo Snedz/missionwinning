@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 2 pass). Chrome: drop font-extrabold; `.house-set-table .house-set-log` is 700. LogConsole stays extrabold.
+Honesty was red (3 fail / 2 pass). Chrome: drop font-extrabold; `.house-set-table .house-set-log` is 700. LogConsole stays extrabold. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27) 12px/700 without font-extrabold, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
