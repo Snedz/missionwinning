@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (missing house-cue-still). Chrome is house leftover. Walk next.
+Walked 1280: left Start href=/active (72+264) → /active Log set rgb(24, 24, 27). session-title house-title. Cue still house-cue-still paper rgb(255, 255, 255). Finish/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
