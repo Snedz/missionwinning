@@ -1079,6 +1079,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live .house-next-cite.house-lede {
+  margin: 0;
+  font-size: 11px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-exercise-title {
   margin: 0;
   font: inherit;

@@ -53,7 +53,8 @@ test('after-set next-cite / e1RM / vs-last stay parked (not this leftover)', () 
   const nextStart = next.indexOf(nextNeedle);
   assert.ok(nextStart >= 0, `missing ${nextNeedle}`);
   const nextLine = next.slice(Math.max(0, nextStart - 180), nextStart + 40);
-  assert.match(nextLine, /text-muted-foreground/);
+  assert.match(nextLine, /house-lede/);
+  assert.doesNotMatch(nextLine, /text-muted-foreground/);
 
   const header = read('src/components/workout/ActiveExerciseHeader.tsx');
   const e1rm = sliceFromTestId(header, 'session-e1rm');

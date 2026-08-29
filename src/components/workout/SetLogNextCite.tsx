@@ -24,7 +24,7 @@ export function SetLogNextCite({ target, provenance, onSkip }: Props) {
       data-testid="set-table-next-cite"
     >
       <p
-        className="min-w-0 truncate text-[11px] tabular-nums text-muted-foreground"
+        className="house-lede house-next-cite min-w-0 truncate tabular-nums"
         data-testid="set-table-next-cite-line"
         aria-label={t('activeNextCiteAria', {
           line,
