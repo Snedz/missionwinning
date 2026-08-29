@@ -1616,6 +1616,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(inlineAdd, /house-btn-primary/);
   assert.match(css, /\.house-compose-live \.house-add-exercise \{[^}]*--house-line/);
   assert.match(spec, /Add-exercise search is house leftover/);
+  const picker = read('src/components/library/ExercisePicker.tsx');
+  const pickerDetail = picker.slice(
+    picker.indexOf('ex.muscleGroups.slice(0, 2)') - 160,
+    picker.indexOf('ex.muscleGroups.slice(0, 2)') + 24
+  );
+  assert.match(pickerDetail, /house-lede/);
+  assert.doesNotMatch(pickerDetail, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \[role="option"\] \.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Exercise picker option details is house leftover/);
   const addSheet = read('src/components/workout/AddExerciseSheet.tsx');
   assert.match(addSheet, /mw-house house-add-sheet/);
   assert.match(addSheet, /house-btn min-h-\[52px\] w-full tap-target/);

@@ -151,7 +151,7 @@ export function ExercisePicker({
                 }}
               >
                 <span className="font-semibold">{ex.name}</span>
-                <span className="block text-[11px] text-muted-foreground">
+                <span className="block house-lede">
                   {[ex.muscleGroups.slice(0, 2).join(' · '), ex.equipment]
                     .filter(Boolean)
                     .join(' · ')}

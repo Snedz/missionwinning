@@ -1206,6 +1206,13 @@
   border-radius: var(--house-radius-sm);
 }
 
+.mw-house [role="option"] .house-lede {
+  margin: 0;
+  font-size: 11px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-add-exercise .house-btn {
   margin-top: 12px;
 }
