@@ -12,9 +12,12 @@ test_written: yes
 
 ## progress
 
-Honesty was red (page gated nextSet on
-activeWorkout; composeNextSet missing).
-Accept green. Walk next.
+Honesty was red. Accept green.
+Walk Home left bar → Start → /active:
+set table + Log set mounted
+`rgb(24, 24, 27)` / `--house-press`.
+Finish / Skip / Swap / Form unfilled
+`rgb(244, 244, 245)`. No poster-red.
 
 ## decisions
 
