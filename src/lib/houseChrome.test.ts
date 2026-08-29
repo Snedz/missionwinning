@@ -1240,6 +1240,19 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house \.house-compose-live \.house-load-pct\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Set-table load-% cite is house leftover/);
+  const victoryStats = read('src/components/workout/VictoryStatsStrip.tsx');
+  assert.match(victoryStats, /mw-house house-victory/);
+  const victoryVsLastCite = victoryStats.slice(
+    victoryStats.indexOf('data-testid="victory-vs-last"') - 180,
+    victoryStats.indexOf('data-testid="victory-vs-last"') + 40
+  );
+  assert.match(victoryVsLastCite, /house-lede house-victory-vs-last/);
+  assert.doesNotMatch(victoryVsLastCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory \.house-victory-vs-last\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory vs-last cite is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),

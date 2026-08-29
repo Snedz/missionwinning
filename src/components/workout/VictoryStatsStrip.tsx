@@ -28,7 +28,7 @@ type Props = {
 function VsLastLine({ children }: { children: string | null }) {
   if (!children) return null;
   return (
-    <p className="mt-1 text-[11px] tabular-nums text-muted-foreground" data-testid="victory-vs-last">
+    <p className="mt-1 house-lede house-victory-vs-last tabular-nums" data-testid="victory-vs-last">
       {children}
     </p>
   );
@@ -61,7 +61,7 @@ export function VictoryStatsStrip({
       : null;
 
   return (
-    <div className="grid grid-cols-3 gap-2 py-2">
+    <div className="mw-house house-victory grid grid-cols-3 gap-2 py-2">
       <div className="border-2 border-border bg-background p-3 text-center">
         <p className="text-xs font-semibold text-muted-foreground">
           {t('victoryDuration', { defaultValue: 'Duration' })}

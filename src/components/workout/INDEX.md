@@ -38,11 +38,11 @@
 | `ExercisePinnedNoteField.tsx` | Pinned reminder on the open lift. Returns next session. Not History (`.996`). |
 | `SessionJotField.tsx` | Optional private session notes — live Show all + close receipt (`.982`). Empty invents nothing. |
 | `ActiveReadinessDeltaStrip.tsx` | Post-check-in readiness delta in Show all (`.432`). Readiness extra is house leftover. Hidden until a real before/after. |
-| `WorkoutVictorySheet.tsx` | Post-workout close receipt — stats + lift table + notes + Next on first paint. Feel, share, rewards, debrief in Show all (`.956` / `.982`). Outline **Save as routine** (`.960`). Outline **Start this again** (`.991`) |
+| `WorkoutVictorySheet.tsx` | Post-workout close receipt — stats + lift table + notes + Next on first paint. Feel, share, rewards, debrief in Show all (`.956` / `.982`). Outline **Save as routine** (`.960`). Outline **Start this again** (`.991`). Victory vs-last cite is house leftover (`house-lede` / `--house-muted`). |
 | `SaveHonoredRoutineDoor.tsx` | Confirm-gated save / replace for a named routine (`.960`). Not the Today red Start |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
-| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); BW prints reps via `formatWorkoutVolumeDisplay` (`.886`) |
+| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); BW prints reps via `formatWorkoutVolumeDisplay` (`.886`). Victory vs-last cite is house leftover (`house-lede` / `--house-muted`). |
 | `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory first paint (`.713` / `.944` / `.956`); private Save receipt |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
