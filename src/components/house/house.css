@@ -1842,6 +1842,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-identity-name-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-athlete-cite {
   margin: 4px 0 0;
   font-size: 14px;
