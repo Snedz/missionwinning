@@ -24,34 +24,32 @@ export function ProfilePreferencesCard({
 
   return (
     <>
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('units', { defaultValue: 'Units' })}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2">
-            <Button
-              className="min-h-[44px] tap-target"
-              variant={units === 'metric' ? 'selected' : 'outline'}
-              onClick={() => onSaveUnits('metric')}
-            >
-              {t('metric', { defaultValue: 'Metric (kg, cm)' })}
-            </Button>
-            <Button
-              className="min-h-[44px] tap-target"
-              variant={units === 'imperial' ? 'selected' : 'outline'}
-              onClick={() => onSaveUnits('imperial')}
-            >
-              {t('imperial', { defaultValue: 'Imperial (lbs, in)' })}
-            </Button>
-          </div>
-          <div className="text-xs mt-2 text-muted-foreground">
-            {t('unitsAffectsHint', {
-              defaultValue: 'Affects calculators and new logs. Default is metric.',
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-3" data-testid="account-units-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('units', { defaultValue: 'Units' })}
+        </h3>
+        <div className="flex gap-2">
+          <Button
+            className="min-h-[44px] tap-target"
+            variant={units === 'metric' ? 'selected' : 'outline'}
+            onClick={() => onSaveUnits('metric')}
+          >
+            {t('metric', { defaultValue: 'Metric (kg, cm)' })}
+          </Button>
+          <Button
+            className="min-h-[44px] tap-target"
+            variant={units === 'imperial' ? 'selected' : 'outline'}
+            onClick={() => onSaveUnits('imperial')}
+          >
+            {t('imperial', { defaultValue: 'Imperial (lbs, in)' })}
+          </Button>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          {t('unitsAffectsHint', {
+            defaultValue: 'Affects calculators and new logs. Default is metric.',
+          })}
+        </div>
+      </div>
 
       <Card className="content-card">
         <CardHeader>
