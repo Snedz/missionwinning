@@ -1999,6 +1999,107 @@
   gap: 8px;
 }
 
+.mw-house .house-fuel .house-fuel-today {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-today-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-today-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-today-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-today .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-fuel .house-fuel-meal {
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+}
+
+.mw-house .house-fuel .house-fuel-meal-sum {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-meal-sum::-webkit-details-marker {
+  display: none;
+}
+
+.mw-house .house-fuel .house-fuel-meal-chevron {
+  color: var(--house-muted);
+}
+
+.mw-house .house-fuel .house-fuel-meal[open] .house-fuel-meal-chevron {
+  transform: rotate(180deg);
+}
+
+.mw-house .house-fuel .house-fuel-meal-list {
+  margin: 0;
+  padding: 8px 12px 12px;
+  list-style: none;
+  border-top: 1px solid var(--house-line);
+}
+
+.mw-house .house-fuel .house-fuel-meal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-meal-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mw-house .house-fuel .house-fuel-meal-acts {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+}
+
+.mw-house .house-fuel .house-fuel-today-totals {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--house-line);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--house-ink);
+}
+
 .mw-house .house-feedback form.house-card {
   max-width: 40rem;
 }

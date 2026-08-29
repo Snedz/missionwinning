@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Pencil, Trash2, UtensilsCrossed } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { DangerZone } from '@/components/ui/DangerZone';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -79,145 +77,141 @@ export function FuelTodayLogCard({
   };
 
   return (
-    <Card className="bg-card">
-      <CardHeader className="flex flex-row items-center justify-between gap-2">
-        <CardTitle className="text-base font-semibold">
+    <section
+      data-testid="fuel-today-log"
+      className="house-card house-fuel-today"
+    >
+      <div className="house-fuel-today-head">
+        <h2 className="house-fuel-today-name">
           {t('fuelTodayLogTitle', { defaultValue: "Today's meals" })}
-        </CardTitle>
-        <div className="flex gap-2 flex-wrap justify-end">
-          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onLoadCloud}>
-            {t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}
-          </Button>
-          {cloudStatus ? (
-            <span className="text-[11px] text-primary self-center">{cloudStatus}</span>
-          ) : null}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {logged.length === 0 ? (
-          <EmptyState
-            icon={UtensilsCrossed}
-            title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
-            description={t('fuelNoEntries', {
-              defaultValue: 'Describe what you ate above, or tap Log food — always review macros before logging.',
-            })}
-            actionLabel={t('fuelEmptyCta', { defaultValue: 'Log food' })}
-            href="#fuel-log"
-          />
-        ) : (
-          orderedKeys.map((mealKey) => {
-            const entries = groupedLog[mealKey] ?? [];
-            const mealP = entries.reduce((s, e) => s + e.entry.protein, 0);
-            const mealC = entries.reduce((s, e) => s + e.entry.cals, 0);
-            return (
-              <details
-                key={mealKey}
-                className="group  border-2 border-border"
-                open
-              >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] [&::-webkit-details-marker]:hidden">
-                  <span className="text-sm font-medium text-foreground">
-                    {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
-                    <span className="ms-2 text-xs font-normal text-muted-foreground tabular-nums">
-                      {entries.length} · {mealP}g P · {mealC} kcal
-                    </span>
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180 shrink-0" />
-                </summary>
-                <ul className="space-y-2 text-sm px-3 pb-3 border-t border-border pt-2">
-                  {entries.map(({ entry: l, index }) => (
-                    <li key={`${mealKey}-${index}`} className="space-y-2">
-                      {editIndex === index && editDraft ? (
-                        <MealEstimateDraft
-                          draft={editDraft}
-                          onChange={setEditDraft}
-                          confidence="high"
-                          sourceLabel={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
-                          logLabel={t('fuelSaveEntry', { defaultValue: 'Save changes' })}
-                          onLog={() => {
-                            onUpdateEntry(index, editDraft);
-                            setEditIndex(null);
-                            setEditDraft(null);
-                          }}
-                          onDismiss={() => {
-                            setEditIndex(null);
-                            setEditDraft(null);
-                          }}
-                        />
-                      ) : (
-                        <div className="flex justify-between gap-2 items-center py-0.5">
-                          <span className="min-w-0 truncate">
-                            <span className="text-muted-foreground tabular-nums text-xs me-1.5">
-                              {l.time}
-                            </span>
-                            {l.name}
-                          </span>
-                          <span className="flex items-center gap-0.5 shrink-0">
-                            <span className="text-muted-foreground tabular-nums text-xs me-1">
-                              +{l.protein}g P · {l.cals} kcal
-                            </span>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="h-11 w-11 p-0 tap-target"
-                              aria-label={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
-                              onClick={() => startEdit(index, l)}
-                            >
-                              <Pencil className="h-3.5 w-3.5" />
-                            </Button>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="h-11 min-h-[44px] px-2 text-[11px] tap-target"
-                              onClick={() => onSaveMeal(l)}
-                            >
-                              {t('fuelSaveMeal', { defaultValue: 'Save' })}
-                            </Button>
-                            <HoldToConfirmButton
-                              size="sm"
-                              className="h-11 w-11 tap-target"
-                              label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
-                              icon={<Trash2 className="h-3.5 w-3.5" />}
-                              onConfirm={() => onRemoveEntry(index)}
-                            />
-                          </span>
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            );
-          })
-        )}
-        <div className="pt-3 border-t border-border text-sm flex justify-between font-medium">
-          <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
-          <span className="tabular-nums">
-            {t('fuelTotalsLine', {
-              protein: totalProtein,
-              cals: totalCals,
-              defaultValue: `${totalProtein}g protein · ${totalCals} kcal`,
-            })}
-          </span>
-        </div>
-        {logged.length > 0 ? (
-          <DangerZone
-            title={t('fuelDangerZone', { defaultValue: 'Danger zone' })}
-            description={t('fuelClearDayHint', {
-              defaultValue: 'Clears every meal logged today. Hold to confirm.',
-            })}
+        </h2>
+        <div className="house-fuel-today-tools">
+          <button
+            type="button"
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+            onClick={onLoadCloud}
           >
-            <HoldToConfirmButton
-              size="sm"
-              className="min-h-[44px] tap-target"
-              label={t('fuelClearTodaysMeals', { defaultValue: "Clear today's meals" })}
-              onConfirm={onClearDay}
-            />
-          </DangerZone>
-        ) : null}
-      </CardContent>
-    </Card>
+            {t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}
+          </button>
+          {cloudStatus ? <span className="house-lede">{cloudStatus}</span> : null}
+        </div>
+      </div>
+
+      {logged.length === 0 ? (
+        <EmptyState
+          className="house-empty"
+          icon={UtensilsCrossed}
+          title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
+          description={t('fuelNoEntries', {
+            defaultValue: 'Describe what you ate above, or tap Log food — always review macros before logging.',
+          })}
+          actionLabel={t('fuelEmptyCta', { defaultValue: 'Log food' })}
+          href="#fuel-log"
+        />
+      ) : (
+        orderedKeys.map((mealKey) => {
+          const entries = groupedLog[mealKey] ?? [];
+          const mealP = entries.reduce((s, e) => s + e.entry.protein, 0);
+          const mealC = entries.reduce((s, e) => s + e.entry.cals, 0);
+          return (
+            <details key={mealKey} className="house-fuel-meal" open>
+              <summary className="house-fuel-meal-sum min-h-[44px] tap-target">
+                <span>
+                  {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+                  <span className="house-lede">
+                    {entries.length} · {mealP}g P · {mealC} kcal
+                  </span>
+                </span>
+                <ChevronDown className="house-fuel-meal-chevron h-4 w-4 shrink-0" />
+              </summary>
+              <ul className="house-fuel-meal-list">
+                {entries.map(({ entry: l, index }) => (
+                  <li key={`${mealKey}-${index}`}>
+                    {editIndex === index && editDraft ? (
+                      <MealEstimateDraft
+                        draft={editDraft}
+                        onChange={setEditDraft}
+                        confidence="high"
+                        sourceLabel={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
+                        logLabel={t('fuelSaveEntry', { defaultValue: 'Save changes' })}
+                        onLog={() => {
+                          onUpdateEntry(index, editDraft);
+                          setEditIndex(null);
+                          setEditDraft(null);
+                        }}
+                        onDismiss={() => {
+                          setEditIndex(null);
+                          setEditDraft(null);
+                        }}
+                      />
+                    ) : (
+                      <div className="house-fuel-meal-row">
+                        <span className="house-fuel-meal-name">
+                          <span className="house-lede">{l.time}</span>
+                          {l.name}
+                        </span>
+                        <span className="house-fuel-meal-acts">
+                          <span className="house-lede">
+                            +{l.protein}g P · {l.cals} kcal
+                          </span>
+                          <button
+                            type="button"
+                            className="house-btn house-btn-ghost min-h-[44px] w-11 p-0 tap-target"
+                            aria-label={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
+                            onClick={() => startEdit(index, l)}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+                            onClick={() => onSaveMeal(l)}
+                          >
+                            {t('fuelSaveMeal', { defaultValue: 'Save' })}
+                          </button>
+                          <HoldToConfirmButton
+                            size="sm"
+                            className="h-11 w-11 tap-target"
+                            label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
+                            icon={<Trash2 className="h-3.5 w-3.5" />}
+                            onConfirm={() => onRemoveEntry(index)}
+                          />
+                        </span>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          );
+        })
+      )}
+
+      <div className="house-fuel-today-totals">
+        <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
+        <span>
+          {t('fuelTotalsLine', {
+            protein: totalProtein,
+            cals: totalCals,
+            defaultValue: `${totalProtein}g protein · ${totalCals} kcal`,
+          })}
+        </span>
+      </div>
+      {logged.length > 0 ? (
+        <DangerZone
+          title={t('fuelDangerZone', { defaultValue: 'Danger zone' })}
+          description={t('fuelClearDayHint', {
+            defaultValue: 'Clears every meal logged today. Hold to confirm.',
+          })}
+        >
+          <HoldToConfirmButton
+            size="sm"
+            className="min-h-[44px] tap-target"
+            label={t('fuelClearTodaysMeals', { defaultValue: "Clear today's meals" })}
+            onConfirm={onClearDay}
+          />
+        </DangerZone>
+      ) : null}
+    </section>
   );
 }
