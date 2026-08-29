@@ -28,7 +28,7 @@
 |-----|----------------|
 | `/builder` | `BuilderPage.tsx` — write side of the official training catalog (templates). Not a shop. |
 | `/coach` | `CoachPage.tsx` — **Mission Coach** (AI weekly plan) |
-| `/library` | `LibraryPage.tsx` — official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
+| `/library` | `LibraryPage.tsx` — Library first paint is house leftover (static page; catalog list, not RouteLoading). Official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
 | `/history` | `HistoryPage.tsx` — History list first paint is house leftover (static page; session list, not RouteLoading). |
 | `/leaderboard` | `LeaderboardPage.tsx` |
 | `/benchmarks` | `BenchmarksPage.tsx` |

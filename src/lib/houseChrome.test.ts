@@ -481,6 +481,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryExtras, /border-2/);
   assert.match(css, /\.house-catalog \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Library Show all extras is house leftover/);
+  const libraryRoute = stripComments(read('app/(app)/library/page.tsx'));
+  assert.doesNotMatch(libraryRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(libraryRoute, /import \{ LibraryPage \}/);
+  assert.match(spec, /Library first paint is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);
