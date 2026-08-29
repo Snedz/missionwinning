@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 5 pass). Chrome. Accept pass.
+Honesty was red (2 fail / 5 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Check-in. Scale hints (Fresh / Beaten up / Poor / Great / Low / Fired up) house-lede --house-muted rgb(113,113,122). Save / Not now outline rgb(244,244,245). Log set rgb(24,24,27). Finish / Skip / Swap stay outline. Copy untouched.
+
+Next leftover: plate-line cite on the live barbell row (SetLogPlateLine still text-muted-foreground). Same leftover pattern. After-set cites (next-target / e1RM / vs-last / load-%) stay parked. Do not restyle the scale ticks or confirm. Not You chrome.
 
 ## decisions
 
