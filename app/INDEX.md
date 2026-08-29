@@ -19,7 +19,7 @@
 | `/active` | Train | `ActiveWorkoutPage.tsx` |
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
 | `/track` | Track | `TrackPage.tsx` — Quiet Track weight / tape (`.975`); walks / GPS in Show more |
-| `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
+| `/profile` | You | `ProfilePage.tsx` — You leftover; first paint is house leftover (static import, no `RouteLoading`) |
 | `/account` | Account | `AccountPage.tsx` — settings leftover; first paint is house leftover (static import, no `RouteLoading`) |
 
 ### Train deeper

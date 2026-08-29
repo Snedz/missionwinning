@@ -39,6 +39,8 @@ press (`--house-press` / #18181b), filled
 `primary-action`, ungated. Account first paint is
 house leftover (sign-in / return / prefs) — not
 `RouteLoading` / `useSearchParams` skeleton.
+You first paint is house leftover
+(identity / kit) — not `RouteLoading`.
 Restoring session is not
 the product. Guest. First set
 ungated. Today still one Start.

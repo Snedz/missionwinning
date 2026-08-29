@@ -715,9 +715,13 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(trainSide, /href: '\/coach'/);
   assert.doesNotMatch(trainSide, /href: '\/server'/);
   assert.match(spec, /History stays on Home/);
+  const profileRoute = stripComments(read('app/(app)/profile/page.tsx'));
+  assert.doesNotMatch(profileRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(profileRoute, /import \{ ProfilePage \}/);
   const profile = read('src/page-components/ProfilePage.tsx');
   assert.match(profile, /className="house-profile"/);
   assert.match(profile, /house-btn house-btn-ghost/);
+  assert.match(spec, /You first paint is house leftover/);
   const fuel = read('src/page-components/NutritionPage.tsx');
   assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
   assert.match(fuel, /id="fuel-log"/);

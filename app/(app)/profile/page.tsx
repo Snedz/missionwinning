@@ -1,20 +1,14 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const ProfilePage = dynamic(
-  () => import('@/page-components/ProfilePage').then((m) => m.ProfilePage),
-  { loading: () => <RouteLoading label="Profile" /> }
-);
+import { ProfilePage } from '@/page-components/ProfilePage';
 
 export const metadata: Metadata = routeMetadata('profile');
 
+/**
+ * You first paint is house leftover. `dynamic()` + `RouteLoading` made the
+ * served HTML a skeleton ("Loading Profile…"). ProfilePage does not read
+ * `useSearchParams`, so there is no Suspense child.
+ */
 export default function ProfileRoute() {
-  return (
-    <Suspense fallback={<RouteLoading label="Profile" />}>
-      <ProfilePage />
-    </Suspense>
-  );
+  return <ProfilePage />;
 }

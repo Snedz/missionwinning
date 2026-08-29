@@ -81,7 +81,7 @@
 
 | File | Route |
 |------|-------|
-| `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
+| `ProfilePage.tsx` | `/profile` — You leftover; first paint is house leftover (static import, no `RouteLoading`). Identity / kit first; Account door is house-btn ghost |
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings leftover; first paint is house leftover (static import, no `RouteLoading` / `useSearchParams`). Sign-in / return / prefs first; Explore / more / help are house-card |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
