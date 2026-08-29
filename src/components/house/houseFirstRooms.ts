@@ -51,6 +51,7 @@ export function getHouseFirstRooms(input: HouseFirstRoomsInput): HouseFirstRoom[
       done: input.weekOpened,
       locked: false,
       kind: 'pane',
+      href: '/log#today-week',
       titleKey: 'houseFirstWeekTitle',
       title: 'Open this week',
       whyKey: 'houseFirstWeekWhy',

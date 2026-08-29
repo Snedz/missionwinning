@@ -9,7 +9,7 @@
 | `HouseSecondRail.tsx` | Left column next to the icon rail (`grid-column: 2`). Home rooms or Library objects. Week pane is the real week + `/coach` (`generateWeek`). Not More. |
 | `HousePane.tsx` | Pane context + visit ticks (week / History). Home click closes the pane. |
 | `HouseGuide.tsx` | One first-run coach-mark. Got it / X dismiss. No popup chain. |
-| `HouseFirstRoomsCard.tsx` | Persistent collapsible N-of-N under Start. Three MW rows. First-rooms Log a set is `href="/active"`. First-rooms History is `href="/history"`. |
+| `HouseFirstRoomsCard.tsx` | Persistent collapsible N-of-N under Start. Three MW rows. First-rooms Log a set is `href="/active"`. First-rooms Week is `href="/log#today-week"`. First-rooms History is `href="/history"`. |
 | `houseFirstRooms.ts` | Inferred ticks + lock for the three first rooms. |
 | `HouseMore.tsx` | Leftover rooms only (Fuel / You / Account + quiet pillars + Garage). Not the Home second bar. |
 | `houseNav.ts` | Rail hrefs + Today/Library rooms + More leftovers. `/server` is quiet More only. |

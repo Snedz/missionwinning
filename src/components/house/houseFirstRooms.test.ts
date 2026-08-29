@@ -16,6 +16,7 @@ test('house first rooms are three MW rows — history stays visible and locked u
   assert.equal(rooms[0]!.kind, 'compose');
   assert.equal(rooms[0]!.href, '/active');
   assert.equal(rooms[1]!.kind, 'pane');
+  assert.equal(rooms[1]!.href, '/log#today-week');
   assert.equal(rooms[2]!.kind, 'navigate');
   assert.equal(rooms[2]!.href, '/history');
   assert.equal(rooms[2]!.locked, true);

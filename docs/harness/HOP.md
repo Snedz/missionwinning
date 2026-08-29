@@ -5,20 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-builder-show-all-door
-done_means: Builder first-paint Show-all door is house leftover, not text-foreground / text-sm. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/builder/builderShowAllDoor.test.ts
+ticket: leftover-first-rooms-week-href
+done_means: First-rooms Week is href=/log#today-week — the real Today week object, not a JS-only pane button and not a invented /week room. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/today/firstRoomsWeek.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-show-all-door` + `--house-ink` 14px/600 on `.house-builder`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), Builder `.house-show-all-door` color rgb(24, 24, 27) 14px without text-foreground / text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (2 fail / 1 pass). Chrome: first-rooms Week is href=/log#today-week; pane open stays click enhancement.
 
 ## decisions
 
-- One leftover: Builder Show-all door is house leftover.
-- Builder Show all extras body already shipped. This hop is the summary door only.
-- ProgramTemplatesPanel internals stay parked.
+- One leftover: first-rooms Week is a real href.
+- `/log#today-week` already exists (`id="today-week"` on Today; left rail already uses this href). Not a new room.
+- Pane open stays a click enhancement, same as the left-bar week row.
+- Do not invent `/week`.
 - Do not rewrite shared ExercisePicker.
 - Calendar / charts / posters stay parked.
 - Do not restyle shared EmptyState.

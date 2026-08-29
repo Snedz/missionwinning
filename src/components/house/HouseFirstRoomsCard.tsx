@@ -128,6 +128,30 @@ export function HouseFirstRoomsCard({ loggedSet, hasFinish, onLogSet }: Props) {
                         )}
                       </span>
                     </Link>
+                  ) : row.kind === 'pane' && row.href ? (
+                    <Link
+                      data-testid="today-first-week"
+                      href="/log#today-week"
+                      aria-expanded={open}
+                      onClick={() => {
+                        setOpenKey(row.key);
+                        openPane('week');
+                      }}
+                    >
+                      <span className="house-check-copy">
+                        <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
+                        <span className="house-check-why">
+                          <span>{t(row.whyKey, { defaultValue: row.why })}</span>
+                        </span>
+                      </span>
+                      <span className="house-check-mark">
+                        {row.done ? (
+                          <Check className="h-4 w-4" aria-hidden />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" aria-hidden />
+                        )}
+                      </span>
+                    </Link>
                   ) : row.kind === 'navigate' && row.href ? (
                     <Link
                       data-testid="today-first-history"
