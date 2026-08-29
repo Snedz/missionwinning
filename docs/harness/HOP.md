@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty test first (red 3/3). Chrome on both DialogContent + confirm house-btn. Accept next. Walk Home left bar → Start → /active, then History merge door.
+Honesty test first (red 3/3). Chrome. Accept green (`npx tsx --test src/lib/workout/mergeExercisesDialogHouse.test.ts` + surface / houseChrome / context / log). Walk Home left bar → Start → `/active`. History merge door is not on History first paint (Show all / empty extras). Radix Content source carries `mw-house`. Confirm is house-btn, not filled. ProgramTemplatesPanel untouched.
 
 ## decisions
 
