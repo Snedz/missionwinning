@@ -147,7 +147,15 @@ describe('writeTodayComposeSession wiring', () => {
     );
     const src = read('src/lib/workout/writeTodayComposeSession.ts');
     assert.match(src, /export function composeNextSet/);
+    assert.match(src, /export function composeSidecarWorkout/);
     assert.match(src, /paintTodayComposeWorkout\(\)/);
+  });
+
+  it('sidecar on /active is composeSidecarWorkout — persist does not own first paint', () => {
+    const sidecar = read('src/components/house/TrainSidecar.tsx');
+    assert.match(sidecar, /composeSidecarWorkout/);
+    assert.doesNotMatch(sidecar, /if \(!workout\)/);
+    assert.doesNotMatch(sidecar, /activeEmptyExercises/);
   });
 
   it('writeTodayComposeSession replaces a no-lift session', () => {

@@ -779,6 +779,9 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(sidecar, /href: '\/server'/);
   const trainSide = stripComments(read('src/components/house/TrainSidecar.tsx'));
   assert.match(trainSide, /house-sidecar/);
+  assert.match(trainSide, /composeSidecarWorkout/);
+  assert.doesNotMatch(trainSide, /if \(!workout\)/);
+  assert.doesNotMatch(trainSide, /activeEmptyExercises/);
   assert.match(trainSide, /startRest/);
   assert.doesNotMatch(trainSide, /href: '\/history'/);
   assert.doesNotMatch(trainSide, /href: '\/coach'/);

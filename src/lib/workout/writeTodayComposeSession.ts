@@ -110,8 +110,12 @@ export function paintTodayComposeWorkout(): ActiveWorkout {
 export function composeNextSet(
   live: ActiveWorkout | null | undefined
 ): { exIdx: number; setIdx: number } | null {
-  const session = hasComposeExercises(live)
-    ? (live as ActiveWorkout)
-    : paintTodayComposeWorkout();
-  return findNextSet(session.exercises);
+  return findNextSet(composeSidecarWorkout(live).exercises);
+}
+
+/** Sidecar session from the painted compose. Persist hydrate does not own this. */
+export function composeSidecarWorkout(
+  live: ActiveWorkout | null | undefined
+): ActiveWorkout {
+  return hasComposeExercises(live) ? (live as ActiveWorkout) : paintTodayComposeWorkout();
 }

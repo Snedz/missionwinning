@@ -15,6 +15,11 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Sidecar first paint does not
+wait on persist.
+`composeSidecarWorkout` paints
+the session name + rest/notes
+when the store is empty.
 `/active` first paint Log set
 does not wait on persist.
 `composeNextSet` paints the next
