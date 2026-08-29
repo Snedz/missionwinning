@@ -14,7 +14,7 @@ test_written: yes
 
 Honesty was red (page gated nextSet on
 activeWorkout; composeNextSet missing).
-Chrome in. Accept next.
+Accept green. Walk next.
 
 ## decisions
 
