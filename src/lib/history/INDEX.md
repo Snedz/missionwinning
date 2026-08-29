@@ -45,5 +45,6 @@
 | `historyGroupLoading.test.ts` | `/history` client nav is not group Loading; segment loading is house leftover (`.1058`) |
 | `historyFirstPaintSkeleton.test.ts` | History first paint is not Loading sessions; empty still waits for persist hydrate (`.1058`) |
 | `historyDayGroupLoading.test.ts` | `/history` day client nav is not group Loading; segment loading is house leftover (`.1058`) |
+| `historyShowAllDoor.test.ts` | History Show-all door is house leftover (`.1058`) |
 
 Day replay (`HistoryDayPage`) and charts (`historyAnalytics.ts`) live elsewhere.
