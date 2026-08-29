@@ -382,6 +382,8 @@ Label `2026.07-unified.1055` (from
 master `.1054` / `20b99670`). Stamp
 stays `.1055`. Live www stays `.696`.
 
+Preview trigger for `.1055`.
+
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1038-for-1055.md](docs/archive/log/LOG-rotate-1038-for-1055.md).
 
 ## 2026-08-27 — v0 catalog labeling (`.1054`)
