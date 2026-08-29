@@ -72,7 +72,7 @@ export function AthletePageShareCard() {
   return (
     <div className="house-card space-y-3" data-testid="athlete-page-share">
         <p className="eyebrow">{t('athletePageShareTitle', { defaultValue: 'Share page' })}</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-share-cite" data-testid="athlete-page-share-cite">
           {t('athletePageShareBody', {
             defaultValue:
               'Renders on this device and leaves only if you send it. No public link yet.',

@@ -1883,6 +1883,13 @@
   box-shadow: none;
 }
 
+.mw-house .house-profile .house-share-cite {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);
