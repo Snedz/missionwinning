@@ -70,7 +70,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | You leftover | `.house-profile` | Quiet title stays. Account door is a ghost house button |
 | Account leftover | `.house-account` | Quiet title stays. Sign-in / return / prefs stay first paint. Explore, more settings, and help are house-card objects. Sidecar leftover rooms only (Account / You). Never History or Coach on the right. |
 | Fuel leftover | `.house-fuel` | Log stays first paint. Search / barcode / recipes stay in Show all |
-| Quiet More | `.house-move` `.house-mind` `.house-track` `.house-learn` | Quiet title stays. Move first-paint flow list is house leftover. Start Flow is house-btn, not filled. Collection chips are house-state; selected `#eee`. Mind / Track / Learn first paint unchanged. Extra tools in house-card Show all |
+| Quiet More | `.house-move` `.house-mind` `.house-track` `.house-learn` | Quiet title stays. Move first-paint flow list is house leftover. Track first-paint metrics is house leftover. Log is house-btn, not filled. Metric chips are house-state; selected `#eee`. Chart stays. Walks / GPS stay Show all. Mind / Learn first paint unchanged. Extra tools in house-card Show all |
 | Feedback leftover | `.house-feedback` | Quiet title stays. Form is the first-paint object. One filled submit. Sign-in stays extra. |
 | Garage leftover | `.house-garage` | Quiet foot only. Never a rail. First paint unchanged. |
 | Explore leftover | `.house-explore` | Quiet title stays. Board + pin list stay first paint. Add a place is a house-card. Never a rail. Account still doors it. Not a shop. |

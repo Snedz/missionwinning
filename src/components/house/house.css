@@ -2103,6 +2103,64 @@
   color: var(--house-ink);
 }
 
+.mw-house .house-track .house-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mw-house .house-track .house-metrics .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-track .house-metrics-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-track .house-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .mw-house .house-track .house-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mw-house .house-track .house-stat {
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+}
+
+.mw-house .house-track .house-stat .house-kicker {
+  margin: 0 0 4px;
+  text-transform: none;
+}
+
+.mw-house .house-track .house-stat-value {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-track .house-collections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-track .house-state.is-on {
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;
