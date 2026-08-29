@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (missing house-set-kind). Chrome is house leftover. Walk next.
+Walked 1280: left Start href=/active (72+264) → /active Log set rgb(24, 24, 27). Finish/Swap/Form guide never house-btn-primary. Two kind-chip rows house-set-kind, color rgb(113, 113, 122).
 
 ## decisions
 
