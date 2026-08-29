@@ -35,7 +35,7 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
           loading="lazy"
           decoding="async"
           data-testid="in-set-cues-demo"
-          className="mx-auto max-h-24 w-full object-contain bg-background"
+          className="house-cue-still mx-auto max-h-24 w-full object-contain"
         />
       ) : null}
       <div className="flex items-start justify-between gap-2">
