@@ -730,6 +730,10 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live .house-cue-line {
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-session-more,
 .mw-house .house-compose-live .house-exercise-more,
 .mw-house .house-compose-live .house-set-options {
