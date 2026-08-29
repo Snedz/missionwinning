@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty first. File missing is red.
+Honesty was red. Accept green. Walked Home left Start → `/active` (Log set `rgb(24, 24, 27)`). Then Today close → Library rail → Builder second bar → `/builder`. First `/builder` tick was house leftover, not `Loading…`.
 
 ## decisions
 
