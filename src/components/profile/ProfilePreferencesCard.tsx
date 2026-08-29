@@ -74,7 +74,8 @@ export function ProfilePreferencesCard({
         </label>
         <textarea
           id="profile-goals"
-          className="w-full min-h-[88px] border-2 border-border bg-background p-2"
+          data-testid="account-goals-textarea"
+          className="house-field w-full min-h-[88px]"
           value={goals}
           onChange={(e) => onGoalsChange(e.target.value)}
           rows={3}

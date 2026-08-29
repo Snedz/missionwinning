@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Account first-paint goals textarea is house leftover.
 You identity Edit / signature cites is house leftover.
 Under the Hood week-4 diagnostic card is house leftover.
 Account first-paint reminders day-review row is house leftover.
