@@ -15,6 +15,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
+Show-all door is house leftover.
 In-set cue line size is house leftover.
 Session clock size is house leftover.
 In-set cue mark is house leftover.

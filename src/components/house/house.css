@@ -702,6 +702,12 @@
   padding: 0;
 }
 
+.mw-house .house-compose-live .house-show-all-door {
+  color: var(--house-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .mw-house .house-compose-live .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

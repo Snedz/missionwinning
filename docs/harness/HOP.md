@@ -5,23 +5,25 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-inset-cue-line-size
-done_means: Train first-paint in-set cue line size is house leftover, not text-sm. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/workout/inSetCueLineSize.test.ts
+ticket: leftover-show-all-door
+done_means: Train first-paint Show-all door is house leftover, not text-foreground / text-sm. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/workout/showAllDoor.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: drop `text-sm`, `font-size: 14px` on `.house-cue-line`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), `.house-cue-line` 14px without text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-show-all-door` + `--house-ink` 14px/600. Walk next.
 
 ## decisions
 
-- One leftover: In-set cue line size is house leftover.
-- Color leftover already shipped (house-cue-line / --house-muted). This hop is size only.
+- One leftover: Show-all door is house leftover.
+- Show-all extras body already shipped. This hop is the summary door only.
+- Do not rewrite shared ExercisePicker.
 - Do not restyle Finish / Skip / Swap / Form guide / Repeat*.
 - Do not invent rooms. Calendar / charts / posters stay parked.
 - Do not restyle shared EmptyState.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
+- Library / History / Coach / Builder Show-all doors wait their own hop.
 - Next-target / e1RM / vs-last / load-% cites wait until after a set.
 - I-Day Begin / Continue parked.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.
