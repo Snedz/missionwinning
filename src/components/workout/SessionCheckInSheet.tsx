@@ -46,7 +46,7 @@ function QuickRow({
     <div className="space-y-1.5">
       <div className="flex justify-between text-sm">
         <span className="font-semibold">{label}</span>
-        <span className="text-muted-foreground tabular-nums">{value}/5</span>
+        <span className="house-lede tabular-nums">{value}/5</span>
       </div>
       {/*
         One 2px-ruled strip with 1px internal divisions, filling left to right.
