@@ -89,7 +89,7 @@ export function FormGuideSheet({
                   : guide.readyPosition}
               </h3>
               {!guide.militaryStyle && (
-                <p className="text-muted-foreground text-base">{guide.readyPosition}</p>
+                <p className="house-lede text-base">{guide.readyPosition}</p>
               )}
             </section>
           )}
