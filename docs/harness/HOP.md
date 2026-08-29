@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk next.
+Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Swap (garage path on Bench Press). Garage lead cite house-lede --house-muted rgb(113,113,122). Confirm outline rgb(244,244,245). Log set rgb(24,24,27). Option rows / pick list / search untouched.
+
+Next leftover: Check-in lead cite (SessionCheckInSheet still text-muted-foreground). Same leftover pattern. Do not restyle scale / confirm. After-set cites stay parked. Not You chrome.
 
 ## decisions
 
