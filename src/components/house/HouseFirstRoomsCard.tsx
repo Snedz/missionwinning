@@ -128,6 +128,39 @@ export function HouseFirstRoomsCard({ loggedSet, hasFinish, onLogSet }: Props) {
                         )}
                       </span>
                     </Link>
+                  ) : row.kind === 'navigate' && row.href ? (
+                    <Link
+                      data-testid="today-first-history"
+                      href="/history"
+                      aria-expanded={open}
+                      onClick={(event) => {
+                        setOpenKey(row.key);
+                        if (row.locked) event.preventDefault();
+                      }}
+                    >
+                      <span className="house-check-copy">
+                        <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
+                        <span className="house-check-why">
+                          <span>{t(row.whyKey, { defaultValue: row.why })}</span>
+                        </span>
+                      </span>
+                      <span className="house-check-mark">
+                        {row.done ? (
+                          <Check className="h-4 w-4" aria-hidden />
+                        ) : row.locked ? (
+                          <span className="house-lock">
+                            <Ban className="h-4 w-4" aria-hidden />
+                            <span className="house-lock-tip" role="tooltip">
+                              {t(row.lockWhyKey ?? 'houseFirstHistoryLock', {
+                                defaultValue: row.lockWhy ?? 'Finish a session first — then History is yours.',
+                              })}
+                            </span>
+                          </span>
+                        ) : (
+                          <ChevronRight className="h-4 w-4" aria-hidden />
+                        )}
+                      </span>
+                    </Link>
                   ) : (
                     <button type="button" aria-expanded={open} onClick={() => runRow(row)}>
                       <span className="house-check-copy">
