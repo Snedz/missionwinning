@@ -83,11 +83,11 @@ export function ProfilePreferencesCard({
         <Button variant="outline" className="min-h-[44px] tap-target" onClick={onSaveGoals}>
           {t('saveGoals', { defaultValue: 'Save goals' })}
         </Button>
-        <div className="text-xs text-muted-foreground">
+        <p className="house-goals-cite" data-testid="account-goals-cite">
           {t('trainingGoalsHint', {
             defaultValue: 'Used for program recommendations.',
           })}
-        </div>
+        </p>
       </div>
     </>
   );
