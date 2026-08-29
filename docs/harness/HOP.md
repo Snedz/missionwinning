@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Chrome in. Accept pending walk.
+Honesty was red (3 fail / 1 pass). Chrome: beta journey card is house-card, not Card content-card. Inner grid cites and Email stay. Walk 1280: /log → Start → /active → History → /account More settings. House 72+264, Log set rgb(24, 24, 27), beta journey card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
