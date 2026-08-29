@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty first. File missing is red.
+Honesty was red. Accept green. Walked Home left Start → `/active` (Log set `rgb(24, 24, 27)`). Then Today close → Library rail → `/library`. First `/library` tick was house catalog, not `Loading…`.
 
 ## decisions
 
