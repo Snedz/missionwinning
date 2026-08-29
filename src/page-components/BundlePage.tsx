@@ -7,7 +7,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { track } from "@/lib/analytics";
 import { usePremium } from "@/hooks/usePremium";
@@ -65,10 +64,13 @@ const PhantomLifetimeCheckout = dynamic(
   { ssr: false }
 );
 
-export function BundlePage() {
+type BundlePageProps = {
+  initialCheckout?: string;
+};
+
+export function BundlePage({ initialCheckout }: BundlePageProps = {}) {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const { premium, loading: premiumLoading, refetch } = usePremium();
   const [planId, setPlanId] = useState<BundlePlanId>(DEFAULT_BUNDLE_PLAN);
   const [unlockTimedOut, setUnlockTimedOut] = useState(false);
@@ -81,7 +83,7 @@ export function BundlePage() {
     track('bundle_viewed');
   }, []);
 
-  const checkoutSuccess = searchParams.get('checkout') === 'success';
+  const checkoutSuccess = initialCheckout === 'success';
 
   useEffect(() => {
     if (!checkoutSuccess || premiumLoading || premium) return;

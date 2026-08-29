@@ -65,7 +65,7 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → teaser until the gate cookie; cookie → `.696` `LandingPage` (not cinematic). Gated + no cookie → `/private`. |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome). Free-beta 307s to `/notify`. |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle first paint is house leftover (static page; title + offer, not RouteLoading). Free-beta 307s to `/notify`. Phantom checkout stays parked. |
 | `/notify` | `app/notify/page.tsx` → `NotifyPage` — Super Bundle email waitlist (checkout not live). Public while gated. `robots: noindex`. |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |

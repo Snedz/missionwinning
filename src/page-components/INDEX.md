@@ -56,7 +56,7 @@
 
 | File | Route |
 |------|-------|
-| `BundlePage.tsx` | `/bundle` |
+| `BundlePage.tsx` | `/bundle` — Super Bundle first paint is house leftover (static page; title + offer, not RouteLoading). Phantom checkout stays parked. Free-beta 307s to `/notify`. |
 | `NotifyPage.tsx` | `/notify` — Super Bundle waitlist (Get notified; no checkout) |
 | `LearnPathsPublicIndexPage.tsx` | `/paths` |
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
