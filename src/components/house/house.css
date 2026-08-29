@@ -1906,6 +1906,12 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-kit-locked {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-share-cite {
   margin: 0;
   font-size: 14px;

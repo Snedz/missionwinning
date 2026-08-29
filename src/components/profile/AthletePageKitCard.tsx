@@ -89,7 +89,7 @@ export function AthletePageKitCard() {
                   defaultValue: KIT_LABEL_DEFAULT[kit.id] ?? kit.id,
                 })}
                 {!open && (
-                  <span className="ml-1 text-xs text-muted-foreground">
+                  <span className="house-kit-locked ml-1" data-testid="athlete-kit-locked">
                     {t('athleteKitLocked', {
                       tier: kit.minTier,
                       defaultValue: `T${kit.minTier}`,
