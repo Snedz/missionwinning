@@ -461,6 +461,16 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(historySearch, /<Input[\s>]/);
   assert.match(css, /\.house-history \.house-filter-bar \.house-field \{[^}]*--house-line/);
   assert.match(spec, /History search is house leftover/);
+  const historyExtras = history.slice(
+    history.lastIndexOf('<details', history.indexOf('history-show-all')),
+    history.indexOf('house-show-all-body') + 80
+  );
+  assert.match(historyExtras, /house-card group/);
+  assert.match(historyExtras, /house-show-all-body/);
+  assert.match(historyExtras, /data-testid="history-show-all"/);
+  assert.doesNotMatch(historyExtras, /border-t-2/);
+  assert.match(css, /\.house-history \.house-show-all-body \{[^}]*--house-line/);
+  assert.match(spec, /History Show all extras is house leftover/);
   const coach = read('src/page-components/CoachPage.tsx');
   assert.match(coach, /className="house-plan max-w-2xl pb-24"/);
   assert.match(coach, /className="house-empty"/);

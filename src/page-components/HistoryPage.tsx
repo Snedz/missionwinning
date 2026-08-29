@@ -723,7 +723,7 @@ export function HistoryPage() {
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
-        <div className="space-y-4 border-t border-border p-4">
+        <div className="house-show-all-body space-y-4 p-4">
       <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
         <p className="text-xs font-semibold tracking-wide text-muted-foreground">
           {t('historyMissionStory', { defaultValue: 'At a glance' })}

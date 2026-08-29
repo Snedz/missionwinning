@@ -1706,6 +1706,10 @@
   border-top: 1px solid var(--house-line);
 }
 
+.mw-house .house-history .house-show-all-body {
+  border-top: 1px solid var(--house-line);
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }
