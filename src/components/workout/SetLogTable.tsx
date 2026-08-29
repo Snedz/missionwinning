@@ -347,12 +347,12 @@ export function SetLogTable({
                     </>
                   )}
                   <td className={cn(cell, 'text-end')}>
-                    {/* Sole red primary on desktop Active log path. */}
+                    {/* House leftover press — ink, not poster red. */}
                     <button
                       type="button"
                       onClick={onLog}
                       data-testid="set-table-log-set"
-                      className="primary-action min-h-[44px] w-full tap-target bg-[hsl(var(--accent-poster))] px-1.5 py-1.5 text-xs font-extrabold leading-tight text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+                      className="house-btn house-btn-primary house-set-log primary-action min-h-[44px] w-full tap-target px-1.5 py-1.5 text-xs font-extrabold leading-tight"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>

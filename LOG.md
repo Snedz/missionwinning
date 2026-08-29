@@ -34,10 +34,9 @@ navigates — no second start after
 `loadCoachTodayOptional`. History
 day first paint is house leftover
 (date + that day's rows). Calendar
-/ charts stay parked. Log set stays filled
-`primary-action` / `--accent-poster`
-(house press `rgb(24, 24, 27)`),
-ungated. Restoring session is not
+/ charts stay parked. Log set is house leftover
+press (`--house-press` / #18181b), filled
+`primary-action`, ungated. Restoring session is not
 the product. Guest. First set
 ungated. Today still one Start.
 Resume `.963` kept. `/private` stays

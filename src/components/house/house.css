@@ -791,6 +791,12 @@
   border-inline-start: 3px solid var(--house-ink);
 }
 
+.mw-house .house-compose-live .house-set-log {
+  background: var(--house-press);
+  border-color: var(--house-press);
+  color: var(--house-press-ink);
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

@@ -1092,8 +1092,15 @@ test('house design system is the signed-in token table', () => {
   const setTable = read('src/components/workout/SetLogTable.tsx');
   assert.match(setTable, /house-state min-h-\[44px\] tap-target/);
   assert.match(setTable, /house-num min-h-\[44px\] w-full min-w-0 tap-target/);
-  assert.match(setTable, /data-testid="set-table-log-set"/);
-  assert.match(setTable, /bg-\[hsl\(var\(--accent-poster\)\)\]/);
+  const logSet = setTable.slice(
+    setTable.indexOf('data-testid="set-table-log-set"'),
+    setTable.indexOf('data-testid="set-table-log-set"') + 360
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.match(logSet, /primary-action/);
+  assert.doesNotMatch(logSet, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-set-log \{[^}]*--house-press/);
+  assert.match(spec, /Log set is house leftover/);
   const setHead = setTable.slice(setTable.indexOf('<thead>'), setTable.indexOf('</thead>'));
   assert.match(setHead, /house-set-head/);
   assert.doesNotMatch(setHead, /border-b-2/);
