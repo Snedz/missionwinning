@@ -841,6 +841,10 @@
   color: var(--house-press-ink);
 }
 
+.mw-house .house-compose-live .house-set-table .house-set-log {
+  font-size: 12px;
+}
+
 .mw-house .house-overlay-head {
   border-bottom: 1px solid var(--house-line);
   background: var(--house-paper);

@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-set-table-size
-done_means: Set table size is house leftover, not text-sm. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/workout/setTableSize.test.ts
+ticket: leftover-log-set-size
+done_means: Log set size is house leftover, not text-xs. Scoped to the set table so LogConsole stays 19px. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/workout/logSetSize.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-set-table` + 14px on `.house-compose-live`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), table .house-set-table 14px without text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 2 pass). Chrome: drop text-xs; `.house-set-table .house-set-log` is 12px. LogConsole stays 19px.
 
 ## decisions
 
-- One leftover: set table size is house leftover (14px from house.css).
-- Number cells stay house-num (already 14px).
+- One leftover: set-table Log set size is house leftover (12px from house.css).
+- Do not put font-size on shared `.house-set-log` — LogConsole stays `text-[19px]`.
 - Next-target / e1RM / vs-last / load-% cites wait until after a set.
 - Do not rewrite shared ExercisePicker.
 - Calendar / charts / posters stay parked.
