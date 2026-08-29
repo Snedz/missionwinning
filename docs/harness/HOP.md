@@ -5,22 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-card
-done_means: Account first-paint account card is house leftover, not Card. Sign-in block, SignInPanel, DangerZone stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountCard.test.ts
+ticket: leftover-account-reminders-card
+done_means: Account first-paint reminders card is house leftover, not Card. Toggles, day-review row, and muted cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountRemindersCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: account card is house-card, not Card. Sign-in block, SignInPanel, DangerZone stay. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), account card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: reminders card is house-card, not Card. Toggles, day-review row, muted cites stay.
 
 ## decisions
 
-- One leftover: Account first-paint account card frame is house leftover.
-- Do not restyle house-account-signin (already leftover).
-- Do not restyle SignInPanel internals.
-- Do not restyle DangerZone / HoldToConfirm.
-- Do not restyle muted cites this hop.
+- One leftover: Account first-paint reminders card frame is house leftover.
+- Do not restyle On/Off toggles.
+- Do not restyle ProfileDayReviewRow.
+- Do not restyle muted cites or kinds list this hop.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
