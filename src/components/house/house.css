@@ -1899,6 +1899,13 @@
   box-shadow: none;
 }
 
+.mw-house .house-profile .house-kit-cite {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-share-cite {
   margin: 0;
   font-size: 14px;

@@ -62,7 +62,7 @@ export function AthletePageKitCard() {
             {t('athleteKitTitle', { defaultValue: 'Page kit' })}
           </summary>
           <div className="mt-3">
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="house-kit-cite" data-testid="athlete-kit-cite">
           {t('athleteKitBody', {
             defaultValue: 'How this page is laid out. Training unlocks more kits.',
           })}
