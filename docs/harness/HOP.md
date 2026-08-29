@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 2 pass — no Card import already). Chrome. Accept next.
+Honesty was red (2 fail / 2 pass — no Card import already). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Sync status row is 1px house-card.
 
 ## decisions
 
