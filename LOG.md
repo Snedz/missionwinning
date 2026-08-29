@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Super Bundle first paint is house leftover
+`loadCoachTodayOptional`. Move first paint is house leftover
+(title + flow list / quiet log — not useSearchParams skeleton).
+Super Bundle first paint is house leftover
 (title + offer — not RouteLoading; free-beta still 307s to `/notify`).
 Benchmarks first paint is house leftover
 (title + stats / empty — not RouteLoading).
