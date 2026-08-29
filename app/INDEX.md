@@ -30,6 +30,7 @@
 | `/coach` | `CoachPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. Coach first paint is house leftover (static page; title + empty/generate or week, not RouteLoading). **Mission Coach** (AI weekly plan). |
 | `/library` | `LibraryPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. Library first paint is house leftover (static page; catalog list, not RouteLoading). Official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
 | `/history` | `HistoryPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. History list first paint is house leftover (static page; session list, not RouteLoading). |
+| `/history/[date]` | `HistoryDayPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. History day leftover is the open day. Calendar / charts stay parked. |
 | `/leaderboard` | `LeaderboardPage.tsx` — Leaderboard first paint is house leftover (static page; title + board, not RouteLoading). |
 | `/benchmarks` | `BenchmarksPage.tsx` — Benchmarks first paint is house leftover (static page; title + stats / empty, not RouteLoading). |
 
