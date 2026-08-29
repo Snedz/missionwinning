@@ -2054,6 +2054,55 @@
   scroll-margin-top: 24px;
 }
 
+.mw-house .house-move .house-collections {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 4px 4px;
+  margin: 0 -4px;
+}
+
+.mw-house .house-move .house-state {
+  min-height: 44px;
+}
+
+.mw-house .house-move .house-state.is-on {
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
+}
+
+.mw-house .house-move .house-flow-list {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .mw-house .house-move .house-flow-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mw-house .house-move .house-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  border-color: var(--house-line);
+}
+
+.mw-house .house-move .house-flow .house-lede {
+  margin: 0;
+  font-size: 14px;
+}
+
+.mw-house .house-move .house-flow-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
 .mw-house .house-kicker {
   margin: 0 0 6px;
   font-size: 13px;

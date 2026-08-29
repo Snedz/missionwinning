@@ -672,7 +672,28 @@ test('house design system is the signed-in token table', () => {
   assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
   assert.match(fuel, /id="fuel-log"/);
   assert.match(fuel, /className="house-card group"/);
-  assert.match(read('src/page-components/MovePage.tsx'), /className="house-move"/);
+  const move = read('src/page-components/MovePage.tsx');
+  assert.match(move, /className="house-move"/);
+  const moveFlows = move.slice(
+    move.indexOf('const renderFlowGrid'),
+    move.indexOf('premium && filteredPremium')
+  );
+  assert.match(moveFlows, /house-collections/);
+  assert.match(moveFlows, /house-state shrink-0 tap-target/);
+  assert.match(moveFlows, /house-card house-flow/);
+  assert.match(moveFlows, /house-flow-name/);
+  assert.match(moveFlows, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.match(moveFlows, /defaultValue: 'Start Flow'/);
+  assert.doesNotMatch(moveFlows, /<Card[\s>]/);
+  assert.doesNotMatch(moveFlows, /<Button[\s>]/);
+  assert.doesNotMatch(moveFlows, /content-card/);
+  assert.doesNotMatch(moveFlows, /uppercase tracking/);
+  assert.doesNotMatch(moveFlows, /hover:border-primary/);
+  assert.doesNotMatch(moveFlows, /house-btn-primary/);
+  assert.doesNotMatch(moveFlows, /text-primary/);
+  assert.match(css, /\.house-move \.house-flow \{[^}]*--house-/);
+  assert.match(css, /\.house-move \.house-state\.is-on \{[^}]*--house-selected/);
+  assert.match(spec, /Move first-paint flow list is house leftover/);
   assert.match(read('src/page-components/MindPage.tsx'), /className="house-mind"/);
   assert.match(read('src/page-components/TrackPage.tsx'), /className="house-track"/);
   assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);

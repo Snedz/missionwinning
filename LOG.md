@@ -223,6 +223,7 @@ Library pick bar is house leftover.
 Library Show all extras is house leftover.
 History Show all extras is house leftover.
 Today Start quiet offers are house leftover.
+Move first-paint flow list is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
@@ -232,9 +233,13 @@ is `house-fuel` (log first; search /
 barcode / recipes in Show all). Quiet
 More leftovers Move / Mind / Track /
 Learn carry house-move / house-mind /
-house-track / house-learn. First paint
-unchanged; extra tools stay in
-house-card Show all. Feedback leftover
+house-track / house-learn. Move
+first-paint flow list is house leftover
+(Start Flow is house-btn, not filled;
+collection chips are house-state,
+selected `#eee`). Mind / Track / Learn
+first paint unchanged; extra tools stay
+in house-card Show all. Feedback leftover
 is `house-feedback`: quiet title stays,
 the form is the first-paint object, one
 filled submit, Sign-in stays extra.
