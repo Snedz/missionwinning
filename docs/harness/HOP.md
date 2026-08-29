@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome both frames. Accept next.
+Honesty was red (3 fail / 1 pass). Chrome both frames. Accept pass. Walk 1280: /log → Start → /active → History. Journey card is 1px house-card (Edit profile after I-Day).
 
 ## decisions
 
