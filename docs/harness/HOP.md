@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-log-set-size
-done_means: Log set size is house leftover, not text-xs. Scoped to the set table so LogConsole stays 19px. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/workout/logSetSize.test.ts
+ticket: leftover-log-set-weight
+done_means: Log set weight is house leftover, not font-extrabold. Scoped to the set table so LogConsole stays extrabold. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/workout/logSetWeight.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 2 pass). Chrome: drop text-xs; `.house-set-table .house-set-log` is 12px. LogConsole stays 19px. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27) 12px without text-xs, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 2 pass). Chrome: drop font-extrabold; `.house-set-table .house-set-log` is 700. LogConsole stays extrabold.
 
 ## decisions
 
-- One leftover: set-table Log set size is house leftover (12px from house.css).
-- Do not put font-size on shared `.house-set-log` — LogConsole stays `text-[19px]`.
+- One leftover: set-table Log set weight is house leftover (700 from house.css).
+- Do not put font-weight on shared `.house-set-log` — LogConsole stays font-extrabold.
 - Next-target / e1RM / vs-last / load-% cites wait until after a set.
 - Do not rewrite shared ExercisePicker.
 - Calendar / charts / posters stay parked.
