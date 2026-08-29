@@ -71,7 +71,7 @@ export function SessionSwapSheet({
           />
         ) : null}
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">
+          <p className="house-lede text-sm">
             {t('activeSwapAnotherMovement', { defaultValue: 'Another movement' })}
           </p>
           <ExercisePicker
