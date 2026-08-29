@@ -1778,6 +1778,12 @@
   margin-top: 16px;
 }
 
+.mw-house .house-builder .house-show-all-door {
+  color: var(--house-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }
