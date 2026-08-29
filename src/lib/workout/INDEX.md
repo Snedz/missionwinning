@@ -124,6 +124,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `setTableLogSetHousePress.test.ts` | Log set is house leftover press (`--house-press` / #18181b), not poster red (`.1058`) |
 | `logConsoleLogSetHousePress.test.ts` | LogConsole Log set is house leftover press (`--house-press` / #18181b), not poster red (`.1058`) |
 | `formGuideSwapPortalHouse.test.ts` | Form guide + Swap portaled overlay root carries `mw-house` (`.1058`) |
+| `mergeExercisesDialogHouse.test.ts` | Merge-exercises Radix DialogContent carries `mw-house` (`.1058`) |
 | `openEmptyLoad.test.ts` | Open empty load is blank, not 0; store stays 0; focused draft keeps `0.` / `2.5` (`.1048`) |
 | `openEmptyLoadSurface.test.ts` | SetLogTable open cell is `SetRowLoadField` draft, not raw `input.weight`; History edit empty string stays; completed BW stays; Today one Start (`.1048`) |
 | `victoryReceipt.test.ts` | Vs-last session by shape + per-lift receipt (`.713` / `.944`). Close: empty → no receipt; finished → one keepable text (`.956`) |

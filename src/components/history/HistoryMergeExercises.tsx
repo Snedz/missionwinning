@@ -3,6 +3,7 @@
 /**
  * Merge two names of the same movement (`.1002`).
  * Pick a source and a keeper, then confirm. Cannot be undone.
+ * Confirm dialogs are house leftover (`mw-house` on Radix Content).
  * Does not invent a match. Not Resume. Not the Today Start.
  */
 
@@ -176,7 +177,7 @@ export function HistoryMergeExercises({
       </div>
 
       <Dialog open={confirmOpen} onOpenChange={(open) => !open && setConfirmOpen(false)}>
-        <DialogContent className="max-w-md border-2 border-border bg-card">
+        <DialogContent className="mw-house house-overlay-panel max-w-md">
           <DialogHeader>
             <DialogTitle>
               {t('historyMergeConfirmTitle', { defaultValue: 'Merge these names?' })}
@@ -191,10 +192,9 @@ export function HistoryMergeExercises({
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex-col gap-2 sm:flex-col">
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="w-full min-h-[44px] tap-target"
+              className="house-btn min-h-[44px] w-full tap-target"
               data-testid="session-history-merge-confirm"
               onClick={() => {
                 setConfirmOpen(false);
@@ -202,21 +202,20 @@ export function HistoryMergeExercises({
               }}
             >
               {t('historyMergeConfirm', { defaultValue: 'Merge — cannot be undone' })}
-            </Button>
-            <Button
+            </button>
+            <button
               type="button"
-              variant="ghost"
-              className="w-full min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
               onClick={() => setConfirmOpen(false)}
             >
               {t('historyMergeCancel', { defaultValue: 'Cancel' })}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={emptyOpen} onOpenChange={(open) => !open && setEmptyOpen(false)}>
-        <DialogContent className="max-w-md border-2 border-border bg-card">
+        <DialogContent className="mw-house house-overlay-panel max-w-md">
           <DialogHeader>
             <DialogTitle>
               {t('historyMergeEmpty', { defaultValue: 'Nothing to merge' })}
@@ -228,14 +227,13 @@ export function HistoryMergeExercises({
               })}
             </DialogDescription>
           </DialogHeader>
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn min-h-[44px] w-full tap-target"
             onClick={() => setEmptyOpen(false)}
           >
             {t('historyMergeCancel', { defaultValue: 'Cancel' })}
-          </Button>
+          </button>
         </DialogContent>
       </Dialog>
     </div>

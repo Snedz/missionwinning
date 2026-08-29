@@ -75,6 +75,8 @@ press (`--house-press` / #18181b), filled
 house leftover press (`--house-press` / #18181b),
 not poster-red. Form guide + Swap portal is
 house leftover (`mw-house` on the overlay root).
+Merge-exercises dialog is house leftover
+(`mw-house` on Radix Content).
 Account first paint is
 house leftover (sign-in / return / prefs) — not
 `RouteLoading` / `useSearchParams` skeleton.
