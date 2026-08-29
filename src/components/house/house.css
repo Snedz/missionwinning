@@ -810,6 +810,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live .house-plate-line .house-lede {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live tr.house-set-line {
   border-bottom: 1px solid var(--house-line);
 }
