@@ -243,7 +243,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
             </fieldset>
 
             <fieldset className="space-y-2">
-              <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <legend className="house-athlete-backdrop-legend" data-testid="athlete-card-backdrop-legend">
                 {t('athleteCardBackdrop', { defaultValue: 'Backdrop' })}
               </legend>
               <div className="flex flex-wrap gap-2">
