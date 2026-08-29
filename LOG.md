@@ -227,6 +227,7 @@ Move first-paint flow list is house leftover.
 Track first-paint metrics is house leftover.
 Mind first-paint check-in is house leftover.
 Learn first-paint intro is house leftover.
+Mind first-paint breathe is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
@@ -249,7 +250,11 @@ all). Mind first-paint check-in is
 house leftover (Save is house-btn-primary,
 not `--accent-poster`; scale ticks are
 ink, not red; Behavior strip / breathe
-/ sessions stay). Learn first-paint
+/ sessions stay). Mind first-paint
+breathe is house leftover (Start /
+Pause / Reset are house-btn, not
+filled; pattern chips are house-state,
+selected `#eee`). Learn first-paint
 intro is house leftover (doors are
 house-btn, not filled; other paths
 stay Show all). Extra tools stay in
