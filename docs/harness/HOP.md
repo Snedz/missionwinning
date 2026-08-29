@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 3 pass). Chrome. Accept pass.
+Honesty was red (2 fail / 3 pass). Chrome. Accept pass. Walk 1440: /active → Form guide. Ready-position cite house-lede --house-muted rgb(113,113,122). Got it outline rgb(244,244,245). Log set rgb(24,24,27).
 
 ## decisions
 
