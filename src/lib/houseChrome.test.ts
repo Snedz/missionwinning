@@ -653,6 +653,11 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(coachExtras, /border-2/);
   assert.match(css, /\.house-plan \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Coach Show all extras is house leftover/);
+  const coachRoute = stripComments(read('app/(app)/coach/page.tsx'));
+  assert.doesNotMatch(coachRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(coachRoute, /import \{ CoachPage \}/);
+  assert.match(coachRoute, /askExerciseId/);
+  assert.match(spec, /Coach first paint is house leftover/);
   const weekStrip = read('src/components/coach/WeekStrip.tsx');
   const landingDemo = read('src/components/landing/CoachAdaptDemo.tsx');
   const parkedToday = read('src/components/coach/TodayCoachWeekStrip.tsx');

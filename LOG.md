@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Library first paint is house leftover
+`loadCoachTodayOptional`. Coach first paint is house leftover
+(title + empty/generate or week — not RouteLoading).
+Library first paint is house leftover
 (title + catalog list — not RouteLoading).
 History list first paint is house leftover
 (title + list/empty — not RouteLoading).
