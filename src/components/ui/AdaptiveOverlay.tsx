@@ -128,6 +128,12 @@ export function AdaptiveOverlay({
 
   if (!open || !mounted) return null;
 
+  /**
+   * House leftover: header + close transfer only when the caller already
+   * marked the panel `.mw-house`. Every other AdaptiveOverlay stays field-manual.
+   */
+  const isHouse = /\bmw-house\b/.test(className ?? '');
+
   const overlay = (
     <div
       className={cn(
@@ -151,31 +157,51 @@ export function AdaptiveOverlay({
         aria-labelledby={hideHeader && !title ? undefined : titleId}
         className={cn(
           'relative w-full max-h-[min(88vh,100dvh)] overflow-hidden flex flex-col',
-          'bg-card',
-          /* Compact sheet chrome. The 2px ink rule is the whole top edge — it
-             is what says "sheet" now that the drag pill is gone, and it reads
-             at arm's length where a 30%-alpha pill did not. */
-          'border-t-2 border-foreground pb-[env(safe-area-inset-bottom)]',
           'animate-in slide-in-from-bottom duration-[250ms] ease-[cubic-bezier(.22,1,.36,1)]',
-          /* Medium+ dialog chrome */
-          'md:border-2 md:pb-0 md:max-h-[85vh]',
-          'md:animate-in md:fade-in md:zoom-in-95 md:slide-in-from-bottom-0',
+          'md:animate-in md:fade-in md:zoom-in-95 md:slide-in-from-bottom-0 md:max-h-[85vh]',
           SIZE_MAX[size],
+          isHouse
+            ? 'house-overlay-panel'
+            : [
+                'bg-card',
+                /* Compact sheet chrome. The 2px ink rule is the whole top edge —
+                   it is what says "sheet" now that the drag pill is gone, and it
+                   reads at arm's length where a 30%-alpha pill did not. */
+                'border-t-2 border-foreground pb-[env(safe-area-inset-bottom)]',
+                'md:border-2 md:pb-0',
+              ],
           className
         )}
       >
         {!hideHeader && (
-          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b-2 border-border bg-card p-4">
+          <div
+            className={cn(
+              'sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3',
+              isHouse
+                ? 'house-overlay-head'
+                : 'border-b-2 border-border bg-card p-4'
+            )}
+          >
             <div className="min-w-0">
               {eyebrow ? (
-                <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                <div
+                  className={
+                    isHouse
+                      ? 'house-overlay-kicker'
+                      : 'mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground'
+                  }
+                >
                   {eyebrow}
                 </div>
               ) : null}
               {title != null ? (
                 <h2
                   id={titleId}
-                  className="truncate text-[22px] font-extrabold leading-tight tracking-[-0.01em]"
+                  className={
+                    isHouse
+                      ? 'house-overlay-title'
+                      : 'truncate text-[22px] font-extrabold leading-tight tracking-[-0.01em]'
+                  }
                 >
                   {title}
                 </h2>
@@ -189,7 +215,11 @@ export function AdaptiveOverlay({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="flex h-11 w-11 shrink-0 items-center justify-center border-2 border-border transition-colors hover:bg-muted"
+              className={
+                isHouse
+                  ? 'house-btn house-btn-ghost house-overlay-close'
+                  : 'flex h-11 w-11 shrink-0 items-center justify-center border-2 border-border transition-colors hover:bg-muted'
+              }
               aria-label="Close"
             >
               <X className="h-5 w-5" />
@@ -211,7 +241,15 @@ export function AdaptiveOverlay({
           {children}
         </div>
         {footer ? (
-          <div className="shrink-0 border-t-2 border-border bg-card p-4">{footer}</div>
+          <div
+            className={
+              isHouse
+                ? 'house-overlay-foot'
+                : 'shrink-0 border-t-2 border-border bg-card p-4'
+            }
+          >
+            {footer}
+          </div>
         ) : null}
       </div>
     </div>

@@ -18,8 +18,8 @@
 | `MuscleFreshnessStrip.tsx` | Muscle days/REC glance — chips at `md+`, ruled rows with an 8px meter on compact |
 | `CrossPillarCoachChips.tsx` | Move/Fuel/Mind suggestions |
 | `Sparkline.tsx` | Shared mini chart |
-| `TodayReentryCard.tsx` | S7 0.1 (beta) quiet line on the Start field (`JourneyHero`) |
-| `TodayPlannedMissPrompt.tsx` | `.945` — skippable do-it-now / skip / slide when a planned day is overdue |
+| `TodayReentryCard.tsx` | Quiet line on the Start field. House leftover. |
+| `TodayPlannedMissPrompt.tsx` | Skippable do-it-now / skip / slide. House leftover. |
 | `TodaySummaryPins.tsx` | Summary pin grid (0–4). Session tap starts. Edit persists. |
 | `TodayHighlights.tsx` | One honest Highlights sentence. Empty is allowed. |
 | `TodayShowAll.tsx` | Lean house door. Coach week + First Steps row. Not first paint. |

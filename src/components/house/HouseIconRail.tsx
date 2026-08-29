@@ -11,6 +11,8 @@ import { HOUSE_RAIL_HREFS, housePathActive } from './houseNav';
 
 type Props = {
   onOpenMore: () => void;
+  onOpenHome: () => void;
+  onOpenLibrary: () => void;
   moreOpen?: boolean;
   floor?: boolean;
 };
@@ -23,7 +25,13 @@ function RailTip({ label, floor }: { label: string; floor?: boolean }) {
   );
 }
 
-export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: Props) {
+export function HouseIconRail({
+  onOpenMore,
+  onOpenHome,
+  onOpenLibrary,
+  moreOpen = false,
+  floor = false,
+}: Props) {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { closePane } = useHousePane();
@@ -40,6 +48,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
       href: HOUSE_RAIL_HREFS.home,
       label: todayLabel,
       icon: Home,
+      open: 'home' as const,
     },
     {
       href: HOUSE_RAIL_HREFS.train,
@@ -51,6 +60,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
       href: HOUSE_RAIL_HREFS.library,
       label: libraryLabel,
       icon: BookOpen,
+      open: 'library' as const,
     },
   ];
   const accountOn = housePathActive(pathname, HOUSE_RAIL_HREFS.account);
@@ -63,7 +73,11 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
             href={HOUSE_RAIL_HREFS.home}
             className="house-rail-mark"
             aria-label={todayLabel}
-            onClick={closePane}
+            data-house-rail-open="home"
+            onClick={() => {
+              closePane();
+              onOpenHome();
+            }}
           >
             <BrandMonogram className="h-7 w-7 text-sm" />
             <RailTip label={todayLabel} />
@@ -71,7 +85,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
         </div>
       )}
       <div className={floor ? undefined : 'house-rail-mid'} style={floor ? { display: 'contents' } : undefined}>
-        {items.map(({ href, label, icon: Icon, plus }) => {
+        {items.map(({ href, label, icon: Icon, plus, open }) => {
           const on = housePathActive(pathname, href);
           return (
             <Link
@@ -79,8 +93,16 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
               href={href}
               aria-label={label}
               aria-current={on ? 'page' : undefined}
+              data-house-rail-open={open}
               className={`house-rail-btn${plus ? ' house-rail-plus' : ''}${on ? ' is-on' : ''}`}
-              onClick={href === HOUSE_RAIL_HREFS.home ? closePane : undefined}
+              onClick={() => {
+                if (open === 'home') {
+                  closePane();
+                  onOpenHome();
+                } else if (open === 'library') {
+                  onOpenLibrary();
+                }
+              }}
             >
               <Icon className="h-5 w-5" aria-hidden />
               {href === HOUSE_RAIL_HREFS.train && live ? (
@@ -106,6 +128,7 @@ export function HouseIconRail({ onOpenMore, moreOpen = false, floor = false }: P
           className={`house-rail-btn${moreOpen ? ' is-on' : ''}`}
           aria-label={moreLabel}
           aria-expanded={moreOpen}
+          data-house-rail-open="more"
           onClick={onOpenMore}
         >
           <MoreVertical className="h-5 w-5" aria-hidden />

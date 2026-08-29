@@ -39,14 +39,14 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
         />
       ) : null}
       <div className="flex items-start justify-between gap-2">
-        <p className="pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="house-kicker pt-2">
           {t('activeInSetCues', { defaultValue: 'Cues' })}
         </p>
         <button
           type="button"
           onClick={onHide}
           data-testid="in-set-cues-skip"
-          className="min-h-[44px] shrink-0 border-2 border-border px-2 text-[11px] font-semibold text-foreground tap-target hover:bg-muted"
+          className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target"
         >
           {t('activeInSetCuesHide', { defaultValue: 'Hide cues' })}
         </button>
@@ -62,7 +62,7 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
       <Link
         href={quietLearnHref()}
         data-testid="in-set-cues-more"
-        className="inline-flex min-h-[44px] items-center text-sm text-muted-foreground underline underline-offset-2 tap-target"
+        className="house-btn house-btn-ghost"
       >
         {t('activeInSetCuesMore', { defaultValue: 'More than a rack card' })}
       </Link>

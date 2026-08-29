@@ -24,7 +24,7 @@ export function ActiveInlineAddExercise({
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-[640px] border-t-2 border-border pt-5">
+    <div className="house-add-exercise max-w-[640px] pt-5">
       <ExercisePicker
         value={addExerciseId}
         onChange={onAddExerciseIdChange}
@@ -35,6 +35,7 @@ export function ActiveInlineAddExercise({
       <button
         type="button"
         disabled={!addExerciseId}
+        data-testid="active-add-selected-exercise"
         onClick={() => {
           const id = resolveAddExerciseId(addExerciseId);
           if (!id) return;
@@ -42,7 +43,7 @@ export function ActiveInlineAddExercise({
           onAdd(id, ex?.muscleGroups);
           onAddExerciseIdChange('');
         }}
-        className="mt-3 min-h-[44px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-muted disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground tap-target"
+        className="house-btn min-h-[44px] tap-target"
       >
         {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
       </button>

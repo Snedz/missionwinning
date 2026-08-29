@@ -86,6 +86,7 @@ export function TrackPage() {
 
   return (
     <PillarPageShell
+      className="house-track"
       icon={Scale}
       eyebrow={t('trackEyebrow', { defaultValue: 'Track' })}
       title={t('trackTitle', { defaultValue: 'Track' })}
@@ -99,7 +100,7 @@ export function TrackPage() {
        */}
       <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('trackMoreGpsImport', { defaultValue: 'Walks, GPS & import' })}
         </summary>
@@ -189,6 +190,7 @@ export function TrackPage() {
             <CardContent>
               {weekActivities.length === 0 ? (
                 <EmptyState
+                  className="house-empty"
                   icon={Scale}
                   title={t('trackEmptyTitle', { defaultValue: 'No activities this week' })}
                   description={t('trackEmptyWeek', {
@@ -242,7 +244,7 @@ export function TrackPage() {
         </div>
       </details>
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
           {t('trackMoreBodyWearables', { defaultValue: 'Trends & extras' })}
         </summary>

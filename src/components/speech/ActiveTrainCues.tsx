@@ -8,7 +8,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Volume2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { speak, speechSupport, stopSpeaking } from '@/lib/speech/speak';
 import {
   shouldSpeakOnRestEnd,
@@ -71,13 +70,10 @@ export function ActiveTrainCues({
   if (!canSpeak) return null;
 
   return (
-    <Button
+    <button
       type="button"
-      variant="outline"
-      size="sm"
-      className={`h-11 min-h-[44px] shrink-0 px-3 tap-target${
-        cueMe ? ' border-2 border-foreground' : ''
-      }`}
+      data-testid="active-cue-me"
+      className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
       onClick={() => {
         setCueMe((on) => {
           const nextOn = !on;
@@ -103,6 +99,6 @@ export function ActiveTrainCues({
           ? t('activeCueMeOn', { defaultValue: 'Cues on' })
           : t('activeCueMe', { defaultValue: 'Cue me' })}
       </span>
-    </Button>
+    </button>
   );
 }

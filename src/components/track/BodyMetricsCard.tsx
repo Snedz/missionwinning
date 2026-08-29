@@ -11,15 +11,12 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { Scale } from 'lucide-react';
 import {
   CHART_GRID,
   CHART_SERIES_SOLO,
   CHART_TICK,
   CHART_TOOLTIP,
 } from '@/components/charts/chartTheme';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { kgToDisplay } from '@/lib/units';
 import {
@@ -76,137 +73,130 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
   };
 
   return (
-    <Card className="content-card" data-testid="quiet-track-log">
-      <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
+    <section className="house-card house-metrics" data-testid="quiet-track-log">
+      <div className="house-row">
         <div>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Scale className="h-4 w-4 text-primary" aria-hidden />
+          <h2 className="house-metrics-name">
             {t('bodyMetricsTitle', { defaultValue: 'Weight & tape' })}
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="house-lede">
             {t('bodyMetricsLead', {
               defaultValue: 'A number you already have. Scale or tape. Never required to train.',
             })}
-          </CardDescription>
+          </p>
         </div>
-        <Button
+        <button
           type="button"
-          size="sm"
-          variant="outline"
-          className="min-h-[44px] tap-target"
+          className="house-btn house-btn-ghost min-h-[44px] tap-target"
           onClick={() => setOpen(true)}
         >
           {t('bodyMetricsLog', { defaultValue: 'Log' })}
-        </Button>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {snap.empty ? (
-          <p className="text-sm text-muted-foreground" data-testid="quiet-track-empty">
-            {t('bodyMetricsEmpty', {
-              defaultValue: 'No number yet. Log the one on the scale or tape.',
-            })}
-          </p>
-        ) : (
-        <>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
-          <Stat
-            label={t('bodyWeight', { defaultValue: 'Weight' })}
-            value={`${displayValue(last, 'weightKg')} ${weightUnitLabel(units)}`}
-          />
-          <Stat
-            label={t('bodyFat', { defaultValue: 'Body fat' })}
-            value={`${displayValue(last, 'bodyFatPct')}%`}
-          />
-          <Stat
-            label={t('bodyWaist', { defaultValue: 'Waist' })}
-            value={`${displayValue(last, 'waistCm')} cm`}
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-1">
-          {(
-            [
-              ['weightKg', t('bodyWeight', { defaultValue: 'Weight' })],
-              ['bodyFatPct', t('bodyFat', { defaultValue: 'Body fat' })],
-              ['waistCm', t('bodyWaist', { defaultValue: 'Waist' })],
-            ] as const
-          ).map(([key, label]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setMetric(key)}
-              className={`px-2.5 py-1 text-[11px] border ${
-                metric === key
-                  ? 'border-primary bg-muted text-primary'
-                  : 'border-border text-muted-foreground'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {chartData.length >= 2 ? (
-          <div className="h-40 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid {...CHART_GRID} />
-                <XAxis dataKey="date" tick={CHART_TICK} />
-                <YAxis
-                  width={36}
-                  tick={CHART_TICK}
-                  domain={['auto', 'auto']}
-                  tickFormatter={(v) =>
-                    metric === 'weightKg'
-                      ? String(Math.round(kgToDisplay(Number(v), units) * 10) / 10)
-                      : String(v)
-                  }
-                />
-                {/*
-                  `.244` — this `<Tooltip>` carried no `contentStyle`, so it
-                  rendered recharts' stock white box with a `#ccc` border and
-                  the library's own radius. Styling that is *absent* rather
-                  than wrong: no colour scan can see it, which is why
-                  `unstyled-chart-tooltip` now checks for the spread itself.
-                */}
-                <Tooltip
-                  {...CHART_TOOLTIP}
-                  /*
-                    One series, so there is no name to print — and recharts
-                    renders the separator whenever `name` is non-nil, so the
-                    `''` this formatter returns produced a stray leading
-                    colon: ": 80.8 kg". Invisible until the box above it was
-                    styled enough to read, which is `.221`'s note again —
-                    the screen said it, no scan could have.
-                  */
-                  separator=""
-                  formatter={(v: number) =>
-                    metric === 'weightKg'
-                      ? [`${Math.round(kgToDisplay(v, units) * 10) / 10} ${weightUnitLabel(units)}`, '']
-                      : [v, '']
-                  }
-                />
-                <Line type="monotone" dataKey="value" {...CHART_SERIES_SOLO} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        ) : (
-          <p className="text-xs text-muted-foreground">
-            {t('bodyMetricsNeedTwo', {
-              defaultValue: 'Log at least two entries to see a trend.',
-            })}
-          </p>
-        )}
-
-        <p className="text-[10px] text-muted-foreground">
-          {t('bodyMetricsCount', {
-            count: loadBodyMetrics().length,
-            defaultValue: `${loadBodyMetrics().length} entries on device`,
+        </button>
+      </div>
+      {snap.empty ? (
+        <p className="house-lede" data-testid="quiet-track-empty">
+          {t('bodyMetricsEmpty', {
+            defaultValue: 'No number yet. Log the one on the scale or tape.',
           })}
         </p>
+      ) : (
+        <>
+          <div className="house-stat-grid">
+            <Stat
+              label={t('bodyWeight', { defaultValue: 'Weight' })}
+              value={`${displayValue(last, 'weightKg')} ${weightUnitLabel(units)}`}
+            />
+            <Stat
+              label={t('bodyFat', { defaultValue: 'Body fat' })}
+              value={`${displayValue(last, 'bodyFatPct')}%`}
+            />
+            <Stat
+              label={t('bodyWaist', { defaultValue: 'Waist' })}
+              value={`${displayValue(last, 'waistCm')} cm`}
+            />
+          </div>
+
+          <div className="house-collections" role="tablist">
+            {(
+              [
+                ['weightKg', t('bodyWeight', { defaultValue: 'Weight' })],
+                ['bodyFatPct', t('bodyFat', { defaultValue: 'Body fat' })],
+                ['waistCm', t('bodyWaist', { defaultValue: 'Waist' })],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                role="tab"
+                aria-selected={metric === key}
+                onClick={() => setMetric(key)}
+                className={`house-state tap-target${metric === key ? ' is-on' : ''}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {chartData.length >= 2 ? (
+            <div className="h-40 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid {...CHART_GRID} />
+                  <XAxis dataKey="date" tick={CHART_TICK} />
+                  <YAxis
+                    width={36}
+                    tick={CHART_TICK}
+                    domain={['auto', 'auto']}
+                    tickFormatter={(v) =>
+                      metric === 'weightKg'
+                        ? String(Math.round(kgToDisplay(Number(v), units) * 10) / 10)
+                        : String(v)
+                    }
+                  />
+                  {/*
+                    `.244` — this `<Tooltip>` carried no `contentStyle`, so it
+                    rendered recharts' stock white box with a `#ccc` border and
+                    the library's own radius. Styling that is *absent* rather
+                    than wrong: no colour scan can see it, which is why
+                    `unstyled-chart-tooltip` now checks for the spread itself.
+                  */}
+                  <Tooltip
+                    {...CHART_TOOLTIP}
+                    /*
+                      One series, so there is no name to print — and recharts
+                      renders the separator whenever `name` is non-nil, so the
+                      `''` this formatter returns produced a stray leading
+                      colon: ": 80.8 kg". Invisible until the box above it was
+                      styled enough to read, which is `.221`'s note again —
+                      the screen said it, no scan could have.
+                    */
+                    separator=""
+                    formatter={(v: number) =>
+                      metric === 'weightKg'
+                        ? [`${Math.round(kgToDisplay(v, units) * 10) / 10} ${weightUnitLabel(units)}`, '']
+                        : [v, '']
+                    }
+                  />
+                  <Line type="monotone" dataKey="value" {...CHART_SERIES_SOLO} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p className="house-lede">
+              {t('bodyMetricsNeedTwo', {
+                defaultValue: 'Log at least two entries to see a trend.',
+              })}
+            </p>
+          )}
+
+          <p className="house-lede">
+            {t('bodyMetricsCount', {
+              count: loadBodyMetrics().length,
+              defaultValue: `${loadBodyMetrics().length} entries on device`,
+            })}
+          </p>
         </>
-        )}
-      </CardContent>
+      )}
 
       <BodyMetricsSheet
         open={open}
@@ -215,15 +205,15 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
         onSave={handleSave}
         units={units}
       />
-    </Card>
+    </section>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-2 border-border p-2.5">
-      <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</div>
-      <div className="font-semibold tabular-nums text-foreground">{value}</div>
+    <div className="house-stat">
+      <p className="house-kicker">{label}</p>
+      <p className="house-stat-value tabular-nums">{value}</p>
     </div>
   );
 }

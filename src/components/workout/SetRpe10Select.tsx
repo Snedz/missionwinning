@@ -36,11 +36,7 @@ export function SetRpe10Select({
       data-testid={testId}
       value={rpe10 === undefined ? '' : String(rpe10)}
       onChange={(e) => onRateRpe10(parseOptionalRpe10(e.target.value))}
-      className={cn(
-        'h-11 min-h-[44px] min-w-[44px] border-2 border-border bg-background px-1.5 text-[11px] font-semibold tabular-nums tap-target',
-        'focus:outline-none focus:ring-2 focus:ring-ring',
-        className
-      )}
+      className={cn('house-num min-h-[44px] min-w-[44px] tap-target', className)}
     >
       <option value="">{label}</option>
       {RPE10_VALUES.map((n) => (

@@ -1,15 +1,17 @@
 'use client';
 /**
- * Page: /service-terms — Service-Specific Terms (Super Bundle, Coach AI, Android, etc.)
+ * Page: /service-terms — leftover service-specific terms.
+ * Quiet Account / legal door. Never a rail.
+ * Super Bundle, Coach AI, Android, human 1:1.
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { FileStack } from 'lucide-react';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { infoEnFloor } from '@/i18n/infoEnFloor';
 
-const SECTIONS = [
+const SERVICE_SECTIONS = [
   { id: 'scope', key: 'infoServiceScope', bodyKey: 'infoServiceScopeBody' },
   { id: 'free-core', key: 'infoServiceFreeCore', bodyKey: 'infoServiceFreeCoreBody' },
   { id: 'super-bundle', key: 'infoServiceBundle', bodyKey: 'infoServiceBundleBody' },
@@ -22,58 +24,69 @@ const SECTIONS = [
 
 export function ServiceTermsPage() {
   const { t } = useTranslation();
-  const jumpLinks = SECTIONS.map((s) => ({
-    id: s.id,
-    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
-  }));
 
   return (
     <InfoPageShell
+      className="house-service-terms"
       icon={FileStack}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
-      title={t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
+      title={t('infoServiceTermsTitle', { defaultValue: infoEnFloor('infoServiceTermsTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
+      variant="sections"
       showLegalFooter
-      jumpLinks={jumpLinks}
     >
-      <p className="text-sm text-muted-foreground -mt-2 mb-4">
-        {t('infoServiceLead', {
-          defaultValue:
-            'These terms supplement the general Terms of Service for particular Mission Winning products. If they conflict on a product-specific point, these terms control for that product.',
-        })}
-      </p>
+      {/* Quiet leftover: lead + jump chips + sections. Legal copy unchanged. */}
+      <section className="house-card space-y-3">
+        <p className="text-sm text-muted-foreground">
+          {t('infoServiceLead', { defaultValue: infoEnFloor('infoServiceLead') })}
+        </p>
+      </section>
 
-      {SECTIONS.map((section) => (
-        <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: infoEnFloor(section.key) })}>
-          <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}</p>
+      <nav
+        className="house-service-terms-jump"
+        aria-label={t('infoServiceTermsTitle', { defaultValue: infoEnFloor('infoServiceTermsTitle') })}
+      >
+        {SERVICE_SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} className="house-state">
+            {t(s.key, { defaultValue: infoEnFloor(s.key) })}
+          </a>
+        ))}
+      </nav>
+
+      {SERVICE_SECTIONS.map((section) => (
+        <section key={section.id} id={section.id} className="house-card space-y-3">
+          <h2 className="font-semibold">{t(section.key, { defaultValue: infoEnFloor(section.key) })}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
+          </p>
           {section.id === 'super-bundle' && (
-            <p className="mt-2">
-              <Link href="/refunds" className="text-primary hover:underline text-sm">
-                {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
+            <p>
+              <Link href="/refunds" className="text-sm underline underline-offset-2">
+                {t('infoRefundsTitle', { defaultValue: infoEnFloor('infoRefundsTitle') })}
               </Link>
             </p>
           )}
           {section.id === 'regions' && (
-            <p className="mt-2">
-              <Link href="/regions" className="text-primary hover:underline text-sm">
-                {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+            <p>
+              <Link href="/regions" className="text-sm underline underline-offset-2">
+                {t('infoRegionsTitle', { defaultValue: infoEnFloor('infoRegionsTitle') })}
               </Link>
             </p>
           )}
-        </InfoSection>
+        </section>
       ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoServiceFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
-        <Link href="/terms" className="text-primary hover:underline">
+        {t('infoServiceFoot', { defaultValue: infoEnFloor('infoServiceFoot') })}{' '}
+        <Link href="/terms" className="underline underline-offset-2">
           {t('termsOfService', { defaultValue: 'Terms of Service' })}
         </Link>
         {' · '}
-        <Link href="/usage" className="text-primary hover:underline">
-          {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
+        <Link href="/usage" className="underline underline-offset-2">
+          {t('infoUsageTitle', { defaultValue: infoEnFloor('infoUsageTitle') })}
         </Link>
         {' · '}
-        <Link href="/privacy" className="text-primary hover:underline">
+        <Link href="/privacy" className="underline underline-offset-2">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
       </p>

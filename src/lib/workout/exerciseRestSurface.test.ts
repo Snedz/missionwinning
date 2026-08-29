@@ -23,6 +23,9 @@ describe('per-exercise rest surface lock (.995)', () => {
     assert.match(strip, /rememberLastRest|onSetLane/);
     assert.doesNotMatch(strip, /saveDefaultRestSeconds/);
     assert.doesNotMatch(strip, /primary-action|bg-primary-fill/);
+    assert.match(strip, /house-state min-h-\[44px\] tap-target/);
+    assert.doesNotMatch(strip, /accent-poster/);
+    assert.doesNotMatch(strip, /border-2/);
     assert.doesNotMatch(strip, BANNED);
     assert.doesNotMatch(strip, FEED);
 

@@ -14,16 +14,20 @@ test('SetLogRow marks completed sets for eyes and AT', () => {
   assert.match(src, /role="listitem"/);
 });
 
-test('session sheets use primary-action + border-border skip (not ink cage)', () => {
+test('session sheets use house leftover confirm (not ink cage)', () => {
   const checkIn = readFileSync(
     join(root, 'src/components/workout/SessionCheckInSheet.tsx'),
     'utf8'
   );
-  assert.match(checkIn, /primary-action/);
-  assert.match(checkIn, /border-border/);
+  assert.match(checkIn, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.match(checkIn, /house-btn house-btn-ghost/);
+  assert.doesNotMatch(checkIn, /primary-action/);
+  assert.doesNotMatch(checkIn, /<Button/);
   assert.doesNotMatch(checkIn, /border-foreground tap-target/);
 
   const add = readFileSync(join(root, 'src/components/workout/AddExerciseSheet.tsx'), 'utf8');
-  assert.match(add, /primary-action/);
+  assert.match(add, /house-btn min-h-\[52px\] w-full tap-target/);
   assert.match(add, /tap-target/);
+  assert.doesNotMatch(add, /primary-action/);
+  assert.doesNotMatch(add, /<Button/);
 });

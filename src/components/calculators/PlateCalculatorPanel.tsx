@@ -2,9 +2,6 @@
 
 import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import {
@@ -45,20 +42,20 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
   const quickTargets = units === 'imperial' ? [135, 185, 225, 275, 315] : [60, 80, 100, 120, 140];
 
   return (
-    <>
+    <div className="house-plates">
       {!compact && (
-        <CardHeader>
-          <CardTitle>
+        <>
+          <p className="house-kicker">
             {t('calcPlateTitle', { defaultValue: 'Plate loader' })}
-          </CardTitle>
-          <CardDescription>
+          </p>
+          <p className="house-lede" style={{ marginTop: 0 }}>
             {t('calcPlateDesc', {
               defaultValue: 'Greedy load from largest plates. Shows per-side stack and achieved weight.',
             })}
-          </CardDescription>
-        </CardHeader>
+          </p>
+        </>
       )}
-      <CardContent className={cn('space-y-4', compact && 'p-0')}>
+      <div className={cn('space-y-4', !compact && 'mt-3')}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* useId, not literals: this panel also renders inside PlateCalculatorSheet,
               so a page can hold two instances and static ids would collide. */}
@@ -66,25 +63,25 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             <Label htmlFor={`${uid}-target`}>
               {t('calcPlateTarget', { unit, defaultValue: `Target weight (${unit})` })}
             </Label>
-            <Input
+            <input
               id={`${uid}-target`}
               type="number"
               step={units === 'imperial' ? 2.5 : 1.25}
               value={target}
               onChange={(e) => setTarget(parseFloat(e.target.value) || 0)}
-              className="mt-1 tabular-nums"
+              className="house-num mt-1 tabular-nums"
             />
           </div>
           <div>
             <Label htmlFor={`${uid}-bar`}>
               {t('calcPlateBar', { unit, defaultValue: `Bar weight (${unit})` })}
             </Label>
-            <Input
+            <input
               id={`${uid}-bar`}
               type="number"
               value={bar}
               onChange={(e) => setBar(parseFloat(e.target.value) || 0)}
-              className="mt-1 tabular-nums"
+              className="house-num mt-1 tabular-nums"
             />
           </div>
         </div>
@@ -96,12 +93,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               type="button"
               aria-pressed={target === w}
               onClick={() => setTarget(w)}
-              className={cn(
-                'min-h-[44px] border-2 px-3 text-sm font-semibold tabular-nums transition-colors',
-                target === w
-                  ? 'border-transparent bg-primary-fill text-primary-foreground'
-                  : 'border-border hover:bg-foreground/[0.07]'
-              )}
+              className={cn('house-state min-h-[44px] tap-target', target === w && 'is-on')}
             >
               {w}
               {unit}
@@ -109,13 +101,13 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           ))}
         </div>
 
-        <div className="space-y-3 border-2 border-border bg-card p-4">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+        <div className="house-card house-plates-stack">
+          <p className="house-kicker">
             {t('calcPlatePerSide', { defaultValue: 'Per side' })}
-          </div>
+          </p>
           {/*
             52px squares rather than text pills, ink-filled for the heaviest
-            plate size and 2px-outlined for everything lighter — so the stack
+            plate size and hairline for everything lighter — so the stack
             reads as a *shape* you can check against the bar at a glance,
             instead of a sentence you have to parse mid-lift.
           */}
@@ -127,12 +119,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
                 return (
                   <span
                     key={`${plate}-${i}`}
-                    className={cn(
-                      'inline-flex h-[52px] min-w-[52px] items-center justify-center px-2 text-sm font-semibold tabular-nums',
-                      solid
-                        ? 'bg-foreground text-background'
-                        : 'border-2 border-foreground text-foreground'
-                    )}
+                    className={cn('house-plates-disc', solid && 'is-heavy')}
                   >
                     {plate}
                     {unit}
@@ -157,26 +144,23 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               happened either way — silence after an exact hit reads the same as
               silence after a miss. */}
           {result.remainder === 0 ? (
-            <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+            <p className="house-kicker">
               {t('calcPlateExact', { defaultValue: 'Achieved · exact' })}
-            </div>
+            </p>
           ) : (
-            // The closest-loadable warning. text-primary, not status-warn: this
-            // is the one thing in the panel you must not miss.
-            <div className="border-s-2 border-primary ps-2 text-xs font-semibold text-primary">
+            <p className="house-kicker house-plates-short">
               {t('calcPlateRemainder', {
                 remainder: result.remainder,
                 unit,
                 defaultValue: `Cannot load exactly — ${result.remainder}${unit} short of target ${result.targetWeight}${unit}`,
               })}
-            </div>
+            </p>
           )}
         </div>
 
         {onApplyTarget && (
-          <Button
-            variant="default"
-            size="block"
+          <button
+            type="button"
             className="primary-action min-h-[52px] tap-target w-full"
             onClick={() => onApplyTarget(result.achievedWeight)}
           >
@@ -185,9 +169,9 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               unit,
               defaultValue: `Use ${result.achievedWeight} ${unit}`,
             })}
-          </Button>
+          </button>
         )}
-      </CardContent>
-    </>
+      </div>
+    </div>
   );
 }

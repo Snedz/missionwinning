@@ -5,7 +5,6 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import {
   shouldShowApplyTargetsMenuitem,
   shouldShowRemoveSetMenuitem,
@@ -34,11 +33,10 @@ export function ActiveSetOptionsMenu({
 
   return (
     <div className="relative ms-auto">
-      <Button
+      <button
         type="button"
-        variant="ghost"
-        size="sm"
-        className="min-h-[44px] text-muted-foreground tap-target"
+        className="house-btn house-btn-ghost min-h-[44px] tap-target"
+        data-testid="active-set-options"
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => onOpenChange(!open)}
@@ -46,7 +44,7 @@ export function ActiveSetOptionsMenu({
         {open
           ? t('activeSetLess', { defaultValue: 'Less' })
           : t('activeSetOptions', { defaultValue: 'Set options' })}
-      </Button>
+      </button>
       {open && (
         <>
           <button
@@ -57,13 +55,13 @@ export function ActiveSetOptionsMenu({
           />
           <div
             role="menu"
-            className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] border-2 border-border bg-card p-1"
+            className="house-card house-set-options absolute end-0 bottom-full z-50 mb-1 min-w-[10rem]"
           >
             {shouldShowApplyTargetsMenuitem(hasLastSets, hasPlanned) && (
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start text-primary"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => {
                   onApplyAllTargets();
                   onOpenChange(false);
@@ -76,7 +74,7 @@ export function ActiveSetOptionsMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start text-muted-foreground"
+                className="house-btn house-btn-ghost min-h-[44px] w-full justify-start tap-target"
                 onClick={() => {
                   onRemoveSet();
                   onOpenChange(false);

@@ -19,16 +19,17 @@ import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeybo
 import { recordScreen } from '@/lib/screenTrail';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { AccountSidecar } from './AccountSidecar';
-import { CatalogTabs } from './CatalogTabs';
 import { HouseGuide } from './HouseGuide';
 import { HouseIconRail } from './HouseIconRail';
 import { HouseMore } from './HouseMore';
 import { HousePaneProvider } from './HousePane';
 import { HouseSecondRail } from './HouseSecondRail';
 import {
+  HOUSE_RAIL_HREFS,
+  houseCanvasTitle,
+  houseSecondDockForPath,
   isHouseAccountPath,
   isHouseCatalogPath,
-  isHouseSecondRailPath,
   isHouseTrainPath,
 } from './houseNav';
 import { TrainSidecar } from './TrainSidecar';
@@ -50,12 +51,22 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const openMore = useCallback(() => setMoreOpen(true), []);
   const closeMore = useCallback(() => setMoreOpen(false), []);
+  const openHome = useCallback(() => {
+    setMoreOpen(false);
+    router.push(HOUSE_RAIL_HREFS.home);
+  }, [router]);
+  const openLibrary = useCallback(() => {
+    setMoreOpen(false);
+    router.push(HOUSE_RAIL_HREFS.library);
+  }, [router]);
   const keyboardOverlap = useVisualViewportKeyboardOverlap();
   const train = isHouseTrainPath(pathname);
   const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
-  const second = !compose && isHouseSecondRailPath(pathname);
+  const dock = !compose ? houseSecondDockForPath(pathname) : null;
+  const transferred = Boolean(dock);
+  const canvasTitle = houseCanvasTitle(pathname);
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
 
   useEffect(() => {
@@ -63,11 +74,14 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
     recordScreen(pathname);
   }, [pathname]);
 
-  const padClass = compose || train
-    ? 'house-canvas-pad is-flush'
-    : catalog || account
-      ? 'house-canvas-pad is-wide'
-      : 'house-canvas-pad';
+  const padClass = [
+    'house-canvas-pad',
+    compose || train ? 'is-flush' : '',
+    !compose && (catalog || account) ? 'is-wide' : '',
+    transferred ? 'is-transferred' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <JourneyGuard>
@@ -99,26 +113,53 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           ) : null}
-          <div className={`house-frame${compose ? ' is-compose' : ''}`} style={{ flex: 1, minHeight: 0 }}>
+          <div
+            className={`house-frame${dock ? ' is-second' : ''}${compose ? ' is-compose' : ''}`}
+            data-house-frame={dock ? 'second-left' : 'rail'}
+            style={{ flex: 1, minHeight: 0 }}
+          >
             {compose ? null : (
-              <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} />
+              <HouseIconRail
+                onOpenMore={openMore}
+                onOpenHome={openHome}
+                onOpenLibrary={openLibrary}
+                moreOpen={moreOpen}
+              />
             )}
-            {second ? <HouseSecondRail /> : null}
-            <div className={`house-stage${compose || train ? ' is-compose' : ''}`}>
-              <main className="house-canvas">
-                <div className={padClass}>
-                  {catalog ? <CatalogTabs /> : null}
-                  <PageTransition>{children}</PageTransition>
+            {compose ? (
+              <div className="house-stage is-compose">
+                <main className="house-canvas">
+                  <div className={padClass}>
+                    <PageTransition>{children}</PageTransition>
+                  </div>
+                </main>
+                {train ? <TrainSidecar /> : null}
+              </div>
+            ) : (
+              <div className={`house-sheet${dock ? ' is-second' : ''}`}>
+                {dock ? <HouseSecondRail dock={dock} /> : null}
+                <div className="house-stage">
+                  <main className="house-canvas">
+                    <div className={padClass} data-house-transferred={transferred ? '1' : undefined}>
+                      {canvasTitle ? <h1 className="sr-only">{canvasTitle}</h1> : null}
+                      <PageTransition>{children}</PageTransition>
+                    </div>
+                  </main>
+                  {account ? <AccountSidecar /> : null}
                 </div>
-              </main>
-              {train ? <TrainSidecar /> : null}
-              {account ? <AccountSidecar /> : null}
-            </div>
+              </div>
+            )}
           </div>
           <div id={SCREEN_DOCK_HOST_ID} className="house-dock" />
           <div id={CONSENT_BANNER_HOST_ID} className="house-consent" />
           {compose ? null : (
-            <HouseIconRail onOpenMore={openMore} moreOpen={moreOpen} floor />
+            <HouseIconRail
+              onOpenMore={openMore}
+              onOpenHome={openHome}
+              onOpenLibrary={openLibrary}
+              moreOpen={moreOpen}
+              floor
+            />
           )}
           <HouseGuide />
           <HouseMore open={moreOpen} onClose={closeMore} />

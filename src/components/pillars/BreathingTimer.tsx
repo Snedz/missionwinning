@@ -2,8 +2,6 @@
 import { useTranslation } from 'react-i18next';
 
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { logPillarWin } from '@/lib/pillarLog';
 
 export type BreathingPattern = 'box' | '478' | 'relax';
@@ -78,70 +76,71 @@ export function BreathingTimer() {
   const scale = phase.label === 'Inhale' ? 1.15 : phase.label === 'Exhale' ? 0.85 : 1;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('mindBreathingTitle', { defaultValue: 'Breathing Timer' })}</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          {t('mindBreathingSubtitle', {
-            count: targetCycles,
-            defaultValue: `Free guided patterns — no audio required. ${targetCycles} cycles.`,
-          })}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex gap-2 flex-wrap">
-          {(Object.keys(PATTERNS) as BreathingPattern[]).map((p) => (
-            <Button
-              key={p}
-              size="sm"
-              className="min-h-[44px]"
-              variant={pattern === p ? 'selected' : 'outline'}
-              onClick={() => setPattern(p)}
-            >
-              {PATTERNS[p].name.split(' ')[0]}
-            </Button>
-          ))}
-        </div>
-
-        <div className="flex flex-col items-center py-6">
-          <div
-            // A scaling square, per the handoff — nothing in this system is
-            // round. Ink, because while it is breathing it is the only thing
-            // you should be looking at, same rule as the rest dock.
-            className="flex h-36 w-36 items-center justify-center bg-neutral-900 text-neutral-100 transition-transform duration-1000 motion-reduce:transition-none"
-            style={{ transform: `scale(${scale})` }}
+    <section className="house-card house-breathe">
+      <h2 className="house-breathe-name">
+        {t('mindBreathingTitle', { defaultValue: 'Breathing Timer' })}
+      </h2>
+      <p className="house-lede">
+        {t('mindBreathingSubtitle', {
+          count: targetCycles,
+          defaultValue: `Free guided patterns — no audio required. ${targetCycles} cycles.`,
+        })}
+      </p>
+      <div className="house-collections">
+        {(Object.keys(PATTERNS) as BreathingPattern[]).map((p) => (
+          <button
+            key={p}
+            type="button"
+            className={`house-state tap-target${pattern === p ? ' is-on' : ''}`}
+            onClick={() => setPattern(p)}
           >
-            <div className="text-center">
-              <div className="text-[40px] font-extrabold leading-none tabular-nums">{remaining}</div>
-              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
-                {phase.label}
-              </div>
-            </div>
-          </div>
-          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground tabular-nums">
-            Cycle {Math.min(cycles + 1, targetCycles)} / {targetCycles}
-          </p>
-        </div>
+            {PATTERNS[p].name.split(' ')[0]}
+          </button>
+        ))}
+      </div>
 
-        <div className="flex justify-center gap-2">
-          {/* `min-h-[44px]`: the Button default is `h-10` (40px), under the 44px
-              floor `.125` set for one-thumb use. Applied here rather than to the
-              primitive — see LOG `.198` for why that is a founder call. */}
-          <Button variant="outline" className="min-h-[44px]" onClick={() => setRunning(!running)}>
-            {running ? 'Pause' : cycles >= targetCycles ? 'Restart' : 'Start'}
-          </Button>
-          {running && (
-            <Button variant="ghost" className="min-h-[44px]" onClick={() => { setRunning(false); setPhaseIdx(0); setRemaining(config.phases[0].sec); setCycles(0); }}>
-              Reset
-            </Button>
-          )}
+      <div className="house-breathe-stage">
+        <div
+          // A scaling square, per the handoff — nothing in this system is
+          // round. Ink, because while it is breathing it is the only thing
+          // you should be looking at, same rule as the rest dock.
+          className="house-breathe-square"
+          style={{ transform: `scale(${scale})` }}
+        >
+          <p className="house-breathe-count tabular-nums">{remaining}</p>
+          <p className="house-kicker">{phase.label}</p>
         </div>
-        {cycles >= targetCycles && !running && (
-          <p className="border-s-2 border-primary ps-2 text-sm font-semibold text-primary">
-            Session complete — logged to Mind pillar.
-          </p>
+        <p className="house-lede tabular-nums">
+          Cycle {Math.min(cycles + 1, targetCycles)} / {targetCycles}
+        </p>
+      </div>
+
+      <div className="house-row">
+        <button
+          type="button"
+          className="house-btn house-btn-ghost min-h-[44px] tap-target"
+          onClick={() => setRunning(!running)}
+        >
+          {running ? 'Pause' : cycles >= targetCycles ? 'Restart' : 'Start'}
+        </button>
+        {running && (
+          <button
+            type="button"
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
+            onClick={() => {
+              setRunning(false);
+              setPhaseIdx(0);
+              setRemaining(config.phases[0].sec);
+              setCycles(0);
+            }}
+          >
+            Reset
+          </button>
         )}
-      </CardContent>
-    </Card>
+      </div>
+      {cycles >= targetCycles && !running && (
+        <p className="house-lede">Session complete — logged to Mind pillar.</p>
+      )}
+    </section>
   );
 }

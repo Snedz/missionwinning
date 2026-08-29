@@ -23,7 +23,8 @@ test('FormGuideSheet footer is valid footer= prop', () => {
   const src = readFileSync(join(root, 'src/components/form/FormGuideSheet.tsx'), 'utf8');
   assert.match(src, /footer=\{/);
   assert.doesNotMatch(src, /<footer=\{/);
-  assert.match(src, /primary-action w-full min-h-\[52px\]/);
+  assert.match(src, /house-btn min-h-\[52px\] w-full tap-target/);
+  assert.doesNotMatch(src, /primary-action|bg-primary-fill/);
 });
 
 test('Adjust session constraint chips are 44px tap targets', () => {

@@ -8,9 +8,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { CardHeader, CardTitle } from '@/components/ui/card';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
 import { ExerciseReorderHandle } from '@/components/workout/ExerciseReorderHandle';
@@ -111,9 +108,9 @@ export function ActiveExerciseHeader({
   };
 
   return (
-    <CardHeader className="p-3 pb-2 space-y-2">
+    <div className="house-exercise-head space-y-2">
       <div className="flex items-start gap-2">
-        <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
+        <h3 className="house-exercise-title flex flex-wrap items-center gap-2 min-w-0 flex-1">
           {canReorder && onReorder ? (
             <ExerciseReorderHandle
               name={exercise.name}
@@ -136,44 +133,40 @@ export function ActiveExerciseHeader({
             {exercise.name}
           </button>
           {ssLabel && (
-            <Badge variant="outline" className="text-[10px]">
-              {ssLabel}
-            </Badge>
+            <span className="house-state house-exercise-mark">{ssLabel}</span>
           )}
           {shouldShowLoadPctChip(exLog.loadPct, exLog.sets) && (
-            <Badge variant="outline" className="text-[10px] tabular-nums">
+            <span className="house-state house-exercise-mark tabular-nums">
               {t('activeLoadPctChip', {
                 pct: exLog.loadPct,
                 weight: firstWeightedLoad(exLog.sets),
                 unit: unitLabel,
                 defaultValue: '{{pct}}% · {{weight}} {{unit}}',
               })}
-            </Badge>
+            </span>
           )}
-        </CardTitle>
+        </h3>
         <div className="flex shrink-0 items-center gap-0.5">
           {hasFormGuide && (
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="icon"
-              className="h-11 w-11 tap-target text-primary"
+              className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
+              data-testid="active-form-guide"
               aria-label={t('activeFormGuide', { defaultValue: 'Form guide' })}
               onClick={onFormGuide}
             >
               <Info className="h-5 w-5" />
-            </Button>
+            </button>
           )}
           {shouldShowExerciseSwapMenuitem(hasCompleted, swapOptionCount, skipped) && (
-            <Button
+            <button
               type="button"
-              variant="ghost"
-              size="sm"
-              className="min-h-[44px] px-2 text-sm text-primary"
+              className="house-btn house-btn-ghost min-h-[44px] tap-target"
+              data-testid="active-swap-exercise"
               onClick={onToggleSwap}
             >
               {t('activeSwap', { defaultValue: 'Swap' })}
-            </Button>
+            </button>
           )}
           <ActiveExerciseMoreMenu
             open={menuOpen}
@@ -235,9 +228,9 @@ export function ActiveExerciseHeader({
 
       {shouldShowSessionSkip({ skippedThisSession: skipped }) && (
         <HoldToConfirmButton
-          variant="outline"
-          size="sm"
+          chrome="house"
           className="w-fit justify-start"
+          data-testid="active-skip-exercise"
           label={t('activeSkipThisExerciseHold', {
             defaultValue: 'Skip this exercise — this session',
           })}
@@ -246,15 +239,14 @@ export function ActiveExerciseHeader({
       )}
 
       {hasCompleted && !skipped && (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
-          className="min-h-[44px] w-fit"
+          className="house-btn min-h-[44px] w-fit tap-target"
+          data-testid="active-repeat-last"
           onClick={onRepeatLast}
         >
           {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
-        </Button>
+        </button>
       )}
 
       <SessionSwapSheet
@@ -271,6 +263,6 @@ export function ActiveExerciseHeader({
         rows={historyRows}
         rowType={resolveSetRowType(exercise)}
       />
-    </CardHeader>
+    </div>
   );
 }

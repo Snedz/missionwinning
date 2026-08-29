@@ -60,8 +60,9 @@ describe('patch finished set load pct surface lock (.1044)', () => {
     assert.doesNotMatch(helper, /from ['"]@\/store\/workoutStore['"]/);
     const field = read('src/components/workout/SetLoadPctField.tsx');
     assert.match(field, /min-h-\[44px\]/);
-    assert.match(field, /border-border/);
-    assert.match(field, /bg-background/);
+    assert.match(field, /house-num/);
+    assert.doesNotMatch(field, /border-2/);
+    assert.doesNotMatch(field, /focus:ring-2/);
     assert.match(field, /parseOptionalLoadPct/);
     assert.match(field, /activeSetPct/);
     assert.match(field, /activeSetPctAria/);

@@ -101,7 +101,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
   return (
     <PillarPageShell
-      className="max-w-2xl pb-24"
+      className="house-plan max-w-2xl pb-24"
       icon={Sparkles}
       eyebrow={weekEyebrow}
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
@@ -115,7 +115,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && locked && plan && (
         <div className="space-y-4">
           <p className="text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
-          <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+          <WeekStrip house weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
           <p className="text-sm text-muted-foreground text-center leading-relaxed">
             {t('coachLockedWeekSummary', {
               done: plan.sessions.filter((s) => s.status === 'done').length,
@@ -139,6 +139,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && locked && freeBeta && !needsParq && (
         <>
           <EmptyState
+            className="house-empty"
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachFreeBetaNextWeek', {
@@ -146,11 +147,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             })}
           />
           <ScreenDock>
-            <div className="poster-field px-4 pb-4 pt-3.5">
-              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {weekEyebrow}
-              </p>
-              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+            <div className="house-generate-dock">
+              <p className="house-kicker">{weekEyebrow}</p>
+              <p className="house-lede">
                 {t('coachFreeBetaNextWeek', {
                   defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
                 })}
@@ -158,7 +157,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <button
                 type="button"
                 onClick={() => generate()}
-                className="primary-action min-h-[52px] w-full text-[19px]"
+                className="house-btn house-btn-primary primary-action min-h-[52px] w-full tap-target"
               >
                 <span className="flex-1 text-start">
                   {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
@@ -214,7 +213,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       )}
 
       {/* Field manual 1A: EmptyState is invite only (outline CTAs demoted by design).
-          Boss Generate docks in poster-field — same chrome as Active empty Start. */}
+          Generate dock is house leftover — one filled action on /coach. */}
       {!loading && !plan && !locked && needsParq && (
         <ParqIntakeCard
           onDone={() => {
@@ -226,6 +225,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && !plan && !locked && !needsParq && (
         <>
           <EmptyState
+            className="house-empty"
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachGenerateEmptyDesc', {
@@ -236,11 +236,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           />
           <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
           <ScreenDock>
-            <div className="poster-field px-4 pb-4 pt-3.5">
-              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {weekEyebrow}
-              </p>
-              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+            <div className="house-generate-dock">
+              <p className="house-kicker">{weekEyebrow}</p>
+              <p className="house-lede">
                 {t('coachGenerateEmptyDesc', {
                   defaultValue: freeBeta
                     ? 'One week from your logs. Free every week — no wearable.'
@@ -250,7 +248,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <button
                 type="button"
                 onClick={() => generate()}
-                className="primary-action min-h-[52px] w-full text-[19px]"
+                className="house-btn house-btn-primary primary-action min-h-[52px] w-full tap-target"
                 data-testid="coach-generate-dock"
               >
                 <span className="flex-1 text-start">
@@ -266,10 +264,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {plan && !locked && (
         <div className="space-y-5">
           <div>
-            <p className="eyebrow mb-3 text-primary">{weekEyebrow}</p>
-            <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+            <WeekStrip house weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
-              <p className="mt-3 text-sm text-muted-foreground" data-testid="coach-week-dose">
+              <p className="house-lede house-week-dose" data-testid="coach-week-dose">
                 {t('coachWeekDose', {
                   count: weekDose.sessionCount,
                   intent: t(doseIntentKey, { defaultValue: doseIntentDefault }),
@@ -344,14 +341,14 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }}
           />
 
-          <details className="group border-2 border-border bg-card">
+          <details className="house-card group">
             <summary
               className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
               data-testid="coach-show-all"
             >
               {t('todayShowAll', { defaultValue: 'Show all' })}
             </summary>
-            <div className="space-y-4 border-t-2 border-border p-4">
+            <div className="house-show-all-body space-y-4 p-4">
               <CoachLogCite emphasis />
               <CoachAdaptBanner
                 plan={plan}

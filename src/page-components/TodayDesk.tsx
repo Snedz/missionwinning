@@ -3,11 +3,12 @@
  * Today as a working desk — one live session object + this week's work.
  * Not HomeTodayLean. Not a following feed. Not the #885 card stack.
  *
- * First paint must not show SSR_ACTION. peekCoachToday() returns null
- * on the server (`typeof window === 'undefined'`). useState lazy init
- * does not re-run on hydrate, so snap stayed null and the hero painted
- * Train / Start / Start with seven Rest cells until useLayoutEffect.
- * Do not guess-lock copy. Do not make the dummy Start clickable.
+ * First paint must stay as dense as the Thursday #888 walk: Just Go
+ * hero, first rooms, and the week strip. peekCoachToday() is null on
+ * the server — do not hide the desk until snap. Start always lands
+ * `/active` with a Just Go table (last loads). Start writes the
+ * session before Train opens. The live engine still runs when snap
+ * is ready.
  */
 
 import Link from 'next/link';
@@ -44,6 +45,7 @@ import { readRaw } from '@/lib/storage/safeStorage';
 import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { HouseFirstRoomsCard } from '@/components/house/HouseFirstRoomsCard';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
@@ -142,6 +144,8 @@ export function TodayDesk() {
   const copy = snap?.copy ?? null;
 
   const handleStart = () => {
+    writeTodayComposeSession();
+    router.push('/active');
     if (!snap || !action) return;
     void (async () => {
       const liveHistory = readWorkoutHistoryFromStorage();
@@ -185,12 +189,21 @@ export function TodayDesk() {
     ? liveName || t('navTrain', { defaultValue: 'Train' })
     : copy
       ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
-      : t('todayStartCta', { defaultValue: 'Start' });
+      : t('justGoTitle', { defaultValue: 'Training — Just Go', focus: 'Training' });
   const sessionLede = hasActiveWorkout
     ? t('todayStartCta', { defaultValue: 'Start' })
     : copy
       ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
-      : t('todayStartCta', { defaultValue: 'Start' });
+      : t('justGoDesc', {
+          defaultValue:
+            "One tap builds today's training session from how fresh you are and what you lifted last time.",
+          focus: 'Training',
+        });
+  const sessionKicker = hasActiveWorkout
+    ? t('navTrain', { defaultValue: 'Train' })
+    : copy
+      ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
+      : t('justGoEyebrow', { defaultValue: 'Ready to train' });
   const startLabel = t('todayStartCta', { defaultValue: 'Start' });
   const todayLabel = formatLocalDateKey(localDateKey(), i18n.language, {
     weekday: 'long',
@@ -241,29 +254,19 @@ export function TodayDesk() {
       <section
         id="today-start"
         className="house-card house-card-hero"
-        style={{ marginTop: 20 }}
         aria-busy={snap ? undefined : true}
         data-testid={snap ? 'today-start-ready' : 'today-start-pending'}
       >
-        {snap ? (
-          <>
-        <p className="house-kicker">
-          {copy
-            ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
-            : t('navTrain', { defaultValue: 'Train' })}
-        </p>
+        <p className="house-kicker">{sessionKicker}</p>
         <h2 className="house-title" style={{ fontSize: 26 }}>
           {sessionTitle}
         </h2>
         <p className="house-lede">{sessionLede}</p>
-          </>
-        ) : null}
-        <div className="house-row" style={{ marginTop: snap ? 18 : 0 }}>
+        <div className="house-row" style={{ marginTop: 18 }}>
           <button
             type="button"
             className="house-btn house-btn-primary"
             onClick={handleStart}
-            disabled={!snap}
           >
             {startLabel}
           </button>
@@ -285,15 +288,12 @@ export function TodayDesk() {
         ) : null}
       </section>
 
-      {snap ? (
-        <HouseFirstRoomsCard
-          loggedSet={finished.length > 0}
-          hasFinish={finished.length > 0}
-          onLogSet={handleStart}
-        />
-      ) : null}
+      <HouseFirstRoomsCard
+        loggedSet={finished.length > 0}
+        hasFinish={finished.length > 0}
+        onLogSet={handleStart}
+      />
 
-      {snap ? (
       <section id="today-week" className="house-week-object" style={{ marginTop: 22 }}>
         <div className="house-row" style={{ marginBottom: 12 }}>
           <h2 className="house-side-title" style={{ margin: 0 }}>
@@ -321,12 +321,16 @@ export function TodayDesk() {
           ))}
         </div>
         {!plan ? (
-          <button type="button" className="house-btn house-btn-primary" style={{ marginTop: 14 }} onClick={() => router.push('/coach')}>
+          <Link
+            href="/coach"
+            className="house-btn"
+            style={{ marginTop: 14 }}
+            data-house-week-writer="generateWeek"
+          >
             {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-          </button>
+          </Link>
         ) : null}
       </section>
-      ) : null}
 
       {recent.length > 0 ? (
         <section style={{ marginTop: 28 }}>

@@ -5,22 +5,25 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..', '..');
 
-test('Active menus use muted hover + 2px panels', () => {
+test('Active menus use house leftover overflow', () => {
   const more = readFileSync(
     join(root, 'src/components/workout/ActiveExerciseMoreMenu.tsx'),
     'utf8'
   );
-  assert.match(more, /hover:bg-muted/);
+  assert.match(more, /house-card house-exercise-more/);
   assert.doesNotMatch(more, /hover:bg-accent-100/);
-  assert.match(more, /border-t-2 border-border/);
+  assert.doesNotMatch(more, /hover:bg-muted/);
+  assert.doesNotMatch(more, /border-2/);
 
   const setOpts = readFileSync(
     join(root, 'src/components/workout/ActiveSetOptionsMenu.tsx'),
     'utf8'
   );
-  assert.match(setOpts, /hover:bg-muted/);
+  assert.match(setOpts, /house-card house-set-options/);
   assert.match(setOpts, /aria-haspopup/);
   assert.doesNotMatch(setOpts, /hover:bg-accent-100/);
+  assert.doesNotMatch(setOpts, /hover:bg-muted/);
+  assert.doesNotMatch(setOpts, /border-2/);
 });
 
 test('Active page scrolls next set when rest ends', () => {

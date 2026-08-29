@@ -79,7 +79,7 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /accent-poster/);
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /set-table-logged-check/);
-  assert.match(src, /border-s-primary|border-s-\[3px\]/);
+  assert.match(src, /house-set-done-mark|border-s-primary|border-s-\[3px\]/);
   assert.match(src, /set-table-prev/);
   assert.match(src, /data-prev-anchor/);
   assert.match(src, /set-table-rate/);
@@ -94,8 +94,9 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   const src = workout('RestTimerBar.tsx');
   assert.match(src, /data-testid="rest-skip"/);
   assert.match(src, /min-h-\[44px\]/);
-  assert.match(src, /finalSeconds &&/);
-  assert.match(src, /bg-accent-400/);
+  assert.match(src, /finalSeconds/);
+  assert.match(src, /house-rest-fill/);
+  assert.doesNotMatch(src, /bg-accent-400/);
   // Ambient running chrome — ticking clock + depleting fill while remaining > 0.
   assert.match(src, /data-rest-running/);
   assert.match(src, /data-rest-remaining/);
@@ -106,13 +107,17 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   assert.doesNotMatch(src, /accent-poster/);
 });
 
-test('LastSetGhostButton: outline one-tap; never poster-red', () => {
+test('LastSetGhostButton: house leftover one-tap; never poster-red', () => {
   const src = workout('LastSetGhostButton.tsx');
   assert.match(src, /data-testid="last-set-ghost"/);
+  assert.match(src, /house-btn house-btn-ghost house-last-ghost/);
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /tap-target/);
+  assert.doesNotMatch(src, /border-2/);
+  assert.doesNotMatch(src, /hover:bg-muted/);
   assert.doesNotMatch(src, /primary-action/);
   assert.doesNotMatch(src, /accent-poster/);
+  assert.doesNotMatch(src, /house-btn-primary/);
 });
 
 test('LogConsole and SetLogTable mount the last-set ghost', () => {

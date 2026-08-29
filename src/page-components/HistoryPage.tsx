@@ -9,9 +9,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { Calendar, Dumbbell, History as HistoryIcon, Plus, SearchX, Timer, Trophy } from 'lucide-react';
+import { Dumbbell, History as HistoryIcon, Plus, SearchX, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -92,7 +91,6 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, localMonthKey, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
@@ -453,6 +451,7 @@ export function HistoryPage() {
 
   return (
     <PillarPageShell
+      className="house-history"
       icon={HistoryIcon}
       eyebrow={t('historyEyebrow', { defaultValue: 'History' })}
       title={t('historyTitle', { defaultValue: 'Workout History' })}
@@ -465,6 +464,7 @@ export function HistoryPage() {
       ) : liveHistory.length === 0 ? (
         <div data-testid="session-history-empty">
           <EmptyState
+            className="house-empty"
             icon={Dumbbell}
             illustrationSrc="/brand/mascot/kalligator-invite.webp"
             illustrationAlt=""
@@ -475,123 +475,112 @@ export function HistoryPage() {
             actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
             href="/log"
           />
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="mt-3 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-3 min-h-[44px] w-full tap-target"
             data-testid="session-history-backfill-open"
             onClick={openBackfill}
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-merge-open"
             onClick={openMerge}
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-start-from-open"
             onClick={openStartFrom}
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-export-open"
             onClick={openExport}
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="mt-2 w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
             data-testid="session-history-import-open"
             onClick={openImport}
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
-          </Button>
+          </button>
           {deletedHistory.length > 0 ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="mt-2 w-full min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
               data-testid="session-history-restore-open"
               onClick={openRestore}
             >
               {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
-            </Button>
+            </button>
           ) : null}
         </div>
       ) : (
         <div className="space-y-3">
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-backfill-open"
             onClick={openBackfill}
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-merge-open"
             onClick={openMerge}
           >
             {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-start-from-open"
             onClick={openStartFrom}
           >
             {t('historyStartFrom', { defaultValue: 'Start history from this date' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-export-open"
             onClick={openExport}
           >
             {t('historyExport', { defaultValue: 'Export this diary' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[44px] tap-target"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
             data-testid="session-history-import-open"
             onClick={openImport}
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
-          </Button>
+          </button>
           {deletedHistory.length > 0 ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="w-full min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
               data-testid="session-history-restore-open"
               onClick={openRestore}
             >
               {t('historyRestoreOpen', { defaultValue: 'Deleted sessions' })}
-            </Button>
+            </button>
           ) : null}
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Input
+          <div className="house-filter-bar">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <input
               type="search"
               data-testid="session-history-search"
               value={nameQuery}
@@ -599,12 +588,12 @@ export function HistoryPage() {
               placeholder={t('historySearchPlaceholder', {
                 defaultValue: 'Search sessions (name, date, lift)…',
               })}
-              className="sm:flex-1 min-h-[44px]"
+              className="house-field house-history-search sm:flex-1 min-h-[44px]"
               aria-label={t('historySearchPlaceholder', {
                 defaultValue: 'Search sessions (name, date, lift)…',
               })}
             />
-            <div className="flex flex-wrap gap-1.5">
+            <div className="house-catalog-states">
               {(
                 [
                   ['7', 'Last 7'],
@@ -619,19 +608,17 @@ export function HistoryPage() {
                     setRange(value);
                     setVisibleCount(30);
                   }}
-                  className={
-                    range === value
-                      ? 'min-h-[44px] tap-target border-2 border-transparent bg-primary-fill px-3 text-xs font-semibold text-primary-foreground'
-                      : 'min-h-[44px] tap-target border-2 border-border px-3 text-xs font-semibold text-muted-foreground hover:bg-muted'
-                  }
+                  className={`house-state${range === value ? ' is-on' : ''}`}
                 >
                   {t(`historyRange${value}`, { defaultValue: label })}
                 </button>
               ))}
             </div>
+            </div>
           </div>
           {filteredHistory.length === 0 ? (
             <EmptyState
+              className="house-empty"
               icon={SearchX}
               title={t('historyNoMatches', { defaultValue: 'No sessions match these filters' })}
               description={t('historyNoMatchesDesc', {
@@ -644,7 +631,7 @@ export function HistoryPage() {
               }}
             />
           ) : (
-            <div className="space-y-3" data-testid="session-history-list">
+            <div className="house-list" data-testid="session-history-list">
             {visibleHistory.map((log) => {
               const row = toSessionHistoryRow(log);
               if (!row) return null;
@@ -660,103 +647,83 @@ export function HistoryPage() {
                     });
               const vol = formatLogVolumeDisplay(log, unitLabel, fmt.num);
               return (
-              <Card
-                key={log.id}
-                className="content-card hover:border-foreground transition-colors"
-              >
-                <CardContent className="flex items-center justify-between gap-3 py-3 px-4">
+              <div key={log.id} className="house-item">
                   <button
                     type="button"
                     data-testid="session-history-row"
-                    className="min-h-[44px] min-w-0 flex-1 text-left"
+                    className="house-item-body"
                     onClick={() => openLog(log)}
                     aria-label={t('historyOpenLog', {
                       name: historySessionLabel(log, fmt.longDate(row.completedAt)),
                       defaultValue: `Open log: ${historySessionLabel(log, fmt.longDate(row.completedAt))}`,
                     })}
                   >
-                    <p className="font-semibold truncate">
+                    <strong>
                       {historySessionLabel(log, fmt.longDate(row.completedAt))}
-                    </p>
+                    </strong>
                     {log.sessionTitle && log.workoutName && log.sessionTitle !== log.workoutName ? (
-                      <p className="text-xs text-muted-foreground truncate">{log.workoutName}</p>
+                      <span>{log.workoutName}</span>
                     ) : null}
-                    {muscleLine ? (
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{muscleLine}</p>
-                    ) : null}
-                    <p className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {fmt.longDate(row.completedAt)}
-                      </span>
-                      <span>{setLabel}</span>
-                      {log.durationSeconds > 0 ? (
-                        <span className="inline-flex items-center gap-1">
-                          <Timer className="h-3 w-3" />
-                          {formatDuration(log.durationSeconds)}
-                        </span>
-                      ) : null}
-                      <span>
-                        {vol.value} {vol.unit}
-                      </span>
-                    </p>
+                    {muscleLine ? <span>{muscleLine}</span> : null}
+                    <span>
+                      {fmt.longDate(row.completedAt)}
+                      {' · '}
+                      {setLabel}
+                      {log.durationSeconds > 0 ? ` · ${formatDuration(log.durationSeconds)}` : ''}
+                      {' · '}
+                      {vol.value} {vol.unit}
+                    </span>
                   </button>
-                  <div className="flex shrink-0 items-center gap-0.5">
                     {decideRepeatThisSession({ log }).kind !== 'empty' ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="min-h-[44px]"
+                      <button
+                        type="button"
+                        className="house-btn house-btn-ghost"
                         onClick={(e) => {
                           e.stopPropagation();
                           retrainFromLog(log);
                         }}
                       >
                         {t('historyTrainAgainShort', { defaultValue: 'Again' })}
-                      </Button>
+                      </button>
                     ) : null}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="min-h-[44px]"
+                    <button
+                      type="button"
+                      className="house-btn house-btn-ghost"
                       onClick={(e) => {
                         e.stopPropagation();
                         openLog(log);
                       }}
                     >
                       {t('historyDetails', { defaultValue: 'Details' })}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                    </button>
+              </div>
               );
             })}
             {filteredHistory.length > visibleCount ? (
-              <Button
+              <button
                 type="button"
-                variant="outline"
-                className="w-full min-h-[44px]"
+                className="house-btn"
                 onClick={() => setVisibleCount((n) => n + 30)}
               >
                 {t('historyLoadMore', {
                   remaining: filteredHistory.length - visibleCount,
                   defaultValue: `Show more (${filteredHistory.length - visibleCount} left)`,
                 })}
-              </Button>
+              </button>
             ) : null}
             </div>
           )}
         </div>
       )}
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="history-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
-        <div className="space-y-4 border-t-2 border-border p-4">
+        <div className="house-show-all-body space-y-4 p-4">
       <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
         <p className="text-xs font-semibold tracking-wide text-muted-foreground">
           {t('historyMissionStory', { defaultValue: 'At a glance' })}

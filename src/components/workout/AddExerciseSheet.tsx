@@ -16,7 +16,6 @@
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { Button } from '@/components/ui/button';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 
 type Props = {
@@ -35,14 +34,14 @@ export function AddExerciseSheet({ open, onClose, value, onChange, onConfirm }: 
       open={open}
       onClose={onClose}
       size="sm"
+      className="mw-house house-add-sheet"
       eyebrow={t('activeAddExerciseEyebrow', { defaultValue: 'This session' })}
       title={t('activeAddExerciseTitle', { defaultValue: 'Add exercise' })}
       bodyClassName="p-4"
       footer={
-        <Button
+        <button
           type="button"
-          variant="default"
-          className="primary-action w-full min-h-[52px] tap-target"
+          className="house-btn min-h-[52px] w-full tap-target"
           disabled={!value}
           // Kept verbatim: `logger-depth` and `first-90` both drive this name.
           aria-label={t('activeAddSelectedExercise', {
@@ -55,7 +54,7 @@ export function AddExerciseSheet({ open, onClose, value, onChange, onConfirm }: 
         >
           <Plus className="h-4 w-4 me-2" aria-hidden />
           {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
-        </Button>
+        </button>
       }
     >
       <ExercisePicker value={value} onChange={onChange} listClassName="max-h-[52vh]" />

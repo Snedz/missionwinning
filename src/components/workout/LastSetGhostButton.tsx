@@ -64,10 +64,10 @@ export function LastSetGhostButton({
       data-ghost-weight={ghost.weight}
       aria-label={t('activeCopyLast', { defaultValue: 'Copy last' })}
       className={cn(
-        'min-h-[44px] w-full border-2 px-3 text-start text-sm font-semibold tabular-nums tap-target',
+        'min-h-[44px] w-full tap-target',
         tone === 'ink'
-          ? 'mt-1.5 border-neutral-500 text-neutral-100 hover:bg-neutral-800'
-          : 'mt-1.5 border-border text-foreground hover:bg-muted'
+          ? 'mt-1.5 border border-neutral-500 bg-transparent px-3 text-start text-sm font-semibold tabular-nums text-neutral-100'
+          : 'house-btn house-btn-ghost house-last-ghost mt-1.5 w-full justify-start tabular-nums'
       )}
     >
       {line}

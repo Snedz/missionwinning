@@ -122,6 +122,7 @@ export function LearnPage() {
 
   return (
     <PillarPageShell
+      className="house-learn"
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnTitle', { defaultValue: 'Learn & Master' })}
@@ -131,7 +132,7 @@ export function LearnPage() {
     >
         <QuietLearnIntroCard paths={paths} />
 
-        <details open={showMoreOpen || undefined} className="group border-2 border-border bg-card">
+        <details open={showMoreOpen || undefined} className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <BookMarked className="h-4 w-4 text-primary" aria-hidden />
             {t('quietLearnMorePaths', {
@@ -155,6 +156,7 @@ export function LearnPage() {
           />
           {filteredPaths.length === 0 && (
             <EmptyState
+              className="house-empty"
               icon={BookOpen}
               title={t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
               description={t('learnNoMatchesDesc', {

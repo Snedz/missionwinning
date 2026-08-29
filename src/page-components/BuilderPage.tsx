@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from "next/dynamic";
-import { Layers, PenTool, ChevronRight } from "lucide-react";
+import { PenTool, ChevronRight } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
 
@@ -253,6 +253,7 @@ export function BuilderPage() {
 
   return (
     <PillarPageShell
+      className="house-builder"
       icon={PenTool}
       eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })}
       title={t('builderTitle', { defaultValue: 'Workout Builder' })}
@@ -266,20 +267,13 @@ export function BuilderPage() {
         {stepLabels.map((label, i) => {
           const n = (i + 1) as 1 | 2 | 3;
           const active = step === n;
-          const done = step > n;
           return (
             <div key={label} className="flex items-center gap-2">
               {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden />}
               <button
                 type="button"
                 onClick={() => n < step && setStep(n)}
-                className={`min-h-[44px] border-2 px-3 py-2 text-xs font-semibold tap-target ${
-                  active
-                    ? 'border-primary bg-muted text-primary'
-                    : done
-                      ? 'border-border text-foreground'
-                      : 'border-border text-muted-foreground'
-                }`}
+                className={`house-state${active ? ' is-on' : ''}`}
                 disabled={n > step}
                 aria-current={active ? 'step' : undefined}
               >
@@ -292,62 +286,56 @@ export function BuilderPage() {
 
       {step === 1 && (
         <div className="space-y-6">
-          <Card className="card-elevated">
-            <CardHeader>
-              <CardTitle>{t('builderPickStart', { defaultValue: 'How do you want to start?' })}</CardTitle>
-              <CardDescription>
-                {t('builderPickStartDesc', {
-                  defaultValue: 'Blank session, a program template, or a saved routine.',
-                })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-2">
-              <Button
-                variant="default"
-                className="primary-action min-h-[44px] tap-target"
+          <section className="house-card-hero">
+            <p className="house-kicker">{t('builderPickStart', { defaultValue: 'How do you want to start?' })}</p>
+            <p className="house-lede">
+              {t('builderPickStartDesc', {
+                defaultValue: 'Blank session, a program template, or a saved routine.',
+              })}
+            </p>
+            <div className="house-row" style={{ marginTop: 16 }}>
+              <button
+                type="button"
+                className="house-btn house-btn-primary primary-action"
                 onClick={startBlank}
               >
                 {t('builderStartBlank', { defaultValue: 'Blank workout' })}
-              </Button>
-            </CardContent>
-          </Card>
+              </button>
+            </div>
+          </section>
 
           {savedWorkouts.length > 0 ? (
         <div>
-          <h3 className="text-lg font-semibold mb-3">
+          <h3 className="house-side-title">
             {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
           </h3>
-          <div className="grid gap-3">
+          <div className="house-list">
             {(showAllSaved ? savedWorkouts : savedWorkouts.slice(0, 6)).map((w) => (
-              <Card key={w.id} className="content-card pressable-card">
-                <CardContent className="flex items-center justify-between p-4">
-                  <div>
-                    <p className="font-semibold">{w.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('builderSavedMeta', {
-                        count: w.exercises.length,
-                        date: fmt.date(w.createdAt),
-                        defaultValue: `${w.exercises.length} exercises · ${fmt.date(w.createdAt)}`,
-                      })}
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="min-h-[44px] tap-target"
-                    onClick={() => loadSaved(w)}
-                  >
-                    {t('builderLoadSaved', { defaultValue: 'Load' })}
-                  </Button>
-                </CardContent>
-              </Card>
+              <div key={w.id} className="house-item">
+                <div className="house-item-body">
+                  <strong>{w.name}</strong>
+                  <span>
+                    {t('builderSavedMeta', {
+                      count: w.exercises.length,
+                      date: fmt.date(w.createdAt),
+                      defaultValue: `${w.exercises.length} exercises · ${fmt.date(w.createdAt)}`,
+                    })}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="house-btn"
+                  onClick={() => loadSaved(w)}
+                >
+                  {t('builderLoadSaved', { defaultValue: 'Load' })}
+                </button>
+              </div>
             ))}
           </div>
           {savedWorkouts.length > 6 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-2 min-h-[44px] w-full tap-target"
+            <button
+              type="button"
+              className="house-btn house-btn-ghost"
               onClick={() => setShowAllSaved((v) => !v)}
             >
               {showAllSaved
@@ -356,36 +344,28 @@ export function BuilderPage() {
                     count: savedWorkouts.length,
                     defaultValue: `Show all ${savedWorkouts.length}`,
                   })}
-            </Button>
+            </button>
           )}
         </div>
           ) : null}
 
-          <details className="group border-2 border-border bg-card">
+          <details className="house-card group">
             <summary
               className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
               data-testid="builder-show-all"
             >
               {t('todayShowAll', { defaultValue: 'Show all' })}
             </summary>
-            <div className="space-y-4 border-t-2 border-border p-4">
-          <section
-            id="program-templates"
-            className="content-card space-y-4 border-2 border-border p-5 md:p-6"
-          >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="flex items-center gap-2 text-xl font-extrabold">
-            <Layers className="h-6 w-6 text-primary" aria-hidden />
-            {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
-          </h3>
-          <Badge variant="secondary">
-            {t('builderProgramCount', {
-              count: FREE_TEMPLATE_PROGRAM_COUNT,
-              defaultValue: '{{count}} programs',
-            })}
-          </Badge>
-        </div>
-        <p className="text-xs text-muted-foreground">
+            <div className="house-show-all-body space-y-4 p-4">
+          <section id="program-templates" className="space-y-4">
+        <p className="house-kicker">{t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}</p>
+        <p className="house-lede">
+          {t('builderProgramCount', {
+            count: FREE_TEMPLATE_PROGRAM_COUNT,
+            defaultValue: '{{count}} programs',
+          })}
+        </p>
+        <p className="house-lede">
           {t('builderTemplatesFoot', {
             defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
           })}
@@ -408,11 +388,7 @@ export function BuilderPage() {
                 role="tab"
                 aria-selected={templateCategory === value}
                 onClick={() => setTemplateCategory(value)}
-                className={
-                  templateCategory === value
-                    ? 'min-h-[44px] border-2 border-primary bg-muted px-4 py-2 text-sm font-semibold text-primary tap-target'
-                    : 'min-h-[44px] border-2 border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground tap-target'
-                }
+                className={`house-state${templateCategory === value ? ' is-on' : ''}`}
               >
                 {t(key, { defaultValue: fallback })}
               </button>
@@ -428,7 +404,7 @@ export function BuilderPage() {
       </section>
 
       {savedWorkouts.length === 0 ? (
-        <EmptyState icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts yet. Build one above or load a template.' })} description={t('builderNoSavedDesc', {
+        <EmptyState className="house-empty" icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts yet. Build one above or load a template.' })} description={t('builderNoSavedDesc', {
             defaultValue: 'Build a workout and save it — your routines appear here.',
           })}
           actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}

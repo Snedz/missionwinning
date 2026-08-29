@@ -8,7 +8,6 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, GripVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 const TRAVEL_PX = 8;
 
@@ -44,7 +43,7 @@ export function ExerciseReorderHandle({
       <button
         type="button"
         data-testid="exercise-reorder-handle"
-        className="flex h-11 w-11 tap-target min-h-[44px] items-center justify-center text-muted-foreground"
+        className="house-btn house-btn-ghost house-reorder min-h-[44px] tap-target"
         aria-label={t('activeReorderHandleAria', {
           name,
           defaultValue: 'Drag to reorder {{name}}',
@@ -73,11 +72,9 @@ export function ExerciseReorderHandle({
       >
         <GripVertical className="h-5 w-5" />
       </button>
-      <Button
+      <button
         type="button"
-        variant="ghost"
-        size="icon"
-        className="h-11 w-11 tap-target min-h-[44px]"
+        className="house-btn house-btn-ghost house-reorder min-h-[44px] tap-target"
         data-testid="exercise-reorder-up"
         disabled={!canMoveUp}
         aria-label={t('activeReorderMoveUp', {
@@ -90,12 +87,10 @@ export function ExerciseReorderHandle({
         }}
       >
         <ChevronUp className="h-5 w-5" />
-      </Button>
-      <Button
+      </button>
+      <button
         type="button"
-        variant="ghost"
-        size="icon"
-        className="h-11 w-11 tap-target min-h-[44px]"
+        className="house-btn house-btn-ghost house-reorder min-h-[44px] tap-target"
         data-testid="exercise-reorder-down"
         disabled={!canMoveDown}
         aria-label={t('activeReorderMoveDown', {
@@ -108,7 +103,7 @@ export function ExerciseReorderHandle({
         }}
       >
         <ChevronDown className="h-5 w-5" />
-      </Button>
+      </button>
     </div>
   );
 }

@@ -116,10 +116,8 @@ type Props = {
 
 const cell = 'px-1.5 py-1.5 align-middle';
 
-/** 2px rules and radius 0 come from the system. ≥44px taps. Width follows the column. */
-const numberInput =
-  'h-11 min-h-[44px] w-full min-w-0 border-2 border-border bg-background px-1 text-center text-sm font-semibold tabular-nums ' +
-  'focus:outline-none focus:ring-2 focus:ring-ring';
+/** House number cell on live compose. ≥44px taps. Width follows the column. */
+const numberInput = 'house-num min-h-[44px] w-full min-w-0 tap-target';
 
 export function SetLogTable({
   sets,
@@ -177,7 +175,7 @@ export function SetLogTable({
         <col className="w-[26%]" />
       </colgroup>
       <thead>
-        <tr className="border-b-2 border-border text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+        <tr className="house-set-head">
           <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
@@ -223,7 +221,7 @@ export function SetLogTable({
               className={cn(
                 !completed && 'border-b border-border',
                 isActive && 'is-active-row',
-                completed && !isActive && 'bg-muted/40 text-foreground',
+                completed && !isActive && 'house-set-done',
                 !completed && !isActive && 'text-muted-foreground'
               )}
             >
@@ -233,7 +231,7 @@ export function SetLogTable({
                   cell,
                   'text-start',
                   isActive || completed ? 'font-extrabold' : 'font-normal',
-                  completed && !isActive && 'border-s-[3px] border-s-primary'
+                  completed && !isActive && 'house-set-done-mark'
                 )}
               >
                 {isActive && onToggleWarmup ? (
@@ -247,7 +245,7 @@ export function SetLogTable({
                         ? t('activeToggleWorkAria', { defaultValue: 'Mark as work set' })
                         : t('activeToggleWarmupAria', { defaultValue: 'Mark as warmup' })
                     }
-                    className="flex h-11 min-h-[44px] min-w-[44px] items-center justify-start font-extrabold tabular-nums tap-target hover:bg-muted"
+                    className="house-btn house-btn-ghost house-warmup-toggle h-11 min-h-[44px] min-w-[44px] justify-start font-extrabold tabular-nums tap-target"
                   >
                     {ordinalLabels?.[setIdx] ?? (pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1)}
                   </button>
@@ -256,7 +254,7 @@ export function SetLogTable({
                 )}
                 {side ? (
                   <span
-                    className="ms-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+                    className="house-set-kicker ms-1"
                     data-testid="set-table-side"
                   >
                     {t(setSideLabelKey(side), { defaultValue: setSideDefaultLabel(side) })}
@@ -291,7 +289,7 @@ export function SetLogTable({
                       <td className={cell}>
                         <div className="flex items-center gap-1">
                           {plusLoad ? (
-                            <span className="shrink-0 text-[11px] font-semibold uppercase text-muted-foreground">
+                            <span className="house-set-kicker shrink-0">
                               {t('activeSetBodyweight', { defaultValue: 'BW' })}+
                             </span>
                           ) : null}
@@ -363,7 +361,7 @@ export function SetLogTable({
                         type="button"
                         onClick={() => onRemovePlannedSet(setIdx)}
                         data-testid="set-table-remove-warmup"
-                        className="mt-1 min-h-[44px] w-full tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                        className="house-btn house-btn-ghost mt-1 min-h-[44px] w-full tap-target"
                       >
                         {t('activeRemoveSet', { defaultValue: 'Remove set' })}
                       </button>
@@ -410,7 +408,7 @@ export function SetLogTable({
                   <td className={cn(cell, 'text-end')}>
                     {completed ? (
                       <Check
-                        className="ms-auto h-4 w-4 shrink-0 text-primary"
+                        className="house-set-check ms-auto h-4 w-4 shrink-0"
                         aria-hidden
                         data-testid="set-table-logged-check"
                       />
@@ -425,7 +423,7 @@ export function SetLogTable({
                         type="button"
                         onClick={() => onRemovePlannedSet(setIdx)}
                         data-testid="set-table-remove-warmup"
-                        className="ms-auto mt-1 min-h-[44px] tap-target border-2 border-border px-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground hover:bg-muted"
+                        className="house-btn house-btn-ghost ms-auto mt-1 min-h-[44px] tap-target"
                       >
                         {t('activeRemoveSet', { defaultValue: 'Remove set' })}
                       </button>
@@ -457,7 +455,7 @@ export function SetLogTable({
               </tr>
             ) : null}
             {completed ? (
-              <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+              <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                 <td
                   colSpan={5}
                   className={cn(cell, 'min-w-0')}
@@ -484,7 +482,7 @@ export function SetLogTable({
                     ) : kind !== 'normal' ? (
                       <Badge
                         variant="outline"
-                        className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
+                        className={cn('house-set-kicker', setKindBadgeClass(kind))}
                       >
                         {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
                       </Badge>
@@ -509,7 +507,7 @@ export function SetLogTable({
                             key={r}
                             type="button"
                             onClick={() => onRate(setIdx, r)}
-                            className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
+                            className="house-state min-h-[44px] tap-target"
                           >
                             {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
                           </button>
@@ -554,7 +552,7 @@ export function SetLogTable({
                 bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
               });
               return (
-                <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+                <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                   <td colSpan={5} className={cn(cell, 'min-w-0')}>
                     <SetLogNextCite
                       target={parts.target}
@@ -759,8 +757,7 @@ function SetRowWorkClock({
   onStop?: () => void;
 }) {
   const { t } = useTranslation();
-  const chip =
-    'min-h-[44px] min-w-[44px] border-2 border-border px-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground tap-target hover:bg-muted';
+  const chip = 'house-state min-h-[44px] tap-target';
 
   if (!kind) {
     return (
@@ -811,9 +808,7 @@ function SetRowWorkClock({
         defaultValue: '{{kind}} {{clock}}',
       })}
     >
-      <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-        {kindLabel}
-      </span>
+      <span className="house-set-kicker">{kindLabel}</span>
       <span
         className="font-extrabold tabular-nums text-foreground"
         data-testid="set-row-work-clock-digits"
@@ -871,10 +866,8 @@ function SetRowTagChips({
           data-testid={`set-table-tag-${tag}`}
           onClick={() => onPick(tag)}
           className={cn(
-            'min-h-[44px] min-w-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] tap-target',
-            kind === tag
-              ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
-              : 'border-border text-muted-foreground hover:bg-muted'
+            'house-state min-h-[44px] tap-target',
+            kind === tag && 'is-on'
           )}
         >
           {t(setKindLabelKey(tag), { defaultValue: setKindDefaultLabel(tag) })}

@@ -47,27 +47,23 @@ export function TrainComposeEmpty({
 }: Props) {
   const { t } = useTranslation();
   const start = !savedRoutineName && !hasLastSession && onPreviewStart ? onPreviewStart : onStart;
-  const title = !hydrated
-    ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
-    : savedRoutineName
-      ? savedRoutineName
-      : hasLastSession
-        ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
-        : previewName
-          ? previewName
-          : t('navTrain', { defaultValue: 'Train' });
-  const lede = !hydrated
-    ? t('activeLoadingSessionDesc', { defaultValue: 'Reading the last workout saved on this device.' })
-    : savedRoutineName
-      ? t('activeSavedRoutineDesc', {
-          name: savedRoutineName,
-          defaultValue: 'Your saved routine — last loads stay on the set row.',
+  const title = savedRoutineName
+    ? savedRoutineName
+    : hasLastSession
+      ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
+      : previewName
+        ? previewName
+        : t('navTrain', { defaultValue: 'Train' });
+  const lede = savedRoutineName
+    ? t('activeSavedRoutineDesc', {
+        name: savedRoutineName,
+        defaultValue: 'Your saved routine — last loads stay on the set row.',
+      })
+    : hasLastSession
+      ? t('activeRepeatLastSessionDesc', {
+          defaultValue: 'Same exercises and last loads. Log when ready.',
         })
-      : hasLastSession
-        ? t('activeRepeatLastSessionDesc', {
-            defaultValue: 'Same exercises and last loads. Log when ready.',
-          })
-        : t('activeEmptyExercises', { defaultValue: 'Add an exercise to begin logging sets.' });
+      : t('activeEmptyExercises', { defaultValue: 'Add an exercise to begin logging sets.' });
 
   return (
     <div className="house-compose-empty" aria-busy={hydrated ? undefined : true}>
@@ -79,7 +75,6 @@ export function TrainComposeEmpty({
           type="button"
           className="house-btn house-btn-primary"
           onClick={start}
-          disabled={!hydrated}
           data-testid={
             !savedRoutineName && !hasLastSession && previewName ? 'active-start-preview' : undefined
           }

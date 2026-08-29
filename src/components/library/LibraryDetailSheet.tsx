@@ -4,9 +4,7 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { Badge } from '@/components/ui/badge';
 import { getExerciseById } from '@/data/exercises';
 import type { Exercise } from '@/types';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
@@ -132,6 +130,7 @@ export function LibraryDetailSheet({
         open={open && !!exercise}
         onClose={() => onOpenChange(false)}
         size="sm"
+        className="mw-house house-library-detail"
         eyebrow={
           exercise
             ? [
@@ -147,51 +146,51 @@ export function LibraryDetailSheet({
         bodyClassName="p-5"
         footer={
           exercise ? (
-            <Button variant="default" className="w-full min-h-[52px] tap-target" onClick={addToSession}>
-              <Plus className="h-4 w-4 mr-2" />
+            <button
+              type="button"
+              className="house-btn house-btn-primary min-h-[52px] w-full tap-target"
+              onClick={addToSession}
+            >
+              <Plus className="h-4 w-4 me-2" />
               {activeWorkout
                 ? t('libraryAddToActive', { defaultValue: "Add to today's session" })
                 : t('libraryTrainThis', { defaultValue: 'Train this' })}
-            </Button>
+            </button>
           ) : undefined
         }
       >
           {exercise && (
               <div className="space-y-4">
                 {neighborNav && onSelectExercise && (
-                  <div className="flex items-center justify-between gap-2 border-b-2 border-border pb-3">
-                    <Button
+                  <div className="house-library-detail-nav">
+                    <button
                       type="button"
-                      variant="outline"
-                      size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
+                      className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
                       disabled={!neighborNav.prevId}
                       aria-label={t('libraryPrevExercise', { defaultValue: 'Previous exercise' })}
                       onClick={() => neighborNav.prevId && onSelectExercise(neighborNav.prevId)}
                     >
                       <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
+                    </button>
+                    <span className="house-kicker">
                       {String(neighborNav.index).padStart(3, '0')} / {String(neighborNav.total).padStart(3, '0')}
                     </span>
-                    <Button
+                    <button
                       type="button"
-                      variant="outline"
-                      size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
+                      className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] tap-target"
                       disabled={!neighborNav.nextId}
                       aria-label={t('libraryNextExercise', { defaultValue: 'Next exercise' })}
                       onClick={() => neighborNav.nextId && onSelectExercise(neighborNav.nextId)}
                     >
                       <ChevronRight className="h-4 w-4" />
-                    </Button>
+                    </button>
                   </div>
                 )}
                 {/* Craft-index detail order: media → coach language → history → alts */}
                 {guide?.mediaUrl && guideMediaMode && guideStillSrc && (
                   <button
                     type="button"
-                    className="block w-full overflow-hidden border-2 border-border bg-card text-left"
+                    className="house-card house-library-detail-media"
                     onClick={() => setFormGuideOpen(true)}
                     aria-label={t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
                   >
@@ -215,7 +214,7 @@ export function LibraryDetailSheet({
                       />
                     )}
                     {guide.mediaCaption ? (
-                      <p className="border-t-2 border-border px-2 py-1.5 text-[10px] text-muted-foreground">
+                      <p className="house-kicker px-2 py-1.5">
                         {guide.mediaCaption}
                       </p>
                     ) : null}
@@ -224,20 +223,18 @@ export function LibraryDetailSheet({
 
                 <div className="flex flex-wrap gap-1">
                   {(exercise.tags ?? []).map((tagId) => (
-                    <Badge key={tagId} variant="outline" className="text-[10px]">
+                    <span key={tagId} className="house-set-kicker">
                       {PROGRAM_TAG_LABELS[tagId]}
-                    </Badge>
+                    </span>
                   ))}
-                  {exercise.level && (
-                    <Badge variant="secondary" className="text-[10px] capitalize">
-                      {exercise.level}
-                    </Badge>
-                  )}
+                  {exercise.level ? (
+                    <span className="house-set-kicker">{exercise.level}</span>
+                  ) : null}
                 </div>
 
                 {exercise.cues && (
                   <div className="text-sm">
-                    <p className="font-medium mb-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <p className="house-kicker">
                       {t('libraryKeyCues', { defaultValue: 'Coach language' })}
                     </p>
                     <p className="text-muted-foreground">{exercise.cues}</p>
@@ -248,7 +245,7 @@ export function LibraryDetailSheet({
                   <div className="text-sm space-y-2">
                     {guide.setup.length > 0 && (
                       <div>
-                        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                        <p className="house-kicker">
                           {t('libraryFormSetup', { defaultValue: 'Setup' })}
                         </p>
                         <ul className="list-disc ps-4 text-muted-foreground space-y-0.5">
@@ -260,7 +257,7 @@ export function LibraryDetailSheet({
                     )}
                     {guide.execute.length > 0 && (
                       <div>
-                        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                        <p className="house-kicker">
                           {t('libraryFormExecute', { defaultValue: 'Execute' })}
                         </p>
                         <ul className="list-disc ps-4 text-muted-foreground space-y-0.5">
@@ -274,7 +271,7 @@ export function LibraryDetailSheet({
                 )}
 
                 {sessionCount > 0 && (
-                  <div className="content-card  p-3 text-sm space-y-2">
+                  <div className="house-card p-3 text-sm space-y-2">
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-medium">
                         {t('libraryYourHistory', {
@@ -298,7 +295,7 @@ export function LibraryDetailSheet({
 
                 {exercise.alternatives && exercise.alternatives.length > 0 && (
                   <div className="text-sm">
-                    <p className="font-medium mb-2">
+                    <p className="house-kicker">
                       {t('libraryAlternatives', { defaultValue: 'Alternatives' })}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -309,7 +306,7 @@ export function LibraryDetailSheet({
                           <button
                             key={id}
                             type="button"
-                            className="text-xs px-2 py-1  border-2 border-border hover:bg-card"
+                            className="house-state tap-target"
                             onClick={() => onSelectExercise?.(id)}
                           >
                             {alt.name}
@@ -321,23 +318,22 @@ export function LibraryDetailSheet({
                 )}
 
                 {guide && (
-                  <Button
-                    variant="outline"
-                    className="min-h-[44px] border-2 w-full"
+                  <button
+                    type="button"
+                    className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
                     onClick={() => setFormGuideOpen(true)}
                   >
                     {t('libraryViewFormGuide', { defaultValue: 'Full form guide' })}
-                  </Button>
+                  </button>
                 )}
-                <Button
+                <button
                   type="button"
-                  variant="outline"
-                  className="min-h-[44px] border-2 w-full tap-target"
+                  className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
                   data-testid="library-hide"
                   onClick={hideFromLibrary}
                 >
                   {t('libraryHide', { defaultValue: 'Hide this exercise' })}
-                </Button>
+                </button>
               </div>
           )}
       </AdaptiveOverlay>

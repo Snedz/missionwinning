@@ -19,7 +19,7 @@ export function GarageSwapList({ options, onChoose, selectedId }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-3" data-testid="garage-swap-list">
+    <div className="mw-house space-y-3" data-testid="garage-swap-list">
       <p className="text-sm text-muted-foreground">
         {t('activeSwapGarageLead', {
           defaultValue: 'Same pattern. Floor, chair, or a bar you already have.',
@@ -33,10 +33,8 @@ export function GarageSwapList({ options, onChoose, selectedId }: Props) {
               data-testid="garage-swap-option"
               data-swap-id={ex.id}
               className={cn(
-                'flex min-h-[44px] w-full flex-col items-start gap-0.5 border-2 px-3 py-2.5 text-start hover:bg-muted',
-                selectedId === ex.id
-                  ? 'border-primary bg-muted'
-                  : 'border-border bg-background'
+                'house-btn house-btn-ghost house-swap-option min-h-[44px] w-full tap-target',
+                selectedId === ex.id && 'is-on'
               )}
               onClick={() => onChoose(ex.id)}
             >

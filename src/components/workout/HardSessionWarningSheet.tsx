@@ -7,7 +7,6 @@
 
 import { useId, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import {
   hardSessionStopLine,
@@ -34,6 +33,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
       open={open}
       onClose={onBack}
       size="sm"
+      className="mw-house house-hard-session"
       titleId={titleId}
       eyebrow={t('hardSessionEyebrow', { defaultValue: 'Before a hard session' })}
       title={t('hardSessionTitle', { defaultValue: 'Stopping is allowed' })}
@@ -41,23 +41,21 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
       bodyClassName="p-5 space-y-3"
       footer={
         <div className="flex flex-col gap-2">
-          <Button
+          <button
             ref={continueRef}
             type="button"
-            variant="default"
-            className="primary-action w-full min-h-[52px] tap-target"
+            className="house-btn min-h-[52px] w-full tap-target"
             onClick={onContinue}
           >
             {t('hardSessionContinue', { defaultValue: 'I understand — start' })}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
-            className="w-full min-h-[52px] border-2 border-border tap-target"
+            className="house-btn house-btn-ghost min-h-[52px] w-full tap-target"
             onClick={onBack}
           >
             {t('hardSessionBack', { defaultValue: 'Back' })}
-          </Button>
+          </button>
         </div>
       }
     >

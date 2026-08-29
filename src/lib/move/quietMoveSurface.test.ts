@@ -60,7 +60,7 @@ describe('quiet Move surface lock', () => {
     assert.match(src, /data-testid="quiet-move-log"/);
     assert.match(src, /data-testid="quiet-move-log-submit"/);
     assert.match(src, /moveQuietLog|Log/);
-    assert.match(src, /variant="outline"/);
+    assert.match(src, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
     assert.match(src, /useEffect/);
     assert.doesNotMatch(
       src,

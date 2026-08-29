@@ -63,7 +63,7 @@ function RestLaneRow({
       role="group"
       aria-label={label}
     >
-      <span className="me-1 min-w-[5.5rem] text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+      <span className="house-kicker me-1 min-w-[5.5rem]" style={{ margin: 0 }}>
         {label}
       </span>
       {REST_PRESETS.map((sec) => {
@@ -81,12 +81,7 @@ function RestLaneRow({
               defaultValue: `Set ${label} to ${clock}`,
             })}
             onClick={() => onSetLane(lane, sec)}
-            className={cn(
-              'min-h-[44px] border-2 px-2.5 text-xs font-semibold tap-target',
-              selected
-                ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
-                : 'border-border text-muted-foreground hover:bg-muted'
-            )}
+            className={cn('house-state min-h-[44px] tap-target', selected && 'is-on')}
           >
             {clock}
           </button>

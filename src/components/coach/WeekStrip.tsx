@@ -16,21 +16,35 @@ type Props = {
   weekStart: string;
   sessions: PlanSession[];
   todayOffset: number;
+  /**
+   * House leftover on `/coach` only. Landing `CoachAdaptDemo` and the
+   * parked Today strip keep the field-manual tail — today ring stays
+   * `--accent-poster` there (www tokens). Do not pass this on landing.
+   */
+  house?: boolean;
 };
 
 function SessionGlyph({
   done,
   kind,
   missed,
+  house,
 }: {
   done: boolean;
   kind: PlanSession['kind'] | undefined;
   /** A missed day is behind you — it must not compete with live days for the eye. */
   missed?: boolean;
+  house?: boolean;
 }) {
   // A done cell is an ink fill, so its check has to be light or it disappears.
   if (done) {
-    return <Check className="mt-1 h-3.5 w-3.5 text-neutral-100" aria-hidden strokeWidth={2.5} />;
+    return (
+      <Check
+        className={house ? 'house-week-check' : 'mt-1 h-3.5 w-3.5 text-neutral-100'}
+        aria-hidden
+        strokeWidth={2.5}
+      />
+    );
   }
   /*
    * `.601` — a missed day drew its glyph in `text-primary`, the same accent a
@@ -43,15 +57,30 @@ function SessionGlyph({
    */
   const tone = missed ? 'text-muted-foreground' : 'text-primary';
   if (kind === 'conditioning') {
-    return <Zap className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
+    return (
+      <Zap
+        className={house ? `house-week-glyph${missed ? ' is-missed' : ''}` : cn('mt-1 h-3.5 w-3.5', tone)}
+        aria-hidden
+      />
+    );
   }
   if (kind === 'recovery') {
-    return <Wind className="mt-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden />;
+    return (
+      <Wind
+        className={house ? 'house-week-glyph is-missed' : 'mt-1 h-3.5 w-3.5 text-muted-foreground'}
+        aria-hidden
+      />
+    );
   }
-  return <Dumbbell className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
+  return (
+    <Dumbbell
+      className={house ? `house-week-glyph${missed ? ' is-missed' : ''}` : cn('mt-1 h-3.5 w-3.5', tone)}
+      aria-hidden
+    />
+  );
 }
 
-export function WeekStrip({ sessions, todayOffset }: Props) {
+export function WeekStrip({ sessions, todayOffset, house }: Props) {
   const { t } = useTranslation();
   const [pulseOffsets, setPulseOffsets] = useState<Set<number>>(() => new Set());
   const prevDoneRef = useRef<Map<number, boolean>>(new Map());
@@ -73,7 +102,10 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
   const byOffset = new Map(sessions.map((s) => [s.dayOffset, s]));
 
   return (
-    <div className="grid grid-cols-7 gap-1">
+    <div
+      className={house ? 'house-week-strip' : 'grid grid-cols-7 gap-1'}
+      data-testid={house ? 'coach-week-strip' : undefined}
+    >
       {DAY_LABELS.map((label, i) => {
         const session = byOffset.get(i);
         const isToday = i === todayOffset;
@@ -81,6 +113,39 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
         const done = status === 'done';
         const missed = status === 'missed';
         const recovery = session?.kind === 'recovery';
+
+        if (house) {
+          return (
+            <div
+              key={label}
+              className={`house-week-cell${done ? ' is-done' : ''}${isToday ? ' is-today' : ''}${missed ? ' is-missed' : ''}${!session ? ' is-rest' : ''}${pulseOffsets.has(i) ? ' week-strip-pulse' : ''}`}
+            >
+              <span className="house-week-cell-name">{label}</span>
+              {session ? (
+                <>
+                  <SessionGlyph house done={done} kind={session.kind} missed={missed} />
+                  {done && (
+                    <span className="house-week-cell-mark">
+                      {t('coachSessionDone', { defaultValue: 'Done' })}
+                    </span>
+                  )}
+                  {missed && (
+                    <span className="house-week-cell-mark is-missed">
+                      {t('coachSessionMissed', { defaultValue: 'Missed' })}
+                    </span>
+                  )}
+                  {recovery && session.kind === 'recovery' && !done && (
+                    <span className="house-week-cell-mark">
+                      {t('coachSessionMobility', { defaultValue: 'Mobility' })}
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="house-week-cell-mark">—</span>
+              )}
+            </div>
+          );
+        }
 
         return (
           <div

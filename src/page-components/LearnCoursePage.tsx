@@ -50,6 +50,7 @@ export function LearnCoursePage() {
 
   return (
     <PillarPageShell
+      className="house-learn"
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnCourseTitle', { defaultValue: 'Specialist courses' })}
@@ -75,6 +76,7 @@ export function LearnCoursePage() {
       )}
       {!loading && premium && chapters.length === 0 && !fetchFailed && (
         <EmptyState
+          className="house-empty"
           icon={BookOpen}
           title={t('learnCourseEmptyTitle', { defaultValue: 'No specialist courses yet' })}
           description={

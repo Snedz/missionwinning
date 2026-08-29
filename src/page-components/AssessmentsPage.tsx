@@ -9,14 +9,13 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ClipboardList } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { persistParqScreen, scoreParqAnswers } from '@/lib/journey/parqIntake';
+import { assessmentsEnFloor } from '@/i18n/assessmentsLocales';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -222,6 +221,7 @@ export function AssessmentsPage() {
 
   return (
     <PillarPageShell
+      className="house-assess"
       icon={ClipboardList}
       eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })}
       title={t('assessTitle', { defaultValue: 'Readiness Assessment' })}
@@ -230,64 +230,64 @@ export function AssessmentsPage() {
       })}
       showLegalFooter
     >
-      {/* Field manual: health form first; stage coaching under disclosure. */}
+      {/* Quiet leftover: form is the first-paint object. Stage prompts stay extra. */}
       {!result && (
-        <Card className="content-card">
-          <CardHeader>
-            <CardTitle>{t('assessFormTitle', { defaultValue: 'Quick Health & Lifestyle Screen' })}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {questions.map((item) => (
-              <div key={item.key} className="space-y-1">
-                <div className="text-sm font-semibold">
-                  {t(`assessQ_${item.key}`, { defaultValue: item.key })}
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  {[
-                    { opt: 'yes', label: t('assessYes', { defaultValue: 'Yes' }) },
-                    { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
-                    { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
-                  ].map(({ opt, label }) => (
-                    <Button
-                      key={opt}
-                      size="sm"
-                      variant={answers[item.key] === opt ? 'selected' : 'outline'}
-                      className="min-h-[44px] tap-target"
-                      onClick={() => handleAnswer(item.key, opt)}
-                    >
-                      {label}
-                    </Button>
-                  ))}
-                  {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
-                    <input
-                      className="border-2 border-border rounded-none px-2 text-sm min-h-[44px]"
-                      placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
-                      onBlur={(e) =>
-                        handleAnswer(item.key, e.target.value || answers[item.key] || '')
-                      }
-                    />
-                  ) : null}
-                </div>
+        <div className="house-card space-y-4">
+          <p className="font-semibold">
+            {t('assessFormTitle', { defaultValue: 'Quick Health & Lifestyle Screen' })}
+          </p>
+          {questions.map((item) => (
+            <div key={item.key} className="space-y-1">
+              <div className="text-sm font-semibold">
+                {t(`assessQ_${item.key}`, {
+                  defaultValue: assessmentsEnFloor(`assessQ_${item.key}`),
+                })}
               </div>
-            ))}
-            <Button
-              className="mt-4 w-full min-h-[44px] tap-target primary-action"
-              onClick={submitAssessment}
-              disabled={Object.keys(answers).length < 5}
-            >
-              {t('submitAssessment', { defaultValue: 'Submit Assessment' })}
-            </Button>
-            <div className="text-xs text-muted-foreground">
-              {t('assessDisclaimer', {
-                defaultValue:
-                  'This is educational screening only — not medical advice. Always consult a doctor.',
-              })}
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { opt: 'yes', label: t('assessYes', { defaultValue: 'Yes' }) },
+                  { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
+                  { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
+                ].map(({ opt, label }) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    className={`house-state${answers[item.key] === opt ? ' is-on' : ''}`}
+                    onClick={() => handleAnswer(item.key, opt)}
+                  >
+                    {label}
+                  </button>
+                ))}
+                {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
+                  <input
+                    className="px-2 text-sm min-h-[44px]"
+                    placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
+                    onBlur={(e) =>
+                      handleAnswer(item.key, e.target.value || answers[item.key] || '')
+                    }
+                  />
+                ) : null}
+              </div>
             </div>
-          </CardContent>
-        </Card>
+          ))}
+          <button
+            type="button"
+            className="house-btn house-btn-primary primary-action mt-4 w-full min-h-[44px] tap-target"
+            onClick={submitAssessment}
+            disabled={Object.keys(answers).length < 5}
+          >
+            {t('submitAssessment', { defaultValue: 'Submit Assessment' })}
+          </button>
+          <p className="house-kicker">
+            {t('assessDisclaimer', {
+              defaultValue:
+                'This is educational screening only — not medical advice. Always consult a doctor.',
+            })}
+          </p>
+        </div>
       )}
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
           {t('assessMoreStage', { defaultValue: 'Stage of change & prompts' })}
         </summary>
@@ -297,19 +297,18 @@ export function AssessmentsPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button
+              <button
                 key={s.nameKey}
-                size="sm"
-                variant={selectedStage === i ? 'selected' : 'outline'}
-                className="min-h-[44px] tap-target"
+                type="button"
+                className={`house-state${selectedStage === i ? ' is-on' : ''}`}
                 onClick={() => setSelectedStage(i)}
               >
                 {t(s.nameKey, { defaultValue: s.nameDefault })}
-              </Button>
+              </button>
             ))}
           </div>
-          <div className="rounded-none border-2 border-border bg-card p-3">
-            <div className="font-semibold text-primary">
+          <div className="house-card" style={{ padding: 12 }}>
+            <div className="font-semibold">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, {
                 defaultValue: stages[selectedStage].focusDefault,
@@ -321,17 +320,17 @@ export function AssessmentsPage() {
               ))}
             </ul>
           </div>
-          <div className="text-xs text-muted-foreground">
+          <p className="house-kicker">
             {t('assessOarsNote', {
               defaultValue:
                 'OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness.',
             })}
-          </div>
+          </p>
         </div>
       </details>
 
       {result && (
-        <Card
+        <div
           // Three ranks, one hue. High is the filled red poster the handoff
           // asks for; moderate keeps the red as an edge only; low is a plain
           // ruled card. Red/amber/green would have been a traffic light, and
@@ -339,68 +338,63 @@ export function AssessmentsPage() {
           // "green means go" when the whole point is to send some people to a
           // doctor first.
           className={cn(
-            'content-card border-2',
+            'house-card space-y-4',
             result.riskLevel === 'high'
               ? 'border-primary bg-muted'
               : result.riskLevel === 'moderate'
                 ? 'border-primary'
-                : 'border-border'
+                : undefined
           )}
         >
-          <CardHeader>
-            <CardTitle>
-              {t('assessResultTitle', { defaultValue: 'Assessment result' })}:{' '}
-              <span className="uppercase">
-                {result.riskLevel === 'low'
-                  ? t('riskLow', { defaultValue: 'Low risk' })
-                  : result.riskLevel === 'moderate'
-                    ? t('riskModerate', { defaultValue: 'Moderate risk' })
-                    : t('riskHigh', { defaultValue: 'High risk' })}
-              </span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p>{result.notes}</p>
-            <div>
-              <div className="font-semibold mb-2">
-                {t('assessRecommendations', {
-                  defaultValue: 'Recommendations — tap to start a free starter:',
-                })}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {result.recommendations.map((r, i) => (
-                  <Button
-                    key={i}
-                    size="sm"
-                    variant="outline"
-                    className="min-h-[44px] tap-target"
-                    onClick={() => startRecommended(r)}
-                  >
-                    {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
-                    {r.length > 45 ? `${r.slice(0, 42)}...` : r}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <Button
-              onClick={() => {
-                setResult(null);
-                setAnswers({});
-              }}
-            >
-              {t('retake', { defaultValue: 'Retake Assessment' })}
-            </Button>
-            <div className="text-xs">
-              {t('assessResultFoot', {
-                defaultValue:
-                  'Results stay on this device. Use them to pick a starter on Today. Completing a workout is what earns a streak.',
+          <p className="font-semibold">
+            {t('assessResultTitle', { defaultValue: 'Assessment result' })}:{' '}
+            {result.riskLevel === 'low'
+              ? t('riskLow', { defaultValue: 'Low risk' })
+              : result.riskLevel === 'moderate'
+                ? t('riskModerate', { defaultValue: 'Moderate risk' })
+                : t('riskHigh', { defaultValue: 'High risk' })}
+          </p>
+          <p>{result.notes}</p>
+          <div>
+            <div className="font-semibold mb-2">
+              {t('assessRecommendations', {
+                defaultValue: 'Recommendations — tap to start a free starter:',
               })}
             </div>
-            <Button variant="outline" className="mt-2" asChild>
-              <Link href="/log">{t('assessGoToday', { defaultValue: 'Go to Today for free starters' })}</Link>
-            </Button>
-          </CardContent>
-        </Card>
+            <div className="flex flex-wrap gap-2">
+              {result.recommendations.map((r, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className="house-btn"
+                  onClick={() => startRecommended(r)}
+                >
+                  {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
+                  {r.length > 45 ? `${r.slice(0, 42)}...` : r}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="house-btn"
+            onClick={() => {
+              setResult(null);
+              setAnswers({});
+            }}
+          >
+            {t('retake', { defaultValue: 'Retake Assessment' })}
+          </button>
+          <p className="house-kicker">
+            {t('assessResultFoot', {
+              defaultValue:
+                'Results stay on this device. Use them to pick a starter on Today. Completing a workout is what earns a streak.',
+            })}
+          </p>
+          <Link href="/log" className="house-btn house-btn-ghost">
+            {t('assessGoToday', { defaultValue: 'Go to Today for free starters' })}
+          </Link>
+        </div>
       )}
 
       <SignInPrompt

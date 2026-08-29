@@ -29,7 +29,7 @@ export function TodayReentryCard({ reentry }: { reentry: Reentry }) {
   if (!reentry.show) return null;
 
   return (
-    <p className="poster-sub mb-2.5 text-sm leading-relaxed" role="status">
+    <p className="house-lede house-reentry" role="status">
       {reentryQuietLine(reentry, t)}
     </p>
   );

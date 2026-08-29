@@ -14,11 +14,9 @@ import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
 import { MoveLockedPreview } from '@/components/move/MoveLockedPreview';
 import { QuietMoveLogCard } from '@/components/move/QuietMoveLogCard';
 import { usePremium } from '@/hooks/usePremium';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getPillarWins } from '@/lib/pillarLog';
-import { Clock, Wind, ChevronDown } from 'lucide-react';
+import { Wind, ChevronDown } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { useToast } from '@/hooks/use-toast';
@@ -131,63 +129,45 @@ export function MovePage() {
     );
   }
 
-  const renderFlowGrid = (flows: MobilityFlow[], label: string, accent?: boolean) => (
+  const renderFlowGrid = (flows: MobilityFlow[], label: string) => (
     <div className="space-y-3">
-      {label ? (
-        <h3
-          className={`text-sm font-semibold uppercase tracking-wide ${
-            accent ? 'text-primary' : 'text-muted-foreground'
-          }`}
-        >
-          {label}
-        </h3>
-      ) : null}
+      {label ? <p className="house-kicker">{label}</p> : null}
       {flows.length === 0 ? (
-        <div className="border-y-2 border-border py-4 space-y-3">
-          <p className="text-sm text-muted-foreground">
+        <div className="space-y-3">
+          <p className="house-lede">
             {t('moveCollectionEmpty', {
               defaultValue: 'No flows in this collection.',
             })}
           </p>
           {collectionId !== 'all' ? (
-            <Button
+            <button
               type="button"
-              variant="outline"
-              className="min-h-[44px] tap-target"
+              className="house-btn house-btn-ghost min-h-[44px] tap-target"
               onClick={() => setCollectionId('all')}
             >
               {t('moveCollectionShowAll', { defaultValue: 'Show all flows' })}
-            </Button>
+            </button>
           ) : null}
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="house-flow-list">
           {flows.map((flow) => (
-            <Card
-              key={flow.id}
-              className="content-card border-2 border-border hover:border-primary transition-colors"
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Clock className="h-4 w-4 text-primary" />
-                  {flow.name}
-                </CardTitle>
-                <CardDescription>{flow.focus}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between gap-4">
-                <span className="text-sm text-muted-foreground tabular-nums">
+            <article key={flow.id} className="house-card house-flow">
+              <h3 className="house-flow-name">{flow.name}</h3>
+              <p className="house-lede">{flow.focus}</p>
+              <div className="house-row">
+                <span className="house-lede tabular-nums">
                   {flow.durationMin} min · {flow.steps.length} steps
                 </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="min-h-[44px] tap-target"
+                <button
+                  type="button"
+                  className="house-btn house-btn-ghost min-h-[44px] tap-target"
                   onClick={() => setActiveFlowId(flow.id)}
                 >
                   {t('moveStartFlow', { defaultValue: 'Start Flow' })}
-                </Button>
-              </CardContent>
-            </Card>
+                </button>
+              </div>
+            </article>
           ))}
         </div>
       )}
@@ -196,6 +176,7 @@ export function MovePage() {
 
   return (
     <PillarPageShell
+      className="house-move"
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
@@ -217,7 +198,11 @@ export function MovePage() {
         id="move-flows"
         className="scroll-mt-20 space-y-6"
       >
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label={t('moveCollections', { defaultValue: 'Collections' })}>
+      <div
+        className="house-collections"
+        role="tablist"
+        aria-label={t('moveCollections', { defaultValue: 'Collections' })}
+      >
         {MOVE_COLLECTIONS.map((c) => {
           const selected = collectionId === c.id;
           return (
@@ -226,15 +211,7 @@ export function MovePage() {
               type="button"
               role="tab"
               aria-selected={selected}
-              className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-semibold transition-colors tap-target',
-                // `is-active-tab`, not a red fill: a selection is not an action
-                // (`.240`). `bg-primary` here read as a red action on a screen
-                // whose cap is zero — the same defect `/programs` fixed.
-                selected
-                  ? 'is-active-tab border-primary text-foreground'
-                  : 'border-border bg-card text-foreground hover:border-primary'
-              )}
+              className={cn('house-state shrink-0 tap-target', selected && 'is-on')}
               onClick={() => setCollectionId(c.id)}
             >
               {t(c.titleKey, { defaultValue: c.titleDefault })}
@@ -253,7 +230,7 @@ export function MovePage() {
       </div>
 
       {premium && filteredPremium.length > 0 && (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <span>
               {t('movePremiumFlowsCount', {
@@ -264,7 +241,7 @@ export function MovePage() {
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
           <div className="border-t-2 border-border p-4">
-            {renderFlowGrid(filteredPremium, '', true)}
+            {renderFlowGrid(filteredPremium, '')}
           </div>
         </details>
       )}
@@ -325,7 +302,7 @@ export function MovePage() {
       )}
 
       {recentWins.length > 0 ? (
-        <details className="group border-2 border-border bg-card">
+        <details className="house-card group">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
             {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}
           </summary>
@@ -339,6 +316,7 @@ export function MovePage() {
         </details>
       ) : (
         <EmptyState
+          className="house-empty"
           icon={Wind}
           title={t('moveEmptyTitle', { defaultValue: 'No Move sessions logged yet' })}
           description={t('moveEmptyDesc', {

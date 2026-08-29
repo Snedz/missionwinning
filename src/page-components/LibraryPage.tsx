@@ -12,7 +12,6 @@ import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Check, Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -32,7 +31,7 @@ import {
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { FilterChip } from '@/components/ui/FilterChip';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
@@ -196,14 +195,9 @@ export function LibraryPage() {
       className="house-catalog"
     >
       {hiddenRows.length > 0 ? (
-        <div
-          className="mb-3 space-y-2 border-2 border-border p-3"
-          data-testid="library-hidden"
-        >
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            {t('libraryHidden', { defaultValue: 'Hidden' })}
-          </p>
-          <p className="text-xs text-muted-foreground">
+        <div className="house-card house-library-hidden mb-3 space-y-2" data-testid="library-hidden">
+          <p className="house-kicker">{t('libraryHidden', { defaultValue: 'Hidden' })}</p>
+          <p className="house-lede">
             {t('libraryHiddenDesc', {
               defaultValue: 'Hidden names stay off Add and search. History stays.',
             })}
@@ -212,40 +206,41 @@ export function LibraryPage() {
             {hiddenRows.map((row) => (
               <li
                 key={row.id}
-                className="flex min-h-[44px] items-center justify-between gap-2"
+                className="house-item house-library-hidden-row flex items-center justify-between gap-2"
               >
-                <span className="text-sm font-semibold">{row.name}</span>
-                <Button
+                <span className="min-w-0 font-medium">{row.name}</span>
+                <button
                   type="button"
-                  variant="outline"
-                  className="min-h-[44px] shrink-0 tap-target"
+                  className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target"
                   data-testid="library-unhide"
                   onClick={() => {
                     if (unhideExerciseNow(row.id)) bumpHide();
                   }}
                 >
                   {t('libraryUnhide', { defaultValue: 'Unhide' })}
-                </Button>
+                </button>
               </li>
             ))}
           </ul>
         </div>
       ) : null}
-      <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
+      <div className="house-filter-bar space-y-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
+            <input
+              type="search"
+              className="house-field house-library-search min-h-[44px]"
               placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
               value={filters.query}
               onChange={(e) => setFilter('query', e.target.value)}
-              className="min-h-[44px] pl-9"
+              data-testid="library-search"
             />
           </div>
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="shrink-0 min-h-[44px] gap-1.5"
+            className="house-btn house-btn-ghost house-filter-btn shrink-0 gap-1.5 tap-target"
+            data-testid="library-filters-open"
             onClick={() => setFiltersOpen(true)}
           >
             <SlidersHorizontal className="h-4 w-4" />
@@ -253,7 +248,7 @@ export function LibraryPage() {
             {activeFilterCount > 0 && (
               <span className="tabular-nums text-primary">({activeFilterCount})</span>
             )}
-          </Button>
+          </button>
         </div>
 
         <div className="house-catalog-states" data-testid="library-states">
@@ -272,36 +267,36 @@ export function LibraryPage() {
         {activeFilterCount > 0 && (
           <div className="flex flex-wrap gap-1.5 items-center">
             {filters.muscle && (
-              <FilterChip active onClick={() => setFilter('muscle', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('muscle', '')}>
                 {filters.muscle} <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.equipment && (
-              <FilterChip active onClick={() => setFilter('equipment', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('equipment', '')}>
                 {t(EQUIP_LABELS[filters.equipment] ?? 'libraryEquipAll')}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.level && (
-              <FilterChip active onClick={() => setFilter('level', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('level', '')}>
                 {t(LEVEL_LABELS[filters.level] ?? 'libraryLevelAll')}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.tag && (
-              <FilterChip active onClick={() => setFilter('tag', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('tag', '')}>
                 {PROGRAM_TAG_LABELS[filters.tag]} <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             {filters.pattern && (
-              <FilterChip active onClick={() => setFilter('pattern', '')}>
+              <button type="button" className="house-state is-on" onClick={() => setFilter('pattern', '')}>
                 {PATTERN_FILTER_LABELS[filters.pattern]}{' '}
                 <X className="inline h-3 w-3 ms-0.5" />
-              </FilterChip>
+              </button>
             )}
             <button
               type="button"
-              className="text-xs text-muted-foreground underline"
+              className="house-btn house-btn-ghost"
               onClick={clearFilters}
             >
               {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
@@ -309,7 +304,7 @@ export function LibraryPage() {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground">
+        <p className="house-lede house-library-showing">
           {t('libraryShowingCount', {
             shown: visibleExercises.length,
             total: filtered.length,
@@ -318,141 +313,137 @@ export function LibraryPage() {
         </p>
       </div>
 
-      <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{t('libraryFilters', { defaultValue: 'Filters' })}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterMuscle', { defaultValue: 'Muscle' })}
-              </p>
-              <Input
-                type="search"
-                value={muscleQuery}
-                onChange={(e) => setMuscleQuery(e.target.value)}
-                placeholder={t('libraryMuscleSearch', { defaultValue: 'Search muscles…' })}
-              />
-              <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
-                <FilterChip active={!filters.muscle} onClick={() => setFilter('muscle', '')}>
-                  {t('libraryEquipAll', { defaultValue: 'All' })}
-                </FilterChip>
-                {muscleOptions.map((m) => (
-                  <FilterChip
-                    key={m}
-                    active={filters.muscle === m}
-                    onClick={() => setFilter('muscle', m)}
-                  >
-                    {m}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterPattern', { defaultValue: 'Pattern' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {PATTERN_FILTER_CHIPS.map((p) => (
-                  <FilterChip
-                    key={p || 'all-pattern'}
-                    active={filters.pattern === p}
-                    onClick={() => setFilter('pattern', p)}
-                  >
-                    {p
-                      ? PATTERN_FILTER_LABELS[p]
-                      : t('libraryPatternAll', { defaultValue: 'All' })}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterEquipment', { defaultValue: 'Equipment' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {EQUIP_CHIPS.map((e) => (
-                  <FilterChip
-                    key={e || 'all-equip'}
-                    active={filters.equipment === e}
-                    onClick={() => setFilter('equipment', e)}
-                  >
-                    {t(EQUIP_LABELS[e])}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterLevel', { defaultValue: 'Level' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {LEVEL_CHIPS.map((l) => (
-                  <FilterChip
-                    key={l || 'all-level'}
-                    active={filters.level === l}
-                    onClick={() => setFilter('level', l)}
-                  >
-                    {t(LEVEL_LABELS[l])}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('libraryFilterTag', { defaultValue: 'Goal' })}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {TAG_CHIPS.map((tag) => (
-                  <FilterChip
-                    key={tag || 'all-tag'}
-                    active={filters.tag === tag}
-                    onClick={() => setFilter('tag', tag)}
-                  >
-                    {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
-                  </FilterChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <Button
-                variant="outline"
-                className="min-h-[44px] flex-1 tap-target"
-                onClick={clearFilters}
+      <AdaptiveOverlay
+        open={filtersOpen}
+        onClose={() => setFiltersOpen(false)}
+        size="sm"
+        className="mw-house house-library-filters"
+        title={t('libraryFilters', { defaultValue: 'Filters' })}
+        bodyClassName="space-y-4 p-5"
+        footer={
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="house-btn house-btn-ghost min-h-[44px] flex-1 tap-target"
+              onClick={clearFilters}
+            >
+              {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
+            </button>
+            <button
+              type="button"
+              className="house-btn min-h-[44px] flex-1 tap-target"
+              onClick={() => setFiltersOpen(false)}
+            >
+              {t('libraryApplyFilters', { defaultValue: 'Done' })}
+            </button>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterMuscle', { defaultValue: 'Muscle' })}</p>
+            <input
+              type="search"
+              className="house-field"
+              value={muscleQuery}
+              onChange={(e) => setMuscleQuery(e.target.value)}
+              placeholder={t('libraryMuscleSearch', { defaultValue: 'Search muscles…' })}
+            />
+            <div className="flex max-h-40 flex-wrap gap-2 overflow-y-auto">
+              <button
+                type="button"
+                className={cn('house-state tap-target', !filters.muscle && 'is-on')}
+                onClick={() => setFilter('muscle', '')}
               >
-                {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
-              </Button>
-              <Button
-                variant="default"
-                className="primary-action min-h-[44px] flex-1 tap-target"
-                onClick={() => setFiltersOpen(false)}
-              >
-                {t('libraryApplyFilters', { defaultValue: 'Done' })}
-              </Button>
+                {t('libraryEquipAll', { defaultValue: 'All' })}
+              </button>
+              {muscleOptions.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={cn('house-state tap-target', filters.muscle === m && 'is-on')}
+                  onClick={() => setFilter('muscle', m)}
+                >
+                  {m}
+                </button>
+              ))}
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
 
-      <ul data-testid="library-exercise-list">
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterPattern', { defaultValue: 'Pattern' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {PATTERN_FILTER_CHIPS.map((p) => (
+                <button
+                  key={p || 'all-pattern'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.pattern === p && 'is-on')}
+                  onClick={() => setFilter('pattern', p)}
+                >
+                  {p ? PATTERN_FILTER_LABELS[p] : t('libraryPatternAll', { defaultValue: 'All' })}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterEquipment', { defaultValue: 'Equipment' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {EQUIP_CHIPS.map((e) => (
+                <button
+                  key={e || 'all-equip'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.equipment === e && 'is-on')}
+                  onClick={() => setFilter('equipment', e)}
+                >
+                  {t(EQUIP_LABELS[e])}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterLevel', { defaultValue: 'Level' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {LEVEL_CHIPS.map((l) => (
+                <button
+                  key={l || 'all-level'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.level === l && 'is-on')}
+                  onClick={() => setFilter('level', l)}
+                >
+                  {t(LEVEL_LABELS[l])}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="house-kicker">{t('libraryFilterTag', { defaultValue: 'Goal' })}</p>
+            <div className="flex flex-wrap gap-2">
+              {TAG_CHIPS.map((tag) => (
+                <button
+                  key={tag || 'all-tag'}
+                  type="button"
+                  className={cn('house-state tap-target', filters.tag === tag && 'is-on')}
+                  onClick={() => setFilter('tag', tag)}
+                >
+                  {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AdaptiveOverlay>
+
+      <ul className="house-list" data-testid="library-exercise-list">
         {visibleExercises.map((ex) => {
           const isPicked = pickedIds.includes(ex.id);
           return (
-            <li key={ex.id} className="flex items-stretch border-t border-border">
+            <li key={ex.id} className="house-item">
               <button
                 type="button"
-                className={cn(
-                  'flex h-[52px] w-[52px] shrink-0 items-center justify-center border-r border-border',
-                  isPicked
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-background text-muted-foreground'
-                )}
+                className={`house-item-pick${isPicked ? ' is-on' : ''}`}
                 aria-pressed={isPicked}
                 aria-label={
                   isPicked
@@ -466,19 +457,18 @@ export function LibraryPage() {
               <button
                 type="button"
                 data-testid="library-exercise-row"
-                className="min-h-[52px] min-w-0 flex-1 px-3 py-2 text-left"
+                className="house-item-body"
                 onClick={() => setDetailId(ex.id)}
               >
-                <p className="truncate text-[15px] font-semibold">{ex.name}</p>
-                <p className="truncate text-xs text-muted-foreground">
+                <strong>{ex.name}</strong>
+                <span>
                   {ex.muscleGroups.join(' · ')}
                   {ex.equipment ? ` · ${ex.equipment}` : ''}
-                </p>
+                </span>
               </button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="min-h-[52px] shrink-0 text-xs"
+              <button
+                type="button"
+                className="house-btn house-btn-ghost"
                 aria-label={t('libraryViewDetailsFor', {
                   name: ex.name,
                   defaultValue: `View details for ${ex.name}`,
@@ -486,7 +476,7 @@ export function LibraryPage() {
                 onClick={() => setDetailId(ex.id)}
               >
                 {t('libraryViewDetails', { defaultValue: 'View details' })}
-              </Button>
+              </button>
             </li>
           );
         })}
@@ -494,22 +484,22 @@ export function LibraryPage() {
 
       {filtered.length > visibleCount ? (
         <div className="flex justify-center pt-2">
-          <Button
+          <button
             type="button"
-            variant="outline"
-            className="min-h-[44px]"
+            className="house-btn"
             onClick={() => setVisibleCount((n) => n + 16)}
           >
             {t('libraryLoadMore', {
               remaining: filtered.length - visibleCount,
               defaultValue: `Load more (${filtered.length - visibleCount} left)`,
             })}
-          </Button>
+          </button>
         </div>
       ) : null}
 
       {filtered.length === 0 && (
         <EmptyState
+          className="house-empty"
           icon={Dumbbell}
           title={t('libraryNoResultsTitle', { defaultValue: 'Nothing matches' })}
           description={t('libraryNoResults', {
@@ -520,14 +510,14 @@ export function LibraryPage() {
         />
       )}
 
-      <details className="group border-2 border-border bg-card">
+      <details className="house-card group">
         <summary
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="library-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
-        <div className="space-y-4 border-t-2 border-border p-4">
+        <div className="house-show-all-body space-y-4 p-4">
           <Button
             type="button"
             variant="outline"
@@ -635,12 +625,13 @@ export function LibraryPage() {
 
       {pickMode && (
         <div
-          className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-border bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          className="house-pick-bar"
           role="region"
           aria-label={t('libraryPickBar', { defaultValue: 'Session pick bar' })}
+          data-testid="library-pick-bar"
         >
-          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="house-pick-bar-row">
+            <p className="house-kicker">
               {t('libraryPickedCount', {
                 count: pickedIds.length,
                 max: LIBRARY_PICK_MAX,
@@ -648,18 +639,16 @@ export function LibraryPage() {
               })}
             </p>
             <div className="flex gap-2">
-              <Button
+              <button
                 type="button"
-                variant="outline"
-                className="min-h-[44px] border-2"
+                className="house-btn house-btn-ghost min-h-[44px] tap-target"
                 onClick={() => setPickedIds([])}
               >
                 {t('libraryClearPick', { defaultValue: 'Clear' })}
-              </Button>
-              <Button
+              </button>
+              <button
                 type="button"
-                variant="default"
-                className="min-h-[44px]"
+                className="house-btn house-btn-primary primary-action min-h-[44px] tap-target"
                 onClick={trainPicked}
               >
                 {activeWorkout
@@ -671,7 +660,7 @@ export function LibraryPage() {
                       count: pickedIds.length,
                       defaultValue: `Train selected (${pickedIds.length})`,
                     })}
-              </Button>
+              </button>
             </div>
           </div>
         </div>

@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
@@ -67,6 +66,7 @@ export function FeedbackPage() {
   if (submitted) {
     return (
       <InfoPageShell
+        className="house-feedback"
         icon={MessageSquare}
         eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
@@ -75,8 +75,8 @@ export function FeedbackPage() {
         })}
         variant="sections"
       >
-        {/* Field manual: one exit, no badge farm. */}
-        <div className="content-card space-y-4 p-6 text-center sm:p-8">
+        {/* Quiet leftover: one filled exit, no badge farm. */}
+        <div className="house-card space-y-4 text-center">
           <p className="text-sm text-muted-foreground">
             {t('feedbackThankRoadmap', {
               defaultValue: 'We read every note — friction first.',
@@ -85,14 +85,13 @@ export function FeedbackPage() {
               defaultValue: 'If you left email, we may follow up on a fix.',
             })}
           </p>
-          <Button
-            size="lg"
-            variant="default"
-            className="primary-action min-h-[52px] tap-target"
+          <button
+            type="button"
+            className="house-btn house-btn-primary primary-action min-h-[52px] tap-target"
             onClick={() => router.push('/log')}
           >
             {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
-          </Button>
+          </button>
         </div>
       </InfoPageShell>
     );
@@ -100,6 +99,7 @@ export function FeedbackPage() {
 
   return (
     <InfoPageShell
+      className="house-feedback"
       icon={MessageSquare}
       eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
@@ -109,8 +109,8 @@ export function FeedbackPage() {
       variant="sections"
       showLegalFooter
     >
-      {/* Field manual: form is the page — no competing header card. */}
-      <form onSubmit={handleSubmit} className="content-card space-y-6 p-6 sm:p-8">
+      {/* Quiet leftover: form is the first-paint object. Sign-in stays extra. */}
+      <form onSubmit={handleSubmit} className="house-card space-y-6">
         <p className="text-sm font-semibold">
           {t('infoFeedbackFormTitle', { defaultValue: 'What should we fix?' })}
         </p>
@@ -145,7 +145,7 @@ export function FeedbackPage() {
                 })}
               </Label>
               <textarea
-                className="mt-1 w-full h-28 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+                className="mt-1 w-full h-28 bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none"
                 value={form.friction}
                 onChange={(e) => setForm({ ...form, friction: e.target.value })}
                 placeholder={t('feedbackFrictionPlaceholder', {
@@ -161,7 +161,7 @@ export function FeedbackPage() {
                 {t('feedbackExpectedLabel', { defaultValue: 'What did you expect instead? (optional)' })}
               </Label>
               <textarea
-                className="mt-1 w-full h-20 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+                className="mt-1 w-full h-20 bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none"
                 value={form.expected}
                 onChange={(e) => setForm({ ...form, expected: e.target.value })}
                 placeholder={t('feedbackExpectedPlaceholder', {
@@ -186,17 +186,15 @@ export function FeedbackPage() {
               />
             </div>
 
-        <Button
+        <button
           type="submit"
-          size="lg"
-          variant="default"
-          className="primary-action w-full min-h-[52px] tap-target"
+          className="house-btn house-btn-primary primary-action w-full min-h-[52px] tap-target"
           disabled={loading}
         >
           {loading
             ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
             : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
-        </Button>
+        </button>
         <p className="text-center text-[10px] text-muted-foreground">
           {t('feedbackFootnote', {
             defaultValue:

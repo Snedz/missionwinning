@@ -24,6 +24,11 @@ describe('hide exercise from library surface lock (.1004)', () => {
     const page = read('src/page-components/LibraryPage.tsx');
     assert.match(page, /hideExerciseNow|unhideExerciseNow|omitHiddenExercises/);
     assert.match(page, /data-testid="library-hidden"|library-hidden/);
+    const hiddenAt = page.indexOf('library-unhide');
+    const hiddenBtn = page.slice(Math.max(0, hiddenAt - 280), hiddenAt + 80);
+    assert.match(hiddenBtn, /house-btn house-btn-ghost/);
+    assert.doesNotMatch(hiddenBtn, /variant="outline"/);
+    assert.doesNotMatch(hiddenBtn, /<Button[\s>]/);
     assert.match(page, /decideMergeExercises/);
     assert.doesNotMatch(page, DELETE_SESSION);
     assert.doesNotMatch(page, IN_SET_PR);
@@ -35,7 +40,8 @@ describe('hide exercise from library surface lock (.1004)', () => {
     const hideAt = detail.indexOf('library-hide');
     const hideBtn = detail.slice(Math.max(0, hideAt - 280), hideAt + 80);
     assert.match(hideBtn, /min-h-\[44px\]/);
-    assert.match(hideBtn, /variant="outline"/);
+    assert.match(hideBtn, /house-btn house-btn-ghost/);
+    assert.doesNotMatch(hideBtn, /variant="outline"/);
     assert.doesNotMatch(hideBtn, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(detail, /upsertCustomExercise|exercise-picker-use-name/);
     assert.doesNotMatch(detail, /looksLike|fuzzy|autoHide/);

@@ -7,7 +7,6 @@
 
 import { useTranslation } from 'react-i18next';
 import { Plus, Timer } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { ActiveSetOptionsMenu } from '@/components/workout/ActiveSetOptionsMenu';
 import { ExerciseRestStrip } from '@/components/workout/ExerciseRestStrip';
 import { restLaneFromKind, type RestLane } from '@/lib/workout/restTimer';
@@ -80,15 +79,18 @@ export function ActiveExerciseFooter({
   return (
     <div className="space-y-2 pt-1">
       <div className="flex flex-wrap items-center gap-2">
-      <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onAddSet}>
-        <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
-      </Button>
+      <button
+        type="button"
+        className="house-btn min-h-[44px] tap-target"
+        data-testid="active-add-set"
+        onClick={onAddSet}
+      >
+        <Plus className="h-3 w-3 me-1" aria-hidden /> {t('activeAddSet', { defaultValue: 'Add Set' })}
+      </button>
       {canStartDrop ? (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
-          className="min-h-[44px] tap-target"
+          className="house-btn min-h-[44px] tap-target"
           onClick={onStartDrop}
           data-testid="start-drop-set"
           aria-label={t('activeSetDropTip', {
@@ -96,30 +98,27 @@ export function ActiveExerciseFooter({
           })}
         >
           {t('activeSetDrop', { defaultValue: 'Drop' })}
-        </Button>
+        </button>
       ) : null}
       {showAddWarmups && onAddWarmups ? (
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
-          className="min-h-[44px] tap-target"
+          className="house-btn min-h-[44px] tap-target"
           data-testid="active-add-warmups"
           onClick={onAddWarmups}
         >
           {t('activeAddWarmups', { defaultValue: 'Add warmups' })}
-        </Button>
+        </button>
       ) : null}
-      <Button
+      <button
         type="button"
-        variant="ghost"
-        size="icon"
-        className="h-11 w-11 shrink-0 tap-target"
+        className="house-btn house-btn-ghost min-h-[44px] min-w-[44px] shrink-0 tap-target"
+        data-testid="active-start-rest"
         aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
         onClick={() => onStartRest(restSec, restLaneFromKind(activeSetKind))}
       >
-        <Timer className="h-4 w-4" />
-      </Button>
+        <Timer className="h-4 w-4" aria-hidden />
+      </button>
     </div>
       {holdsActiveSet ? (
         <ExerciseRestStrip
@@ -142,10 +141,8 @@ export function ActiveExerciseFooter({
               aria-pressed={activeSetKind === k}
               onClick={() => onSetKindChange(k)}
               className={cn(
-                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
-                activeSetKind === k
-                  ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
-                  : 'border-border text-muted-foreground hover:bg-muted'
+                'house-state min-h-[44px] tap-target',
+                activeSetKind === k && 'is-on'
               )}
             >
               {t(setKindLabelKey(k), {
@@ -169,10 +166,8 @@ export function ActiveExerciseFooter({
               aria-pressed={activeSetSide === s}
               onClick={() => onSetSideChange(activeSetSide === s ? undefined : s)}
               className={cn(
-                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
-                activeSetSide === s
-                  ? 'border-border bg-muted text-foreground'
-                  : 'border-border text-muted-foreground hover:bg-muted'
+                'house-state min-h-[44px] tap-target',
+                activeSetSide === s && 'is-on'
               )}
             >
               {t(setSideLabelKey(s), { defaultValue: setSideDefaultLabel(s) })}

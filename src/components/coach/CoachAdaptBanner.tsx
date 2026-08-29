@@ -129,23 +129,11 @@ export function CoachAdaptBanner({
 
   return (
     <div
-      className={
-        // The ADAPTED banner: accent-100 fill behind a red edge, per the
-        // handoff. It was a tinted box with a hairline border, which read as
-        // one more panel rather than as the plan telling you it changed.
-        compact
-          ? 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-3 py-2 space-y-1'
-          : 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-4 py-3 space-y-2'
-      }
+      className={compact ? 'house-adapt house-adapt-compact' : 'house-adapt'}
       data-testid="coach-adapt-banner"
     >
       <p
-        className={
-          // Field manual clarity: adapt reads as an explanation kicker, not a toast.
-          compact
-            ? 'eyebrow text-[10px] text-accent-900'
-            : 'eyebrow text-accent-900'
-        }
+        className="house-kicker"
         data-testid={weekDiffLine ? 'coach-week-diff' : undefined}
       >
         {weekDiffLine
@@ -169,14 +157,7 @@ export function CoachAdaptBanner({
       </p>
 
       {weekDiffLine && citeFact ? (
-        <p
-          className={
-            compact
-              ? 'text-xs text-muted-foreground leading-relaxed'
-              : 'text-sm text-muted-foreground leading-relaxed'
-          }
-          data-testid="coach-week-diff-cite"
-        >
+        <p className="house-lede" data-testid="coach-week-diff-cite">
           {t('coachCiteFromLog', {
             fact: citeFact,
             defaultValue: COACH_CITATION_COPY.fromLog,
@@ -186,10 +167,7 @@ export function CoachAdaptBanner({
 
       {/* Log-cited inspectability: inputs → rule → effect (a progression logger beat). */}
       {rationale && compact && !weekDiffLine ? (
-        <p
-          className="text-xs text-muted-foreground leading-relaxed"
-          data-testid="coach-week-rationale"
-        >
+        <p className="house-lede" data-testid="coach-week-rationale">
           {t(rationale.compactKey, {
             ...rationale.compactParams,
             defaultValue: rationale.compactDefault,
@@ -198,8 +176,8 @@ export function CoachAdaptBanner({
       ) : null}
       {rationale && !compact ? (
         <div className="space-y-1.5" data-testid="coach-week-rationale">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <span className="font-medium text-foreground">
+          <p className="house-lede">
+            <span className="house-adapt-label">
               {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
               {': '}
             </span>
@@ -208,15 +186,15 @@ export function CoachAdaptBanner({
               defaultValue: rationale.inputDefault,
             })}
           </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <span className="font-medium text-foreground">
+          <p className="house-lede">
+            <span className="house-adapt-label">
               {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
               {': '}
             </span>
             {t(rationale.ruleKey, { defaultValue: rationale.ruleDefault })}
           </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <span className="font-medium text-foreground">
+          <p className="house-lede">
+            <span className="house-adapt-label">
               {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
               {': '}
             </span>
@@ -232,14 +210,7 @@ export function CoachAdaptBanner({
       {!rationale && visibleBeats.length > 0 ? (
         <ul className={compact ? 'space-y-1' : 'space-y-1.5 text-[15px] leading-snug'}>
           {visibleBeats.map((beat) => (
-            <li
-              key={beat.key}
-              className={
-                compact
-                  ? 'text-xs text-muted-foreground leading-relaxed'
-                  : 'text-sm text-muted-foreground leading-relaxed'
-              }
-            >
+            <li key={beat.key} className="house-lede">
               {t(beat.key, {
                 count: beat.count,
                 days: beat.days,
@@ -249,13 +220,7 @@ export function CoachAdaptBanner({
           ))}
         </ul>
       ) : !rationale && beats.length === 0 && whyKeys.length === 0 ? (
-        <p
-          className={
-            compact
-              ? 'text-xs text-muted-foreground leading-relaxed'
-              : 'text-sm text-muted-foreground leading-relaxed'
-          }
-        >
+        <p className="house-lede">
           {t('coachAdaptRevisionNote', {
             rev: plan.revision,
             defaultValue: `Plan revision ${plan.revision} — week reshaped from workout history alone.`,
@@ -265,7 +230,7 @@ export function CoachAdaptBanner({
 
       {whyKeys.length > 0 ? (
         <div className="space-y-1 pt-1" data-testid="coach-why-panel">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-accent-900">
+          <p className="house-kicker">
             {t('coachWhyTodayEyebrow', { defaultValue: "Why today's plan" })}
           </p>
           <ul className="space-y-1">
@@ -274,7 +239,7 @@ export function CoachAdaptBanner({
               const line = coachWhyLine(key, t);
               if (!line) return null;
               return (
-                <li key={key} className="text-xs leading-relaxed text-muted-foreground">
+                <li key={key} className="house-lede">
                   {line}
                 </li>
               );

@@ -114,6 +114,10 @@ export function assessmentsStringsFor(lang: string): Record<string, string> {
   return BY_LANG[lang] ?? BY_LANG.en;
 }
 
+export function assessmentsEnFloor(key: string): string {
+  return ASSESS_EN[key] ?? key;
+}
+
 export function mergeAssessmentsStrings(common: Record<string, string>, lang: string): void {
   Object.assign(common, assessmentsStringsFor(lang));
 }
