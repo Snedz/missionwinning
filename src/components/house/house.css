@@ -2013,6 +2013,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-account .house-referral-cite {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-explore .house-board {
   border: 1px solid var(--house-line);
   background: var(--house-soft);

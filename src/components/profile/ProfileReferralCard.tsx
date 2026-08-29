@@ -74,7 +74,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
         <Users className="h-4 w-4 text-primary" aria-hidden />
         {t('growthReferralTitle', { defaultValue: 'Invite a friend' })}
       </h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-referral-cite" data-testid="account-referral-cite">
           {t('growthReferralDesc', {
             defaultValue:
               'Share your code. When someone starts their free path with it, you both grow the mission. Recognition only — no paid rewards yet.',
