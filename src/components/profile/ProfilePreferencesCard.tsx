@@ -43,11 +43,11 @@ export function ProfilePreferencesCard({
             {t('imperial', { defaultValue: 'Imperial (lbs, in)' })}
           </Button>
         </div>
-        <div className="text-xs text-muted-foreground">
+        <p className="house-units-cite" data-testid="account-units-cite">
           {t('unitsAffectsHint', {
             defaultValue: 'Affects calculators and new logs. Default is metric.',
           })}
-        </div>
+        </p>
       </div>
 
       <div className="house-card space-y-3" data-testid="account-language-card">
