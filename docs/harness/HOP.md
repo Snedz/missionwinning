@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty first. Coach still paints CoachPlanSkeleton while loading.
+Honesty was red. Accept green. Walked Home left Start → `/active` (Log set `rgb(24, 24, 27)`). Then Today close → Weekly plan → `/coach`. First `/coach` tick was house week leftover, not Loading coach plan.
 
 ## decisions
 
