@@ -53,8 +53,13 @@ function SetDeltaCell({
       })
     );
   }
-  if (parts.length === 0) return <span className="text-muted-foreground">—</span>;
-  return <span className="text-muted-foreground tabular-nums">{parts.join(' · ')}</span>;
+  if (parts.length === 0)
+    return <span className="house-lede house-victory-receipt-delta">—</span>;
+  return (
+    <span className="house-lede house-victory-receipt-delta tabular-nums">
+      {parts.join(' · ')}
+    </span>
+  );
 }
 
 export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props) {

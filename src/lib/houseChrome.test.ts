@@ -1314,6 +1314,23 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house\.house-victory-receipt \.house-victory-receipt-prev\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Victory receipt Prev is house leftover/);
+  const receiptDeltaEmpty = victoryReceipt.slice(
+    victoryReceipt.indexOf('>—</span>') - 120,
+    victoryReceipt.indexOf('>—</span>') + 20
+  );
+  assert.match(receiptDeltaEmpty, /house-lede house-victory-receipt-delta/);
+  assert.doesNotMatch(receiptDeltaEmpty, /text-muted-foreground/);
+  const receiptDeltaValue = victoryReceipt.slice(
+    victoryReceipt.indexOf('parts.join') - 180,
+    victoryReceipt.indexOf('parts.join') + 40
+  );
+  assert.match(receiptDeltaValue, /house-lede house-victory-receipt-delta/);
+  assert.doesNotMatch(receiptDeltaValue, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-delta\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt vs-last cells is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),
