@@ -58,7 +58,7 @@ export function ProfileRemindersCard({
               'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
           })}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-reminders-hint" data-testid="account-reminders-hint">
           {t('remindersPushUnavailableHint', {
             defaultValue:
               'Until then: open Today after a rest day — one next session, no catch-up.',

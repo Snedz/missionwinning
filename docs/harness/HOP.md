@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-reminders-unavailable-cite
-done_means: Account first-paint reminders unavailable cite is house leftover, not text-muted. Hint cite stays later. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountRemindersUnavailableCite.test.ts
+ticket: leftover-account-reminders-hint-cite
+done_means: Account first-paint reminders hint cite is house leftover, not text-muted. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountRemindersHintCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Reminders unavailable cite --house-muted 14px. Hint cite stays later.
+Honesty was red (3 fail / 1 pass). Chrome.
 
 ## decisions
 
-- One leftover: Account first-paint reminders unavailable cite is house leftover.
-- Hint cite stays later.
+- One leftover: Account first-paint reminders hint cite is house leftover.
+- Reminders inner ul border-t-2 stays later.
 - Identity number select stays border-2.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
