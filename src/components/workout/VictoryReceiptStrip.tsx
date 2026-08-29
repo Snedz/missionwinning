@@ -151,7 +151,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
                     </td>
                     {showVs ? (
                       <td
-                        className="py-1.5 pe-2 align-top text-muted-foreground"
+                        className="py-1.5 pe-2 align-top house-lede house-victory-receipt-prev"
                         data-testid="victory-prev"
                       >
                         {set.priorReps !== null && set.priorWeight !== null

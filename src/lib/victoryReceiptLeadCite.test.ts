@@ -48,7 +48,8 @@ test('receipt heads leftover ships separately (house-lede, not muted)', () => {
   assert.doesNotMatch(head, /text-muted-foreground/);
 
   const prev = sliceAround(receipt, 'data-testid="victory-prev"');
-  assert.match(prev, /text-muted-foreground/);
+  assert.match(prev, /house-lede/);
+  assert.doesNotMatch(prev, /text-muted-foreground/);
 
   const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
   const descNeedle = 'text-sm leading-relaxed text-muted-foreground';

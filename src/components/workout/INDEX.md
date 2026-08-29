@@ -43,7 +43,7 @@
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); BW prints reps via `formatWorkoutVolumeDisplay` (`.886`). Victory vs-last cite is house leftover (`house-lede` / `--house-muted`). Victory stats labels is house leftover (`house-lede` / `--house-muted`). Victory volume unit is house leftover (`house-lede` / `--house-muted`). |
-| `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory first paint (`.713` / `.944` / `.956`); private Save receipt. Victory receipt lead is house leftover (`house-lede` / `--house-muted`). Victory receipt heads is house leftover (`house-lede` / `--house-muted`). |
+| `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory first paint (`.713` / `.944` / `.956`); private Save receipt. Victory receipt lead is house leftover (`house-lede` / `--house-muted`). Victory receipt heads is house leftover (`house-lede` / `--house-muted`). Victory receipt Prev is house leftover (`house-lede` / `--house-muted`). |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
