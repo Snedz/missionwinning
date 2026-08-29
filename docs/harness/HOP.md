@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty first. Chrome after red. Walk after accept.
+Honesty was red (2 fail / 5 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Check-in. Scale value cite house-lede --house-muted rgb(113,113,122). Save / Not now outline rgb(244,244,245). Log set rgb(24,24,27). Finish / Skip / Swap stay outline. Copy untouched.
+
+Next leftover: Check-in scale hints (Fresh / Beaten up still text-muted-foreground). Same leftover pattern. Do not restyle the scale ticks or confirm. After-set cites stay parked. Not You chrome.
 
 ## decisions
 
