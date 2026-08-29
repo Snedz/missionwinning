@@ -5,20 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-journey-card
-done_means: Account more-settings journey card is house leftover, not Card bg-card. Both frames. Begin / day chips / Edit stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountJourneyCard.test.ts
+ticket: leftover-account-wearables-card
+done_means: Account more-settings wearables card is house leftover, not Card. Connect / Sync / Disconnect stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountWearablesCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome both frames. Accept pass. Walk 1280: /log → Start → /active → History. Journey card is 1px house-card (Edit profile after I-Day).
+Honesty was red (3 fail / 1 pass). Chrome. Accept next.
 
 ## decisions
 
-- One leftover: Account more-settings journey card frames are house leftover.
-- Not first paint (More settings). Both setup and edit frames.
-- Do not restyle Begin, day chips, or Edit profile.
+- One leftover: Account more-settings wearables card frame is house leftover.
+- Not first paint (More settings). Card unmounts when wearables is parked / flag off.
+- Do not restyle Connect / Sync / Disconnect.
+- Do not flip NEXT_PUBLIC_WEARABLES or surface parking.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
