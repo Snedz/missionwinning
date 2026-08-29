@@ -83,7 +83,7 @@
 | File | Route |
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — You leftover; first paint is house leftover (static import, no `RouteLoading`). Identity / kit first; Account door is house-btn ghost |
-| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
+| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab. Garage first-paint board is house leftover. BuddyList / ChatWindow internals stay. |
 | `AccountPage.tsx` | `/account` — settings leftover; first paint is house leftover (static import, no `RouteLoading` / `useSearchParams`). Sign-in / return / prefs first; Explore / more / help are house-card |
 | `UnderTheHoodPage.tsx` | `/account/under-the-hood` — Under the Hood first paint is house leftover (static page, not RouteLoading). Weights / downloads stay. |
 | `TransparencyPage.tsx` | `/account/transparency` — Visibility first paint is house leftover (static page, not RouteLoading). Report / downloads stay. |

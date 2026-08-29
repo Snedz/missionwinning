@@ -2235,6 +2235,21 @@
   border-color: var(--house-ink);
 }
 
+.mw-house .house-garage .house-garage-board {
+  border: 1px solid var(--house-line);
+}
+
+.mw-house .house-garage .house-garage-rail {
+  border-bottom: 1px solid var(--house-line);
+}
+
+@media (min-width: 768px) {
+  .mw-house .house-garage .house-garage-rail {
+    border-bottom: 0;
+    border-inline-end: 1px solid var(--house-line);
+  }
+}
+
 .mw-house .house-coaching form.house-card {
   max-width: 40rem;
 }
