@@ -1552,6 +1552,12 @@ test('house design system is the signed-in token table', () => {
   assert.match(formGuide, /mw-house house-form-guide/);
   assert.match(formGuide, /house-card house-form-figure/);
   assert.match(formGuide, /house-card house-form-breath/);
+  const breathCite = formGuide.slice(
+    formGuide.indexOf('{guide.breathing}</p>') - 80,
+    formGuide.indexOf('{guide.breathing}</p>') + 24
+  );
+  assert.match(breathCite, /house-lede/);
+  assert.doesNotMatch(breathCite, /text-muted-foreground/);
   assert.match(formGuide, /house-form-section/);
   assert.match(formGuide, /house-form-mark/);
   assert.doesNotMatch(formGuide, /primary-action/);
@@ -1568,6 +1574,11 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Merge-exercises dialog is house leftover/);
   assert.match(spec, /Form guide body is house leftover/);
   assert.match(spec, /Form guide sections is house leftover/);
+  assert.match(spec, /Form guide breath cite is house leftover/);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide \.house-form-breath \.house-lede \{[^}]*--house-muted/
+  );
   const inlineAdd = read('src/components/workout/ActiveInlineAddExercise.tsx');
   assert.match(inlineAdd, /house-add-exercise/);
   assert.match(inlineAdd, /house-btn min-h-\[44px\] tap-target/);

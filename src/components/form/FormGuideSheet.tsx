@@ -102,7 +102,7 @@ export function FormGuideSheet({
           {guide.breathing && (
             <section className="house-card house-form-breath">
               <h3 className="house-form-section">{t('breath', { defaultValue: 'Breath' })}</h3>
-              <p>{guide.breathing}</p>
+              <p className="house-lede">{guide.breathing}</p>
             </section>
           )}
         </div>
