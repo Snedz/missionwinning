@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk next.
+Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active. Just Go Start does not mount Hard-session. Log set rgb(24,24,27). /active?fieldTest=1 DID mount the sheet on this walk (session already written by Start). Live leftover rule `.mw-house.house-hard-session .house-lede` paints the clinician wording --house-muted rgb(113,113,122). Confirm / Finish / Skip / Swap stay outline. Copy untouched.
+
+Next leftover: Check-in scale value cite (still text-muted-foreground). Same leftover pattern. Do not restyle confirm. After-set cites stay parked. Not You chrome.
 
 ## decisions
 
