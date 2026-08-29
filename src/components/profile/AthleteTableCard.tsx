@@ -10,7 +10,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   ATHLETE_PAGE_CHANGED,
@@ -102,8 +101,7 @@ export function AthleteTableCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-table-card">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-table-card">
         <p className="eyebrow mb-1">{t('athleteTableTitle', { defaultValue: 'About training' })}</p>
         <p className="mb-4 text-sm text-muted-foreground">
           {t('athleteTableBody', {
@@ -179,7 +177,6 @@ export function AthleteTableCard() {
             </div>
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }
