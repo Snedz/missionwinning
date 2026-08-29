@@ -172,7 +172,11 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
           <div className="mt-3 space-y-3">
             <div className="flex flex-wrap items-end gap-2">
               <div className="space-y-1">
-                <label htmlFor="athlete-call-number" className="text-xs font-semibold text-muted-foreground">
+                <label
+                  htmlFor="athlete-call-number"
+                  className="house-identity-number-label"
+                  data-testid="athlete-identity-number-label"
+                >
                   {t('athleteIdentityNumber', { defaultValue: 'Number' })}
                 </label>
                 <select

@@ -5,24 +5,24 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-athlete-badges-preview-cite
-done_means: You athlete card badges preview cite is house leftover, not text-muted. Source leftover is enough if unmounted on guest. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youAthleteBadgesPreviewCite.test.ts
+ticket: leftover-you-identity-number-label
+done_means: You identity number label cite is house leftover, not text-muted. Number select stays border-2. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youIdentityNumberLabelCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Badges preview unmounted on guest — source leftover holds.
+Honesty was red (3 fail / 1 pass). Chrome next.
 
 ## decisions
 
-- One leftover: You athlete card badges preview cite is house leftover.
-- Identity remaining labels stay later.
-- What’s New inner border-t-2 stays later.
-- Badge buttons stay outline / selected. Do not restyle to house-btn-primary.
-- Preview double-rule border-2 stays.
+- One leftover: You identity number label cite is house leftover.
+- Name label stays later.
+- Identity saved cite stays later.
+- Identity Edit summary stays later.
+- Number select stays border-2. Do not leftover the select. Do not restyle to house-btn-primary.
 - Language select stays border-2.
-- Identity number select stays border-2.
+- What’s New inner border-t-2 stays later.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
