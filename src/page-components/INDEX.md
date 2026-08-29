@@ -13,7 +13,7 @@
 
 | File | Route |
 |------|-------|
-| `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. |
+| `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. Segment loading is house leftover — `/log` client nav is not group Loading. |
 | `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail. Compact hero Start is `href="/active"` (writes compose on click). |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
