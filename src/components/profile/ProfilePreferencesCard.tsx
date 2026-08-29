@@ -51,19 +51,17 @@ export function ProfilePreferencesCard({
         </div>
       </div>
 
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('language', { defaultValue: 'Language' })}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ProfileLanguageSwitcher />
-          <div className="text-xs mt-2 text-muted-foreground">
-            {t('languageHint', {
-              defaultValue: 'Switch the app language. Names stay in native form.',
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-3" data-testid="account-language-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('language', { defaultValue: 'Language' })}
+        </h3>
+        <ProfileLanguageSwitcher />
+        <div className="text-xs text-muted-foreground">
+          {t('languageHint', {
+            defaultValue: 'Switch the app language. Names stay in native form.',
+          })}
+        </div>
+      </div>
 
       <Card className="content-card">
         <CardHeader>
