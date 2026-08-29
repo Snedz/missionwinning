@@ -103,7 +103,7 @@ export function AthleteTableCard() {
   return (
     <div className="house-card space-y-3" data-testid="athlete-table-card">
         <p className="eyebrow mb-1">{t('athleteTableTitle', { defaultValue: 'About training' })}</p>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="house-table-cite" data-testid="athlete-table-cite">
           {t('athleteTableBody', {
             defaultValue: 'Who you are as an athlete — picks only, stays on this device.',
           })}

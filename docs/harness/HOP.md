@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-private-note-saved-cite
-done_means: You private note saved cite is house leftover, not text-muted. Save stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youPrivateNoteSavedCite.test.ts
+ticket: leftover-you-table-body-cite
+done_means: You table body cite is house leftover, not text-muted. Display dt / Edit stay later. Selects stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youTableBodyCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Saved cite --house-muted 14px after Save. Save stays outline.
+Honesty was red (3 fail / 1 pass). Chrome.
 
 ## decisions
 
-- One leftover: You private note saved cite is house leftover.
-- Athlete table dt cites stay later.
-- Save stays outline. Do not restyle to house-btn-primary.
+- One leftover: You table body cite is house leftover.
+- Display dt / Edit labels stay later.
+- Selects stay. Save stays outline. Do not restyle to house-btn-primary.
 - Identity number select stays border-2.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
