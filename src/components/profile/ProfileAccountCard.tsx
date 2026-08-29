@@ -149,7 +149,7 @@ export function ProfileAccountCard({
             Owner tools: enrollments + local demo grants. Real payments when LLC is ready.
           </p>
         ) : freeBeta ? (
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="house-account-foot" data-testid="account-free-beta-foot">
             {t('profileFreeBetaFoot', {
               defaultValue: 'Alpha — full tools free while we grow with you. Logger stays free forever.',
             })}
