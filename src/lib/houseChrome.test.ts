@@ -721,6 +721,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(hoodRoute, /dynamic\(|RouteLoading|Suspense/);
   assert.match(hoodRoute, /import \{ UnderTheHoodPage \}/);
   assert.match(spec, /Under the Hood first paint is house leftover/);
+  const visibilityRoute = stripComments(read('app/(app)/account/transparency/page.tsx'));
+  assert.doesNotMatch(visibilityRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(visibilityRoute, /import \{ TransparencyPage \}/);
+  assert.match(spec, /Visibility first paint is house leftover/);
   assert.match(spec, /12px rows, selected `#eee`/);
   assert.match(spec, /stacked 13px muted rows/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));
