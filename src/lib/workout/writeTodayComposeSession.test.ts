@@ -117,11 +117,35 @@ describe('writeTodayComposeSession wiring', () => {
     assert.match(active, /useLayoutEffect/);
     assert.match(active, /writeTodayComposeSession\(\)/);
     assert.match(active, /paintTodayComposeWorkout/);
-    const layout = active.slice(
-      active.indexOf('useLayoutEffect(() =>'),
-      active.indexOf('useEffect(() => {\n    void ensureFullExerciseCatalog')
-    );
+    const layoutStart = active.indexOf('useLayoutEffect(() =>');
+    const hydrateStart = active.indexOf('useEffect(() => {\n    if (!hasHydrated) return;');
+    assert.ok(layoutStart > 0 && hydrateStart > layoutStart, 'layout seed is before hydrate reconcile');
+    const layout = active.slice(layoutStart, hydrateStart);
     assert.doesNotMatch(layout, /hasHydrated/);
     assert.doesNotMatch(layout, /await reconcileOpenSession/);
   });
+
+  it('reconcile after hydrate re-seeds an empty canvas, even with a pending remote', () => {
+    const active = read('src/page-components/ActiveWorkoutPage.tsx');
+    const hydrate = active.slice(
+      active.indexOf('useEffect(() => {\n    if (!hasHydrated) return;'),
+      active.indexOf('const seoExerciseConsumed')
+    );
+    assert.match(hydrate, /await reconcileOpenSession/);
+    assert.match(hydrate, /hasLoggedWork\(store\.activeWorkout\)/);
+    assert.match(hydrate, /hasComposeExercises\(store\.activeWorkout\)/);
+    assert.match(hydrate, /writeTodayComposeSession\(\)/);
+    assert.doesNotMatch(hydrate, /pendingRemoteOpenSession\) return/);
+  });
+
+  it('writeTodayComposeSession replaces a no-lift session', () => {
+    const src = read('src/lib/workout/writeTodayComposeSession.ts');
+    assert.match(src, /hasLoggedWork\(live\) \|\| hasComposeExercises\(live\)/);
+    assert.doesNotMatch(
+      src,
+      /if \(store\.activeWorkout\) return true/,
+      'an empty activeWorkout must not block Just Go'
+    );
+  });
 });
+

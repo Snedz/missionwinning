@@ -96,7 +96,7 @@ Today Start → `/active`. This week pane shows the real week; `generateWeek` wr
 
 Transferred rooms hide `data-house-costume="pillar-header"`. The second bar names the room. Canvas keeps an `sr-only` title.
 
-On the desktop sheet, Today does not repeat a “Today” H1. The date kicker stays. The canvas then starts with the session (kicker + title + one Start). The Start hero is flush on the sheet, not a nested paper card. First rooms stay one object. Compact `<723` still shows the Today title because the second bar is hidden. First paint always shows Just Go, first rooms, and the week strip — do not hide them until snap. Start on `/log` writes today's session (Just Go with last loads) before Train opens. Cold `/active` paints add-exercise + a set row + Log set before hydrate — Restoring session is never the product.
+On the desktop sheet, Today does not repeat a “Today” H1. The date kicker stays. The canvas then starts with the session (kicker + title + one Start). The Start hero is flush on the sheet, not a nested paper card. First rooms stay one object. Compact `<723` still shows the Today title because the second bar is hidden. First paint always shows Just Go, first rooms, and the week strip — do not hide them until snap. Start on `/log` writes today's session (Just Go with last loads) before Train opens. Cold `/active` is a static compose page: add-exercise + a set row + Log set before hydrate. Persist merge keeps that compose over a null rehydrate. Restoring session is never the product.
 
 ## Do not
 

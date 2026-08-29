@@ -18,7 +18,11 @@ import {
   readSavedWorkoutsFromStorage,
   readWorkoutHistoryFromStorage,
 } from '@/lib/workout/workoutPersistLite';
-import { useWorkoutStore } from '@/store/workoutStore';
+import {
+  hasComposeExercises,
+  hasLoggedWork,
+  useWorkoutStore,
+} from '@/store/workoutStore';
 import type { ActiveWorkout, CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 
@@ -73,15 +77,16 @@ export function resolveTodayComposeTemplate(opts?: {
   return { name: preview.name, exercises: preview.exercises, source: 'just_go' };
 }
 
-/** Write today's session into the live store. No-op when a session is already open. */
+/** Write today's session into the live store. No-op when a session already has lifts. */
 export function writeTodayComposeSession(): boolean {
   const store = useWorkoutStore.getState();
-  if (store.activeWorkout) return true;
+  const live = store.activeWorkout;
+  if (hasLoggedWork(live) || hasComposeExercises(live)) return true;
   const history = store.hasHydrated ? store.workoutHistory : readWorkoutHistoryFromStorage();
   const saved = store.hasHydrated ? store.savedWorkouts : readSavedWorkoutsFromStorage();
   const template = resolveTodayComposeTemplate({ history, saved });
   store.startWorkout(template.name, template.exercises);
-  return !!useWorkoutStore.getState().activeWorkout;
+  return hasComposeExercises(useWorkoutStore.getState().activeWorkout);
 }
 
 /** Display-only session so /active can paint a set table before persist. */

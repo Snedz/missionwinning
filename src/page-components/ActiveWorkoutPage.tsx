@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { exerciseDisplayName, resolveExercise } from '@/lib/workout/customExercise';
-import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
+import { useWorkoutStore, hasComposeExercises, hasLoggedWork } from '@/store/workoutStore';
 import { reconcileOpenSession } from '@/lib/workout/reconcileOpenSession';
 import {
   parseSeoExerciseParam,
@@ -187,9 +187,10 @@ export function ActiveWorkoutPage() {
     void (async () => {
       await reconcileOpenSession();
       if (cancelled) return;
-      const store = useWorkoutStore.getState();
-      if (store.activeWorkout || store.pendingRemoteOpenSession) return;
       if (parseSeoExerciseParam(searchParams)) return;
+      const store = useWorkoutStore.getState();
+      if (hasLoggedWork(store.activeWorkout)) return;
+      if (hasComposeExercises(store.activeWorkout)) return;
       writeTodayComposeSession();
     })();
     return () => {
@@ -772,7 +773,10 @@ export function ActiveWorkoutPage() {
   });
 
   return (
-    <div className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
+    <div
+      className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}
+      aria-busy={hasHydrated ? undefined : true}
+    >
       <ActiveSessionChrome
         workoutName={session.workoutName}
         completedSets={completedSets}

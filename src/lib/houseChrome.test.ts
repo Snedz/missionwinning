@@ -142,15 +142,23 @@ test('/active first paint is a compose table, never Restoring as the product', (
   const empty = stripComments(read('src/components/house/TrainComposeEmpty.tsx'));
   assert.doesNotMatch(empty, /Restoring session|activeLoadingSession|Reading the last workout/);
   assert.match(empty, /aria-busy=\{hydrated \? undefined : true\}/);
+  const route = stripComments(read('app/(app)/active/page.tsx'));
+  assert.doesNotMatch(route, /dynamic\(|RouteLoading/);
+  assert.match(route, /import \{ ActiveWorkoutPage \}/);
   const active = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
+  assert.doesNotMatch(active, /Restoring session|activeLoadingSession|ActiveEmptyState/);
   assert.match(active, /useLayoutEffect/);
   assert.match(active, /writeTodayComposeSession\(\)/);
   assert.match(active, /paintTodayComposeWorkout/);
   assert.match(active, /await reconcileOpenSession/);
-  assert.match(active, /pendingRemoteOpenSession\) return/);
+  assert.match(active, /hasComposeExercises\(store\.activeWorkout\)/);
   assert.match(active, /parseSeoExerciseParam\(searchParams\)/);
   assert.match(active, /previewJustGoForEquipment/);
-  const layout = active.slice(active.indexOf('useLayoutEffect(() =>'), active.indexOf('useEffect(() => {'));
+  assert.match(active, /aria-busy=\{hasHydrated \? undefined : true\}/);
+  const layout = active.slice(
+    active.indexOf('useLayoutEffect(() =>'),
+    active.indexOf('useEffect(() => {\n    if (!hasHydrated) return;')
+  );
   assert.doesNotMatch(layout, /hasHydrated/);
   const emptyStart = active.slice(
     active.indexOf('const handleEmptyStart'),
