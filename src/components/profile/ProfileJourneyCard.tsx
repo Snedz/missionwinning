@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatStoredGoal } from '@/lib/journeyGoals';
 import { scheduleJourneyPush } from '@/lib/journeySync';
@@ -68,35 +67,28 @@ export function ProfileJourneyCard({
 
   if (!isOnboarded) {
     return (
-      <Card className="bg-card">
-        <CardHeader>
-          <CardTitle className="text-base font-semibold">
-            {t('firstTimeSetup', { defaultValue: 'First-time setup' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <p className="text-muted-foreground leading-relaxed">
-            {t('profileSetupHint', {
-              defaultValue:
-                'Answer a few questions so sessions match your gear (~2 minutes).',
-            })}
-          </p>
-          <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
-            {t('welcomeBegin', { defaultValue: 'Begin' })}
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-3 text-sm" data-testid="account-journey-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('firstTimeSetup', { defaultValue: 'First-time setup' })}
+        </h3>
+        <p className="text-muted-foreground leading-relaxed">
+          {t('profileSetupHint', {
+            defaultValue:
+              'Answer a few questions so sessions match your gear (~2 minutes).',
+          })}
+        </p>
+        <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
+          {t('welcomeBegin', { defaultValue: 'Begin' })}
+        </Button>
+      </div>
     );
   }
 
   return (
-    <Card className="bg-card">
-      <CardHeader>
-        <CardTitle className="text-base font-semibold">
-          {t('editJourneyProfile', { defaultValue: 'Edit profile' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-journey-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('editJourneyProfile', { defaultValue: 'Edit profile' })}
+      </h3>
         <p className="text-muted-foreground leading-relaxed">
           Experience: <span className="text-foreground capitalize">{experience || '—'}</span>
           {' · '}
@@ -181,7 +173,6 @@ export function ProfileJourneyCard({
         >
           {t('editJourneyProfile', { defaultValue: 'Edit profile' })}
         </Button>
-      </CardContent>
-    </Card>
+    </div>
   );
 }
