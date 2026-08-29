@@ -63,7 +63,7 @@ export function VictoryStatsStrip({
   return (
     <div className="mw-house house-victory grid grid-cols-3 gap-2 py-2">
       <div className="border-2 border-border bg-background p-3 text-center">
-        <p className="text-xs font-semibold text-muted-foreground">
+        <p className="house-lede house-victory-stat-label font-semibold">
           {t('victoryDuration', { defaultValue: 'Duration' })}
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
@@ -72,7 +72,7 @@ export function VictoryStatsStrip({
         <VsLastLine>{durationDelta}</VsLastLine>
       </div>
       <div className="border-2 border-border bg-background p-3 text-center">
-        <p className="text-xs font-semibold text-muted-foreground">
+        <p className="house-lede house-victory-stat-label font-semibold">
           {t('victoryVolume', { defaultValue: 'Volume' })}
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
@@ -82,7 +82,7 @@ export function VictoryStatsStrip({
         <VsLastLine>{volumeDelta}</VsLastLine>
       </div>
       <div className="border-2 border-border bg-background p-3 text-center">
-        <p className="text-xs font-semibold text-muted-foreground">
+        <p className="house-lede house-victory-stat-label font-semibold">
           {t('victorySets', { defaultValue: 'Sets' })}
         </p>
         <p className="text-xl font-semibold tabular-nums">{setCount}</p>

@@ -1,6 +1,6 @@
 /**
- * Victory vs-last cite is house leftover — house-lede, not text-muted.
- * Stats strip carries mw-house house-victory. Stats labels / receipt stay muted.
+ * Victory stats labels are house leftover — house-lede, not text-muted.
+ * vs-last leftover stays. Volume unit / receipt stay muted.
  * Next stays filled on Victory. Log set stays filled on compose.
  */
 import { test } from 'node:test';
@@ -18,30 +18,32 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-test('Victory vs-last cite is house leftover, not text-muted', () => {
-  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  const needle = 'data-testid="victory-vs-last"';
-  const start = stats.indexOf(needle);
+function sliceAround(src: string, needle: string): string {
+  const start = src.indexOf(needle);
   assert.ok(start >= 0, `missing ${needle}`);
-  const cite = stats.slice(Math.max(0, start - 180), start + 40);
+  return src.slice(Math.max(0, start - 180), start + 40);
+}
+
+test('Victory stats labels are house leftover, not text-muted', () => {
+  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
+  for (const key of ['victoryDuration', 'victoryVolume', 'victorySets'] as const) {
+    const slice = sliceAround(stats, key);
+    assert.match(slice, /house-lede house-victory-stat-label/, key);
+    assert.doesNotMatch(slice, /text-muted-foreground/, key);
+  }
+});
+
+test('vs-last leftover stays (not this leftover)', () => {
+  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
+  const cite = sliceAround(stats, 'data-testid="victory-vs-last"');
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
-test('Victory stats strip carries mw-house house-victory', () => {
+test('volume unit / receipt stay parked (not this leftover)', () => {
   const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  assert.match(stats, /mw-house house-victory/);
-});
-
-test('stats labels leftover ships separately (house-lede, not muted)', () => {
-  const stats = read('src/components/workout/VictoryStatsStrip.tsx');
-  for (const key of ['victoryDuration', 'victoryVolume', 'victorySets'] as const) {
-    const start = stats.indexOf(key);
-    assert.ok(start >= 0, `missing ${key}`);
-    const slice = stats.slice(Math.max(0, start - 180), start + 40);
-    assert.match(slice, /house-lede/, key);
-    assert.doesNotMatch(slice, /text-muted-foreground/, key);
-  }
+  const unit = sliceAround(stats, '{volume.unit}');
+  assert.match(unit, /text-muted-foreground/);
 
   const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
   assert.match(receipt, /text-muted-foreground/);
@@ -58,19 +60,19 @@ test('Log set stays the sole filled press on compose', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints Victory vs-last cite with --house-muted', () => {
+test('house leftover rule paints Victory stats labels with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house\.house-victory \.house-victory-vs-last\.house-lede \{[^}]*--house-muted/
+    /\.mw-house\.house-victory \.house-victory-stat-label\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Victory vs-last cite is house leftover', () => {
+test('DESIGN names Victory stats labels is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Victory vs-last cite is house leftover/);
+  assert.match(spec, /Victory stats labels is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
