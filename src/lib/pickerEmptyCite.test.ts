@@ -1,7 +1,7 @@
 /**
- * Exercise picker option details is house leftover — house-lede, not text-muted.
- * Picker rewrite stays parked. Selected / empty cites stay. After-set cites stay parked.
- * Log set stays filled. Finish / Skip / Swap / Form guide stay outline.
+ * Exercise picker empty cite is house leftover — house-lede, not text-muted.
+ * Selected leftover stays. Option-details leftover stays. Picker rewrite stays parked.
+ * After-set cites stay parked. Log set stays filled.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,11 +18,11 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-function sliceOptionDetail(picker: string): string {
-  const needle = 'ex.muscleGroups.slice(0, 2)';
+function sliceEmpty(picker: string): string {
+  const needle = 'exercisePickerEmpty';
   const start = picker.indexOf(needle);
-  assert.ok(start >= 0, 'missing picker option detail cite');
-  return picker.slice(Math.max(0, start - 160), start + needle.length);
+  assert.ok(start >= 0, `missing ${needle}`);
+  return picker.slice(Math.max(0, start - 180), start + 40);
 }
 
 function sliceSelected(picker: string): string {
@@ -32,26 +32,32 @@ function sliceSelected(picker: string): string {
   return picker.slice(Math.max(0, start - 180), start + 40);
 }
 
-function sliceEmpty(picker: string): string {
-  const needle = 'exercisePickerEmpty';
+function sliceOptionDetail(picker: string): string {
+  const needle = 'ex.muscleGroups.slice(0, 2)';
   const start = picker.indexOf(needle);
-  assert.ok(start >= 0, `missing ${needle}`);
-  return picker.slice(Math.max(0, start - 180), start + 40);
+  assert.ok(start >= 0, 'missing picker option detail cite');
+  return picker.slice(Math.max(0, start - 160), start + needle.length);
 }
 
-test('Exercise picker option details is house leftover, not text-muted', () => {
+test('Exercise picker empty cite is house leftover, not text-muted', () => {
   const picker = read('src/components/library/ExercisePicker.tsx');
-  const cite = sliceOptionDetail(picker);
+  const cite = sliceEmpty(picker);
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
-test('picker selected and empty cites leftover ship separately as house-lede', () => {
+test('picker selected cite leftover stays (not this leftover)', () => {
   const picker = read('src/components/library/ExercisePicker.tsx');
-  assert.match(sliceSelected(picker), /house-lede/);
-  assert.doesNotMatch(sliceSelected(picker), /text-muted-foreground/);
-  assert.match(sliceEmpty(picker), /house-lede/);
-  assert.doesNotMatch(sliceEmpty(picker), /text-muted-foreground/);
+  const cite = sliceSelected(picker);
+  assert.match(cite, /house-lede/);
+  assert.doesNotMatch(cite, /text-muted-foreground/);
+});
+
+test('picker option-details leftover stays (not this leftover)', () => {
+  const picker = read('src/components/library/ExercisePicker.tsx');
+  const cite = sliceOptionDetail(picker);
+  assert.match(cite, /house-lede/);
+  assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
 test('picker rewrite stays parked (not this leftover)', () => {
@@ -87,19 +93,19 @@ test('Log set stays the sole filled press', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints picker option details with --house-muted', () => {
+test('house leftover rule paints picker empty cite with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house \[role="option"\] \.house-lede \{[^}]*--house-muted/
+    /\.mw-house \.house-picker-empty\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Exercise picker option details is house leftover', () => {
+test('DESIGN names Exercise picker empty cite is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Exercise picker option details is house leftover/);
+  assert.match(spec, /Exercise picker empty cite is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {

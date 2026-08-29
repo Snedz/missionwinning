@@ -1639,6 +1639,17 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house \.house-picker-selected\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Exercise picker selected cite is house leftover/);
+  const pickerEmpty = picker.slice(
+    picker.indexOf('exercisePickerEmpty') - 180,
+    picker.indexOf('exercisePickerEmpty') + 40
+  );
+  assert.match(pickerEmpty, /house-lede house-picker-empty/);
+  assert.doesNotMatch(pickerEmpty, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-picker-empty\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Exercise picker empty cite is house leftover/);
   const addSheet = read('src/components/workout/AddExerciseSheet.tsx');
   assert.match(addSheet, /mw-house house-add-sheet/);
   assert.match(addSheet, /house-btn min-h-\[52px\] w-full tap-target/);

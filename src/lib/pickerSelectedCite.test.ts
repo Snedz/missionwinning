@@ -53,9 +53,10 @@ test('picker option-details leftover stays (not this leftover)', () => {
   assert.doesNotMatch(cite, /text-muted-foreground/);
 });
 
-test('picker empty cite stays (not this leftover)', () => {
+test('picker empty cite leftover ships separately as house-lede', () => {
   const picker = read('src/components/library/ExercisePicker.tsx');
-  assert.match(sliceEmpty(picker), /text-muted-foreground/);
+  assert.match(sliceEmpty(picker), /house-lede/);
+  assert.doesNotMatch(sliceEmpty(picker), /text-muted-foreground/);
 });
 
 test('picker rewrite stays parked (not this leftover)', () => {

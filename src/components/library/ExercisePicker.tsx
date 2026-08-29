@@ -131,7 +131,7 @@ export function ExercisePicker({
             </button>
           ) : null}
           {filtered.length === 0 && invent?.kind !== 'create' ? (
-            <p className="px-3 py-2 text-sm text-muted-foreground">
+            <p className="px-3 py-2 house-lede house-picker-empty">
               {t('exercisePickerEmpty', { defaultValue: 'No matches' })}
             </p>
           ) : (
