@@ -1931,6 +1931,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-table-summary {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--house-muted);
+}
+
 .mw-house .house-profile .house-table-dt {
   font-size: 13px;
   font-weight: 600;

@@ -127,7 +127,10 @@ export function AthleteTableCard() {
         </dl>
 
         <details className="group house-table-edit" data-testid="athlete-table-edit">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-table-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-table-edit-summary"
+          >
             {t('athleteTableEdit', { defaultValue: 'Edit table' })}
           </summary>
           <div className="mt-3">
