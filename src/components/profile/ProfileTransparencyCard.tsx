@@ -26,7 +26,7 @@ export function ProfileTransparencyCard() {
         {t('transparencyCardTitle', { defaultValue: 'Visibility' })}
       </h3>
       <p className="font-semibold text-foreground text-sm">{summary}</p>
-      <p className="text-muted-foreground leading-relaxed text-sm">
+      <p className="house-visibility-cite" data-testid="account-visibility-cite">
         {t('transparencyCardLead', {
           defaultValue:
             'See if anything is limited and why. Under the Hood publishes Mission Points boosts and visibility filters. Download includes both, plus labels on this athlete.',
