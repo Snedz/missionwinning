@@ -453,7 +453,7 @@ export function AccountPage({ initialAuthError }: AccountPageProps = {}) {
             <p className="font-semibold">
               {t('calcTitle', { defaultValue: 'Calculators' })}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="house-calc-cite" data-testid="account-calc-cite">
               {t('calcSubtitleBrief', {
                 defaultValue: '1RM, macros, plates — free tools, no account required.',
               })}
