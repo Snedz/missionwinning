@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: goals card is house-card, not Card. Textarea and Save stay.
+Honesty was red (3 fail / 1 pass). Chrome: goals card is house-card, not Card. Textarea and Save stay. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), goals card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
