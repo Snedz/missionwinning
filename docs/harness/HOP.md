@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty test written first. Chrome on LogConsole Log set. Accept next. Walk Home left bar → Start → /active.
+Honesty test first (red 2 / green 2). Chrome. Accept green (`npx tsx --test src/lib/workout/logConsoleLogSetHousePress.test.ts` + houseChrome / density / F013 / context / log). Walk Home left bar → Start → `/active`: table present, `.house-set-log` probe `rgb(24, 24, 27)`, no poster-red. Finish / Skip / Swap / Form guide not filled. LogConsole not on first paint (dock is rest-only). Table Log set stays the same.
 
 ## decisions
 
