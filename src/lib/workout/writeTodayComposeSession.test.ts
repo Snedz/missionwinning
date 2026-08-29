@@ -138,6 +138,18 @@ describe('writeTodayComposeSession wiring', () => {
     assert.doesNotMatch(hydrate, /pendingRemoteOpenSession\) return/);
   });
 
+  it('nextSet on /active is composeNextSet — persist does not own first paint', () => {
+    const active = read('src/page-components/ActiveWorkoutPage.tsx');
+    assert.match(active, /composeNextSet\(activeWorkout\)/);
+    assert.doesNotMatch(
+      active,
+      /activeWorkout \? findNextSet\(activeWorkout\.exercises\) : null/
+    );
+    const src = read('src/lib/workout/writeTodayComposeSession.ts');
+    assert.match(src, /export function composeNextSet/);
+    assert.match(src, /paintTodayComposeWorkout\(\)/);
+  });
+
   it('writeTodayComposeSession replaces a no-lift session', () => {
     const src = read('src/lib/workout/writeTodayComposeSession.ts');
     assert.match(src, /hasLoggedWork\(live\) \|\| hasComposeExercises\(live\)/);

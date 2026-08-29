@@ -18,6 +18,7 @@ import {
   readSavedWorkoutsFromStorage,
   readWorkoutHistoryFromStorage,
 } from '@/lib/workout/workoutPersistLite';
+import { findNextSet } from '@/lib/workout/activeWorkoutHelpers';
 import {
   hasComposeExercises,
   hasLoggedWork,
@@ -103,4 +104,14 @@ export function paintTodayComposeWorkout(): ActiveWorkout {
       ...(ex.prescribed ? { prescribed: true } : {}),
     })),
   };
+}
+
+/** Next set from the painted compose. Persist hydrate does not own this. */
+export function composeNextSet(
+  live: ActiveWorkout | null | undefined
+): { exIdx: number; setIdx: number } | null {
+  const session = hasComposeExercises(live)
+    ? (live as ActiveWorkout)
+    : paintTodayComposeWorkout();
+  return findNextSet(session.exercises);
 }

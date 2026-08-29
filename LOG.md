@@ -15,7 +15,11 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
-Cold `/active` was Restoring
+`/active` first paint Log set
+does not wait on persist.
+`composeNextSet` paints the next
+set from the compose when the
+store is empty. Cold `/active` was Restoring
 session with Start disabled.
 `writeTodayComposeSession` shipped
 on `.1057` as source guards; persist

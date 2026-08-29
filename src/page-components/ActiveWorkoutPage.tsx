@@ -69,7 +69,6 @@ import { isBarLoadedEquipment } from '@/lib/plateCalculator';
 import { planWarmupRamp, resolveWorkingLoad } from '@/lib/workout/warmupRamp';
 import {
   buildConsoleSet,
-  findNextSet,
   getLastSessionSets,
   getLastPerformanceForSet,
   lastWorkingForDial,
@@ -102,6 +101,7 @@ import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClo
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import {
+  composeNextSet,
   paintTodayComposeWorkout,
   writeTodayComposeSession,
 } from '@/lib/workout/writeTodayComposeSession';
@@ -292,10 +292,7 @@ export function ActiveWorkoutPage() {
     }
   }, [sessionKey, fieldTestParam]);
 
-  const nextSet = useMemo(
-    () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
-    [activeWorkout]
-  );
+  const nextSet = useMemo(() => composeNextSet(activeWorkout), [activeWorkout]);
 
   useEffect(() => {
     if (!activeWorkout) return;

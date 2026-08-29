@@ -149,6 +149,8 @@ test('/active first paint is a compose table, never Restoring as the product', (
   assert.match(active, /useLayoutEffect/);
   assert.match(active, /writeTodayComposeSession\(\)/);
   assert.match(active, /paintTodayComposeWorkout/);
+  assert.match(active, /composeNextSet\(activeWorkout\)/);
+  assert.doesNotMatch(active, /activeWorkout \? findNextSet\(activeWorkout\.exercises\) : null/);
   assert.match(active, /await reconcileOpenSession/);
   assert.match(active, /hasComposeExercises\(store\.activeWorkout\)/);
   assert.match(active, /parseSeoExerciseParam\(searchParams\)/);
