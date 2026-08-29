@@ -191,7 +191,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
         <p className="mt-2 text-sm text-foreground">{tableBits.join(' · ')}</p>
       )}
       {shownBadges.length > 0 && (
-        <p className="mt-3 text-xs text-muted-foreground">
+        <p className="house-athlete-badges-preview" data-testid="athlete-card-badges-preview">
           {shownBadges.map((b) => t(b.titleKey, { defaultValue: b.titleDefault })).join(' · ')}
         </p>
       )}
