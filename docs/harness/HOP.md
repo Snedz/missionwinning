@@ -12,9 +12,12 @@ test_written: yes
 
 ## progress
 
-Honesty was red (sidecar gated on
-!workout + activeEmptyExercises).
-Chrome in. Accept next.
+Honesty was red. Accept green.
+Walk Home left bar → Start → /active:
+sidecar is Train + Chest + rest/notes,
+not "Add an exercise". Log set still
+`rgb(24, 24, 27)`. Finish / Skip / Swap /
+Form unfilled. No poster-red.
 
 ## decisions
 
