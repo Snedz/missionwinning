@@ -41,7 +41,7 @@
 | File | Route |
 |------|-------|
 | `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/`; this week's restock in Show more (`.965`) |
-| `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); flow list is house leftover. Extra tools in Show all |
+| `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); quiet log and flow list are house leftovers. Extra tools in Show all |
 | `MindPage.tsx` | `/mind` | First paint is check-in + breathe; both are house leftovers. Sessions in Show all |
 | `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
 | `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |

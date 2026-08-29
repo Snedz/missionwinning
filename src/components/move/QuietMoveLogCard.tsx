@@ -7,8 +7,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { localDateKey } from '@/lib/time/localDate';
 import {
@@ -62,23 +60,21 @@ export function QuietMoveLogCard() {
   };
 
   return (
-    <div
+    <section
       data-testid="quiet-move-log"
-      className="border-2 border-border bg-card px-3 py-3 space-y-3"
+      className="house-card house-quiet-move"
     >
-      <div className="space-y-1">
-        <p className="text-sm font-semibold text-foreground">
-          {t('moveQuietTitle', { defaultValue: 'Easy walk or easy session' })}
-        </p>
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          {t('moveQuietHint', {
-            defaultValue: 'Rest is fine. Optional — minutes or distance if you have them.',
-          })}
-        </p>
-      </div>
+      <h2 className="house-quiet-move-name">
+        {t('moveQuietTitle', { defaultValue: 'Easy walk or easy session' })}
+      </h2>
+      <p className="house-lede">
+        {t('moveQuietHint', {
+          defaultValue: 'Rest is fine. Optional — minutes or distance if you have them.',
+        })}
+      </p>
 
       <div
-        className="flex gap-2"
+        className="house-collections"
         role="tablist"
         aria-label={t('moveQuietKinds', { defaultValue: 'Easy Move kind' })}
       >
@@ -87,12 +83,7 @@ export function QuietMoveLogCard() {
           role="tab"
           aria-selected={kind === 'walk'}
           data-testid="quiet-move-kind-walk"
-          className={cn(
-            'min-h-[44px] flex-1 border-2 px-3 text-sm font-semibold tap-target',
-            kind === 'walk'
-              ? 'is-active-tab border-primary text-foreground'
-              : 'border-border bg-card text-foreground hover:border-primary'
-          )}
+          className={cn('house-state tap-target', kind === 'walk' && 'is-on')}
           onClick={() => setKind('walk')}
         >
           {t('moveQuietWalk', { defaultValue: 'Walk' })}
@@ -102,67 +93,61 @@ export function QuietMoveLogCard() {
           role="tab"
           aria-selected={kind === 'easy'}
           data-testid="quiet-move-kind-easy"
-          className={cn(
-            'min-h-[44px] flex-1 border-2 px-3 text-sm font-semibold tap-target',
-            kind === 'easy'
-              ? 'is-active-tab border-primary text-foreground'
-              : 'border-border bg-card text-foreground hover:border-primary'
-          )}
+          className={cn('house-state tap-target', kind === 'easy' && 'is-on')}
           onClick={() => setKind('easy')}
         >
           {t('moveQuietEasy', { defaultValue: 'Easy session' })}
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <label className="block space-y-1">
-          <span className="text-xs font-medium text-muted-foreground">
+      <div className="house-quiet-move-fields">
+        <label>
+          <span className="house-kicker">
             {t('moveQuietMinutes', { defaultValue: 'Minutes (optional)' })}
           </span>
-          <Input
+          <input
             data-testid="quiet-move-minutes"
             type="text"
             inputMode="numeric"
             value={minutes}
             onChange={(e) => setMinutes(e.target.value)}
-            className="min-h-[44px] border-2"
+            className="house-field"
           />
         </label>
-        <label className="block space-y-1">
-          <span className="text-xs font-medium text-muted-foreground">
+        <label>
+          <span className="house-kicker">
             {t('moveQuietDistance', { defaultValue: 'Distance km (optional)' })}
           </span>
-          <Input
+          <input
             data-testid="quiet-move-distance"
             type="text"
             inputMode="decimal"
             value={distanceKm}
             onChange={(e) => setDistanceKm(e.target.value)}
-            className="min-h-[44px] border-2"
+            className="house-field"
           />
         </label>
       </div>
 
-      <Button
+      <button
         type="button"
-        variant="outline"
-        className="min-h-[44px] tap-target"
+        className="house-btn house-btn-ghost min-h-[44px] tap-target"
         data-testid="quiet-move-log-submit"
         onClick={handleLog}
       >
         {t('moveQuietLog', { defaultValue: 'Log' })}
-      </Button>
+      </button>
 
       {todayRows.length === 0 ? (
-        <p className="text-sm leading-relaxed text-muted-foreground">
+        <p className="house-lede">
           {t('moveQuietEmpty', {
             defaultValue: 'Nothing logged. Rest is not a fail.',
           })}
         </p>
       ) : (
-        <ul className="space-y-1 text-sm text-foreground">
+        <ul className="house-quiet-move-rows">
           {todayRows.map((row) => (
-            <li key={row.id} data-testid="quiet-move-row">
+            <li key={row.id} data-testid="quiet-move-row" className="house-lede">
               {rowLine(
                 row.kind === 'easy'
                   ? t('moveQuietEasy', { defaultValue: 'Easy session' })
@@ -184,6 +169,6 @@ export function QuietMoveLogCard() {
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 }
