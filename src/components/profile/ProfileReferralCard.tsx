@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Users } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { getMyReferral } from '@/lib/referral';
@@ -70,14 +69,11 @@ export function ProfileReferralCard({ signedIn }: Props) {
   const badge = recognitionKey(count);
 
   return (
-    <Card className="content-card">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Users className="h-4 w-4 text-primary" aria-hidden />
-          {t('growthReferralTitle', { defaultValue: 'Invite a friend' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="house-card space-y-3" data-testid="account-referral-card">
+      <h3 className="flex items-center gap-2 text-base font-semibold">
+        <Users className="h-4 w-4 text-primary" aria-hidden />
+        {t('growthReferralTitle', { defaultValue: 'Invite a friend' })}
+      </h3>
         <p className="text-sm text-muted-foreground">
           {t('growthReferralDesc', {
             defaultValue:
@@ -141,7 +137,6 @@ export function ProfileReferralCard({ signedIn }: Props) {
             </Button>
           </>
         )}
-      </CardContent>
-    </Card>
+    </div>
   );
 }

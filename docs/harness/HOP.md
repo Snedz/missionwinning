@@ -5,20 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-rewards-card
-done_means: You first-paint rewards card is house leftover, not Card content-card. Badge rows, Honor badge, and muted cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youRewardsCard.test.ts
+ticket: leftover-account-referral-card
+done_means: Account first-paint referral card is house leftover, not Card content-card. Code block, Sign in / Invite, and muted cites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountReferralCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: rewards card is house-card, not Card content-card. Badge rows, Honor badge, muted cites stay. Walk 1280: /log → Start → /active → History → /profile. House 72+264, Log set rgb(24, 24, 27), rewards card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: referral card is house-card, not Card content-card. Code block, Sign in / Invite, muted cites stay.
 
 ## decisions
 
-- One leftover: You first-paint rewards card frame is house leftover.
-- Do not restyle badge list rows (border-2 stays).
-- Do not restyle Honor Badge or muted cites this hop.
+- One leftover: Account first-paint referral card frame is house leftover.
+- Do not restyle the signed-in code block (border-2 stays).
+- Do not restyle Sign in / Invite buttons.
+- Do not restyle muted cites or Skeleton this hop.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
