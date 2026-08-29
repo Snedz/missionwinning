@@ -55,11 +55,11 @@ export function ProfilePreferencesCard({
           {t('language', { defaultValue: 'Language' })}
         </h3>
         <ProfileLanguageSwitcher />
-        <div className="text-xs text-muted-foreground">
+        <p className="house-language-cite" data-testid="account-language-cite">
           {t('languageHint', {
             defaultValue: 'Switch the app language. Names stay in native form.',
           })}
-        </div>
+        </p>
       </div>
 
       <div className="house-card space-y-3" data-testid="account-goals-card">
