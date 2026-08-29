@@ -790,6 +790,10 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live tr.house-set-kind {
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-set-check {
   color: var(--house-ink);
 }

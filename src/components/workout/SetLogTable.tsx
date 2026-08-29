@@ -433,7 +433,7 @@ export function SetLogTable({
               )}
             </tr>
             {onSetKind && !completed ? (
-              <tr className={cn(!isActive && 'text-muted-foreground')}>
+              <tr className={cn(!isActive && 'house-set-kind')}>
                 <td colSpan={5} className={cn(cell, 'min-w-0 pt-0')}>
                   <SetRowTagChips
                     kind={kind}
