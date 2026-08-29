@@ -6,9 +6,11 @@
  */
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Ban, Check, ChevronRight, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import {
   getHouseFirstRooms,
   readHouseChecklistCollapsed,
@@ -102,30 +104,56 @@ export function HouseFirstRoomsCard({ loggedSet, hasFinish, onLogSet }: Props) {
                   data-testid="house-check-row"
                   data-house-step={row.key}
                 >
-                  <button type="button" aria-expanded={open} onClick={() => runRow(row)}>
-                    <span className="house-check-copy">
-                      <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
-                      <span className="house-check-why">
-                        <span>{t(row.whyKey, { defaultValue: row.why })}</span>
-                      </span>
-                    </span>
-                    <span className="house-check-mark">
-                      {row.done ? (
-                        <Check className="h-4 w-4" aria-hidden />
-                      ) : row.locked ? (
-                        <span className="house-lock">
-                          <Ban className="h-4 w-4" aria-hidden />
-                          <span className="house-lock-tip" role="tooltip">
-                            {t(row.lockWhyKey ?? 'houseFirstHistoryLock', {
-                              defaultValue: row.lockWhy ?? 'Finish a session first — then History is yours.',
-                            })}
-                          </span>
+                  {row.kind === 'compose' && row.href ? (
+                    <Link
+                      href="/active"
+                      data-testid="today-first-log-set"
+                      aria-expanded={open}
+                      onClick={() => {
+                        setOpenKey(row.key);
+                        writeTodayComposeSession();
+                      }}
+                    >
+                      <span className="house-check-copy">
+                        <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
+                        <span className="house-check-why">
+                          <span>{t(row.whyKey, { defaultValue: row.why })}</span>
                         </span>
-                      ) : (
-                        <ChevronRight className="h-4 w-4" aria-hidden />
-                      )}
-                    </span>
-                  </button>
+                      </span>
+                      <span className="house-check-mark">
+                        {row.done ? (
+                          <Check className="h-4 w-4" aria-hidden />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" aria-hidden />
+                        )}
+                      </span>
+                    </Link>
+                  ) : (
+                    <button type="button" aria-expanded={open} onClick={() => runRow(row)}>
+                      <span className="house-check-copy">
+                        <strong>{t(row.titleKey, { defaultValue: row.title })}</strong>
+                        <span className="house-check-why">
+                          <span>{t(row.whyKey, { defaultValue: row.why })}</span>
+                        </span>
+                      </span>
+                      <span className="house-check-mark">
+                        {row.done ? (
+                          <Check className="h-4 w-4" aria-hidden />
+                        ) : row.locked ? (
+                          <span className="house-lock">
+                            <Ban className="h-4 w-4" aria-hidden />
+                            <span className="house-lock-tip" role="tooltip">
+                              {t(row.lockWhyKey ?? 'houseFirstHistoryLock', {
+                                defaultValue: row.lockWhy ?? 'Finish a session first — then History is yours.',
+                              })}
+                            </span>
+                          </span>
+                        ) : (
+                          <ChevronRight className="h-4 w-4" aria-hidden />
+                        )}
+                      </span>
+                    </button>
+                  )}
                 </div>
               );
             })}

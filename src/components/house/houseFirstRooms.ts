@@ -40,6 +40,7 @@ export function getHouseFirstRooms(input: HouseFirstRoomsInput): HouseFirstRoom[
       done: input.loggedSet,
       locked: false,
       kind: 'compose',
+      href: '/active',
       titleKey: 'houseFirstLogTitle',
       title: 'Log a set',
       whyKey: 'houseFirstLogWhy',

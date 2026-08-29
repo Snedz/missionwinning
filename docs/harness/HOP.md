@@ -5,17 +5,17 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-compact-hero-start
-done_means: Compact hero Start is a Link to /active (href survives without JS). Click writes today's compose. One filled Start. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/today/compactHeroStart.test.ts
+ticket: leftover-first-rooms-log-set
+done_means: First-rooms Log a set is a Link to /active (href survives without JS). Click writes today's compose. One filled Start (hero). Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/today/firstRoomsLogSet.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red. Accept green. Walked compact 390 I-Day → `/log` → `[data-testid="today-start-cta"]` (`href="/active"`, left Start hidden). Landed `/active` set table. Log set `rgb(24, 24, 27)`. Finish / Skip / Swap / Form unfilled `rgb(244, 244, 245)`.
+Honesty was red. Accept next. Walk next.
 
 ## decisions
 
-- One leftover: compact hero Start navigates.
+- One leftover: first-rooms Log a set navigates.
 - Do not restyle Finish / Skip / Swap / Form guide / Repeat*.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

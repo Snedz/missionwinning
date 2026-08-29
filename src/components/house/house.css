@@ -2847,7 +2847,8 @@
   background: var(--house-chip);
 }
 
-.mw-house .house-check-row > button {
+.mw-house .house-check-row > button,
+.mw-house .house-check-row > a {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -2859,6 +2860,7 @@
   background: none;
   color: inherit;
   text-align: left;
+  text-decoration: none;
   font: inherit;
   cursor: pointer;
   border-radius: 0;
