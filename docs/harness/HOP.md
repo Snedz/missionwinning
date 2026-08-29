@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-garage-board` + 1px `--house-line`. Rail split is house-garage-rail. BuddyList / ChatWindow stay.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-garage-board` + 1px `--house-line`. Rail split is house-garage-rail. BuddyList / ChatWindow stay. Walk 1280: /log → Start → /active → History. House 72+264, Log set rgb(24, 24, 27), Garage board 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
