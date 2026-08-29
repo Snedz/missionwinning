@@ -515,6 +515,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(historyExtras, /border-t-2/);
   assert.match(css, /\.house-history \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /History Show all extras is house leftover/);
+  const historyRoute = stripComments(read('app/(app)/history/page.tsx'));
+  assert.doesNotMatch(historyRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(historyRoute, /import \{ HistoryPage \}/);
+  assert.match(spec, /History list first paint is house leftover/);
   const reentry = read('src/components/today/TodayReentryCard.tsx');
   const plannedMiss = read('src/components/today/TodayPlannedMissPrompt.tsx');
   assert.match(reentry, /house-lede house-reentry/);

@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. History
+`loadCoachTodayOptional`. History list first paint is house leftover
+(title + list/empty — not RouteLoading).
+History
 day first paint is house leftover
 (date + that day's rows). Calendar
 / charts stay parked. Log set is house leftover
