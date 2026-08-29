@@ -5,9 +5,9 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-builder-first-paint
-done_means: Builder first paint is house leftover (title + Blank workout / saved), not RouteLoading. ProgramTemplatesPanel internals stay parked.
-accept: npx tsx --test src/lib/builderFirstPaintHonesty.test.ts
+ticket: leftover-fuel-first-paint
+done_means: Fuel first paint is house leftover (title + notepad / today log / remaining), not RouteLoading. Search / barcode / recipes stay parked.
+accept: npx tsx --test src/lib/fuelFirstPaintHonesty.test.ts
 test_written: yes
 
 ## progress
@@ -17,5 +17,5 @@ Accept green. Walk next.
 
 ## decisions
 
-- Do not restyle ProgramTemplatesPanel internals or Show-all extras.
+- Route leftover only. Do not restart Fuel notepad / today log / remaining chrome.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

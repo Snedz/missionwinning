@@ -31,7 +31,10 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Builder first paint is house leftover
+`loadCoachTodayOptional`. Fuel first paint is house leftover
+(title + notepad / today log / remaining — not
+RouteLoading).
+Builder first paint is house leftover
 (title + Blank workout / saved — not RouteLoading).
 Coach first paint is house leftover
 (title + empty/generate or week — not RouteLoading).

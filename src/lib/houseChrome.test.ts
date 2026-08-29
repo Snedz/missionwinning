@@ -790,6 +790,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(macro, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-macro \{[^}]*--house-ink/);
   assert.match(spec, /Fuel first-paint remaining is house leftover/);
+  const fuelRoute = stripComments(read('app/(app)/nutrition/page.tsx'));
+  assert.doesNotMatch(fuelRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(fuelRoute, /import \{ NutritionPage \}/);
+  assert.match(spec, /Fuel first paint is house leftover/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
   const moveFlows = move.slice(
