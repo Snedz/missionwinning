@@ -59,7 +59,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
         </div>
       }
     >
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionLead', {
           defaultValue:
             'A max-effort or timed test can be dangerous. This is not the default way to train.',
