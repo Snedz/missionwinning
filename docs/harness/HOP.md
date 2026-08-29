@@ -12,7 +12,9 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 2 pass). Chrome. Accept pass. Walk next.
+Honesty was red (3 fail / 2 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Swap. Another-movement cite house-lede --house-muted rgb(113,113,122). Confirm outline rgb(244,244,245). Log set rgb(24,24,27).
+
+Next leftover: Swap garage lead cite (GarageSwapList helper still text-muted-foreground). Same leftover pattern. Do not restyle garage option rows / pick list / search / confirm. After-set cites stay parked. Not You chrome.
 
 ## decisions
 
