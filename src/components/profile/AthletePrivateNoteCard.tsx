@@ -60,7 +60,7 @@ export function AthletePrivateNoteCard() {
           <Button type="button" variant="outline" onClick={commit} className="tap-target min-h-[44px]">
             {t('athletePrivateNoteSave', { defaultValue: 'Save note' })}
           </Button>
-          <span className="text-xs tabular-nums text-muted-foreground">
+          <span className="house-note-count" data-testid="athlete-private-note-count">
             {note.length}/{PRIVATE_NOTE_MAX}
           </span>
         </div>

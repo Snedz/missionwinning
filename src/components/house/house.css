@@ -1897,6 +1897,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-profile .house-note-count {
+  font-size: 13px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: var(--house-muted);
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);
