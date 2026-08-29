@@ -110,134 +110,154 @@ export function FuelQuickLogPanel({
 
   return (
     <>
-      {tools ? null : recentFoods.length > 0 && (
-        <div className="space-y-1.5">
-          <p className="text-xs font-medium text-muted-foreground">
-            {t('fuelRecents', { defaultValue: 'Recent' })}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {recentFoods.map(([name, p, c, carbs, fat]) => (
-              <div key={`recent-${name}`} className="inline-flex items-center gap-0.5">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="text-xs min-h-[44px] tap-target "
-                  onClick={() => onQuickLog(name, p, c, carbs, fat)}
-                >
-                  {name}
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-11 w-11 p-0 tap-target text-muted-foreground"
-                  aria-label={t('fuelEditThenLog', { defaultValue: 'Edit servings then log' })}
-                  onClick={() => openDraftFromChip(name, p, c, carbs, fat)}
-                >
-                  <Pencil className="h-3 w-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
-          <p className="text-[11px] text-muted-foreground">
-            {t('fuelRecentsHint', {
-              defaultValue: 'Tap to log · pencil to adjust servings first',
-            })}
-          </p>
-        </div>
-      )}
-
       {tools ? null : (
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="fuel-nl-meal">
-          {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
-        </label>
-        {notepad ? null : (
-          <div
-            className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
-            role="group"
-            aria-label={t('fuelMealPicker', { defaultValue: 'Meal' })}
-          >
-            {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((m) => (
-              <Button
-                key={m}
-                type="button"
-                size="sm"
-                variant={activeMeal === m ? 'selected' : 'outline'}
-                className="min-h-[44px] h-11 text-xs tap-target "
-                onClick={() => onActiveMealChange(m)}
+        <section
+          data-testid="fuel-notepad"
+          className="house-card house-fuel-notepad"
+        >
+          {recentFoods.length > 0 ? (
+            <div className="house-collections">
+              <p className="house-kicker">
+                {t('fuelRecents', { defaultValue: 'Recent' })}
+              </p>
+              <div className="house-fuel-recents">
+                {recentFoods.map(([name, p, c, carbs, fat]) => (
+                  <div key={`recent-${name}`} className="house-fuel-recent">
+                    <button
+                      type="button"
+                      className="house-state min-h-[44px] tap-target"
+                      onClick={() => onQuickLog(name, p, c, carbs, fat)}
+                    >
+                      {name}
+                    </button>
+                    <button
+                      type="button"
+                      className="house-btn house-btn-ghost min-h-[44px] w-11 p-0 tap-target"
+                      aria-label={t('fuelEditThenLog', { defaultValue: 'Edit servings then log' })}
+                      onClick={() => openDraftFromChip(name, p, c, carbs, fat)}
+                    >
+                      <Pencil className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <p className="house-lede">
+                {t('fuelRecentsHint', {
+                  defaultValue: 'Tap to log · pencil to adjust servings first',
+                })}
+              </p>
+            </div>
+          ) : null}
+
+          <div className="house-fuel-type">
+            <label className="house-fuel-notepad-name" htmlFor="fuel-nl-meal">
+              {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
+            </label>
+            {notepad ? null : (
+              <div
+                className="house-fuel-meals"
+                role="group"
+                aria-label={t('fuelMealPicker', { defaultValue: 'Meal' })}
               >
-                {mealLabel(m)}
-              </Button>
-            ))}
-          </div>
-        )}
-        <input
-          id="fuel-nl-meal"
-          type="text"
-          value={nlMealText}
-          placeholder={t('fuelNlPlaceholder', {
-            defaultValue: 'chicken rice broccoli… or 3 eggs',
-          })}
-          onChange={(e) => onNlMealTextChange(e.target.value)}
-          className="w-full h-11  border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        />
-        {draft && (nlPreview || manualDraft) ? (
-          <div className="space-y-3">
-            <MealEstimateDraft
-              draft={draft}
-              onChange={(next) => {
-                setDraft(next);
-              }}
-              confidence={confidence}
-              sourceLabel={sourceLabel}
-              requireEdit={
-                !draftFromDb &&
-                !manualDraft &&
-                (nlPreview?.source === 'rough' || nlPreview?.confidence === 'low')
-              }
-              onLog={() => {
-                onLogNlMeal(draft);
-                setDraft(null);
-                setManualDraft(false);
-                setDraftFromDb(false);
-              }}
-              onDismiss={() => {
-                setDraft(null);
-                setDraftFromDb(false);
-                setManualDraft(false);
-                onNlMealTextChange('');
-              }}
-            />
-            {nlPreview &&
-              !manualDraft &&
-              (nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
-              <div className="border-2 border-border bg-background p-3 space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">
-                  {t('fuelSearchToImprove', {
-                    defaultValue: 'Search the food database for better macros',
-                  })}
-                </p>
-                <FoodSearchBar
-                  compact
-                  initialQuery={nlMealText.trim().length >= 2 ? nlMealText.trim() : draft.name}
-                  onSelect={(item) => {
-                    setManualDraft(false);
-                    setDraft({
-                      name: item.brand ? `${item.name} (${item.brand})` : item.name,
-                      protein: item.protein,
-                      cals: item.calories,
-                      carbs: item.carbs,
-                      fat: item.fat,
-                    });
-                    setDraftFromDb(true);
-                  }}
-                />
+                {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    className={`house-state min-h-[44px] tap-target${activeMeal === m ? ' is-on' : ''}`}
+                    onClick={() => onActiveMealChange(m)}
+                  >
+                    {mealLabel(m)}
+                  </button>
+                ))}
               </div>
             )}
+            <input
+              id="fuel-nl-meal"
+              type="text"
+              value={nlMealText}
+              placeholder={t('fuelNlPlaceholder', {
+                defaultValue: 'chicken rice broccoli… or 3 eggs',
+              })}
+              onChange={(e) => onNlMealTextChange(e.target.value)}
+              className="house-field"
+            />
+            {draft && (nlPreview || manualDraft) ? (
+              <div className="house-fuel-draft">
+                <MealEstimateDraft
+                  draft={draft}
+                  onChange={(next) => {
+                    setDraft(next);
+                  }}
+                  confidence={confidence}
+                  sourceLabel={sourceLabel}
+                  requireEdit={
+                    !draftFromDb &&
+                    !manualDraft &&
+                    (nlPreview?.source === 'rough' || nlPreview?.confidence === 'low')
+                  }
+                  onLog={() => {
+                    onLogNlMeal(draft);
+                    setDraft(null);
+                    setManualDraft(false);
+                    setDraftFromDb(false);
+                  }}
+                  onDismiss={() => {
+                    setDraft(null);
+                    setDraftFromDb(false);
+                    setManualDraft(false);
+                    onNlMealTextChange('');
+                  }}
+                />
+                {nlPreview &&
+                  !manualDraft &&
+                  (nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
+                  <div className="house-fuel-improve">
+                    <p className="house-lede">
+                      {t('fuelSearchToImprove', {
+                        defaultValue: 'Search the food database for better macros',
+                      })}
+                    </p>
+                    <FoodSearchBar
+                      compact
+                      initialQuery={nlMealText.trim().length >= 2 ? nlMealText.trim() : draft.name}
+                      onSelect={(item) => {
+                        setManualDraft(false);
+                        setDraft({
+                          name: item.brand ? `${item.name} (${item.brand})` : item.name,
+                          protein: item.protein,
+                          cals: item.calories,
+                          carbs: item.carbs,
+                          fat: item.fat,
+                        });
+                        setDraftFromDb(true);
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
+
+          <div className="house-fuel-water">
+            <button
+              type="button"
+              className="house-btn house-btn-ghost min-h-[44px] tap-target"
+              onClick={() => onWaterChange(Math.max(0, water - 1))}
+            >
+              −
+            </button>
+            <span className="house-lede">
+              {water} {t('fuelGlasses', { defaultValue: 'glasses' })}
+            </span>
+            <button
+              type="button"
+              className="house-btn house-btn-ghost min-h-[44px] tap-target"
+              onClick={() => onWaterChange(water + 1)}
+            >
+              +
+            </button>
+          </div>
+        </section>
       )}
 
       {notepad ? null : (
@@ -283,23 +303,11 @@ export function FuelQuickLogPanel({
       )}
 
       {tools ? (
-        <Button variant="outline" size="sm" onClick={onOpenLogSheet}>
+        <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onOpenLogSheet}>
           <Plus className="h-3.5 w-3.5 me-1" />
           {t('fuelLogDetailed', { defaultValue: 'Photo & detailed log' })}
         </Button>
-      ) : (
-        <div className="flex items-center gap-1">
-          <Button size="sm" variant="ghost" onClick={() => onWaterChange(Math.max(0, water - 1))}>
-            −
-          </Button>
-          <span className="text-sm tabular-nums text-muted-foreground min-w-[4.5rem] text-center">
-            {water} {t('fuelGlasses', { defaultValue: 'glasses' })}
-          </span>
-          <Button size="sm" variant="ghost" onClick={() => onWaterChange(water + 1)}>
-            +
-          </Button>
-        </div>
-      )}
+      ) : null}
 
       {notepad ? null : yesterdayMeals.length > 0 && (
         <Button variant="secondary" size="sm" onClick={onRepeatYesterday}>

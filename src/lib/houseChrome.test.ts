@@ -672,6 +672,27 @@ test('house design system is the signed-in token table', () => {
   assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
   assert.match(fuel, /id="fuel-log"/);
   assert.match(fuel, /className="house-card group"/);
+  const notepad = read('src/components/nutrition/FuelQuickLogPanel.tsx');
+  const notepadSlice = notepad.slice(
+    notepad.indexOf('data-testid="fuel-notepad"'),
+    notepad.indexOf('</section>')
+  );
+  assert.match(notepad, /house-card house-fuel-notepad/);
+  assert.match(notepad, /house-fuel-notepad-name/);
+  assert.match(notepad, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.match(notepad, /house-state min-h-\[44px\] tap-target/);
+  assert.match(notepad, /className="house-field"/);
+  assert.match(notepadSlice, /data-testid="fuel-notepad"/);
+  assert.doesNotMatch(notepadSlice, /<Button[\s>]/);
+  assert.doesNotMatch(notepadSlice, /<Input[\s>]/);
+  assert.doesNotMatch(notepadSlice, /focus:ring-2/);
+  assert.doesNotMatch(notepadSlice, /border-2/);
+  assert.doesNotMatch(notepadSlice, /house-btn-primary/);
+  assert.doesNotMatch(notepadSlice, /primary-action/);
+  assert.doesNotMatch(notepadSlice, /text-primary/);
+  assert.match(css, /\.house-fuel \.house-fuel-notepad \.house-field \{[^}]*--house-line/);
+  assert.match(css, /\.house-fuel \.house-state\.is-on \{[^}]*--house-selected/);
+  assert.match(spec, /Fuel first-paint notepad is house leftover/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
   const moveFlows = move.slice(

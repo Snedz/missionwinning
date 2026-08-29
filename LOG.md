@@ -229,13 +229,18 @@ Mind first-paint check-in is house leftover.
 Learn first-paint intro is house leftover.
 Mind first-paint breathe is house leftover.
 Move first-paint quiet log is house leftover.
+Fuel first-paint notepad is house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is
 `house-profile` (Account door is a
 ghost house button). Fuel leftover
 is `house-fuel` (log first; search /
-barcode / recipes in Show all). Quiet
+barcode / recipes in Show all). Fuel
+first-paint notepad is house leftover
+(recents are house-state; type is
+house-field; water is house-btn, not
+filled; today's meals card stays). Quiet
 More leftovers Move / Mind / Track /
 Learn carry house-move / house-mind /
 house-track / house-learn. Move

@@ -1913,6 +1913,92 @@
   scroll-margin-top: 24px;
 }
 
+.mw-house .house-fuel .house-fuel-notepad {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mw-house .house-fuel .house-fuel-notepad .house-lede {
+  margin: 0;
+}
+
+.mw-house .house-fuel .house-fuel-notepad-name {
+  display: block;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-type {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-recents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-recent {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mw-house .house-fuel .house-fuel-meals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-state.is-on {
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
+}
+
+.mw-house .house-fuel .house-fuel-notepad .house-field {
+  min-height: 44px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
+.mw-house .house-fuel .house-fuel-notepad .house-field:focus,
+.mw-house .house-fuel .house-fuel-notepad .house-field:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
+.mw-house .house-fuel .house-fuel-draft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mw-house .house-fuel .house-fuel-improve {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mw-house .house-fuel .house-fuel-water {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .mw-house .house-feedback form.house-card {
   max-width: 40rem;
 }
