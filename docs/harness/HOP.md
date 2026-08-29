@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red. Accept next. Walk next.
+Honesty was red. Accept green. Walked compact 390 `[data-testid="today-first-log-set"]` (`href="/active"`, not filled). Hero Start stays the one filled action. Landed `/active` set table. Log set `rgb(24, 24, 27)`. Finish / Form / Swap unfilled `rgb(244, 244, 245)`.
 
 ## decisions
 
