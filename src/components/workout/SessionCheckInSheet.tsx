@@ -150,7 +150,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
         </div>
       }
     >
-      <p className="text-sm text-muted-foreground leading-relaxed -mt-1">
+      <p className="house-lede text-sm">
         {t('sessionCheckInLead', {
           defaultValue:
             'Three quick ratings. We adjust readiness — we never cut your sets without asking.',

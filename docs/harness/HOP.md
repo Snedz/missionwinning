@@ -5,23 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-swap-garage-lead-cite
-done_means: Swap garage lead cite under .mw-house is house leftover (--house-muted / house-lede), not text-muted-foreground. Option rows / pick list / search / confirm stay. Portals stay mw-house. Confirm stays outline.
-accept: npx tsx --test src/lib/swapGarageLeadCite.test.ts
+ticket: leftover-check-in-lead-cite
+done_means: Check-in lead cite under .mw-house is house leftover (--house-muted / house-lede), not text-muted-foreground. Scale / confirm stay. Confirm stays outline. Portals stay mw-house.
+accept: npx tsx --test src/lib/checkInLeadCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Swap (garage path on Bench Press). Garage lead cite house-lede --house-muted rgb(113,113,122). Confirm outline rgb(244,244,245). Log set rgb(24,24,27). Option rows / pick list / search untouched.
-
-Next leftover: Check-in lead cite (SessionCheckInSheet still text-muted-foreground). Same leftover pattern. Do not restyle scale / confirm. After-set cites stay parked. Not You chrome.
+Honesty was red (3 fail / 3 pass). Chrome. Accept pass. Walk next.
 
 ## decisions
 
-- One leftover: Swap garage lead cite is house leftover.
-- Cite is house-lede + text-sm. Scoped `.house-swap-sheet .house-lede` keeps 14px inherit and `--house-muted`.
-- Do not restyle garage option rows / pick list / search / confirm.
-- ExercisePicker / another-movement cite / Form guide ready-cite stay done. Do not reopen.
+- One leftover: Check-in lead cite is house leftover.
+- Cite is house-lede + text-sm. Scoped `.house-checkin .house-lede` keeps 14px inherit and `--house-muted`.
+- Do not restyle check-in scale or confirm.
+- Swap garage lead / another-movement / Form guide ready-cite stay done. Do not reopen.
 - Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - After-set cites parked.

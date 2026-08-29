@@ -998,6 +998,13 @@
   color: var(--house-press-ink);
 }
 
+.mw-house.house-checkin .house-lede {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live .house-exercise-head {
   padding: 12px 12px 8px;
 }
