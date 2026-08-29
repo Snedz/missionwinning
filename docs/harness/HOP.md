@@ -5,25 +5,26 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-swap-garage-cues
-done_means: GarageSwapList cues under .mw-house are house leftover (--house-muted / house-lede), not text-muted-foreground. Lead cite leftover stays. List / confirm / copy stay. Finish / Skip / Swap / Form guide stay outline. Log set stays the sole filled press. After-set cites stay parked.
-accept: npx tsx --test src/lib/swapGarageCuesCite.test.ts
+ticket: leftover-set-table-rpe-cite
+done_means: Completed-set easy/med/hard RPE cite under .mw-house is house leftover (--house-muted / house-lede), not text-muted-foreground. vs-last / e1RM / next-target / load-% stay parked muted. in-set PR stays muted. Chips / RPE10 select / copy stay. Finish / Skip / Swap / Form guide stay outline. Log set stays the sole filled press.
+accept: npx tsx --test src/lib/setTableRpeCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 5 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active. I-Day kit was bodyweight so first lift was Push-ups (no garage list). Swap another-movement to Bench Press, confirm, garage list opens. Cues (Push-ups / Chair Dips) house-lede --house-muted rgb(113,113,122) at 12px. Lead cite leftover stays rgb(113,113,122). Log set rgb(24,24,27). Close / Finish / Skip / Swap stay outline. Copy untouched. List / confirm untouched.
+Honesty was red (3 fail / 4 pass). Chrome. Accept pass. Walk 1440: already on /active from prior Home Start. Bench Press 60×8 Log set → tap Easy. RPE cite "Easy" house-lede --house-muted rgb(113,113,122) at 11px. vs-last / in-set PR not present. Log set rgb(24,24,27). Finish / Skip / Swap / Form guide / Repeat last stay outline. Copy untouched. Chips / RPE10 untouched.
 
-Next leftover: pick the loudest non-parked first-paint fail on /active after this leftover ships. Same leftover pattern. Prefer Swap / Form guide / Check-in / live row. After-set cites (next-target / e1RM / vs-last / load-%) stay parked. Do not restyle the lead cite, list, confirm, or copy. Not You chrome.
+Next leftover: pick the loudest non-parked first-paint fail on /active after this leftover ships. Same leftover pattern. Prefer Swap / Form guide / Check-in / live row. After-set cites (next-target / e1RM / vs-last / load-%) stay parked. Do not restyle vs-last, in-set PR, chips, or Log set. Not You chrome. ExercisePicker rewrite stays parked.
 
 ## decisions
 
-- One leftover: Swap garage cues are house leftover.
-- Lead cite leftover stays. Do not restyle it.
-- Do not restyle the list, confirm, or copy.
+- One leftover: Set-table RPE cite is house leftover.
+- vs-last / e1RM / next-target / load-% stay parked. Do not restyle them.
+- in-set PR stays muted (not this leftover).
+- Easy / Med / Hard chips stay house-state. RPE10 select stays house-num.
+- Do not restyle copy.
 - Close / Finish / Skip / Swap / Form guide stay outline — never house-btn-primary.
 - Log set stays the sole filled press.
-- After-set cites (next-target / e1RM / vs-last / load-%) stay parked.
-- Movement-history list-row / empty / Plate-line / Check-in / Hard-session stay done. Do not reopen.
+- Swap garage cues leftover stays. Do not reopen.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.

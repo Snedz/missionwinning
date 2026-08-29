@@ -817,6 +817,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-set-rate .house-lede {
+  margin: 0;
+  font-size: 11px;
+  line-height: inherit;
+  color: var(--house-muted);
+}
+
 .mw-house .house-compose-live tr.house-set-line {
   border-bottom: 1px solid var(--house-line);
 }

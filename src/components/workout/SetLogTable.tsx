@@ -458,7 +458,7 @@ export function SetLogTable({
               <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                 <td
                   colSpan={5}
-                  className={cn(cell, 'min-w-0')}
+                  className={cn(cell, 'min-w-0 house-set-rate')}
                   data-testid="set-table-rate"
                 >
                   <div className="flex min-w-0 flex-wrap items-center justify-end gap-1">
@@ -515,7 +515,10 @@ export function SetLogTable({
                       </div>
                     )}
                     {set.rpe && (
-                      <span className="text-[11px] text-muted-foreground">
+                      <span
+                        className="house-lede"
+                        data-testid="set-table-rpe"
+                      >
                         {t(rpeLabelKey(set.rpe), {
                           defaultValue: rpeDefaultLabel(set.rpe),
                         })}
