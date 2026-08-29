@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Chrome in. Accept pending walk.
+Honesty was red (3 fail / 1 pass). Chrome: career card (hasCareer) is house-card, not Card border-2. Empty EmptyState stays. Walk 1280: /log → Start → /active → History → /profile. House 72+264, Log set rgb(24, 24, 27), career card unmounted (guest EmptyState expected), Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
