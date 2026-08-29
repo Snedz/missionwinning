@@ -782,6 +782,10 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live tr.house-set-line {
+  border-bottom: 1px solid var(--house-line);
+}
+
 .mw-house .house-compose-live .house-set-check {
   color: var(--house-ink);
 }
