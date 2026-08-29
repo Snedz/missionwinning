@@ -29,7 +29,7 @@
 | `SetLoadPctField.tsx` | Optional authored % of a known 1-rep max on a finished History set (`.1044`). Empty is valid. Never cites % from kg. Load-% cell is house-num. Live `SetRowPercentField` stays on Train (`.981`). |
 | `SetLogAdjacencyStack.tsx` | Unused TARGET-above-PREVIOUS stack — do not remount into Prev (would restyle the table). |
 | `SetLogRow.tsx` | Legacy read-only set record (not mounted on Active). Kept for tests of the old compact density. |
-| `LogConsole.tsx` | Legacy compact dock entry. Active dock is rest-only; set entry is the table. |
+| `LogConsole.tsx` | Legacy compact dock entry. Active dock is rest-only; set entry is the table. LogConsole Log set is house leftover press (`--house-press`), not poster-red. |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. Confirm is house-btn, not filled. Do not rewrite shared ExercisePicker. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them. Typed catalog miss can name a custom (`.990`). Hidden names stay off the list (`.1004`). Unlimited. Free. Empty invents nothing. |
 | `HardSessionWarningSheet.tsx` | Pre-start hard-session warning — Back does not start; never gates Log set. Stop line follows pregnancy flag (`.746` v1). Hard-session confirm is house leftover. |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s. Global Default chips stay here — not a second rest home (`.995`). |

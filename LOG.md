@@ -71,7 +71,9 @@ day first paint is house leftover
 (date + that day's rows). Calendar
 / charts stay parked. Log set is house leftover
 press (`--house-press` / #18181b), filled
-`primary-action`, ungated. Account first paint is
+`primary-action`, ungated. LogConsole Log set is
+house leftover press (`--house-press` / #18181b),
+not poster-red. Account first paint is
 house leftover (sign-in / return / prefs) — not
 `RouteLoading` / `useSearchParams` skeleton.
 You first paint is house leftover

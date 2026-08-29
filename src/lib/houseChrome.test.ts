@@ -1186,6 +1186,15 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(logSet, /accent-poster/);
   assert.match(css, /\.house-compose-live \.house-set-log \{[^}]*--house-press/);
   assert.match(spec, /Log set is house leftover/);
+  const logConsole = read('src/components/workout/LogConsole.tsx');
+  const consoleLogSet = logConsole.slice(
+    logConsole.indexOf('data-testid="log-console-log-set"'),
+    logConsole.indexOf('data-testid="log-console-log-set"') + 400
+  );
+  assert.match(consoleLogSet, /house-btn house-btn-primary house-set-log/);
+  assert.match(consoleLogSet, /primary-action/);
+  assert.doesNotMatch(consoleLogSet, /accent-poster/);
+  assert.match(spec, /LogConsole Log set is house leftover/);
   const setHead = setTable.slice(setTable.indexOf('<thead>'), setTable.indexOf('</thead>'));
   assert.match(setHead, /house-set-head/);
   assert.doesNotMatch(setHead, /border-b-2/);

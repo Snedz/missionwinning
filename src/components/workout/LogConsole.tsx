@@ -3,10 +3,10 @@
 /**
  * The logger's one console — the only place a set is entered (compact).
  *
- * set-table density on ink: metric steppers under the thumb, one poster-red
- * Log set, no filled accent chrome competing with it (kind / Use next stay
- * outline-ink). Kind strip collapses to Work + expand so Log stays in the
- * easy thumb zone (F-003 / MatrAIx).
+ * set-table density on ink: metric steppers under the thumb, one house leftover
+ * Log set (`--house-press`), no filled accent chrome competing with it (kind /
+ * Use next stay outline-ink). Kind strip collapses to Work + expand so Log stays
+ * in the easy thumb zone (F-003 / MatrAIx).
  *
  * See: src/components/workout/INDEX.md
  */
@@ -460,12 +460,12 @@ export function LogConsole({
         </p>
       ) : null}
 
-      {/* Sole poster-red primary on the hero Active log path (compact dock). */}
+      {/* Sole house leftover primary on the leftover compact dock. */}
       <button
         type="button"
         onClick={onLog}
         data-testid="log-console-log-set"
-        className="primary-action mt-2.5 flex min-h-[52px] w-full items-center gap-2 bg-[hsl(var(--accent-poster))] px-4 text-[19px] font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+        className="house-btn house-btn-primary house-set-log primary-action mt-2.5 flex min-h-[52px] w-full items-center gap-2 tap-target px-4 text-[19px] font-extrabold"
       >
         <span className="flex-1 text-start">{t('activeLogSet', { defaultValue: 'Log set' })}</span>
         <Check className="h-5 w-5 shrink-0" aria-hidden />

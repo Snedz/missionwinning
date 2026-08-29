@@ -21,7 +21,12 @@ test('LogConsole: sole primary-action Log set; kind/Use-next never accent-fill',
   const primaries = src.match(/primary-action/g) || [];
   assert.equal(primaries.length, 1, 'exactly one primary-action (Log set)');
   assert.match(src, /log-console-log-set/);
-  assert.match(src, /accent-poster/);
+  const logSet = src.slice(
+    src.indexOf('data-testid="log-console-log-set"'),
+    src.indexOf('data-testid="log-console-log-set"') + 400
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.doesNotMatch(logSet, /accent-poster/);
   assert.match(src, /min-h-\[52px\]/);
   assert.match(src, /h-\[52px\]/);
   // Selected kind / Use next stay ink — filled accent competed with Log set.
