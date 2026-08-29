@@ -785,6 +785,10 @@
   background: var(--house-selected);
 }
 
+.mw-house .house-compose-live .house-set-table {
+  font-size: 14px;
+}
+
 .mw-house .house-compose-live .house-set-head {
   border-bottom: 1px solid var(--house-line);
   color: var(--house-muted);

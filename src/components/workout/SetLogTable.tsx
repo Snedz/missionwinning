@@ -162,7 +162,7 @@ export function SetLogTable({
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-hidden">
     <table
-      className="w-full table-fixed border-collapse text-sm"
+      className="house-set-table w-full table-fixed border-collapse"
       data-testid="set-log-table"
       data-row-type={rowType}
       data-pair-mark={pairMark ?? undefined}
