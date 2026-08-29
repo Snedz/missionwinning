@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (4 fail / 1 pass). Chrome. Accept pending.
+Honesty was red (4 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. /profile athlete signature --house-muted; Edit hairline. Preview double-rule unmounted (default frame).
 
 ## decisions
 
