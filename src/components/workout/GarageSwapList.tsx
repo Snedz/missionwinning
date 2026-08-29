@@ -20,7 +20,7 @@ export function GarageSwapList({ options, onChoose, selectedId }: Props) {
 
   return (
     <div className="mw-house space-y-3" data-testid="garage-swap-list">
-      <p className="text-sm text-muted-foreground">
+      <p className="house-lede text-sm">
         {t('activeSwapGarageLead', {
           defaultValue: 'Same pattern. Floor, chair, or a bar you already have.',
         })}

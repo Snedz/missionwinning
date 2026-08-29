@@ -5,24 +5,21 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-swap-another-movement-cite
-done_means: Swap another-movement cite under .mw-house is house leftover (--house-muted / house-lede), not text-muted-foreground. Portals stay mw-house. Confirm stays outline.
-accept: npx tsx --test src/lib/swapAnotherMovementCite.test.ts
+ticket: leftover-swap-garage-lead-cite
+done_means: Swap garage lead cite under .mw-house is house leftover (--house-muted / house-lede), not text-muted-foreground. Option rows / pick list / search / confirm stay. Portals stay mw-house. Confirm stays outline.
+accept: npx tsx --test src/lib/swapGarageLeadCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 2 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → Swap. Another-movement cite house-lede --house-muted rgb(113,113,122). Confirm outline rgb(244,244,245). Log set rgb(24,24,27).
-
-Next leftover: Swap garage lead cite (GarageSwapList helper still text-muted-foreground). Same leftover pattern. Do not restyle garage option rows / pick list / search / confirm. After-set cites stay parked. Not You chrome.
+Honesty was red (2 fail / 4 pass). Chrome. Accept pass. Walk next.
 
 ## decisions
 
-- One leftover: Swap another-movement cite is house leftover.
+- One leftover: Swap garage lead cite is house leftover.
 - Cite is house-lede + text-sm. Scoped `.house-swap-sheet .house-lede` keeps 14px inherit and `--house-muted`.
-- Confirm stays house-btn outline. ExercisePicker / pick list / search untouched.
-- AdaptiveOverlay className stays mw-house house-swap-sheet.
-- Form guide ready-cite stays done. Do not reopen.
+- Do not restyle garage option rows / pick list / search / confirm.
+- ExercisePicker / another-movement cite / Form guide ready-cite stay done. Do not reopen.
 - Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - After-set cites parked.
