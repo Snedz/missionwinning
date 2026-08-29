@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DangerZone } from '@/components/ui/DangerZone';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -88,13 +87,10 @@ export function ProfileAccountCard({
   };
 
   return (
-    <Card className="bg-card">
-      <CardHeader>
-        <CardTitle className="text-base font-semibold">
-          {t('account', { defaultValue: 'Account' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="house-card space-y-3" data-testid="account-card">
+      <h3 className="text-base font-semibold">
+        {t('account', { defaultValue: 'Account' })}
+      </h3>
         {authError ? (
           <p
             role="alert"
@@ -181,7 +177,6 @@ export function ProfileAccountCard({
             />
           </DangerZone>
         ) : null}
-      </CardContent>
-    </Card>
+    </div>
   );
 }

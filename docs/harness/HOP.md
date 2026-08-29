@@ -5,21 +5,22 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-table-card
-done_means: You first-paint table card is house leftover, not Card. Row hairlines and Edit table internals stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youTableCard.test.ts
+ticket: leftover-account-card
+done_means: Account first-paint account card is house leftover, not Card. Sign-in block, SignInPanel, DangerZone stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: table card is house-card, not Card. Row hairlines and Edit internals stay. Walk 1280: /log → Start → /active → History → /profile. House 72+264, Log set rgb(24, 24, 27), table card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Honesty was red (3 fail / 1 pass). Chrome: account card is house-card, not Card. Sign-in block, SignInPanel, DangerZone stay.
 
 ## decisions
 
-- One leftover: You first-paint table card frame is house leftover.
-- Do not restyle table row hairlines this hop.
-- Do not restyle Edit table internals.
-- Do not restyle muted body cite this hop.
+- One leftover: Account first-paint account card frame is house leftover.
+- Do not restyle house-account-signin (already leftover).
+- Do not restyle SignInPanel internals.
+- Do not restyle DangerZone / HoldToConfirm.
+- Do not restyle muted cites this hop.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
