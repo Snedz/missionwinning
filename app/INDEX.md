@@ -30,7 +30,7 @@
 | `/coach` | `CoachPage.tsx` — Coach first paint is house leftover (static page; title + empty/generate or week, not RouteLoading). **Mission Coach** (AI weekly plan). |
 | `/library` | `LibraryPage.tsx` — Library first paint is house leftover (static page; catalog list, not RouteLoading). Official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
 | `/history` | `HistoryPage.tsx` — History list first paint is house leftover (static page; session list, not RouteLoading). |
-| `/leaderboard` | `LeaderboardPage.tsx` |
+| `/leaderboard` | `LeaderboardPage.tsx` — Leaderboard first paint is house leftover (static page; title + board, not RouteLoading). |
 | `/benchmarks` | `BenchmarksPage.tsx` |
 
 ### Other pillars & info

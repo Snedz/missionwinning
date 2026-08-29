@@ -5,7 +5,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Trophy, RefreshCw, Moon, Sunrise } from 'lucide-react';
@@ -36,25 +36,34 @@ import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
 import { visibleLeaderboardScopes } from '@/lib/leaderboard/boards';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 
-export function LeaderboardPage() {
+type LeaderboardPageProps = {
+  initialBoard?: string;
+  initialScope?: string;
+  initialClass?: string;
+};
+
+export function LeaderboardPage({
+  initialBoard,
+  initialScope,
+  initialClass,
+}: LeaderboardPageProps = {}) {
  const { t } = useTranslation();
  const fmt = useLocaleFormat();
  const router = useRouter();
- const searchParams = useSearchParams();
  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
  const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
  const [boardId, setBoardId] = useState<LeaderboardBoardId>(() => {
- return parseLeaderboardBoardId(searchParams.get('board')) ?? 'mission-score';
+ return parseLeaderboardBoardId(initialBoard) ?? 'mission-score';
  });
  const [scope, setScope] = useState<LeaderboardScope>(() => {
-     const requested = parseLeaderboardScope(searchParams.get('scope')) ?? 'global';
+     const requested = parseLeaderboardScope(initialScope) ?? 'global';
      const allowed = new Set(visibleLeaderboardScopes().map((s) => s.id));
      return allowed.has(requested) ? requested : 'global';
    });
  const [cloud, setCloud] = useState<Awaited<ReturnType<typeof fetchCloudLeaderboardSnapshots>>>([]);
  const [classRows, setClassRows] = useState<ClassLeaderboardRow[]>([]);
- const [classCode, setClassCode] = useState('');
+ const [classCode, setClassCode] = useState(() => initialClass?.toUpperCase() ?? '');
  const [operatorName, setOperatorName] = useState(loadOperatorName);
  const [nameError, setNameError] = useState<DisplayNameRejection | null>(null);
  const [squadCode, setSquadCode] = useState(loadSquadCode);
@@ -133,19 +142,25 @@ export function LeaderboardPage() {
  setSquadCode(joined);
  }
  if (joined) setClassCode(joined);
- if (joined && !searchParams.get('scope')) {
+ if (joined && !initialScope) {
  setScope(boardId === 'presidential-fitness' ? 'class' : 'friends');
  }
- }, [searchParams, boardId]);
+ }, [initialScope, boardId]);
 
  useEffect(() => {
- const nextBoard = parseLeaderboardBoardId(searchParams.get('board'));
- const nextScope = parseLeaderboardScope(searchParams.get('scope'));
- const urlClass = searchParams.get('class')?.toUpperCase();
+ const apply = (search: string) => {
+ const sp = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+ const nextBoard = parseLeaderboardBoardId(sp.get('board'));
+ const nextScope = parseLeaderboardScope(sp.get('scope'));
+ const urlClass = sp.get('class')?.toUpperCase();
  if (nextBoard) setBoardId(nextBoard);
  if (nextScope) setScope(nextScope);
  if (urlClass) setClassCode(urlClass);
- }, [searchParams]);
+ };
+ const onPop = () => apply(window.location.search);
+ window.addEventListener('popstate', onPop);
+ return () => window.removeEventListener('popstate', onPop);
+ }, []);
 
  const updateUrl = useCallback(
  (nextBoard: LeaderboardBoardId, nextScope: LeaderboardScope) => {

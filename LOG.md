@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Visibility first paint is house leftover
+`loadCoachTodayOptional`. Leaderboard first paint is house leftover
+(title + board — not RouteLoading).
+Visibility first paint is house leftover
 (title + report — not RouteLoading).
 Under the Hood first paint is house leftover
 (title + weights — not RouteLoading).

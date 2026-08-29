@@ -5,17 +5,17 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-visibility-first-paint
-done_means: Visibility first paint is house leftover (title + report), not RouteLoading. Do not invent room chrome.
-accept: npx tsx --test src/lib/visibilityFirstPaintHonesty.test.ts
+ticket: leftover-leaderboard-first-paint
+done_means: Leaderboard first paint is house leftover (title + board), not RouteLoading. Do not invent room chrome.
+accept: npx tsx --test src/lib/leaderboardFirstPaintHonesty.test.ts
 test_written: yes
 
 ## progress
 
-Honesty test written first (2 red / 1 already green). Route is a static import.
-Accept green. Walk: `/account/transparency` HTML has Visibility + Back to Account; no "Loading Visibility". Downloads stay. Do not invent room chrome.
+Honesty test written first (3 red). Route is a static import. `?board=` / `?scope=` / `?class=` server-resolved.
+Accept green. Walk: `/leaderboard` HTML has Leaderboard + Optional ranks; no "Loading Leaderboard". Do not invent room chrome.
 
 ## decisions
 
-- Route leftover only. Do not restyle TransparencyPage / downloads.
+- `?board=` / `?scope=` / `?class=` stay server-resolved on the route. Do not restyle the board.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.
