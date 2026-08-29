@@ -728,6 +728,7 @@
 
 .mw-house .house-compose-live .house-session-clock {
   color: var(--house-muted);
+  font-size: 11px;
 }
 
 .mw-house .house-compose-live .house-cue-line {
