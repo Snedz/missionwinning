@@ -134,7 +134,10 @@ export function ProfileRemindersCard({
           <p className="mt-4 text-xs font-semibold uppercase tracking-[0.04em] text-muted-foreground">
             {t('remindersKindsLabel', { defaultValue: 'What this device will receive' })}
           </p>
-          <ul className="mt-2 space-y-2 border-t-2 border-border pt-2 text-[13px] text-muted-foreground">
+          <ul
+            className="house-reminders-kinds mt-2 space-y-2 pt-2 text-[13px] text-muted-foreground"
+            data-testid="account-reminders-kinds"
+          >
             <li>
               {t('remindersKindComeback', {
                 defaultValue:

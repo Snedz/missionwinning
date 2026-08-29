@@ -2013,6 +2013,10 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-account .house-reminders-kinds {
+  border-top: 1px solid var(--house-line);
+}
+
 .mw-house .house-account .house-referral-cite {
   margin: 0;
   font-size: 14px;
