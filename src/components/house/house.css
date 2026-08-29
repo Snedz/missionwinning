@@ -1864,6 +1864,25 @@
   padding-top: 16px;
 }
 
+.mw-house .house-profile .house-field {
+  min-height: 88px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
+.mw-house .house-profile .house-field:focus,
+.mw-house .house-profile .house-field:focus-visible {
+  border: 1px solid var(--house-ink);
+  outline: none;
+  box-shadow: none;
+}
+
 .mw-house .house-account .bg-card {
   border: 1px solid var(--house-line);
   background: var(--house-paper);

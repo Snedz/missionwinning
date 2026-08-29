@@ -46,6 +46,7 @@ export function AthletePrivateNoteCard() {
         </label>
         <textarea
           id="athlete-private-note"
+          data-testid="athlete-private-note-textarea"
           value={note}
           maxLength={PRIVATE_NOTE_MAX}
           rows={3}
@@ -53,7 +54,7 @@ export function AthletePrivateNoteCard() {
             setNote(e.target.value.slice(0, PRIVATE_NOTE_MAX));
             setSaved(false);
           }}
-          className="w-full resize-y rounded-none border border-border bg-background px-3 py-2 text-sm"
+          className="house-field w-full resize-y"
         />
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <Button type="button" variant="outline" onClick={commit} className="tap-target min-h-[44px]">

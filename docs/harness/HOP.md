@@ -5,19 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-you-table-edit-row-hairlines
-done_means: You table Edit / row hairlines is house leftover, not border-t-2. Selects stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/youTableEditHairlines.test.ts
+ticket: leftover-you-private-note-textarea
+done_means: You private note textarea is house leftover, not border-border. Save stays outline. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/youPrivateNoteTextarea.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (4 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Table first row no hairline; later rows 1px --house-line; Edit hairline. Selects stay.
+Honesty was red (3 fail / 1 pass). Chrome. Accept pending.
 
 ## decisions
 
-- One leftover: You table Edit disclosure + display row hairlines are house leftover.
-- Selects stay. Save stays outline.
+- One leftover: You private note textarea is house leftover (house-field).
+- Save stays outline. Do not restyle to house-btn-primary.
+- Body cite stays later.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
