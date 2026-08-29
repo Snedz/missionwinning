@@ -83,7 +83,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
 
         {!signedIn ? (
           <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">
+            <p className="house-referral-hint" data-testid="account-referral-hint">
               {t('growthReferralSignInHint', {
                 defaultValue: 'Sign in to get your invite code and share the mission.',
               })}
