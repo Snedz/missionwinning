@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty first. History still paints SkeletonBlock Loading sessions before hydrate.
+Honesty was red. Accept green. Walked Home left Start → `/active` (Log set `rgb(24, 24, 27)`). Then Today close → History → `/history`. First `/history` tick was house empty, not Loading sessions.
 
 ## decisions
 
