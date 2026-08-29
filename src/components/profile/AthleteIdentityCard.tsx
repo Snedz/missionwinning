@@ -166,7 +166,10 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         )}
 
         <details className="group house-identity-edit" data-testid="athlete-identity-edit">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-identity-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-identity-summary"
+          >
             {t('athleteIdentityEdit', { defaultValue: 'Edit call sign' })}
           </summary>
           <div className="mt-3 space-y-3">
