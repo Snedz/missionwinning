@@ -191,7 +191,7 @@ export function ActiveExerciseHeader({
       </div>
 
       {nextTarget && (
-        <p className="house-next-cite text-[11px] tabular-nums">
+        <p className="text-[11px] tabular-nums text-muted-foreground">
           {t('activeNextTargetLine', {
             line: formatSetRowLine({
               type: resolveSetRowType(exercise),
