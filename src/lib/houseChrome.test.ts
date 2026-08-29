@@ -730,6 +730,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(leaderboardRoute, /import \{ LeaderboardPage \}/);
   assert.match(leaderboardRoute, /initialBoard/);
   assert.match(spec, /Leaderboard first paint is house leftover/);
+  const benchmarksRoute = stripComments(read('app/(app)/benchmarks/page.tsx'));
+  assert.doesNotMatch(benchmarksRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(benchmarksRoute, /import \{ BenchmarksPage \}/);
+  assert.match(spec, /Benchmarks first paint is house leftover/);
   assert.match(spec, /12px rows, selected `#eee`/);
   assert.match(spec, /stacked 13px muted rows/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));
