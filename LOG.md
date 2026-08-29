@@ -31,7 +31,9 @@ Reconcile after hydrate re-seeds an
 empty canvas even with a pending
 remote. Start on `/log` writes then
 navigates — no second start after
-`loadCoachTodayOptional`. Learn first paint is house leftover
+`loadCoachTodayOptional`. Guidebook first paint is house leftover
+(title + chapter list — not RouteLoading).
+Learn first paint is house leftover
 (title + quiet intro — not RouteLoading).
 Mind first paint is house leftover
 (title + check-in / breathe — not useSearchParams skeleton).
