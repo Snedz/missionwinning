@@ -681,8 +681,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-builder \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Builder Show all extras is house leftover/);
   assert.match(css, /\.house-builder \.house-item/);
+  const accountRoute = stripComments(read('app/(app)/account/page.tsx'));
+  assert.doesNotMatch(accountRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(accountRoute, /import \{ AccountPage \}/);
+  assert.match(accountRoute, /initialAuthError/);
   const account = read('src/page-components/AccountPage.tsx');
   assert.match(account, /className="house-account"/);
+  assert.doesNotMatch(stripComments(account), /useSearchParams/);
   assert.match(account, /ProfileAccountCard/);
   assert.match(account, /ProfileRemindersCard/);
   assert.match(account, /ProfilePreferencesCard/);
@@ -694,6 +699,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(account, /<Card[\s>]/);
   assert.match(css, /\.house-account \.bg-card/);
   assert.match(spec, /Account leftover/);
+  assert.match(spec, /Account first paint is house leftover/);
   assert.match(spec, /12px rows, selected `#eee`/);
   assert.match(spec, /stacked 13px muted rows/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));

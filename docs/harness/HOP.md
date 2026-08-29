@@ -5,19 +5,18 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-log-set-house-press
-done_means: Log set under .mw-house is --house-press ink (#18181b), not poster red.
-accept: npx tsx --test src/lib/workout/setTableLogSetHousePress.test.ts
+ticket: leftover-account-first-paint
+done_means: Account first paint is house leftover (sign-in / return / prefs), not RouteLoading or a useSearchParams skeleton.
+accept: npx tsx --test src/lib/accountFirstPaintHonesty.test.ts
 test_written: yes
 
 ## progress
 
-Honesty test written first (3 red / 1 already green). Log set className + leftover
-`.house-set-log` rule under compose-live. Accept 4/4.
+Honesty test written first (3 red). Route is a static import; `?authError=`
+resolved on the server. Accept 3/3.
 
 ## decisions
 
-- Slice starts at `data-testid="set-table-log-set"` so house classes follow that attribute.
-- Press is `--house-press` / #18181b via `.house-btn-primary` + leftover `.house-set-log`.
-- Finish / Skip / Swap / Form guide / Repeat last stay not filled.
-- Stamp stays `.1058`. Not a letter. Do not run harness:done — leftover on #889.
+- Same defect class as `/welcome` `.765` and `/active` `.1058`.
+- Do not restart Learn / Move / Mind `useSearchParams`. You kit RouteLoading is next leftover.
+- Stamp stays `.1058`. Not a letter. Do not run harness:done.

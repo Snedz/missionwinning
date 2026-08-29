@@ -36,7 +36,10 @@ day first paint is house leftover
 (date + that day's rows). Calendar
 / charts stay parked. Log set is house leftover
 press (`--house-press` / #18181b), filled
-`primary-action`, ungated. Restoring session is not
+`primary-action`, ungated. Account first paint is
+house leftover (sign-in / return / prefs) — not
+`RouteLoading` / `useSearchParams` skeleton.
+Restoring session is not
 the product. Guest. First set
 ungated. Today still one Start.
 Resume `.963` kept. `/private` stays
