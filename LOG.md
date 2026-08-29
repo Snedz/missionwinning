@@ -222,6 +222,7 @@ Coach week strip is house leftover.
 Library pick bar is house leftover.
 Library Show all extras is house leftover.
 History Show all extras is house leftover.
+Today Start quiet offers are house leftover.
 Train sidecar leftover is rest /
 skip / notes; History stays on Home.
 You leftover is

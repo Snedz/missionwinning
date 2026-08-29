@@ -1710,6 +1710,10 @@
   border-top: 1px solid var(--house-line);
 }
 
+.mw-house .house-reentry {
+  margin-top: 16px;
+}
+
 .mw-house .house-builder .house-show-all-body {
   border-top: 1px solid var(--house-line);
 }

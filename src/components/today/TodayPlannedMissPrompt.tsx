@@ -22,15 +22,15 @@ export function TodayPlannedMissPrompt({
   if (!offer.show) return null;
 
   return (
-    <div className="mb-2.5 space-y-2" data-testid="planned-miss-reentry" role="status">
-      <p className="poster-sub text-sm leading-relaxed">
+    <div className="house-reentry space-y-2" data-testid="planned-miss-reentry" role="status">
+      <p className="house-lede">
         {t('plannedMissLine', { defaultValue: 'A planned session is still here.' })}
       </p>
       <div className="flex flex-wrap gap-x-4 gap-y-1">
         <button
           type="button"
           onClick={onDoNow}
-          className="poster-sub min-h-[44px] text-sm font-medium underline underline-offset-2"
+          className="house-btn house-btn-ghost min-h-[44px] tap-target"
         >
           {t('plannedMissDoNow', { defaultValue: 'Do it now' })}
         </button>
@@ -38,7 +38,7 @@ export function TodayPlannedMissPrompt({
           type="button"
           data-testid="planned-miss-skip"
           onClick={onSkip}
-          className="poster-sub min-h-[44px] text-sm"
+          className="house-btn house-btn-ghost min-h-[44px] tap-target"
         >
           {t('plannedMissSkip', { defaultValue: 'Skip' })}
         </button>
@@ -46,7 +46,7 @@ export function TodayPlannedMissPrompt({
           <button
             type="button"
             onClick={onSlide}
-            className="poster-sub min-h-[44px] text-sm"
+            className="house-btn house-btn-ghost min-h-[44px] tap-target"
           >
             {t('plannedMissSlide', { defaultValue: 'Slide' })}
           </button>

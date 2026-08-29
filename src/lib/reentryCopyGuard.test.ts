@@ -66,12 +66,13 @@ test('planned-miss prompt defaults stay shame-free', () => {
     }
     assert.doesNotMatch(d, /streak/i, d);
   }
-  // Ink tokens vanish on Today's red Start field (see .poster-field in index.css).
-  assert.match(src, /poster-sub/);
+  // House leftover on Today desk — quiet ghost actions, not ink tokens.
+  assert.match(src, /house-lede/);
+  assert.match(src, /house-btn house-btn-ghost/);
   assert.doesNotMatch(
     src,
-    /text-primary|text-muted-foreground/,
-    'Do it now / Skip / Slide must use poster-sub, not ink tokens'
+    /text-primary|text-muted-foreground|poster-sub/,
+    'Do it now / Skip / Slide must use house leftover, not ink tokens'
   );
 });
 

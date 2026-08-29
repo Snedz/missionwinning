@@ -471,6 +471,17 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(historyExtras, /border-t-2/);
   assert.match(css, /\.house-history \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /History Show all extras is house leftover/);
+  const reentry = read('src/components/today/TodayReentryCard.tsx');
+  const plannedMiss = read('src/components/today/TodayPlannedMissPrompt.tsx');
+  assert.match(reentry, /house-lede house-reentry/);
+  assert.doesNotMatch(reentry, /poster-sub/);
+  assert.match(plannedMiss, /house-reentry/);
+  assert.match(plannedMiss, /house-lede/);
+  assert.match(plannedMiss, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
+  assert.doesNotMatch(plannedMiss, /poster-sub/);
+  assert.doesNotMatch(plannedMiss, /text-primary/);
+  assert.match(css, /\.house-reentry \{[^}]*margin-top:\s*16px/);
+  assert.match(spec, /Today Start quiet offers are house leftover/);
   const coach = read('src/page-components/CoachPage.tsx');
   assert.match(coach, /className="house-plan max-w-2xl pb-24"/);
   assert.match(coach, /className="house-empty"/);
