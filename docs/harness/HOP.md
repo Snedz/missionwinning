@@ -12,12 +12,14 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 3 pass). Chrome. Accept pass. Walk next.
+Honesty was red (3 fail / 3 pass). Chrome. Accept pass. Walk 1440: Home left second bar → Start → /active → fieldTest=1 Hard-session. Lead cite house-lede --house-muted rgb(113,113,122). Confirm / Back outline rgb(244,244,245). Log set rgb(24,24,27). Stop / not-care / clinician / copy untouched.
+
+Next leftover: Hard-session not-care cite (still text-muted-foreground). Same leftover pattern. Do not restyle confirm. After-set cites stay parked. Not You chrome.
 
 ## decisions
 
 - One leftover: Hard-session lead cite is house leftover.
-- Cite is house-lede. Scoped `.house-hard-session .house-lede` keeps inherit and `--house-muted`.
+- Cite is house-lede + text-sm. Scoped `.house-hard-session .house-lede` keeps inherit and `--house-muted`.
 - Do not change hard-session / PT / field-test copy. Counsel owns it.
 - Do not restyle confirm. Confirm / Finish / Skip / Swap / Form guide stay outline.
 - Log set stays the sole filled press.
