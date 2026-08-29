@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: `.house-show-all-door` + `--house-ink` 14px/600 on `.house-plan`. Walk next.
+Honesty was red (3 fail / 1 pass). Chrome: `.house-show-all-door` + `--house-ink` 14px/600 on `.house-plan`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), Coach `.house-show-all-door` color rgb(24, 24, 27) 14px without text-foreground / text-sm, Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
