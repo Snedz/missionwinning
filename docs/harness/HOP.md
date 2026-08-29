@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: drop `text-[11px]`, `font-size: 11px` on `.house-session-clock`. Walk next.
+Honesty was red (3 fail / 1 pass). Chrome: drop `text-[11px]`, `font-size: 11px` on `.house-session-clock`. Walk 1280: Start href=/active, house 72+264, Log set rgb(24, 24, 27), `.house-session-clock` 11px without text-[11px], Finish/Skip/Swap/Form guide never house-btn-primary.
 
 ## decisions
 
