@@ -44,7 +44,7 @@
 | `NutritionPage.tsx` | `/nutrition` (Fuel) — Fuel first paint is house leftover (static page, not RouteLoading). Shell + state; logging UI in `src/components/nutrition/`; first-paint remaining, notepad, and today log are house leftovers. Search / barcode / recipes in Show more. |
 | `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); quiet log and flow list are house leftovers. Extra tools in Show all |
 | `MindPage.tsx` | `/mind` | First paint is check-in + breathe; both are house leftovers. Sessions in Show all |
-| `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
+| `TrackPage.tsx` | `/track` | Track first paint is house leftover (static page, not RouteLoading). First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
 | `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |

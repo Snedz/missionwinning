@@ -875,6 +875,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-track \.house-stat \{[^}]*--house-line/);
   assert.match(css, /\.house-track \.house-state\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Track first-paint metrics is house leftover/);
+  const trackRoute = stripComments(read('app/(app)/track/page.tsx'));
+  assert.doesNotMatch(trackRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(trackRoute, /import \{ TrackPage \}/);
+  assert.match(spec, /Track first paint is house leftover/);
   assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);
   const learnIntro = read('src/components/learn/QuietLearnIntroCard.tsx');
   assert.match(learnIntro, /house-card house-learn-intro/);

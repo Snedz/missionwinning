@@ -18,7 +18,7 @@
 | `/log` | Today | `HomePage.tsx` |
 | `/active` | Train | `ActiveWorkoutPage.tsx` |
 | `/nutrition` | Fuel | `NutritionPage.tsx` — Fuel first paint is house leftover (static import, no `RouteLoading`) |
-| `/track` | Track | `TrackPage.tsx` — Quiet Track weight / tape (`.975`); walks / GPS in Show more |
+| `/track` | Track | `TrackPage.tsx` — Track first paint is house leftover (static import, no `RouteLoading`). Quiet Track weight / tape (`.975`); walks / GPS in Show more |
 | `/profile` | You | `ProfilePage.tsx` — You leftover; first paint is house leftover (static import, no `RouteLoading`) |
 | `/account` | Account | `AccountPage.tsx` — settings leftover; first paint is house leftover (static import, no `RouteLoading`) |
 
