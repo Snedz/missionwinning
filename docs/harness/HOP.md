@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red. Accept next. Walk next.
+Honesty was red. Accept green. Walked compact 390 Start → `/active`. Client nav ticks showed house chrome, not `Loading…`. Then set table. Log set `rgb(24, 24, 27)`.
 
 ## decisions
 
