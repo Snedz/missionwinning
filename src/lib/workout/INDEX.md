@@ -31,7 +31,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
-10a2b. `writeTodayComposeSession.ts` — Start writes today's session before Train opens. Honor saved → last → Coach peek → Just Go with last loads. `/active` writes this in `useLayoutEffect` (hydrate does not own the canvas). `composeNextSet` paints Log set from the compose when the store is empty — persist does not own first paint. `composeSidecarWorkout` paints the sidecar the same way. Persist merge keeps that compose over a null rehydrate. Empty active sessions are replaced.  
+10a2b. `writeTodayComposeSession.ts` — Start writes today's session before Train opens. Honor saved → last → Coach peek → Just Go with last loads. `/active` writes this in `useLayoutEffect` (hydrate does not own the canvas). `composeNextSet` paints Log set from the compose when the store is empty — persist does not own first paint. `composeSidecarWorkout` paints the sidecar the same way. `composeFormGuideSheet` opens Form guide from the painted compose. Overlay portals when open — no mount wait. Persist merge keeps that compose over a null rehydrate. Empty active sessions are replaced.  
 10a4. `startAgain.ts` — session-out Start this again from a finished log (`.991`). Wraps `templateFromCompletedLog` + `protectLiveStart`. Empty invents nothing. Not a shop.  
 10a4b. `repeatThisSession.ts` — History detail copies the sets they logged into the one live Start (`.1026`). Honest fields. Warmup stays. Empty invents nothing. Not a shop.  
 10a4c. `moveSessionDay.ts` — re-date a finished History log (`.1027`). Same id. Vacated day drops that row. Empty / tomb / future invents nothing. Not a new backfill.  
@@ -125,6 +125,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `logConsoleLogSetHousePress.test.ts` | LogConsole Log set is house leftover press (`--house-press` / #18181b), not poster red (`.1058`) |
 | `activeLogSetWithoutPersist.test.ts` | `/active` first paint Log set does not wait on persist; `composeNextSet` owns nextSet (`.1058`) |
 | `activeSidecarWithoutPersist.test.ts` | `/active` first paint sidecar does not wait on persist; `composeSidecarWorkout` owns the session name (`.1058`) |
+| `activeFormSwapSheets.test.ts` | Form / Swap sheets open on click from first paint; overlay has no mount wait (`.1058`) |
 | `formGuideSwapPortalHouse.test.ts` | Form guide + Swap portaled overlay root carries `mw-house` (`.1058`) |
 | `mergeExercisesDialogHouse.test.ts` | Merge-exercises Radix DialogContent carries `mw-house` (`.1058`) |
 | `openEmptyLoad.test.ts` | Open empty load is blank, not 0; store stays 0; focused draft keeps `0.` / `2.5` (`.1048`) |

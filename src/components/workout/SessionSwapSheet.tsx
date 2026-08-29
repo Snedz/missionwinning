@@ -62,7 +62,7 @@ export function SessionSwapSheet({
         </button>
       }
     >
-      <div className="space-y-4">
+      <div className="space-y-4" data-testid="session-swap-sheet">
         {garageOptions.length > 0 ? (
           <GarageSwapList
             options={garageOptions}

@@ -67,7 +67,10 @@ export function FormGuideSheet({
         </div>
       }
     >
-        <div className="house-form-guide-body p-5 space-y-5 text-[17px] leading-relaxed">
+        <div
+          className="house-form-guide-body p-5 space-y-5 text-[17px] leading-relaxed"
+          data-testid="form-guide-sheet"
+        >
           {guide.mediaUrl && (
             <FormGuideMedia
               url={guide.mediaUrl}

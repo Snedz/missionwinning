@@ -15,7 +15,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-08-29 — /active first paint is a set table (`.1058`)
 
-Sidecar first paint does not
+Form / Swap sheets open on
+click from first paint.
+Overlay portals when open —
+no mount wait. Form guide
+resolves from the painted
+compose. Sidecar first paint does not
 wait on persist.
 `composeSidecarWorkout` paints
 the session name + rest/notes

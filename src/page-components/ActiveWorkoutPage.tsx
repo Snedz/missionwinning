@@ -24,7 +24,6 @@ import {
   shouldStartSeoExerciseSession,
   stripSeoExerciseFromSearch,
 } from '@/lib/seoExerciseBridge';
-import { getFormGuideOrCues } from '@/lib/formGuides';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { Plus } from 'lucide-react';
 import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
@@ -76,7 +75,6 @@ import {
   planApplyTargets,
   resolveActiveDockMode,
   resolveActiveSetDial,
-  resolveFormGuideSheet,
   resolveRepeatLastTarget,
   activeSessionBottomClass,
   resolveActiveGoalId,
@@ -101,6 +99,7 @@ import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClo
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import {
+  composeFormGuideSheet,
   composeNextSet,
   paintTodayComposeWorkout,
   writeTodayComposeSession,
@@ -763,11 +762,7 @@ export function ActiveWorkoutPage() {
       reps: dial.reps,
     };
   })();
-  const formGuideSheet = resolveFormGuideSheet({
-    formGuideId,
-    getExerciseById,
-    getFormGuideOrCues,
-  });
+  const formGuideSheet = composeFormGuideSheet(formGuideId);
 
   return (
     <div

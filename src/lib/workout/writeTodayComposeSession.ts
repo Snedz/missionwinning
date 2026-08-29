@@ -19,12 +19,15 @@ import {
   readWorkoutHistoryFromStorage,
 } from '@/lib/workout/workoutPersistLite';
 import { findNextSet } from '@/lib/workout/activeWorkoutHelpers';
+import { resolveExercise } from '@/lib/workout/customExercise';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import {
   hasComposeExercises,
   hasLoggedWork,
   useWorkoutStore,
 } from '@/store/workoutStore';
 import type { ActiveWorkout, CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
+import type { FormGuide } from '@/types/formGuide';
 import type { UnitsPref } from '@/lib/units';
 
 export type TodayComposeTemplate = {
@@ -118,4 +121,16 @@ export function composeSidecarWorkout(
   live: ActiveWorkout | null | undefined
 ): ActiveWorkout {
   return hasComposeExercises(live) ? (live as ActiveWorkout) : paintTodayComposeWorkout();
+}
+
+/** Form guide from the painted compose. A catalog miss does not own the sheet. */
+export function composeFormGuideSheet(
+  formGuideId: string | null | undefined
+): { exerciseId: string; exerciseName: string; guide: FormGuide } | null {
+  if (!formGuideId) return null;
+  const ex = resolveExercise(formGuideId);
+  if (!ex) return null;
+  const guide = getFormGuideOrCues(formGuideId, { exercise: ex });
+  if (!guide) return null;
+  return { exerciseId: ex.id, exerciseName: ex.name, guide };
 }
