@@ -1438,6 +1438,17 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house \.house-compose-live \.house-exercise-head \.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Skipped-this-session cite is house leftover/);
+  const nextTargetCite = skipHeader.slice(
+    skipHeader.indexOf('{nextTarget && ('),
+    skipHeader.indexOf('{nextTarget && (') + 220
+  );
+  assert.match(nextTargetCite, /house-lede house-next-target/);
+  assert.doesNotMatch(nextTargetCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-next-target\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Live-row next-target cite is house leftover/);
   const exerciseCard = read('src/components/workout/ActiveExerciseCard.tsx');
   assert.match(exerciseCard, /house-exercise-card/);
   assert.match(exerciseCard, /data-testid="active-exercise-card"/);

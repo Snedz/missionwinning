@@ -5,28 +5,28 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-picker-empty-cite
-done_means: Exercise picker empty cite under .mw-house is house leftover (--house-muted / house-lede). Selected leftover stays. Option-details leftover stays. Picker rewrite stays parked. After-set cites stay parked. Finish / Skip / Swap / Form guide stay outline. Log set stays the sole filled press.
-accept: npx tsx --test src/lib/pickerEmptyCite.test.ts
+ticket: leftover-live-next-target-cite
+done_means: Live-row next-target cite under .mw-house is house leftover (--house-muted / house-lede). Skipped leftover stays. After-set next-cite / e1RM / vs-last / load-% stay parked this leftover. Finish / Skip / Swap / Form guide stay outline. Log set stays the sole filled press. Picker rewrite stays parked.
+accept: npx tsx --test src/lib/liveNextTargetCite.test.ts
 test_written: yes
 
 ## progress
 
-Honesty first. Chrome after red. Honesty red 3 fail / 6 pass, then class-only chrome.
+Honesty first. Chrome after red. Honesty red 3 fail / 4 pass, then class-only chrome.
 
-Walk 1440 localhost:3000 /active (hydrated). Hidden catalog name in add-exercise search. Empty cite "No matches" is house-lede house-picker-empty rgb(113, 113, 122) 14px. Invent not shown. Log set rgb(24, 24, 27). Finish / Form guide outline rgb(244, 244, 245). vs-last stays text-muted (parked). Copy untouched. Picker rewrite stays parked. Hidden list cleared after walk.
+Walk 1440 localhost:3000 /active (hydrated). Next-target "Next: 5 × BW" is house-lede house-next-target rgb(113, 113, 122) 11px. Skipped leftover stays 14px muted. Log set rgb(24, 24, 27). Finish / Form guide outline. vs-last / e1RM stay text-muted this leftover. Copy untouched. Picker rewrite stays parked.
 
-Next leftover: pick the loudest non-parked first-paint fail on /active after this leftover ships. Same leftover pattern. Prefer Swap / Form guide / Check-in / live row. After-set cites (next-target / e1RM / vs-last / load-%) stay parked. Do not restyle option name, search, invent, or Log set. Not You chrome. ExercisePicker rewrite stays parked.
+Keep going after this leftover ships: one leftover per pass. Prefer remaining live-row muted (e1RM / vs-last / load-% / after-set next-cite). Not You chrome. ExercisePicker rewrite stays parked.
 
 ## decisions
 
-- One leftover: Exercise picker empty cite is house leftover. Class-only. Not a picker rewrite.
-- Selected leftover stays. Option-details leftover stays. Do not restyle them.
-- Do not restyle search, list chrome, invent, or option name.
+- One leftover: Live-row next-target cite is house leftover. Class-only.
+- Skipped-this-session leftover stays. Do not restyle it.
+- Do not restyle after-set next-cite, e1RM, vs-last, or load-% this leftover.
 - Close / Finish / Skip / Swap / Form guide stay outline — never house-btn-primary.
 - Log set stays the sole filled press.
-- After-set cites stay parked.
 - ExercisePicker rewrite stays parked.
-- Form guide leftovers stay. Do not restyle them.
+- Form guide leftovers stay. Picker leftovers stay.
 - Fuel / Mind / Learn / Track / Move chrome not restarted.
 - Stamp stays `.1058`. Not a letter. Do not run harness:done.
+- Founder said keep going without Continue. One leftover per pass until remaining first-paint muted on /active is gone or parked rewrite.

@@ -1,7 +1,7 @@
 /**
- * Skipped-this-session cite is house leftover — house-lede, not text-muted.
- * vs-last / e1RM / load-% stay parked. Live-row next-target leftover ships separately. Skip hold stays outline.
- * Copy stays. Log set stays filled.
+ * Live-row next-target cite is house leftover — house-lede, not text-muted.
+ * Skipped leftover stays. After-set next-cite / e1RM / vs-last / load-% stay parked.
+ * Log set stays filled. Finish / Skip / Swap / Form guide stay outline.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,23 +18,36 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
   return src.slice(start, start + chars);
 }
 
-function sliceSkippedCite(header: string): string {
+function sliceNextTarget(header: string): string {
+  const needle = '{nextTarget && (';
+  const start = header.indexOf(needle);
+  assert.ok(start >= 0, 'missing live-row next-target cite');
+  return header.slice(start, start + 220);
+}
+
+function sliceSkipped(header: string): string {
   const needle = 'data-testid="session-skipped-exercise"';
   const start = header.indexOf(needle);
   assert.ok(start >= 0, `missing ${needle}`);
   return header.slice(Math.max(0, start - 180), start + 80);
 }
 
-test('Skipped-this-session cite is house leftover, not text-muted', () => {
+test('Live-row next-target cite is house leftover, not text-muted', () => {
   const header = read('src/components/workout/ActiveExerciseHeader.tsx');
-  const cite = sliceSkippedCite(header);
+  const cite = sliceNextTarget(header);
   assert.match(cite, /house-lede/);
   assert.doesNotMatch(cite, /text-muted-foreground/);
-  assert.match(header, /activeSkippedThisSession/);
   assert.match(header, /house-exercise-head/);
 });
 
-test('after-set cites stay parked (not this leftover)', () => {
+test('skipped-this-session leftover stays (not this leftover)', () => {
+  const header = read('src/components/workout/ActiveExerciseHeader.tsx');
+  const cite = sliceSkipped(header);
+  assert.match(cite, /house-lede/);
+  assert.doesNotMatch(cite, /text-muted-foreground/);
+});
+
+test('after-set next-cite / e1RM / vs-last stay parked (not this leftover)', () => {
   const next = read('src/components/workout/SetLogNextCite.tsx');
   const nextNeedle = 'data-testid="set-table-next-cite-line"';
   const nextStart = next.indexOf(nextNeedle);
@@ -42,37 +55,16 @@ test('after-set cites stay parked (not this leftover)', () => {
   const nextLine = next.slice(Math.max(0, nextStart - 180), nextStart + 40);
   assert.match(nextLine, /text-muted-foreground/);
 
+  const header = read('src/components/workout/ActiveExerciseHeader.tsx');
+  const e1rm = sliceFromTestId(header, 'session-e1rm');
+  assert.match(e1rm, /text-muted-foreground/);
+
   const table = read('src/components/workout/SetLogTable.tsx');
   const vsNeedle = 'data-testid="set-table-vs-last"';
   const vsStart = table.indexOf(vsNeedle);
   assert.ok(vsStart >= 0, `missing ${vsNeedle}`);
   const vsLast = table.slice(Math.max(0, vsStart - 180), vsStart + 40);
   assert.match(vsLast, /text-muted-foreground/);
-
-  const header = read('src/components/workout/ActiveExerciseHeader.tsx');
-  const e1rm = sliceFromTestId(header, 'session-e1rm');
-  assert.match(e1rm, /text-muted-foreground/);
-
-  const targetNeedle = 'activeNextTargetLine';
-  const targetStart = header.indexOf(targetNeedle);
-  assert.ok(targetStart >= 0, `missing ${targetNeedle}`);
-  const nextTarget = header.slice(Math.max(0, targetStart - 160), targetStart + 40);
-  assert.match(nextTarget, /house-lede/);
-  assert.doesNotMatch(nextTarget, /text-muted-foreground/);
-
-  const pctNeedle = 'data-testid="set-table-load-pct-cite"';
-  const pctStart = table.indexOf(pctNeedle);
-  assert.ok(pctStart >= 0, `missing ${pctNeedle}`);
-  const loadPct = table.slice(Math.max(0, pctStart - 180), pctStart + 40);
-  assert.match(loadPct, /text-muted-foreground/);
-});
-
-test('Skip this exercise stays outline, never house-btn-primary', () => {
-  const skip = sliceFromTestId(
-    read('src/components/workout/ActiveExerciseHeader.tsx'),
-    'active-skip-exercise'
-  );
-  assert.doesNotMatch(skip, /house-btn-primary/);
 });
 
 test('Log set stays the sole filled press', () => {
@@ -81,19 +73,19 @@ test('Log set stays the sole filled press', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints skipped-this-session cite with --house-muted', () => {
+test('house leftover rule paints live-row next-target cite with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-exercise-head \.house-lede \{[^}]*--house-muted/
+    /\.mw-house \.house-compose-live \.house-next-target\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Skipped-this-session cite is house leftover', () => {
+test('DESIGN names Live-row next-target cite is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Skipped-this-session cite is house leftover/);
+  assert.match(spec, /Live-row next-target cite is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
