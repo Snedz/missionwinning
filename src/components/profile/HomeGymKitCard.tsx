@@ -72,7 +72,7 @@ export function HomeGymKitCard() {
       <h3 className="text-2xl font-semibold leading-none tracking-tight">
         {t('homeGymKitTitle', { defaultValue: 'Home gym kit' })}
       </h3>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-home-kit-cite" data-testid="home-gym-kit-cite">
         {t('homeGymKitBody', {
           defaultValue:
             'List what you actually have. Free, stays on this device. Leave this unset if you train at a full gym.',
