@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red (missing today-first-history). Chrome is href=/history. Walk next.
+Walked 1280: left Start href=/active (72+264) → /active Log set rgb(24, 24, 27). Finish/Skip/Swap/Form guide never house-btn-primary. Back Today. today-first-history is a[href="/history"], locked Ban, click stays /log.
 
 ## decisions
 
