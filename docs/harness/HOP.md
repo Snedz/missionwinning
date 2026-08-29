@@ -12,7 +12,7 @@ test_written: yes
 
 ## progress
 
-Honesty was red. Accept green. Walk next.
+Honesty was red. Accept green. Walked Home left bar Start → `/active` (1280). Form guide → `[data-testid="form-guide-sheet"]` + `[role="dialog"]` + `mw-house` (Push-ups). Escape. Swap → `[data-testid="session-swap-sheet"]`. Log set still `rgb(24, 24, 27)`. Form / Swap / Finish / Skip unfilled `rgb(244, 244, 245)`.
 
 ## decisions
 
