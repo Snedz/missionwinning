@@ -14,7 +14,7 @@
 | File | Route |
 |------|-------|
 | `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. |
-| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail |
+| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail. Compact hero Start is `href="/active"` (writes compose on click). |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
 

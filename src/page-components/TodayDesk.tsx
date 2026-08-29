@@ -221,13 +221,16 @@ export function TodayDesk() {
         </h2>
         <p className="house-lede">{sessionLede}</p>
         <div className="house-row" style={{ marginTop: 18 }}>
-          <button
-            type="button"
+          <Link
+            href="/active"
             className="house-btn house-btn-primary"
-            onClick={handleStart}
+            data-testid="today-start-cta"
+            onClick={() => {
+              writeTodayComposeSession();
+            }}
           >
             {startLabel}
-          </button>
+          </Link>
         </div>
         {reentryShowing ? (
           <div style={{ marginTop: 16 }}>
