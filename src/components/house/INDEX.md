@@ -16,7 +16,7 @@
 | `DESIGN.md` | House design system — tokens, type, layout, motion, rooms. Field-manual stays on `/private` / www. |
 | `house.css` | Runtime for that system, scoped to `.mw-house`. Transferred rooms hide the old pillar header. |
 | `TodayDesk` | Lives in `src/page-components/TodayDesk.tsx` — one Start, week as work. |
-| `TrainComposeEmpty.tsx` | Cold `/active` canvas. Same start engines as ActiveEmptyState. |
+| `TrainComposeEmpty.tsx` | Cold `/active` canvas while persist is still reading. Never Restoring-session as the product. After hydrate, `/active` seeds Just Go so the set table is the compose. |
 | `TrainSidecar.tsx` | Live session settings: rest, skip, jot. |
 | `AccountSidecar.tsx` | Settings room links. |
 

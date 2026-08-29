@@ -124,13 +124,35 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.doesNotMatch(src, /SSR_ACTION/);
   assert.doesNotMatch(src, /startWorkoutFromStore/);
   assert.doesNotMatch(src, /copy:\s*prev\.copy/);
-  assert.match(src, /if \(!snap \|\| !action\) return/);
-  assert.match(src, /disabled=\{!snap\}/);
+  assert.doesNotMatch(src, /if \(!snap \|\| !action\) return/);
+  assert.doesNotMatch(src, /disabled=\{!snap\}/);
+  assert.doesNotMatch(src, /startEmptyWorkout|startEmpty\(/);
+  assert.match(src, /previewJustGoForEquipment/);
+  assert.match(src, /startLive\(preview\.name, preview\.exercises\)/);
   assert.match(src, /today-start-pending/);
+  assert.match(src, /justGoTitle/);
+  assert.match(src, /<HouseFirstRoomsCard/);
+  assert.match(src, /id="today-week"/);
   assert.match(src, /startLive\(/);
   assert.match(src, /router\.push\('\/active'\)/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
   assert.match(peek, /typeof window === 'undefined'/);
+});
+
+test('/active after hydrate is a Just Go table, never Restoring as the product', () => {
+  const empty = stripComments(read('src/components/house/TrainComposeEmpty.tsx'));
+  assert.doesNotMatch(empty, /Restoring session|activeLoadingSession|Reading the last workout/);
+  assert.match(empty, /aria-busy=\{hydrated \? undefined : true\}/);
+  const active = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
+  assert.match(active, /await reconcileOpenSession/);
+  assert.match(active, /pendingRemoteOpenSession\) return/);
+  assert.match(active, /parseSeoExerciseParam\(searchParams\)/);
+  assert.match(active, /previewJustGoForEquipment/);
+  const emptyStart = active.slice(
+    active.indexOf('const handleEmptyStart'),
+    active.indexOf('const handlePreviewStart')
+  );
+  assert.doesNotMatch(emptyStart, /previewJustGoForEquipment|startWorkout\(preview/);
 });
 
 test('Today desk keeps Start order engines', () => {
@@ -182,7 +204,8 @@ test('checklist never owns Start, and house copy is not a pasted brand', () => {
   assert.doesNotMatch(src, /getFirstSteps|summarizeFirstSteps/);
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
   assert.match(guide, /houseGuideGotIt/);
-  assert.match(guide, /today-start-ready/);
+  assert.match(guide, /#today-start/);
+  assert.doesNotMatch(guide, /today-start-ready/);
   assert.match(guide, /onClick=\{dismiss\}/);
   assert.doesNotMatch(guide, /setStep|railStep|next =/);
   const card = stripComments(read('src/components/house/HouseFirstRoomsCard.tsx'));

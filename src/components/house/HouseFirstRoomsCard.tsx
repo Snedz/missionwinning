@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * Persistent collapsible N-of-N under Start. Never owns first paint —
- * the caller mounts this only after the desk snap is ready.
+ * Persistent collapsible N-of-N under Start. First paint — mount even
+ * before the desk snap so the Thursday desk stays dense.
  */
 
 import { useState } from 'react';

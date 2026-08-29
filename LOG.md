@@ -283,7 +283,16 @@ Garage leftover is `house-garage`: quiet
 foot only, never a rail, first paint
 unchanged. `/feedback` is 200 on this
 host; `/server` still 307 to `/private`.
-Coach inner costume eyebrow is
+Today first paint stays the
+Thursday desk (Just Go, first
+rooms, week strip) — never hide
+them until snap. Start before
+snap seeds Just Go, not an empty
+Quick Workout. `/active` after
+hydrate is the Just Go table +
+Log set, never Restoring session
+as the product. handleEmptyStart
+stays freestyle empty. Coach inner costume eyebrow is
 gone. Today has one filled
 action (Start); week generate
 is a door to `/coach`.

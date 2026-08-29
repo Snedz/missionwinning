@@ -167,10 +167,29 @@ export function ActiveWorkoutPage() {
     void ensureFullExerciseCatalog();
   }, []);
 
+  /**
+   * After persist + reconcile, an empty `/active` is still a compose.
+   * Seed Just Go so the set table is the product — never Restoring
+   * session as the only content. Do not race SEO `?exercise=` or a
+   * pending remote open. handleEmptyStart stays freestyle empty.
+   */
   useEffect(() => {
     if (!hasHydrated) return;
-    void reconcileOpenSession();
-  }, [hasHydrated]);
+    let cancelled = false;
+    void (async () => {
+      await reconcileOpenSession();
+      if (cancelled) return;
+      const store = useWorkoutStore.getState();
+      if (store.activeWorkout || store.pendingRemoteOpenSession) return;
+      if (parseSeoExerciseParam(searchParams)) return;
+      const equipment = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
+      const preview = previewJustGoForEquipment(equipment);
+      startWorkout(preview.name, preview.exercises);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hasHydrated, searchParams, startWorkout]);
 
   /**
    * Flow-2 — SEO `/exercises/[id]` lands here with `?exercise=`. After persist

@@ -28,7 +28,7 @@ export function HouseGuide() {
       return;
     }
     const id = window.setTimeout(() => {
-      if (document.querySelector('[data-testid="today-start-ready"]')) {
+      if (document.querySelector('#today-start')) {
         setOpen(true);
       }
     }, 40);
