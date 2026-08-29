@@ -5,20 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-owner-tools-cards
-done_means: Account owner-tools cards are house leftover, not Card content-card. Both frames. Demo cites / View events stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountOwnerToolsCards.test.ts
+ticket: leftover-account-beta-admin-cards
+done_means: Account owner-tools beta admin cards are house leftover, not Card. Both frames. Copy / Refresh / Invites stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountBetaAdminCards.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome. Accept pass. Walk 1280: /log → Start → /active → History. Owner-tools cards unmounted (guest).
+Honesty was red (3 fail / 1 pass). Chrome. Accept next.
 
 ## decisions
 
-- One leftover: Account owner-tools snapshot + events frames are house leftover.
+- One leftover: Account owner-tools beta admin funnel + invites frames are house leftover.
 - Not first paint. Owner tools only. Guest walk unmounts them.
-- Do not restyle View Tracked Events. Demo figures stay named demo.
+- Do not restyle Copy / Refresh / Download / Invite controls. Inner proof summary border-2 stays.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.

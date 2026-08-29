@@ -6,7 +6,6 @@ import { countFeedbackDests, formatDestCounts } from '@/lib/feedbackTriage';
 import { loadReviewedAt, markReviewed, unreadCount } from '@/lib/feedbackUnread';
 import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
 
 type InviteRow = {
@@ -246,10 +245,9 @@ export function BetaAdminPanel({ enabled }: Props) {
 
   return (
     <div className="space-y-4">
-      <Card className="border-2 border-[hsl(var(--status-warn))] bg-card">
-        <CardHeader>
-          <CardTitle className="flex flex-wrap items-center justify-between gap-2">
-            <span>Beta funnel (all users)</span>
+      <div className="house-card space-y-4 text-sm" data-testid="account-beta-admin-card">
+        <h3 className="flex flex-wrap items-center justify-between gap-2 text-2xl font-semibold leading-none tracking-tight">
+          <span>Beta funnel (all users)</span>
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
@@ -276,9 +274,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 {loading ? 'Loading…' : 'Refresh'}
               </button>
             </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-sm">
+        </h3>
           {error && <p className="text-destructive text-xs">{error}</p>}
           {metrics && (
             <>
@@ -459,14 +455,10 @@ export function BetaAdminPanel({ enabled }: Props) {
             Requires <code className="text-[10px]">BETA_ADMIN_EMAILS</code> +{' '}
             <code className="text-[10px]">SUPABASE_SERVICE_ROLE_KEY</code> in Vercel.
           </p>
-        </CardContent>
-      </Card>
+      </div>
 
-      <Card className="border-primary">
-        <CardHeader>
-          <CardTitle className="text-base">Invites</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-sm">
+      <div className="house-card space-y-4 text-sm" data-testid="account-beta-admin-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">Invites</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <Stat
               label="Signed up / target"
@@ -565,8 +557,7 @@ export function BetaAdminPanel({ enabled }: Props) {
               ).
             </p>
           )}
-        </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }
