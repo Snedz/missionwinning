@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const BuilderPage = dynamic(
-  () => import('@/page-components/BuilderPage').then((m) => m.BuilderPage),
-  { loading: () => <RouteLoading label="Builder" /> }
-);
+import { BuilderPage } from '@/page-components/BuilderPage';
 
 export const metadata: Metadata = routeMetadata('builder');
 
+/**
+ * Builder first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. ProgramTemplatesPanel internals stay parked.
+ */
 export default function BuilderRoute() {
   return <BuilderPage />;
 }

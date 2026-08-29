@@ -693,6 +693,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(builderExtras, /<Layers/);
   assert.match(css, /\.house-builder \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Builder Show all extras is house leftover/);
+  const builderRoute = stripComments(read('app/(app)/builder/page.tsx'));
+  assert.doesNotMatch(builderRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(builderRoute, /import \{ BuilderPage \}/);
+  assert.match(spec, /Builder first paint is house leftover/);
   assert.match(css, /\.house-builder \.house-item/);
   const accountRoute = stripComments(read('app/(app)/account/page.tsx'));
   assert.doesNotMatch(accountRoute, /dynamic\(|RouteLoading|Suspense/);
