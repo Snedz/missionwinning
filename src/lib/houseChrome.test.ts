@@ -132,7 +132,6 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.match(src, /justGoTitle/);
   assert.match(src, /<HouseFirstRoomsCard/);
   assert.match(src, /id="today-week"/);
-  assert.match(src, /startLive\(/);
   assert.match(src, /router\.push\('\/active'\)/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
   assert.match(peek, /typeof window === 'undefined'/);
@@ -172,9 +171,15 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /pickHonoredStart/);
   assert.match(src, /peekCoachToday/);
   assert.match(src, /shouldRepeatLastOnToday/);
-  assert.match(src, /runTodayPrimaryAction/);
-  assert.match(src, /includeColdStart:\s*true/);
-  assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
+  assert.match(src, /writeTodayComposeSession/);
+  const handle = src.slice(src.indexOf('const handleStart'), src.indexOf('const sessionTitle'));
+  assert.match(handle, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
+  assert.doesNotMatch(handle, /runTodayPrimaryAction/);
+  const writer = read('src/lib/workout/writeTodayComposeSession.ts');
+  assert.match(writer, /pickHonoredStart/);
+  assert.match(writer, /peekCoachToday/);
+  assert.match(writer, /shouldRepeatLastOnToday/);
+  assert.match(writer, /buildJustGoSession/);
 });
 
 test('Today desk has one filled action — week generate is a door to /coach', () => {

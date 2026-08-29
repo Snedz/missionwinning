@@ -29,7 +29,9 @@ Just Go over a persisted null.
 Logged work on disk still wins.
 Reconcile after hydrate re-seeds an
 empty canvas even with a pending
-remote. Log set stays filled
+remote. Start on `/log` writes then
+navigates — no second start after
+`loadCoachTodayOptional`. Log set stays filled
 `primary-action` / `--accent-poster`
 (house press `rgb(24, 24, 27)`),
 ungated. Restoring session is not

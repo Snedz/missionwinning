@@ -7,8 +7,7 @@
  * hero, first rooms, and the week strip. peekCoachToday() is null on
  * the server — do not hide the desk until snap. Start always lands
  * `/active` with a Just Go table (last loads). Start writes the
- * session before Train opens. The live engine still runs when snap
- * is ready.
+ * session before Train opens. Engines live in writeTodayComposeSession.
  */
 
 import Link from 'next/link';
@@ -39,10 +38,7 @@ import {
   type JourneyState,
 } from '@/lib/missionJourney';
 import type { CompletedWorkoutLog } from '@/types';
-import { runTodayPrimaryAction, isTodayTrainReady } from '@/lib/todayPrimaryAction';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readRaw } from '@/lib/storage/safeStorage';
-import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
+import { isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
@@ -103,7 +99,6 @@ export function TodayDesk() {
   const { t, i18n } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
-  const startLive = useWorkoutStore((s) => s.startWorkout);
   const startCoach = useStartCoachSession();
   const [snap, setSnap] = useState<DeskSnap | null>(null);
   const plannedMiss = usePlannedMissOffer(
@@ -146,43 +141,6 @@ export function TodayDesk() {
   const handleStart = () => {
     writeTodayComposeSession();
     router.push('/active');
-    if (!snap || !action) return;
-    void (async () => {
-      const liveHistory = readWorkoutHistoryFromStorage();
-      const savedWorkouts = readSavedWorkoutsFromStorage();
-      const [{ computeReadinessFromHistory }, { getRecommendedFocus }] = await Promise.all([
-        import('@/lib/readinessIndex'),
-        import('@/lib/score'),
-      ]);
-      const readiness = computeReadinessFromHistory(liveHistory);
-      const recommendedFocus = getRecommendedFocus(readiness);
-      const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
-      const userEquip = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
-      const liveReentry = computeReentry(liveHistory, Date.now(), loadPlan());
-      await runTodayPrimaryAction({
-        hasActiveWorkout,
-        action,
-        recommendedFocus,
-        readiness,
-        history: liveHistory,
-        savedWorkouts,
-        units,
-        equipment: userEquip,
-        homeGymKit: loadHomeGymKit(),
-        includeBasicJustGo: false,
-        includeColdStart: true,
-        doseScale: liveReentry.show ? liveReentry.doseScale : 1,
-        startWorkout: (name, exercises, workoutId) => {
-          startLive(name, exercises, workoutId);
-        },
-        navigate: (href) => {
-          router.push(href);
-        },
-      });
-      if (useWorkoutStore.getState().activeWorkout) {
-        router.push('/active');
-      }
-    })();
   };
 
   const sessionTitle = hasActiveWorkout

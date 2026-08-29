@@ -102,7 +102,7 @@ describe('writeTodayComposeSession wiring', () => {
       handle.indexOf('writeTodayComposeSession') < handle.indexOf("router.push('/active')"),
       'write must happen before navigate'
     );
-    assert.match(desk, /runTodayPrimaryAction\(/);
+    assert.doesNotMatch(handle, /runTodayPrimaryAction/);
   });
 
   it('second-bar Start writes before /active', () => {
