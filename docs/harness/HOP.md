@@ -5,21 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-account-feedback-card
-done_means: Account first-paint feedback card is house leftover, not Card. FeedbackSheet and Send stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
-accept: npx tsx --test src/lib/accountFeedbackCard.test.ts
+ticket: leftover-account-premium-card
+done_means: Account first-paint premium card is house leftover, not Card content-card. Free-beta may unmount it. Billing / Explore buttons stay. Finish / Skip / Swap / Form guide / Repeat* never house-btn-primary.
+accept: npx tsx --test src/lib/accountPremiumCard.test.ts
 test_written: yes
 
 ## progress
 
-Honesty was red (3 fail / 1 pass). Chrome: feedback card is house-card, not Card. FeedbackSheet and Send stay. Walk 1280: /log → Start → /active → History → /account. House 72+264, Log set rgb(24, 24, 27), feedback card DIV.house-card 1px rgb(228, 228, 231) without border-2, Finish/Skip/Swap/Form guide never house-btn-primary.
+Chrome in. Accept pending walk.
 
 ## decisions
 
-- One leftover: Account first-paint feedback card frame is house leftover.
-- Do not restyle FeedbackSheet internals.
-- Do not restyle Send feedback button.
-- Do not restyle muted lead cite this hop.
+- One leftover: Account first-paint premium card frame is house leftover.
+- Do not restyle Manage billing / Explore Super Bundle buttons.
+- Do not restyle free-beta unmount.
 - Do not rewrite shared ExercisePicker.
 - After-set cites stay parked.
 - Calendar / charts / posters stay parked.
