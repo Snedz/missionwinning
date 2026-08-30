@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Watch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { isWearablesPubliclyEnabled } from '@/lib/wearables/flags';
 import type { WearableConnectionStatus } from '@/lib/wearables/types';
@@ -149,20 +148,17 @@ export function ProfileWearablesCard({ signedIn }: Props) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Watch className="h-4 w-4 text-primary" aria-hidden />
-          {t('wearablesTitle', { defaultValue: 'Wearables' })}
-        </CardTitle>
-        <CardDescription>
-          {t('wearablesLead', {
-            defaultValue:
-              'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Mission Score still comes from your logs.',
-          })}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-wearables-card">
+      <h3 className="flex items-center gap-2 text-2xl font-semibold leading-none tracking-tight">
+        <Watch className="h-4 w-4 text-primary" aria-hidden />
+        {t('wearablesTitle', { defaultValue: 'Wearables' })}
+      </h3>
+      <p className="text-muted-foreground leading-relaxed">
+        {t('wearablesLead', {
+          defaultValue:
+            'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Mission Score still comes from your logs.',
+        })}
+      </p>
         {!signedIn ? (
           <p className="text-muted-foreground">
             {t('wearablesSignIn', {
@@ -251,7 +247,6 @@ export function ProfileWearablesCard({ signedIn }: Props) {
             {t('wearablesOpenTrack', { defaultValue: 'Open Track' })}
           </Link>
         </p>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

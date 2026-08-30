@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const TrackPage = dynamic(
-  () => import('@/page-components/TrackPage').then((m) => m.TrackPage),
-  { loading: () => <RouteLoading label="Track" /> }
-);
+import { TrackPage } from '@/page-components/TrackPage';
 
 export const metadata: Metadata = routeMetadata('track');
 
+/**
+ * Track first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. Walks / GPS stay parked.
+ */
 export default function TrackRoute() {
   return <TrackPage />;
 }

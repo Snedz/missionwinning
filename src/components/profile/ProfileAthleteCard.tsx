@@ -12,7 +12,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Share2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { summarizeRewards, ownedBadgeDefs } from '@/lib/rewards/summary';
@@ -173,7 +172,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
       </p>
       <p className="mt-2 text-xl font-extrabold tracking-tight">{previewTitle}</p>
       {sig ? (
-        <p className="mt-1 text-sm text-muted-foreground" data-testid="athlete-card-signature">
+        <p className="house-athlete-cite" data-testid="athlete-card-signature">
           {t('careerSignature', {
             sessions: n(sig.sessions),
             bestWeek: n(sig.bestWeek),
@@ -182,7 +181,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
           })}
         </p>
       ) : (
-        <p className="mt-1 text-sm text-muted-foreground" data-testid="athlete-card-signature">
+        <p className="house-athlete-cite" data-testid="athlete-card-signature">
           {t('athleteCardPreviewEmpty', {
             defaultValue: 'Log a session and the card fills from your record.',
           })}
@@ -192,7 +191,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
         <p className="mt-2 text-sm text-foreground">{tableBits.join(' · ')}</p>
       )}
       {shownBadges.length > 0 && (
-        <p className="mt-3 text-xs text-muted-foreground">
+        <p className="house-athlete-badges-preview" data-testid="athlete-card-badges-preview">
           {shownBadges.map((b) => t(b.titleKey, { defaultValue: b.titleDefault })).join(' · ')}
         </p>
       )}
@@ -200,8 +199,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
   );
 
   return (
-    <Card className="bg-card" data-testid="athlete-card-editor">
-      <CardContent className="space-y-4 pt-6">
+    <div className="house-card space-y-4" data-testid="athlete-card-editor">
         <p className="eyebrow text-primary">
           {t('athleteCardTitle', { defaultValue: 'Your card' })}
         </p>
@@ -219,13 +217,16 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
           )}
         </div>
 
-        <details className="group border-t-2 border-border pt-4">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <details className="group house-athlete-edit" data-testid="athlete-card-edit">
+          <summary
+            className="house-athlete-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-card-edit-summary"
+          >
             {t('athleteCardEdit', { defaultValue: 'Edit card' })}
           </summary>
           <div className="mt-3 space-y-4">
             <fieldset className="space-y-2">
-              <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <legend className="house-athlete-frame-legend" data-testid="athlete-card-frame-legend">
                 {t('athleteCardFrame', { defaultValue: 'Frame' })}
               </legend>
               <div className="flex flex-wrap gap-2">
@@ -245,7 +246,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
             </fieldset>
 
             <fieldset className="space-y-2">
-              <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <legend className="house-athlete-backdrop-legend" data-testid="athlete-card-backdrop-legend">
                 {t('athleteCardBackdrop', { defaultValue: 'Backdrop' })}
               </legend>
               <div className="flex flex-wrap gap-2">
@@ -266,7 +267,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
 
             {owned.length > 0 && (
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <legend className="house-athlete-badges-legend" data-testid="athlete-card-badges-legend">
                   {t('athleteCardBadges', {
                     slots,
                     defaultValue: `Badges — pick up to ${slots}`,
@@ -295,7 +296,7 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
                 ? t('athleteCardSharing', { defaultValue: 'Preparing…' })
                 : t('athleteCardShare', { defaultValue: 'Share your card' })}
             </Button>
-            <p className="text-xs text-muted-foreground">
+            <p className="house-athlete-privacy" data-testid="athlete-card-privacy">
               {t('athleteCardPrivacy', {
                 defaultValue:
                   'Rendered on this device and shared only if you send it. Nothing is uploaded.',
@@ -303,7 +304,6 @@ export function ProfileAthleteCard({ career }: { career: CareerLine }) {
             </p>
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

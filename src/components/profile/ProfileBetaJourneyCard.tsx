@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { BetaFunnelMetrics } from '@/lib/journeyAnalytics';
 
@@ -25,11 +24,10 @@ export function ProfileBetaJourneyCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-primary bg-muted">
-      <CardHeader>
-        <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-beta-journey-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}
+      </h3>
         <div className="grid grid-cols-2 gap-2">
           <div className="border-2 border-border p-3">
             <div className="text-xs text-muted-foreground">Phase</div>
@@ -71,7 +69,6 @@ export function ProfileBetaJourneyCard({
             {t('emailNextStepSent', { defaultValue: 'Check your inbox for your next step.' })}
           </p>
         )}
-      </CardContent>
-    </Card>
+    </div>
   );
 }

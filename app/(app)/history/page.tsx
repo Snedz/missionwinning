@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const HistoryPage = dynamic(
-  () => import('@/page-components/HistoryPage').then((m) => m.HistoryPage),
-  { loading: () => <RouteLoading label="History" /> }
-);
+import { HistoryPage } from '@/page-components/HistoryPage';
 
 export const metadata: Metadata = routeMetadata('history');
 
+/**
+ * History list first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. Calendar / charts stay parked in Show all.
+ */
 export default function HistoryRoute() {
   return <HistoryPage />;
 }

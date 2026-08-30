@@ -20,7 +20,6 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { MessageSquare } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FeedbackSheet } from './FeedbackSheet';
 
@@ -32,31 +31,26 @@ export function ProfileFeedbackCard() {
   const pathname = usePathname() || '/profile';
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-4 w-4" aria-hidden="true" />
-          {t('feedbackCardTitle', { defaultValue: 'Tell us what broke' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
-        <p className="text-muted-foreground leading-relaxed">
-          {t('feedbackCardLead', {
-            defaultValue:
-              'A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.',
-          })}
-        </p>
-        <Button
-          type="button"
-          variant="outline"
-          className="min-h-[44px] w-full tap-target"
-          onClick={() => setOpen(true)}
-        >
-          {t('feedbackCardOpen', { defaultValue: 'Send feedback' })}
-        </Button>
-      </CardContent>
-
+    <div className="house-card space-y-3" data-testid="account-feedback-card">
+      <h3 className="flex items-center gap-2 text-2xl font-semibold leading-none tracking-tight">
+        <MessageSquare className="h-4 w-4" aria-hidden="true" />
+        {t('feedbackCardTitle', { defaultValue: 'Tell us what broke' })}
+      </h3>
+      <p className="house-feedback-cite" data-testid="account-feedback-cite">
+        {t('feedbackCardLead', {
+          defaultValue:
+            'A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.',
+        })}
+      </p>
+      <Button
+        type="button"
+        variant="outline"
+        className="min-h-[44px] w-full tap-target"
+        onClick={() => setOpen(true)}
+      >
+        {t('feedbackCardOpen', { defaultValue: 'Send feedback' })}
+      </Button>
       <FeedbackSheet open={open} onClose={() => setOpen(false)} screen={pathname} />
-    </Card>
+    </div>
   );
 }

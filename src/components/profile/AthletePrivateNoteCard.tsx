@@ -8,7 +8,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   loadPrivateNote,
@@ -31,14 +30,16 @@ export function AthletePrivateNoteCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-private-note">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-private-note">
         <details className="group">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-note-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-private-note-summary"
+          >
             {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
           </summary>
           <div className="mt-3">
-        <p className="mb-3 text-sm text-muted-foreground">
+        <p className="house-note-cite" data-testid="athlete-private-note-cite">
           {t('athletePrivateNoteBody', {
             defaultValue: 'For you only on this device. Never on share cards or public pages.',
           })}
@@ -48,6 +49,7 @@ export function AthletePrivateNoteCard() {
         </label>
         <textarea
           id="athlete-private-note"
+          data-testid="athlete-private-note-textarea"
           value={note}
           maxLength={PRIVATE_NOTE_MAX}
           rows={3}
@@ -55,24 +57,23 @@ export function AthletePrivateNoteCard() {
             setNote(e.target.value.slice(0, PRIVATE_NOTE_MAX));
             setSaved(false);
           }}
-          className="w-full resize-y rounded-none border border-border bg-background px-3 py-2 text-sm"
+          className="house-field w-full resize-y"
         />
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <Button type="button" variant="outline" onClick={commit} className="tap-target min-h-[44px]">
             {t('athletePrivateNoteSave', { defaultValue: 'Save note' })}
           </Button>
-          <span className="text-xs tabular-nums text-muted-foreground">
+          <span className="house-note-count" data-testid="athlete-private-note-count">
             {note.length}/{PRIVATE_NOTE_MAX}
           </span>
         </div>
         {saved && (
-          <p className="mt-2 text-sm text-muted-foreground" role="status">
+          <p className="house-note-saved" data-testid="athlete-private-note-saved" role="status">
             {t('athletePrivateNoteSaved', { defaultValue: 'Saved on this device only.' })}
           </p>
         )}
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

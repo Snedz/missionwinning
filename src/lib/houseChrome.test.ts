@@ -132,7 +132,6 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.match(src, /justGoTitle/);
   assert.match(src, /<HouseFirstRoomsCard/);
   assert.match(src, /id="today-week"/);
-  assert.match(src, /startLive\(/);
   assert.match(src, /router\.push\('\/active'\)/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
   assert.match(peek, /typeof window === 'undefined'/);
@@ -142,15 +141,28 @@ test('/active first paint is a compose table, never Restoring as the product', (
   const empty = stripComments(read('src/components/house/TrainComposeEmpty.tsx'));
   assert.doesNotMatch(empty, /Restoring session|activeLoadingSession|Reading the last workout/);
   assert.match(empty, /aria-busy=\{hydrated \? undefined : true\}/);
+  const route = stripComments(read('app/(app)/active/page.tsx'));
+  assert.doesNotMatch(route, /dynamic\(|RouteLoading/);
+  assert.match(route, /import \{ ActiveWorkoutPage \}/);
+  const activeLoading = stripComments(read('app/(app)/active/loading.tsx'));
+  assert.match(activeLoading, /house-compose-live/);
+  assert.doesNotMatch(activeLoading, /ActiveWorkoutPage|SkeletonCard|Loading…/);
   const active = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
+  assert.doesNotMatch(active, /Restoring session|activeLoadingSession|ActiveEmptyState/);
   assert.match(active, /useLayoutEffect/);
   assert.match(active, /writeTodayComposeSession\(\)/);
   assert.match(active, /paintTodayComposeWorkout/);
+  assert.match(active, /composeNextSet\(activeWorkout\)/);
+  assert.doesNotMatch(active, /activeWorkout \? findNextSet\(activeWorkout\.exercises\) : null/);
   assert.match(active, /await reconcileOpenSession/);
-  assert.match(active, /pendingRemoteOpenSession\) return/);
+  assert.match(active, /hasComposeExercises\(store\.activeWorkout\)/);
   assert.match(active, /parseSeoExerciseParam\(searchParams\)/);
   assert.match(active, /previewJustGoForEquipment/);
-  const layout = active.slice(active.indexOf('useLayoutEffect(() =>'), active.indexOf('useEffect(() => {'));
+  assert.match(active, /aria-busy=\{hasHydrated \? undefined : true\}/);
+  const layout = active.slice(
+    active.indexOf('useLayoutEffect(() =>'),
+    active.indexOf('useEffect(() => {\n    if (!hasHydrated) return;')
+  );
   assert.doesNotMatch(layout, /hasHydrated/);
   const emptyStart = active.slice(
     active.indexOf('const handleEmptyStart'),
@@ -164,9 +176,15 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /pickHonoredStart/);
   assert.match(src, /peekCoachToday/);
   assert.match(src, /shouldRepeatLastOnToday/);
-  assert.match(src, /runTodayPrimaryAction/);
-  assert.match(src, /includeColdStart:\s*true/);
-  assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
+  assert.match(src, /writeTodayComposeSession/);
+  const handle = src.slice(src.indexOf('const handleStart'), src.indexOf('const sessionTitle'));
+  assert.match(handle, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
+  assert.doesNotMatch(handle, /runTodayPrimaryAction/);
+  const writer = read('src/lib/workout/writeTodayComposeSession.ts');
+  assert.match(writer, /pickHonoredStart/);
+  assert.match(writer, /peekCoachToday/);
+  assert.match(writer, /shouldRepeatLastOnToday/);
+  assert.match(writer, /buildJustGoSession/);
 });
 
 test('Today desk has one filled action — week generate is a door to /coach', () => {
@@ -468,6 +486,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(libraryExtras, /border-2/);
   assert.match(css, /\.house-catalog \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Library Show all extras is house leftover/);
+  const libraryRoute = stripComments(read('app/(app)/library/page.tsx'));
+  assert.doesNotMatch(libraryRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(libraryRoute, /import \{ LibraryPage \}/);
+  assert.match(spec, /Library first paint is house leftover/);
   assert.match(css, /\.house-catalog \.house-item-pick/);
   assert.match(css, /\.house-floor \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-history \.house-item/);
@@ -502,6 +524,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(historyExtras, /border-t-2/);
   assert.match(css, /\.house-history \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /History Show all extras is house leftover/);
+  const historyRoute = stripComments(read('app/(app)/history/page.tsx'));
+  assert.doesNotMatch(historyRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(historyRoute, /import \{ HistoryPage \}/);
+  assert.match(spec, /History list first paint is house leftover/);
   const reentry = read('src/components/today/TodayReentryCard.tsx');
   const plannedMiss = read('src/components/today/TodayPlannedMissPrompt.tsx');
   assert.match(reentry, /house-lede house-reentry/);
@@ -632,6 +658,11 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(coachExtras, /border-2/);
   assert.match(css, /\.house-plan \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Coach Show all extras is house leftover/);
+  const coachRoute = stripComments(read('app/(app)/coach/page.tsx'));
+  assert.doesNotMatch(coachRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(coachRoute, /import \{ CoachPage \}/);
+  assert.match(coachRoute, /askExerciseId/);
+  assert.match(spec, /Coach first paint is house leftover/);
   const weekStrip = read('src/components/coach/WeekStrip.tsx');
   const landingDemo = read('src/components/landing/CoachAdaptDemo.tsx');
   const parkedToday = read('src/components/coach/TodayCoachWeekStrip.tsx');
@@ -667,9 +698,18 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(builderExtras, /<Layers/);
   assert.match(css, /\.house-builder \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Builder Show all extras is house leftover/);
+  const builderRoute = stripComments(read('app/(app)/builder/page.tsx'));
+  assert.doesNotMatch(builderRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(builderRoute, /import \{ BuilderPage \}/);
+  assert.match(spec, /Builder first paint is house leftover/);
   assert.match(css, /\.house-builder \.house-item/);
+  const accountRoute = stripComments(read('app/(app)/account/page.tsx'));
+  assert.doesNotMatch(accountRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(accountRoute, /import \{ AccountPage \}/);
+  assert.match(accountRoute, /initialAuthError/);
   const account = read('src/page-components/AccountPage.tsx');
   assert.match(account, /className="house-account"/);
+  assert.doesNotMatch(stripComments(account), /useSearchParams/);
   assert.match(account, /ProfileAccountCard/);
   assert.match(account, /ProfileRemindersCard/);
   assert.match(account, /ProfilePreferencesCard/);
@@ -681,6 +721,57 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(account, /<Card[\s>]/);
   assert.match(css, /\.house-account \.bg-card/);
   assert.match(spec, /Account leftover/);
+  assert.match(spec, /Account first paint is house leftover/);
+  const hoodRoute = stripComments(read('app/(app)/account/under-the-hood/page.tsx'));
+  assert.doesNotMatch(hoodRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(hoodRoute, /import \{ UnderTheHoodPage \}/);
+  assert.match(spec, /Under the Hood first paint is house leftover/);
+  const visibilityRoute = stripComments(read('app/(app)/account/transparency/page.tsx'));
+  assert.doesNotMatch(visibilityRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(visibilityRoute, /import \{ TransparencyPage \}/);
+  assert.match(spec, /Visibility first paint is house leftover/);
+  const leaderboardRoute = stripComments(read('app/(app)/leaderboard/page.tsx'));
+  assert.doesNotMatch(leaderboardRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(leaderboardRoute, /import \{ LeaderboardPage \}/);
+  assert.match(leaderboardRoute, /initialBoard/);
+  assert.match(spec, /Leaderboard first paint is house leftover/);
+  const benchmarksRoute = stripComments(read('app/(app)/benchmarks/page.tsx'));
+  assert.doesNotMatch(benchmarksRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(benchmarksRoute, /import \{ BenchmarksPage \}/);
+  assert.match(spec, /Benchmarks first paint is house leftover/);
+  const bundleRoute = stripComments(read('app/bundle/page.tsx'));
+  assert.doesNotMatch(bundleRoute, /RouteLoading|Suspense/);
+  assert.match(bundleRoute, /import \{ BundlePage \}/);
+  assert.match(bundleRoute, /initialCheckout/);
+  assert.match(spec, /Super Bundle first paint is house leftover/);
+  const moveRoute = stripComments(read('app/(app)/move/page.tsx'));
+  assert.doesNotMatch(moveRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(moveRoute, /import \{ MovePage \}/);
+  assert.match(moveRoute, /initialCollection/);
+  assert.match(spec, /Move first paint is house leftover/);
+  const mindRoute = stripComments(read('app/(app)/mind/page.tsx'));
+  assert.doesNotMatch(mindRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(mindRoute, /import \{ MindPage \}/);
+  assert.match(mindRoute, /initialCollection/);
+  assert.match(spec, /Mind first paint is house leftover/);
+  const learnRoute = stripComments(read('app/(app)/learn/page.tsx'));
+  assert.doesNotMatch(learnRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(learnRoute, /import \{ LearnPage \}/);
+  assert.match(learnRoute, /initialPath/);
+  assert.match(spec, /Learn first paint is house leftover/);
+  const guidebookRoute = stripComments(read('app/(app)/learn/guide/page.tsx'));
+  assert.doesNotMatch(guidebookRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(guidebookRoute, /import \{ GuidebookIndexPage \}/);
+  assert.match(spec, /Guidebook first paint is house leftover/);
+  const guideChapterRoute = stripComments(read('app/(app)/learn/guide/[chapterId]/page.tsx'));
+  assert.doesNotMatch(guideChapterRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(guideChapterRoute, /import \{ GuidebookChapterPage \}/);
+  assert.match(spec, /Guide chapter first paint is house leftover/);
+  const courseRoute = stripComments(read('app/(app)/learn/course/page.tsx'));
+  assert.doesNotMatch(courseRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(courseRoute, /import \{ LearnCoursePage \}/);
+  assert.match(courseRoute, /initialChapter/);
+  assert.match(spec, /Course first paint is house leftover/);
   assert.match(spec, /12px rows, selected `#eee`/);
   assert.match(spec, /stacked 13px muted rows/);
   const sidecar = stripComments(read('src/components/house/AccountSidecar.tsx'));
@@ -691,14 +782,21 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(sidecar, /href: '\/server'/);
   const trainSide = stripComments(read('src/components/house/TrainSidecar.tsx'));
   assert.match(trainSide, /house-sidecar/);
+  assert.match(trainSide, /composeSidecarWorkout/);
+  assert.doesNotMatch(trainSide, /if \(!workout\)/);
+  assert.doesNotMatch(trainSide, /activeEmptyExercises/);
   assert.match(trainSide, /startRest/);
   assert.doesNotMatch(trainSide, /href: '\/history'/);
   assert.doesNotMatch(trainSide, /href: '\/coach'/);
   assert.doesNotMatch(trainSide, /href: '\/server'/);
   assert.match(spec, /History stays on Home/);
+  const profileRoute = stripComments(read('app/(app)/profile/page.tsx'));
+  assert.doesNotMatch(profileRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(profileRoute, /import \{ ProfilePage \}/);
   const profile = read('src/page-components/ProfilePage.tsx');
   assert.match(profile, /className="house-profile"/);
   assert.match(profile, /house-btn house-btn-ghost/);
+  assert.match(spec, /You first paint is house leftover/);
   const fuel = read('src/page-components/NutritionPage.tsx');
   assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
   assert.match(fuel, /id="fuel-log"/);
@@ -750,6 +848,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(macro, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-macro \{[^}]*--house-ink/);
   assert.match(spec, /Fuel first-paint remaining is house leftover/);
+  const fuelRoute = stripComments(read('app/(app)/nutrition/page.tsx'));
+  assert.doesNotMatch(fuelRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(fuelRoute, /import \{ NutritionPage \}/);
+  assert.match(spec, /Fuel first paint is house leftover/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
   const moveFlows = move.slice(
@@ -831,6 +933,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-track \.house-stat \{[^}]*--house-line/);
   assert.match(css, /\.house-track \.house-state\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Track first-paint metrics is house leftover/);
+  const trackRoute = stripComments(read('app/(app)/track/page.tsx'));
+  assert.doesNotMatch(trackRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(trackRoute, /import \{ TrackPage \}/);
+  assert.match(spec, /Track first paint is house leftover/);
   assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);
   const learnIntro = read('src/components/learn/QuietLearnIntroCard.tsx');
   assert.match(learnIntro, /house-card house-learn-intro/);
@@ -1079,8 +1185,193 @@ test('house design system is the signed-in token table', () => {
   const setTable = read('src/components/workout/SetLogTable.tsx');
   assert.match(setTable, /house-state min-h-\[44px\] tap-target/);
   assert.match(setTable, /house-num min-h-\[44px\] w-full min-w-0 tap-target/);
-  assert.match(setTable, /data-testid="set-table-log-set"/);
-  assert.match(setTable, /bg-\[hsl\(var\(--accent-poster\)\)\]/);
+  const logSet = setTable.slice(
+    setTable.indexOf('data-testid="set-table-log-set"'),
+    setTable.indexOf('data-testid="set-table-log-set"') + 360
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.match(logSet, /primary-action/);
+  assert.doesNotMatch(logSet, /accent-poster/);
+  assert.match(css, /\.house-compose-live \.house-set-log \{[^}]*--house-press/);
+  assert.match(spec, /Log set is house leftover/);
+  const rpeCite = setTable.slice(
+    setTable.indexOf('rpeLabelKey(set.rpe)') - 160,
+    setTable.indexOf('rpeLabelKey(set.rpe)') + 40
+  );
+  assert.match(rpeCite, /house-lede/);
+  assert.doesNotMatch(rpeCite, /text-muted-foreground/);
+  assert.match(setTable, /house-set-rate/);
+  assert.match(css, /\.mw-house \.house-set-rate \.house-lede \{[^}]*--house-muted/);
+  assert.match(spec, /Set-table RPE cite is house leftover/);
+  const inSetPrCite = setTable.slice(
+    setTable.indexOf('data-testid="set-table-in-set-pr"') - 180,
+    setTable.indexOf('data-testid="set-table-in-set-pr"') + 40
+  );
+  assert.match(inSetPrCite, /house-lede/);
+  assert.doesNotMatch(inSetPrCite, /text-muted-foreground/);
+  assert.match(spec, /Set-table in-set PR cite is house leftover/);
+  const vsLastCite = setTable.slice(
+    setTable.indexOf('data-testid="set-table-vs-last"') - 180,
+    setTable.indexOf('data-testid="set-table-vs-last"') + 40
+  );
+  assert.match(vsLastCite, /house-lede/);
+  assert.doesNotMatch(vsLastCite, /text-muted-foreground/);
+  assert.match(spec, /Set-table vs-last cite is house leftover/);
+  const nextCiteSrc = read('src/components/workout/SetLogNextCite.tsx');
+  const nextCiteLine = nextCiteSrc.slice(
+    nextCiteSrc.indexOf('data-testid="set-table-next-cite-line"') - 180,
+    nextCiteSrc.indexOf('data-testid="set-table-next-cite-line"') + 40
+  );
+  assert.match(nextCiteLine, /house-lede house-next-cite/);
+  assert.doesNotMatch(nextCiteLine, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-next-cite\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Set-table next-cite is house leftover/);
+  const loadPctCiteSrc = setTable.slice(
+    setTable.indexOf('data-testid="set-table-load-pct-cite"') - 180,
+    setTable.indexOf('data-testid="set-table-load-pct-cite"') + 40
+  );
+  assert.match(loadPctCiteSrc, /house-lede house-load-pct/);
+  assert.doesNotMatch(loadPctCiteSrc, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-load-pct\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Set-table load-% cite is house leftover/);
+  const victoryStats = read('src/components/workout/VictoryStatsStrip.tsx');
+  assert.match(victoryStats, /mw-house house-victory/);
+  const victoryVsLastCite = victoryStats.slice(
+    victoryStats.indexOf('data-testid="victory-vs-last"') - 180,
+    victoryStats.indexOf('data-testid="victory-vs-last"') + 40
+  );
+  assert.match(victoryVsLastCite, /house-lede house-victory-vs-last/);
+  assert.doesNotMatch(victoryVsLastCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory \.house-victory-vs-last\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory vs-last cite is house leftover/);
+  for (const key of ['victoryDuration', 'victoryVolume', 'victorySets'] as const) {
+    const label = victoryStats.slice(
+      victoryStats.indexOf(key) - 180,
+      victoryStats.indexOf(key) + 40
+    );
+    assert.match(label, /house-lede house-victory-stat-label/, key);
+    assert.doesNotMatch(label, /text-muted-foreground/, key);
+  }
+  assert.match(
+    css,
+    /\.mw-house\.house-victory \.house-victory-stat-label\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory stats labels is house leftover/);
+  const victoryVolumeUnit = victoryStats.slice(
+    victoryStats.indexOf('{volume.unit}') - 180,
+    victoryStats.indexOf('{volume.unit}') + 20
+  );
+  assert.match(victoryVolumeUnit, /house-lede house-victory-volume-unit/);
+  assert.doesNotMatch(victoryVolumeUnit, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory \.house-victory-volume-unit\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory volume unit is house leftover/);
+  const victoryReceipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  assert.match(victoryReceipt, /mw-house house-victory-receipt/);
+  const receiptLeadStart = victoryReceipt.lastIndexOf('victoryReceiptLabel');
+  const receiptLead = victoryReceipt.slice(
+    Math.max(0, receiptLeadStart - 180),
+    receiptLeadStart + 40
+  );
+  assert.match(receiptLead, /house-lede house-victory-receipt-lead/);
+  assert.doesNotMatch(receiptLead, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-lead\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt lead is house leftover/);
+  const receiptHead = victoryReceipt.slice(
+    victoryReceipt.indexOf('const headCell'),
+    victoryReceipt.indexOf('const headCell') + 180
+  );
+  assert.match(receiptHead, /house-lede house-victory-receipt-head/);
+  assert.doesNotMatch(receiptHead, /text-muted-foreground/);
+  assert.doesNotMatch(receiptHead, /uppercase/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-head\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt heads is house leftover/);
+  const receiptPrev = victoryReceipt.slice(
+    victoryReceipt.indexOf('data-testid="victory-prev"') - 180,
+    victoryReceipt.indexOf('data-testid="victory-prev"') + 40
+  );
+  assert.match(receiptPrev, /house-lede house-victory-receipt-prev/);
+  assert.doesNotMatch(receiptPrev, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-prev\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt Prev is house leftover/);
+  const receiptDeltaEmpty = victoryReceipt.slice(
+    victoryReceipt.indexOf('>—</span>') - 120,
+    victoryReceipt.indexOf('>—</span>') + 20
+  );
+  assert.match(receiptDeltaEmpty, /house-lede house-victory-receipt-delta/);
+  assert.doesNotMatch(receiptDeltaEmpty, /text-muted-foreground/);
+  const receiptDeltaValue = victoryReceipt.slice(
+    victoryReceipt.indexOf('parts.join') - 180,
+    victoryReceipt.indexOf('parts.join') + 40
+  );
+  assert.match(receiptDeltaValue, /house-lede house-victory-receipt-delta/);
+  assert.doesNotMatch(receiptDeltaValue, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-delta\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt vs-last cells is house leftover/);
+  const receiptSetIdx = victoryReceipt.slice(
+    victoryReceipt.indexOf('{set.setIndex + 1}') - 180,
+    victoryReceipt.indexOf('{set.setIndex + 1}') + 40
+  );
+  assert.match(receiptSetIdx, /house-lede house-victory-receipt-set/);
+  assert.doesNotMatch(receiptSetIdx, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-set\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt set-index is house leftover/);
+  const victorySheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  const victoryDescNeedle = 'house-victory-desc';
+  const victoryDescAt = victorySheet.indexOf(victoryDescNeedle);
+  assert.ok(victoryDescAt >= 0, 'missing house-victory-desc');
+  const victoryDesc = victorySheet.slice(
+    Math.max(0, victoryDescAt - 180),
+    victoryDescAt + 40
+  );
+  assert.match(victoryDesc, /house-lede/);
+  assert.match(victoryDesc, /house-victory-desc/);
+  assert.doesNotMatch(victoryDesc, /text-muted-foreground/);
+  const victoryDialog = victorySheet.slice(
+    victorySheet.indexOf('victory-lock') - 40,
+    victorySheet.indexOf('victory-lock') + 80
+  );
+  assert.doesNotMatch(victoryDialog, /mw-house/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-desc\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory description is house leftover/);
+  const logConsole = read('src/components/workout/LogConsole.tsx');
+  const consoleLogSet = logConsole.slice(
+    logConsole.indexOf('data-testid="log-console-log-set"'),
+    logConsole.indexOf('data-testid="log-console-log-set"') + 400
+  );
+  assert.match(consoleLogSet, /house-btn house-btn-primary house-set-log/);
+  assert.match(consoleLogSet, /primary-action/);
+  assert.doesNotMatch(consoleLogSet, /accent-poster/);
+  assert.match(spec, /LogConsole Log set is house leftover/);
   const setHead = setTable.slice(setTable.indexOf('<thead>'), setTable.indexOf('</thead>'));
   assert.match(setHead, /house-set-head/);
   assert.doesNotMatch(setHead, /border-b-2/);
@@ -1289,6 +1580,39 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(skipHeader, /from '@\/components\/ui\/card'/);
   assert.match(css, /\.house-compose-live \.house-exercise-head \{[^}]*padding/);
   assert.match(spec, /Exercise head is house leftover/);
+  const skippedCite = skipHeader.slice(
+    skipHeader.indexOf('data-testid="session-skipped-exercise"') - 180,
+    skipHeader.indexOf('data-testid="session-skipped-exercise"') + 80
+  );
+  assert.match(skippedCite, /house-lede/);
+  assert.doesNotMatch(skippedCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-exercise-head \.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Skipped-this-session cite is house leftover/);
+  const nextTargetCite = skipHeader.slice(
+    skipHeader.indexOf('{nextTarget && ('),
+    skipHeader.indexOf('{nextTarget && (') + 220
+  );
+  assert.match(nextTargetCite, /house-lede house-next-target/);
+  assert.doesNotMatch(nextTargetCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-next-target\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Live-row next-target cite is house leftover/);
+  const e1rmCite = skipHeader.slice(
+    skipHeader.indexOf('data-testid="session-e1rm"'),
+    skipHeader.indexOf('data-testid="session-e1rm"') + 220
+  );
+  assert.match(e1rmCite, /house-lede house-session-e1rm/);
+  assert.doesNotMatch(e1rmCite, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-session-e1rm\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Session e1RM cite is house leftover/);
   const exerciseCard = read('src/components/workout/ActiveExerciseCard.tsx');
   assert.match(exerciseCard, /house-exercise-card/);
   assert.match(exerciseCard, /data-testid="active-exercise-card"/);
@@ -1393,7 +1717,9 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(garageSwap, /house-btn-primary/);
   assert.doesNotMatch(garageSwap, /accent-poster/);
   assert.match(css, /\.mw-house \.house-swap-option \{[^}]*flex-direction:\s*column/);
+  assert.match(css, /\.mw-house \.house-swap-option \.house-lede \{[^}]*--house-muted/);
   assert.match(spec, /Garage swap is house leftover/);
+  assert.match(spec, /Swap garage cues is house leftover/);
   const formGuide = read('src/components/form/FormGuideSheet.tsx');
   assert.match(formGuide, /data-testid="form-guide-got-it"/);
   assert.match(formGuide, /house-btn min-h-\[52px\] w-full tap-target/);
@@ -1401,6 +1727,12 @@ test('house design system is the signed-in token table', () => {
   assert.match(formGuide, /mw-house house-form-guide/);
   assert.match(formGuide, /house-card house-form-figure/);
   assert.match(formGuide, /house-card house-form-breath/);
+  const breathCite = formGuide.slice(
+    formGuide.indexOf('{guide.breathing}</p>') - 80,
+    formGuide.indexOf('{guide.breathing}</p>') + 24
+  );
+  assert.match(breathCite, /house-lede/);
+  assert.doesNotMatch(breathCite, /text-muted-foreground/);
   assert.match(formGuide, /house-form-section/);
   assert.match(formGuide, /house-form-mark/);
   assert.doesNotMatch(formGuide, /primary-action/);
@@ -1413,8 +1745,43 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.mw-house\.house-form-guide \.house-form-figure \{[^}]*padding:\s*0/);
   assert.match(css, /\.mw-house\.house-form-guide \.house-form-section \{[^}]*text-transform:\s*none/);
   assert.match(spec, /Form guide confirm is house-btn, not filled/);
+  assert.match(spec, /Form guide \+ Swap portal is house leftover/);
+  assert.match(spec, /Merge-exercises dialog is house leftover/);
   assert.match(spec, /Form guide body is house leftover/);
   assert.match(spec, /Form guide sections is house leftover/);
+  const sectionItemCite = formGuide.slice(
+    formGuide.indexOf('{item}</span>') - 80,
+    formGuide.indexOf('{item}</span>') + 16
+  );
+  assert.match(sectionItemCite, /house-lede/);
+  assert.doesNotMatch(sectionItemCite, /text-muted-foreground/);
+  assert.match(spec, /Form guide section items is house leftover/);
+  assert.match(spec, /Form guide figure caption is house leftover/);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide \.house-form-figure-cap \.house-lede \{[^}]*--house-muted/
+  );
+  let capFrom = 0;
+  let capCount = 0;
+  while (true) {
+    const capAt = formGuide.indexOf('className="house-form-figure-cap"', capFrom);
+    if (capAt < 0) break;
+    const capCite = formGuide.slice(capAt, capAt + 180);
+    assert.match(capCite, /house-lede/);
+    assert.doesNotMatch(capCite, /text-muted-foreground/);
+    capCount += 1;
+    capFrom = capAt + 1;
+  }
+  assert.equal(capCount, 2);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide li \.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Form guide breath cite is house leftover/);
+  assert.match(
+    css,
+    /\.mw-house\.house-form-guide \.house-form-breath \.house-lede \{[^}]*--house-muted/
+  );
   const inlineAdd = read('src/components/workout/ActiveInlineAddExercise.tsx');
   assert.match(inlineAdd, /house-add-exercise/);
   assert.match(inlineAdd, /house-btn min-h-\[44px\] tap-target/);
@@ -1424,6 +1791,40 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(inlineAdd, /house-btn-primary/);
   assert.match(css, /\.house-compose-live \.house-add-exercise \{[^}]*--house-line/);
   assert.match(spec, /Add-exercise search is house leftover/);
+  const picker = read('src/components/library/ExercisePicker.tsx');
+  const pickerDetail = picker.slice(
+    picker.indexOf('ex.muscleGroups.slice(0, 2)') - 160,
+    picker.indexOf('ex.muscleGroups.slice(0, 2)') + 24
+  );
+  assert.match(pickerDetail, /house-lede/);
+  assert.doesNotMatch(pickerDetail, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \[role="option"\] \.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Exercise picker option details is house leftover/);
+  const pickerSelected = picker.slice(
+    picker.indexOf('exercisePickerSelected') - 180,
+    picker.indexOf('exercisePickerSelected') + 40
+  );
+  assert.match(pickerSelected, /house-lede house-picker-selected/);
+  assert.doesNotMatch(pickerSelected, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-picker-selected\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Exercise picker selected cite is house leftover/);
+  const pickerEmpty = picker.slice(
+    picker.indexOf('exercisePickerEmpty') - 180,
+    picker.indexOf('exercisePickerEmpty') + 40
+  );
+  assert.match(pickerEmpty, /house-lede house-picker-empty/);
+  assert.doesNotMatch(pickerEmpty, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house \.house-picker-empty\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Exercise picker empty cite is house leftover/);
   const addSheet = read('src/components/workout/AddExerciseSheet.tsx');
   assert.match(addSheet, /mw-house house-add-sheet/);
   assert.match(addSheet, /house-btn min-h-\[52px\] w-full tap-target/);

@@ -178,8 +178,11 @@ export function ServerPage() {
         </div>
       </div>
 
-      <div className="grid min-h-[60vh] border-2 border-border md:grid-cols-[13rem_minmax(0,1fr)]">
-        <div className="border-b-2 border-border p-2 md:border-b-0 md:border-r-2">
+      <div
+        className="house-garage-board grid min-h-[60vh] md:grid-cols-[13rem_minmax(0,1fr)]"
+        data-testid="garage-board"
+      >
+        <div className="house-garage-rail p-2">
           <BuddyList state={state} activeId={channel.id} onSelect={setChannelId} />
         </div>
         <ChatWindow

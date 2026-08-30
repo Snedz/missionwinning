@@ -512,7 +512,7 @@ export function LibraryPage() {
 
       <details className="house-card group">
         <summary
-          className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+          className="house-show-all-door flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 [&::-webkit-details-marker]:hidden"
           data-testid="library-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
@@ -668,7 +668,7 @@ export function LibraryPage() {
 
       <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
         <DialogContent
-          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          className="mw-house house-overlay-panel max-w-lg max-h-[85vh] overflow-y-auto"
           data-testid="library-merge-dialog"
         >
           <DialogHeader>

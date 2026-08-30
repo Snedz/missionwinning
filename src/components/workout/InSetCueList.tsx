@@ -35,7 +35,7 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
           loading="lazy"
           decoding="async"
           data-testid="in-set-cues-demo"
-          className="mx-auto max-h-24 w-full object-contain bg-background"
+          className="house-cue-still mx-auto max-h-24 w-full object-contain"
         />
       ) : null}
       <div className="flex items-start justify-between gap-2">
@@ -53,8 +53,8 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
       </div>
       <ul className="space-y-1">
         {lines.map((line) => (
-          <li key={line} className="flex gap-2 text-sm text-muted-foreground">
-            <span className="shrink-0 text-foreground">·</span>
+          <li key={line} className="house-cue-line flex gap-2">
+            <span className="house-cue-mark shrink-0">·</span>
             <span>{line}</span>
           </li>
         ))}

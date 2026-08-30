@@ -6,7 +6,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { readRaw } from '@/lib/storage/safeStorage';
@@ -69,36 +68,34 @@ export function HomeGymKitCard() {
   };
 
   return (
-    <Card className="content-card" id="home-gym-kit" data-testid="home-gym-kit">
-      <CardHeader>
-        <CardTitle>{t('homeGymKitTitle', { defaultValue: 'Home gym kit' })}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="mb-3 text-sm text-muted-foreground leading-relaxed">
-          {t('homeGymKitBody', {
-            defaultValue:
-              'List what you actually have. Free, stays on this device. Leave this unset if you train at a full gym.',
-          })}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {HOME_GYM_ITEMS.map((item) => (
-            <Button
-              key={item}
-              type="button"
-              size="sm"
-              variant={kitHas(kit, item) ? 'selected' : 'outline'}
-              className="min-h-[44px] tap-target"
-              data-testid={`home-gym-kit-${item}`}
-              aria-pressed={kitHas(kit, item)}
-              onClick={() => onToggle(item)}
-            >
-              {t(`homeGymKitItem_${item.replace(/-/g, '_')}`, {
-                defaultValue: ITEM_DEFAULTS[item],
-              })}
-            </Button>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="house-card space-y-3" id="home-gym-kit" data-testid="home-gym-kit">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('homeGymKitTitle', { defaultValue: 'Home gym kit' })}
+      </h3>
+      <p className="house-home-kit-cite" data-testid="home-gym-kit-cite">
+        {t('homeGymKitBody', {
+          defaultValue:
+            'List what you actually have. Free, stays on this device. Leave this unset if you train at a full gym.',
+        })}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {HOME_GYM_ITEMS.map((item) => (
+          <Button
+            key={item}
+            type="button"
+            size="sm"
+            variant={kitHas(kit, item) ? 'selected' : 'outline'}
+            className="min-h-[44px] tap-target"
+            data-testid={`home-gym-kit-${item}`}
+            aria-pressed={kitHas(kit, item)}
+            onClick={() => onToggle(item)}
+          >
+            {t(`homeGymKitItem_${item.replace(/-/g, '_')}`, {
+              defaultValue: ITEM_DEFAULTS[item],
+            })}
+          </Button>
+        ))}
+      </div>
+    </div>
   );
 }

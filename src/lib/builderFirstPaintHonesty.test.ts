@@ -1,5 +1,6 @@
 /**
- * R1 — Builder first paint matches the EN pack.
+ * Builder first paint is house leftover — title + Blank workout / saved.
+ * ProgramTemplatesPanel internals stay parked. RouteLoading is not the product.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -7,18 +8,28 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const root = path.join(import.meta.dirname, '..', '..');
-const page = readFileSync(path.join(root, 'src/page-components/BuilderPage.tsx'), 'utf8');
+const read = (rel: string) => readFileSync(path.join(root, rel), 'utf8');
 
-test('Builder program count first-paints the pack shape', () => {
-  assert.match(page, /builderProgramCount/);
-  assert.match(page, /count:\s*FREE_TEMPLATE_PROGRAM_COUNT/);
-  assert.match(page, /defaultValue: '\{\{count\}\} programs'/);
-  assert.doesNotMatch(page, /defaultValue: 'Free programs'/);
+function stripComments(src: string): string {
+  return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+}
+
+test('Builder route is a static page, not a RouteLoading skeleton', () => {
+  const route = stripComments(read('app/(app)/builder/page.tsx'));
+  assert.doesNotMatch(route, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(route, /import \{ BuilderPage \}/);
 });
 
-test('Builder empty saved first-paints the pack sentence', () => {
-  assert.match(
-    page,
-    /builderNoSaved[\s\S]{0,80}defaultValue: 'No saved workouts yet\. Build one above or load a template\.'/,
-  );
+test('BuilderPage first paint is house leftover; templates stay parked', () => {
+  const page = stripComments(read('src/page-components/BuilderPage.tsx'));
+  assert.doesNotMatch(page, /useSearchParams/);
+  assert.match(page, /className="house-builder"/);
+  assert.match(page, /defaultValue: 'Workout Builder'/);
+  assert.match(page, /builderStartBlank|Blank workout/);
+  assert.match(page, /ProgramTemplatesPanel/);
+});
+
+test('DESIGN names Builder first paint as house leftover', () => {
+  const spec = read('src/components/house/DESIGN.md');
+  assert.match(spec, /Builder first paint is house leftover/);
 });

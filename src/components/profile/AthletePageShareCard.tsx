@@ -9,7 +9,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Share2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { summarizeRewards, ownedBadgeDefs } from '@/lib/rewards/summary';
@@ -71,10 +70,9 @@ export function AthletePageShareCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-page-share">
-      <CardContent className="space-y-3 pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-page-share">
         <p className="eyebrow">{t('athletePageShareTitle', { defaultValue: 'Share page' })}</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-share-cite" data-testid="athlete-page-share-cite">
           {t('athletePageShareBody', {
             defaultValue:
               'Renders on this device and leaves only if you send it. No public link yet.',
@@ -93,7 +91,6 @@ export function AthletePageShareCard() {
             ? t('athletePageShareBusy', { defaultValue: 'Preparing…' })
             : t('athletePageShareAction', { defaultValue: 'Share your page' })}
         </Button>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

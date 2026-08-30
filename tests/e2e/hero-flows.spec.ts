@@ -64,7 +64,7 @@ test.describe('Phase H hero flows @gate', () => {
   test('workout logger entry — active or builder', async ({ page }) => {
     await page.goto('/active', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('body')).toContainText(
-      /active workout|start workout|sin entrenamiento|iniciar/i
+      /log set|add exercise|just go|entrenamiento|iniciar/i
     );
 
     await page.goto('/builder', { waitUntil: 'domcontentloaded' });

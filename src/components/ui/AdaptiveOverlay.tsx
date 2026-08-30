@@ -10,7 +10,6 @@ import {
   useEffect,
   useId,
   useRef,
-  useState,
   type ReactNode,
   type RefObject,
 } from 'react';
@@ -77,11 +76,6 @@ export function AdaptiveOverlay({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -126,22 +120,26 @@ export function AdaptiveOverlay({
     };
   }, [open, onClose, initialFocusRef]);
 
-  if (!open || !mounted) return null;
+  if (!open) return null;
+  if (typeof document === 'undefined') return null;
 
   /**
    * House leftover: header + close transfer only when the caller already
-   * marked the panel `.mw-house`. Every other AdaptiveOverlay stays field-manual.
+   * marked the panel `.mw-house`. The portaled root also carries `mw-house`
+   * so tokens do not drop on document.body. Every other AdaptiveOverlay
+   * stays field-manual.
    */
   const isHouse = /\bmw-house\b/.test(className ?? '');
 
   const overlay = (
     <div
-      className={cn(
-        'fixed inset-0 flex justify-center',
-        zClassName,
-        /* Compact: bottom sheet. md+: centered dialog. */
-        'items-end md:items-center md:p-6'
-      )}
+        className={cn(
+          'fixed inset-0 flex justify-center',
+          zClassName,
+          /* Compact: bottom sheet. md+: centered dialog. */
+          'items-end md:items-center md:p-6',
+          isHouse && 'mw-house'
+        )}
       role="presentation"
     >
       <button

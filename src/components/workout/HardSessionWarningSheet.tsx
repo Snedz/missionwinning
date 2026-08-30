@@ -59,7 +59,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
         </div>
       }
     >
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionLead', {
           defaultValue:
             'A max-effort or timed test can be dangerous. This is not the default way to train.',
@@ -70,7 +70,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
           ? t('hardSessionStopPregnancy', { defaultValue: stopLine })
           : t('hardSessionStop', { defaultValue: stopLine })}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionNotCare', {
           defaultValue:
             'This app is not medical care and cannot prevent a medical emergency.',
@@ -82,7 +82,7 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
             'If this is an emergency, call local emergency services — not this app.',
         })}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="house-lede text-sm">
         {t('hardSessionClinician', {
           defaultValue:
             'Talk with a clinician before max-effort tests if you have a heart, breathing, or other health condition, or if you are unsure.',

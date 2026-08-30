@@ -7,7 +7,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { week4HoodSnapshot } from '@/lib/week4Logger';
 
 export function UnderTheHoodCard() {
@@ -22,13 +21,11 @@ export function UnderTheHoodCard() {
   const no = t('accountUnderTheHoodNo', { defaultValue: 'no' });
 
   return (
-    <Card className="border-2 border-border bg-card">
-      <CardHeader>
-        <CardTitle className="text-sm font-semibold">
-          {t('accountUnderTheHood', { defaultValue: 'Under the Hood' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2 text-sm text-muted-foreground">
+    <div className="house-card space-y-3 text-sm" data-testid="account-under-the-hood-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('accountUnderTheHood', { defaultValue: 'Under the Hood' })}
+      </h3>
+      <div className="space-y-2 text-sm text-muted-foreground">
         <p>
           {t('accountUnderTheHoodHint', {
             defaultValue:
@@ -59,7 +56,7 @@ export function UnderTheHoodCard() {
             </div>
           </dl>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

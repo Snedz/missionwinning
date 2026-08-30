@@ -76,10 +76,12 @@ test.describe('Offline logging @gate', () => {
     await expect(page.locator('body')).toBeVisible();
 
     await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    const start = page.getByRole('button', { name: /start workout/i });
-    await expect(start).toBeVisible({ timeout: 15_000 });
-    await expect(start).toBeEnabled({ timeout: 15_000 });
-    await start.click();
+    const logSet = page
+      .getByTestId('set-table-log-set')
+      .or(page.getByTestId('log-console-log-set'))
+      .or(page.getByRole('button', { name: /^log set$/i }));
+    await expect(logSet.first()).toBeVisible({ timeout: 15_000 });
+    await expect(logSet.first()).toBeEnabled();
 
     const skipCheckIn = page.getByRole('button', { name: /not now/i });
     if (await skipCheckIn.isVisible({ timeout: 1_500 }).catch(() => false)) {

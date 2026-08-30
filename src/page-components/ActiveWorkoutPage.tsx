@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { exerciseDisplayName, resolveExercise } from '@/lib/workout/customExercise';
-import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
+import { useWorkoutStore, hasComposeExercises, hasLoggedWork } from '@/store/workoutStore';
 import { reconcileOpenSession } from '@/lib/workout/reconcileOpenSession';
 import {
   parseSeoExerciseParam,
@@ -24,7 +24,6 @@ import {
   shouldStartSeoExerciseSession,
   stripSeoExerciseFromSearch,
 } from '@/lib/seoExerciseBridge';
-import { getFormGuideOrCues } from '@/lib/formGuides';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { Plus } from 'lucide-react';
 import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
@@ -69,7 +68,6 @@ import { isBarLoadedEquipment } from '@/lib/plateCalculator';
 import { planWarmupRamp, resolveWorkingLoad } from '@/lib/workout/warmupRamp';
 import {
   buildConsoleSet,
-  findNextSet,
   getLastSessionSets,
   getLastPerformanceForSet,
   lastWorkingForDial,
@@ -77,7 +75,6 @@ import {
   planApplyTargets,
   resolveActiveDockMode,
   resolveActiveSetDial,
-  resolveFormGuideSheet,
   resolveRepeatLastTarget,
   activeSessionBottomClass,
   resolveActiveGoalId,
@@ -102,6 +99,8 @@ import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClo
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import {
+  composeFormGuideSheet,
+  composeNextSet,
   paintTodayComposeWorkout,
   writeTodayComposeSession,
 } from '@/lib/workout/writeTodayComposeSession';
@@ -187,9 +186,10 @@ export function ActiveWorkoutPage() {
     void (async () => {
       await reconcileOpenSession();
       if (cancelled) return;
-      const store = useWorkoutStore.getState();
-      if (store.activeWorkout || store.pendingRemoteOpenSession) return;
       if (parseSeoExerciseParam(searchParams)) return;
+      const store = useWorkoutStore.getState();
+      if (hasLoggedWork(store.activeWorkout)) return;
+      if (hasComposeExercises(store.activeWorkout)) return;
       writeTodayComposeSession();
     })();
     return () => {
@@ -291,10 +291,7 @@ export function ActiveWorkoutPage() {
     }
   }, [sessionKey, fieldTestParam]);
 
-  const nextSet = useMemo(
-    () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
-    [activeWorkout]
-  );
+  const nextSet = useMemo(() => composeNextSet(activeWorkout), [activeWorkout]);
 
   useEffect(() => {
     if (!activeWorkout) return;
@@ -765,14 +762,13 @@ export function ActiveWorkoutPage() {
       reps: dial.reps,
     };
   })();
-  const formGuideSheet = resolveFormGuideSheet({
-    formGuideId,
-    getExerciseById,
-    getFormGuideOrCues,
-  });
+  const formGuideSheet = composeFormGuideSheet(formGuideId);
 
   return (
-    <div className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
+    <div
+      className={`house-compose-live space-y-4 ${activeSessionBottomClass(restTimerActive)}`}
+      aria-busy={hasHydrated ? undefined : true}
+    >
       <ActiveSessionChrome
         workoutName={session.workoutName}
         completedSets={completedSets}
@@ -931,7 +927,7 @@ export function ActiveWorkoutPage() {
 
       <details className="house-card group">
         <summary
-          className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+          className="house-show-all-door flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 [&::-webkit-details-marker]:hidden"
           data-testid="active-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}

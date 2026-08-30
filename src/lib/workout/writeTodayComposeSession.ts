@@ -18,8 +18,16 @@ import {
   readSavedWorkoutsFromStorage,
   readWorkoutHistoryFromStorage,
 } from '@/lib/workout/workoutPersistLite';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { findNextSet } from '@/lib/workout/activeWorkoutHelpers';
+import { resolveExercise } from '@/lib/workout/customExercise';
+import { getFormGuideOrCues } from '@/lib/formGuides';
+import {
+  hasComposeExercises,
+  hasLoggedWork,
+  useWorkoutStore,
+} from '@/store/workoutStore';
 import type { ActiveWorkout, CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
+import type { FormGuide } from '@/types/formGuide';
 import type { UnitsPref } from '@/lib/units';
 
 export type TodayComposeTemplate = {
@@ -73,15 +81,16 @@ export function resolveTodayComposeTemplate(opts?: {
   return { name: preview.name, exercises: preview.exercises, source: 'just_go' };
 }
 
-/** Write today's session into the live store. No-op when a session is already open. */
+/** Write today's session into the live store. No-op when a session already has lifts. */
 export function writeTodayComposeSession(): boolean {
   const store = useWorkoutStore.getState();
-  if (store.activeWorkout) return true;
+  const live = store.activeWorkout;
+  if (hasLoggedWork(live) || hasComposeExercises(live)) return true;
   const history = store.hasHydrated ? store.workoutHistory : readWorkoutHistoryFromStorage();
   const saved = store.hasHydrated ? store.savedWorkouts : readSavedWorkoutsFromStorage();
   const template = resolveTodayComposeTemplate({ history, saved });
   store.startWorkout(template.name, template.exercises);
-  return !!useWorkoutStore.getState().activeWorkout;
+  return hasComposeExercises(useWorkoutStore.getState().activeWorkout);
 }
 
 /** Display-only session so /active can paint a set table before persist. */
@@ -98,4 +107,30 @@ export function paintTodayComposeWorkout(): ActiveWorkout {
       ...(ex.prescribed ? { prescribed: true } : {}),
     })),
   };
+}
+
+/** Next set from the painted compose. Persist hydrate does not own this. */
+export function composeNextSet(
+  live: ActiveWorkout | null | undefined
+): { exIdx: number; setIdx: number } | null {
+  return findNextSet(composeSidecarWorkout(live).exercises);
+}
+
+/** Sidecar session from the painted compose. Persist hydrate does not own this. */
+export function composeSidecarWorkout(
+  live: ActiveWorkout | null | undefined
+): ActiveWorkout {
+  return hasComposeExercises(live) ? (live as ActiveWorkout) : paintTodayComposeWorkout();
+}
+
+/** Form guide from the painted compose. A catalog miss does not own the sheet. */
+export function composeFormGuideSheet(
+  formGuideId: string | null | undefined
+): { exerciseId: string; exerciseName: string; guide: FormGuide } | null {
+  if (!formGuideId) return null;
+  const ex = resolveExercise(formGuideId);
+  if (!ex) return null;
+  const guide = getFormGuideOrCues(formGuideId, { exercise: ex });
+  if (!guide) return null;
+  return { exerciseId: ex.id, exerciseName: ex.name, guide };
 }

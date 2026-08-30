@@ -10,7 +10,6 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ATHLETE_VISIBLE_FLAGS,
   type PregnancyFlag,
@@ -41,13 +40,10 @@ export function ProfilePregnancyCard() {
   const selectValue = isAthleteVisibleFlag(flag) ? flag : '';
 
   return (
-    <Card className="content-card" data-testid="pregnancy-flag-card">
-      <CardHeader>
-        <CardTitle className="text-base font-semibold">
+    <div className="house-card space-y-3" data-testid="pregnancy-flag-card">
+        <h3 className="text-base font-semibold">
           {t('pregnancyFlagTitle', { defaultValue: 'Pregnancy & postpartum' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+        </h3>
         <p className="text-xs text-muted-foreground leading-relaxed">
           {t('pregnancyFlagHint', {
             defaultValue:
@@ -81,7 +77,6 @@ export function ProfilePregnancyCard() {
               'This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician.',
           })}
         </p>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

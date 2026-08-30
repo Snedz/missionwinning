@@ -8,7 +8,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { summarizeRewards } from '@/lib/rewards/summary';
@@ -57,14 +56,16 @@ export function AthletePageKitCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-page-kit-card">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-page-kit-card">
         <details className="group">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <summary
+            className="house-kit-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-kit-summary"
+          >
             {t('athleteKitTitle', { defaultValue: 'Page kit' })}
           </summary>
           <div className="mt-3">
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="house-kit-cite" data-testid="athlete-kit-cite">
           {t('athleteKitBody', {
             defaultValue: 'How this page is laid out. Training unlocks more kits.',
           })}
@@ -91,7 +92,7 @@ export function AthletePageKitCard() {
                   defaultValue: KIT_LABEL_DEFAULT[kit.id] ?? kit.id,
                 })}
                 {!open && (
-                  <span className="ml-1 text-xs text-muted-foreground">
+                  <span className="house-kit-locked ml-1" data-testid="athlete-kit-locked">
                     {t('athleteKitLocked', {
                       tier: kit.minTier,
                       defaultValue: `T${kit.minTier}`,
@@ -104,13 +105,12 @@ export function AthletePageKitCard() {
         </div>
 
         {saved && (
-          <p className="mt-3 text-sm text-muted-foreground" role="status">
+          <p className="house-kit-saved" data-testid="athlete-kit-saved" role="status">
             {t('athleteKitSaved', { defaultValue: 'Layout saved on this device.' })}
           </p>
         )}
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

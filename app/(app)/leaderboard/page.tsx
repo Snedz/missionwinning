@@ -1,21 +1,34 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
 import { surfaceMetadata } from '@/lib/surfaceRoute';
-
-const LeaderboardPage = dynamic(
-  () => import('@/page-components/LeaderboardPage').then((m) => m.LeaderboardPage),
-  { loading: () => <RouteLoading label="Leaderboard" /> }
-);
+import { LeaderboardPage } from '@/page-components/LeaderboardPage';
 
 export const metadata: Metadata = surfaceMetadata('leaderboard', routeMetadata('leaderboard'));
 
-export default function LeaderboardRoute() {
+type SearchParams = Promise<{
+  board?: string | string[];
+  scope?: string | string[];
+  class?: string | string[];
+}>;
+
+function first(raw: string | string[] | undefined): string | undefined {
+  return Array.isArray(raw) ? raw[0] : raw;
+}
+
+/**
+ * Leaderboard first paint is house leftover. `useSearchParams()` plus
+ * `dynamic()` + `RouteLoading` made the served HTML a skeleton
+ * ("Loading Leaderboard…"). `?board=` / `?scope=` / `?class=` are resolved
+ * here, same shape as `/account` `?authError=`. Do not invent room chrome.
+ */
+export default async function LeaderboardRoute({ searchParams }: { searchParams: SearchParams }) {
+  const sp = await searchParams;
+
   return (
-    <Suspense fallback={<RouteLoading label="Leaderboard" />}>
-      <LeaderboardPage />
-    </Suspense>
+    <LeaderboardPage
+      initialBoard={first(sp.board)}
+      initialScope={first(sp.scope)}
+      initialClass={first(sp.class)}
+    />
   );
 }

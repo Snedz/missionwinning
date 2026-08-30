@@ -1,8 +1,9 @@
 /**
  * F-003 / MatrAIx — Active set-table density guards (.694).
  *
- * Source shape (not timing): sole poster-red Log set on the hero log path,
- * no filled accent chrome competing with it, ≥44px taps, metric-first rows.
+ * Source shape (not timing): sole filled Log set on the hero log path
+ * (house leftover press under .mw-house), no filled accent chrome competing
+ * with it, ≥44px taps, metric-first rows.
  * Do not claim faster-than-Strong — this only pins chrome discipline.
  */
 
@@ -20,7 +21,12 @@ test('LogConsole: sole primary-action Log set; kind/Use-next never accent-fill',
   const primaries = src.match(/primary-action/g) || [];
   assert.equal(primaries.length, 1, 'exactly one primary-action (Log set)');
   assert.match(src, /log-console-log-set/);
-  assert.match(src, /accent-poster/);
+  const logSet = src.slice(
+    src.indexOf('data-testid="log-console-log-set"'),
+    src.indexOf('data-testid="log-console-log-set"') + 400
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.doesNotMatch(logSet, /accent-poster/);
   assert.match(src, /min-h-\[52px\]/);
   assert.match(src, /h-\[52px\]/);
   // Selected kind / Use next stay ink — filled accent competed with Log set.
@@ -71,12 +77,17 @@ test('ActiveExerciseCard mounts the table on every surface', () => {
   assert.doesNotMatch(code, /isCompact\s*\?\s*\(/);
 });
 
-test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', () => {
+test('SetLogTable: Prev column anchored; one house leftover Log set; 44px inputs', () => {
   const src = workout('SetLogTable.tsx');
   const primaries = src.match(/primary-action/g) || [];
   assert.equal(primaries.length, 1, 'exactly one primary-action (inline Log set)');
   assert.match(src, /set-table-log-set/);
-  assert.match(src, /accent-poster/);
+  const logSet = src.slice(
+    src.indexOf('data-testid="set-table-log-set"'),
+    src.indexOf('data-testid="set-table-log-set"') + 360
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.doesNotMatch(logSet, /accent-poster/);
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /set-table-logged-check/);
   assert.match(src, /house-set-done-mark|border-s-primary|border-s-\[3px\]/);

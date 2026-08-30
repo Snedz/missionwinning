@@ -22,7 +22,7 @@ import { CoachLoadBand } from '@/components/coach/CoachLoadBand';
 import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
+import { SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { ParqIntakeCard } from '@/components/coach/ParqIntakeCard';
 import { CoachNextDayCite } from '@/components/coach/CoachNextDayCite';
@@ -110,7 +110,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
       })}
     >
-      {loading && <CoachPlanSkeleton className="py-2" />}
+      {loading && <div className="house-empty" aria-busy="true" data-testid="coach-first-paint" />}
 
       {!loading && locked && plan && (
         <div className="space-y-4">
@@ -343,7 +343,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
           <details className="house-card group">
             <summary
-              className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+              className="house-show-all-door flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 [&::-webkit-details-marker]:hidden"
               data-testid="coach-show-all"
             >
               {t('todayShowAll', { defaultValue: 'Show all' })}

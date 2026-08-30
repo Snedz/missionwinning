@@ -104,15 +104,13 @@ export function ActiveWorkoutSheets({
       />
       <SessionCheckInSheet open={checkInOpen} onDismiss={onCheckInDismiss} />
 
-      {formGuideSheet ? (
-        <FormGuideSheet
-          exerciseName={formGuideSheet.exerciseName}
-          exerciseId={formGuideSheet.exerciseId}
-          guide={formGuideSheet.guide}
-          open
-          onClose={onCloseFormGuide}
-        />
-      ) : null}
+      <FormGuideSheet
+        exerciseName={formGuideSheet?.exerciseName ?? ''}
+        exerciseId={formGuideSheet?.exerciseId}
+        guide={formGuideSheet?.guide ?? { setup: [], execute: [] }}
+        open={!!formGuideSheet}
+        onClose={onCloseFormGuide}
+      />
 
       <AddExerciseSheet
         open={addExerciseOpen}

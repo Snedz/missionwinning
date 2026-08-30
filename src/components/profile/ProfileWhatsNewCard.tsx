@@ -10,7 +10,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Newspaper, ListChecks } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { WhatsNewSheet } from './WhatsNewSheet';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
@@ -44,14 +43,11 @@ export function ProfileWhatsNewCard() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Newspaper className="h-4 w-4" aria-hidden="true" />
-          {t('whatsNewCardTitle', { defaultValue: 'What’s new' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-whats-new-card">
+      <h3 className="flex items-center gap-2 text-2xl font-semibold leading-none tracking-tight">
+        <Newspaper className="h-4 w-4" aria-hidden="true" />
+        {t('whatsNewCardTitle', { defaultValue: 'What’s new' })}
+      </h3>
         <p className="leading-relaxed text-muted-foreground">
           {t('whatsNewCardLead', {
             defaultValue:
@@ -96,9 +92,8 @@ export function ProfileWhatsNewCard() {
             })}
           </p>
         ) : null}
-      </CardContent>
 
       <WhatsNewSheet open={open} onClose={closeSheet} />
-    </Card>
+    </div>
   );
 }

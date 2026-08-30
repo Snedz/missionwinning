@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
+import { composeSidecarWorkout } from '@/lib/workout/writeTodayComposeSession';
 import { useWorkoutStore } from '@/store/workoutStore';
 
 const REST = [60, 90, 120, 180] as const;
@@ -9,23 +10,13 @@ const REST = [60, 90, 120, 180] as const;
 export function TrainSidecar() {
   const { t } = useTranslation();
   const units = useUnits();
-  const workout = useWorkoutStore((s) => s.activeWorkout);
+  const live = useWorkoutStore((s) => s.activeWorkout);
+  const workout = composeSidecarWorkout(live);
   const restOn = useWorkoutStore((s) => s.restTimerActive);
   const restLeft = useWorkoutStore((s) => s.restSecondsRemaining);
   const startRest = useWorkoutStore((s) => s.startRestTimer);
   const stopRest = useWorkoutStore((s) => s.stopRestTimer);
   const setNote = useWorkoutStore((s) => s.setSessionNote);
-
-  if (!workout) {
-    return (
-      <aside className="house-sidecar is-open" aria-label={t('navTrain', { defaultValue: 'Train' })}>
-        <h2 className="house-side-title">{t('navTrain', { defaultValue: 'Train' })}</h2>
-        <p className="house-lede" style={{ marginTop: 0 }}>
-          {t('activeEmptyExercises', { defaultValue: 'Add an exercise to begin logging sets.' })}
-        </p>
-      </aside>
-    );
-  }
 
   return (
     <aside className="house-sidecar is-open" data-testid="train-sidecar" aria-label={t('navTrain', { defaultValue: 'Train' })}>

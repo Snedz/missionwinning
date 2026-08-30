@@ -226,15 +226,22 @@ test('/active declares aria-busy while persist rehydrates', () => {
    * `a11y.spec.ts` used to carry `if (path === '/active')` and wait on the Start
    * button's *copy* (`/start workout|loading session/i`) — so the wait was one
    * string edit from silently disappearing, and no other route had one at all.
-   * `/active`'s pre-hydration state is not a code-split chunk (`RouteLoading`
-   * already announces that); it is `ActiveEmptyState` with `hydrated={false}`,
-   * which said nothing. Now it does, and the general rule covers it.
+   * Cold `/active` is the compose canvas (set table + Log set), not
+   * `ActiveEmptyState` Restoring. Busy lives on the live compose shell and on
+   * victory-only `TrainComposeEmpty`.
    */
+  const live = read('src/page-components/ActiveWorkoutPage.tsx');
+  assert.match(
+    live,
+    /aria-busy=\{hasHydrated \? undefined : true\}/,
+    'house-compose-live must mark itself busy while unhydrated, or a11y.spec.ts loses /active'
+  );
+  assert.doesNotMatch(live, /ActiveEmptyState/);
   const src = read('src/components/house/TrainComposeEmpty.tsx');
   assert.match(
     src,
     /aria-busy=\{hydrated \? undefined : true\}/,
-    'TrainComposeEmpty must mark itself busy while unhydrated, or a11y.spec.ts loses /active'
+    'TrainComposeEmpty must mark itself busy while unhydrated on the victory empty'
   );
 });
 
