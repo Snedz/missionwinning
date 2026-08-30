@@ -1342,6 +1342,27 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house\.house-victory-receipt \.house-victory-receipt-set\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Victory receipt set-index is house leftover/);
+  const victorySheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  const victoryDescNeedle = 'house-victory-desc';
+  const victoryDescAt = victorySheet.indexOf(victoryDescNeedle);
+  assert.ok(victoryDescAt >= 0, 'missing house-victory-desc');
+  const victoryDesc = victorySheet.slice(
+    Math.max(0, victoryDescAt - 180),
+    victoryDescAt + 40
+  );
+  assert.match(victoryDesc, /house-lede/);
+  assert.match(victoryDesc, /house-victory-desc/);
+  assert.doesNotMatch(victoryDesc, /text-muted-foreground/);
+  const victoryDialog = victorySheet.slice(
+    victorySheet.indexOf('victory-lock') - 40,
+    victorySheet.indexOf('victory-lock') + 80
+  );
+  assert.doesNotMatch(victoryDialog, /mw-house/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-desc\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory description is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),

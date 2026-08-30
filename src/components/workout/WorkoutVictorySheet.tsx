@@ -316,7 +316,7 @@ export function WorkoutVictorySheet({
           <DialogTitle className="font-display text-2xl font-extrabold tracking-[-0.015em]">
             {t('victoryTitle', { defaultValue: 'Session locked' })}
           </DialogTitle>
-          <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
+          <DialogDescription className="mw-house house-victory-desc house-lede leading-relaxed">
             {finishedLog
               ? historySessionLabel(finishedLog, fmt.longDate(finishedLog.completedAt))
               : summary.workoutName}

@@ -1,6 +1,6 @@
 /**
  * Victory receipt lead is house leftover — house-lede, not text-muted.
- * Receipt table / description stay muted. Stats leftovers stay.
+ * Receipt table leftover stays. Description is house leftover. Feel / share stay muted.
  * Next stays filled on Victory. Log set stays filled on compose.
  */
 import { test } from 'node:test';
@@ -52,8 +52,9 @@ test('receipt heads leftover ships separately (house-lede, not muted)', () => {
   assert.doesNotMatch(prev, /text-muted-foreground/);
 
   const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
-  const descNeedle = 'text-sm leading-relaxed text-muted-foreground';
-  assert.ok(sheet.includes(descNeedle), 'missing Victory description muted');
+  const desc = sliceAround(sheet, 'house-victory-desc');
+  assert.match(desc, /house-lede/);
+  assert.doesNotMatch(desc, /text-muted-foreground/);
 });
 
 test('volume unit leftover stays (not this leftover)', () => {

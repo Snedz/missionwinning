@@ -1,6 +1,6 @@
 /**
- * Victory receipt table heads is house leftover — house-lede, not text-muted.
- * Receipt lead leftover stays. Description is house leftover. Feel / share stay muted.
+ * Victory description is house leftover — house-lede, not text-muted.
+ * DialogContent is not mw-house. Receipt leftovers stay. Feel / share stay muted.
  * Next stays filled on Victory. Log set stays filled on compose.
  */
 import { test } from 'node:test';
@@ -24,35 +24,34 @@ function sliceAround(src: string, needle: string): string {
   return src.slice(Math.max(0, start - 180), start + 40);
 }
 
-test('Victory receipt table heads is house leftover, not text-muted', () => {
-  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
-  const start = receipt.indexOf('const headCell');
-  assert.ok(start >= 0, 'missing headCell');
-  const head = receipt.slice(start, start + 180);
-  assert.match(head, /house-lede house-victory-receipt-head/);
-  assert.doesNotMatch(head, /text-muted-foreground/);
-  assert.doesNotMatch(head, /uppercase/);
-});
-
-test('receipt lead leftover stays (not this leftover)', () => {
-  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
-  const start = receipt.lastIndexOf('victoryReceiptLabel');
-  assert.ok(start >= 0, 'missing victoryReceiptLabel');
-  const lead = receipt.slice(Math.max(0, start - 180), start + 40);
-  assert.match(lead, /house-lede house-victory-receipt-lead/);
-  assert.doesNotMatch(lead, /text-muted-foreground/);
-});
-
-test('Prev leftover ships separately (house-lede, not muted)', () => {
-  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
-  const prev = sliceAround(receipt, 'data-testid="victory-prev"');
-  assert.match(prev, /house-lede/);
-  assert.doesNotMatch(prev, /text-muted-foreground/);
-
+test('Victory description is house leftover, not text-muted', () => {
   const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  // house-victory-desc is unique on DialogDescription. historySessionLabel
+  // hits the import first and the className never lands in a ±180 slice.
   const desc = sliceAround(sheet, 'house-victory-desc');
   assert.match(desc, /house-lede/);
+  assert.match(desc, /house-victory-desc/);
   assert.doesNotMatch(desc, /text-muted-foreground/);
+});
+
+test('Victory dialog is not mw-house', () => {
+  const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  const dialog = sliceAround(sheet, 'victory-lock');
+  assert.doesNotMatch(dialog, /mw-house/);
+});
+
+test('receipt set-index leftover stays (not this leftover)', () => {
+  const receipt = read('src/components/workout/VictoryReceiptStrip.tsx');
+  const idx = sliceAround(receipt, '{set.setIndex + 1}');
+  assert.match(idx, /house-lede house-victory-receipt-set/);
+  assert.doesNotMatch(idx, /text-muted-foreground/);
+});
+
+test('feel / share stay parked (not this leftover)', () => {
+  const feel = read('src/components/workout/VictoryFeelStrip.tsx');
+  assert.match(feel, /text-muted-foreground/);
+  const share = read('src/components/workout/VictorySecondaryLinks.tsx');
+  assert.match(share, /text-muted-foreground/);
 });
 
 test('Next stays the filled press on Victory', () => {
@@ -66,19 +65,19 @@ test('Log set stays the sole filled press on compose', () => {
   assert.match(logSet, /house-btn house-btn-primary house-set-log/);
 });
 
-test('house leftover rule paints Victory receipt heads with --house-muted', () => {
+test('house leftover rule paints Victory description with --house-muted', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-muted/);
   assert.match(css, /\.house-lede \{[^}]*--house-muted/);
   assert.match(
     css,
-    /\.mw-house\.house-victory-receipt \.house-victory-receipt-head\.house-lede \{[^}]*--house-muted/
+    /\.mw-house\.house-victory-desc\.house-lede \{[^}]*--house-muted/
   );
 });
 
-test('DESIGN names Victory receipt heads is house leftover', () => {
+test('DESIGN names Victory description is house leftover', () => {
   const spec = read('src/components/house/DESIGN.md');
-  assert.match(spec, /Victory receipt heads is house leftover/);
+  assert.match(spec, /Victory description is house leftover/);
 });
 
 test('Finish / Skip / Swap / Form guide / Repeat last never house-btn-primary', () => {
