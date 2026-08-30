@@ -146,7 +146,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
               <tbody>
                 {ex.sets.map((set) => (
                   <tr key={set.setIndex} className="tabular-nums">
-                    <td className="w-8 py-1.5 pe-2 align-top text-muted-foreground">
+                    <td className="w-8 py-1.5 pe-2 align-top house-lede house-victory-receipt-set">
                       {set.setIndex + 1}
                       {set.kind && set.kind !== 'normal' ? (
                         <span className="ms-1 text-[10px] uppercase">

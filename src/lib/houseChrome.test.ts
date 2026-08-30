@@ -1331,6 +1331,17 @@ test('house design system is the signed-in token table', () => {
     /\.mw-house\.house-victory-receipt \.house-victory-receipt-delta\.house-lede \{[^}]*--house-muted/
   );
   assert.match(spec, /Victory receipt vs-last cells is house leftover/);
+  const receiptSetIdx = victoryReceipt.slice(
+    victoryReceipt.indexOf('{set.setIndex + 1}') - 180,
+    victoryReceipt.indexOf('{set.setIndex + 1}') + 40
+  );
+  assert.match(receiptSetIdx, /house-lede house-victory-receipt-set/);
+  assert.doesNotMatch(receiptSetIdx, /text-muted-foreground/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-receipt \.house-victory-receipt-set\.house-lede \{[^}]*--house-muted/
+  );
+  assert.match(spec, /Victory receipt set-index is house leftover/);
   const logConsole = read('src/components/workout/LogConsole.tsx');
   const consoleLogSet = logConsole.slice(
     logConsole.indexOf('data-testid="log-console-log-set"'),
