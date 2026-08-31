@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1055-for-1070.md](./log/LOG-rotate-1055-for-1070.md) | rotated 2026-08-31 for `.1070` Feedback is the form (`.1055`) |
 | [log/LOG-rotate-1054-for-1069.md](./log/LOG-rotate-1054-for-1069.md) | rotated 2026-08-31 for `.1069` Learn is the intro (`.1054`) |
 | [log/LOG-rotate-1053-for-1068.md](./log/LOG-rotate-1053-for-1068.md) | rotated 2026-08-31 for `.1068` Track is the scale/tape log (`.1053`) |
 | [log/LOG-rotate-1052-for-1067.md](./log/LOG-rotate-1052-for-1067.md) | rotated 2026-08-31 for `.1067` Mind is the check-in (`.1052`) |

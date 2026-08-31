@@ -823,6 +823,8 @@ test('house design system is the signed-in token table', () => {
   assert.match(feedback, /house-btn house-btn-primary primary-action/);
   assert.match(feedback, /InfoPageShell/);
   assert.match(feedback, /composeFeedbackNote\(/);
+  assert.doesNotMatch(feedback, /<SignInPrompt\b/);
+  assert.doesNotMatch(feedback, /showLegalFooter/);
   assert.doesNotMatch(feedback, /content-card/);
   assert.match(css, /\.house-feedback form\.house-card/);
   assert.match(css, /\.house-feedback textarea/);
