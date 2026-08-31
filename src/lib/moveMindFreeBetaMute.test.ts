@@ -9,11 +9,12 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('MovePage free-beta uses open-beta fetch/offline keys', () => {
+test('MovePage does not leftover premium flow fetch chrome', () => {
   const src = readFileSync(join(root, 'src/page-components/MovePage.tsx'), 'utf8');
-  assert.match(src, /movePremiumFetchFailedOpenBeta/);
-  assert.match(src, /movePremiumOfflineOpenBeta/);
-  assert.match(src, /isFreeBeta|freeBeta/);
+  assert.doesNotMatch(src, /movePremiumFetchFailedOpenBeta/);
+  assert.doesNotMatch(src, /movePremiumOfflineOpenBeta/);
+  assert.doesNotMatch(src, /isFreeBeta|freeBeta/);
+  assert.match(src, /<QuietMoveLogCard\b/);
 });
 
 test('MindPage free-beta uses open-beta fetch/offline + section keys', () => {

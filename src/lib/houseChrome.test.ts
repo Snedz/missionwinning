@@ -737,26 +737,13 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /Remaining \/ notepad \/ Show more/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
-  const moveFlows = move.slice(
-    move.indexOf('const renderFlowGrid'),
-    move.indexOf('premium && filteredPremium')
-  );
-  assert.match(moveFlows, /house-collections/);
-  assert.match(moveFlows, /house-state shrink-0 tap-target/);
-  assert.match(moveFlows, /house-card house-flow/);
-  assert.match(moveFlows, /house-flow-name/);
-  assert.match(moveFlows, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
-  assert.match(moveFlows, /defaultValue: 'Start Flow'/);
-  assert.doesNotMatch(moveFlows, /<Card[\s>]/);
-  assert.doesNotMatch(moveFlows, /<Button[\s>]/);
-  assert.doesNotMatch(moveFlows, /content-card/);
-  assert.doesNotMatch(moveFlows, /uppercase tracking/);
-  assert.doesNotMatch(moveFlows, /hover:border-primary/);
-  assert.doesNotMatch(moveFlows, /house-btn-primary/);
-  assert.doesNotMatch(moveFlows, /text-primary/);
+  assert.match(move, /<QuietMoveLogCard\b/);
+  assert.doesNotMatch(move, /renderFlowGrid/);
+  assert.doesNotMatch(move, /id="move-flows"/);
+  assert.doesNotMatch(move, /TimedFlowRunner/);
   assert.match(css, /\.house-move \.house-flow \{[^}]*--house-/);
   assert.match(css, /\.house-move \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Move first-paint flow list is house leftover/);
+  assert.match(spec, /Move first paint is the quiet log/);
   const quietMove = read('src/components/move/QuietMoveLogCard.tsx');
   assert.match(quietMove, /house-card house-quiet-move/);
   assert.match(quietMove, /house-quiet-move-name/);
@@ -769,7 +756,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(quietMove, /house-btn-primary/);
   assert.doesNotMatch(quietMove, /primary-action/);
   assert.match(css, /\.house-move \.house-quiet-move \.house-field \{[^}]*--house-line/);
-  assert.match(spec, /Move first-paint quiet log is house leftover/);
+  assert.match(spec, /Quiet log is house leftover/);
   assert.match(read('src/page-components/MindPage.tsx'), /className="house-mind"/);
   const mindCheckIn = read('src/components/pillars/DailyCheckIn.tsx');
   assert.match(mindCheckIn, /house-card house-checkin/);

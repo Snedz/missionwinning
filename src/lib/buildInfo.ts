@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1063` Fuel is the log, not a tour (from `.1062` `8a2119ea`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1063";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1064` Move is the quiet log (from `.1063` `96f39a3b`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1064";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
