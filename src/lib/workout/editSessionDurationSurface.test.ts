@@ -76,7 +76,7 @@ describe('edit this session duration surface lock (.1035)', () => {
     assert.match(live, /toggleSessionClock|sessionElapsedSeconds/);
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
     assert.doesNotMatch(sheet, DURATION);
-    assert.match(sheet, /HistorySessionName/);
+    assert.doesNotMatch(sheet, /HistorySessionName/);
   });
 
   it('first set stays ungated — duration never mounts a login wall', () => {

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1060` I-Day is not a wall (from `.1059` `59501192`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1060";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1061` Victory is a receipt (from `.1060` `157a1c65`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1061";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

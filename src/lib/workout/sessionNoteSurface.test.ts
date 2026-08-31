@@ -57,12 +57,10 @@ describe('session notes surface lock', () => {
     assert.match(page, /<SessionJotField\b/);
   });
 
-  it('receipt first paint has the notes field; it is not a red Start', () => {
+  it('Victory does not leftover the notes field; jot stays off Today', () => {
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
     const jsx = sheet.slice(sheet.indexOf('return ('));
-    const open = jsx.split('<details')[0];
-    assert.match(open, /<SessionJotField\b/, 'notes belong on the close receipt, not Show all');
-    assert.doesNotMatch(open, /primary-action|bg-primary-fill/);
+    assert.doesNotMatch(jsx, /<SessionJotField\b/, 'notes belong on History / Train Show all, not Victory');
     assert.doesNotMatch(sheet, /discord\.com|WeChat|marketplace|four-scene/i);
     assert.doesNotMatch(sheet, PREMIUM);
   });

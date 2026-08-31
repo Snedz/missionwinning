@@ -50,15 +50,15 @@ describe('nextVictoryShareAfterText', () => {
   });
 });
 
-describe('WorkoutVictorySheet wires victoryShare helpers (.452)', () => {
-  it('uses payload + file/text next helpers rather than inlining ladder', () => {
+describe('WorkoutVictorySheet does not leftover share (.1061)', () => {
+  it('does not wire payload + file/text next helpers on the overlay', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
       'utf8'
     );
-    assert.match(src, /buildVictorySharePayload/);
-    assert.match(src, /nextVictoryShareAfterFile/);
-    assert.match(src, /nextVictoryShareAfterText/);
+    assert.doesNotMatch(src, /buildVictorySharePayload/);
+    assert.doesNotMatch(src, /nextVictoryShareAfterFile/);
+    assert.doesNotMatch(src, /nextVictoryShareAfterText/);
     assert.doesNotMatch(
       src,
       /utm_source=share&utm_medium=victory/,
@@ -66,15 +66,13 @@ describe('WorkoutVictorySheet wires victoryShare helpers (.452)', () => {
     );
   });
 
-  it('shows fail-only recovery on method:failed — not cancel (design 2A)', () => {
+  it('does not leftover fail-only share recovery on the overlay', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
       'utf8'
     );
-    assert.match(src, /shareFailHint/);
-    assert.match(src, /victory-share-fail/);
-    assert.match(src, /victoryShareFailed/);
-    assert.match(src, /method: 'failed'/);
-    assert.match(src, /setShareFailHint\(true\)/);
+    assert.doesNotMatch(src, /shareFailHint/);
+    assert.doesNotMatch(src, /victory-share-fail/);
+    assert.doesNotMatch(src, /handleShare/);
   });
 });

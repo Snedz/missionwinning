@@ -1,6 +1,6 @@
 /**
- * Victory first paint is the close receipt: stats + lift table + one Next.
- * Feel, share, rewards, debrief live in Show all. (`.956`)
+ * Victory first paint is title + stats + one Next. Leftover hops stay off
+ * the overlay (`.1061`).
  */
 
 import { test } from 'node:test';
@@ -21,10 +21,9 @@ const sheet = () =>
     'utf8'
   );
 
-test('the Victory house is behind Show all, not on first paint', () => {
+test('leftover hops stay off the overlay', () => {
   const src = sheet();
   const jsx = src.slice(src.indexOf('return ('));
-  const open = jsx.split('<details')[0];
   for (const name of [
     'VictoryFeelStrip',
     'VictoryRewardsLine',
@@ -32,29 +31,20 @@ test('the Victory house is behind Show all, not on first paint', () => {
     'SessionDebriefCard',
     'FieldTestReceiptStrip',
     'VictoryBodyDeltaStrip',
+    'VictoryReceiptStrip',
+    'SessionJotField',
   ]) {
-    assert.doesNotMatch(open, new RegExp(`<${name}\\b`), `${name} is on first paint`);
+    assert.doesNotMatch(jsx, new RegExp(`<${name}\\b`), `${name} is leftover on Victory`);
   }
-  assert.doesNotMatch(open, /handleShare/, 'Share is on first paint');
-  assert.match(jsx, /<details/);
-  assert.match(jsx, /data-testid="victory-show-all"/);
-  assert.match(jsx, /<VictoryFeelStrip\b/);
-  assert.match(jsx, /<VictoryRewardsLine\b/);
+  assert.doesNotMatch(jsx, /handleShare/);
+  assert.doesNotMatch(jsx, /<details/);
+  assert.doesNotMatch(jsx, /data-testid="victory-show-all"/);
 });
 
-test('first paint is the close receipt and the Next dock', () => {
+test('first paint is stats and the Next dock', () => {
   const src = sheet();
   const jsx = src.slice(src.indexOf('return ('));
-  const open = jsx.split('<details')[0];
-  assert.match(open, /<VictoryStatsStrip\b/);
-  assert.match(open, /<VictoryReceiptStrip\b/, 'lift table is the keepable close, not Show all');
-  assert.match(open, /<SessionJotField\b/, 'session notes sit on the receipt, not Show all');
-  assert.equal(
-    (jsx.match(/<VictoryReceiptStrip\b/g) ?? []).length,
-    1,
-    'one session, one receipt'
-  );
-  assert.match(open, /onSaveReceipt=/);
+  assert.match(jsx, /<VictoryStatsStrip\b/);
   assert.match(jsx, /data-testid="victory-next-dock"/);
   assert.match(jsx, /<VictoryNextActionStrip\b/);
 });

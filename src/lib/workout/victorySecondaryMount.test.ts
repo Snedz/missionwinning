@@ -3,14 +3,13 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-test('WorkoutVictorySheet mounts quiet secondary Super Bundle links', () => {
+test('WorkoutVictorySheet does not mount leftover secondary Super Bundle links', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
     'utf8'
   );
-  assert.match(src, /VictorySecondaryLinks/);
-  assert.match(src, /buildVictorySecondaryLinks/);
-  assert.match(src, /workingMuscleGroups/);
+  assert.doesNotMatch(src, /VictorySecondaryLinks/);
+  assert.doesNotMatch(src, /buildVictorySecondaryLinks/);
 });
 
 test('mw-core victory never routes fuel to Bundle', () => {

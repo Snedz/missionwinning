@@ -55,10 +55,10 @@ describe('repeat this session surface lock (.1026)', () => {
     assert.doesNotMatch(priv, REPEAT);
   });
 
-  it('receipt Start this again (.991) stays — this does not smash the close receipt', () => {
+  it('receipt does not leftover Start this again; Repeat stays on History', () => {
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
-    assert.match(sheet, /decideStartAgain/);
-    assert.match(sheet, /data-testid="victory-start-again"/);
+    assert.doesNotMatch(sheet, /decideStartAgain/);
+    assert.doesNotMatch(sheet, /data-testid="victory-start-again"/);
     assert.doesNotMatch(sheet, /decideRepeatThisSession/);
   });
 
