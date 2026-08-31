@@ -44,7 +44,6 @@ export function UsagePolicyPage() {
       title={t('infoUsageTitle', { defaultValue: infoEnFloor('infoUsageTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: lead + jump chips + sections. Legal copy unchanged. */}
       <section className="house-card space-y-3">

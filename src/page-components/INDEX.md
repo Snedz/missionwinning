@@ -84,15 +84,15 @@
 | `ServerPage.tsx` | `/server` — quiet title first paint. Rooms / buddy list / chat stay off first paint. Not a Today tab. |
 | `AccountPage.tsx` | `/account` — sign-in / return / prefs first paint. Import / backup / pregnancy in More settings. Explore / help stay off first paint. |
 | `ExplorePlacesPage.tsx` | `/explore` — board + pin list + add a place first paint. GPS / tag last / maps stay off first paint. Quiet Account door. Not a shop. |
-| `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
-| `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
-| `AccessibilityPage.tsx` | `/accessibility` — leftover accessibility; jump chips + house-card sections. Never a rail. |
-| `TermsPage.tsx` | `/terms` — leftover terms; jump chips + house-card sections. Never a rail. |
-| `DmcaPage.tsx` | `/dmca` — leftover DMCA; jump chips + house-card sections. Never a rail. |
-| `RefundsPage.tsx` | `/refunds` — leftover refunds; jump chips + house-card sections. Never a rail. |
-| `UsagePolicyPage.tsx` | `/usage` — leftover usage; jump chips + house-card sections. Never a rail. |
-| `SupportedRegionsPage.tsx` | `/regions` — leftover regions; jump chips + house-card sections. Never a rail. |
-| `ServiceTermsPage.tsx` | `/service-terms` — leftover service terms; jump chips + house-card sections. Never a rail. |
+| `PrivacyPage.tsx` | `/privacy` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `CookiesPage.tsx` | `/cookies` — overview + table first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `AccessibilityPage.tsx` | `/accessibility` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `TermsPage.tsx` | `/terms` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `DmcaPage.tsx` | `/dmca` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `RefundsPage.tsx` | `/refunds` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `UsagePolicyPage.tsx` | `/usage` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `SupportedRegionsPage.tsx` | `/regions` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `ServiceTermsPage.tsx` | `/service-terms` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
 | `HelpPage.tsx` | `/help` — FAQ first paint. Legal footer stays off first paint. Never a rail. |
 | `FeedbackPage.tsx` | `/feedback` — form first paint. Sign-in / legal footer stay off first paint. composeFeedbackNote is the writer. |
 | `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |

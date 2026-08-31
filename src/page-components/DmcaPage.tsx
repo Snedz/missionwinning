@@ -39,7 +39,6 @@ export function DmcaPage() {
       title={t('infoDmcaTitle', { defaultValue: infoEnFloor('infoDmcaTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: intro + jump chips + sections. Legal copy unchanged. */}
       <section className="house-card space-y-3">

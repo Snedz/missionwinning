@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1073` Help is the FAQ (from `.1072` `11deecbb`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1073";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1074` Legal is the policy (from `.1073` `81726238`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1074";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

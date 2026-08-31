@@ -42,7 +42,6 @@ export function AccessibilityPage() {
       title={t('infoA11yTitle', { defaultValue: infoEnFloor('infoA11yTitle') })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} 2026-08-04`}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: jump chips + sections. Legal copy unchanged. */}
       <nav className="house-a11y-jump" aria-label={t('infoA11yTitle', { defaultValue: infoEnFloor('infoA11yTitle') })}>

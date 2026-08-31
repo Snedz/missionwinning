@@ -107,7 +107,6 @@ export function PrivacyPage() {
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: jump chips + sections. Legal copy unchanged. */}
       <nav className="house-privacy-jump" aria-label={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}>

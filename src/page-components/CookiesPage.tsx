@@ -36,7 +36,6 @@ export function CookiesPage() {
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoCookiesTitle', { defaultValue: 'Cookies & device storage' })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
-      showLegalFooter
     >
       {/* Quiet leftover: overview + inventory stay first paint. */}
       <section id="overview" className="house-card space-y-3">

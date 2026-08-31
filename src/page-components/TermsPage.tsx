@@ -50,7 +50,6 @@ export function TermsPage() {
       title={t('infoTermsTitle', { defaultValue: 'Terms of Service' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: jump chips + sections. Legal copy unchanged. */}
       <nav className="house-terms-jump" aria-label={t('infoTermsTitle', { defaultValue: 'Terms of Service' })}>

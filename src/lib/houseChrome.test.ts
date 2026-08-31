@@ -930,6 +930,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(privacy, /house-privacy-jump/);
   assert.match(privacy, /infoEnFloor/);
   assert.match(privacy, /PRIVACY_SECTIONS/);
+  assert.doesNotMatch(privacy, /showLegalFooter/);
   assert.doesNotMatch(privacy, /InfoSection/);
   assert.doesNotMatch(moreNav, /['"]\/privacy['"]/);
   assert.match(css, /\.house-privacy/);
