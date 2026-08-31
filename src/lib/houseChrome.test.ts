@@ -554,12 +554,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(nextDayFilled, /eyebrow/);
   assert.match(css, /\.house-next-day \{[^}]*padding:\s*16px 18px/);
   assert.match(spec, /Coach next-day cite is house leftover/);
-  const weekDose = coach.slice(
-    Math.max(0, coach.indexOf('coach-week-dose') - 80),
-    coach.indexOf('coach-week-dose') + 40
-  );
-  assert.match(weekDose, /house-lede house-week-dose/);
-  assert.doesNotMatch(weekDose, /text-muted-foreground/);
+  assert.doesNotMatch(coach, /coach-week-dose/);
   assert.match(css, /\.house-week-dose \{[^}]*font-size:\s*14px/);
   assert.match(spec, /Coach week dose is house leftover/);
   const sessionCard = read('src/components/coach/PlanSessionCard.tsx');
@@ -615,25 +610,15 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(adaptBanner, /uppercase tracking/);
   assert.match(css, /\.house-adapt \{[^}]*--house-ink/);
   assert.match(spec, /Coach adapt banner is house leftover/);
-  const coachExtras = coach.slice(
-    coach.lastIndexOf('<details', coach.indexOf('coach-show-all')),
-    coach.indexOf('<CoachLoadBand') + 40
-  );
-  assert.match(coachExtras, /house-card group/);
-  assert.match(coachExtras, /house-show-all-body/);
-  assert.match(coachExtras, /CoachVoiceCard/);
-  assert.match(coachExtras, /CoachLoadBand/);
-  assert.match(coachExtras, /CoachLogCite/);
-  assert.match(coachExtras, /CoachManageSheet/);
-  assert.doesNotMatch(coachExtras, /content-card/);
-  assert.doesNotMatch(coachExtras, /border-t-2/);
-  assert.doesNotMatch(coachExtras, /border-2/);
+  assert.doesNotMatch(coach, /data-testid="coach-show-all"/);
+  assert.doesNotMatch(coach, /<CoachLoadBand/);
+  assert.doesNotMatch(coach, /<CoachVoiceCard/);
   assert.match(css, /\.house-plan \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Coach Show all extras is house leftover/);
   const weekStrip = read('src/components/coach/WeekStrip.tsx');
   const landingDemo = read('src/components/landing/CoachAdaptDemo.tsx');
   const parkedToday = read('src/components/coach/TodayCoachWeekStrip.tsx');
-  assert.equal((coach.match(/<WeekStrip house\b/g) || []).length, 2);
+  assert.equal((coach.match(/<WeekStrip house\b/g) || []).length, 0);
   assert.match(weekStrip, /house-week-strip/);
   assert.match(weekStrip, /house-week-cell/);
   assert.match(weekStrip, /border-\[hsl\(var\(--accent-poster\)\)\]/);

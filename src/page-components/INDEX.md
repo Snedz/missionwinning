@@ -33,7 +33,7 @@
 
 | File | Route | Notes |
 |------|-------|-------|
-| `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; generate dock, next-day cite, week dose, week strip, and Show all fold chrome are house leftovers. Landing WeekStrip stays field-manual. Voice/LoadBand/LogCite/Manage internals stay. |
+| `CoachPage.tsx` | `/coach` | Weekly AI plan — empty + Generate, or this week’s session (`.1062`). Week strip, dose, live voice, next-day cite, Show all, chat, and Super Bundle taster unmounted. `generateWeek` stays the week writer via `useCoachPlan`. |
 | `CoachingPage.tsx` | `/coaching` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 
 ### Fuel / Move / Mind / Track / Learn

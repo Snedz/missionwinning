@@ -453,13 +453,13 @@ describe('nextDayFromLogs wiring', () => {
     const page = read('src/page-components/CoachPage.tsx');
     const strip = read('src/components/coach/TodayCoachWeekStrip.tsx');
     const cite = read('src/components/coach/CoachNextDayCite.tsx');
-    assert.match(page, /CoachNextDayCite/);
-    assert.match(page, /nextDayFromLogs\(/);
+    assert.doesNotMatch(page, /CoachNextDayCite/);
+    assert.doesNotMatch(page, /nextDayFromLogs\(/);
     assert.match(strip, /CoachNextDayCite/);
     assert.match(cite, /data-testid="coach-next-day"/);
     assert.doesNotMatch(cite, /className="primary-action/);
     assert.doesNotMatch(page, /<details[^>]*\bopen\b/);
-    assert.match(page, /data-testid="coach-show-all"/);
+    assert.doesNotMatch(page, /data-testid="coach-show-all"/);
   });
 
   it('lean return path has no Feed / Top 8 / likes / login wall strings', () => {

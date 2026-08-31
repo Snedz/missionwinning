@@ -28,7 +28,7 @@
 
 | Layer | Path |
 |-------|------|
-| Page | `CoachPage.tsx` |
+| Page | `CoachPage.tsx` — empty + Generate, or this week’s session (`.1062`) |
 | Hook | `useCoachPlan.ts` |
 | Engine | `src/lib/coach/INDEX.md` |
 | API | `/api/coach/plan-voice`, `/api/coach/chat` |

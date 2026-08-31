@@ -19,11 +19,11 @@ test('Today week strip shows dose and compact adapt, never a second red', () => 
   assert.doesNotMatch(src, /primary-action/);
 });
 
-test('Coach page still shows week dose and adapt', () => {
+test('Coach page does not leftover week dose and adapt', () => {
   const src = read('src/page-components/CoachPage.tsx');
-  assert.match(src, /summarizeWeekDose/);
-  assert.match(src, /coach-week-dose/);
-  assert.match(src, /<CoachAdaptBanner/);
+  assert.doesNotMatch(src, /summarizeWeekDose/);
+  assert.doesNotMatch(src, /coach-week-dose/);
+  assert.doesNotMatch(src, /<CoachAdaptBanner/);
 });
 
 test('Dashboard mounts the week strip; Lean does not pull Coach onto first paint', () => {

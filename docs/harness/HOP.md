@@ -5,9 +5,9 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: leftover-victory
-done_means: Victory first paint is title + stats + one next. No Show all, feel, share, rewards, receipt table, jot, name, save-routine, or start-again on the overlay. Finish on 0 sets stays a no-op. Log set stays filled. generateWeek stays on /coach.
-accept: npx tsx --test src/lib/workout/leftoverVictory.test.ts
+ticket: leftover-coach
+done_means: Coach first paint is empty + Generate, or this week's session. No week strip, dose, live voice, next-day cite, Show all, chat, or Super Bundle taster on /coach. generateWeek stays the week writer via useCoachPlan. Log set stays filled.
+accept: npx tsx --test src/lib/coach/leftoverCoach.test.ts
 test_written: yes
 
 ## progress
@@ -16,7 +16,7 @@ Honesty first. Chrome after red. Park leftover PR #889. Continue #890.
 
 ## decisions
 
-- Tracker first: Victory is a receipt, not a tour.
-- Name / notes / train again stay on History.
-- Stamp `.1061` from this branch `.1060`.
+- Tracker first: Coach is the week writer, not a tour.
+- PARQ stays if the engine still requires it.
+- Stamp `.1062` from this branch `.1061`.
 - `[skip vercel]`. Do not merge. Do not promote. PRIVATE_MODE on. Live www stays `.696`.

@@ -19,9 +19,7 @@ test('Coach subtitle first-paints the pack', () => {
 test('Coach empty title first-paints No plan this week', () => {
   assert.match(page, /defaultValue: 'No plan this week'/);
   assert.doesNotMatch(page, /Ready for a new week\?/);
-});
-
-test('Coach free-core note first-paints the pack', () => {
-  assert.match(page, /premium funds the mission/);
+  assert.doesNotMatch(page, /premium funds the mission/);
+  assert.doesNotMatch(page, /UnlockButton/);
   assert.doesNotMatch(page, /stay free forever/);
 });
