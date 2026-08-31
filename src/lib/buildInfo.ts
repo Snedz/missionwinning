@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1058` Train does not mint a Coach week (from master `.1057` `f302f40f`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1058";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1059` Today is date + Start (from `.1058` `3761ca38`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1059";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

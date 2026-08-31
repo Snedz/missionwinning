@@ -130,8 +130,8 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.match(src, /writeTodayComposeSession\(\)/);
   assert.match(src, /today-start-pending/);
   assert.match(src, /justGoTitle/);
-  assert.match(src, /<HouseFirstRoomsCard/);
-  assert.match(src, /id="today-week"/);
+  assert.doesNotMatch(src, /HouseFirstRoomsCard/);
+  assert.doesNotMatch(src, /id="today-week"/);
   assert.match(src, /startLive\(/);
   assert.match(src, /router\.push\('\/active'\)/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
@@ -169,12 +169,11 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
 });
 
-test('Today desk has one filled action — week generate is a door to /coach', () => {
+test('Today desk has one filled action — week generate is not on Today', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const primaries = [...src.matchAll(/house-btn-primary/g)];
   assert.equal(primaries.length, 1, 'Start is the only filled action on Today');
-  assert.match(src, /href="\/coach"/);
-  assert.match(src, /data-house-week-writer="generateWeek"/);
+  assert.doesNotMatch(src, /data-house-week-writer="generateWeek"/);
   assert.doesNotMatch(src, /generateWeek\(/);
 });
 
@@ -200,10 +199,9 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
 test('checklist never owns Start, and house copy is not a pasted brand', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const startAt = src.indexOf('id="today-start"');
-  const weekAt = src.indexOf('id="today-week"');
-  const stepsAt = src.indexOf('<HouseFirstRoomsCard');
-  assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
-  assert.ok(stepsAt > startAt && stepsAt < weekAt, 'checklist sits under Start, before week');
+  assert.ok(startAt > 0, 'Start is on Today');
+  assert.doesNotMatch(src, /id="today-week"/);
+  assert.doesNotMatch(src, /HouseFirstRoomsCard/);
   assert.match(src, /snap \?/);
   assert.doesNotMatch(src, /getFirstSteps|summarizeFirstSteps/);
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
