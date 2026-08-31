@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1050-for-1066.md](./log/LOG-rotate-1050-for-1066.md) | rotated 2026-08-31 for `.1066` Account is sign-in / return / prefs (`.1050`) |
 | [log/LOG-rotate-1048-for-1065.md](./log/LOG-rotate-1048-for-1065.md) | rotated 2026-08-31 for `.1065` You is quiet title + Account door (`.1048`) |
 | [log/LOG-rotate-1047-for-1064.md](./log/LOG-rotate-1047-for-1064.md) | rotated 2026-08-31 for `.1064` Move is the quiet log (`.1047`) |
 | [log/LOG-rotate-1046-for-1063.md](./log/LOG-rotate-1046-for-1063.md) | rotated 2026-08-30 for `.1063` Fuel is the log (`.1046`) |

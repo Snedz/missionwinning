@@ -38,9 +38,9 @@ test('Explore does not sit on Today', () => {
   assert.deepEqual(hits, [], `Today must not link Explore:\n  ${hits.join('\n  ')}`);
 });
 
-test('Explore is wired as a quiet Account / More door, not a tab', () => {
+test('Explore is wired as a quiet More door, not a tab or Account tour', () => {
   const account = readFileSync(path.join(root, 'src/page-components/AccountPage.tsx'), 'utf8');
-  assert.match(account, /\/explore/);
+  assert.doesNotMatch(account, /\/explore/);
 
   const quiet = readFileSync(path.join(root, 'src/lib/moreSheetTiers.ts'), 'utf8');
   assert.match(quiet, /href: '\/explore'/);

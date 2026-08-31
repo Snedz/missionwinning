@@ -205,7 +205,7 @@ test('keep-list is closed — a new consent key must be added here on purpose', 
 
 test('AccountPage marks explicit leave before the wipe', () => {
   const src = readFileSync(join(root, 'src/page-components/AccountPage.tsx'), 'utf8');
-  const fn = src.slice(src.indexOf('const handleSignOut'), src.indexOf('const handleManageBilling'));
+  const fn = src.slice(src.indexOf('const handleSignOut'), src.indexOf('const ownerTools'));
   assert.match(fn, /markExplicitSignOut\s*\(/);
   assert.match(fn, /clearAthleteLocalState\s*\(/);
   assert.ok(

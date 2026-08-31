@@ -656,10 +656,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(account, /ProfileAccountCard/);
   assert.match(account, /ProfileRemindersCard/);
   assert.match(account, /ProfilePreferencesCard/);
-  assert.match(account, /className="house-card space-y-2"/);
   assert.match(account, /className="house-card group"/);
-  assert.match(account, /house-btn house-btn-ghost/);
-  assert.match(account, /href="\/explore"/);
+  assert.doesNotMatch(account, /href="\/explore"/);
+  assert.doesNotMatch(account, /<ProfileFeedbackCard\b/);
+  assert.doesNotMatch(account, /<ProfilePremiumCard\b/);
   assert.doesNotMatch(account, /eyebrow text-primary/);
   assert.doesNotMatch(account, /<Card[\s>]/);
   assert.match(css, /\.house-account \.bg-card/);
@@ -867,7 +867,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(calc, /className="house-card group"/);
   assert.doesNotMatch(calc, /content-card/);
   assert.doesNotMatch(calc, /<Card[\s>]/);
-  assert.match(account, /href="\/calculators"/);
+  assert.doesNotMatch(account, /href="\/calculators"/);
   assert.doesNotMatch(moreNav, /['"]\/calculators['"]/);
   assert.match(css, /\.house-calc/);
   assert.match(spec, /Calculator leftover/);

@@ -281,7 +281,7 @@ test('page reuses buildWeekRationale and Account links to both reports', () => {
   assert.match(panel, /hoodPenalties/);
   assert.doesNotMatch(panel, /xai-org|Copy link/);
   const account = readFileSync(path.join(root, 'src/page-components/AccountPage.tsx'), 'utf8');
-  assert.match(account, /ProfileTransparencyCard/);
+  assert.doesNotMatch(account, /ProfileTransparencyCard/);
   const card = readFileSync(
     path.join(root, 'src/components/profile/ProfileTransparencyCard.tsx'),
     'utf8'
