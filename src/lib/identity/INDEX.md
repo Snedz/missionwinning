@@ -27,7 +27,7 @@
 
 | Path | Role |
 |------|------|
-| `/profile` | Athlete Page |
+| `/profile` | You leftover: quiet title + Account door |
 | `/account` | Settings (was old profile) |
 | `src/lib/careerLine.ts` | The line + signature (derived totals) |
 | `src/lib/rewards/` | Badges / XP shelf |

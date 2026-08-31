@@ -156,10 +156,10 @@ describe('display', () => {
     assert.equal(formatMissionId(12), '#12');
   });
 
-  it('Athlete Page shows #1 when the founder profile is the current user', () => {
+  it('Athlete Page does not leftover MissionIdView; Account still shows #1', () => {
     const profile = read('src/page-components/ProfilePage.tsx');
-    assert.match(profile, /MissionIdView/);
-    assert.match(profile, /useMissionId/);
+    assert.doesNotMatch(profile, /MissionIdView/);
+    assert.doesNotMatch(profile, /useMissionId/);
     const account = read('src/page-components/AccountPage.tsx');
     assert.match(account, /useMissionId/);
     const accountCard = read('src/components/profile/ProfileAccountCard.tsx');

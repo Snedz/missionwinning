@@ -80,7 +80,7 @@
 
 | File | Route |
 |------|-------|
-| `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
+| `ProfilePage.tsx` | `/profile` — You leftover: quiet title + Account door. Identity / career / rewards / share stay off first paint. |
 | `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings leftover; sign-in / return / prefs first; Explore / more / help are house-card |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
