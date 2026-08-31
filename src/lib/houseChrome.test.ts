@@ -815,7 +815,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(learnIntro, /house-btn-primary/);
   assert.doesNotMatch(learnIntro, /primary-action/);
   assert.match(css, /\.house-learn \.house-learn-points \.house-lede \{[^}]*--house-line/);
-  assert.match(spec, /Learn first-paint intro is house leftover/);
+  assert.match(spec, /Learn first paint is the intro/);
   assert.match(read('src/page-components/LearnCoursePage.tsx'), /className="house-learn"/);
   const feedback = read('src/page-components/FeedbackPage.tsx');
   assert.match(feedback, /className="house-feedback"/);

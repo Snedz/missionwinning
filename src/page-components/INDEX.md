@@ -44,7 +44,7 @@
 | `MovePage.tsx` | `/move` — quiet log first paint. Flow list / collections / premium / recent wins stay off first paint. QuietMoveLogCard is the writer. |
 | `MindPage.tsx` | `/mind` — check-in first paint. Breathe / sessions / Show all stay off first paint. DailyCheckIn is the writer. |
 | `TrackPage.tsx` | `/track` — scale/tape log first paint. Walks / GPS / trends stay off first paint. BodyMetricsCard is the writer. |
-| `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |
+| `LearnPage.tsx` | `/learn` — intro first paint. Other paths / guidebook / sample stay off first paint. QuietLearnIntroCard is the intro. |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |

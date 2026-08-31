@@ -39,7 +39,7 @@
 |-----|----------------|-------|
 | `/move` | `MovePage.tsx` | Mobility + quiet rest-day walk / easy log (`.969`) |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
-| `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
+| `/learn` | `LearnPage.tsx` | intro first paint; other paths off first paint |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |

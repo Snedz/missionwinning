@@ -5,12 +5,12 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..', '..');
 
-test('Learn paths anchor + 44px CTAs; plain Done/sample copy', () => {
+test('LearnPage does not leftover path catalog or sample merch', () => {
   const page = readFileSync(join(root, 'src/page-components/LearnPage.tsx'), 'utf8');
-  assert.match(page, /learn-paths/);
-  assert.match(page, /min-h-\[44px\] tap-target/);
-  assert.match(page, /Open Guidebook →/);
-  assert.match(page, /Start Bodyweight Sample →/);
+  assert.match(page, /<QuietLearnIntroCard\b/);
+  assert.doesNotMatch(page, /id="learn-paths"/);
+  assert.doesNotMatch(page, /Open Guidebook →/);
+  assert.doesNotMatch(page, /Start Bodyweight Sample →/);
 });
 
 test('Learn locked preview muted not accent-100', () => {
