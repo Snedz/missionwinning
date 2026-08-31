@@ -18,7 +18,6 @@ export function HelpPage() {
       subtitle={t('infoHelpSubtitle', {
         defaultValue: 'Short answers. The free logger is never gated.',
       })}
-      showLegalFooter
     >
       {/* Quiet leftover: FAQ is the first-paint object. */}
       <dl className="house-list" data-testid="help-faq">

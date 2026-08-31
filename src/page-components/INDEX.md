@@ -93,7 +93,7 @@
 | `UsagePolicyPage.tsx` | `/usage` — leftover usage; jump chips + house-card sections. Never a rail. |
 | `SupportedRegionsPage.tsx` | `/regions` — leftover regions; jump chips + house-card sections. Never a rail. |
 | `ServiceTermsPage.tsx` | `/service-terms` — leftover service terms; jump chips + house-card sections. Never a rail. |
-| `HelpPage.tsx` | `/help` — leftover FAQ; hairline items. Never a rail. |
+| `HelpPage.tsx` | `/help` — FAQ first paint. Legal footer stays off first paint. Never a rail. |
 | `FeedbackPage.tsx` | `/feedback` — form first paint. Sign-in / legal footer stay off first paint. composeFeedbackNote is the writer. |
 | `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |
 | `CalculatorsPage.tsx` | `/calculators` — leftover tools; 1RM / macros / plates first; premium in Show all. Account More-settings door. Never a rail. |

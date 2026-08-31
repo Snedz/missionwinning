@@ -78,7 +78,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Calculator leftover | `.house-calc` | Quiet title stays. 1RM / macros / plates stay first paint. Chips are house-state. Tools sit in house-card. Premium stays in Show all. Sign-in stays extra. Never a rail. Not a shop. Account More settings still doors it. |
 | Human coaching leftover | `.house-coaching` | Quiet title stays. Form is the first-paint object. One filled submit. Never a rail. Not Mission Coach. Not a shop. |
 | Programs leftover | `.house-programs` | Quiet title stays. Education outlines first. Chips are house-state. Unlock / price stay in Show all. Never a rail. Not the training catalog. Not a shop. |
-| Help leftover | `.house-help` | Quiet title stays. FAQ is the first-paint object. Hairline items. Never a rail. Free logger stays ungated. |
+| Help leftover | `.house-help` | Quiet title stays. FAQ is the first-paint object. Hairline items. Legal footer stays off first paint. Never a rail. Free logger stays ungated. |
 | Cookies leftover | `.house-cookies` | Quiet title stays. Overview + inventory stay first paint. Table is a house object. Never a rail. Legal copy unchanged. |
 | Privacy leftover | `.house-privacy` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |
 | Terms leftover | `.house-terms` | Quiet title stays. Jump chips are house-state. Sections are house-card. Never a rail. Legal copy unchanged. |

@@ -909,6 +909,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(help, /className="house-item"/);
   assert.match(help, /HELP_FAQ/);
   assert.match(help, /data-testid="help-faq"/);
+  assert.doesNotMatch(help, /showLegalFooter/);
   assert.doesNotMatch(help, /InfoSection/);
   assert.doesNotMatch(moreNav, /['"]\/help['"]/);
   assert.match(css, /\.house-help/);
