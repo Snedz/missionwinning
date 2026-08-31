@@ -12,8 +12,9 @@ const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 test('Track first-paint does not sell a live wearable sync', () => {
   const page = read('src/page-components/TrackPage.tsx');
   const card = read('src/components/profile/ProfileWearablesCard.tsx');
-  assert.match(page, /track-no-strap/);
-  assert.match(page, /No strap required/);
+  assert.match(page, /<BodyMetricsCard\b/);
+  assert.doesNotMatch(page, /track-no-strap/);
+  assert.doesNotMatch(page, /<ProfileWearablesCard\b/);
   assert.doesNotMatch(page, /Body, wearables & trends/);
   assert.match(card, /isWearablesPubliclyEnabled/);
   assert.match(card, /if \(!enabled\) return null/);

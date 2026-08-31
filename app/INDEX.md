@@ -18,7 +18,7 @@
 | `/log` | Today | `HomePage.tsx` |
 | `/active` | Train | `ActiveWorkoutPage.tsx` |
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
-| `/track` | Track | `TrackPage.tsx` — Quiet Track weight / tape (`.975`); walks / GPS in Show more |
+| `/track` | Track | `TrackPage.tsx` — scale/tape log first paint; walks / GPS off first paint |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
 | `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
 

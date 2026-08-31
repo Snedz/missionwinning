@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1053-for-1068.md](./log/LOG-rotate-1053-for-1068.md) | rotated 2026-08-31 for `.1068` Track is the scale/tape log (`.1053`) |
 | [log/LOG-rotate-1052-for-1067.md](./log/LOG-rotate-1052-for-1067.md) | rotated 2026-08-31 for `.1067` Mind is the check-in (`.1052`) |
 | [log/LOG-rotate-1050-for-1066.md](./log/LOG-rotate-1050-for-1066.md) | rotated 2026-08-31 for `.1066` Account is sign-in / return / prefs (`.1050`) |
 | [log/LOG-rotate-1048-for-1065.md](./log/LOG-rotate-1048-for-1065.md) | rotated 2026-08-31 for `.1065` You is quiet title + Account door (`.1048`) |
