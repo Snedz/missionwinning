@@ -95,17 +95,29 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
     setStep('profile');
   }, [isEdit, t]);
 
-  const saveProfileFields = () => {
-    writeRaw(STORAGE_KEYS.experience, experience);
-    writeRaw(STORAGE_KEYS.equipment, equipment);
-    writeRaw(STORAGE_KEYS.primaryGoal, primaryGoal);
-    writeRaw(STORAGE_KEYS.goals, primaryGoal);
-    seedHomeGymKitIfUnset(equipment);
-    saveDaysPerWeek(defaultDaysPerWeek(experience));
+  const saveProfileFields = (
+    profile: { experience: string; equipment: string; primaryGoal: string } = {
+      experience,
+      equipment,
+      primaryGoal,
+    }
+  ) => {
+    writeRaw(STORAGE_KEYS.experience, profile.experience);
+    writeRaw(STORAGE_KEYS.equipment, profile.equipment);
+    writeRaw(STORAGE_KEYS.primaryGoal, profile.primaryGoal);
+    writeRaw(STORAGE_KEYS.goals, profile.primaryGoal);
+    seedHomeGymKitIfUnset(profile.equipment);
+    saveDaysPerWeek(defaultDaysPerWeek(profile.experience));
     scheduleJourneyPush();
   };
 
-  const finish = () => {
+  const finish = (
+    profile: { experience: string; equipment: string; primaryGoal: string } = {
+      experience,
+      equipment,
+      primaryGoal,
+    }
+  ) => {
     const go = (path: string) => navigateAfterPrivateGateUnlock(path, router.push);
 
     if (isEdit) {
@@ -113,9 +125,9 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
       go('/profile');
       return;
     }
-    saveProfileFields();
-    completeIDay({ experience, equipment, primaryGoal });
-    track('iday_completed', { experience, equipment });
+    saveProfileFields(profile);
+    completeIDay(profile);
+    track('iday_completed', { experience: profile.experience, equipment: profile.equipment });
     /*
      * `.204` — never let onboarding take a session away.
      * `.839` — cold Continue lands Today (`/log`), gate on or off.
@@ -135,6 +147,18 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
     track('iday_started');
     track('iday_mission_accepted');
     setStep('profile');
+  };
+
+  const handleSkip = () => {
+    markIDayStarted();
+    markMissionAccepted();
+    track('iday_started');
+    track('iday_mission_accepted');
+    finish({
+      experience: 'beginner',
+      equipment: 'bodyweight',
+      primaryGoal: goalPresetValue('strength'),
+    });
   };
 
   const handleProfileNext = () => {
@@ -254,6 +278,15 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                 >
                   {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="w-full min-h-[44px] tap-target"
+                  onClick={handleSkip}
+                >
+                  {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
+                </Button>
               </>
             )}
 

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1059` Today is date + Start (from `.1058` `3761ca38`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1059";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1060` I-Day is not a wall (from `.1059` `59501192`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1060";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

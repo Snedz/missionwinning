@@ -79,7 +79,8 @@ describe('firstSetUngated wiring', () => {
     assert.doesNotMatch(src, /'signin'/);
     assert.doesNotMatch(src, /setStep\('signin'\)/);
     assert.doesNotMatch(src, /<SignInPanel/);
-    assert.doesNotMatch(src, /welcomeSkipSignIn|welcomeSignInTitle/);
+    assert.doesNotMatch(src, /welcomeSignInTitle/);
+    assert.match(src, /welcomeSkipSignIn/);
     const next = src.slice(src.indexOf('const handleProfileNext'), src.indexOf('const stepIndex'));
     assert.match(next, /finish\(\)/);
     assert.doesNotMatch(next, /setStep/);
@@ -173,7 +174,7 @@ describe('firstSetUngated wiring', () => {
     const spec = read('tests/e2e/first-90.spec.ts');
     assert.match(spec, /const TAP_BUDGET = 4;/);
     assert.doesNotMatch(spec, /TAP_BUDGET\s*=\s*[6-9]/);
-    assert.doesNotMatch(spec, /Skip — start training|Skip-sign-in|skipSignIn/i);
+    assert.doesNotMatch(spec, /Skip-sign-in|skipSignIn/i);
     const cold = spec.slice(
       spec.indexOf('a cold visitor logs a set'),
       spec.indexOf('the homepage uses the brand')

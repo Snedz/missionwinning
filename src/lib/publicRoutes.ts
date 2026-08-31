@@ -1,6 +1,12 @@
-/** Routes reachable before I-Day completes (JourneyGuard bypass). */
+/**
+ * Routes reachable before I-Day completes (JourneyGuard bypass).
+ * `.1060` — Today and Train are the tracker. I-Day is a Skip, not a wall.
+ * Coach / History / You still bounce until the academy is stamped.
+ */
 export const JOURNEY_BYPASS_PATHS = [
   '/welcome',
+  '/log',
+  '/active',
   '/private',
   '/vision',
   '/about',

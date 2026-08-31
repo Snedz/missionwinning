@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1043-for-1060.md](./log/LOG-rotate-1043-for-1060.md) | rotated 2026-08-30 for `.1060` I-Day is not a wall (`.1043`) |
 | [log/LOG-rotate-1042-for-1059.md](./log/LOG-rotate-1042-for-1059.md) | rotated 2026-08-30 for `.1059` Today is date + Start (`.1042`) |
 | [log/LOG-rotate-1041-for-1058.md](./log/LOG-rotate-1041-for-1058.md) | rotated 2026-08-30 for `.1058` Train does not mint a Coach week (`.1041`) |
 | [log/LOG-rotate-1040-for-1057.md](./log/LOG-rotate-1040-for-1057.md) | rotated 2026-08-27 for `.1057` left second bar + transferred rooms (`.1040`) |

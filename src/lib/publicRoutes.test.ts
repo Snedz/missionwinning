@@ -15,7 +15,9 @@ describe('publicRoutes', () => {
     assert.equal(isJourneyBypassPath('/press'), true);
     assert.equal(isJourneyBypassPath('/notify'), true);
     assert.equal(isJourneyBypassPath('/join/class/MW-TEST'), true);
-    assert.equal(isJourneyBypassPath('/log'), false);
+    assert.equal(isJourneyBypassPath('/log'), true);
+    assert.equal(isJourneyBypassPath('/active'), true);
+    assert.equal(isJourneyBypassPath('/coach'), false);
   });
 
   it('includes join class prefix in bypass list', () => {

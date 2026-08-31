@@ -257,8 +257,9 @@ test.describe('First 90 seconds @gate', () => {
   }
 
   test('every control on the logger is thumb-sized', async ({ page }) => {
-    // JourneyGuard sends a cold visitor to /welcome; this case is about an
-    // established user opening the Train tab.
+    // Seed I-Day so Coach/History bounce is not in this case. Train itself
+    // is reachable without the academy (`.1060`). This case is an established
+    // user opening the Train tab.
     await seedLegacyOnboarding(page);
     await page.goto('/active', { waitUntil: 'networkidle' });
     const start = page.getByRole('button', { name: /start workout/i });
