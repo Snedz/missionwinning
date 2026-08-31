@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1057-for-1072.md](./log/LOG-rotate-1057-for-1072.md) | rotated 2026-08-31 for `.1072` Explore is the board (`.1057`) |
 | [log/LOG-rotate-1056-for-1071.md](./log/LOG-rotate-1056-for-1071.md) | rotated 2026-08-31 for `.1071` Garage is quiet title (`.1056`) |
 | [log/LOG-rotate-1055-for-1070.md](./log/LOG-rotate-1055-for-1070.md) | rotated 2026-08-31 for `.1070` Feedback is the form (`.1055`) |
 | [log/LOG-rotate-1054-for-1069.md](./log/LOG-rotate-1054-for-1069.md) | rotated 2026-08-31 for `.1069` Learn is the intro (`.1054`) |

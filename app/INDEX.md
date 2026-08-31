@@ -53,7 +53,7 @@
 | `/service-terms` | `ServiceTermsPage.tsx` | Leftover service terms — jump chips + house-card sections. Never a rail. |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
-| `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
+| `/explore` | `ExplorePlacesPage.tsx` | board + pin list + add a place first paint. GPS off first paint. Quiet Account / More door. Not a shop. |
 | `/calculators` | `CalculatorsPage.tsx` | Leftover 1RM / macros / plates. Quiet Account More-settings door. Never a rail. Not a shop. |
 | `/programs` | `ProgramsPage.tsx` | Leftover education outlines. Unlock / price in Show all. Never a rail. Not a shop. |
 | `/server` | `ServerPage.tsx` | quiet title first paint; rooms / chat off first paint. More quiet foot. Not a tab. `robots: noindex` |

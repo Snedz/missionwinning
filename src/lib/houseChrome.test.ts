@@ -844,6 +844,8 @@ test('house design system is the signed-in token table', () => {
   assert.match(explore, /className="house-board/);
   assert.match(explore, /house-btn house-btn-primary/);
   assert.match(explore, /Not a shop/);
+  assert.doesNotMatch(explore, /geolocation/);
+  assert.doesNotMatch(explore, /openStreetMapUrl/);
   assert.doesNotMatch(explore, /<Card[\s>]/);
   assert.doesNotMatch(explore, /bg-primary-fill/);
   assert.match(css, /\.house-explore \.house-board/);

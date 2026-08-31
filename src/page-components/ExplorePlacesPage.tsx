@@ -1,6 +1,6 @@
 'use client';
 /**
- * Page: /explore — optional GPS nearby + free-roam pin board.
+ * Page: /explore — leftover places pin board.
  * Quiet door from Account / More. Not Today. Not the log path.
  * Not a shop. Not the training catalog (that is /library + /builder).
  * See: docs/places/PLAN.md, docs/IA_SKELETON.md, app/INDEX.md.
@@ -12,70 +12,33 @@ import { MapPin } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { Input } from '@/components/ui/input';
 import { EXAMPLE_PUBLIC_PLACES } from '@/lib/places/examplePublicPlaces';
-import { addPersonalPlace, loadPlaceDex, tagSessionOnPlace } from '@/lib/places/placeDex';
+import { addPersonalPlace, loadPlaceDex } from '@/lib/places/placeDex';
 import { sortByNearby, type NearbyPlace } from '@/lib/places/nearby';
 import { plotLngLat } from '@/lib/places/plot';
-import { openStreetMapUrl } from '@/lib/places/openInMaps';
-import { hasCoords, type GeoOrigin, type PlacePin } from '@/lib/places/types';
-import { useWorkoutStore } from '@/store/workoutStore';
-
-type GpsState = 'off' | 'pending' | 'on' | 'denied';
+import { hasCoords, type PlacePin } from '@/lib/places/types';
 
 export function ExplorePlacesPage() {
   const { t } = useTranslation();
-  const lastSessionId = useWorkoutStore((s) => s.workoutHistory[0]?.id ?? null);
 
   const [personal, setPersonal] = useState<PlacePin[]>([]);
-  const [origin, setOrigin] = useState<GeoOrigin | null>(null);
-  const [gps, setGps] = useState<GpsState>('off');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
-  const [tagNote, setTagNote] = useState<string | null>(null);
 
   useEffect(() => {
     setPersonal(loadPlaceDex());
   }, []);
 
   const pins = useMemo(
-    () => sortByNearby([...personal, ...EXAMPLE_PUBLIC_PLACES], origin),
-    [personal, origin]
+    () => sortByNearby([...personal, ...EXAMPLE_PUBLIC_PLACES], null),
+    [personal]
   );
 
-  const selected = pins.find((p) => p.id === selectedId) ?? null;
-
-  const requestNearby = () => {
-    if (typeof navigator === 'undefined' || !navigator.geolocation) {
-      setGps('denied');
-      return;
-    }
-    setGps('pending');
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setOrigin({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setGps('on');
-      },
-      () => setGps('denied'),
-      { enableHighAccuracy: false, maximumAge: 60_000, timeout: 8_000 }
-    );
-  };
-
-  const savePlace = (withGps: boolean) => {
-    const lat = withGps && origin ? origin.lat : undefined;
-    const lng = withGps && origin ? origin.lng : undefined;
-    const place = addPersonalPlace({ name: newName, lat, lng });
+  const savePlace = () => {
+    const place = addPersonalPlace({ name: newName });
     if (!place) return;
     setPersonal(loadPlaceDex());
     setNewName('');
     setSelectedId(place.id);
-    setTagNote(null);
-  };
-
-  const tagLast = () => {
-    if (!selected || selected.kind !== 'personal' || !lastSessionId) return;
-    const updated = tagSessionOnPlace(selected.id, lastSessionId);
-    if (!updated) return;
-    setPersonal(loadPlaceDex());
-    setTagNote(t('exploreTagged', { defaultValue: 'Last session tagged on this place.' }));
   };
 
   return (
@@ -88,36 +51,12 @@ export function ExplorePlacesPage() {
         defaultValue:
           'Pins you have tagged, plus a few example public parks. Optional nearby — logging never needs GPS.',
       })}
-      showLegalFooter
     >
-      {/* Quiet leftover: board + list stay first paint. Add a place is the write. Never a rail. */}
       <p className="house-lede">
         {t('exploreNotContested', {
           defaultValue: 'Example parks are a catalog, not a contest. Nothing here is owned.',
         })}
       </p>
-
-      <div className="house-row">
-        <button
-          type="button"
-          className="house-btn house-btn-ghost"
-          onClick={requestNearby}
-          disabled={gps === 'pending'}
-        >
-          {t('exploreNearby', { defaultValue: 'Show nearby' })}
-        </button>
-        <p className="house-kicker" style={{ margin: 0 }}>
-          {gps === 'on'
-            ? t('exploreRoam', { defaultValue: 'Sorted by distance. Pan the list to roam.' })
-            : gps === 'denied'
-              ? t('exploreNearbyDenied', {
-                  defaultValue: 'Location skipped — roam the list instead.',
-                })
-              : t('exploreGpsOptional', {
-                  defaultValue: 'GPS is optional. Deny it and the board still works.',
-                })}
-        </p>
-      </div>
 
       <PinBoard pins={pins} selectedId={selectedId} onSelect={setSelectedId} />
 
@@ -134,48 +73,11 @@ export function ExplorePlacesPage() {
                 {pin.kind === 'personal'
                   ? t('explorePersonal', { defaultValue: 'Yours' })
                   : t('exploreExamplePublic', { defaultValue: 'Example public' })}
-                {pin.distanceKm != null
-                  ? ` · ${t('exploreDistanceKm', { km: pin.distanceKm.toFixed(0), defaultValue: '{{km}} km' })}`
-                  : ''}
               </span>
             </button>
           </li>
         ))}
       </ul>
-
-      {selected && hasCoords(selected) ? (
-        <a
-          href={openStreetMapUrl(selected.lat, selected.lng)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="house-btn house-btn-ghost"
-        >
-          {t('exploreOpenMaps', { defaultValue: 'Open in maps' })}
-        </a>
-      ) : null}
-
-      {selected?.kind === 'personal' ? (
-        <div className="space-y-2">
-          <button
-            type="button"
-            className="house-btn"
-            onClick={tagLast}
-            disabled={!lastSessionId}
-          >
-            {t('exploreTagLastSession', { defaultValue: 'Tag last session here' })}
-          </button>
-          <p className="house-kicker">
-            {tagNote ??
-              (lastSessionId
-                ? t('exploreTagHint', {
-                    defaultValue: 'Place is optional and added after the set.',
-                  })
-                : t('exploreNoSessions', {
-                    defaultValue: 'Log a set first — then you can tag it here.',
-                  }))}
-          </p>
-        </div>
-      ) : null}
 
       <div className="house-card space-y-3">
         <p className="font-semibold">{t('exploreAddPlace', { defaultValue: 'Add a place' })}</p>
@@ -191,18 +93,10 @@ export function ExplorePlacesPage() {
           <button
             type="button"
             className="house-btn house-btn-primary"
-            onClick={() => savePlace(false)}
+            onClick={savePlace}
             disabled={!newName.trim()}
           >
             {t('exploreSavePlace', { defaultValue: 'Save to place-dex' })}
-          </button>
-          <button
-            type="button"
-            className="house-btn house-btn-ghost"
-            onClick={() => savePlace(true)}
-            disabled={!newName.trim() || !origin}
-          >
-            {t('exploreUseLocation', { defaultValue: 'Save with my location' })}
           </button>
         </div>
       </div>
