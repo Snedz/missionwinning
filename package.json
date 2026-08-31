@@ -114,7 +114,7 @@
     "posthog-js": "^1.396.5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-i18next": "^17.0.11",
+    "react-i18next": "^17.0.12",
     "recharts": "^2.15.4",
     "resend": "^6.21.0",
     "server-only": "^0.0.1",
