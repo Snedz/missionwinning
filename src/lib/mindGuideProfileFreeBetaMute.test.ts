@@ -9,10 +9,11 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('MindPage free-beta uses open-beta series blurb', () => {
+test('MindPage does not leftover open-beta series blurb', () => {
   const src = readFileSync(join(root, 'src/page-components/MindPage.tsx'), 'utf8');
-  assert.match(src, /mindSeriesSleepWeekBlurbOpenBeta/);
-  assert.match(src, /isFreeBeta|freeBeta/);
+  assert.doesNotMatch(src, /mindSeriesSleepWeekBlurbOpenBeta/);
+  assert.doesNotMatch(src, /isFreeBeta|freeBeta/);
+  assert.match(src, /<DailyCheckIn\b/);
 });
 
 test('GuidebookIndexPage free-beta uses open-beta specialist badge', () => {

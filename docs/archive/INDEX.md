@@ -12,6 +12,24 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1060-for-1075.md](./log/LOG-rotate-1060-for-1075.md) | rotated 2026-08-31 for `.1075` PathShell, not House (`.1060`) |
+| [log/LOG-rotate-1059-for-1074.md](./log/LOG-rotate-1059-for-1074.md) | rotated 2026-08-31 for `.1074` Legal is the policy (`.1059`) |
+| [log/LOG-rotate-1058-for-1073.md](./log/LOG-rotate-1058-for-1073.md) | rotated 2026-08-31 for `.1073` Help is the FAQ (`.1058`) |
+| [log/LOG-rotate-1057-for-1072.md](./log/LOG-rotate-1057-for-1072.md) | rotated 2026-08-31 for `.1072` Explore is the board (`.1057`) |
+| [log/LOG-rotate-1056-for-1071.md](./log/LOG-rotate-1056-for-1071.md) | rotated 2026-08-31 for `.1071` Garage is quiet title (`.1056`) |
+| [log/LOG-rotate-1055-for-1070.md](./log/LOG-rotate-1055-for-1070.md) | rotated 2026-08-31 for `.1070` Feedback is the form (`.1055`) |
+| [log/LOG-rotate-1054-for-1069.md](./log/LOG-rotate-1054-for-1069.md) | rotated 2026-08-31 for `.1069` Learn is the intro (`.1054`) |
+| [log/LOG-rotate-1053-for-1068.md](./log/LOG-rotate-1053-for-1068.md) | rotated 2026-08-31 for `.1068` Track is the scale/tape log (`.1053`) |
+| [log/LOG-rotate-1052-for-1067.md](./log/LOG-rotate-1052-for-1067.md) | rotated 2026-08-31 for `.1067` Mind is the check-in (`.1052`) |
+| [log/LOG-rotate-1050-for-1066.md](./log/LOG-rotate-1050-for-1066.md) | rotated 2026-08-31 for `.1066` Account is sign-in / return / prefs (`.1050`) |
+| [log/LOG-rotate-1048-for-1065.md](./log/LOG-rotate-1048-for-1065.md) | rotated 2026-08-31 for `.1065` You is quiet title + Account door (`.1048`) |
+| [log/LOG-rotate-1047-for-1064.md](./log/LOG-rotate-1047-for-1064.md) | rotated 2026-08-31 for `.1064` Move is the quiet log (`.1047`) |
+| [log/LOG-rotate-1046-for-1063.md](./log/LOG-rotate-1046-for-1063.md) | rotated 2026-08-30 for `.1063` Fuel is the log (`.1046`) |
+| [log/LOG-rotate-1045-for-1062.md](./log/LOG-rotate-1045-for-1062.md) | rotated 2026-08-30 for `.1062` Coach is the week writer (`.1045`) |
+| [log/LOG-rotate-1044-for-1061.md](./log/LOG-rotate-1044-for-1061.md) | rotated 2026-08-30 for `.1061` Victory is a receipt (`.1044`) |
+| [log/LOG-rotate-1043-for-1060.md](./log/LOG-rotate-1043-for-1060.md) | rotated 2026-08-30 for `.1060` I-Day is not a wall (`.1043`) |
+| [log/LOG-rotate-1042-for-1059.md](./log/LOG-rotate-1042-for-1059.md) | rotated 2026-08-30 for `.1059` Today is date + Start (`.1042`) |
+| [log/LOG-rotate-1041-for-1058.md](./log/LOG-rotate-1041-for-1058.md) | rotated 2026-08-30 for `.1058` Train does not mint a Coach week (`.1041`) |
 | [log/LOG-rotate-1040-for-1057.md](./log/LOG-rotate-1040-for-1057.md) | rotated 2026-08-27 for `.1057` left second bar + transferred rooms (`.1040`) |
 | [log/LOG-rotate-1039-for-1056.md](./log/LOG-rotate-1039-for-1056.md) | rotated 2026-08-27 for `.1056` from-scratch Patreon-class house (`.1039`) |
 | [log/LOG-rotate-1038-for-1055.md](./log/LOG-rotate-1038-for-1055.md) | rotated 2026-08-27 for `.1055` later-door object model + isolation holds (`.1038`) |

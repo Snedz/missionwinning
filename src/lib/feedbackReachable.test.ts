@@ -41,33 +41,17 @@ function stripComments(src: string): string {
 const PROFILE_PAGE = 'src/page-components/AccountPage.tsx';
 const CARD = 'src/components/profile/ProfileFeedbackCard.tsx';
 const SHEET = 'src/components/profile/FeedbackSheet.tsx';
-const SHELL = 'src/components/house/HouseShell.tsx';
+const SHELL = 'src/components/zero/PathShell.tsx';
 const LEADS_ROUTE = 'app/api/leads/route.ts';
 const SCHEMA = 'src/lib/apiSchemas.ts';
 
 /* ── Reachability ────────────────────────────────────────────────────────── */
 
-test('the feedback card is rendered, and not gated to the founder', () => {
+test('Account does not leftover the feedback card; /feedback stays the composer', () => {
   const page = stripComments(read(PROFILE_PAGE));
-  assert.match(page, /<ProfileFeedbackCard\s*\/>/, 'the card must actually be mounted on Account');
-
-  /*
-   * `ownerTools &&` is how `BetaAdminPanel` and `ProfileOwnerTools` are gated on
-   * this exact page, so the wrong spelling is one character away and would look
-   * right in review. It would also be undetectable in testing: the founder is
-   * the one account that always sees it.
-   */
-  assert.doesNotMatch(
-    page,
-    /ownerTools\s*&&\s*<ProfileFeedbackCard/,
-    'a feedback button only the founder can reach collects feedback from the founder'
-  );
-  assert.doesNotMatch(
-    page,
-    /email\s*&&\s*<ProfileFeedbackCard/,
-    'the anonymous athlete is the one this product is built for, and the one with no other ' +
-      'way to reach us at all'
-  );
+  assert.doesNotMatch(page, /<ProfileFeedbackCard\b/, 'feedback is leftover on Account');
+  const feedback = stripComments(read('src/page-components/FeedbackPage.tsx'));
+  assert.match(feedback, /composeFeedbackNote\(/);
 });
 
 test('the considered /feedback page uses the same composer as the sheet', () => {

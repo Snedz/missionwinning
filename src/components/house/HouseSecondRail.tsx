@@ -158,7 +158,7 @@ function HouseWeekPane({ title, onBack }: { title: string; onBack: () => void })
         ))}
       </div>
       <div className="house-second-nav">
-        <Link href="/log#today-week" className="house-second-link">
+        <Link href="/log" className="house-second-link">
           {t('houseWeekPaneToday', { defaultValue: 'Today on the canvas' })}
         </Link>
         <Link href="/coach" className="house-second-link" data-house-week-writer="generateWeek">

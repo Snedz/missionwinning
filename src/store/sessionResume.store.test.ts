@@ -78,8 +78,10 @@ describe('session resume store', () => {
       },
     ]);
     useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    const openId = useWorkoutStore.getState().activeWorkout?.clientId;
     const log = useWorkoutStore.getState().completeActiveWorkout();
     assert.ok(log);
+    assert.equal(log.clientId, openId);
     assert.equal(log.exercises[0]?.sets.length, 1);
     assert.equal(log.totalVolume, 500);
     assert.equal(useWorkoutStore.getState().activeWorkout, null);

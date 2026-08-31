@@ -180,7 +180,7 @@ describe('weekRationale wiring', () => {
       'utf8'
     );
     // Page wires the banner with showWeekRationale + log hints; testid lives on the banner.
-    assert.match(src, /showWeekRationale/);
+    assert.doesNotMatch(src, /showWeekRationale/);
     assert.match(src, /rationaleHints/);
     assert.match(src, /loggedWorkoutCount:\s*ctx\.history\.length/);
   });

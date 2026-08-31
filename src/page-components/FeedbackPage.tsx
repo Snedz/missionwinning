@@ -14,7 +14,6 @@ import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { composeFeedbackNote } from '@/lib/feedbackNote';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { enqueueFeedback } from '@/lib/sync/feedbackSync';
-import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { readJson, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 
@@ -107,7 +106,6 @@ export function FeedbackPage() {
         defaultValue: 'What broke or confused you. We read every note.',
       })}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: form is the first-paint object. Sign-in stays extra. */}
       <form onSubmit={handleSubmit} className="house-card space-y-6">
@@ -202,13 +200,6 @@ export function FeedbackPage() {
           })}
         </p>
       </form>
-
-      <SignInPrompt
-        nextPath="/feedback"
-        description={t('feedbackSignInDesc', {
-          defaultValue: 'Sign in if you want this linked to your account — optional.',
-        })}
-      />
     </InfoPageShell>
   );
 }

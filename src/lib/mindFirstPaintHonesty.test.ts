@@ -16,8 +16,9 @@ test('Mind title first-paints Mind & Recovery', () => {
   assert.doesNotMatch(page, /mindTitle[\s\S]{0,40}defaultValue: 'Mind'/);
 });
 
-test('Mind chrome first-paints the pack', () => {
-  assert.match(page, /defaultValue: 'Recent Mind Wins'/);
-  assert.match(page, /No mind sessions logged yet/);
-  assert.match(page, /breathing timer — your first win shows here/);
+test('Mind first paint is the check-in, not a sessions tour', () => {
+  assert.match(page, /<DailyCheckIn\b/);
+  assert.doesNotMatch(page, /defaultValue: 'Recent Mind Wins'/);
+  assert.doesNotMatch(page, /No mind sessions logged yet/);
+  assert.doesNotMatch(page, /breathing timer — your first win shows here/);
 });

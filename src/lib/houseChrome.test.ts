@@ -27,9 +27,10 @@ function walkHouse(): string[] {
     .map((n) => `src/components/house/${n}`);
 }
 
-test('app group layout mounts HouseShell, not AppLayout', () => {
+test('app group layout mounts PathShell, not House or AppLayout', () => {
   const src = read('app/(app)/layout.tsx');
-  assert.match(src, /HouseShell/);
+  assert.match(src, /PathShell/);
+  assert.doesNotMatch(src, /HouseShell/);
   assert.doesNotMatch(src, /AppLayout/);
 });
 
@@ -130,8 +131,8 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.match(src, /writeTodayComposeSession\(\)/);
   assert.match(src, /today-start-pending/);
   assert.match(src, /justGoTitle/);
-  assert.match(src, /<HouseFirstRoomsCard/);
-  assert.match(src, /id="today-week"/);
+  assert.doesNotMatch(src, /HouseFirstRoomsCard/);
+  assert.doesNotMatch(src, /id="today-week"/);
   assert.match(src, /startLive\(/);
   assert.match(src, /router\.push\('\/active'\)/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
@@ -169,12 +170,11 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /doseScale:\s*liveReentry\.show\s*\?\s*liveReentry\.doseScale\s*:\s*1/);
 });
 
-test('Today desk has one filled action — week generate is a door to /coach', () => {
+test('Today desk has one filled action — week generate is not on Today', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const primaries = [...src.matchAll(/house-btn-primary/g)];
   assert.equal(primaries.length, 1, 'Start is the only filled action on Today');
-  assert.match(src, /href="\/coach"/);
-  assert.match(src, /data-house-week-writer="generateWeek"/);
+  assert.doesNotMatch(src, /data-house-week-writer="generateWeek"/);
   assert.doesNotMatch(src, /generateWeek\(/);
 });
 
@@ -200,10 +200,9 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
 test('checklist never owns Start, and house copy is not a pasted brand', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const startAt = src.indexOf('id="today-start"');
-  const weekAt = src.indexOf('id="today-week"');
-  const stepsAt = src.indexOf('<HouseFirstRoomsCard');
-  assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
-  assert.ok(stepsAt > startAt && stepsAt < weekAt, 'checklist sits under Start, before week');
+  assert.ok(startAt > 0, 'Start is on Today');
+  assert.doesNotMatch(src, /id="today-week"/);
+  assert.doesNotMatch(src, /HouseFirstRoomsCard/);
   assert.match(src, /snap \?/);
   assert.doesNotMatch(src, /getFirstSteps|summarizeFirstSteps/);
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
@@ -556,12 +555,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(nextDayFilled, /eyebrow/);
   assert.match(css, /\.house-next-day \{[^}]*padding:\s*16px 18px/);
   assert.match(spec, /Coach next-day cite is house leftover/);
-  const weekDose = coach.slice(
-    Math.max(0, coach.indexOf('coach-week-dose') - 80),
-    coach.indexOf('coach-week-dose') + 40
-  );
-  assert.match(weekDose, /house-lede house-week-dose/);
-  assert.doesNotMatch(weekDose, /text-muted-foreground/);
+  assert.doesNotMatch(coach, /coach-week-dose/);
   assert.match(css, /\.house-week-dose \{[^}]*font-size:\s*14px/);
   assert.match(spec, /Coach week dose is house leftover/);
   const sessionCard = read('src/components/coach/PlanSessionCard.tsx');
@@ -617,25 +611,15 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(adaptBanner, /uppercase tracking/);
   assert.match(css, /\.house-adapt \{[^}]*--house-ink/);
   assert.match(spec, /Coach adapt banner is house leftover/);
-  const coachExtras = coach.slice(
-    coach.lastIndexOf('<details', coach.indexOf('coach-show-all')),
-    coach.indexOf('<CoachLoadBand') + 40
-  );
-  assert.match(coachExtras, /house-card group/);
-  assert.match(coachExtras, /house-show-all-body/);
-  assert.match(coachExtras, /CoachVoiceCard/);
-  assert.match(coachExtras, /CoachLoadBand/);
-  assert.match(coachExtras, /CoachLogCite/);
-  assert.match(coachExtras, /CoachManageSheet/);
-  assert.doesNotMatch(coachExtras, /content-card/);
-  assert.doesNotMatch(coachExtras, /border-t-2/);
-  assert.doesNotMatch(coachExtras, /border-2/);
+  assert.doesNotMatch(coach, /data-testid="coach-show-all"/);
+  assert.doesNotMatch(coach, /<CoachLoadBand/);
+  assert.doesNotMatch(coach, /<CoachVoiceCard/);
   assert.match(css, /\.house-plan \.house-show-all-body \{[^}]*--house-line/);
   assert.match(spec, /Coach Show all extras is house leftover/);
   const weekStrip = read('src/components/coach/WeekStrip.tsx');
   const landingDemo = read('src/components/landing/CoachAdaptDemo.tsx');
   const parkedToday = read('src/components/coach/TodayCoachWeekStrip.tsx');
-  assert.equal((coach.match(/<WeekStrip house\b/g) || []).length, 2);
+  assert.equal((coach.match(/<WeekStrip house\b/g) || []).length, 0);
   assert.match(weekStrip, /house-week-strip/);
   assert.match(weekStrip, /house-week-cell/);
   assert.match(weekStrip, /border-\[hsl\(var\(--accent-poster\)\)\]/);
@@ -673,10 +657,10 @@ test('house design system is the signed-in token table', () => {
   assert.match(account, /ProfileAccountCard/);
   assert.match(account, /ProfileRemindersCard/);
   assert.match(account, /ProfilePreferencesCard/);
-  assert.match(account, /className="house-card space-y-2"/);
   assert.match(account, /className="house-card group"/);
-  assert.match(account, /house-btn house-btn-ghost/);
-  assert.match(account, /href="\/explore"/);
+  assert.doesNotMatch(account, /href="\/explore"/);
+  assert.doesNotMatch(account, /<ProfileFeedbackCard\b/);
+  assert.doesNotMatch(account, /<ProfilePremiumCard\b/);
   assert.doesNotMatch(account, /eyebrow text-primary/);
   assert.doesNotMatch(account, /<Card[\s>]/);
   assert.match(css, /\.house-account \.bg-card/);
@@ -700,9 +684,11 @@ test('house design system is the signed-in token table', () => {
   assert.match(profile, /className="house-profile"/);
   assert.match(profile, /house-btn house-btn-ghost/);
   const fuel = read('src/page-components/NutritionPage.tsx');
-  assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
+  assert.match(fuel, /className="house-fuel max-w-3xl pb-24"/);
+  assert.match(fuel, /className="house-empty"/);
+  assert.match(fuel, /data-testid="fuel-log-dock"/);
   assert.match(fuel, /id="fuel-log"/);
-  assert.match(fuel, /className="house-card group"/);
+  assert.doesNotMatch(fuel, /className="house-card group"/);
   const notepad = read('src/components/nutrition/FuelQuickLogPanel.tsx');
   const notepadSlice = notepad.slice(
     notepad.indexOf('data-testid="fuel-notepad"'),
@@ -723,7 +709,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(notepadSlice, /text-primary/);
   assert.match(css, /\.house-fuel \.house-fuel-notepad \.house-field \{[^}]*--house-line/);
   assert.match(css, /\.house-fuel \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Fuel first-paint notepad is house leftover/);
+  assert.match(spec, /Empty is house-empty \+ Log meal dock/);
   const todayLog = read('src/components/nutrition/FuelTodayLogCard.tsx');
   assert.match(todayLog, /house-card house-fuel-today/);
   assert.match(todayLog, /house-fuel-today-name/);
@@ -737,7 +723,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(todayLog, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-today \{[^}]*--house-/);
   assert.match(css, /\.house-fuel \.house-fuel-meal \{[^}]*--house-line/);
-  assert.match(spec, /Fuel first-paint today log is house leftover/);
+  assert.match(spec, /Today's meals are the log/);
   const macro = read('src/components/nutrition/FuelMacroOverview.tsx');
   assert.match(macro, /house-card house-fuel-macro/);
   assert.match(macro, /house-fuel-macro-num/);
@@ -749,29 +735,16 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(macro, /house-btn-primary/);
   assert.doesNotMatch(macro, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-macro \{[^}]*--house-ink/);
-  assert.match(spec, /Fuel first-paint remaining is house leftover/);
+  assert.match(spec, /Remaining \/ notepad \/ Show more/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
-  const moveFlows = move.slice(
-    move.indexOf('const renderFlowGrid'),
-    move.indexOf('premium && filteredPremium')
-  );
-  assert.match(moveFlows, /house-collections/);
-  assert.match(moveFlows, /house-state shrink-0 tap-target/);
-  assert.match(moveFlows, /house-card house-flow/);
-  assert.match(moveFlows, /house-flow-name/);
-  assert.match(moveFlows, /house-btn house-btn-ghost min-h-\[44px\] tap-target/);
-  assert.match(moveFlows, /defaultValue: 'Start Flow'/);
-  assert.doesNotMatch(moveFlows, /<Card[\s>]/);
-  assert.doesNotMatch(moveFlows, /<Button[\s>]/);
-  assert.doesNotMatch(moveFlows, /content-card/);
-  assert.doesNotMatch(moveFlows, /uppercase tracking/);
-  assert.doesNotMatch(moveFlows, /hover:border-primary/);
-  assert.doesNotMatch(moveFlows, /house-btn-primary/);
-  assert.doesNotMatch(moveFlows, /text-primary/);
+  assert.match(move, /<QuietMoveLogCard\b/);
+  assert.doesNotMatch(move, /renderFlowGrid/);
+  assert.doesNotMatch(move, /id="move-flows"/);
+  assert.doesNotMatch(move, /TimedFlowRunner/);
   assert.match(css, /\.house-move \.house-flow \{[^}]*--house-/);
   assert.match(css, /\.house-move \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Move first-paint flow list is house leftover/);
+  assert.match(spec, /Move first paint is the quiet log/);
   const quietMove = read('src/components/move/QuietMoveLogCard.tsx');
   assert.match(quietMove, /house-card house-quiet-move/);
   assert.match(quietMove, /house-quiet-move-name/);
@@ -784,7 +757,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(quietMove, /house-btn-primary/);
   assert.doesNotMatch(quietMove, /primary-action/);
   assert.match(css, /\.house-move \.house-quiet-move \.house-field \{[^}]*--house-line/);
-  assert.match(spec, /Move first-paint quiet log is house leftover/);
+  assert.match(spec, /Quiet log is house leftover/);
   assert.match(read('src/page-components/MindPage.tsx'), /className="house-mind"/);
   const mindCheckIn = read('src/components/pillars/DailyCheckIn.tsx');
   assert.match(mindCheckIn, /house-card house-checkin/);
@@ -799,7 +772,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(mindCheckIn, /text-primary/);
   assert.doesNotMatch(mindCheckIn, /bg-foreground/);
   assert.match(css, /\.house-mind \.house-checkin-tick\.is-on \{[^}]*--house-press/);
-  assert.match(spec, /Mind first-paint check-in is house leftover/);
+  assert.match(spec, /Mind first paint is the check-in/);
   const breathe = read('src/components/pillars/BreathingTimer.tsx');
   assert.match(breathe, /house-card house-breathe/);
   assert.match(breathe, /house-breathe-square/);
@@ -813,7 +786,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(breathe, /primary-action/);
   assert.match(css, /\.house-mind \.house-breathe-square \{[^}]*--house-ink/);
   assert.match(css, /\.house-mind \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Mind first-paint breathe is house leftover/);
+  assert.match(spec, /Breathe stays off first paint/);
   assert.match(read('src/page-components/TrackPage.tsx'), /className="house-track"/);
   const metrics = read('src/components/track/BodyMetricsCard.tsx');
   assert.match(metrics, /house-card house-metrics/);
@@ -830,7 +803,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(metrics, /primary-action/);
   assert.match(css, /\.house-track \.house-stat \{[^}]*--house-line/);
   assert.match(css, /\.house-track \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Track first-paint metrics is house leftover/);
+  assert.match(spec, /Track first paint is the scale\/tape log/);
   assert.match(read('src/page-components/LearnPage.tsx'), /className="house-learn"/);
   const learnIntro = read('src/components/learn/QuietLearnIntroCard.tsx');
   assert.match(learnIntro, /house-card house-learn-intro/);
@@ -843,7 +816,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(learnIntro, /house-btn-primary/);
   assert.doesNotMatch(learnIntro, /primary-action/);
   assert.match(css, /\.house-learn \.house-learn-points \.house-lede \{[^}]*--house-line/);
-  assert.match(spec, /Learn first-paint intro is house leftover/);
+  assert.match(spec, /Learn first paint is the intro/);
   assert.match(read('src/page-components/LearnCoursePage.tsx'), /className="house-learn"/);
   const feedback = read('src/page-components/FeedbackPage.tsx');
   assert.match(feedback, /className="house-feedback"/);
@@ -851,12 +824,16 @@ test('house design system is the signed-in token table', () => {
   assert.match(feedback, /house-btn house-btn-primary primary-action/);
   assert.match(feedback, /InfoPageShell/);
   assert.match(feedback, /composeFeedbackNote\(/);
+  assert.doesNotMatch(feedback, /<SignInPrompt\b/);
+  assert.doesNotMatch(feedback, /showLegalFooter/);
   assert.doesNotMatch(feedback, /content-card/);
   assert.match(css, /\.house-feedback form\.house-card/);
   assert.match(css, /\.house-feedback textarea/);
   const garage = read('src/page-components/ServerPage.tsx');
   assert.match(garage, /className="house-garage p-6"/);
-  assert.match(garage, /className="house-garage space-y-4"/);
+  assert.doesNotMatch(garage, /<ChatWindow\b/);
+  assert.doesNotMatch(garage, /<BuddyList\b/);
+  assert.doesNotMatch(garage, /<PresenceControl\b/);
   const moreNav = read('src/components/house/houseNav.ts');
   assert.match(moreNav, /href: '\/feedback'/);
   assert.match(moreNav, /href: '\/server'/);
@@ -868,6 +845,8 @@ test('house design system is the signed-in token table', () => {
   assert.match(explore, /className="house-board/);
   assert.match(explore, /house-btn house-btn-primary/);
   assert.match(explore, /Not a shop/);
+  assert.doesNotMatch(explore, /geolocation/);
+  assert.doesNotMatch(explore, /openStreetMapUrl/);
   assert.doesNotMatch(explore, /<Card[\s>]/);
   assert.doesNotMatch(explore, /bg-primary-fill/);
   assert.match(css, /\.house-explore \.house-board/);
@@ -895,7 +874,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(calc, /className="house-card group"/);
   assert.doesNotMatch(calc, /content-card/);
   assert.doesNotMatch(calc, /<Card[\s>]/);
-  assert.match(account, /href="\/calculators"/);
+  assert.doesNotMatch(account, /href="\/calculators"/);
   assert.doesNotMatch(moreNav, /['"]\/calculators['"]/);
   assert.match(css, /\.house-calc/);
   assert.match(spec, /Calculator leftover/);
@@ -931,6 +910,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(help, /className="house-item"/);
   assert.match(help, /HELP_FAQ/);
   assert.match(help, /data-testid="help-faq"/);
+  assert.doesNotMatch(help, /showLegalFooter/);
   assert.doesNotMatch(help, /InfoSection/);
   assert.doesNotMatch(moreNav, /['"]\/help['"]/);
   assert.match(css, /\.house-help/);
@@ -951,6 +931,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(privacy, /house-privacy-jump/);
   assert.match(privacy, /infoEnFloor/);
   assert.match(privacy, /PRIVACY_SECTIONS/);
+  assert.doesNotMatch(privacy, /showLegalFooter/);
   assert.doesNotMatch(privacy, /InfoSection/);
   assert.doesNotMatch(moreNav, /['"]\/privacy['"]/);
   assert.match(css, /\.house-privacy/);

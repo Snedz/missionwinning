@@ -9,14 +9,14 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('LearnPage free-beta uses open-beta Learn chrome keys', () => {
+test('LearnPage does not leftover open-beta Learn chrome keys', () => {
   const src = readFileSync(join(root, 'src/page-components/LearnPage.tsx'), 'utf8');
   assert.match(src, /quietLearnSubtitle/);
-  assert.match(src, /learnSubtitleOpenBeta/);
-  assert.match(src, /learnPremiumTitleOpenBeta/);
-  assert.match(src, /isFreeBeta|freeBeta/);
-  const firstPaint = src.slice(0, src.indexOf('<details'));
-  assert.doesNotMatch(firstPaint, /Super Bundle unlocks|Join Discord/);
+  assert.match(src, /<QuietLearnIntroCard\b/);
+  assert.doesNotMatch(src, /learnSubtitleOpenBeta/);
+  assert.doesNotMatch(src, /learnPremiumTitleOpenBeta/);
+  assert.doesNotMatch(src, /isFreeBeta|freeBeta/);
+  assert.doesNotMatch(src, /Super Bundle unlocks|Join Discord/);
 });
 
 test('learnLocales EN open-beta strings omit Super Bundle and premium pay pitch', () => {

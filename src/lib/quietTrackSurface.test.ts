@@ -64,13 +64,11 @@ describe('quiet track surface lock', () => {
     assert.doesNotMatch(strip, /BodyMetricsCard|ProgressPhotosCard|primary-action/);
   });
 
-  it('Track first paint is the metrics log — no rings, no photos, no red action', () => {
+  it('Track first paint is the metrics log — no walks tour, no rings, no photos, no red action', () => {
     const page = read('src/page-components/TrackPage.tsx');
-    const detailsAt = page.indexOf('<details');
-    const cardAt = page.indexOf('<BodyMetricsCard');
-    assert.notEqual(detailsAt, -1, 'activity / GPS still have a Show more house');
-    assert.notEqual(cardAt, -1, 'Quiet Track log is wired');
-    assert.ok(cardAt < detailsAt, 'BodyMetricsCard must sit on first paint, not inside Show more');
+    assert.match(page, /<BodyMetricsCard\b/);
+    assert.doesNotMatch(page, /<details\b/);
+    assert.doesNotMatch(page, /<TrackGpsPanel\b/);
     assert.doesNotMatch(page, /ProgressPhotosCard/);
     assert.doesNotMatch(page, /ScoreNumeral/);
     assert.doesNotMatch(page, /primary-action/);

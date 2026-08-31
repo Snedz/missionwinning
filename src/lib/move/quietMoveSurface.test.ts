@@ -46,11 +46,9 @@ describe('quiet Move surface lock', () => {
 
   it('Move page mounts the quiet log on first paint, not a red Start', () => {
     const page = read('src/page-components/MovePage.tsx');
-    const cardAt = page.indexOf('<QuietMoveLogCard');
-    const flowsAt = page.indexOf('id="move-flows"');
-    assert.notEqual(cardAt, -1, 'QuietMoveLogCard is wired');
-    assert.notEqual(flowsAt, -1, 'flows house stays');
-    assert.ok(cardAt < flowsAt, 'quiet log is first paint, before the flow grid');
+    assert.match(page, /<QuietMoveLogCard\b/, 'QuietMoveLogCard is wired');
+    assert.doesNotMatch(page, /id="move-flows"/);
+    assert.doesNotMatch(page, /TimedFlowRunner/);
     assert.doesNotMatch(page, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(page, /geolocation|getCurrentPosition|HealthKit/i);
   });

@@ -47,7 +47,6 @@ export function SupportedRegionsPage() {
       title={t('infoRegionsTitle', { defaultValue: infoEnFloor('infoRegionsTitle') })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       variant="sections"
-      showLegalFooter
     >
       {/* Quiet leftover: posture + jump chips + sections. Legal copy unchanged. */}
       <section className="house-card space-y-3">

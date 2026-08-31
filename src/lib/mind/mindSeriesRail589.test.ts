@@ -69,9 +69,10 @@ test('filter by sleep-week tag matches series tag only', () => {
   );
 });
 
-test('MindPage wires series banner and order helper', () => {
+test('MindPage does not leftover series banner', () => {
   const src = readFileSync(join(root, 'src/page-components/MindPage.tsx'), 'utf8');
-  assert.match(src, /mind-series-banner/);
-  assert.match(src, /orderSessionsForSeries/);
-  assert.match(src, /mindSeriesByCollectionId/);
+  assert.match(src, /<DailyCheckIn\b/);
+  assert.doesNotMatch(src, /mind-series-banner/);
+  assert.doesNotMatch(src, /orderSessionsForSeries/);
+  assert.doesNotMatch(src, /mindSeriesByCollectionId/);
 });

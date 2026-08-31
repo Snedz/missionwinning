@@ -24,7 +24,7 @@ test('Profile premium/backup/whatsnew use 44px tap targets', () => {
 
 test('Coach Bundle Feedback primary CTAs are 44/52px', () => {
   const coach = readFileSync(join(root, 'src/page-components/CoachPage.tsx'), 'utf8');
-  assert.match(coach, /min-h-\[44px\] tap-target/);
+  assert.match(coach, /min-h-\[52px\] w-full tap-target/);
 
   const bundle = readFileSync(join(root, 'src/page-components/BundlePage.tsx'), 'utf8');
   assert.match(bundle, /min-h-\[44px\] tap-target/);

@@ -16,10 +16,10 @@ test('Locked previews See Super Bundle is 44px', () => {
   }
 });
 
-test('Victory secondary Share is 44px tap target', () => {
+test('Victory does not leftover Share on the overlay', () => {
   const src = readFileSync(
     join(root, 'src/components/workout/WorkoutVictorySheet.tsx'),
     'utf8'
   );
-  assert.match(src, /handleShare[\s\S]{0,200}min-h-\[44px\]|min-h-\[44px\][\s\S]{0,80}handleShare/);
+  assert.doesNotMatch(src, /handleShare/);
 });

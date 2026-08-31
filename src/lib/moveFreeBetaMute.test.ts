@@ -9,10 +9,11 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('MovePage free-beta uses open-beta subtitle brief key', () => {
+test('MovePage does not leftover open-beta flow-catalog subtitle', () => {
   const src = readFileSync(join(root, 'src/page-components/MovePage.tsx'), 'utf8');
-  assert.match(src, /moveSubtitleBriefOpenBeta/);
-  assert.match(src, /isFreeBeta|freeBeta/);
+  assert.doesNotMatch(src, /moveSubtitleBriefOpenBeta/);
+  assert.doesNotMatch(src, /isFreeBeta|freeBeta/);
+  assert.match(src, /<QuietMoveLogCard\b/);
 });
 
 test('moveLocales EN open-beta brief omits Super Bundle and premium pay pitch', () => {

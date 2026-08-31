@@ -166,6 +166,6 @@ test('Today and Coach mount the diff in the existing banner slot', () => {
   assert.doesNotMatch(today, /coach-week-diff-block|TodayWeekDiff/);
 
   const page = readFileSync(path.join(root, 'src/page-components/CoachPage.tsx'), 'utf8');
-  assert.match(page, /<CoachAdaptBanner/);
+  assert.doesNotMatch(page, /<CoachAdaptBanner/);
   assert.doesNotMatch(page, /coach-week-diff-block/);
 });

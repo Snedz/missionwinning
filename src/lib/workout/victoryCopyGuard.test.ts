@@ -25,44 +25,22 @@ test('empty-finish copy is calm guidance', () => {
   assert.match(finish, /finishBlockedReason/);
 });
 
-test('Victory collapses long details; Active gates empty finish', () => {
+test('Victory is a receipt, not a tour; Active gates empty finish', () => {
   const sheet = readFileSync(
     join(root, 'src/components/workout/WorkoutVictorySheet.tsx'),
     'utf8'
   );
-  assert.match(sheet, /data-testid="victory-show-all"/);
-  assert.match(sheet, /victorySessionDetails|Session details|Show all/);
+  assert.doesNotMatch(sheet, /data-testid="victory-show-all"/);
   const stats = readFileSync(
     join(root, 'src/components/workout/VictoryStatsStrip.tsx'),
     'utf8'
   );
   assert.match(stats, /grid-cols-3/, 'the set-table logger receipt header is Duration · Volume · Sets');
   assert.match(stats, /text-muted-foreground/, 'vs-last deltas stay muted in both directions');
-  const receipt = readFileSync(
-    join(root, 'src/components/workout/VictoryReceiptStrip.tsx'),
-    'utf8'
-  );
-  assert.match(receipt, /activeColPrev/, 'receipt shows last-time load, not only a delta');
-  assert.match(receipt, /data-testid="victory-prev"/);
-  assert.doesNotMatch(
-    receipt,
-    /<thead className="sr-only">/,
-    'Set · Prev · Load headers stay visible — a receipt you can read'
-  );
   const jsx = sheet.slice(sheet.indexOf('return ('));
-  const receiptAt = jsx.indexOf('<VictoryReceiptStrip');
-  const detailsAt = jsx.indexOf('<details');
-  assert.ok(receiptAt >= 0, 'Victory mounts the vs-last receipt');
-  assert.ok(detailsAt >= 0, 'Victory houses extras in Show all');
-  assert.ok(
-    receiptAt < detailsAt,
-    'close receipt is first paint — stay / screenshot / save, not buried in Show all'
-  );
-  assert.equal(
-    (jsx.match(/<VictoryReceiptStrip\b/g) ?? []).length,
-    1,
-    'one session, one receipt'
-  );
+  assert.match(jsx, /<VictoryStatsStrip\b/);
+  assert.match(jsx, /data-testid="victory-next-dock"/);
+  assert.doesNotMatch(jsx, /<VictoryReceiptStrip\b/);
   assert.doesNotMatch(sheet, /share-to-unlock|unlock.{0,20}share/i);
   assert.doesNotMatch(sheet, /\blikes?\b|\bfeed\b/i);
   assert.doesNotMatch(

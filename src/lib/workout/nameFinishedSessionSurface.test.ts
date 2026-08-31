@@ -29,7 +29,7 @@ describe('name this finished session surface lock (.1007)', () => {
     assert.match(fields, /min-h-\[44px\]/);
     assert.doesNotMatch(fields, /primary-action|bg-primary-fill/);
     const receipt = read('src/components/workout/WorkoutVictorySheet.tsx');
-    assert.match(receipt, /HistorySessionName/);
+    assert.doesNotMatch(receipt, /HistorySessionName/);
     assert.doesNotMatch(receipt, BANNED);
   });
 

@@ -18,7 +18,7 @@
 | `/log` | Today | `HomePage.tsx` |
 | `/active` | Train | `ActiveWorkoutPage.tsx` |
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
-| `/track` | Track | `TrackPage.tsx` — Quiet Track weight / tape (`.975`); walks / GPS in Show more |
+| `/track` | Track | `TrackPage.tsx` — scale/tape log first paint; walks / GPS off first paint |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
 | `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
 
@@ -39,7 +39,7 @@
 |-----|----------------|-------|
 | `/move` | `MovePage.tsx` | Mobility + quiet rest-day walk / easy log (`.969`) |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
-| `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
+| `/learn` | `LearnPage.tsx` | intro first paint; other paths off first paint |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
@@ -53,10 +53,10 @@
 | `/service-terms` | `ServiceTermsPage.tsx` | Leftover service terms — jump chips + house-card sections. Never a rail. |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
-| `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
+| `/explore` | `ExplorePlacesPage.tsx` | board + pin list + add a place first paint. GPS off first paint. Quiet Account / More door. Not a shop. |
 | `/calculators` | `CalculatorsPage.tsx` | Leftover 1RM / macros / plates. Quiet Account More-settings door. Never a rail. Not a shop. |
 | `/programs` | `ProgramsPage.tsx` | Leftover education outlines. Unlock / price in Show all. Never a rail. Not a shop. |
-| `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). Signed-in rooms persist. More → You. Not a tab. `robots: noindex` |
+| `/server` | `ServerPage.tsx` | quiet title first paint; rooms / chat off first paint. More quiet foot. Not a tab. `robots: noindex` |
 
 ### Outside `(app)` group
 

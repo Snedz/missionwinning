@@ -74,7 +74,7 @@ describe('move this session to another day surface lock (.1027)', () => {
     assert.match(day, /decideRepeatThisSession/);
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
     assert.doesNotMatch(sheet, MOVE);
-    assert.match(sheet, /decideStartAgain/);
+    assert.doesNotMatch(sheet, /decideStartAgain/);
   });
 
   it('first set stays ungated — move never mounts a login wall', () => {

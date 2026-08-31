@@ -251,8 +251,7 @@ const en: FuelStrings = {
   fuelLoadCloud: 'Load from Cloud',
   fuelCloudLoading: 'Loading...',
   fuelCloudLoaded: 'Cloud loaded (signed-in only)',
-  fuelNoEntries:
-    'Describe what you ate above, or tap Log food — always review macros before logging.',
+  fuelNoEntries: 'Log a meal on this device. Review macros before logging.',
   fuelTotals: 'Totals',
   fuelTotalsLine: '{{protein}}g protein • {{cals}} kcal',
   fuelLocalNote:
@@ -431,7 +430,7 @@ const en: FuelStrings = {
   fuelGoalAppliedDesc: '{{cals}} kcal · {{protein}}g protein',
   fuelHideMore: 'Hide search & recipes',
   fuelShowMore: 'Search, barcode & recipes',
-  fuelSubtitleBrief: 'Log meals on this device. Targets and recipes when you need them.',
+  fuelSubtitleBrief: 'Log meals on this device.',
   fuelMoreTools: 'Targets, week & weight',
   fuelSubtitleDepthBeta:
     '{{free}} free recipes · {{unlocked}} unlocked in Alpha — meals stay on this device.',

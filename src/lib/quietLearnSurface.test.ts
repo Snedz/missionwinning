@@ -53,16 +53,13 @@ describe('quiet learn surface lock', () => {
     assert.deepEqual(offenders, [], `Today leaked Learn intro: ${offenders.join(', ')}`);
   });
 
-  it('Learn first paint is the existing intro — catalog in Show more, no red action', () => {
+  it('Learn first paint is the intro — no paths tour, no red action', () => {
     const page = read('src/page-components/LearnPage.tsx');
-    const detailsAt = page.indexOf('<details');
-    const cardAt = page.indexOf('<QuietLearnIntroCard');
-    assert.notEqual(detailsAt, -1, 'other paths still have a Show more house');
-    assert.notEqual(cardAt, -1, 'Quiet Learn intro is wired');
-    assert.ok(cardAt < detailsAt, 'QuietLearnIntroCard must sit on first paint, not inside Show more');
+    assert.match(page, /<QuietLearnIntroCard\b/);
+    assert.doesNotMatch(page, /<details\b/);
+    assert.doesNotMatch(page, /id="learn-paths"/);
     assert.doesNotMatch(page, /primary-action|bg-primary-fill/);
     assert.doesNotMatch(page, /discord\.com|WeChat|marketplace|Top 8|four-scene/i);
-    assert.match(page, /learn-paths/);
   });
 
   it('intro card is free, empty-honest, and reuses catalog copy', () => {

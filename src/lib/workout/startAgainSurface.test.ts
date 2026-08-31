@@ -14,14 +14,12 @@ const SHOP = /marketplace|template shop|3.template|discord\.com|WeChat|Trainer-r
 const PREMIUM = /from ['"]@\/lib\/(premium|trial|bundle)/;
 
 describe('start again surface lock (.991)', () => {
-  it('receipt first paint has outline Start this again, not a red Start', () => {
+  it('receipt does not leftover Start this again; Next stays the one filled press', () => {
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
     const jsx = sheet.slice(sheet.indexOf('return ('));
-    const open = jsx.split('<details')[0];
-    assert.match(sheet, /decideStartAgain/);
-    assert.match(open, /data-testid="victory-start-again"/);
-    assert.match(open, /honorSaveAsRoutine|victory-save-routine/);
-    assert.doesNotMatch(open, /primary-action|bg-primary-fill/);
+    assert.doesNotMatch(sheet, /decideStartAgain/);
+    assert.doesNotMatch(jsx, /data-testid="victory-start-again"/);
+    assert.doesNotMatch(jsx, /honorSaveAsRoutine|victory-save-routine/);
     assert.match(jsx, /data-testid="victory-next-dock"/);
     assert.doesNotMatch(sheet, SHOP);
     assert.doesNotMatch(sheet, PREMIUM);

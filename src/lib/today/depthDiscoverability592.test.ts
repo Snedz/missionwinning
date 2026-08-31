@@ -14,13 +14,13 @@ test('HomeTodayLean does not mount the continuity strip', () => {
   assert.doesNotMatch(src, /ContinuityStrip/);
 });
 
-test('Fuel page subtitle uses content inventory depth counts', () => {
+test('Fuel page does not leftover recipe-depth merch', () => {
   const src = readFileSync(
     join(root, 'src/page-components/NutritionPage.tsx'),
     'utf8'
   );
-  assert.match(src, /getContentInventory/);
-  assert.match(src, /fuelSubtitleDepth/);
-  assert.match(src, /inv\.recipes\.free/);
-  assert.match(src, /inv\.recipes\.premium/);
+  assert.doesNotMatch(src, /getContentInventory/);
+  assert.doesNotMatch(src, /fuelSubtitleDepth/);
+  assert.doesNotMatch(src, /inv\.recipes\.free/);
+  assert.match(src, /data-testid="fuel-log-dock"/);
 });

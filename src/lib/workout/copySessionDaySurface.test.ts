@@ -79,7 +79,7 @@ describe('copy this session onto another day surface lock (.1030)', () => {
     assert.match(day, /decideRepeatThisSession/);
     const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
     assert.doesNotMatch(sheet, COPY);
-    assert.match(sheet, /decideStartAgain/);
+    assert.doesNotMatch(sheet, /decideStartAgain/);
   });
 
   it('first set stays ungated — copy never mounts a login wall', () => {

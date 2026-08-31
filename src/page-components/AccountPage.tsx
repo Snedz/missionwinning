@@ -1,18 +1,10 @@
 'use client';
 /**
- * Page: /account — settings, notifications, billing, backup.
- *
- * This was `/profile` until `.606`. The route was named after a person and held
- * nothing of one: email, units, goals, push cadence, billing, backup. The single
- * identity block on it was the badge shelf. Splitting it gives the settings a
- * name that says what they are and frees `/profile` to become the Athlete Page
- * the nav label "You" has always claimed — docs/IDENTITY_SOCIAL_PLAN.md S2.
- *
+ * Page: /account — settings leftover
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
@@ -22,59 +14,29 @@ import {
   markExplicitSignOut,
 } from '@/lib/storage/athleteLocalState';
 import { formatOAuthError } from '@/lib/oauthConfig';
-import { useMissionJourney } from '@/hooks/useMissionJourney';
-import { daysSinceCommission } from '@/lib/missionJourney';
-import { getBetaFunnelMetrics } from '@/lib/journeyAnalytics';
 import { BetaAdminPanel } from '@/components/beta/BetaAdminPanel';
 import { FounderStatusBoard } from '@/components/profile/FounderStatusBoard';
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { LegalNav } from '@/components/layout/LegalNav';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { useToast } from '@/hooks/use-toast';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
-import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
-import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
 import { ProfilePregnancyCard } from '@/components/profile/ProfilePregnancyCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { useMissionId } from '@/hooks/useMissionId';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
-import { HomeGymKitCard } from '@/components/profile/HomeGymKitCard';
-import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
-import { ProfileBetaJourneyCard } from '@/components/profile/ProfileBetaJourneyCard';
-import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
-import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
 import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
 import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
-import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
-import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
-import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
-import { ProfileWhatsNewCard } from '@/components/profile/ProfileWhatsNewCard';
-import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
-import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { readRaw, writeRaw, remove as removeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { cadenceHourPatch, readDayReviewHour } from '@/lib/dayReviewPrefs';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { lastSessionAt } from '@/lib/reentry';
 
-/**
- * Cadence for the push row — read imperatively so the value is always current and
- * the mount effect keeps an empty dependency list. Deliberately narrow: the server
- * learns when the athlete last trained, how often they aim to, and the hour they
- * chose for the evening review — and nothing about what they actually did.
- *
- * `.196` added the hour. Leaving it out is what made `day_review_hour` NULL for
- * every athlete who already had push: the only writer was an opt-in card that
- * skipped itself in exactly that case, and no other sync carried the field. Note
- * the field is only included when the device actually has a stored hour —
- * `buildSubscriptionRow` omits `undefined`, so a cadence sync from a device that
- * has never chosen one can never clear a hour chosen elsewhere.
- */
 function readPushCadence() {
   return {
     lastSessionAt: lastSessionAt(useWorkoutStore.getState().workoutHistory),
@@ -90,32 +52,21 @@ export function AccountPage() {
   const authError = authErrorRaw ? formatOAuthError(authErrorRaw) : null;
   const router = useRouter();
   const { toast } = useToast();
-  const { isCommissioned, state, action } = useMissionJourney();
   const [email, setEmail] = useState<string | null>(null);
-  const [nudgeLoading, setNudgeLoading] = useState(false);
-  const [nudgeSent, setNudgeSent] = useState(false);
   const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
   const [goals, setGoals] = useState('Build strength and stay healthy');
-  const [premium, setPremium] = useState(false);
   const [reminders, setReminders] = useState(false);
   const [remindersBusy, setRemindersBusy] = useState(false);
   const [pushSupported, setPushSupported] = useState(false);
   const [pushOn, setPushOn] = useState(false);
   const [pushBusy, setPushBusy] = useState(false);
   const [dayReviewHour, setDayReviewHour] = useState<number | null>(null);
-  const [billingBusy, setBillingBusy] = useState(false);
-  /**
-   * `#import` deep link. Read in an effect, not during render: the fragment is
-   * not sent to the server, so deciding `open` from it while hydrating would be a
-   * mismatch. One frame closed, then open and scrolled, beats a hydration error.
-   */
   const [importDeepLink, setImportDeepLink] = useState(false);
   const missionId = useMissionId();
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash !== '#import') return;
     setImportDeepLink(true);
-    // After the details paints open, put the card on screen.
     const id = requestAnimationFrame(() => {
       document.getElementById('import')?.scrollIntoView({ block: 'start' });
     });
@@ -142,17 +93,11 @@ export function AccountPage() {
     if (savedGoals) setGoals(savedGoals);
     setDayReviewHour(readDayReviewHour(readRaw(STORAGE_KEYS.dayReviewHour)));
 
-    import('@/lib/supabase').then(({ isPremium }) => {
-      isPremium().then(setPremium);
-    });
     void import('@/lib/pushClient').then(async (m) => {
       if (!m.isPushSupported()) return;
       setPushSupported(true);
       const on = await m.hasLocalPushSubscription();
       setPushOn(on);
-      // Re-post silently when one already exists: heals a row lost to a failed POST,
-      // and attaches user_id to a subscription first made signed-out, so nobody is
-      // asked to opt in twice for the same device. Never prompts.
       if (on) void m.syncPushSubscription(readPushCadence());
     });
   }, []);
@@ -202,13 +147,6 @@ export function AccountPage() {
     }
   };
 
-  /**
-   * Choosing an hour is how the evening review is turned on, so this subscribes
-   * when the device has no subscription yet rather than requiring the athlete to
-   * flip device notifications first and then find this row. Turning it off sends
-   * an explicit `null` — the one place the field must reach the column as NULL
-   * instead of being omitted, or the note keeps arriving after they said stop.
-   */
   const changeDayReviewHour = async (next: number | null) => {
     setPushBusy(true);
     const previous = dayReviewHour;
@@ -224,8 +162,6 @@ export function AccountPage() {
         : (await m.subscribePush(cadence)) === 'ok';
 
       if (!ok) {
-        // Put the device back where it was: a stored hour the server never
-        // learned about would show the athlete a setting that does nothing.
         setDayReviewHour(previous);
         if (previous === null) removeRaw(STORAGE_KEYS.dayReviewHour);
         else writeRaw(STORAGE_KEYS.dayReviewHour, String(previous));
@@ -270,96 +206,18 @@ export function AccountPage() {
     router.push('/');
   };
 
-  const handleManageBilling = async () => {
-    setBillingBusy(true);
-    const result = await openBillingPortal();
-    setBillingBusy(false);
-    if (result.ok) {
-      window.location.href = result.url;
-      return;
-    }
-    toast({
-      title: t('billingPortalError', { defaultValue: 'Billing portal' }),
-      description:
-        result.code === 'auth_required'
-          ? t('billingPortalSignIn', { defaultValue: 'Sign in to manage billing.' })
-          : result.message,
-      variant: 'destructive',
-    });
-  };
-
-  const handleEmailNudge = async () => {
-    setNudgeLoading(true);
-    setNudgeSent(false);
-    try {
-      const res = await fetch('/api/journey/nudge', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          label: action.label,
-          description: action.description,
-          href: action.href,
-          stepLabel: action.stepLabel,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Could not send email');
-      setNudgeSent(true);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Email not available';
-      toast({
-        title: t('emailNextStepFailed', { defaultValue: 'Could not send email' }),
-        description: msg,
-        variant: 'destructive',
-      });
-    } finally {
-      setNudgeLoading(false);
-    }
-  };
-
-  const [experience] = useState(() =>
-    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.experience) || '' : ''
-  );
-  const [equipment] = useState(() =>
-    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.equipment) || '' : ''
-  );
-  const [daysPerWeek, setDaysPerWeek] = useState(() =>
-    loadDaysPerWeek(
-      typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.experience) || 'beginner' : 'beginner'
-    )
-  );
-  const [primaryGoal] = useState(() =>
-    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.primaryGoal) || goals : goals
-  );
-
-  const isOnboarded = !!(experience && equipment);
-  const funnel = getBetaFunnelMetrics(state);
   const ownerTools = showOwnerTools();
 
   return (
-    /*
-     * House leftover on Account: day-one stack stays open (sign-in · return
-     * channel · prefs). Explore, more settings, and help are house-card objects.
-     * Owner tools stay reachably grouped. Red-action rules on this route are
-     * unchanged (magic-link / billing own red).
-     */
     <PillarPageShell
       className="house-account"
       icon={Settings}
       eyebrow={t('accountEyebrow', { defaultValue: 'Account' })}
       title={t('accountTitle', { defaultValue: 'Settings' })}
-      subtitle={
-        isCommissioned && state.commissionedAt
-          ? t('profileCommissionedDay', {
-              day: daysSinceCommission(state.commissionedAt),
-              defaultValue: `Day ${daysSinceCommission(state.commissionedAt)} on the path`,
-            })
-          : t('accountSubtitle', {
-              defaultValue:
-                'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
-            })
-      }
+      subtitle={t('accountSubtitle', {
+        defaultValue:
+          'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
+      })}
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
       <ProfileAccountCard
@@ -370,11 +228,6 @@ export function AccountPage() {
         missionId={missionId}
       />
 
-      <ProfileTransparencyCard />
-
-      {/* Not behind `email &&` — device notifications are the only return channel an
-          anonymous athlete has, and they are the athlete this product is built for.
-          The card renders nothing when it has neither row to offer. */}
       <ProfileRemindersCard
         signedIn={Boolean(email)}
         reminders={reminders}
@@ -396,95 +249,13 @@ export function AccountPage() {
         onSaveGoals={saveGoals}
       />
 
-      <HomeGymKitCard />
-
-      {/* Reachable without expanding: referral invite, feedback, privacy, backup
-          (e2e + product promise). Everything else folds under More settings. */}
-      <ProfileReferralCard signedIn={Boolean(email)} />
-
-      <ProfileFeedbackCard />
-
-      <div className="house-card space-y-2">
-        <p className="font-semibold">
-          {t('accountExploreTitle', { defaultValue: 'Explore places' })}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {t('accountExploreLead', {
-            defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
-          })}
-        </p>
-        <Link href="/explore" className="house-btn house-btn-ghost">
-          {t('accountExploreCta', { defaultValue: 'Open Explore' })}
-        </Link>
-      </div>
-
-      <ProfilePremiumCard
-        premium={premium}
-        billingBusy={billingBusy}
-        onManageBilling={handleManageBilling}
-      />
-
-      {/*
-       * `.766` — `#import` opens this and scrolls to the CSV card.
-       *
-       * set-table import has existed and shipped for a while, and it was
-       * unreachable in practice: `/account` → expand "More settings" → scroll
-       * past six cards. The East Asia shard lists data-in as its own P1 next to
-       * logging speed, and a migrant arriving with a CSV in hand had no path.
-       * I-Day and the Active empty state now link straight here.
-       */}
       <details className="house-card group" open={importDeepLink}>
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('accountMoreSettings', { defaultValue: 'More settings' })}
         </summary>
         <div className="space-y-6 border-t-2 border-border px-4 py-4">
           <ProfilePregnancyCard />
-
-          <ProfileAssessmentCard />
-
-          <div className="house-card space-y-2">
-            <p className="font-semibold">
-              {t('calcTitle', { defaultValue: 'Calculators' })}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t('calcSubtitleBrief', {
-                defaultValue: '1RM, macros, plates — free tools, no account required.',
-              })}
-            </p>
-            <Link href="/calculators" className="house-btn house-btn-ghost">
-              {t('calcTitle', { defaultValue: 'Calculators' })}
-            </Link>
-          </div>
-
-          <ProfileBetaJourneyCard
-            funnel={funnel}
-            email={email}
-            isCommissioned={isCommissioned}
-            nudgeLoading={nudgeLoading}
-            nudgeSent={nudgeSent}
-            onEmailNudge={handleEmailNudge}
-          />
-
-          <ProfileJourneyCard
-            isOnboarded={isOnboarded}
-            experience={experience}
-            equipment={equipment}
-            primaryGoal={primaryGoal}
-            goals={goals}
-            daysPerWeek={daysPerWeek}
-            onDaysPerWeekChange={setDaysPerWeek}
-          />
-
-          <ProfileWearablesCard signedIn={Boolean(email)} />
-
-          <ProfileWhatsNewCard />
-
-          <ProfilePrivacyCard />
-
-          <SyncStatusRow />
-
           <ProfileBackupCard />
-
           <div id="import" className="scroll-mt-4">
             <ProfileImportCard />
           </div>
@@ -503,13 +274,6 @@ export function AccountPage() {
           </div>
         </details>
       ) : null}
-
-      <div className="house-card">
-        <p className="house-kicker">
-          {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
-        </p>
-        <LegalNav />
-      </div>
     </PillarPageShell>
   );
 }

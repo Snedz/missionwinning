@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-test('MindPage wires collections + content inventory', () => {
+test('MindPage does not leftover session collections or depth merch', () => {
   const src = readFileSync(join(import.meta.dirname, '..', '..', 'page-components', 'MindPage.tsx'), 'utf8');
-  assert.match(src, /filterMindByCollection/);
-  assert.match(src, /MIND_COLLECTIONS/);
-  assert.match(src, /getContentInventory/);
+  assert.match(src, /<DailyCheckIn\b/);
+  assert.doesNotMatch(src, /filterMindByCollection/);
+  assert.doesNotMatch(src, /MIND_COLLECTIONS/);
+  assert.doesNotMatch(src, /getContentInventory/);
 });

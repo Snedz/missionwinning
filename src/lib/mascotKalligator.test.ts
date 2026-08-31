@@ -31,7 +31,7 @@ test('product surfaces wire Kalligator paths', () => {
     'utf8'
   );
   const history = readFileSync(path.join(root, 'src/page-components/HistoryPage.tsx'), 'utf8');
-  assert.match(victory, /kalligator-celebrate\.webp/);
+  assert.doesNotMatch(victory, /kalligator-celebrate\.webp/);
   assert.doesNotMatch(victory, /scout-celebrate/);
   assert.match(history, /kalligator-invite\.webp/);
   assert.doesNotMatch(history, /scout-invite/);

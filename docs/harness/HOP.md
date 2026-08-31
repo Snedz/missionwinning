@@ -5,19 +5,19 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: residual-set-table-empty-load-cell
-done_means: A completed weight-type empty-load cell prints BW, not 0.
-accept: npx tsx --test src/lib/workout/setTableEmptyLoadCell.test.ts
+ticket: from-zero-shell
+done_means: Signed-in chrome is PathShell, not House. Commands are Start / Log / Generate. Coach and History are not I-Day walls. Finish keeps the open session clientId. Coach does not auto-mint a week on empty storage. Log set stays filled. generateWeek stays on /coach.
+accept: npx tsx --test src/lib/fromZeroContract.test.ts src/store/sessionResume.store.test.ts src/lib/coach/weekWriter.test.ts src/lib/social/isolation.test.ts src/lib/iDayNotAWall.test.ts
 test_written: yes
 
 ## progress
 
-Tests written first (4 red). Helper + SetLogTable wired. Tests 4/4.
+PathShell mounted. Finish keeps clientId. Coach does not auto-mint.
+Walked Today/Train at 390. Stamp `.1075`. Park leftover PR #889. Continue #890.
 
 ## decisions
 
-- Cites already print 8 × BW (.1017). Completed kg cell still painted raw 0.
-- New helper `formatCompletedWeightCell` — empty is BW; loaded barbell stays the number; plus-load extra stays BW+N.
-- Assisted 0 mute (`—`) is a later hop. Duration stays Time.
-- Display only. Today one Start. Not a letter. VISION stays ready-for-founder.
-- Stamp `.1025` from master `.1024` (`72685e9b`). History volume `.1024` / citation `.1023` / heatmap `.1022` stay.
+- Athlete grammar: Start · Log · Generate. Not a house floor.
+- One session id through Finish.
+- refresh() adapts an existing week; it does not mint empty-history weeks.
+- `[skip vercel]`. Do not merge. Do not promote. PRIVATE_MODE on. Live www stays `.696`.

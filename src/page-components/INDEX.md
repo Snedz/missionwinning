@@ -14,7 +14,7 @@
 | File | Route |
 |------|-------|
 | `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. |
-| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail |
+| `TodayDesk.tsx` | `/log` desk | Date + session + one Start. Week / Generate stay off first paint. |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
 
@@ -33,18 +33,18 @@
 
 | File | Route | Notes |
 |------|-------|-------|
-| `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; generate dock, next-day cite, week dose, week strip, and Show all fold chrome are house leftovers. Landing WeekStrip stays field-manual. Voice/LoadBand/LogCite/Manage internals stay. |
+| `CoachPage.tsx` | `/coach` | Weekly AI plan — empty + Generate, or this week’s session (`.1062`). Week strip, dose, live voice, next-day cite, Show all, chat, and Super Bundle taster unmounted. `generateWeek` stays the week writer via `useCoachPlan`. |
 | `CoachingPage.tsx` | `/coaching` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 
 ### Fuel / Move / Mind / Track / Learn
 
 | File | Route |
 |------|-------|
-| `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/`; first-paint remaining, notepad, and today log are house leftovers. Search / barcode / recipes in Show more. |
-| `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); quiet log and flow list are house leftovers. Extra tools in Show all |
-| `MindPage.tsx` | `/mind` | First paint is check-in + breathe; both are house leftovers. Sessions in Show all |
-| `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
-| `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |
+| `NutritionPage.tsx` | `/nutrition` (Fuel) — empty + Log meal, or today's meals. FuelLogSheet is the writer. Remaining / notepad / Show more / recipes stay off first paint. |
+| `MovePage.tsx` | `/move` — quiet log first paint. Flow list / collections / premium / recent wins stay off first paint. QuietMoveLogCard is the writer. |
+| `MindPage.tsx` | `/mind` — check-in first paint. Breathe / sessions / Show all stay off first paint. DailyCheckIn is the writer. |
+| `TrackPage.tsx` | `/track` — scale/tape log first paint. Walks / GPS / trends stay off first paint. BodyMetricsCard is the writer. |
+| `LearnPage.tsx` | `/learn` — intro first paint. Other paths / guidebook / sample stay off first paint. QuietLearnIntroCard is the intro. |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |
@@ -80,21 +80,21 @@
 
 | File | Route |
 |------|-------|
-| `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
-| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
-| `AccountPage.tsx` | `/account` — settings leftover; sign-in / return / prefs first; Explore / more / help are house-card |
-| `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
-| `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
-| `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
-| `AccessibilityPage.tsx` | `/accessibility` — leftover accessibility; jump chips + house-card sections. Never a rail. |
-| `TermsPage.tsx` | `/terms` — leftover terms; jump chips + house-card sections. Never a rail. |
-| `DmcaPage.tsx` | `/dmca` — leftover DMCA; jump chips + house-card sections. Never a rail. |
-| `RefundsPage.tsx` | `/refunds` — leftover refunds; jump chips + house-card sections. Never a rail. |
-| `UsagePolicyPage.tsx` | `/usage` — leftover usage; jump chips + house-card sections. Never a rail. |
-| `SupportedRegionsPage.tsx` | `/regions` — leftover regions; jump chips + house-card sections. Never a rail. |
-| `ServiceTermsPage.tsx` | `/service-terms` — leftover service terms; jump chips + house-card sections. Never a rail. |
-| `HelpPage.tsx` | `/help` — leftover FAQ; hairline items. Never a rail. |
-| `FeedbackPage.tsx` | `/feedback` |
+| `ProfilePage.tsx` | `/profile` — You leftover: quiet title + Account door. Identity / career / rewards / share stay off first paint. |
+| `ServerPage.tsx` | `/server` — quiet title first paint. Rooms / buddy list / chat stay off first paint. Not a Today tab. |
+| `AccountPage.tsx` | `/account` — sign-in / return / prefs first paint. Import / backup / pregnancy in More settings. Explore / help stay off first paint. |
+| `ExplorePlacesPage.tsx` | `/explore` — board + pin list + add a place first paint. GPS / tag last / maps stay off first paint. Quiet Account door. Not a shop. |
+| `PrivacyPage.tsx` | `/privacy` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `CookiesPage.tsx` | `/cookies` — overview + table first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `AccessibilityPage.tsx` | `/accessibility` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `TermsPage.tsx` | `/terms` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `DmcaPage.tsx` | `/dmca` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `RefundsPage.tsx` | `/refunds` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `UsagePolicyPage.tsx` | `/usage` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `SupportedRegionsPage.tsx` | `/regions` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `ServiceTermsPage.tsx` | `/service-terms` — jump chips + sections first paint. Legal footer stays off first paint. Never a rail. Legal copy unchanged. |
+| `HelpPage.tsx` | `/help` — FAQ first paint. Legal footer stays off first paint. Never a rail. |
+| `FeedbackPage.tsx` | `/feedback` — form first paint. Sign-in / legal footer stay off first paint. composeFeedbackNote is the writer. |
 | `AssessmentsPage.tsx` | `/assessments` — leftover form; one filled submit; stage prompts in Show all. Account door. |
 | `CalculatorsPage.tsx` | `/calculators` — leftover tools; 1RM / macros / plates first; premium in Show all. Account More-settings door. Never a rail. |
 | `BetaStartPage.tsx` | `/beta` |

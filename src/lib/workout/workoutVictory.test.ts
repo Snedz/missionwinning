@@ -98,19 +98,17 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.equal(shouldShowVictoryBackTodaySecondary(''), false);
   });
 
-  it('WorkoutVictorySheet wires the helper and one Share control (.422)', () => {
+  it('WorkoutVictorySheet is stats + one next — leftover hops stay off (.1061)', () => {
     const src = fs.readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
       'utf8'
     );
-    assert.match(src, /shouldShowVictoryBackTodaySecondary/);
-    assert.match(src, /victoryShare/);
-    assert.doesNotMatch(src, /victoryShareCard/);
-    assert.doesNotMatch(src, /ImageIcon/);
-    assert.match(src, /VictoryFeelStrip/);
-    assert.match(src, /VictoryBodyDeltaStrip/);
+    assert.doesNotMatch(src, /shouldShowVictoryBackTodaySecondary/);
+    assert.doesNotMatch(src, /victoryShare/);
+    assert.doesNotMatch(src, /VictoryFeelStrip/);
+    assert.doesNotMatch(src, /VictoryBodyDeltaStrip/);
     assert.match(src, /VictoryStatsStrip/);
-    assert.match(src, /VictoryReceiptStrip/);
+    assert.doesNotMatch(src, /VictoryReceiptStrip/);
     assert.match(src, /VictoryNextActionStrip/);
     assert.doesNotMatch(
       src,
@@ -122,7 +120,6 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
       /victoryVolume/,
       'volume/sets grid lives in VictoryStatsStrip'
     );
-    assert.match(src, /formatWorkoutVolumeDisplay/);
     assert.match(src, /workingReps/);
     assert.doesNotMatch(
       src,
@@ -150,7 +147,7 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     );
     assert.match(
       src,
-      /<\/details>\s*<\/div>\s*<div\s+data-testid="victory-next-dock"/,
+      /data-testid="victory-scroll"[\s\S]*<\/div>\s*<div\s+data-testid="victory-next-dock"/,
       'dock is a sibling after the scroll pane closes — not a child of it'
     );
     const dockAt = src.indexOf('data-testid="victory-next-dock"');

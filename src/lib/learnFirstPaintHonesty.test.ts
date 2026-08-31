@@ -16,15 +16,13 @@ test('Learn title first-paints Learn & Master', () => {
   assert.doesNotMatch(page, /learnTitle[\s\S]{0,40}defaultValue: 'Learn'/);
 });
 
-test('Learn chrome first-paints the pack', () => {
+test('Learn first paint is the intro, not a paths tour', () => {
   assert.match(page, /QuietLearnIntroCard/);
   assert.match(page, /Log a set\. Then Coach from those logs\./);
-  assert.match(page, /No paths match that search\./);
-  assert.match(page, /clear search to see all free paths/);
-  assert.match(page, /Open Guidebook →/);
-  assert.match(page, /Start Bodyweight Sample →/);
-  assert.match(page, /Open specialist courses →/);
-  const introAt = page.indexOf('<QuietLearnIntroCard');
-  const detailsAt = page.indexOf('<details');
-  assert.ok(introAt !== -1 && introAt < detailsAt, 'intro sits on first paint');
+  assert.doesNotMatch(page, /No paths match that search\./);
+  assert.doesNotMatch(page, /clear search to see all free paths/);
+  assert.doesNotMatch(page, /Open Guidebook →/);
+  assert.doesNotMatch(page, /Start Bodyweight Sample →/);
+  assert.doesNotMatch(page, /Open specialist courses →/);
+  assert.doesNotMatch(page, /<details\b/);
 });
