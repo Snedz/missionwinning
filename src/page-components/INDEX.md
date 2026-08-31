@@ -81,7 +81,7 @@
 | File | Route |
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — You leftover: quiet title + Account door. Identity / career / rewards / share stay off first paint. |
-| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
+| `ServerPage.tsx` | `/server` — quiet title first paint. Rooms / buddy list / chat stay off first paint. Not a Today tab. |
 | `AccountPage.tsx` | `/account` — sign-in / return / prefs first paint. Import / backup / pregnancy in More settings. Explore / help stay off first paint. |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
 | `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |

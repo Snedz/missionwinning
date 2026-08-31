@@ -830,7 +830,9 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /\.house-feedback textarea/);
   const garage = read('src/page-components/ServerPage.tsx');
   assert.match(garage, /className="house-garage p-6"/);
-  assert.match(garage, /className="house-garage space-y-4"/);
+  assert.doesNotMatch(garage, /<ChatWindow\b/);
+  assert.doesNotMatch(garage, /<BuddyList\b/);
+  assert.doesNotMatch(garage, /<PresenceControl\b/);
   const moreNav = read('src/components/house/houseNav.ts');
   assert.match(moreNav, /href: '\/feedback'/);
   assert.match(moreNav, /href: '\/server'/);
