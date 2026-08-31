@@ -68,8 +68,8 @@ test('missing or junk metrics never invent a pad', () => {
   );
 });
 
-test('HouseShell lifts the logger dock by that overlap', () => {
-  const layout = read('src/components/house/HouseShell.tsx');
+test('PathShell lifts the logger dock by that overlap', () => {
+  const layout = read('src/components/zero/PathShell.tsx');
   const hook = read('src/hooks/useVisualViewportKeyboardOverlap.ts');
   assert.match(layout, /useVisualViewportKeyboardOverlap/);
   assert.match(layout, /paddingBottom:\s*keyboardOverlap/);

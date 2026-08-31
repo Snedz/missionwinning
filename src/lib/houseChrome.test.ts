@@ -27,9 +27,10 @@ function walkHouse(): string[] {
     .map((n) => `src/components/house/${n}`);
 }
 
-test('app group layout mounts HouseShell, not AppLayout', () => {
+test('app group layout mounts PathShell, not House or AppLayout', () => {
   const src = read('app/(app)/layout.tsx');
-  assert.match(src, /HouseShell/);
+  assert.match(src, /PathShell/);
+  assert.doesNotMatch(src, /HouseShell/);
   assert.doesNotMatch(src, /AppLayout/);
 });
 

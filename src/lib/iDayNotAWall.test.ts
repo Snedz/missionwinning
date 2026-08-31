@@ -1,5 +1,5 @@
 /**
- * I-Day is a Skip, not a wall. Today and Train stay reachable without the academy.
+ * I-Day is a Skip, not a wall. Tracker paths stay reachable without the academy.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,16 +12,17 @@ const read = (rel: string) => readFileSync(path.join(root, rel), 'utf8');
 const stripComments = (src: string) =>
   src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
 
-test('Today and Train bypass I-Day; Coach does not', () => {
+test('Today, Train, Coach, and History bypass I-Day', () => {
   assert.equal(isJourneyBypassPath('/log'), true);
   assert.equal(isJourneyBypassPath('/log/'), true);
   assert.equal(isJourneyBypassPath('/active'), true);
   assert.equal(isJourneyBypassPath('/active/foo'), true);
-  assert.equal(isJourneyBypassPath('/coach'), false);
-  assert.equal(isJourneyBypassPath('/history'), false);
+  assert.equal(isJourneyBypassPath('/coach'), true);
+  assert.equal(isJourneyBypassPath('/history'), true);
   assert.ok(JOURNEY_BYPASS_PATHS.includes('/log'));
   assert.ok(JOURNEY_BYPASS_PATHS.includes('/active'));
-  assert.ok(!JOURNEY_BYPASS_PATHS.includes('/coach'));
+  assert.ok(JOURNEY_BYPASS_PATHS.includes('/coach'));
+  assert.ok(JOURNEY_BYPASS_PATHS.includes('/history'));
 });
 
 test('JourneyGuard still honors the bypass list before bouncing', () => {

@@ -1,6 +1,6 @@
 # src/components/house/
 
-> Signed-in product house — icon rail, desk, compose sidecar. Not AppLayout.
+> Parked house chrome. Signed-in layout is PathShell (`src/components/zero/`). Not AppLayout.
 
 | File | Purpose |
 |------|---------|

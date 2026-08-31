@@ -1,7 +1,7 @@
-import { HouseShell } from '@/components/house/HouseShell';
+import { PathShell } from '@/components/zero/PathShell';
 
 /**
- * Signed-in product house. Client-only auth/journey — no force-dynamic so Next
+ * Signed-in product chrome. Client-only auth/journey — no force-dynamic so Next
  * can stream/static-shell where possible (Lighthouse / cold path).
  */
 export default function AppGroupLayout({
@@ -9,5 +9,5 @@ export default function AppGroupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <HouseShell>{children}</HouseShell>;
+  return <PathShell>{children}</PathShell>;
 }

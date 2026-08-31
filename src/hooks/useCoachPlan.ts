@@ -66,13 +66,7 @@ export function useCoachPlan() {
     let existing = loadPlan();
 
     if (!existing) {
-      existing = generateWeek(ctx, weekStart, 1);
-      if (!tasterUsed) markTasterUsed();
-      savePlan(existing);
-      scheduleCoachPush();
-      track('coach_week_generated', { weekStart, premium: !!premium, auto: true });
-      if (premium) track('coach_premium_active', { weekStart });
-      setPlan(existing);
+      setPlan(null);
       return;
     }
 

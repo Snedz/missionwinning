@@ -71,10 +71,7 @@ const TODAY_TRAIN_ENTRIES = [
  * Chrome that wraps every signed-in paint, including Today and Train.
  * A ChatWindow here is a type-5 bubble on the log path.
  */
-const FIRST_PAINT_CHROME = [
-  'src/components/house/HouseShell.tsx',
-  'src/components/house/HouseIconRail.tsx',
-] as const;
+const FIRST_PAINT_CHROME = ['src/components/zero/PathShell.tsx'] as const;
 
 /**
  * Coach chat lives on /coach. C1 already walks src/lib/coach/. The hole
@@ -138,7 +135,7 @@ test('first-paint chrome does not import messenger', () => {
   assert.deepEqual(
     offenders,
     [],
-    `HouseShell wraps Today and Train. A messenger import here is a bubble on the log path.\n${offenders.join('\n')}`
+    `PathShell wraps Today and Train. A messenger import here is a bubble on the log path.\n${offenders.join('\n')}`
   );
   const ui = /ChatWindow|BuddyList|MessageComposer|PresenceControl|CoachChatPanel|from ['"]@\/components\/social/;
   for (const file of FIRST_PAINT_CHROME) {
@@ -149,11 +146,11 @@ test('first-paint chrome does not import messenger', () => {
 });
 
 test('outbox drain is a door, not a Today chat widget', () => {
-  const chain = reaches('src/components/house/HouseShell.tsx', CHAT_ROOTS, read, {
+  const chain = reaches('src/components/zero/PathShell.tsx', CHAT_ROOTS, read, {
     allow: FIRST_PAINT_DOORS,
   });
   assert.equal(chain, null, 'socialSync must stay terminal or the outbox looks like a chat bubble');
-  const withoutDoor = reaches('src/components/house/HouseShell.tsx', CHAT_ROOTS, read);
+  const withoutDoor = reaches('src/components/zero/PathShell.tsx', CHAT_ROOTS, read);
   assert.ok(
     withoutDoor?.some((p) => p.includes('socialSync') || p.includes('social/')),
     'sanity: without the door the walk still reaches social — the door is doing work'
@@ -180,7 +177,7 @@ test('isolation scan includes HomePage, ActiveWorkoutPage, today/, and first-pai
     TODAY_TRAIN_ENTRIES.some((f) => f.startsWith('src/components/today/')),
     'today/ widgets must be discovered, not listed'
   );
-  assert.ok(FIRST_PAINT_CHROME.includes('src/components/house/HouseShell.tsx'));
+  assert.ok(FIRST_PAINT_CHROME.includes('src/components/zero/PathShell.tsx'));
   assert.ok(COACH_CHAT_ENTRIES.includes('src/page-components/CoachPage.tsx'));
   assert.ok(
     COACH_CHAT_ENTRIES.some((f) => f.startsWith('src/components/coach/')),

@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1060-for-1075.md](./log/LOG-rotate-1060-for-1075.md) | rotated 2026-08-31 for `.1075` PathShell, not House (`.1060`) |
 | [log/LOG-rotate-1059-for-1074.md](./log/LOG-rotate-1059-for-1074.md) | rotated 2026-08-31 for `.1074` Legal is the policy (`.1059`) |
 | [log/LOG-rotate-1058-for-1073.md](./log/LOG-rotate-1058-for-1073.md) | rotated 2026-08-31 for `.1073` Help is the FAQ (`.1058`) |
 | [log/LOG-rotate-1057-for-1072.md](./log/LOG-rotate-1057-for-1072.md) | rotated 2026-08-31 for `.1072` Explore is the board (`.1057`) |

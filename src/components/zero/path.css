@@ -1,0 +1,79 @@
+/**
+ * Path chrome — word nav for Start / Log / Generate.
+ * Rooms still paint through house.css until the look hop remints them.
+ * Compact floor vs desktop side are two compositions, not one mock hidden.
+ */
+
+.mw-path {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.path-desktop {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+.path-canvas {
+  min-height: 100%;
+}
+
+.path-dock,
+.path-consent {
+  flex-shrink: 0;
+}
+
+.path-nav-floor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+  min-height: 44px;
+  border-top: 2px solid hsl(var(--border));
+  padding: 0 8px;
+}
+
+.path-nav-side {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 160px;
+  min-height: 0;
+  padding: 24px 8px;
+  border-right: 2px solid hsl(var(--border));
+  gap: 0;
+}
+
+.path-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font-weight: 500;
+  text-decoration: none;
+  color: hsl(var(--muted-foreground));
+  background: transparent;
+  border: 0;
+}
+
+.path-nav-link.is-on {
+  color: hsl(var(--foreground));
+  font-weight: 700;
+}
+
+.path-live-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-bottom: 2px solid hsl(var(--border));
+  flex-shrink: 0;
+}
+
+.path-live-name {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}

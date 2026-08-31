@@ -412,7 +412,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         const log: CompletedWorkoutLog = attachSessionNote(
           {
             id: `log-${Date.now()}`,
-            clientId: newClientId(),
+            clientId: activeWorkout.clientId ?? newClientId(),
             revision: 1,
             updatedAt: completedAt,
             workoutName: activeWorkout.workoutName,
