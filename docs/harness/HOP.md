@@ -5,19 +5,20 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: residual-set-table-empty-load-cell
-done_means: A completed weight-type empty-load cell prints BW, not 0.
-accept: npx tsx --test src/lib/workout/setTableEmptyLoadCell.test.ts
+ticket: train-no-week-writer
+done_means: /active does not mount useCoachPlan. generateWeek stays on /coach only. Today Start still writes then /active. Log set stays the filled press. Finish stays outline. Volume trim in Show all still works from a stored plan without minting a week.
+accept: npx tsx --test src/lib/coach/trainNoWeekWriter.test.ts
 test_written: yes
 
 ## progress
 
-Tests written first (4 red). Helper + SetLogTable wired. Tests 4/4.
+Honesty first. Chrome after red. Park leftover PR #889. Branch from master.
 
 ## decisions
 
-- Cites already print 8 × BW (.1017). Completed kg cell still painted raw 0.
-- New helper `formatCompletedWeightCell` — empty is BW; loaded barbell stays the number; plus-load extra stays BW+N.
-- Assisted 0 mute (`—`) is a later hop. Duration stays Time.
-- Display only. Today one Start. Not a letter. VISION stays ready-for-founder.
-- Stamp `.1025` from master `.1024` (`72685e9b`). History volume `.1024` / citation `.1023` / heatmap `.1022` stay.
+- From-zero hop 1: Train is the logger, not a week writer.
+- Do not mount useCoachPlan on /active (that hook auto-generateWeeks).
+- Volume trim reads/writes the stored plan only.
+- Not I-Day. Not Today first-rooms. Not Victory leftover. Not a letter.
+- Stamp `.1058` from master `.1057`. Leftover PR #889 stays parked at its own `.1058`.
+- `[skip vercel]`. Do not merge. Do not promote. PRIVATE_MODE on. Live www stays `.696`.

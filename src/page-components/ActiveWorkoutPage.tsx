@@ -48,7 +48,7 @@ import {
   markSessionCheckInSkipped,
 } from '@/components/workout/SessionCheckInSheet';
 import { needsHardSessionWarning } from '@/lib/workout/hardSession';
-import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { hasStoredWeekPlan, trimTodayVolume } from '@/lib/coach/trimTodayVolume';
 import {
   assembleActiveVictory,
   finishBlockedReason,
@@ -116,7 +116,7 @@ export function ActiveWorkoutPage() {
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const step = weightStep(units);
-  const { adjustToday, plan } = useCoachPlan();
+  const storedWeekPlan = hasStoredWeekPlan();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
@@ -609,7 +609,7 @@ export function ActiveWorkoutPage() {
       sessionNote,
       units,
       goalId,
-      hasCoachPlan: !!plan,
+      hasCoachPlan: storedWeekPlan,
       resolveExerciseName: (id) => exerciseDisplayName(id) || id.replace(/-/g, ' '),
     });
     setDebrief(assembled.debrief);
@@ -943,8 +943,8 @@ export function ActiveWorkoutPage() {
             readinessBefore={readinessBefore}
             readinessAfter={readinessAfter}
             offerVolumeTrim={offerVolumeTrim}
-            hasPlan={!!plan}
-            onReduceVolume={() => adjustToday({ type: 'readiness' })}
+            hasPlan={storedWeekPlan}
+            onReduceVolume={() => trimTodayVolume(workoutHistory)}
             onDismissOffer={() => setOfferVolumeTrim(false)}
             toast={toast}
           />

@@ -30,6 +30,7 @@
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
 12. `rng.ts` — `mulberry32`, `hashString` (deterministic variety)
 13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group; scales `loadPct`)
+13b. `trimTodayVolume.ts` — Show-all readiness trim from the stored week. Does not call `generateWeek`. Train must not mount `useCoachPlan`.
 14. Related: `src/lib/coachChatServer.ts` — premium chat ReAct + retrieve + parse (API `/api/coach/chat`)
 15. Related load math: `src/lib/workout/percentLoad.ts` — e1RM → weight from `loadPct`
 
@@ -59,6 +60,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
 | `weekDiff.test.ts` | H-02: engine session-count change + citation on the existing banner slot |
 | `sessionRationale.test.ts` | Log-cited why-this-session (or honest empty) + boss-card / grid wiring; why never paywalled |
+| `trainNoWeekWriter.test.ts` | `/active` does not import `useCoachPlan`; volume trim never calls `generateWeek` |
 
 ## Tests (colocated)
 
