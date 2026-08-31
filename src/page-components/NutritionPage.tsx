@@ -4,64 +4,31 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight, UtensilsCrossed } from 'lucide-react';
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
 import { isNonFoodEntryName } from '@/lib/pillarLog';
 import { syncProteinChallengeFromNutrition } from '@/lib/challenges';
-import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
-import type { Recipe } from '@/data/recipes/types';
-import { usePremium } from '@/hooks/usePremium';
-import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { FuelLogSheet, type MealType } from '@/components/nutrition/FuelLogSheet';
-import { FuelMacroOverview } from '@/components/nutrition/FuelMacroOverview';
-import { FuelQuickLogPanel } from '@/components/nutrition/FuelQuickLogPanel';
-import { FuelMoreTools } from '@/components/nutrition/FuelMoreTools';
 import { FuelTodayLogCard, type FuelLogEntry } from '@/components/nutrition/FuelTodayLogCard';
-import { FuelRecipesPanel } from '@/components/nutrition/FuelRecipesPanel';
-import { FuelTargetsEditor } from '@/components/nutrition/FuelTargetsEditor';
-import { FuelGoalWizard } from '@/components/nutrition/FuelGoalWizard';
-import { FuelAdaptBanner } from '@/components/nutrition/FuelAdaptBanner';
-import { estimateMealFromDescription } from '@/lib/nlMealLog';
-import { listMealPresets, saveMealPreset, type SavedMealPreset } from '@/lib/savedMeals';
-import { bumpFuelLogStreak, getFuelLogStreak } from '@/lib/fuelStreak';
+import { saveMealPreset } from '@/lib/savedMeals';
+import { bumpFuelLogStreak } from '@/lib/fuelStreak';
 import {
   DEFAULT_QUICK_FOODS,
   getFrequentQuickFoods,
-  getRecentFoods,
-  getYesterdayEntries,
   parseNutritionLog,
   pruneNutritionLogToDays,
   mergeTodayIntoNutritionLog,
-  summarizeNutritionDays,
 } from '@/lib/nutritionQuickLog';
-import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
-import { FuelWeightStrip } from '@/components/nutrition/FuelWeightStrip';
-import { FuelPastDaysCard } from '@/components/nutrition/FuelPastDaysCard';
-import { FuelRestockCard } from '@/components/nutrition/FuelRestockCard';
-import {
-  defaultRestockWeekStart,
-  loadFuelRestockExtras,
-} from '@/lib/fuelRestock';
-import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
-import {
-  adaptDeltaSummary,
-  loadFuelAdaptEnabled,
-  resolveFuelDayTargets,
-  saveFuelAdaptEnabled,
-} from '@/lib/fuelDayAdapt';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { UtensilsCrossed } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { ScreenDock } from '@/components/layout/ScreenDock';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/hooks/use-toast';
-import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
+import { readRaw, writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { formatLocalClockTime, localDateKey } from '@/lib/time/localDate';
-import { getContentInventory } from '@/lib/contentInventory';
-import { isFreeBeta } from '@/lib/freeBeta';
 
-const freeRecipes = FREE_RECIPES;
 const QUICK_FOODS = DEFAULT_QUICK_FOODS;
 
 type LogEntry = FuelLogEntry;
@@ -69,19 +36,7 @@ type LogEntry = FuelLogEntry;
 export function NutritionPage() {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { premium } = usePremium();
-  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
-  const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
-  const [premiumFetchError, setPremiumFetchError] = useState(false);
-  const [premiumRetry, setPremiumRetry] = useState(0);
-  /** Base targets (edited/saved); rings use adapted values when train-match is on. */
-  const [targetCals, setTargetCals] = useState(DEFAULT_MACRO_TARGETS.cals);
-  const [targetProtein, setTargetProtein] = useState(DEFAULT_MACRO_TARGETS.protein);
-  const [targetCarbs, setTargetCarbs] = useState(DEFAULT_MACRO_TARGETS.carbs);
-  const [targetFat, setTargetFat] = useState(DEFAULT_MACRO_TARGETS.fat);
-  const [adaptEnabled, setAdaptEnabled] = useState(true);
   const [logged, setLogged] = useState<LogEntry[]>([]);
-  const [water, setWater] = useState(0);
   const [customName, setCustomName] = useState('');
   const [customP, setCustomP] = useState(20);
   const [customC, setCustomC] = useState(200);
@@ -96,51 +51,14 @@ export function NutritionPage() {
     if (h < 20) return 'dinner';
     return 'snack';
   });
-  const [fuelStreak, setFuelStreak] = useState(0);
-  const [nlMealText, setNlMealText] = useState('');
-  const [nlPreview, setNlPreview] = useState<ReturnType<typeof estimateMealFromDescription>>(null);
-
-  const [savedMeals, setSavedMeals] = useState<SavedMealPreset[]>(() =>
-    typeof window !== 'undefined' ? listMealPresets() : []
-  );
   const [allLogs, setAllLogs] = useState(() =>
     parseNutritionLog(readRaw(STORAGE_KEYS.nutritionLog))
   );
 
   const today = localDateKey();
-  const recentFoods = getRecentFoods(allLogs, today, 6);
   const frequentFoods = getFrequentQuickFoods(allLogs, QUICK_FOODS);
-  const yesterdayMeals = getYesterdayEntries(allLogs, today);
-
-  const dayAdapt = useMemo(
-    () =>
-      resolveFuelDayTargets(
-        {
-          cals: targetCals,
-          protein: targetProtein,
-          carbs: targetCarbs,
-          fat: targetFat,
-        },
-        workoutHistory,
-        { todayIso: today, adapt: adaptEnabled }
-      ),
-    [targetCals, targetProtein, targetCarbs, targetFat, workoutHistory, today, adaptEnabled]
-  );
-  const dayTargets = dayAdapt.targets;
-  const adaptDelta = dayAdapt.isAdapted
-    ? adaptDeltaSummary(dayAdapt.base, dayAdapt.targets)
-    : undefined;
 
   useEffect(() => {
-    setAdaptEnabled(loadFuelAdaptEnabled());
-    const savedTargets = loadMacroTargets();
-    if (savedTargets) {
-      setTargetCals(savedTargets.cals);
-      setTargetProtein(savedTargets.protein);
-      setTargetCarbs(savedTargets.carbs ?? DEFAULT_MACRO_TARGETS.carbs);
-      setTargetFat(savedTargets.fat ?? DEFAULT_MACRO_TARGETS.fat);
-    }
-
     const saved = readRaw(STORAGE_KEYS.nutritionLog);
     if (saved) {
       const rawParsed = parseNutritionLog(saved);
@@ -163,21 +81,21 @@ export function NutritionPage() {
           }))
       );
     }
-    const savedWater = readRaw(STORAGE_KEYS.water);
-    if (savedWater) setWater(parseInt(savedWater));
 
     getUser().then((u) => {
       if (u) {
         getUserNutritionForDate(today).then((cloud) => {
           if (cloud.length > 0) {
-            const mapped = cloud.map((c) => ({
-              name: c.name,
-              protein: c.protein,
-              cals: c.cals,
-              carbs: c.carbs,
-              fat: c.fat,
-              time: formatLocalClockTime(),
-            }));
+            const mapped = cloud
+              .filter((c) => !isNonFoodEntryName(c.name))
+              .map((c) => ({
+                name: c.name,
+                protein: c.protein,
+                cals: c.cals,
+                carbs: c.carbs,
+                fat: c.fat,
+                time: formatLocalClockTime(),
+              }));
             setLogged((prev) => {
               const combined = [...prev, ...mapped.filter((m) => !prev.some((p) => p.name === m.name))];
               return combined;
@@ -187,42 +105,6 @@ export function NutritionPage() {
       }
     });
   }, [today]);
-
-  useEffect(() => {
-    if (!premium) {
-      setPremiumRecipes([]);
-      setPremiumFetchError(false);
-      return;
-    }
-    setPremiumFetchError(false);
-    fetchPremiumCatalogJson<{ recipes?: Recipe[] }>('/api/premium/recipes')
-      .then((data) => setPremiumRecipes(data.recipes ?? []))
-      .catch(() => {
-        setPremiumRecipes([]);
-        setPremiumFetchError(true);
-        toast({
-          title: isFreeBeta()
-            ? t('fuelPremiumFetchFailedOpenBeta', {
-                defaultValue: 'Could not load extra recipes',
-              })
-            : t('fuelPremiumFetchFailed', {
-                defaultValue: 'Could not load premium recipes',
-              }),
-          description: t('fuelPremiumFetchFailedDesc', {
-            defaultValue: 'Free recipes still work. Check your connection and try again.',
-          }),
-          variant: 'destructive',
-        });
-      });
-  }, [premium, premiumRetry, t, toast]);
-
-  useEffect(() => {
-    setFuelStreak(getFuelLogStreak());
-  }, [logged]);
-
-  useEffect(() => {
-    writeRaw(STORAGE_KEYS.water, water.toString());
-  }, [water]);
 
   /** Single writer: merge today's list into full history + device storage. */
   useEffect(() => {
@@ -266,7 +148,7 @@ export function NutritionPage() {
       time: formatLocalClockTime(),
     };
     setLogged((prev) => [...prev, entry]);
-    setFuelStreak(bumpFuelLogStreak());
+    bumpFuelLogStreak();
     syncProteinChallengeFromNutrition();
     if (!opts?.quiet) {
       toast({
@@ -320,7 +202,6 @@ export function NutritionPage() {
         defaultValue: `${label} · ${next.protein}g protein · ${next.cals} kcal`,
       }),
     });
-    // Best-effort append of corrected macros for signed-in users (API is insert-only).
     getUser().then((u) => {
       if (!u) return;
       saveNutritionEntry({
@@ -337,97 +218,6 @@ export function NutritionPage() {
 
   const clearDay = () => {
     setLogged([]);
-    setWater(0);
-  };
-
-  const handleNlMealTextChange = (text: string) => {
-    setNlMealText(text);
-    setNlPreview(estimateMealFromDescription(text));
-  };
-
-  const handleLogNlMeal = (draft: {
-    name: string;
-    protein: number;
-    cals: number;
-    carbs: number;
-    fat: number;
-  }) => {
-    if (!draft.name.trim()) return;
-    addEntry(draft.name.trim(), draft.protein, draft.cals, draft.carbs, draft.fat);
-    setNlMealText('');
-    setNlPreview(null);
-  };
-
-  const handleRepeatYesterday = () => {
-    for (const m of yesterdayMeals) {
-      addEntry(
-        m.name,
-        m.protein,
-        m.cals,
-        m.carbs ?? 0,
-        m.fat ?? 0,
-        (m.meal as MealType) ?? activeMeal,
-        { quiet: true }
-      );
-    }
-    if (yesterdayMeals.length > 0) {
-      toast({
-        title: t('fuelCopiedDay', { defaultValue: 'Copied to today' }),
-        description: t('fuelCopiedDayDesc', {
-          count: yesterdayMeals.length,
-          defaultValue: `${yesterdayMeals.length} meals added — edit anything that changed.`,
-        }),
-      });
-    }
-  };
-
-  const handleCopyDayToToday = (
-    rows: { name: string; protein: number; cals: number; carbs?: number; fat?: number; meal?: string }[]
-  ) => {
-    let added = 0;
-    for (const m of rows) {
-      const already = logged.some(
-        (l) =>
-          l.name.trim().toLowerCase() === m.name.trim().toLowerCase() &&
-          l.protein === m.protein &&
-          l.cals === m.cals
-      );
-      if (already) continue;
-      addEntry(
-        m.name,
-        m.protein,
-        m.cals,
-        m.carbs ?? 0,
-        m.fat ?? 0,
-        (m.meal as MealType) || activeMeal,
-        { quiet: true }
-      );
-      added += 1;
-    }
-    toast({
-      title: t('fuelCopiedDay', { defaultValue: 'Copied to today' }),
-      description:
-        added === 0
-          ? t('fuelCopiedDayNone', {
-              defaultValue: 'Those meals are already on today.',
-            })
-          : t('fuelCopiedDayDesc', {
-              count: added,
-              defaultValue: `${added} meals added — edit anything that changed.`,
-            }),
-    });
-  };
-
-  const totalProtein = logged.reduce((s, l) => s + l.protein, 0);
-  const totalCals = logged.reduce((s, l) => s + l.cals, 0);
-  const totalCarbs = logged.reduce((s, l) => s + (l.carbs || 0), 0);
-  const totalFat = logged.reduce((s, l) => s + (l.fat || 0), 0);
-  const carbsTarget = Math.max(1, dayTargets.carbs);
-  const fatTarget = Math.max(1, dayTargets.fat);
-
-  const handleToggleAdapt = (on: boolean) => {
-    setAdaptEnabled(on);
-    saveFuelAdaptEnabled(on);
   };
 
   const loadCloudNutrition = async () => {
@@ -435,9 +225,6 @@ export function NutritionPage() {
     if (u) {
       const cloud = await getUserNutritionForDate(today);
       if (cloud.length > 0) {
-        // `nutrition_entries` is shared with pillar wins and assessments, which arrive
-        // at 0g / 0 kcal. Without this the food diary listed things like
-        // "track win: GPS 5.20 km" as a meal. See isNonFoodEntryName.
         const food = cloud.filter((c) => !isNonFoodEntryName(c.name));
         const mapped = food.map((c) => ({
           name: c.name,
@@ -455,210 +242,81 @@ export function NutritionPage() {
     }
   };
 
-  const weekDays = summarizeNutritionDays(allLogs, today, 7);
-  const inv = getContentInventory();
+  const totalProtein = logged.reduce((s, l) => s + l.protein, 0);
+  const totalCals = logged.reduce((s, l) => s + l.cals, 0);
+  const fuelEyebrow = t('fuelEyebrow', { defaultValue: 'Fuel' });
 
   return (
     <PillarPageShell
-      className="house-fuel max-w-3xl pb-8"
+      className="house-fuel max-w-3xl pb-24"
       icon={UtensilsCrossed}
-      eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
+      eyebrow={fuelEyebrow}
       title={t('fuelTitle', { defaultValue: 'Nutrition' })}
       subtitle={t('fuelSubtitleBrief', {
-        defaultValue: 'Log meals on this device. Targets and recipes when you need them.',
+        defaultValue: 'Log meals on this device.',
       })}
-      headerActions={
-        fuelStreak > 0 ? (
-          <span className="house-kicker shrink-0 tabular-nums">
-            {t('fuelLogStreak', {
-              count: fuelStreak,
-              defaultValue: `${fuelStreak}-day log streak`,
-            })}
-          </span>
-        ) : undefined
-      }
     >
-      <FuelMacroOverview
-        totalCals={totalCals}
-        targetCals={dayTargets.cals}
-        totalProtein={totalProtein}
-        targetProtein={dayTargets.protein}
-        totalCarbs={totalCarbs}
-        carbsTarget={carbsTarget}
-        totalFat={totalFat}
-        fatTarget={fatTarget}
-        water={water}
-      />
-
-      <div id="fuel-log" className="scroll-mt-20 space-y-4">
-        <FuelQuickLogPanel
-          mode="notepad"
-          activeMeal={activeMeal}
-          onActiveMealChange={setActiveMeal}
-          mealLabel={mealLabel}
-          nlMealText={nlMealText}
-          onNlMealTextChange={handleNlMealTextChange}
-          nlPreview={nlPreview}
-          onLogNlMeal={handleLogNlMeal}
-          recentFoods={recentFoods}
-          frequentFoods={frequentFoods}
-          onQuickLog={addEntry}
-          savedMeals={savedMeals}
-          onOpenLogSheet={() => setLogSheetOpen(true)}
-          water={water}
-          onWaterChange={setWater}
-          yesterdayMeals={yesterdayMeals}
-          onRepeatYesterday={handleRepeatYesterday}
+      {logged.length === 0 ? (
+        <EmptyState
+          className="house-empty"
+          icon={UtensilsCrossed}
+          title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
+          description={t('fuelNoEntries', {
+            defaultValue: 'Log a meal on this device. Review macros before logging.',
+          })}
         />
-      </div>
-
-      <FuelTodayLogCard
-        logged={logged}
-        totalProtein={totalProtein}
-        totalCals={totalCals}
-        cloudStatus={cloudStatus}
-        mealLabel={mealLabel}
-        onClearDay={clearDay}
-        onRemoveEntry={(index) => {
-          setLogged((prev) => prev.filter((_, i) => i !== index));
-        }}
-        onUpdateEntry={updateEntry}
-        onLoadCloud={async () => {
-          setCloudStatus(t('fuelCloudLoading', { defaultValue: 'Loading...' }));
-          await loadCloudNutrition();
-          setCloudStatus(t('fuelCloudLoaded', { defaultValue: 'Cloud loaded (signed-in only)' }));
-          setTimeout(() => setCloudStatus(''), 1800);
-        }}
-        onSaveMeal={(l) => {
-          setSavedMeals(
+      ) : (
+        <FuelTodayLogCard
+          logged={logged}
+          totalProtein={totalProtein}
+          totalCals={totalCals}
+          cloudStatus={cloudStatus}
+          mealLabel={mealLabel}
+          onClearDay={clearDay}
+          onRemoveEntry={(index) => {
+            setLogged((prev) => prev.filter((_, i) => i !== index));
+          }}
+          onUpdateEntry={updateEntry}
+          onLoadCloud={async () => {
+            setCloudStatus(t('fuelCloudLoading', { defaultValue: 'Loading...' }));
+            await loadCloudNutrition();
+            setCloudStatus(t('fuelCloudLoaded', { defaultValue: 'Cloud loaded (signed-in only)' }));
+            setTimeout(() => setCloudStatus(''), 1800);
+          }}
+          onSaveMeal={(l) => {
             saveMealPreset({
               name: l.name,
               protein: l.protein,
               cals: l.cals,
               carbs: l.carbs,
               fat: l.fat,
-            })
-          );
-        }}
-      />
+            });
+          }}
+        />
+      )}
 
-      <details className="house-card group">
-        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-          {t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
-        </summary>
-        <div className="space-y-4 border-t-2 border-border p-4">
-          <FuelQuickLogPanel
-            mode="tools"
-            activeMeal={activeMeal}
-            onActiveMealChange={setActiveMeal}
-            mealLabel={mealLabel}
-            nlMealText={nlMealText}
-            onNlMealTextChange={handleNlMealTextChange}
-            nlPreview={nlPreview}
-            onLogNlMeal={handleLogNlMeal}
-            recentFoods={[]}
-            frequentFoods={frequentFoods}
-            onQuickLog={addEntry}
-            savedMeals={savedMeals}
-            onOpenLogSheet={() => setLogSheetOpen(true)}
-            water={water}
-            onWaterChange={setWater}
-            yesterdayMeals={yesterdayMeals}
-            onRepeatYesterday={handleRepeatYesterday}
-          />
-          <FuelAdaptBanner
-            load={dayAdapt.load}
-            isAdapted={dayAdapt.isAdapted}
-            note={dayAdapt.note}
-            deltaSummary={adaptDelta}
-            adaptEnabled={adaptEnabled}
-            onToggleAdapt={handleToggleAdapt}
-          />
-          <FuelTargetsEditor
-            targetCals={targetCals}
-            targetProtein={targetProtein}
-            targetCarbs={targetCarbs}
-            targetFat={targetFat}
-            onSaved={(next) => {
-              setTargetCals(next.cals);
-              setTargetProtein(next.protein);
-              setTargetCarbs(next.carbs);
-              setTargetFat(next.fat);
-            }}
-          />
-          <FuelGoalWizard
-            onApplied={(next) => {
-              setTargetCals(next.cals);
-              setTargetProtein(next.protein);
-              setTargetCarbs(next.carbs);
-              setTargetFat(next.fat);
-              toast({
-                title: t('fuelGoalApplied', { defaultValue: 'Goal targets applied' }),
-                description: t('fuelGoalAppliedDesc', {
-                  cals: next.cals,
-                  protein: next.protein,
-                  defaultValue: `${next.cals} kcal · ${next.protein}g protein`,
-                }),
-              });
-            }}
-          />
-          <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
-          <FuelRestockCard
-            logs={allLogs}
-            todayIso={today}
-            weekStart={defaultRestockWeekStart(today)}
-            recipes={[...freeRecipes, ...premiumRecipes]}
-            initialTypedText={loadFuelRestockExtras()}
-          />
-          <FuelWeightStrip todayIso={today} />
-          <FuelMoreTools onLogFood={addEntry} />
-          <FuelRecipesPanel
-            freeRecipes={freeRecipes}
-            premium={premium}
-            premiumRecipes={premiumRecipes}
-            premiumFetchError={premiumFetchError}
-            onRetryPremium={() => setPremiumRetry((n) => n + 1)}
-            onLogRecipe={(draft) =>
-              addEntry(draft.name, draft.protein, draft.cals, draft.carbs, draft.fat)
-            }
-          />
-          {isFreeBeta() ? (
-            <p className="text-xs text-muted-foreground">
-              {t('fuelSubtitleDepthBeta', {
-                free: inv.recipes.free,
-                unlocked: inv.unlockedTotal.recipes,
-                defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in Alpha.`,
-              })}
-            </p>
-          ) : (
-            <p className="text-xs text-muted-foreground">
-              {t('fuelSubtitleDepthPaid', {
-                free: inv.recipes.free,
-                premium: inv.recipes.premium,
-                defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more.`,
-              })}
-            </p>
-          )}
-          <FuelPastDaysCard
-            logs={allLogs}
-            todayIso={today}
-            onCopyDayToToday={handleCopyDayToToday}
-          />
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {t('fuelLocalNote', {
-              defaultValue:
-                'Meals stay on this device. Sign in anytime to sync across phones and the web.',
+      <ScreenDock>
+        <div className="house-generate-dock">
+          <p className="house-kicker">{fuelEyebrow}</p>
+          <p className="house-lede">
+            {t('fuelNoEntries', {
+              defaultValue: 'Log a meal on this device. Review macros before logging.',
             })}
           </p>
-          <SignInPrompt
-            className="mt-2"
-            nextPath="/nutrition"
-            description={t('fuelSignInDesc', {
-              defaultValue: 'Sync meals and macro history across devices.',
-            })}
-          />
+          <button
+            type="button"
+            id="fuel-log"
+            onClick={() => setLogSheetOpen(true)}
+            className="house-btn house-btn-primary primary-action min-h-[52px] w-full tap-target"
+            data-testid="fuel-log-dock"
+          >
+            <span className="flex-1 text-start">
+              {t('fuelLogMeal', { defaultValue: 'Log meal' })}
+            </span>
+            <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+          </button>
         </div>
-      </details>
+      </ScreenDock>
 
       <FuelLogSheet
         open={logSheetOpen}

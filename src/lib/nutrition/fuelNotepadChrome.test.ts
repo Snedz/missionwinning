@@ -1,6 +1,6 @@
 /**
- * Fuel first paint is a notepad: remaining, type, today's lines.
- * Recipes, week, wizard, FAB are the house — they live in Show all.
+ * Fuel first paint is the log, not remaining / notepad / recipes.
+ * The unmounted notepad widget still owns the type field.
  */
 
 import { test } from 'node:test';
@@ -12,31 +12,24 @@ const root = path.join(import.meta.dirname, '..', '..', '..');
 const page = () =>
   readFileSync(path.join(root, 'src/page-components/NutritionPage.tsx'), 'utf8');
 
-test('Fuel opens remaining then type-in then today — not recipes first', () => {
+test('Fuel first paint is empty + Log meal, or today\'s meals — not remaining then type', () => {
   const src = page();
   const jsx = src.slice(src.lastIndexOf('return ('));
-  const macro = jsx.indexOf('<FuelMacroOverview');
-  const typeIn = jsx.indexOf('<FuelQuickLogPanel');
-  const today = jsx.indexOf('<FuelTodayLogCard');
-  assert.ok(macro !== -1 && typeIn !== -1 && today !== -1, 'notepad pieces missing');
-  assert.ok(macro < typeIn && typeIn < today, 'order is remaining → type → today');
+  assert.doesNotMatch(jsx, /<FuelMacroOverview\b/);
+  assert.doesNotMatch(jsx, /<FuelQuickLogPanel\b/);
+  assert.match(jsx, /<FuelTodayLogCard\b/);
+  assert.match(jsx, /data-testid="fuel-log-dock"/);
 });
 
-test('the Fuel house door first-paints Search, barcode & recipes, not Show all', () => {
+test('Fuel does not leftover the Search, barcode & recipes house door', () => {
   const src = page();
-  assert.match(src, /fuelShowMore/);
-  assert.match(src, /defaultValue: 'Search, barcode & recipes'/);
-  assert.doesNotMatch(
-    src,
-    /fuelShowMore[\s\S]{0,80}defaultValue: 'Show all'/,
-    'packs win — Show all hydrates into the Fuel lecture'
-  );
+  assert.doesNotMatch(src, /fuelShowMore/);
+  assert.doesNotMatch(src, /defaultValue: 'Search, barcode & recipes'/);
 });
 
-test('the nutrition house is behind Show all, not on first paint', () => {
+test('the nutrition house stays off first paint', () => {
   const src = page();
   const jsx = src.slice(src.lastIndexOf('return ('));
-  const open = jsx.split('<details')[0];
   for (const name of [
     'FuelGoalWizard',
     'FuelRecipesPanel',
@@ -47,20 +40,19 @@ test('the nutrition house is behind Show all, not on first paint', () => {
     'FuelAdaptBanner',
     'SignInPrompt',
   ]) {
-    assert.doesNotMatch(open, new RegExp(`<${name}\\b`), `${name} is on first paint`);
+    assert.doesNotMatch(jsx, new RegExp(`<${name}\\b`), `${name} is leftover on Fuel`);
   }
-  assert.match(jsx, /<details/);
-  assert.match(jsx, /<FuelRecipesPanel\b/);
-  assert.match(jsx, /<SignInPrompt\b/);
+  assert.doesNotMatch(jsx, /<details\b/);
 });
 
-test('Fuel has no floating Log food — the notepad is the action', () => {
+test('Fuel has no floating Log food — the dock is the action', () => {
   const src = page();
   assert.doesNotMatch(src, /fuelLogFab/);
   assert.doesNotMatch(src, /fixed bottom-\[calc\(56px/);
+  assert.match(src, /data-testid="fuel-log-dock"/);
 });
 
-test('the type field is the notepad', () => {
+test('the type field is the unmounted notepad', () => {
   const src = readFileSync(
     path.join(root, 'src/components/nutrition/FuelQuickLogPanel.tsx'),
     'utf8'

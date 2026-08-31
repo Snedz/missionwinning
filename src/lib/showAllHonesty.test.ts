@@ -1,9 +1,10 @@
 /**
  * House Show all is Show all.
  *
- * Fuel owns `fuelShowMore` = Search, barcode & recipes. Train, Coach,
+ * Fuel used to own `fuelShowMore` = Search, barcode & recipes. Train, Coach,
  * Mind, Victory, History, Library, and Builder reused that key with
  * defaultValue Show all. Packs win, so the house door lectured.
+ * Leftover-fuel unmounted that door from /nutrition.
  */
 
 import { test } from 'node:test';
@@ -29,16 +30,13 @@ const PRODUCT = [...walk(path.join(root, 'src')), ...walk(path.join(root, 'app')
 
 const FUEL_HOUSE = 'src/page-components/NutritionPage.tsx';
 
-test('only Fuel uses fuelShowMore', () => {
-  const offenders = PRODUCT.filter((f) => {
-    if (f === FUEL_HOUSE) return false;
-    return /fuelShowMore/.test(read(f));
-  });
+test('Fuel does not leftover fuelShowMore', () => {
+  const offenders = PRODUCT.filter((f) => /fuelShowMore/.test(read(f)));
   assert.deepEqual(
     offenders,
     [],
-    'fuelShowMore is the Fuel house door (Search, barcode & recipes). ' +
+    'fuelShowMore is leftover Fuel Show more. ' +
       `Offenders: ${offenders.join(', ') || 'none'}`
   );
-  assert.match(read(FUEL_HOUSE), /fuelShowMore/, 'Fuel still owns its house door');
+  assert.doesNotMatch(read(FUEL_HOUSE), /fuelShowMore/, 'Fuel first paint is the log');
 });

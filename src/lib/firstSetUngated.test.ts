@@ -124,10 +124,10 @@ describe('firstSetUngated wiring', () => {
     }
   });
 
-  it('Fuel still mounts SignInPrompt — .697 fail-open stays off Train', () => {
+  it('Fuel does not leftover SignInPrompt — .697 fail-open stays off Train', () => {
     const fuel = read('src/page-components/NutritionPage.tsx');
-    assert.match(fuel, SIGNIN_PROMPT_JSX);
-    assert.match(fuel, SIGNIN_PROMPT_IMPORT);
+    assert.doesNotMatch(fuel, SIGNIN_PROMPT_JSX);
+    assert.doesNotMatch(fuel, SIGNIN_PROMPT_IMPORT);
   });
 
   it('HeaderAuthChip uses the predicate and skips getUser when hidden', () => {

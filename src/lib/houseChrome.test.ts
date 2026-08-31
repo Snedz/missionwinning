@@ -683,9 +683,11 @@ test('house design system is the signed-in token table', () => {
   assert.match(profile, /className="house-profile"/);
   assert.match(profile, /house-btn house-btn-ghost/);
   const fuel = read('src/page-components/NutritionPage.tsx');
-  assert.match(fuel, /className="house-fuel max-w-3xl pb-8"/);
+  assert.match(fuel, /className="house-fuel max-w-3xl pb-24"/);
+  assert.match(fuel, /className="house-empty"/);
+  assert.match(fuel, /data-testid="fuel-log-dock"/);
   assert.match(fuel, /id="fuel-log"/);
-  assert.match(fuel, /className="house-card group"/);
+  assert.doesNotMatch(fuel, /className="house-card group"/);
   const notepad = read('src/components/nutrition/FuelQuickLogPanel.tsx');
   const notepadSlice = notepad.slice(
     notepad.indexOf('data-testid="fuel-notepad"'),
@@ -706,7 +708,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(notepadSlice, /text-primary/);
   assert.match(css, /\.house-fuel \.house-fuel-notepad \.house-field \{[^}]*--house-line/);
   assert.match(css, /\.house-fuel \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Fuel first-paint notepad is house leftover/);
+  assert.match(spec, /Empty is house-empty \+ Log meal dock/);
   const todayLog = read('src/components/nutrition/FuelTodayLogCard.tsx');
   assert.match(todayLog, /house-card house-fuel-today/);
   assert.match(todayLog, /house-fuel-today-name/);
@@ -720,7 +722,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(todayLog, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-today \{[^}]*--house-/);
   assert.match(css, /\.house-fuel \.house-fuel-meal \{[^}]*--house-line/);
-  assert.match(spec, /Fuel first-paint today log is house leftover/);
+  assert.match(spec, /Today's meals are the log/);
   const macro = read('src/components/nutrition/FuelMacroOverview.tsx');
   assert.match(macro, /house-card house-fuel-macro/);
   assert.match(macro, /house-fuel-macro-num/);
@@ -732,7 +734,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(macro, /house-btn-primary/);
   assert.doesNotMatch(macro, /primary-action/);
   assert.match(css, /\.house-fuel \.house-fuel-macro \{[^}]*--house-ink/);
-  assert.match(spec, /Fuel first-paint remaining is house leftover/);
+  assert.match(spec, /Remaining \/ notepad \/ Show more/);
   const move = read('src/page-components/MovePage.tsx');
   assert.match(move, /className="house-move"/);
   const moveFlows = move.slice(

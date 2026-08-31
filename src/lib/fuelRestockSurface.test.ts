@@ -46,17 +46,10 @@ describe('restock surface lock', () => {
     }
   });
 
-  it('Fuel restock card is inside Show more only', () => {
+  it('Fuel restock card stays off /nutrition', () => {
     const page = read('src/page-components/NutritionPage.tsx');
-    const detailsAt = page.indexOf('<details');
-    const restockAt = page.indexOf('<FuelRestockCard');
-    assert.notEqual(detailsAt, -1, 'Fuel still owns a Show more house');
-    assert.notEqual(restockAt, -1, 'Fuel restock is wired');
-    assert.ok(
-      restockAt > detailsAt,
-      'FuelRestockCard JSX must sit inside Show more, not first paint'
-    );
-    assert.doesNotMatch(page, /primary-action/);
+    assert.doesNotMatch(page, /<FuelRestockCard\b/);
+    assert.doesNotMatch(page, /<details\b/);
     assert.doesNotMatch(page, /amazon\.com|place order|whole foods/i);
   });
 

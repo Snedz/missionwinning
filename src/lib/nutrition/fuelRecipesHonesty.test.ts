@@ -14,11 +14,12 @@ test('FuelRecipesPanel uses EmptyState + ErrorState for empty/error paths', () =
   assert.match(src, /onRetryPremium/);
 });
 
-test('NutritionPage wires premium recipe retry', () => {
+test('NutritionPage does not leftover premium recipe retry', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', '..', 'page-components', 'NutritionPage.tsx'),
     'utf8'
   );
-  assert.match(src, /onRetryPremium/);
-  assert.match(src, /premiumRetry/);
+  assert.doesNotMatch(src, /onRetryPremium/);
+  assert.doesNotMatch(src, /premiumRetry/);
+  assert.match(src, /FuelLogSheet/);
 });
