@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1066` Account is sign-in / return / prefs (from `.1065` `d611e326`; visual/do-not-merge; do not promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1066";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1067` Mind is the check-in (from `.1066` `d8a65d44`; visual/do-not-merge; do not promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1067";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

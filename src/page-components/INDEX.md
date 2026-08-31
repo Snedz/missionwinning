@@ -42,7 +42,7 @@
 |------|-------|
 | `NutritionPage.tsx` | `/nutrition` (Fuel) — empty + Log meal, or today's meals. FuelLogSheet is the writer. Remaining / notepad / Show more / recipes stay off first paint. |
 | `MovePage.tsx` | `/move` — quiet log first paint. Flow list / collections / premium / recent wins stay off first paint. QuietMoveLogCard is the writer. |
-| `MindPage.tsx` | `/mind` | First paint is check-in + breathe; both are house leftovers. Sessions in Show all |
+| `MindPage.tsx` | `/mind` — check-in first paint. Breathe / sessions / Show all stay off first paint. DailyCheckIn is the writer. |
 | `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); metrics card is house leftover. Walks / GPS in Show more |
 | `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); intro is house leftover. Other paths in Show more |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |

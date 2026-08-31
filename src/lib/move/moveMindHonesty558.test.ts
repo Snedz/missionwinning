@@ -14,10 +14,11 @@ test('Move does not leftover flow-catalog empty or recent wins', () => {
   assert.doesNotMatch(src, /Recent Move Wins/);
 });
 
-test('Mind collection empty offers show-all; empty links to mind-guided', () => {
+test('Mind does not leftover session-catalog empty or recent wins', () => {
   const src = readFileSync(join(root, 'src/page-components/MindPage.tsx'), 'utf8');
-  assert.match(src, /mindCollectionShowAll|Show all sessions/);
-  assert.match(src, /href=.#mind-guided/);
-  assert.match(src, /Recent Mind Wins/);
-  assert.match(src, /tap-target/);
+  assert.match(src, /<DailyCheckIn\b/);
+  assert.doesNotMatch(src, /id="mind-guided"/);
+  assert.doesNotMatch(src, /mindCollectionShowAll|Show all sessions/);
+  assert.doesNotMatch(src, /href=.#mind-guided/);
+  assert.doesNotMatch(src, /Recent Mind Wins/);
 });

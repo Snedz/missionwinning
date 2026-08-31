@@ -771,7 +771,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(mindCheckIn, /text-primary/);
   assert.doesNotMatch(mindCheckIn, /bg-foreground/);
   assert.match(css, /\.house-mind \.house-checkin-tick\.is-on \{[^}]*--house-press/);
-  assert.match(spec, /Mind first-paint check-in is house leftover/);
+  assert.match(spec, /Mind first paint is the check-in/);
   const breathe = read('src/components/pillars/BreathingTimer.tsx');
   assert.match(breathe, /house-card house-breathe/);
   assert.match(breathe, /house-breathe-square/);
@@ -785,7 +785,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(breathe, /primary-action/);
   assert.match(css, /\.house-mind \.house-breathe-square \{[^}]*--house-ink/);
   assert.match(css, /\.house-mind \.house-state\.is-on \{[^}]*--house-selected/);
-  assert.match(spec, /Mind first-paint breathe is house leftover/);
+  assert.match(spec, /Breathe stays off first paint/);
   assert.match(read('src/page-components/TrackPage.tsx'), /className="house-track"/);
   const metrics = read('src/components/track/BodyMetricsCard.tsx');
   assert.match(metrics, /house-card house-metrics/);

@@ -17,12 +17,13 @@ test('MovePage does not leftover premium flow fetch chrome', () => {
   assert.match(src, /<QuietMoveLogCard\b/);
 });
 
-test('MindPage free-beta uses open-beta fetch/offline + section keys', () => {
+test('MindPage does not leftover premium session fetch chrome', () => {
   const src = readFileSync(join(root, 'src/page-components/MindPage.tsx'), 'utf8');
-  assert.match(src, /mindPremiumFetchFailedOpenBeta/);
-  assert.match(src, /mindPremiumOfflineOpenBeta/);
-  assert.match(src, /mindPremiumSessionsCountOpenBeta/);
-  assert.match(src, /isFreeBeta|freeBeta/);
+  assert.doesNotMatch(src, /mindPremiumFetchFailedOpenBeta/);
+  assert.doesNotMatch(src, /mindPremiumOfflineOpenBeta/);
+  assert.doesNotMatch(src, /mindPremiumSessionsCountOpenBeta/);
+  assert.doesNotMatch(src, /isFreeBeta|freeBeta/);
+  assert.match(src, /<DailyCheckIn\b/);
 });
 
 test('move + mind EN open-beta strings omit premium merch', () => {
