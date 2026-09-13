@@ -1105,6 +1105,24 @@
   color: var(--house-muted);
 }
 
+/* Portaled Victory Content is not `.mw-house` (leftover pin). Remap
+   inherited HSL so `bg-card` is C2 ground, not field-manual paper. */
+.victory-lock {
+  --background: 216 20% 5%;
+  --foreground: 207 22% 92%;
+  --card: 216 20% 5%;
+  --card-foreground: 207 22% 92%;
+  --border: 210 19% 15%;
+  --muted: 213 20% 9%;
+  --muted-foreground: 208 10% 54%;
+  --primary: 41 100% 50%;
+  --primary-fill: 41 100% 50%;
+  --primary-foreground: 216 20% 5%;
+  --accent-poster: 41 100% 50%;
+  color: #e6ebef;
+  color-scheme: dark;
+}
+
 .mw-house.house-victory > div {
   border: 1px solid var(--house-line);
   background: var(--house-soft);

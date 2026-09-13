@@ -57,6 +57,13 @@ test('Today Start + Train Log set + Coach Generate + Victory Next use press', ()
   assert.match(coach, /house-btn house-btn-primary/);
   const next = read('src/components/workout/VictoryNextActionStrip.tsx');
   assert.match(next, /mw-house poster-field/);
+  assert.match(css, /\.victory-lock \{[^}]*--card:\s*216 20% 5%/);
+  const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  const dialog = sheet.slice(
+    sheet.indexOf('victory-lock') - 40,
+    sheet.indexOf('victory-lock') + 80
+  );
+  assert.doesNotMatch(dialog, /mw-house/);
 });
 
 test('public gate stays field-manual — no house yellow costume', () => {
