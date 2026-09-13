@@ -48,6 +48,7 @@ import {
 } from '@/components/workout/SessionCheckInSheet';
 import { needsHardSessionWarning } from '@/lib/workout/hardSession';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { adaptPlanAfterFinishedLog } from '@/lib/coach/victoryNextEnvCite';
 import {
   assembleActiveVictory,
   finishBlockedReason,
@@ -599,6 +600,9 @@ export function ActiveWorkoutPage() {
       return;
     }
 
+    const adapt = adaptPlanAfterFinishedLog({
+      historyAfter: [log, ...historyBefore],
+    });
     const assembled = assembleActiveVictory({
       log,
       historyBefore,
@@ -606,9 +610,12 @@ export function ActiveWorkoutPage() {
       sessionNote,
       units,
       goalId,
-      hasCoachPlan: !!plan,
+      hasCoachPlan: !!plan || !!adapt.plan,
       resolveExerciseName: (id) => exerciseDisplayName(id) || id.replace(/-/g, ' '),
     });
+    if (adapt.wroteNextEnv) {
+      assembled.victorySummary.nextEnvFromLog = true;
+    }
     setDebrief(assembled.debrief);
     setEntryFragments(assembled.entry.fragments);
 

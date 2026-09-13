@@ -504,6 +504,16 @@ export function WorkoutVictorySheet({
           data-testid="victory-next-dock"
           className="shrink-0 border-t-2 border-border bg-card px-6 pb-6 pt-3"
         >
+          {summary.nextEnvFromLog ? (
+            <p
+              className="mb-2 text-center text-xs leading-relaxed text-muted-foreground"
+              data-testid="victory-next-env-cite"
+            >
+              {t('victoryNextEnvCite', {
+                defaultValue: 'Next session updated from this workout',
+              })}
+            </p>
+          ) : null}
           {summary.nextAction ? (
             <VictoryNextActionStrip
               nextAction={summary.nextAction}
