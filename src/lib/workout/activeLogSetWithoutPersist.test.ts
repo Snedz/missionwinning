@@ -43,8 +43,8 @@ test('composeNextSet uses the live session when it already has lifts', () => {
       {
         exerciseId: 'bench-press',
         sets: [
-          { reps: 5, weight: 80, completed: true },
-          { reps: 5, weight: 80, completed: false },
+          { id: 's1', reps: 5, weight: 80, completed: true },
+          { id: 's2', reps: 5, weight: 80, completed: false },
         ],
       },
     ],

@@ -26,7 +26,7 @@ function compose(name: string, completed = false): ActiveWorkout {
     exercises: [
       {
         exerciseId: 'barbell-squat',
-        sets: [{ reps: 5, weight: 120, completed }],
+        sets: [{ id: 's1', reps: 5, weight: 120, completed }],
       },
     ],
   };
@@ -44,7 +44,7 @@ function log(): CompletedWorkoutLog {
     exercises: [
       {
         exerciseId: 'barbell-squat',
-        sets: [{ reps: 5, weight: 100, completed: true }],
+        sets: [{ reps: 5, weight: 100 }],
       },
     ],
   };
