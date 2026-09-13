@@ -1,4 +1,3 @@
-| [log/LOG-rotate-1043-for-1061.md](./log/LOG-rotate-1043-for-1061.md) | rotated 2026-09-13 for `.1061` security align (`.1043`) |
 # docs/archive/
 
 > Superseded planning docs moved here when explicitly retired (Wave 9).
@@ -13,6 +12,9 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1045-for-1064.md](./log/LOG-rotate-1045-for-1064.md) | rotated 2026-09-13 for `.1064` Astro AVIF RCE (`.1045`) |
+| [log/LOG-rotate-1044-for-1064.md](./log/LOG-rotate-1044-for-1064.md) | rotated 2026-09-13 for `.1064` Astro AVIF RCE (`.1044`) |
+| [log/LOG-rotate-1043-for-1061.md](./log/LOG-rotate-1043-for-1061.md) | rotated 2026-09-13 for `.1061` security align (`.1043`) |
 | [log/LOG-rotate-1042-for-1059.md](./log/LOG-rotate-1042-for-1059.md) | rotated 2026-09-13 for `.1059` house black+yellow 4th skin (`.1042`) |
 | [log/LOG-rotate-1041-for-1058.md](./log/LOG-rotate-1041-for-1058.md) | rotated 2026-08-29 for `.1058` /active first paint (`.1041`) |
 | [log/LOG-rotate-1040-for-1057.md](./log/LOG-rotate-1040-for-1057.md) | rotated 2026-08-27 for `.1057` left second bar + transferred rooms (`.1040`) |
