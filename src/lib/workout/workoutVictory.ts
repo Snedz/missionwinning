@@ -61,6 +61,11 @@ export interface WorkoutVictorySummary {
   workingMuscleGroups?: string[][];
   /** Vs-last receipt from local logs — instant, offline, free (.713). */
   receipt?: VictoryReceipt;
+  /**
+   * Coach adapt wrote/refreshed a next session from this finished log (.1066).
+   * Victory cites only when true — never invents loads.
+   */
+  nextEnvFromLog?: boolean;
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
