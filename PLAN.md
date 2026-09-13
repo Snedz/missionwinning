@@ -18,6 +18,23 @@ House 4th-skin materials and first-paint density on the real Train / Today / Vic
 
 ## Token table (C2 · Instrument)
 
+Source: `scripts/design-variants/themes.mjs` id `c2-instrument` + `docs/design/variants/c2-instrument.html`.
+
+| Role | Hex |
+|------|-----|
+| Ground / paper | `#0a0c0f` |
+| Ink | `#e6ebef` |
+| Quiet | `#7d8a95` |
+| Rule / hairline | `#1e252c` |
+| Field / raised | `#12161b` |
+| Card | `#0f1319` |
+| Signal yellow | `#ffb000` |
+| Signal deep | `#c98a00` |
+| Signal tint | `#1a1607` |
+| On-signal | `#0a0c0f` |
+
+Do **not** rematch to research `#F5C400` / `#0A0A0A` or zinc `#f5c518`. Prefer `#ffb000` over COD `#ffd000`.
+
 Scoped to `.mw-house` only. Field-manual `src/index.css` / `/private` / landing / www stay paper/ink.
 
 | Token | Value | C2 role |
@@ -60,7 +77,7 @@ Filled `--house-press` is Start / Log set / Generate / Victory Next / live cue o
 ### Surface recreation (CSS-first; JSX only if a hook class is missing)
 
 1. **Today / `/log`** — Start is the one filled yellow action. Week strip: today = press hairline + soft fill; done = selected fill + ink (not yellow wallpaper). First-rooms ticks use press color on the mark only, not a yellow cell.
-2. **Train / `/active`** — set table on C2 ground; Log set = `--house-press` (the one fill). Number cells tabular + mono. Completed row uses press-tint, not a yellow flood. Train plus is selected/chip, not a second yellow circle. Prev / vs-last stay muted cites.
+2. **Train / `/active`** — set table on C2 ground; Log set = `--house-press` (the one fill). Number cells tabular + mono. Completed row uses press-tint, not a yellow flood. Train plus is selected/chip, not a second yellow circle. Prev / vs-last stay muted cites. Set-table IA stays the `.1058` leftover (Set · Prev · load · Reps · Log). Do not rewrite columns to a Bevel TARGET-above-PREVIOUS costume.
 3. **Victory** — receipt + stats on dark; volume / stat numerals ≥19px may use amber; labels stay `--house-muted`. Next strip: add `mw-house` hook on `VictoryNextActionStrip` (dialog portals outside the shell). Poster-field remakes to dark card + yellow primary (not `#ae1800` wallpaper).
 4. **Coach** — empty mark uses press-tint + press icon (not a yellow disc flood). Generate dock stays the one filled yellow action.
 5. **Library / Builder** — inherit via remapped tokens only. No JSX rewrite.

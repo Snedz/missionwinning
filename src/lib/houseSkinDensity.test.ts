@@ -26,6 +26,7 @@ test('house tokens are C2 ground + signal yellow', () => {
   assert.doesNotMatch(css, /--house-press:\s*#f5c518/);
   assert.doesNotMatch(css, /--house-press:\s*#18181b/);
   assert.doesNotMatch(css, /--house-pill:\s*999px/);
+  assert.doesNotMatch(css, /#ffffff|#18181b|#f4f4f5|#f5c518|#ffd000|#F5C400/i);
 });
 
 test('Today Start + Train Log set + Coach Generate + Victory Next use press', () => {
