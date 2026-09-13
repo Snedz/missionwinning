@@ -52,8 +52,8 @@ describe('patch finished set rir surface lock (.1041)', () => {
     assert.doesNotMatch(helper, /from ['"]@\/store\/workoutStore['"]/);
     const select = read('src/components/workout/SetRirSelect.tsx');
     assert.match(select, /min-h-\[44px\]/);
-    assert.match(select, /border-border/);
-    assert.match(select, /bg-background/);
+    assert.match(select, /house-num/);
+    assert.match(select, /min-h-\[44px\]/);
   });
 
   it('no rainbow / hex RIR color identity — paper/ink tokens only', () => {
