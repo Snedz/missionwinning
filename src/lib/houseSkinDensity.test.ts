@@ -67,6 +67,12 @@ test('Today Start + Train Log set + Coach Generate + Victory Next use press', ()
   assert.doesNotMatch(dialog, /mw-house/);
 });
 
+test('PLAN scope is .mw-house only — lineage review', () => {
+  const plan = read('PLAN.md');
+  assert.match(plan, /this craft = `\.mw-house` only/);
+  assert.match(plan, /Do not restyle `\/private` or public www/);
+});
+
 test('public gate stays field-manual — no house yellow costume', () => {
   const landing = read('src/page-components/LandingPage.tsx');
   assert.doesNotMatch(landing, /--house-press|#ffb000|#f5c518|mw-house/);
