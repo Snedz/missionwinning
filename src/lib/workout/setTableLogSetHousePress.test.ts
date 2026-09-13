@@ -28,7 +28,7 @@ test('Log set slice after set-table-log-set is house leftover press, not poster'
 
 test('house leftover rule paints Log set with --house-press', () => {
   const css = read('src/components/house/house.css');
-  assert.match(css, /--house-press:\s*#f5c518/);
+  assert.match(css, /--house-press:\s*#ffb000/);
   assert.match(
     css,
     /\.mw-house \.house-compose-live \.house-set-log \{[^}]*--house-press/

@@ -1,4 +1,4 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1059` house black+yellow 4th skin (from `.1058` `23d4b13c`; master paper `.1057` `f302f40f`; stamp stays `.1059`; visual only; do not merge or promote). */
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1059` house C2 Instrument 4th skin (`#0a0c0f` + `#ffb000`; from `.1058` `23d4b13c`; master paper `.1057` `f302f40f`; stamp stays `.1059`; visual only; do not merge or promote). */
 export const APP_BUILD_LABEL = "2026.07-unified.1059";
 
 /**

@@ -20,17 +20,18 @@ wireframe with black press. Founder
 asked for the 4th design as a full
 black + yellow suit — recreate each
 feature, not a costume paste.
+Design Polish C2 Instrument is law.
 
-**Ship:** `.mw-house` remaps to deep
-black paper (`#111111`) on void
-(`#070707`) with amber press
-(`#f5c518`). Today week-done cells
-and first-rooms ticks, Train Log set
-+ plus, Victory stat numerals, and
-Coach empty + Generate recut on those
-tokens. Rail / second bar / leftover
-IA stay. Field-manual `/private` /
-landing / www untouched.
+**Ship:** `.mw-house` remaps to C2
+ground (`#0a0c0f`) with signal press
+(`#ffb000`). One yellow field per
+screen. Today Start, Train Log set,
+Coach Generate, and Victory Next
+recut on those tokens. Week-done is
+selected, not yellow wallpaper. Rail
+/ second bar / leftover IA stay.
+Field-manual `/private` / landing /
+www untouched.
 
 Guest. First set ungated. Today still
 one Start. Resume `.963` kept.

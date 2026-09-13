@@ -4,32 +4,34 @@ Signed-in product chrome. Runtime: [`house.css`](house.css), scoped to `.mw-hous
 
 The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIGN_SYSTEM.md)) stays on `/private`, landing, and www. Do not copy house tokens there. Do not load a second typeface in `app/layout.tsx`.
 
-4th skin (`.1059`): deep black + amber press. Field-manual stays on `/private` / landing / www. Selected leftover copy still says `#eee` (the role); the token is `--house-selected`.
+4th skin (`.1059`): C2 Instrument — ground `#0a0c0f` + signal `#ffb000`. One yellow field per screen. Field-manual stays on `/private` / landing / www. Selected leftover copy still says `#eee` (the role); the token is `--house-selected`.
 
 ## Tokens
 
 | Token | Value | Role |
 |-------|--------|------|
-| `--house-void` | `#070707` | Stage behind the sheet |
-| `--house-paper` | `#111111` | Canvas, cards, rail |
-| `--house-stage` | `#070707` | Area behind the canvas |
-| `--house-ink` | `#f4f4f5` | Text |
-| `--house-muted` | `#a3a3a8` | Secondary |
-| `--house-faint` | `#73737a` | Disabled |
-| `--house-line` | `#2a2a2e` | 1px hairline |
-| `--house-soft` | `#1a1a1d` | Soft fill |
-| `--house-chip` | `#1c1c20` | Hover fill |
-| `--house-selected` | `#242428` | Selected row / rail mark |
-| `--house-press` | `#f5c518` | Primary pill / Log set / Generate / Start |
-| `--house-press-ink` | `#111111` | Text on press |
-| `--house-amber` | `#f5c518` | Metric accent |
+| `--house-void` | `#0a0c0f` | Stage behind the sheet |
+| `--house-paper` | `#0a0c0f` | Canvas, cards, rail |
+| `--house-stage` | `#0a0c0f` | Area behind the canvas |
+| `--house-ink` | `#e6ebef` | Text |
+| `--house-muted` | `#7d8a95` | Secondary |
+| `--house-faint` | `#5f6b75` | Disabled |
+| `--house-line` | `#1e252c` | 1px hairline |
+| `--house-soft` | `#0f1319` | Card / soft fill |
+| `--house-chip` | `#12161b` | Field / hover fill |
+| `--house-selected` | `#1a2028` | Selected row / rail mark |
+| `--house-press` | `#ffb000` | Primary / Log set / Generate / Start |
+| `--house-press-deep` | `#c98a00` | Press hover |
+| `--house-press-tint` | `#1a1607` | Signal tint |
+| `--house-press-ink` | `#0a0c0f` | Text on press |
+| `--house-amber` | `#ffb000` | Metric accent (≥19px) |
 | `--house-live` | `#ae1800` | Train pulse only |
-| `--house-radius` | `16px` | Cards |
-| `--house-radius-sm` | `10px` | Inputs / small |
-| `--house-radius-row` | `12px` | Second-bar rows |
+| `--house-radius` | `8px` | Cards |
+| `--house-radius-sm` | `4px` | Inputs / small |
+| `--house-radius-row` | `8px` | Second-bar rows |
 | `--house-radius-rail` | `8px` | Rail marks, filters, empty CTA |
-| `--house-radius-sheet` | `12px` | Dark paper panel wrapping second + canvas |
-| `--house-pill` | `999px` | Primary buttons, plus circle |
+| `--house-radius-sheet` | `8px` | Dark paper panel wrapping second + canvas |
+| `--house-pill` | `8px` | Primary buttons, plus |
 | `--house-rail` | `72px` | Icon column |
 | `--house-second` | `264px` | Adjacent bar |
 | `--house-side` | `300px` | Sidecar |
@@ -37,15 +39,15 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-dur` | `180ms` | Chips, hover |
 | `--house-dur-slow` | `260ms` | Column, pane, canvas |
 
-Inherited shadcn tokens inside `.mw-house` remap to the same dark + yellow / 1rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
+Inherited shadcn tokens inside `.mw-house` remap to the same C2 ground + `#ffb000` / 0.5rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
 
 ## Type
 
-`ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif`. Features `ss01` + `cv11`. Tracking `-0.011em` body, `-0.03em` display. Weights 500–700. Sizes: 13 chip / 14 second-bar / 15 body / 22 pane title / 28–32 canvas title. No Archivo. No caps kickers.
+Archivo 400/600/800, with `ui-sans-serif, system-ui` as fallback. Features `ss01` + `cv11`. Tracking `-0.011em` body, `-0.03em` display. Weights 400–800. Sizes: 13 chip / 14 second-bar / 15 body / 22 pane title / 28–32 canvas title. System mono for set-table / Victory telemetry only. No caps kickers. No second face in `app/layout.tsx`.
 
 ## Layout
 
-Desktop `≥723px`: frame is `72 + 1fr` on a grey stage. Second bar and canvas sit in one white `.house-sheet` (`12px` radius, `8px` inset on top/right/bottom, flush to the rail). Home and Library set `--house-second-w: 264px` inside that sheet. Train compose is one column, no sheet. Compact `<723` uses `display: contents` on the sheet so rail and second bar stay hidden; floor icons stay.
+Desktop `≥723px`: frame is `72 + 1fr` on a C2 ground stage. Second bar and canvas sit in one dark `.house-sheet` (`8px` radius, `8px` inset on top/right/bottom, flush to the rail). Home and Library set `--house-second-w: 264px` inside that sheet. Train compose is one column, no sheet. Compact `<723` uses `display: contents` on the sheet so rail and second bar stay hidden; floor icons stay.
 
 Second bar is **column 1 of the sheet**, immediately right of the rail. Never a far-right Home sheet. More leftover may stay a right sheet.
 
@@ -58,12 +60,12 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Piece | Class | Rule |
 |-------|--------|------|
 | Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
-| Train plus | `.house-rail-plus` | 40×40 yellow press circle (desktop rail and compact floor). Click `/active`. |
+| Train plus | `.house-rail-plus` | 40×40 chip circle (desktop rail and compact floor). Click `/active`. Not a second yellow field. |
 | Hover chip | `.house-rail-tip` | Amber press, 13px, 8px radius |
-| Sheet | `.house-sheet` | Dark paper 12px panel wrapping second + canvas |
+| Sheet | `.house-sheet` | Dark paper 8px panel wrapping second + canvas |
 | Second bar | `.house-second` | Kicker + 12px rows, selected `#eee`; pane has back chevron |
 | Card | `.house-card` | Paper, 1px line, 16px radius |
-| Primary | `.house-btn-primary` | Black pill. One filled action |
+| Primary | `.house-btn-primary` | Signal yellow press. One filled action |
 | Guide | `.house-guide` | One Got it. No chain |
 | First rooms | `.house-first-rooms` | N-of-N under Start. Today Start quiet offers are house leftover. Compact hero Start navigates from first paint. First-rooms Log a set navigates from first paint. First-rooms Week navigates from first paint. First-rooms History navigates from first paint. /log client nav is not group Loading. |
 | Train compose | `.house-compose-live` | `/active` client nav is not group Loading. Form / Swap sheets open on click from first paint. Sidecar first paint does not wait on persist. Log set first paint does not wait on persist. Prev cite is house leftover. Set row hairline is house leftover. Upcoming set row is house leftover. Kind chip row is house leftover. Session clock cite is house leftover. Session clock size is house leftover. Session title is a house title. In-set cue line is house leftover. In-set cue line size is house leftover. In-set cue still is house leftover. In-set cue mark is house leftover. Show-all door is house leftover. Set table size is house leftover. Log set size is house leftover. Log set weight is house leftover. Log set leading is house leftover. Log set is house leftover. LogConsole Log set is house leftover. Log set stays the filled action. Empty is house-lede. Add exercise is house-btn. Add Set is house-btn. Rest lanes are house-state; selected `#eee`. Number cells are house-num. Extra set cells are house-num. Set table head is house leftover. Set row kicker is house leftover. Logged check is house leftover. Completed row is house leftover. Plus-load prefix is house leftover. Kind badge is house leftover. Plate-line cite is house leftover. Set-table RPE cite is house leftover. Set-table in-set PR cite is house leftover. Set-table vs-last cite is house leftover. Set-table next-cite is house leftover. Set-table load-% cite is house leftover. Plate skip is house-btn. Next-cite Skip is house-btn. Finish is house-btn, not filled. Session more is house leftover: ghost more, house-card overflow. Session more hold is house leftover. Cue me is house leftover. Plate loader is house leftover. Apply stays primary-action. Exercise more is house leftover: ghost more, house-card overflow. Set options is house leftover: ghost more, house-card overflow. Reorder handle is house leftover: ghost house-btn grip and arrows. Skip this exercise is house-btn hold, not filled. Swap is house-btn ghost, not filled. Swap confirm is house-btn, not filled. Swap sheet is house leftover. Swap another-movement cite is house leftover. Swap garage lead cite is house leftover. Swap garage cues is house leftover. Garage swap is house leftover. Exercise card is house leftover. Exercise head is house leftover. Skipped-this-session cite is house leftover. Live-row next-target cite is house leftover. Session e1RM cite is house leftover. Form guide is house-btn ghost. Form guide confirm is house-btn, not filled. Form guide + Swap portal is house leftover. Form guide body is house leftover. Form guide sections is house leftover. Form guide section items is house leftover. Form guide figure caption is house leftover. Form guide ready-position cite is house leftover. Form guide breath cite is house leftover. Overlay header is house leftover. Overlay footer is house leftover. Overlay panel is house leftover. Repeat last set is house-btn, not filled. Pin and Note are house-field. Add-exercise search is house leftover. Exercise picker option details is house leftover. Exercise picker selected cite is house leftover. Exercise picker empty cite is house leftover. Add-exercise sheet is house leftover. Check-in confirm is house leftover. Check-in scale is house leftover. Check-in lead cite is house leftover. Check-in scale value cite is house leftover. Check-in scale hints is house leftover. Hard-session lead cite is house leftover. Hard-session not-care cite is house leftover. Hard-session clinician cite is house leftover. Hard-session confirm is house leftover. This-movement history is house leftover: Close is house-btn; rows are house-movement-row. Movement-history empty cite is house leftover. Movement-history list-row cites is house leftover. Movement history date is house leftover. Movement history sheet is house leftover. Plates / tip stay in overflow. Show-all extras are house leftover. Session notes are house-field. Heart rate is house leftover. Rest dock is house leftover. Skip is house-btn, not filled. Last-set ghost is house leftover: house-btn ghost, not filled. Load-% cell is house-num. Readiness extra is house leftover. Warmup toggle is house leftover. Set side is house-num. In-set cues are a kicker + ghost hide / Learn door. Kind chips are house-state; selected `#eee`. Sidecar leftover is rest / skip / notes. History stays on Home. Victory vs-last cite is house leftover. Victory stats labels is house leftover. Victory volume unit is house leftover. Victory receipt lead is house leftover. Victory receipt heads is house leftover. Victory receipt Prev is house leftover. Victory receipt vs-last cells is house leftover. Victory receipt set-index is house leftover. Victory description is house leftover. |
