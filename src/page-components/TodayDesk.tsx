@@ -134,7 +134,7 @@ export function TodayDesk() {
 
   const history = snap?.history ?? [];
   const plan = snap?.plan ?? null;
-  const action = snap?.action ?? null;
+  const _action = snap?.action ?? null;
   const journey = snap?.journey ?? getDefaultJourneyState();
   const copy = snap?.copy ?? null;
 

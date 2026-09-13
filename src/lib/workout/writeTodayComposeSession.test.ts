@@ -27,7 +27,7 @@ function log(
     exercises: [
       {
         exerciseId: 'barbell-squat',
-        sets: [{ reps: 5, weight: 100, completed: true }],
+        sets: [{ reps: 5, weight: 100 }],
       },
     ],
     ...over,
@@ -62,7 +62,7 @@ describe('resolveTodayComposeTemplate', () => {
         exercises: [
           {
             exerciseId: 'barbell-squat',
-            sets: [{ reps: 5, weight: 120, completed: true }],
+            sets: [{ reps: 5, weight: 120 }],
           },
         ],
       }),

@@ -65,7 +65,7 @@ export function ExercisePicker({
         catalog: EXERCISES,
         existing: loadCustomExercises(),
       }),
-    [query, namedTick]
+    [query]
   );
 
   const selected =
