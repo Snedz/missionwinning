@@ -9,8 +9,8 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-import { sessionSetCount } from '@/lib/history/sessionHistoryList';
-import { isLocalDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { liveSessionLogs, sessionCalendarKey, sessionSetCount } from '@/lib/history/sessionHistoryList';
+import { isLocalDateKey } from '@/lib/time/localDate';
 
 export type MonthDayFact = {
   dateKey: string;
@@ -27,16 +27,7 @@ export type EmptyDayLogDecision =
   | { kind: 'empty' }
   | { kind: 'open'; dateKey: string };
 
-function liveRows(
-  history: readonly CompletedWorkoutLog[] | null | undefined
-): CompletedWorkoutLog[] {
-  if (!Array.isArray(history)) return [];
-  return history.filter((log) => Boolean(log) && !log.deletedAt);
-}
 
-function logDateKey(log: CompletedWorkoutLog): string {
-  return localDateKeyFromIso(log.completedAt || log.startedAt);
-}
 
 /**
  * Per-day live facts already on the logs. Tombs dropped.
@@ -48,8 +39,8 @@ export function monthLiveFacts(
 ): Map<string, MonthDayFact> {
   void startFrom;
   const facts = new Map<string, MonthDayFact>();
-  for (const log of liveRows(history)) {
-    const dateKey = logDateKey(log);
+  for (const log of liveSessionLogs(history)) {
+    const dateKey = sessionCalendarKey(log);
     if (!dateKey) continue;
     const prev = facts.get(dateKey);
     const setCount = sessionSetCount(log);
@@ -80,7 +71,7 @@ export function decideMonthDaySelect(input: {
   void input.startFrom;
   if (!isLocalDateKey(input.dateKey)) return { kind: 'empty' };
   const dateKey = input.dateKey;
-  const rows = liveRows(input.history).filter((log) => logDateKey(log) === dateKey);
+  const rows = liveSessionLogs(input.history).filter((log) => sessionCalendarKey(log) === dateKey);
   if (rows.length === 0) return { kind: 'none', dateKey };
   return { kind: 'day', dateKey, rows };
 }
