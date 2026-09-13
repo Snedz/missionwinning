@@ -1,3 +1,4 @@
+| [log/LOG-rotate-1043-for-1061.md](./log/LOG-rotate-1043-for-1061.md) | rotated 2026-09-13 for `.1061` security align (`.1043`) |
 # docs/archive/
 
 > Superseded planning docs moved here when explicitly retired (Wave 9).
