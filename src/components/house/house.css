@@ -265,7 +265,7 @@
   flex-direction: column;
   padding: 20px 12px 28px;
   border-right: 1px solid var(--house-line);
-  background: var(--house-paper);
+  background: var(--house-chip);
   overflow: hidden;
   grid-column: 1;
 }
@@ -378,9 +378,9 @@
   pointer-events: auto;
   width: min(320px, calc(100vw - 120px));
   padding: 18px 18px 16px;
-  background: var(--house-paper);
+  background: var(--house-soft);
   border: 1px solid var(--house-line);
-  border-radius: 12px;
+  border-radius: var(--house-radius);
   animation: house-guide-in var(--house-dur-slow) var(--house-ease);
 }
 
@@ -392,7 +392,7 @@
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-right-color: var(--house-paper);
+  border-right-color: var(--house-soft);
 }
 
 .mw-house .house-guide-card::after {
@@ -420,7 +420,7 @@
   flex: 1;
   min-width: 0;
   min-height: 0;
-  background: var(--house-paper);
+  background: var(--house-soft);
   grid-column: 1;
 }
 
@@ -652,7 +652,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgb(7 7 7 / 0.62);
+  background: color-mix(in srgb, var(--house-void) 62%, transparent);
   cursor: pointer;
   animation: house-scrim-in var(--house-dur) var(--house-ease);
 }
@@ -3756,7 +3756,8 @@
     grid-template-columns: minmax(0, 1fr);
     grid-column: 2;
     margin: 8px 8px 8px 0;
-    background: var(--house-paper);
+    background: var(--house-soft);
+    border: 1px solid var(--house-line);
     border-radius: var(--house-radius-sheet);
     overflow: hidden;
     min-height: 0;

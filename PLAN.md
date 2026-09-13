@@ -117,6 +117,18 @@ Do **not** rewrite `TodayDesk.tsx` / `CoachPage.tsx` / Victory sheet JSX except 
 - No yellow wallpaper. No SpaceX D-DIN. No COD yellow everywhere.
 - No glow / gradient blobs / glass.
 
+## Leftover hops (same branch, founder window)
+
+Pick the densest remaining gap, one hop.
+
+| # | Leftover | Status |
+|---|----------|--------|
+| 1 | Kill zinc/white `#fff` / `#18181b` / `#f4f4f5` inside `.mw-house` | Done. More scrim is void mix (no `rgb(7 7 7)`). |
+| 2 | Kill 999px pills; radius ≤8px on cards | Done. Guide card uses `--house-radius` (8px). |
+| 3 | Metric-first set table: TARGET above PREVIOUS | **Do not remount** `SetLogAdjacencyStack` (leftover tests). Log set already `#ffb000`. CSS-only density next if 5 lands. |
+| 4 | House rail + second sheet richer than thin B&W | Done. Void `#0a0c0f` · sheet card `#0f1319` · second `#12161b` · hairline `#1e252c`. |
+| 5 | Empty states: clinical short copy, no AI-slop | **Next hop.** |
+
 ## Done when
 
 - This PLAN.md is frozen at C2, then implemented without expanding the file list beyond what this revision names.

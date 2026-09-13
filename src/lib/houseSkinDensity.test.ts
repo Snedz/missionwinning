@@ -93,6 +93,27 @@ test('public gate stays field-manual — no house yellow costume', () => {
   }
 });
 
+test('rail + sheet use void / card / raised field — leftover 4', () => {
+  const css = read('src/components/house/house.css');
+  assert.match(
+    css,
+    /\.mw-house \.house-second \{[^}]*background:\s*var\(--house-chip\)/
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-stage \{[^}]*background:\s*var\(--house-soft\)/
+  );
+  assert.match(css, /--house-chip:\s*#12161b/);
+  assert.match(css, /--house-soft:\s*#0f1319/);
+  assert.match(css, /--house-line:\s*#1e252c/);
+  assert.match(
+    css,
+    /@media \(min-width: 723px\)[\s\S]*?\.mw-house \.house-sheet \{[\s\S]*?background:\s*var\(--house-soft\)[\s\S]*?1px solid var\(--house-line\)/,
+  );
+  assert.doesNotMatch(css, /rgb\(7 7 7/);
+  assert.doesNotMatch(css, /border-radius:\s*12px/);
+});
+
 test('DESIGN names the C2 token table', () => {
   const spec = read('src/components/house/DESIGN.md');
   assert.match(spec, /`--house-press` \| `#ffb000`/);

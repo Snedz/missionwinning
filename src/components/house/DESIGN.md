@@ -47,7 +47,7 @@ Archivo 400/600/800, with `ui-sans-serif, system-ui` as fallback. Features `ss01
 
 ## Layout
 
-Desktop `≥723px`: frame is `72 + 1fr` on a C2 ground stage. Second bar and canvas sit in one dark `.house-sheet` (`8px` radius, `8px` inset on top/right/bottom, flush to the rail). Home and Library set `--house-second-w: 264px` inside that sheet. Train compose is one column, no sheet. Compact `<723` uses `display: contents` on the sheet so rail and second bar stay hidden; floor icons stay.
+Desktop `≥723px`: frame is `72 + 1fr` on C2 void `#0a0c0f`. Second bar is raised field `#12161b`; canvas sits in card `#0f1319` `.house-sheet` (`8px` radius, `1px` `#1e252c` hairline, `8px` inset, flush to the rail). Home and Library set `--house-second-w: 264px` inside that sheet. Train compose is one column, no sheet. Compact `<723` uses `display: contents` on the sheet so rail and second bar stay hidden; floor icons stay.
 
 Second bar is **column 1 of the sheet**, immediately right of the rail. Never a far-right Home sheet. More leftover may stay a right sheet.
 
@@ -62,9 +62,9 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
 | Train plus | `.house-rail-plus` | 40×40 chip circle (desktop rail and compact floor). Click `/active`. Not a second yellow field. |
 | Hover chip | `.house-rail-tip` | Amber press, 13px, 8px radius |
-| Sheet | `.house-sheet` | Dark paper 8px panel wrapping second + canvas |
-| Second bar | `.house-second` | Kicker + 12px rows, selected `#eee`; pane has back chevron |
-| Card | `.house-card` | Paper, 1px line, 16px radius |
+| Sheet | `.house-sheet` | Card `#0f1319` 8px panel wrapping second + canvas; hairline `#1e252c` |
+| Second bar | `.house-second` | Raised field `#12161b`. Kicker + 12px rows, selected `#eee`; pane has back chevron |
+| Card | `.house-card` | Soft card, 1px line, 8px radius |
 | Primary | `.house-btn-primary` | Signal yellow press. One filled action |
 | Guide | `.house-guide` | One Got it. No chain |
 | First rooms | `.house-first-rooms` | N-of-N under Start. Today Start quiet offers are house leftover. Compact hero Start navigates from first paint. First-rooms Log a set navigates from first paint. First-rooms Week navigates from first paint. First-rooms History navigates from first paint. /log client nav is not group Loading. |

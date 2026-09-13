@@ -28,10 +28,11 @@ ground (`#0a0c0f`) with signal press
 screen. Today Start, Train Log set,
 Coach Generate, and Victory Next
 recut on those tokens. Week-done is
-selected, not yellow wallpaper. Rail
-/ second bar / leftover IA stay.
-Field-manual `/private` / landing /
-www untouched.
+selected, not yellow wallpaper. Leftover
+hop: desktop sheet card `#0f1319` on
+void; second `#12161b`; hairline
+`#1e252c`. Field-manual `/private` /
+landing / www untouched.
 
 Guest. First set ungated. Today still
 one Start. Resume `.963` kept.
