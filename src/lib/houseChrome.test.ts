@@ -673,7 +673,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(landingDemo, /<WeekStrip house\b/);
   assert.doesNotMatch(parkedToday, /<WeekStrip house\b/);
   assert.match(landingDemo, /<WeekStrip/);
-  assert.match(css, /\.house-week-cell\.is-today \{[^}]*--house-ink/);
+  assert.match(css, /\.house-week-cell\.is-today \{[^}]*--house-press/);
   assert.doesNotMatch(css, /\.house-week-cell[^}]*accent-poster/);
   assert.match(spec, /Coach week strip is house leftover/);
   const builder = read('src/page-components/BuilderPage.tsx');
@@ -1405,8 +1405,8 @@ test('house design system is the signed-in token table', () => {
   assert.match(setTable, /house-set-done-mark/);
   assert.doesNotMatch(setTable, /bg-muted\/40/);
   assert.doesNotMatch(setTable, /border-s-primary/);
-  assert.match(css, /\.house-compose-live tr\.house-set-done \{[^}]*--house-soft/);
-  assert.match(css, /\.house-compose-live \.house-set-done-mark \{[^}]*--house-ink/);
+  assert.match(css, /\.house-compose-live tr\.house-set-done \{[^}]*--house-press/);
+  assert.match(css, /\.house-compose-live \.house-set-done-mark \{[^}]*--house-press/);
   assert.match(spec, /Completed row is house leftover/);
   const plusLoadPrefix = setTable.slice(
     setTable.indexOf('{plusLoad ? ('),
