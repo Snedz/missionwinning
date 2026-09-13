@@ -197,7 +197,7 @@ describe('live list + picker wiring', () => {
     assert.match(page, /resolveExercise|exerciseDisplayName/);
     const history = read('src/page-components/HistoryPage.tsx');
     assert.match(history, /resolveExercise|exerciseDisplayName/);
-    assert.match(history, /decideStartAgain/);
+    assert.match(history, /decideRepeatThisSession|decideStartAgain/);
     const startAgain = read('src/lib/workout/startAgain.ts');
     assert.match(startAgain, /templateFromCompletedLog/);
     const library = read('src/page-components/LibraryPage.tsx');

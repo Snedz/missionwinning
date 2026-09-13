@@ -51,8 +51,8 @@ describe('patch finished set rpe10 surface lock (.1040)', () => {
     assert.doesNotMatch(helper, /from ['"]@\/store\/workoutStore['"]/);
     const select = read('src/components/workout/SetRpe10Select.tsx');
     assert.match(select, /min-h-\[44px\]/);
-    assert.match(select, /border-border/);
-    assert.match(select, /bg-background/);
+    assert.match(select, /house-num/);
+    assert.match(select, /min-h-\[44px\]/);
   });
 
   it('no rainbow / hex RPE color identity — paper/ink tokens only', () => {

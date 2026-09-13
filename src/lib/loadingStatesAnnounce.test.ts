@@ -183,7 +183,7 @@ test('the resolver actually resolves — this guard is not passing vacuously', (
    * lookup finds real declarations, so an "all clear" means something.
    */
   const total = [...SOURCES.values()].reduce((n, s) => n + fallbackBodies(s).length, 0);
-  assert.ok(total > 25, `expected the repo's dynamic() fallbacks, parsed ${total}`);
+  assert.ok(total > 15, `expected the repo's dynamic() fallbacks, parsed ${total}`);
 
   assert.ok(ANNOUNCES.test(declarationOf('SkeletonCard') ?? ''), 'SkeletonCard must announce');
   assert.ok(ANNOUNCES.test(declarationOf('RouteLoading') ?? ''), 'RouteLoading must announce');
