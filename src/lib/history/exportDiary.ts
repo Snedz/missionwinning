@@ -7,7 +7,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-import { localDateKeyFromIso } from '@/lib/time/localDate';
+import { liveSessionLogs, sessionCalendarKey } from '@/lib/history/sessionHistoryList';
 import { humanizeExerciseId } from '@/lib/workout/customExercise';
 
 export const EXPORT_DIARY_CSV_HEADER =
@@ -40,12 +40,6 @@ export type ExportDiaryDecision =
       count: number;
     };
 
-function liveLogs(
-  rows: readonly CompletedWorkoutLog[] | null | undefined
-): CompletedWorkoutLog[] {
-  if (!Array.isArray(rows)) return [];
-  return rows.filter((log) => Boolean(log) && !log.deletedAt);
-}
 
 function textCell(value: unknown): string {
   if (typeof value !== 'string') return '';
@@ -101,7 +95,7 @@ function durationCell(
 }
 
 function rowsFromLog(log: CompletedWorkoutLog): ExportDiaryRow[] {
-  const date = localDateKeyFromIso(log.completedAt || log.startedAt) ?? '';
+  const date = sessionCalendarKey(log);
   const sessionTitle = textCell(log.sessionTitle);
   const workoutName = textCell(log.workoutName);
   const sessionNote = log.sessionNote;
@@ -161,7 +155,7 @@ function toCsv(rows: readonly ExportDiaryRow[]): string {
 export function decideExportDiary(
   logs: readonly CompletedWorkoutLog[] | null | undefined
 ): ExportDiaryDecision {
-  const live = liveLogs(logs);
+  const live = liveSessionLogs(logs);
   const rows: ExportDiaryRow[] = [];
   for (const item of live) {
     rows.push(...rowsFromLog(item));
