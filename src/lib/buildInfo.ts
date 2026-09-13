@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1060` Next 16.3.3 security (from Dependabot tip `fd08dacd` / former #895); paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1060";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1061` eslint-config-next 16.3.3 align + js-yaml 4.3.2 lockfile; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1061";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
