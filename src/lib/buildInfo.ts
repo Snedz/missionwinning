@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1058` /active first paint is a set table (from master `.1057` `f302f40f`; stamp stays `.1058`; visual only; do not merge or promote). */
-export const APP_BUILD_LABEL = "2026.07-unified.1058";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1059` house black+yellow 4th skin (from `.1058` `23d4b13c`; master paper `.1057` `f302f40f`; stamp stays `.1059`; visual only; do not merge or promote). */
+export const APP_BUILD_LABEL = "2026.07-unified.1059";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

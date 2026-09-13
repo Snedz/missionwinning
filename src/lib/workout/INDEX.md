@@ -121,8 +121,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutVictory.test.ts` | Victory next action + BW working reps (`.886`) |
 | `volumeDisplay.test.ts` | Load vs reps volume label; History session helper (`.1024`) |
 | `setTableEmptyLoadCell.test.ts` | Completed kg cell empty load is BW, not 0 (`.1025`) |
-| `setTableLogSetHousePress.test.ts` | Log set is house leftover press (`--house-press` / #18181b), not poster red (`.1058`) |
-| `logConsoleLogSetHousePress.test.ts` | LogConsole Log set is house leftover press (`--house-press` / #18181b), not poster red (`.1058`) |
+| `setTableLogSetHousePress.test.ts` | Log set is house leftover press (`--house-press` / #f5c518), not poster red (`.1059`) |
+| `logConsoleLogSetHousePress.test.ts` | LogConsole Log set is house leftover press (`--house-press` / #f5c518), not poster red (`.1059`) |
 | `activeLogSetWithoutPersist.test.ts` | `/active` first paint Log set does not wait on persist; `composeNextSet` owns nextSet (`.1058`) |
 | `activeSidecarWithoutPersist.test.ts` | `/active` first paint sidecar does not wait on persist; `composeSidecarWorkout` owns the session name (`.1058`) |
 | `activeFormSwapSheets.test.ts` | Form / Swap sheets open on click from first paint; overlay has no mount wait (`.1058`) |

@@ -4,27 +4,31 @@ Signed-in product chrome. Runtime: [`house.css`](house.css), scoped to `.mw-hous
 
 The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIGN_SYSTEM.md)) stays on `/private`, landing, and www. Do not copy house tokens there. Do not load a second typeface in `app/layout.tsx`.
 
+4th skin (`.1059`): deep black + amber press. Field-manual stays on `/private` / landing / www. Selected leftover copy still says `#eee` (the role); the token is `--house-selected`.
+
 ## Tokens
 
 | Token | Value | Role |
 |-------|--------|------|
-| `--house-paper` | `#ffffff` | Canvas, cards, rail |
-| `--house-stage` | `#f4f4f5` | Area behind the canvas |
-| `--house-ink` | `#18181b` | Text |
-| `--house-muted` | `#71717a` | Secondary |
-| `--house-faint` | `#a1a1aa` | Disabled |
-| `--house-line` | `#e4e4e7` | 1px hairline |
-| `--house-soft` | `#fafafa` | Soft fill |
-| `--house-chip` | `#f4f4f5` | Hover fill |
-| `--house-selected` | `#eeeeee` | Selected row / rail mark |
-| `--house-press` | `#18181b` | Primary pill |
-| `--house-press-ink` | `#fafafa` | Text on press |
+| `--house-void` | `#070707` | Stage behind the sheet |
+| `--house-paper` | `#111111` | Canvas, cards, rail |
+| `--house-stage` | `#070707` | Area behind the canvas |
+| `--house-ink` | `#f4f4f5` | Text |
+| `--house-muted` | `#a3a3a8` | Secondary |
+| `--house-faint` | `#73737a` | Disabled |
+| `--house-line` | `#2a2a2e` | 1px hairline |
+| `--house-soft` | `#1a1a1d` | Soft fill |
+| `--house-chip` | `#1c1c20` | Hover fill |
+| `--house-selected` | `#242428` | Selected row / rail mark |
+| `--house-press` | `#f5c518` | Primary pill / Log set / Generate / Start |
+| `--house-press-ink` | `#111111` | Text on press |
+| `--house-amber` | `#f5c518` | Metric accent |
 | `--house-live` | `#ae1800` | Train pulse only |
 | `--house-radius` | `16px` | Cards |
 | `--house-radius-sm` | `10px` | Inputs / small |
 | `--house-radius-row` | `12px` | Second-bar rows |
 | `--house-radius-rail` | `8px` | Rail marks, filters, empty CTA |
-| `--house-radius-sheet` | `12px` | White panel wrapping second + canvas |
+| `--house-radius-sheet` | `12px` | Dark paper panel wrapping second + canvas |
 | `--house-pill` | `999px` | Primary buttons, plus circle |
 | `--house-rail` | `72px` | Icon column |
 | `--house-second` | `264px` | Adjacent bar |
@@ -33,7 +37,7 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-dur` | `180ms` | Chips, hover |
 | `--house-dur-slow` | `260ms` | Column, pane, canvas |
 
-Inherited shadcn tokens inside `.mw-house` remap to the same white / zinc / 1rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
+Inherited shadcn tokens inside `.mw-house` remap to the same dark + yellow / 1rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
 
 ## Type
 
@@ -54,9 +58,9 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 | Piece | Class | Rule |
 |-------|--------|------|
 | Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
-| Train plus | `.house-rail-plus` | 40×40 white circle, 1px line, no shadow (desktop rail and compact floor). Click `/active`. |
-| Hover chip | `.house-rail-tip` | Black, 13px, 8px radius |
-| Sheet | `.house-sheet` | White 12px panel wrapping second + canvas |
+| Train plus | `.house-rail-plus` | 40×40 yellow press circle (desktop rail and compact floor). Click `/active`. |
+| Hover chip | `.house-rail-tip` | Amber press, 13px, 8px radius |
+| Sheet | `.house-sheet` | Dark paper 12px panel wrapping second + canvas |
 | Second bar | `.house-second` | Kicker + 12px rows, selected `#eee`; pane has back chevron |
 | Card | `.house-card` | Paper, 1px line, 16px radius |
 | Primary | `.house-btn-primary` | Black pill. One filled action |

@@ -6,17 +6,19 @@
 
 .mw-house {
   position: relative;
-  --house-paper: #ffffff;
-  --house-stage: #f4f4f5;
-  --house-ink: #18181b;
-  --house-muted: #71717a;
-  --house-faint: #a1a1aa;
-  --house-line: #e4e4e7;
-  --house-soft: #fafafa;
-  --house-press: #18181b;
-  --house-press-ink: #fafafa;
-  --house-chip: #f4f4f5;
-  --house-selected: #eeeeee;
+  --house-void: #070707;
+  --house-paper: #111111;
+  --house-stage: #070707;
+  --house-ink: #f4f4f5;
+  --house-muted: #a3a3a8;
+  --house-faint: #73737a;
+  --house-line: #2a2a2e;
+  --house-soft: #1a1a1d;
+  --house-press: #f5c518;
+  --house-press-ink: #111111;
+  --house-amber: #f5c518;
+  --house-chip: #1c1c20;
+  --house-selected: #242428;
   --house-live: #ae1800;
   --house-radius: 16px;
   --house-radius-sm: 10px;
@@ -31,35 +33,36 @@
   --house-dur: 180ms;
   --house-dur-slow: 260ms;
   /* Inherited objects (cards, buttons, set table) pick these up. */
-  --background: 0 0% 100%;
-  --foreground: 240 6% 10%;
-  --card: 0 0% 100%;
-  --card-foreground: 240 6% 10%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 240 6% 10%;
-  --muted: 240 5% 96%;
-  --muted-foreground: 240 4% 46%;
-  --secondary: 240 5% 96%;
-  --secondary-foreground: 240 6% 10%;
-  --border: 240 5% 88%;
-  --input: 240 5% 88%;
+  --background: 0 0% 7%;
+  --foreground: 240 5% 96%;
+  --card: 0 0% 7%;
+  --card-foreground: 240 5% 96%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 240 5% 96%;
+  --muted: 240 6% 11%;
+  --muted-foreground: 240 3% 65%;
+  --secondary: 240 6% 11%;
+  --secondary-foreground: 240 5% 96%;
+  --border: 240 5% 17%;
+  --input: 240 5% 17%;
   --radius: 1rem;
-  --primary: 240 6% 10%;
-  --primary-fill: 240 6% 10%;
-  --primary-fill-hover: 240 5% 16%;
-  --primary-foreground: 0 0% 98%;
-  --accent: 240 5% 96%;
-  --accent-foreground: 240 6% 10%;
-  --accent-tint: 240 5% 96%;
-  --accent-100: 240 5% 96%;
-  --accent-poster: 240 6% 10%;
-  --surface-raised: 0 0% 100%;
-  --neutral-100: 0 0% 100%;
-  --neutral-200: 240 5% 96%;
-  --neutral-300: 240 5% 88%;
-  --neutral-900: 240 6% 10%;
+  --primary: 46 91% 53%;
+  --primary-fill: 46 91% 53%;
+  --primary-fill-hover: 44 90% 46%;
+  --primary-foreground: 0 0% 7%;
+  --accent: 240 6% 11%;
+  --accent-foreground: 240 5% 96%;
+  --accent-tint: 46 40% 12%;
+  --accent-100: 46 40% 12%;
+  --accent-poster: 46 91% 53%;
+  --surface-raised: 0 0% 7%;
+  --neutral-100: 0 0% 7%;
+  --neutral-200: 240 6% 11%;
+  --neutral-300: 240 5% 17%;
+  --neutral-900: 240 5% 96%;
   color: var(--house-ink);
   background: var(--house-paper);
+  color-scheme: dark;
   font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-feature-settings: 'ss01' on, 'cv11' on;
   letter-spacing: -0.011em;
@@ -179,7 +182,7 @@
 .mw-house .house-rail-plus:hover,
 .mw-house .house-rail-plus.is-on {
   color: var(--house-press-ink);
-  background: #27272a;
+  background: var(--house-press);
 }
 
 .mw-house .house-rail a.house-rail-plus,
@@ -187,9 +190,9 @@
   width: 40px;
   height: 40px;
   margin-left: 4px;
-  color: var(--house-ink);
-  background: #ffffff;
-  border: 1px solid var(--house-line);
+  color: var(--house-press-ink);
+  background: var(--house-press);
+  border: 1px solid var(--house-press);
   box-shadow: none;
 }
 
@@ -197,8 +200,8 @@
 .mw-house .house-rail a.house-rail-plus.is-on,
 .mw-house .house-rail .house-rail-plus:hover,
 .mw-house .house-rail .house-rail-plus.is-on {
-  color: var(--house-ink);
-  background: var(--house-selected);
+  color: var(--house-press-ink);
+  background: var(--house-press);
 }
 
 .mw-house .house-rail-dot {
@@ -218,8 +221,8 @@
   transform: translateY(-50%) translateX(-8px);
   z-index: 80;
   padding: 7px 11px;
-  background: #000000;
-  color: #ffffff;
+  background: var(--house-press);
+  color: var(--house-press-ink);
   font-size: 13px;
   font-weight: 500;
   line-height: 1;
@@ -260,7 +263,7 @@
   flex-direction: column;
   padding: 20px 12px 28px;
   border-right: 1px solid var(--house-line);
-  background: #ffffff;
+  background: var(--house-paper);
   overflow: hidden;
   grid-column: 1;
 }
@@ -292,7 +295,7 @@
   width: 100%;
   min-height: 40px;
   padding: 8px 12px;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--house-muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 550;
@@ -337,7 +340,7 @@
 }
 
 .mw-house .house-second-link:hover {
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--house-ink);
   background: var(--house-chip);
 }
 
@@ -373,7 +376,7 @@
   pointer-events: auto;
   width: min(320px, calc(100vw - 120px));
   padding: 18px 18px 16px;
-  background: #ffffff;
+  background: var(--house-paper);
   border: 1px solid var(--house-line);
   border-radius: 12px;
   animation: house-guide-in var(--house-dur-slow) var(--house-ease);
@@ -387,7 +390,7 @@
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-right-color: #ffffff;
+  border-right-color: var(--house-paper);
 }
 
 .mw-house .house-guide-card::after {
@@ -640,7 +643,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgb(24 24 27 / 0.28);
+  background: rgb(7 7 7 / 0.62);
   cursor: pointer;
   animation: house-scrim-in var(--house-dur) var(--house-ease);
 }
@@ -841,12 +844,12 @@
 }
 
 .mw-house .house-compose-live tr.house-set-done {
-  background: var(--house-soft);
+  background: color-mix(in srgb, var(--house-press) 10%, var(--house-paper));
   color: var(--house-ink);
 }
 
 .mw-house .house-compose-live .house-set-done-mark {
-  border-inline-start: 3px solid var(--house-ink);
+  border-inline-start: 3px solid var(--house-press);
 }
 
 .mw-house .house-compose-live .house-set-log {
@@ -1093,6 +1096,18 @@
   color: var(--house-muted);
 }
 
+.mw-house.house-victory > div {
+  border: 1px solid var(--house-line);
+  background: var(--house-soft);
+  border-radius: var(--house-radius-sm);
+}
+
+.mw-house.house-victory > div > p.tabular-nums,
+.mw-house.house-victory > div > p.text-xl {
+  color: var(--house-press);
+  letter-spacing: -0.03em;
+}
+
 .mw-house.house-victory .house-victory-vs-last.house-lede {
   margin: 0;
   font-size: 11px;
@@ -1238,7 +1253,7 @@
 .mw-house .house-history .house-num:focus-visible,
 .mw-house .house-compose-live .house-num:focus,
 .mw-house .house-compose-live .house-num:focus-visible {
-  border: 1px solid var(--house-ink);
+  border: 1px solid var(--house-press);
   outline: none;
   box-shadow: none;
 }
@@ -1374,7 +1389,7 @@
 
 .mw-house .house-filter-bar input {
   min-height: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--house-line);
   border-radius: var(--house-radius-rail);
   background: var(--house-paper);
 }
@@ -1382,7 +1397,7 @@
 .mw-house .house-filter-bar .house-filter-btn {
   min-height: 40px;
   padding: 0 14px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--house-line);
   background: var(--house-paper);
   color: var(--house-ink);
   border-radius: var(--house-radius-rail);
@@ -1490,8 +1505,8 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  background: var(--house-selected);
-  color: var(--house-ink);
+  background: color-mix(in srgb, var(--house-press) 16%, var(--house-paper));
+  color: var(--house-press);
   border-radius: var(--house-pill);
 }
 
@@ -1583,17 +1598,17 @@
 .mw-house .house-floor .house-rail-plus {
   width: 40px;
   height: 40px;
-  color: var(--house-ink);
-  background: #ffffff;
-  border: 1px solid var(--house-line);
+  color: var(--house-press-ink);
+  background: var(--house-press);
+  border: 1px solid var(--house-press);
   border-radius: var(--house-pill);
   box-shadow: none;
 }
 
 .mw-house .house-floor .house-rail-plus:hover,
 .mw-house .house-floor .house-rail-plus.is-on {
-  color: var(--house-ink);
-  background: var(--house-selected);
+  color: var(--house-press-ink);
+  background: var(--house-press);
 }
 
 .mw-house .house-history .house-list {
@@ -1886,14 +1901,14 @@
 }
 
 .mw-house .house-week-cell.is-today {
-  border-color: var(--house-ink);
-  background: var(--house-selected);
+  border-color: var(--house-press);
+  background: var(--house-soft);
 }
 
 .mw-house .house-week-cell.is-done {
-  background: var(--house-ink);
-  color: var(--house-paper);
-  border-color: var(--house-ink);
+  background: var(--house-press);
+  color: var(--house-press-ink);
+  border-color: var(--house-press);
 }
 
 .mw-house .house-week-cell.is-missed,
@@ -1908,7 +1923,7 @@
 }
 
 .mw-house .house-week-cell.is-done .house-week-cell-name {
-  color: var(--house-paper);
+  color: var(--house-press-ink);
 }
 
 .mw-house .house-week-check,
@@ -1920,7 +1935,7 @@
 }
 
 .mw-house .house-week-cell.is-done .house-week-check {
-  color: var(--house-paper);
+  color: var(--house-press-ink);
 }
 
 .mw-house .house-week-glyph.is-missed,
@@ -1936,7 +1951,7 @@
 }
 
 .mw-house .house-week-cell.is-done .house-week-cell-mark {
-  color: var(--house-paper);
+  color: var(--house-press-ink);
 }
 
 .mw-house .house-pick-bar {
@@ -3400,7 +3415,7 @@
   align-items: center;
   min-height: 40px;
   padding: 8px 12px;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--house-muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 550;
@@ -3416,7 +3431,7 @@
 }
 
 .mw-house .house-side-link:hover {
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--house-ink);
   background: var(--house-chip);
 }
 
@@ -3530,7 +3545,7 @@
 }
 
 .mw-house .house-check-row.is-done .house-check-mark {
-  color: var(--house-ink);
+  color: var(--house-press);
 }
 
 .mw-house .house-check-why {
@@ -3565,8 +3580,8 @@
   top: calc(100% + 8px);
   z-index: 80;
   padding: 8px 10px;
-  background: #000000;
-  color: #ffffff;
+  background: var(--house-press);
+  color: var(--house-press-ink);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.35;

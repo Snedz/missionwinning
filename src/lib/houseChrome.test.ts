@@ -87,7 +87,7 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   assert.match(css, /\.house-sheet/);
   assert.match(css, /\.house-rail-tip/);
   assert.match(css, /font-size:\s*13px/);
-  assert.match(css, /rgba\(0,\s*0,\s*0,\s*0\.6\)/);
+  assert.match(css, /--house-muted/);
   assert.match(css, /--house-ease:\s*cubic-bezier/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /house-pane-in/);
@@ -264,9 +264,9 @@ test('house.css actually draws a product site, not radius-0 paper rules', () => 
   assert.match(css, /--house-radius:\s*16px/);
   assert.match(css, /border-radius:\s*var\(--house-radius\)/);
   assert.match(css, /ui-sans-serif/);
-  assert.match(css, /#ffffff/);
+  assert.match(css, /--house-paper:\s*#111111/);
   assert.match(css, /--radius:\s*1rem/);
-  assert.match(css, /--background:\s*0 0% 100%/);
+  assert.match(css, /--background:\s*0 0% 7%/);
   assert.match(css, /\.house-btn[\s\S]*flex-shrink:\s*0/);
   assert.match(css, /\.house-btn[\s\S]*white-space:\s*nowrap/);
   assert.doesNotMatch(css, /border:\s*2px/);
@@ -380,7 +380,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /--house-radius-row:\s*12px/);
   assert.match(css, /--house-radius-rail:\s*8px/);
   assert.match(css, /--house-radius-sheet:\s*12px/);
-  assert.match(css, /--house-selected:\s*#eeeeee/);
+  assert.match(css, /--house-selected:\s*#242428/);
   assert.match(css, /--house-live:\s*#ae1800/);
   assert.match(css, /\.house-rail \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-empty/);
