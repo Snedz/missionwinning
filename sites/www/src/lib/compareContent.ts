@@ -18,7 +18,7 @@ export const HERO = {
 };
 
 export type CompareStory = {
-  path: string;
+  path: `/${string}`;
   title: string;
   subtitle: string;
 };
