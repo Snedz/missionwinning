@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1046-for-1065.md](./log/LOG-rotate-1046-for-1065.md) | rotated 2026-09-13 for `.1065` sharp libheif GHSA (`.1046`) |
 | [log/LOG-rotate-1045-for-1064.md](./log/LOG-rotate-1045-for-1064.md) | rotated 2026-09-13 for `.1064` Astro AVIF RCE (`.1045`) |
 | [log/LOG-rotate-1044-for-1064.md](./log/LOG-rotate-1044-for-1064.md) | rotated 2026-09-13 for `.1064` Astro AVIF RCE (`.1044`) |
 | [log/LOG-rotate-1043-for-1061.md](./log/LOG-rotate-1043-for-1061.md) | rotated 2026-09-13 for `.1061` security align (`.1043`) |
