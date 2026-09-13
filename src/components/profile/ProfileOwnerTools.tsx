@@ -2,7 +2,6 @@
 
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 import { getJourneyEvents } from '@/lib/journeyAnalytics';
@@ -31,13 +30,10 @@ export function ProfileOwnerTools() {
 
   return (
     <>
-      <Card className="content-card border-primary bg-muted">
-        <CardHeader>
-          <CardTitle>
-            {t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm">
+      <div className="house-card space-y-2 text-sm" data-testid="account-owner-tools-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}
+        </h3>
           <div className="flex justify-between">
             <span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span>{' '}
             <span className="font-mono text-primary">{fmt.num(DEMO_MEMBERS)}</span>
@@ -58,14 +54,12 @@ export function ProfileOwnerTools() {
               defaultValue: 'Share wins and feedback when you ship.',
             })}
           </div>
-        </CardContent>
-      </Card>
+      </div>
 
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="house-card space-y-3 text-sm" data-testid="account-owner-tools-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}
+        </h3>
           <Button
             variant="outline"
             className="min-h-[44px] tap-target"
@@ -94,8 +88,7 @@ export function ProfileOwnerTools() {
               defaultValue: 'Journey events, milestones, and installs. Syncs when signed in.',
             })}
           </div>
-        </CardContent>
-      </Card>
+      </div>
     </>
   );
 }

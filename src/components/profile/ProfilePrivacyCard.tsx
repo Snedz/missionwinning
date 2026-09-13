@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   loadAnalyticsPreference,
@@ -70,13 +69,10 @@ export function ProfilePrivacyCard() {
           });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          {t('privacyControlsTitle', { defaultValue: 'Privacy & analytics' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-privacy-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('privacyControlsTitle', { defaultValue: 'Privacy & analytics' })}
+      </h3>
         <p className="text-muted-foreground">
           {t('privacyControlsLead', {
             defaultValue:
@@ -122,7 +118,6 @@ export function ProfilePrivacyCard() {
             {t('privacyPolicyLink', { defaultValue: 'Read the privacy policy' })}
           </Link>
         </p>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const NutritionPage = dynamic(
-  () => import('@/page-components/NutritionPage').then((m) => m.NutritionPage),
-  { loading: () => <RouteLoading label="Fuel" /> }
-);
+import { NutritionPage } from '@/page-components/NutritionPage';
 
 export const metadata: Metadata = routeMetadata('nutrition');
 
+/**
+ * Fuel first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. Search / barcode / recipes stay parked.
+ */
 export default function NutritionRoute() {
   return <NutritionPage />;
 }

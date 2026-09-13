@@ -18,7 +18,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -71,131 +70,121 @@ export function HistoryDayPage({ date }: Props) {
   const valid = isDayKey(date);
   const heading = valid ? formatLocalDateKey(date, i18n.language, LONG_LOCAL_DATE) : date;
 
+  const position = record.index
+    ? t('historyDayPosition', {
+        index: record.index,
+        total: record.total,
+        defaultValue: `Day ${record.index} of ${record.total} logged`,
+      })
+    : '';
+
   return (
     <PillarPageShell
+      className="house-history"
       icon={CalendarDays}
       title={heading}
       eyebrow={t('historyDayEyebrow', { defaultValue: 'On this day' })}
-      subtitle={
-        record.index
-          ? t('historyDayPosition', {
-              index: record.index,
-              total: record.total,
-              defaultValue: `Day ${record.index} of ${record.total} logged`,
-            })
-          : ''
-      }
+      subtitle={position}
     >
-      <div className="space-y-4">
-        {!valid ? (
-          <p className="border-2 border-border p-3 text-sm text-foreground">
-            {t('historyDayBadDate', {
-              defaultValue: 'That is not a date. Pick a day from your history.',
-            })}
-          </p>
-        ) : record.entries.length === 0 ? (
-          /*
-            Two different facts, said differently. A day inside the record with
-            no entries cannot happen (the record is built from days that hold
-            data), so reaching here means the day was never logged — and saying
-            "nothing recorded" is true, where "you did nothing" would not be.
-          */
-          <EmptyState
-            icon={CalendarDays}
-            title={t('historyDayEmptyTitle', { defaultValue: 'Nothing logged this day' })}
-            description={t('historyDayEmpty', {
-              defaultValue: 'Nothing was recorded on this day.',
-            })}
-            actionLabel={t('historyDayEmptyCta', { defaultValue: 'Open Today' })}
-            href="/log"
-          />
-        ) : (
-          <ol className="space-y-2">
-            {record.entries.map((e) => {
-              const trainLog =
-                e.pillar === 'train'
-                  ? logFromTrainJournalId(e.id, workoutHistory)
-                  : null;
-              const canRetrain = trainLog
-                ? decideRepeatThisSession({ log: trainLog }).kind !== 'empty'
-                : false;
-              return (
-                <li key={e.id} className="border-2 border-border p-3">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      {t(`pillar_${e.pillar}`, { defaultValue: PILLAR_LABEL[e.pillar] })}
-                    </span>
-                    <span className="text-[11px] tabular-nums text-muted-foreground">
-                      {new Date(e.at).toLocaleTimeString(i18n.language, {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                      })}
-                    </span>
-                  </div>
-                  <div className="text-sm font-semibold text-foreground">{e.title}</div>
-                  {e.detail && <div className="text-xs text-muted-foreground">{e.detail}</div>}
-                  {canRetrain && trainLog ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 min-h-[44px]"
-                      onClick={() => {
-                        const decision = decideRepeatThisSession({
-                          log: trainLog,
-                          active: activeWorkout,
+      <p className="house-kicker">{t('historyDayEyebrow', { defaultValue: 'On this day' })}</p>
+      <h1 className="house-title">{heading}</h1>
+      {position ? <p className="house-lede">{position}</p> : null}
+
+      {!valid ? (
+        <p className="house-lede">
+          {t('historyDayBadDate', {
+            defaultValue: 'That is not a date. Pick a day from your history.',
+          })}
+        </p>
+      ) : record.entries.length === 0 ? (
+        /*
+          Two different facts, said differently. A day inside the record with
+          no entries cannot happen (the record is built from days that hold
+          data), so reaching here means the day was never logged — and saying
+          "nothing recorded" is true, where "you did nothing" would not be.
+        */
+        <EmptyState
+          className="house-empty"
+          icon={CalendarDays}
+          title={t('historyDayEmptyTitle', { defaultValue: 'Nothing logged this day' })}
+          description={t('historyDayEmpty', {
+            defaultValue: 'Nothing was recorded on this day.',
+          })}
+          actionLabel={t('historyDayEmptyCta', { defaultValue: 'Open Today' })}
+          href="/log"
+        />
+      ) : (
+        <div className="house-list" data-testid="history-day-list">
+          {record.entries.map((e) => {
+            const trainLog =
+              e.pillar === 'train'
+                ? logFromTrainJournalId(e.id, workoutHistory)
+                : null;
+            const canRetrain = trainLog
+              ? decideRepeatThisSession({ log: trainLog }).kind !== 'empty'
+              : false;
+            return (
+              <div key={e.id} className="house-item">
+                <div className="house-item-body">
+                  <span>
+                    {t(`pillar_${e.pillar}`, { defaultValue: PILLAR_LABEL[e.pillar] })}
+                    {' · '}
+                    {new Date(e.at).toLocaleTimeString(i18n.language, {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                  <strong>{e.title}</strong>
+                  {e.detail ? <span>{e.detail}</span> : null}
+                </div>
+                {canRetrain && trainLog ? (
+                  <button
+                    type="button"
+                    className="house-btn house-btn-ghost"
+                    onClick={() => {
+                      const decision = decideRepeatThisSession({
+                        log: trainLog,
+                        active: activeWorkout,
+                      });
+                      if (decision.kind === 'empty') return;
+                      if (decision.kind === 'start') {
+                        startWorkout(decision.name, decision.exercises);
+                        track('history_train_again', {
+                          exerciseCount: decision.exercises.length,
                         });
-                        if (decision.kind === 'empty') return;
-                        if (decision.kind === 'start') {
-                          startWorkout(decision.name, decision.exercises);
-                          track('history_train_again', {
-                            exerciseCount: decision.exercises.length,
-                          });
-                        }
-                        router.push('/active');
-                      }}
-                    >
-                      {t('historyRepeatSession', { defaultValue: 'Repeat this session' })}
-                    </Button>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ol>
+                      }
+                      router.push('/active');
+                    }}
+                  >
+                    {t('historyRepeatSession', { defaultValue: 'Repeat this session' })}
+                  </button>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="house-row" style={{ marginTop: 18 }}>
+        {record.previous ? (
+          <Link href={`/history/${record.previous}`} className="house-btn">
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            {formatLocalDateKey(record.previous, i18n.language, LONG_LOCAL_DATE)}
+          </Link>
+        ) : (
+          <span />
         )}
-
-        <nav className="flex items-center justify-between gap-2 border-t-2 border-border pt-3">
-          {record.previous ? (
-            <Link
-              href={`/history/${record.previous}`}
-              className="flex min-h-[44px] items-center gap-1 border-2 border-border px-3 text-xs text-foreground"
-            >
-              <ChevronLeft className="h-4 w-4" aria-hidden />
-              {formatLocalDateKey(record.previous, i18n.language, LONG_LOCAL_DATE)}
-            </Link>
-          ) : (
-            <span />
-          )}
-          {record.next ? (
-            <Link
-              href={`/history/${record.next}`}
-              className="flex min-h-[44px] items-center gap-1 border-2 border-border px-3 text-xs text-foreground"
-            >
-              {formatLocalDateKey(record.next, i18n.language, LONG_LOCAL_DATE)}
-              <ChevronRight className="h-4 w-4" aria-hidden />
-            </Link>
-          ) : (
-            <span />
-          )}
-        </nav>
-
-        <Link
-          href="/history"
-          className="inline-block text-xs text-primary underline underline-offset-2"
-        >
-          {t('historyDayBack', { defaultValue: 'Back to history' })}
-        </Link>
+        {record.next ? (
+          <Link href={`/history/${record.next}`} className="house-btn">
+            {formatLocalDateKey(record.next, i18n.language, LONG_LOCAL_DATE)}
+            <ChevronRight className="h-4 w-4" aria-hidden />
+          </Link>
+        ) : null}
       </div>
+
+      <Link href="/history" className="house-btn house-btn-ghost" style={{ marginTop: 12 }}>
+        {t('historyDayBack', { defaultValue: 'Back to history' })}
+      </Link>
     </PillarPageShell>
   );
 }

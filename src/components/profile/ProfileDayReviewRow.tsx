@@ -16,7 +16,6 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { CardContent } from '@/components/ui/card';
 import { DAY_REVIEW_HOURS } from '@/lib/dayReviewPrefs';
 
 type Props = {
@@ -35,7 +34,8 @@ export function ProfileDayReviewRow({ hour, busy, onChange, separated }: Props) 
   const { t } = useTranslation();
 
   return (
-    <CardContent
+    <div
+      data-testid="account-day-review-row"
       className={`flex items-center justify-between gap-4 ${
         separated ? 'border-t border-border pt-4' : ''
       }`}
@@ -60,6 +60,6 @@ export function ProfileDayReviewRow({ hour, busy, onChange, separated }: Props) 
           </option>
         ))}
       </select>
-    </CardContent>
+    </div>
   );
 }

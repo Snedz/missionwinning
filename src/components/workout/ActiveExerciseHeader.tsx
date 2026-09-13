@@ -191,7 +191,7 @@ export function ActiveExerciseHeader({
       </div>
 
       {nextTarget && (
-        <p className="text-[11px] tabular-nums text-muted-foreground">
+        <p className="house-lede house-next-target tabular-nums">
           {t('activeNextTargetLine', {
             line: formatSetRowLine({
               type: resolveSetRowType(exercise),
@@ -209,7 +209,7 @@ export function ActiveExerciseHeader({
       {showE1rm && sessionE1rm && (
         <p
           data-testid="session-e1rm"
-          className="text-[11px] tabular-nums text-muted-foreground"
+          className="house-lede house-session-e1rm tabular-nums"
           aria-label={t('activeE1rmAria', { defaultValue: SESSION_E1RM_COPY.aria })}
         >
           {t('activeE1rmLine', {
@@ -221,7 +221,7 @@ export function ActiveExerciseHeader({
       )}
 
       {skipped ? (
-        <p className="text-sm text-muted-foreground" data-testid="session-skipped-exercise">
+        <p className="house-lede" data-testid="session-skipped-exercise">
           {t('activeSkippedThisSession', { defaultValue: 'Skipped this session' })}
         </p>
       ) : null}

@@ -45,7 +45,7 @@ export function SyncStatusRow() {
   };
 
   return (
-    <div className="border-2 border-border bg-card p-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-sync-status-row">
       {failure ? (
         <p className="flex items-start gap-2 text-muted-foreground">
           <CloudOff className="mt-0.5 h-4 w-4 shrink-0" />

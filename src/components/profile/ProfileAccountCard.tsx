@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DangerZone } from '@/components/ui/DangerZone';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -88,13 +87,10 @@ export function ProfileAccountCard({
   };
 
   return (
-    <Card className="bg-card">
-      <CardHeader>
-        <CardTitle className="text-base font-semibold">
-          {t('account', { defaultValue: 'Account' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="house-card space-y-3" data-testid="account-card">
+      <h3 className="text-base font-semibold">
+        {t('account', { defaultValue: 'Account' })}
+      </h3>
         {authError ? (
           <p
             role="alert"
@@ -131,11 +127,11 @@ export function ProfileAccountCard({
             </p>
           </>
         ) : (
-          <div className="border-2 border-border bg-card p-4">
+          <div className="house-account-signin" data-testid="account-signin-block">
             <p className="font-semibold mb-1 text-sm">
               {t('signInOptional', { defaultValue: 'Sign in optional — progress stays on this device.' })}
             </p>
-            <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+            <p className="house-signin-hint" data-testid="account-signin-hint">
               {t('cloudSyncPending', {
                 defaultValue: 'Sign in to sync journey across devices',
               })}
@@ -153,7 +149,7 @@ export function ProfileAccountCard({
             Owner tools: enrollments + local demo grants. Real payments when LLC is ready.
           </p>
         ) : freeBeta ? (
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="house-account-foot" data-testid="account-free-beta-foot">
             {t('profileFreeBetaFoot', {
               defaultValue: 'Alpha — full tools free while we grow with you. Logger stays free forever.',
             })}
@@ -181,7 +177,6 @@ export function ProfileAccountCard({
             />
           </DangerZone>
         ) : null}
-      </CardContent>
-    </Card>
+    </div>
   );
 }

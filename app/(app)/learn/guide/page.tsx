@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const GuidebookIndexPage = dynamic(
-  () => import('@/page-components/GuidebookIndexPage').then((m) => m.GuidebookIndexPage),
-  { loading: () => <RouteLoading label="Guidebook" /> }
-);
+import { GuidebookIndexPage } from '@/page-components/GuidebookIndexPage';
 
 export const metadata: Metadata = { title: 'Guidebook' };
 
+/**
+ * Guidebook first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. Do not restyle guidebook internals.
+ * Course / chapter stay parked.
+ */
 export default function GuidebookIndexRoute() {
   return <GuidebookIndexPage />;
 }

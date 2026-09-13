@@ -10,7 +10,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   ATHLETE_PAGE_CHANGED,
@@ -102,10 +101,9 @@ export function AthleteTableCard() {
   };
 
   return (
-    <Card className="bg-card" data-testid="athlete-table-card">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-table-card">
         <p className="eyebrow mb-1">{t('athleteTableTitle', { defaultValue: 'About training' })}</p>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="house-table-cite" data-testid="athlete-table-cite">
           {t('athleteTableBody', {
             defaultValue: 'Who you are as an athlete — picks only, stays on this device.',
           })}
@@ -117,9 +115,9 @@ export function AthleteTableCard() {
             return (
               <div
                 key={rowId}
-                className="grid gap-1 border-t-2 border-border pt-3 first:border-t-0 first:pt-0 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
+                className="house-table-row grid gap-1 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
               >
-                <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                <dt className="house-table-dt" data-testid="athlete-table-dt">
                   {t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
                 </dt>
                 <dd className="text-sm font-semibold text-foreground">{pickText(rowId)}</dd>
@@ -128,8 +126,11 @@ export function AthleteTableCard() {
           })}
         </dl>
 
-        <details className="group mt-5 border-t-2 border-border pt-4">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <details className="group house-table-edit" data-testid="athlete-table-edit">
+          <summary
+            className="house-table-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-table-edit-summary"
+          >
             {t('athleteTableEdit', { defaultValue: 'Edit table' })}
           </summary>
           <div className="mt-3">
@@ -179,7 +180,6 @@ export function AthleteTableCard() {
             </div>
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

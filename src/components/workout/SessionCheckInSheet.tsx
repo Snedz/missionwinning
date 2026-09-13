@@ -46,7 +46,7 @@ function QuickRow({
     <div className="space-y-1.5">
       <div className="flex justify-between text-sm">
         <span className="font-semibold">{label}</span>
-        <span className="text-muted-foreground tabular-nums">{value}/5</span>
+        <span className="house-lede tabular-nums">{value}/5</span>
       </div>
       {/*
         One 2px-ruled strip with 1px internal divisions, filling left to right.
@@ -79,7 +79,7 @@ function QuickRow({
           </button>
         ))}
       </div>
-      <div className="flex justify-between text-[10px] text-muted-foreground">
+      <div className="flex justify-between text-[10px] house-lede">
         <span>{lowHint}</span>
         <span>{highHint}</span>
       </div>
@@ -150,7 +150,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
         </div>
       }
     >
-      <p className="text-sm text-muted-foreground leading-relaxed -mt-1">
+      <p className="house-lede text-sm">
         {t('sessionCheckInLead', {
           defaultValue:
             'Three quick ratings. We adjust readiness — we never cut your sets without asking.',

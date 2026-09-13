@@ -261,9 +261,9 @@ test.describe('First 90 seconds @gate', () => {
     // established user opening the Train tab.
     await seedLegacyOnboarding(page);
     await page.goto('/active', { waitUntil: 'networkidle' });
-    const start = page.getByRole('button', { name: /start workout/i });
-    await expect(start).toBeEnabled({ timeout: 15_000 });
-    await start.click();
+    await expect(
+      page.getByTestId('set-table-log-set').or(page.getByTestId('log-console-log-set')).or(page.getByRole('button', { name: /^log set$/i }))
+    ).toBeVisible({ timeout: 15_000 });
 
     // The picker is a sheet as of `.156` — it was an inline `max-h-48` list
     // competing with the session for height. One extra tap to open it; the

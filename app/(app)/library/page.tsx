@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const LibraryPage = dynamic(
-  () => import('@/page-components/LibraryPage').then((m) => m.LibraryPage),
-  { loading: () => <RouteLoading label="Library" /> }
-);
+import { LibraryPage } from '@/page-components/LibraryPage';
 
 export const metadata: Metadata = routeMetadata('library');
 
+/**
+ * Library first paint is house leftover. `dynamic()` + `RouteLoading`
+ * made the served HTML a skeleton. Posters / merge stay parked in Show all.
+ */
 export default function LibraryRoute() {
   return <LibraryPage />;
 }

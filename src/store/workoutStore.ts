@@ -1352,6 +1352,19 @@ export const useWorkoutStore = create<WorkoutState>()(
        * not added to the path that holds the athlete's sessions.
        */
       storage: createJSONStorage(() => dedupeWrites(browserStorage())),
+      merge: (persisted, current) => {
+        const slice = mergePersistedWorkoutState(persisted, {
+          savedWorkouts: current.savedWorkouts,
+          workoutHistory: current.workoutHistory,
+          activeWorkout: current.activeWorkout,
+        });
+        return {
+          ...current,
+          savedWorkouts: slice.savedWorkouts ?? current.savedWorkouts,
+          workoutHistory: slice.workoutHistory ?? current.workoutHistory,
+          activeWorkout: slice.activeWorkout ?? null,
+        };
+      },
       // v1: backfill sync-v2 identity so pre-existing logs can reach the cloud
       // without duplicating (they had no stable id the server could key on).
       version: 1,
@@ -1450,6 +1463,57 @@ export function isUsableActiveWorkout(value: unknown): boolean {
   return w.exercises.every(
     (ex) => !!ex && typeof ex === 'object' && Array.isArray((ex as { sets?: unknown }).sets)
   );
+}
+
+/** Live compose the logger can paint — a session with at least one lift. */
+export function hasComposeExercises(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false;
+  if (!isUsableActiveWorkout(value)) return false;
+  const w = value as { exercises?: unknown };
+  return Array.isArray(w.exercises) && w.exercises.length > 0;
+}
+
+export type WorkoutPersistSlice = {
+  savedWorkouts?: SavedWorkout[];
+  workoutHistory?: CompletedWorkoutLog[];
+  activeWorkout?: ActiveWorkout | null;
+};
+
+/**
+ * Persist rehydrate must not wipe a Just Go compose minted this tick.
+ * Logged work on disk still wins. Empty / unusable persisted sessions do not.
+ */
+export function mergePersistedWorkoutState(
+  persisted: unknown,
+  current: WorkoutPersistSlice
+): WorkoutPersistSlice {
+  const p =
+    persisted && typeof persisted === 'object'
+      ? (persisted as WorkoutPersistSlice)
+      : {};
+  const persistedLive = hasComposeExercises(p.activeWorkout) ? p.activeWorkout : null;
+  const currentLive = hasComposeExercises(current.activeWorkout)
+    ? current.activeWorkout
+    : null;
+
+  let active: ActiveWorkout | null | undefined;
+  if (hasLoggedWork(current.activeWorkout) && !hasLoggedWork(p.activeWorkout)) {
+    active = current.activeWorkout;
+  } else if (hasLoggedWork(p.activeWorkout)) {
+    active = p.activeWorkout;
+  } else if (currentLive && !persistedLive) {
+    active = currentLive;
+  } else if (persistedLive) {
+    active = persistedLive;
+  } else {
+    active = currentLive ?? null;
+  }
+
+  return {
+    savedWorkouts: p.savedWorkouts ?? current.savedWorkouts,
+    workoutHistory: p.workoutHistory ?? current.workoutHistory,
+    activeWorkout: active ?? null,
+  };
 }
 
 /**

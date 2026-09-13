@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProfileDayReviewRow } from '@/components/profile/ProfileDayReviewRow';
 
@@ -49,36 +48,34 @@ export function ProfileRemindersCard({
    */
   if (!signedIn && !pushSupported) {
     return (
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="text-sm text-muted-foreground">
-            {t('remindersPushUnavailable', {
-              defaultValue:
-                'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
-            })}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {t('remindersPushUnavailableHint', {
-              defaultValue:
-                'Until then: open Today after a rest day — one next session, no catch-up.',
-            })}
-          </p>
-        </CardContent>
-      </Card>
+      <div className="house-card space-y-2" data-testid="account-reminders-card">
+        <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          {t('remindersTitle', { defaultValue: 'Training reminders' })}
+        </h3>
+        <p className="house-reminders-cite" data-testid="account-reminders-cite">
+          {t('remindersPushUnavailable', {
+            defaultValue:
+              'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
+          })}
+        </p>
+        <p className="house-reminders-hint" data-testid="account-reminders-hint">
+          {t('remindersPushUnavailableHint', {
+            defaultValue:
+              'Until then: open Today after a rest day — one next session, no catch-up.',
+          })}
+        </p>
+      </div>
     );
   }
 
   return (
-    <Card className="content-card">
-      <CardHeader>
-        <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
-      </CardHeader>
+    <div className="house-card space-y-3" data-testid="account-reminders-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('remindersTitle', { defaultValue: 'Training reminders' })}
+      </h3>
 
       {signedIn ? (
-        <CardContent className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
             {t('remindersDesc', {
               defaultValue:
@@ -96,11 +93,11 @@ export function ProfileRemindersCard({
               ? t('remindersOn', { defaultValue: 'On' })
               : t('remindersOff', { defaultValue: 'Off' })}
           </Button>
-        </CardContent>
+        </div>
       ) : null}
 
       {pushSupported ? (
-        <CardContent className={signedIn ? 'border-t border-border pt-4' : ''}>
+        <div className={signedIn ? 'border-t border-border pt-4' : ''}>
           <div className="flex items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               {t('remindersPushDesc', {
@@ -137,7 +134,10 @@ export function ProfileRemindersCard({
           <p className="mt-4 text-xs font-semibold uppercase tracking-[0.04em] text-muted-foreground">
             {t('remindersKindsLabel', { defaultValue: 'What this device will receive' })}
           </p>
-          <ul className="mt-2 space-y-2 border-t-2 border-border pt-2 text-[13px] text-muted-foreground">
+          <ul
+            className="house-reminders-kinds mt-2 space-y-2 pt-2 text-[13px] text-muted-foreground"
+            data-testid="account-reminders-kinds"
+          >
             <li>
               {t('remindersKindComeback', {
                 defaultValue:
@@ -175,7 +175,7 @@ export function ProfileRemindersCard({
               })}
             </p>
           ) : null}
-        </CardContent>
+        </div>
       ) : null}
 
       {/* Under `pushSupported`, not under `pushOn`: choosing the hour is how an
@@ -189,6 +189,6 @@ export function ProfileRemindersCard({
           separated
         />
       ) : null}
-    </Card>
+    </div>
   );
 }

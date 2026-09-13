@@ -5,7 +5,6 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
@@ -34,11 +33,14 @@ import { mindSeriesByCollectionId, orderSessionsForSeries } from '@/lib/mind/min
 import { cn } from '@/lib/utils';
 import { isFreeBeta } from '@/lib/freeBeta';
 
-export function MindPage() {
+type MindPageProps = {
+  initialCollection?: string;
+};
+
+export function MindPage({ initialCollection }: MindPageProps = {}) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const { premium } = usePremium();
   const freeBeta = isFreeBeta();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
@@ -48,17 +50,23 @@ export function MindPage() {
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
   const [collectionId, setCollectionId] = useState<MindCollectionId>(() =>
-    parseMindCollectionParam(
-      typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('collection')
-        : null
-    )
+    parseMindCollectionParam(initialCollection ?? null)
   );
   const inv = getContentInventory();
 
   useEffect(() => {
-    setCollectionId(parseMindCollectionParam(searchParams.get('collection')));
-  }, [searchParams]);
+    setCollectionId(parseMindCollectionParam(initialCollection ?? null));
+  }, [initialCollection]);
+
+  useEffect(() => {
+    const apply = (search: string) => {
+      const sp = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+      setCollectionId(parseMindCollectionParam(sp.get('collection')));
+    };
+    const onPop = () => apply(window.location.search);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));

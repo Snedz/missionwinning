@@ -460,7 +460,7 @@ export function HistoryPage() {
       })}
     >
       {!hasHydrated ? (
-        <SkeletonBlock className="h-32" label="Loading sessions" />
+        <div className="house-empty" aria-busy="true" data-testid="history-first-paint" />
       ) : liveHistory.length === 0 ? (
         <div data-testid="session-history-empty">
           <EmptyState
@@ -718,7 +718,7 @@ export function HistoryPage() {
 
       <details className="house-card group">
         <summary
-          className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+          className="house-show-all-door flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 [&::-webkit-details-marker]:hidden"
           data-testid="history-show-all"
         >
           {t('todayShowAll', { defaultValue: 'Show all' })}
@@ -1217,7 +1217,7 @@ export function HistoryPage() {
 
       <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
         <DialogContent
-          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          className="mw-house house-overlay-panel max-w-lg max-h-[85vh] overflow-y-auto"
           data-testid="session-history-merge-dialog"
         >
           <DialogHeader>

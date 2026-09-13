@@ -33,7 +33,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { loadOperatorName, saveOperatorName } from '@/lib/leaderboard/computeLocalStats';
@@ -126,8 +125,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
      * display title, signature. Editors live under a disclosure so the page
      * reads as authored identity, not a settings form. Save stays outline (0 red).
      */
-    <Card className="border-2 border-border bg-card" data-testid="athlete-identity-card">
-      <CardContent className="space-y-3 pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-identity-card">
         <p className="eyebrow text-primary">
           {t('athleteIdentityTitle', { defaultValue: 'Call sign' })}
         </p>
@@ -142,7 +140,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         </p>
 
         {sig ? (
-          <p className="text-sm leading-relaxed text-muted-foreground" data-testid="athlete-signature">
+          <p className="house-identity-cite" data-testid="athlete-signature">
             {t('careerSignature', {
               sessions: n(sig.sessions),
               bestWeek: n(sig.bestWeek),
@@ -151,7 +149,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             })}
           </p>
         ) : (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="house-identity-cite">
             {t('athleteIdentityNoStart', {
               defaultValue: 'Your first logged session starts the record.',
             })}
@@ -159,7 +157,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         )}
 
         {career.firstSessionOn && (
-          <p className="text-xs text-muted-foreground">
+          <p className="house-identity-cite">
             {t('athleteIdentitySince', {
               date: formatLocalDateKey(career.firstSessionOn, i18n.language),
               defaultValue: `Training here since ${formatLocalDateKey(career.firstSessionOn, i18n.language)}`,
@@ -167,14 +165,21 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
           </p>
         )}
 
-        <details className="group border-t-2 border-border pt-4">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <details className="group house-identity-edit" data-testid="athlete-identity-edit">
+          <summary
+            className="house-identity-summary flex min-h-[44px] cursor-pointer list-none items-center [&::-webkit-details-marker]:hidden"
+            data-testid="athlete-identity-summary"
+          >
             {t('athleteIdentityEdit', { defaultValue: 'Edit call sign' })}
           </summary>
           <div className="mt-3 space-y-3">
             <div className="flex flex-wrap items-end gap-2">
               <div className="space-y-1">
-                <label htmlFor="athlete-call-number" className="text-xs font-semibold text-muted-foreground">
+                <label
+                  htmlFor="athlete-call-number"
+                  className="house-identity-number-label"
+                  data-testid="athlete-identity-number-label"
+                >
                   {t('athleteIdentityNumber', { defaultValue: 'Number' })}
                 </label>
                 <select
@@ -200,7 +205,11 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
               </div>
 
               <div className="min-w-[12rem] flex-1 space-y-1">
-                <label htmlFor="athlete-call-sign" className="text-xs font-semibold text-muted-foreground">
+                <label
+                  htmlFor="athlete-call-sign"
+                  className="house-identity-name-label"
+                  data-testid="athlete-identity-name-label"
+                >
                   {t('athleteIdentityNameLabel', { defaultValue: 'Name' })}
                 </label>
                 <Input
@@ -229,13 +238,12 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             )}
 
             {saved && (
-              <p className="text-sm text-muted-foreground" role="status">
+              <p className="house-identity-saved" data-testid="athlete-identity-saved" role="status">
                 {t('athleteIdentitySaved', { defaultValue: 'Saved on this device.' })}
               </p>
             )}
           </div>
         </details>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

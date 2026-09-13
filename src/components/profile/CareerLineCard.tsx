@@ -19,7 +19,6 @@
 import { useTranslation } from 'react-i18next';
 import { Activity } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Card, CardContent } from '@/components/ui/card';
 import { formatLocalNumber } from '@/lib/i18n/formatLocale';
 import type { CareerLine } from '@/lib/careerLine';
 import { hasCareer } from '@/lib/careerLine';
@@ -72,8 +71,7 @@ export function CareerLineCard({ career }: { career: CareerLine }) {
   ];
 
   return (
-    <Card className="border-2 border-border bg-card">
-      <CardContent className="pt-6">
+    <div className="house-card space-y-3" data-testid="athlete-career-card">
         <p className="eyebrow mb-4 text-primary">
           {t('careerLineTitle', { defaultValue: 'Your record' })}
         </p>
@@ -87,7 +85,6 @@ export function CareerLineCard({ career }: { career: CareerLine }) {
             </div>
           ))}
         </dl>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

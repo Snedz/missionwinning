@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -15,10 +14,13 @@ import { isFreeBeta } from '@/lib/freeBeta';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
 
-export function LearnCoursePage() {
+type LearnCoursePageProps = {
+  initialChapter?: string;
+};
+
+export function LearnCoursePage({ initialChapter }: LearnCoursePageProps = {}) {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const initialChapterId = searchParams.get('chapter') ?? undefined;
+  const initialChapterId = initialChapter;
   const { premium, loading } = usePremium();
   const [chapters, setChapters] = useState<GuideChapter[]>([]);
   /*

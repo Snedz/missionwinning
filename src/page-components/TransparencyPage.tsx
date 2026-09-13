@@ -7,7 +7,6 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { FileText } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { TransparencyDownloads } from '@/components/transparency/TransparencyDownloads';
@@ -73,18 +72,16 @@ export function TransparencyPage() {
       <TransparencyDownloads report={report} />
 
       {report.rows.map((row) => (
-        <Card key={row.id} className="border-2 border-border bg-card">
-          <CardHeader>
-            <CardTitle className="flex flex-wrap items-baseline justify-between gap-2 text-base">
-              <span>{row.title}</span>
-              <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                {t(statusKey(row.status), {
-                  defaultValue: STATUS_DEFAULTS[statusKey(row.status)],
-                })}
-              </span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+        <div key={row.id} className="house-card space-y-3" data-testid="visibility-report-row">
+          <h3 className="flex flex-wrap items-baseline justify-between gap-2 text-base font-semibold">
+            <span>{row.title}</span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+              {t(statusKey(row.status), {
+                defaultValue: STATUS_DEFAULTS[statusKey(row.status)],
+              })}
+            </span>
+          </h3>
+          <div className="space-y-2 text-sm">
             <p className="text-foreground">{row.reason}</p>
             {row.details?.length ? (
               <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
@@ -93,8 +90,8 @@ export function TransparencyPage() {
                 ))}
               </ul>
             ) : null}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ))}
     </PillarPageShell>
   );

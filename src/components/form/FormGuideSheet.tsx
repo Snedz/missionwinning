@@ -67,7 +67,10 @@ export function FormGuideSheet({
         </div>
       }
     >
-        <div className="house-form-guide-body p-5 space-y-5 text-[17px] leading-relaxed">
+        <div
+          className="house-form-guide-body p-5 space-y-5 text-[17px] leading-relaxed"
+          data-testid="form-guide-sheet"
+        >
           {guide.mediaUrl && (
             <FormGuideMedia
               url={guide.mediaUrl}
@@ -86,7 +89,7 @@ export function FormGuideSheet({
                   : guide.readyPosition}
               </h3>
               {!guide.militaryStyle && (
-                <p className="text-muted-foreground text-base">{guide.readyPosition}</p>
+                <p className="house-lede text-base">{guide.readyPosition}</p>
               )}
             </section>
           )}
@@ -99,7 +102,7 @@ export function FormGuideSheet({
           {guide.breathing && (
             <section className="house-card house-form-breath">
               <h3 className="house-form-section">{t('breath', { defaultValue: 'Breath' })}</h3>
-              <p>{guide.breathing}</p>
+              <p className="house-lede">{guide.breathing}</p>
             </section>
           )}
         </div>
@@ -160,7 +163,7 @@ function FormGuideMedia({
           />
         </video>
         <figcaption className="house-form-figure-cap">
-          {caption ?? defaultCaption}
+          <span className="house-lede">{caption ?? defaultCaption}</span>
         </figcaption>
       </figure>
     );
@@ -181,7 +184,7 @@ function FormGuideMedia({
         className="mx-auto w-full max-h-80 object-contain bg-background"
       />
       <figcaption className="house-form-figure-cap">
-        {caption ?? defaultCaption}
+        <span className="house-lede">{caption ?? defaultCaption}</span>
       </figcaption>
     </figure>
   );
@@ -203,7 +206,7 @@ function GuideSection({
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-base">
             <span className="house-form-mark">{variant === 'error' ? '✗' : '·'}</span>
-            <span>{item}</span>
+            <span className="house-lede">{item}</span>
           </li>
         ))}
       </ul>

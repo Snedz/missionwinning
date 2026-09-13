@@ -792,10 +792,9 @@ test.describe('Accessibility @a11y', () => {
       }
     });
     await page.goto('/active', { waitUntil: 'networkidle' });
-    const start = page.getByRole('button', { name: /start workout/i });
-    await expect(start).toBeVisible({ timeout: 15_000 });
-    await expect(start).toBeEnabled({ timeout: 15_000 });
-    await start.click();
+    await expect(
+      page.getByTestId('set-table-log-set').or(page.getByTestId('log-console-log-set')).or(page.getByRole('button', { name: /^log set$/i }))
+    ).toBeVisible({ timeout: 15_000 });
     await expect(
       page.getByRole('button', { name: /not now/i }).or(page.getByText(/how do you feel/i)).first()
     ).toBeVisible({ timeout: 15_000 });

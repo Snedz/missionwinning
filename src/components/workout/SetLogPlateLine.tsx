@@ -32,11 +32,11 @@ export function SetLogPlateLine({
 
   return (
     <div
-      className="mt-1 flex min-w-0 items-center justify-between gap-2"
+      className="house-plate-line mt-1 flex min-w-0 items-center justify-between gap-2"
       data-testid="set-table-plates"
     >
       <div
-        className="min-w-0 truncate text-[11px] tabular-nums text-muted-foreground"
+        className="min-w-0 truncate text-[11px] tabular-nums house-lede"
         data-testid="set-table-plates-line"
         aria-label={t('activePlateBreakdownAria', {
           line,

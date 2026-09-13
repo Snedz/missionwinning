@@ -203,7 +203,7 @@ test('manual edit still beats session carry', () => {
   assert.deepEqual(out, { reps: 3, weight: 120 });
 });
 
-test('LogConsole: one poster-red Log set ≥44px; reps/weight expose prefill values', () => {
+test('LogConsole: one house leftover Log set ≥44px; reps/weight expose prefill values', () => {
   const src = read('src/components/workout/LogConsole.tsx');
   const primaries = src.match(/primary-action/g) || [];
   assert.equal(primaries.length, 1, 'exactly one confirm (Log set)');
@@ -212,7 +212,12 @@ test('LogConsole: one poster-red Log set ≥44px; reps/weight expose prefill val
   assert.match(src, /testId="log-console-reps"/);
   assert.match(src, /log-console-weight/);
   assert.match(src, /data-testid=\{testId\}/);
-  assert.match(src, /accent-poster/);
+  const logSet = src.slice(
+    src.indexOf('data-testid="log-console-log-set"'),
+    src.indexOf('data-testid="log-console-log-set"') + 400
+  );
+  assert.match(logSet, /house-btn house-btn-primary house-set-log/);
+  assert.doesNotMatch(logSet, /accent-poster/);
 });
 
 test('cite / ghost / Prev are not remounted as a second Prev', () => {

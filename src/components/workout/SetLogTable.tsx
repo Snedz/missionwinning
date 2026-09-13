@@ -162,7 +162,7 @@ export function SetLogTable({
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-hidden">
     <table
-      className="w-full table-fixed border-collapse text-sm"
+      className="house-set-table w-full table-fixed border-collapse"
       data-testid="set-log-table"
       data-row-type={rowType}
       data-pair-mark={pairMark ?? undefined}
@@ -219,10 +219,10 @@ export function SetLogTable({
             <tr
               data-set-complete={completed ? 'true' : 'false'}
               className={cn(
-                !completed && 'border-b border-border',
+                !completed && 'house-set-line',
                 isActive && 'is-active-row',
                 completed && !isActive && 'house-set-done',
-                !completed && !isActive && 'text-muted-foreground'
+                !completed && !isActive && 'house-set-wait'
               )}
             >
               <th
@@ -267,7 +267,7 @@ export function SetLogTable({
                   cell,
                   prevLabels[setIdx]
                     ? 'font-semibold text-foreground'
-                    : 'text-muted-foreground'
+                    : 'house-set-prev'
                 )}
                 data-testid="set-table-prev"
                 data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
@@ -347,12 +347,12 @@ export function SetLogTable({
                     </>
                   )}
                   <td className={cn(cell, 'text-end')}>
-                    {/* Sole red primary on desktop Active log path. */}
+                    {/* House leftover press — ink, not poster red. */}
                     <button
                       type="button"
                       onClick={onLog}
                       data-testid="set-table-log-set"
-                      className="primary-action min-h-[44px] w-full tap-target bg-[hsl(var(--accent-poster))] px-1.5 py-1.5 text-xs font-extrabold leading-tight text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+                      className="house-btn house-btn-primary house-set-log primary-action min-h-[44px] w-full tap-target px-1.5 py-1.5"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
@@ -433,7 +433,7 @@ export function SetLogTable({
               )}
             </tr>
             {onSetKind && !completed ? (
-              <tr className={cn(!isActive && 'text-muted-foreground')}>
+              <tr className={cn(!isActive && 'house-set-kind')}>
                 <td colSpan={5} className={cn(cell, 'min-w-0 pt-0')}>
                   <SetRowTagChips
                     kind={kind}
@@ -458,13 +458,13 @@ export function SetLogTable({
               <tr className={cn('border-b border-border', !isActive && 'house-set-done')}>
                 <td
                   colSpan={5}
-                  className={cn(cell, 'min-w-0')}
+                  className={cn(cell, 'min-w-0 house-set-rate')}
                   data-testid="set-table-rate"
                 >
                   <div className="flex min-w-0 flex-wrap items-center justify-end gap-1">
                     {vsLast ? (
                       <span
-                        className="text-[11px] tabular-nums text-muted-foreground"
+                        className="tabular-nums house-lede"
                         data-testid="set-table-vs-last"
                         aria-label={t('activeVsLastAria', {
                           delta: vsLast,
@@ -489,7 +489,7 @@ export function SetLogTable({
                     ) : null}
                     {inSetPr ? (
                       <span
-                        className="inline-flex min-h-[44px] items-center gap-1 text-[11px] text-muted-foreground"
+                        className="house-lede inline-flex min-h-[44px] items-center gap-1"
                         data-testid="set-table-in-set-pr"
                         aria-label={t('activeInSetPrAria', {
                           kinds: inSetPr,
@@ -515,7 +515,10 @@ export function SetLogTable({
                       </div>
                     )}
                     {set.rpe && (
-                      <span className="text-[11px] text-muted-foreground">
+                      <span
+                        className="house-lede"
+                        data-testid="set-table-rpe"
+                      >
                         {t(rpeLabelKey(set.rpe), {
                           defaultValue: rpeDefaultLabel(set.rpe),
                         })}
@@ -737,7 +740,7 @@ function SetRowPercentCite({
   if (!token) return null;
   return (
     <span
-      className="ms-1 text-[11px] font-semibold tabular-nums text-muted-foreground"
+      className="ms-1 house-lede house-load-pct font-semibold tabular-nums"
       data-testid="set-table-load-pct-cite"
     >
       {token}

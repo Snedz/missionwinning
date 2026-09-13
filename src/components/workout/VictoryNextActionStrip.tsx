@@ -22,8 +22,8 @@ export function VictoryNextActionStrip({ nextAction, onNavigate }: Props) {
      * Field manual honor beat: one red next, quiet reason — not a second poster
      * border fighting the title. Earned exit, not confetti chrome.
      */
-    <div className="poster-field space-y-2.5 p-4 text-start">
-      <p className="poster-kicker text-[11px] font-semibold uppercase tracking-[0.12em]">
+    <div className="mw-house poster-field space-y-2.5 p-4 text-start">
+      <p className="poster-kicker">
         {t('victoryNextLabel', { defaultValue: 'Next' })}
       </p>
       <p className="poster-sub text-sm leading-relaxed">

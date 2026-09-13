@@ -15,32 +15,35 @@
 
 | URL | Nav label | Page component |
 |-----|-----------|----------------|
-| `/log` | Today | `HomePage.tsx` |
-| `/active` | Train | `ActiveWorkoutPage.tsx` |
-| `/nutrition` | Fuel | `NutritionPage.tsx` |
-| `/track` | Track | `TrackPage.tsx` — Quiet Track weight / tape (`.975`); walks / GPS in Show more |
-| `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
-| `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
+| `/log` | Today | `HomePage.tsx` — segment `loading.tsx` is house leftover, not group Loading |
+| `/active` | Train | `ActiveWorkoutPage.tsx` — segment `loading.tsx` is house compose leftover, not group Loading |
+| `/nutrition` | Fuel | `NutritionPage.tsx` — Fuel first paint is house leftover (static import, no `RouteLoading`) |
+| `/track` | Track | `TrackPage.tsx` — Track first paint is house leftover (static import, no `RouteLoading`). Quiet Track weight / tape (`.975`); walks / GPS in Show more |
+| `/profile` | You | `ProfilePage.tsx` — You leftover; first paint is house leftover (static import, no `RouteLoading`) |
+| `/account` | Account | `AccountPage.tsx` — settings leftover; first paint is house leftover (static import, no `RouteLoading`) |
 
 ### Train deeper
 
 | URL | Page component |
 |-----|----------------|
-| `/builder` | `BuilderPage.tsx` — write side of the official training catalog (templates). Not a shop. |
-| `/coach` | `CoachPage.tsx` — **Mission Coach** (AI weekly plan) |
-| `/library` | `LibraryPage.tsx` — official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
-| `/history` | `HistoryPage.tsx` |
-| `/leaderboard` | `LeaderboardPage.tsx` |
-| `/benchmarks` | `BenchmarksPage.tsx` |
+| `/builder` | `BuilderPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. Builder first paint is house leftover (static page; Blank workout / saved, not RouteLoading). Write side of the official training catalog (templates). Not a shop. |
+| `/coach` | `CoachPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. Coach first paint is house leftover (static page; title + empty/generate or week, not RouteLoading). **Mission Coach** (AI weekly plan). |
+| `/library` | `LibraryPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. Library first paint is house leftover (static page; catalog list, not RouteLoading). Official exercise catalog. Super Bundle deepens pro templates; never gates `logSet`. |
+| `/history` | `HistoryPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. History list first paint is house leftover (static page; session list, not RouteLoading). |
+| `/history/[date]` | `HistoryDayPage.tsx` — segment `loading.tsx` is house leftover, not group Loading. History day leftover is the open day. Calendar / charts stay parked. |
+| `/leaderboard` | `LeaderboardPage.tsx` — Leaderboard first paint is house leftover (static page; title + board, not RouteLoading). |
+| `/benchmarks` | `BenchmarksPage.tsx` — Benchmarks first paint is house leftover (static page; title + stats / empty, not RouteLoading). |
 
 ### Other pillars & info
 
 | URL | Page component | Notes |
 |-----|----------------|-------|
-| `/move` | `MovePage.tsx` | Mobility + quiet rest-day walk / easy log (`.969`) |
-| `/mind` | `MindPage.tsx` | Mind & recovery |
-| `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
-| `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
+| `/move` | `MovePage.tsx` — Move first paint is house leftover (static page; `?collection=` / `?flow=` server-resolved; not useSearchParams skeleton). Quiet rest-day walk / easy log (`.969`). |
+| `/mind` | `MindPage.tsx` — Mind first paint is house leftover (static page; `?collection=` server-resolved; not useSearchParams skeleton). |
+| `/learn` | `LearnPage.tsx` — Learn first paint is house leftover (static page; `?path=` server-resolved; not RouteLoading). Quiet Learn first-success intro (`.978`); catalog in Show more. |
+| `/learn/guide` | `GuidebookIndexPage.tsx` — Guidebook first paint is house leftover (static page; title + chapter list, not RouteLoading). |
+| `/learn/guide/[chapterId]` | `GuidebookChapterPage.tsx` — Guide chapter first paint is house leftover (static page; title + body, not RouteLoading). |
+| `/learn/course` | `LearnCoursePage.tsx` — Course first paint is house leftover (static page; `?chapter=` server-resolved; not RouteLoading). |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
@@ -52,6 +55,8 @@
 | `/regions` | `SupportedRegionsPage.tsx` | Leftover regions — jump chips + house-card sections. Never a rail. |
 | `/service-terms` | `ServiceTermsPage.tsx` | Leftover service terms — jump chips + house-card sections. Never a rail. |
 | `/help` | `HelpPage.tsx` | Leftover FAQ. Hairline items. Never a rail. |
+| `/account/under-the-hood` | `UnderTheHoodPage.tsx` | Under the Hood first paint is house leftover (static page, not RouteLoading). Weights / downloads stay. |
+| `/account/transparency` | `TransparencyPage.tsx` | Visibility first paint is house leftover (static page, not RouteLoading). Report / downloads stay. |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 | `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
 | `/calculators` | `CalculatorsPage.tsx` | Leftover 1RM / macros / plates. Quiet Account More-settings door. Never a rail. Not a shop. |
@@ -63,7 +68,7 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → teaser until the gate cookie; cookie → `.696` `LandingPage` (not cinematic). Gated + no cookie → `/private`. |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome). Free-beta 307s to `/notify`. |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle first paint is house leftover (static page; title + offer, not RouteLoading). Free-beta 307s to `/notify`. Phantom checkout stays parked. |
 | `/notify` | `app/notify/page.tsx` → `NotifyPage` — Super Bundle email waitlist (checkout not live). Public while gated. `robots: noindex`. |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |

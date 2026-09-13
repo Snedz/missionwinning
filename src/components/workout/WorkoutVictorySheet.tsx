@@ -298,7 +298,8 @@ export function WorkoutVictorySheet({
           once (hero e2e click timeout on an unreachable footer). dvh, not vh.
           The one red Next must not live in the scroll — first-session rewards +
           feel + stats already push it below 390×844. Dock it. */}
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl flex flex-col border-2 border-border bg-card max-h-[90dvh] overflow-hidden p-0">
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl flex flex-col border-0 bg-transparent max-h-[90dvh] overflow-hidden p-0 shadow-none">
+        <div className="mw-house house-victory-portal flex min-h-0 flex-1 flex-col overflow-hidden border-2 border-border bg-card">
         <div data-testid="victory-scroll" className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
@@ -316,7 +317,7 @@ export function WorkoutVictorySheet({
           <DialogTitle className="font-display text-2xl font-extrabold tracking-[-0.015em]">
             {t('victoryTitle', { defaultValue: 'Session locked' })}
           </DialogTitle>
-          <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
+          <DialogDescription className="mw-house house-victory-desc house-lede leading-relaxed">
             {finishedLog
               ? historySessionLabel(finishedLog, fmt.longDate(finishedLog.completedAt))
               : summary.workoutName}
@@ -533,6 +534,7 @@ export function WorkoutVictorySheet({
             }
           }}
         />
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -940,16 +940,16 @@ describe('resolveFormGuideSheet', () => {
     });
   });
 
-  it('ActiveWorkoutPage uses resolveFormGuideSheet rather than an inline IIFE', () => {
+  it('ActiveWorkoutPage uses composeFormGuideSheet rather than an inline IIFE', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /resolveFormGuideSheet\(/);
+    assert.match(src, /composeFormGuideSheet\(/);
     assert.doesNotMatch(
       src,
       /getFormGuideOrCues\(formGuideId/,
-      'form guide lookup must stay inside resolveFormGuideSheet'
+      'form guide lookup must stay inside composeFormGuideSheet'
     );
   });
 

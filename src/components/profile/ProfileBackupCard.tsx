@@ -4,7 +4,6 @@ import { reloadAfterRestore } from '@/lib/storage/reloadAfterRestore';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileJson } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileDropZone } from '@/components/ui/FileDropZone';
 import { FileUploadRow } from '@/components/ui/FileUploadRow';
@@ -66,11 +65,10 @@ export function ProfileBackupCard() {
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('dataBackup', { defaultValue: 'Back up your data' })}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="house-card space-y-3" data-testid="account-backup-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('dataBackup', { defaultValue: 'Back up your data' })}
+      </h3>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             variant="outline"
@@ -156,7 +154,6 @@ export function ProfileBackupCard() {
               'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
           })}
         </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

@@ -92,7 +92,7 @@ export function ExercisePicker({
         autoComplete="off"
       />
       {selected && !query && (
-        <p className="text-xs text-muted-foreground">
+        <p className="house-lede house-picker-selected">
           {t('exercisePickerSelected', {
             name: selected.name,
             defaultValue: `Selected: ${selected.name}`,
@@ -131,7 +131,7 @@ export function ExercisePicker({
             </button>
           ) : null}
           {filtered.length === 0 && invent?.kind !== 'create' ? (
-            <p className="px-3 py-2 text-sm text-muted-foreground">
+            <p className="px-3 py-2 house-lede house-picker-empty">
               {t('exercisePickerEmpty', { defaultValue: 'No matches' })}
             </p>
           ) : (
@@ -151,7 +151,7 @@ export function ExercisePicker({
                 }}
               >
                 <span className="font-semibold">{ex.name}</span>
-                <span className="block text-[11px] text-muted-foreground">
+                <span className="block house-lede">
                   {[ex.muscleGroups.slice(0, 2).join(' · '), ex.equipment]
                     .filter(Boolean)
                     .join(' · ')}

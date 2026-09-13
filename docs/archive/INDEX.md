@@ -12,6 +12,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1042-for-1059.md](./log/LOG-rotate-1042-for-1059.md) | rotated 2026-09-13 for `.1059` house black+yellow 4th skin (`.1042`) |
+| [log/LOG-rotate-1041-for-1058.md](./log/LOG-rotate-1041-for-1058.md) | rotated 2026-08-29 for `.1058` /active first paint (`.1041`) |
 | [log/LOG-rotate-1040-for-1057.md](./log/LOG-rotate-1040-for-1057.md) | rotated 2026-08-27 for `.1057` left second bar + transferred rooms (`.1040`) |
 | [log/LOG-rotate-1039-for-1056.md](./log/LOG-rotate-1039-for-1056.md) | rotated 2026-08-27 for `.1056` from-scratch Patreon-class house (`.1039`) |
 | [log/LOG-rotate-1038-for-1055.md](./log/LOG-rotate-1038-for-1055.md) | rotated 2026-08-27 for `.1055` later-door object model + isolation holds (`.1038`) |

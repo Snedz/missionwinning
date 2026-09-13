@@ -5,7 +5,6 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
@@ -32,21 +31,20 @@ import {
 import { cn } from '@/lib/utils';
 import { isFreeBeta } from '@/lib/freeBeta';
 
-export function MovePage() {
+type MovePageProps = {
+  initialCollection?: string;
+  initialFlow?: string;
+};
+
+export function MovePage({ initialCollection, initialFlow }: MovePageProps = {}) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const { toast } = useToast();
-  const searchParams = useSearchParams();
   const { premium, loading: premiumLoading } = usePremium();
   const freeBeta = isFreeBeta();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(() =>
-    parseMoveFlowParam(
-      typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('flow')
-        : null,
-      MOBILITY_FLOWS
-    )
+    parseMoveFlowParam(initialFlow ?? null, MOBILITY_FLOWS)
   );
   const skipUrlFlow = useRef(false);
   const [refresh, setRefresh] = useState(0);
@@ -54,23 +52,32 @@ export function MovePage() {
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
   const [collectionId, setCollectionId] = useState<MoveCollectionId>(() =>
-    parseMoveCollectionParam(
-      typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('collection')
-        : null
-    )
+    parseMoveCollectionParam(initialCollection ?? null)
   );
   const inv = getContentInventory();
 
   useEffect(() => {
-    setCollectionId(parseMoveCollectionParam(searchParams.get('collection')));
-  }, [searchParams]);
+    setCollectionId(parseMoveCollectionParam(initialCollection ?? null));
+  }, [initialCollection]);
 
   useEffect(() => {
     if (skipUrlFlow.current) return;
-    const id = parseMoveFlowParam(searchParams.get('flow'), MOBILITY_FLOWS);
+    const id = parseMoveFlowParam(initialFlow ?? null, MOBILITY_FLOWS);
     if (id) setActiveFlowId(id);
-  }, [searchParams]);
+  }, [initialFlow]);
+
+  useEffect(() => {
+    const apply = (search: string) => {
+      const sp = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+      setCollectionId(parseMoveCollectionParam(sp.get('collection')));
+      if (skipUrlFlow.current) return;
+      const id = parseMoveFlowParam(sp.get('flow'), MOBILITY_FLOWS);
+      if (id) setActiveFlowId(id);
+    };
+    const onPop = () => apply(window.location.search);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   useEffect(() => {
     if (!premium) {

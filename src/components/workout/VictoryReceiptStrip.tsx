@@ -23,7 +23,7 @@ type Props = {
 };
 
 const headCell =
-  'py-1.5 pe-2 text-start text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground';
+  'house-lede house-victory-receipt-head py-1.5 pe-2 text-start font-semibold';
 
 function SetDeltaCell({
   set,
@@ -53,8 +53,13 @@ function SetDeltaCell({
       })
     );
   }
-  if (parts.length === 0) return <span className="text-muted-foreground">—</span>;
-  return <span className="text-muted-foreground tabular-nums">{parts.join(' · ')}</span>;
+  if (parts.length === 0)
+    return <span className="house-lede house-victory-receipt-delta">—</span>;
+  return (
+    <span className="house-lede house-victory-receipt-delta tabular-nums">
+      {parts.join(' · ')}
+    </span>
+  );
 }
 
 export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props) {
@@ -64,12 +69,12 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
 
   return (
     <section
-      className="space-y-4 border-t-2 border-border pt-3"
+      className="mw-house house-victory-receipt space-y-4 border-t-2 border-border pt-3"
       aria-label={t('victoryReceiptLabel', { defaultValue: 'This session' })}
       data-testid="victory-receipt"
     >
       <div className="flex items-baseline justify-between gap-2 px-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="house-lede house-victory-receipt-lead font-semibold">
           {t('victoryReceiptLabel', { defaultValue: 'This session' })}
         </p>
         <div className="flex items-center gap-3">
@@ -141,7 +146,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
               <tbody>
                 {ex.sets.map((set) => (
                   <tr key={set.setIndex} className="tabular-nums">
-                    <td className="w-8 py-1.5 pe-2 align-top text-muted-foreground">
+                    <td className="w-8 py-1.5 pe-2 align-top house-lede house-victory-receipt-set">
                       {set.setIndex + 1}
                       {set.kind && set.kind !== 'normal' ? (
                         <span className="ms-1 text-[10px] uppercase">
@@ -151,7 +156,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props
                     </td>
                     {showVs ? (
                       <td
-                        className="py-1.5 pe-2 align-top text-muted-foreground"
+                        className="py-1.5 pe-2 align-top house-lede house-victory-receipt-prev"
                         data-testid="victory-prev"
                       >
                         {set.priorReps !== null && set.priorWeight !== null

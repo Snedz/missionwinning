@@ -12,6 +12,7 @@
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 | `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
+| `persistComposeMerge.test.ts` | Persist rehydrate must not wipe a Just Go compose (`.1058`) |
 | `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`). This-session note does not prefill from History (`.996`). History Save replaces the diary and leaves the live set (`.997`). Backfill prepends a new log and leaves the live set (`.1000`). Merge remaps history onto the keeper (`.1002`). Delete tombs one finished log and leaves the live set (`.1003`). Restore clears that tombstone (`.1006`). Name writes a private title (`.1007`). Import merge/upserts the diary file they saved (`.1013`). Move re-dates a finished log and leaves the live set (`.1027`). Copy mints a new finished log onto another day and leaves the live set (`.1030`). Duration edits the logged session clock and leaves the live set (`.1035`). |
 
 ## State slices (`workoutStore`)
@@ -25,7 +26,7 @@
 | `restTimer*` | memory | Rest countdown between sets. `restLane` is warmup vs work (`.995`). |
 | `workClock*` | memory | Optional EMOM / AMRAP on the live set row (`.987`). Not rest. |
 | `elapsedSeconds` | memory | Workout clock — derived from `sessionClock` (`.1001`) |
-| `hasHydrated` | memory | True once rehydration settles — gates Active Start. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error and the logger stays disabled). |
+| `hasHydrated` | memory | True once rehydration settles. Must not own `/active` first paint — compose writes before hydrate; persist `merge` keeps an in-memory Just Go over a persisted null. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error). |
 
 ## Key actions
 

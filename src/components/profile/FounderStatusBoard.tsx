@@ -6,19 +6,15 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 
 export function FounderStatusBoard() {
   const { t } = useTranslation();
   return (
-    <Card className="content-card border-border">
-      <CardHeader>
-        <CardTitle className="text-base tracking-tight">
-          {t('founderStatusTitle', { defaultValue: 'Mission status' })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-founder-status-board">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('founderStatusTitle', { defaultValue: 'Mission status' })}
+      </h3>
         <div className="flex justify-between gap-3">
           <span className="text-muted-foreground">
             {t('founderStatusBuild', { defaultValue: 'Build' })}
@@ -50,7 +46,6 @@ export function FounderStatusBoard() {
               'Beta funnel metrics stay in the panel above when signed in. Ship history: root LOG.md · status: CONTEXT.md.',
           })}
         </p>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

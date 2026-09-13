@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -59,11 +58,10 @@ export function ProfileAssessmentCard() {
   };
 
   return (
-    <Card className="content-card">
-      <CardHeader>
-        <CardTitle>{t('profileAssessmentTitle', { defaultValue: 'Readiness assessment' })}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 text-sm">
+    <div className="house-card space-y-3 text-sm" data-testid="account-assessment-card">
+      <h3 className="text-2xl font-semibold leading-none tracking-tight">
+        {t('profileAssessmentTitle', { defaultValue: 'Readiness assessment' })}
+      </h3>
         {lastAssessment ? (
           <>
             <div>
@@ -136,7 +134,6 @@ export function ProfileAssessmentCard() {
                 defaultValue: 'Core free forever. Premium adds history and deeper coaching.',
               })}
         </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

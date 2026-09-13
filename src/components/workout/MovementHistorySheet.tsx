@@ -57,7 +57,7 @@ export function MovementHistorySheet({
     >
       <div data-testid="movement-history-sheet" data-short={short ? 'true' : 'false'}>
         {empty ? (
-          <p className="text-sm text-muted-foreground" data-testid="movement-history-empty">
+          <p className="text-sm house-lede" data-testid="movement-history-empty">
             {t('activeMovementHistoryEmpty', {
               defaultValue: 'No prior sessions yet — log this one',
             })}
@@ -78,9 +78,9 @@ export function MovementHistorySheet({
                 <p className="text-sm font-semibold">{movementHistoryTitle(row)}</p>
                 {row.workoutName &&
                 row.workoutName !== movementHistoryTitle(row) ? (
-                  <p className="text-xs text-muted-foreground">{row.workoutName}</p>
+                  <p className="text-xs house-lede">{row.workoutName}</p>
                 ) : null}
-                <p className="text-sm tabular-nums text-muted-foreground">
+                <p className="text-sm tabular-nums house-lede">
                   {formatMovementHistorySets(row.sets, rowType)}
                 </p>
               </li>

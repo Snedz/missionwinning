@@ -5,19 +5,31 @@ Write this **before** the first product edit. Clear it back to this
 template after the row is marked `done`. `npm run harness:done` is the
 closer — the agent's last message is not.
 
-ticket: residual-set-table-empty-load-cell
-done_means: A completed weight-type empty-load cell prints BW, not 0.
-accept: npx tsx --test src/lib/workout/setTableEmptyLoadCell.test.ts
+ticket: leftover-victory-description
+done_means: Victory DialogDescription under .mw-house.house-victory-desc is house leftover (--house-muted / house-lede). text-muted-foreground gone from that description only. DialogContent is not mw-house. Receipt leftovers stay. Feel / share stay muted. Next stays the filled press on Victory. Log set stays the sole filled press on compose. Finish / Skip / Swap / Form guide stay outline. Picker rewrite stays parked.
+accept: npx tsx --test src/lib/victoryDescriptionCite.test.ts
 test_written: yes
 
 ## progress
 
-Tests written first (4 red). Helper + SetLogTable wired. Tests 4/4.
+Honesty first. Chrome after red. Walk 1440: Home left second bar → Start → /active → log a set → Finish. Description measures rgb(113, 113, 122). Next stays filled on poster-field rgb(173, 23, 0). Dialog is not mw-house. Receipt set-index leftover stays. Picker rewrite stays parked.
+
+Walk 1440 localhost:3000 (fresh I-Day after /welcome). Home left second bar → Start @e11 → /active. Log set `[data-testid=set-table-log-set]` rgb(24, 24, 27). Reps 8 → Log set → Finish. Description `.house-victory-desc` “Sun, Aug 30, 2026” rgb(113, 113, 122) 14px. Receipt set-index “1” leftover rgb(113, 113, 122) 14px. `.victory-lock` is not mw-house. Next `.poster-field` rgb(173, 23, 0); CTA “Start session 2” stays filled on that field.
+
+Needle trap: `historySessionLabel` hits the import. Honesty slices `house-victory-desc`. Primitive `dialog.tsx` still adds `text-muted-foreground`; do not edit it. House CSS paints the color.
+
+After this leftover ships: stop. Founder: site is getting weirder / too many leftovers. Less is more. Feel / share stay parked unless they unpark. Not picker rewrite. Not You chrome.
 
 ## decisions
 
-- Cites already print 8 × BW (.1017). Completed kg cell still painted raw 0.
-- New helper `formatCompletedWeightCell` — empty is BW; loaded barbell stays the number; plus-load extra stays BW+N.
-- Assisted 0 mute (`—`) is a later hop. Duration stays Time.
-- Display only. Today one Start. Not a letter. VISION stays ready-for-founder.
-- Stamp `.1025` from master `.1024` (`72685e9b`). History volume `.1024` / citation `.1023` / heatmap `.1022` stay.
+- One leftover: Victory description is house leftover. Class-only.
+- Do not put mw-house on the Victory dialog (`DialogContent`). Description itself carries `mw-house house-victory-desc`.
+- Do not edit `src/components/ui/dialog.tsx`.
+- Receipt set-index / vs-last / Prev / heads / lead leftovers stay. Do not restyle them.
+- Feel / share stay muted this leftover.
+- Next stays the filled press on Victory (`primary-action`).
+- Log set stays the sole filled press on compose.
+- Finish / Skip / Swap / Form guide stay outline — never house-btn-primary.
+- ExercisePicker rewrite stays parked.
+- Stamp stays `.1058`. Not a letter. Do not run harness:done.
+- After this hop, do not auto-take feel / share. Founder said too many.

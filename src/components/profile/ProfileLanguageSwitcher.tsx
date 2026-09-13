@@ -37,7 +37,7 @@ export function ProfileLanguageSwitcher() {
           </option>
         ))}
       </select>
-      <p className="text-xs text-muted-foreground">
+      <p className="house-language-switcher-cite" data-testid="account-language-switcher-cite">
         {t('languageNotAvailability', {
           defaultValue:
             'Choosing a language does not change where the hosted service is offered.',

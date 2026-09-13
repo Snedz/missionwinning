@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
 import { supabase, signOut } from '@/lib/supabase';
@@ -83,11 +83,18 @@ function readPushCadence() {
   };
 }
 
-export function AccountPage() {
+type AccountPageProps = {
+  /**
+   * `?authError=`, resolved by the route. Read as a prop rather than through
+   * `useSearchParams()` so Account first paint is the house leftover — that hook
+   * made the whole page a Suspense child and the served HTML became RouteLoading.
+   */
+  initialAuthError?: string;
+};
+
+export function AccountPage({ initialAuthError }: AccountPageProps = {}) {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const authErrorRaw = searchParams.get('authError');
-  const authError = authErrorRaw ? formatOAuthError(authErrorRaw) : null;
+  const authError = initialAuthError ? formatOAuthError(initialAuthError) : null;
   const router = useRouter();
   const { toast } = useToast();
   const { isCommissioned, state, action } = useMissionJourney();
@@ -339,10 +346,10 @@ export function AccountPage() {
 
   return (
     /*
-     * House leftover on Account: day-one stack stays open (sign-in · return
+     * House leftover first paint: day-one stack stays open (sign-in · return
      * channel · prefs). Explore, more settings, and help are house-card objects.
      * Owner tools stay reachably grouped. Red-action rules on this route are
-     * unchanged (magic-link / billing own red).
+     * unchanged (magic-link / billing own red). Route is a static import.
      */
     <PillarPageShell
       className="house-account"
@@ -408,7 +415,7 @@ export function AccountPage() {
         <p className="font-semibold">
           {t('accountExploreTitle', { defaultValue: 'Explore places' })}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="house-explore-cite" data-testid="account-explore-cite">
           {t('accountExploreLead', {
             defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
           })}
@@ -446,7 +453,7 @@ export function AccountPage() {
             <p className="font-semibold">
               {t('calcTitle', { defaultValue: 'Calculators' })}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="house-calc-cite" data-testid="account-calc-cite">
               {t('calcSubtitleBrief', {
                 defaultValue: '1RM, macros, plates — free tools, no account required.',
               })}

@@ -1,13 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { publicPageMetadata } from '@/lib/seoMetadata';
-import { RouteLoading } from '@/components/layout/RouteLoading';
-
-const LearnPage = dynamic(
-  () => import('@/page-components/LearnPage').then((m) => m.LearnPage),
-  { loading: () => <RouteLoading label="Learn" /> }
-);
+import { LearnPage } from '@/page-components/LearnPage';
 
 export const metadata: Metadata = publicPageMetadata({
   title: 'Learn',
@@ -15,10 +8,20 @@ export const metadata: Metadata = publicPageMetadata({
   path: '/learn',
 });
 
-export default function LearnRoute() {
-  return (
-    <Suspense fallback={<RouteLoading label="Learn" />}>
-      <LearnPage />
-    </Suspense>
-  );
+type SearchParams = Promise<{ path?: string | string[] }>;
+
+function first(raw: string | string[] | undefined): string | undefined {
+  return Array.isArray(raw) ? raw[0] : raw;
+}
+
+/**
+ * Learn first paint is house leftover. `dynamic()` + `RouteLoading` plus
+ * `useSearchParams()` made the served HTML a skeleton ("Loading Learn…").
+ * `?path=` is resolved here, same shape as `/mind` `?collection=`.
+ * Do not restart Learn chrome. Guide / course stay parked.
+ */
+export default async function LearnRoute({ searchParams }: { searchParams: SearchParams }) {
+  const sp = await searchParams;
+
+  return <LearnPage initialPath={first(sp.path)} />;
 }
