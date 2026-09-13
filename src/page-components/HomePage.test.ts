@@ -7,8 +7,11 @@ test('Today first paint is the house desk, not Lean or the #885 rail', () => {
   assert.match(home, /<TodayDesk\s*\/>/);
   assert.doesNotMatch(home, /HomeTodayLean/);
   const desk = readFileSync('src/page-components/TodayDesk.tsx', 'utf8');
-  assert.match(desk, /runTodayPrimaryAction\(/);
+  assert.match(desk, /isTodayTrainReady\(/);
   assert.match(desk, /includeColdStart:\s*true/);
+  assert.match(desk, /shouldRepeatLastOnToday\(/);
+  assert.match(desk, /getNextAction\(/);
+  assert.doesNotMatch(desk, /runTodayPrimaryAction\(/);
   assert.doesNotMatch(desk, /from '@\/components\/today\/TodaySummaryPins'/);
   assert.doesNotMatch(desk, /from '@\/components\/today\/TodayQuietWeekStrip'/);
   assert.doesNotMatch(desk, /from '@\/page-components\/HomeTodayLean'/);

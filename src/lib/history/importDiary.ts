@@ -15,6 +15,7 @@ import { countsTowardVolume, type SetKind } from '@/lib/workout/setKind';
 import { resolveSetRowType, setRowVolume } from '@/lib/workout/setRowType';
 import type { SetSide } from '@/lib/workout/unilateral';
 import type { CompletedWorkoutLog } from '@/types';
+import { liveSessionLogs } from '@/lib/history/sessionHistoryList';
 import {
   EXPORT_DIARY_CSV_HEADER,
   type ExportDiaryRow,
@@ -439,10 +440,6 @@ function toLog(
   return next;
 }
 
-function liveLogs(history: readonly CompletedWorkoutLog[] | null | undefined): CompletedWorkoutLog[] {
-  if (!Array.isArray(history)) return [];
-  return history.filter((log) => Boolean(log) && !log.deletedAt);
-}
 
 export function decideImportApply(input: {
   history?: readonly CompletedWorkoutLog[] | null;
@@ -462,7 +459,7 @@ export function decideImportApply(input: {
     return {
       kind: 'needs-replace-confirm',
       incoming: parsed.sessions.length,
-      live: liveLogs(history).length,
+      live: liveSessionLogs(history).length,
     };
   }
 

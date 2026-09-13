@@ -20,7 +20,7 @@ test('Coach adapt banner and day review use muted fill', () => {
     join(root, 'src/components/coach/CoachAdaptBanner.tsx'),
     'utf8'
   );
-  assert.match(coach, /bg-muted/);
+  assert.match(coach, /house-adapt/);
   assert.doesNotMatch(coach, /bg-accent-100/);
 
   const day = readFileSync(

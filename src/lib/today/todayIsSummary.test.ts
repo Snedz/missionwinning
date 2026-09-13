@@ -1,9 +1,8 @@
 /**
- * /log is Summary after the first log — not a dashboard tour.
+ * /log is the house desk — not Lean Summary and not a dashboard tour.
  *
- * Lean already is date + pins + highlights + docked Start.
- * HomePage still swapped readiness/commissioned onto HomeTodayDashboard,
- * so the first completed workout replaced Summary with the old house.
+ * HomePage mounts `<TodayDesk/>` for every journey phase. Lean and
+ * Dashboard remain on disk as legacy shells; they are not this route.
  */
 
 import { test } from 'node:test';
@@ -14,14 +13,16 @@ import path from 'node:path';
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const home = () =>
   readFileSync(path.join(root, 'src/page-components/HomePage.tsx'), 'utf8');
+const desk = () =>
+  readFileSync(path.join(root, 'src/page-components/TodayDesk.tsx'), 'utf8');
 
-test('/log is Lean Summary in every journey phase', () => {
+test('/log is the house desk in every journey phase', () => {
   const src = home();
-  assert.match(src, /<HomeTodayLean\s*\/>/);
+  assert.match(src, /<TodayDesk\s*\/>/);
   assert.doesNotMatch(
     src,
-    /HomeTodayDashboard/,
-    'first workout must not swap Today onto the dashboard tour'
+    /HomeTodayLean|HomeTodayDashboard/,
+    'Today must not swap onto Lean or the dashboard tour'
   );
   assert.doesNotMatch(
     src,
@@ -33,4 +34,11 @@ test('/log is Lean Summary in every journey phase', () => {
     /phase === 'readiness'|phase === 'commissioned'/,
     'phase may still be read; it must not pick a second Today'
   );
+
+  const d = desk();
+  assert.match(d, /isTodayTrainReady\(/);
+  assert.match(d, /includeColdStart:\s*true/);
+  assert.match(d, /shouldRepeatLastOnToday\(/);
+  assert.match(d, /getNextAction\(/);
+  assert.doesNotMatch(d, /runTodayPrimaryAction\(/);
 });

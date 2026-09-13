@@ -92,7 +92,7 @@ export function decideNameFinishedSession(input: {
   if (!sessionId) return { kind: 'empty' };
   if (liveSessionIds(input.live).has(sessionId)) return { kind: 'noop' };
   const found = findFinishedSession(input.history, sessionId);
-  if (!found) return { kind: 'noop' };
+  if (!found || found.deletedAt) return { kind: 'noop' };
   const title = normalizeSessionTitle(input.title);
   const current = normalizeSessionTitle(found.sessionTitle);
   if (title === current) return { kind: 'noop' };

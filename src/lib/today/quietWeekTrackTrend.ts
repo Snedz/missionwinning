@@ -7,6 +7,7 @@
 
 import type { BodyMetricEntry, BodyMetricKey } from '@/lib/bodyMetrics';
 import { entryHasLoggedNumber } from '@/lib/quietTrack';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 import type { UnitsPref } from '@/lib/units';
 import { kgToDisplay } from '@/lib/units';
 
@@ -36,8 +37,10 @@ export type QuietWeekTrackTrendInput = {
 };
 
 function localDate(raw: string | undefined): string {
-  const date = String(raw ?? '').slice(0, 10);
-  return LOCAL_DATE.test(date) ? date : '';
+  const s = String(raw ?? '').trim();
+  if (LOCAL_DATE.test(s)) return s;
+  // ISO instant that slipped past normalize — local calendar day, never UTC slice.
+  return localDateKeyFromIso(s);
 }
 
 function loggedValue(

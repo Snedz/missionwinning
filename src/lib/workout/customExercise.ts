@@ -10,6 +10,7 @@ import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import type { Exercise } from '@/types';
+import { asAuthUserId } from '@/lib/authUserId';
 
 export const CUSTOM_ID_PREFIX = 'custom-';
 export const CUSTOM_NAME_MAX = 80;
@@ -46,7 +47,7 @@ export function isCustomExerciseId(id: string): boolean {
 }
 
 function looksLikeUuid(raw: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(raw);
+  return asAuthUserId(raw) !== null;
 }
 
 /** Leftover id → readable name. A uuid leftover is just Custom. */

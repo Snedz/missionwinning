@@ -78,7 +78,7 @@ describe('isTodayTrainReady', () => {
 });
 
 describe('Today shells pass re-entry doseScale into primary action', () => {
-  it('lean + dashboard agree with shouldRepeatLastOnToday for the hero', () => {
+  it('lean + dashboard + desk agree on shouldRepeatLastOnToday for the hero', () => {
     const root = path.join(import.meta.dirname, '..', '..');
     for (const rel of [
       'src/page-components/HomeTodayLean.tsx',
@@ -88,8 +88,12 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
       const src = readFileSync(path.join(root, rel), 'utf8');
       assert.match(src, /shouldRepeatLastOnToday\(/, rel);
       assert.match(src, /repeatLastName:/, rel);
-      assert.match(src, /savedWorkouts/, rel);
       assert.match(src, /savedRoutineName:/, rel);
+      assert.match(
+        src,
+        /savedWorkouts|readSavedWorkoutsFromStorage/,
+        `${rel} must read saved routines for the hero`
+      );
     }
   });
 
@@ -98,7 +102,6 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
     for (const rel of [
       'src/page-components/HomeTodayLean.tsx',
       'src/page-components/HomeTodayDashboard.tsx',
-      'src/page-components/TodayDesk.tsx',
     ]) {
       const src = readFileSync(path.join(root, rel), 'utf8');
       assert.match(src, /runTodayPrimaryAction\(/, rel);
@@ -109,5 +112,16 @@ describe('Today shells pass re-entry doseScale into primary action', () => {
       );
     }
   });
-});
 
+  it('TodayDesk Start uses desk wiring, not runTodayPrimaryAction', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', 'page-components', 'TodayDesk.tsx'),
+      'utf8'
+    );
+    assert.match(src, /isTodayTrainReady\(/);
+    assert.match(src, /includeColdStart:\s*true/);
+    assert.match(src, /shouldRepeatLastOnToday\(/);
+    assert.match(src, /getNextAction\(/);
+    assert.doesNotMatch(src, /runTodayPrimaryAction\(/);
+  });
+});

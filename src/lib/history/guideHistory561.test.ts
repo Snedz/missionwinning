@@ -20,7 +20,8 @@ test('History empty and filters stay plain with tap chips', () => {
   assert.match(page, /No sessions yet/);
   assert.match(page, /Log one set from Today/);
   assert.match(page, /Widen the range or clear search/);
-  assert.match(page, /hover:bg-muted/);
+  assert.match(page, /house-filter-bar/);
+  assert.match(page, /house-state/);
   assert.match(page, /View in Fuel/);
   assert.doesNotMatch(page, /View in Nutrition →/);
 });

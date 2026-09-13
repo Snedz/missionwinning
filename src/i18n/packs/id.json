@@ -9,7 +9,7 @@
   "activeEmptyExercises": "Tambahkan latihan di atas untuk memulai set logging.",
   "activeFinish": "Menyelesaikan",
   "activeFormGuide": "Panduan formulir",
-  "activeLastPerformance": "Terakhir: {{reps}} × {{weight}}",
+  "activeLastPerformance": "Terakhir: {{line}}",
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeNoWorkout": "Tidak Ada Latihan Aktif",
   "activeNoWorkoutDesc": "Mulai latihan cepat dari Hari Ini atau luncurkan rutinitas tersimpan dari pembuatnya.",

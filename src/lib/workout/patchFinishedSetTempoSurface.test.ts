@@ -58,8 +58,8 @@ describe('patch finished set tempo surface lock (.1043)', () => {
     assert.doesNotMatch(helper, /from ['"]@\/store\/workoutStore['"]/);
     const field = read('src/components/workout/SetTempoField.tsx');
     assert.match(field, /min-h-\[44px\]/);
-    assert.match(field, /border-border/);
-    assert.match(field, /bg-background/);
+    assert.match(field, /house-num/);
+    assert.match(field, /min-h-\[44px\]/);
     assert.match(field, /parseOptionalTempo/);
   });
 

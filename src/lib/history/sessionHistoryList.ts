@@ -85,9 +85,16 @@ export function listSessionHistoryRows(
 }
 
 export function liveSessionLogs(
-  history: readonly CompletedWorkoutLog[]
+  history: readonly CompletedWorkoutLog[] | null | undefined
 ): CompletedWorkoutLog[] {
-  return history.filter((log) => !log.deletedAt);
+  if (!Array.isArray(history)) return [];
+  return history.filter((log) => Boolean(log) && !log.deletedAt);
+}
+
+/** Local calendar day of a live session. Tombs return empty. */
+export function sessionCalendarKey(log: CompletedWorkoutLog): string {
+  if (log.deletedAt) return '';
+  return localDateKeyFromIso(log.completedAt || log.startedAt);
 }
 
 /** Tombstone matching the live row shape. Live rows are not this. */
