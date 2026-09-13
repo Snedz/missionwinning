@@ -58,7 +58,11 @@ test('Today Start + Train Log set + Coach Generate + Victory Next use press', ()
   assert.match(coach, /house-btn house-btn-primary/);
   const next = read('src/components/workout/VictoryNextActionStrip.tsx');
   assert.match(next, /mw-house poster-field/);
-  assert.match(css, /\.victory-lock \{[^}]*--card:\s*216 20% 5%/);
+  assert.match(
+    css,
+    /\.mw-house\.house-victory-portal \{[^}]*--card:\s*216 20% 5%/,
+  );
+  assert.doesNotMatch(css, /^\.victory-lock \{/m);
   const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
   const dialog = sheet.slice(
     sheet.indexOf('victory-lock') - 40,
@@ -112,6 +116,51 @@ test('rail + sheet use void / card / raised field — leftover 4', () => {
   );
   assert.doesNotMatch(css, /rgb\(7 7 7/);
   assert.doesNotMatch(css, /border-radius:\s*12px/);
+});
+
+test('one yellow field — selected chips, not press fills — HOLD', () => {
+  const css = read('src/components/house/house.css');
+  assert.match(
+    css,
+    /\.mw-house \.house-state\.is-on \{[^}]*background:\s*var\(--house-selected\)/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-empty button \{[^}]*min-height:\s*44px[^}]*--house-selected/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-rail-tip \{[^}]*background:\s*var\(--house-chip\)/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-lock-tip \{[^}]*background:\s*var\(--house-chip\)/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-catalog \.house-item-pick\.is-on \{[^}]*--house-selected/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-calc \[role='tab'\]\[data-state='active'\] \{[^}]*--house-selected/,
+  );
+  assert.match(
+    css,
+    /\.mw-house\.house-checkin \.house-checkin-tick\.is-on \{[^}]*--house-selected/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-week-cell\.is-done \.house-week-check \{[^}]*--house-ink/,
+  );
+  assert.match(
+    css,
+    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-size:\s*15px/,
+  );
+  assert.doesNotMatch(css, /^\.victory-lock \{/m);
+  const next = read('src/components/workout/VictoryNextActionStrip.tsx');
+  assert.doesNotMatch(next, /text-\[11px\]/);
+  const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
+  assert.match(sheet, /mw-house house-victory-portal/);
 });
 
 test('DESIGN names the C2 token table', () => {

@@ -48,8 +48,8 @@
   --border: 210 19% 15%;
   --input: 210 19% 15%;
   --radius: 0.5rem;
-  --primary: 41 100% 50%;
-  --primary-fill: 41 100% 50%;
+  --primary: 41 100% 50%; /* #ffb000 */
+  --primary-fill: 41 100% 50%; /* #ffb000 */
   --primary-fill-hover: 41 100% 39%;
   --primary-foreground: 216 20% 5%;
   --accent: 213 20% 9%;
@@ -223,8 +223,9 @@
   transform: translateY(-50%) translateX(-8px);
   z-index: 80;
   padding: 7px 11px;
-  background: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-chip);
+  border: 1px solid var(--house-line);
+  color: var(--house-ink);
   font-size: 13px;
   font-weight: 500;
   line-height: 1;
@@ -868,7 +869,7 @@
 }
 
 .mw-house .house-compose-live .house-set-table .house-set-log {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.25;
 }
@@ -1048,8 +1049,8 @@
 }
 
 .mw-house.house-checkin .house-checkin-tick.is-on {
-  background: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-selected);
+  color: var(--house-ink);
 }
 
 .mw-house.house-checkin .house-lede {
@@ -1105,9 +1106,9 @@
   color: var(--house-muted);
 }
 
-/* Portaled Victory Content is not `.mw-house` (leftover pin). Remap
-   inherited HSL so `bg-card` is C2 ground, not field-manual paper. */
-.victory-lock {
+/* Portaled Victory Content is not `.mw-house` (leftover pin). An inner
+   `.house-victory-portal` remaps inherited HSL so `bg-card` is C2 ground. */
+.mw-house.house-victory-portal {
   --background: 216 20% 5%;
   --foreground: 207 22% 92%;
   --card: 216 20% 5%;
@@ -1115,11 +1116,11 @@
   --border: 210 19% 15%;
   --muted: 213 20% 9%;
   --muted-foreground: 208 10% 54%;
-  --primary: 41 100% 50%;
+  --primary: 41 100% 50%; /* #ffb000 */
   --primary-fill: 41 100% 50%;
   --primary-foreground: 216 20% 5%;
   --accent-poster: 41 100% 50%;
-  color: #e6ebef;
+  color: var(--house-ink);
   color-scheme: dark;
 }
 
@@ -1403,9 +1404,9 @@
 }
 
 .mw-house .house-state.is-on {
-  background: var(--house-press);
-  border-color: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
 }
 
 .mw-house .house-filter-bar {
@@ -1553,12 +1554,12 @@
 }
 
 .mw-house .house-empty button {
-  min-height: 40px;
+  min-height: 44px;
   margin-top: 20px;
   padding: 0 16px;
-  background: var(--house-press);
-  border-color: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
   border-radius: var(--house-radius-rail);
 }
 
@@ -1604,8 +1605,8 @@
 }
 
 .mw-house .house-catalog .house-item-pick.is-on {
-  color: var(--house-press-ink);
-  background: var(--house-press);
+  color: var(--house-ink);
+  background: var(--house-selected);
 }
 
 .mw-house .house-catalog .house-item-body {
@@ -1981,7 +1982,7 @@
 }
 
 .mw-house .house-week-cell.is-done .house-week-check {
-  color: var(--house-press);
+  color: var(--house-ink);
 }
 
 .mw-house .house-week-glyph.is-missed,
@@ -2528,9 +2529,9 @@
 }
 
 .mw-house .house-calc [role='tab'][data-state='active'] {
-  background: var(--house-press);
-  border-color: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-selected);
+  border-color: var(--house-line);
+  color: var(--house-ink);
 }
 
 .mw-house .house-calc .house-card {
@@ -3147,8 +3148,8 @@
 }
 
 .mw-house .house-mind .house-checkin-tick.is-on {
-  background: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-selected);
+  color: var(--house-ink);
 }
 
 .mw-house .house-mind .house-field {
@@ -3591,7 +3592,7 @@
 }
 
 .mw-house .house-check-row.is-done .house-check-mark {
-  color: var(--house-press);
+  color: var(--house-ink);
 }
 
 .mw-house .house-check-why {
@@ -3626,8 +3627,9 @@
   top: calc(100% + 8px);
   z-index: 80;
   padding: 8px 10px;
-  background: var(--house-press);
-  color: var(--house-press-ink);
+  background: var(--house-chip);
+  border: 1px solid var(--house-line);
+  color: var(--house-ink);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.35;

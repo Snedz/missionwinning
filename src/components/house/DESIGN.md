@@ -61,7 +61,7 @@ Column width eases `260ms`. Second-bar rows stagger `40ms` (cap `160ms`). Chips 
 |-------|--------|------|
 | Icon rail | `.house-rail` | 48×48 marks, selected `#eee` / 8px; hover chip to the **right** |
 | Train plus | `.house-rail-plus` | 40×40 chip circle (desktop rail and compact floor). Click `/active`. Not a second yellow field. |
-| Hover chip | `.house-rail-tip` | Amber press, 13px, 8px radius |
+| Hover chip | `.house-rail-tip` | Selected chip, 13px ink, 8px radius |
 | Sheet | `.house-sheet` | Card `#0f1319` 8px panel wrapping second + canvas; hairline `#1e252c` |
 | Second bar | `.house-second` | Raised field `#12161b`. Kicker + 12px rows, selected `#eee`; pane has back chevron |
 | Card | `.house-card` | Soft card, 1px line, 8px radius |

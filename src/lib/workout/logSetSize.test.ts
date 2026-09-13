@@ -1,5 +1,5 @@
 /**
- * Log set size is house leftover — 12px from house.css, not text-xs.
+ * Log set size is house leftover — 15px on the ≥44 press (C2 on-signal floor).
  * Scoped to the set table. LogConsole stays 19px.
  */
 import { test } from 'node:test';
@@ -25,11 +25,11 @@ test('set-table Log set size is house leftover, not text-xs', () => {
   assert.match(row, /house-btn-primary/);
 });
 
-test('house leftover rule paints set-table Log set size at 12px', () => {
+test('house leftover rule paints set-table Log set size at 15px', () => {
   const css = read('src/components/house/house.css');
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-size:\s*12px/
+    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-size:\s*15px/
   );
   assert.doesNotMatch(
     css,

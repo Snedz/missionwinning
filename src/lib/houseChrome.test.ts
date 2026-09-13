@@ -900,7 +900,7 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(mindCheckIn, /primary-action/);
   assert.doesNotMatch(mindCheckIn, /text-primary/);
   assert.doesNotMatch(mindCheckIn, /bg-foreground/);
-  assert.match(css, /\.house-mind \.house-checkin-tick\.is-on \{[^}]*--house-press/);
+  assert.match(css, /\.house-mind \.house-checkin-tick\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Mind first-paint check-in is house leftover/);
   const breathe = read('src/components/pillars/BreathingTimer.tsx');
   assert.match(breathe, /house-card house-breathe/);
@@ -1845,7 +1845,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(checkIn, /house-checkin-tick/);
   assert.doesNotMatch(checkIn, /border-2/);
   assert.doesNotMatch(checkIn, /hover:bg-muted/);
-  assert.match(css, /\.mw-house\.house-checkin \.house-checkin-tick\.is-on \{[^}]*--house-press/);
+  assert.match(css, /\.mw-house\.house-checkin \.house-checkin-tick\.is-on \{[^}]*--house-selected/);
   assert.match(spec, /Check-in scale is house leftover/);
   const hardWarn = read('src/components/workout/HardSessionWarningSheet.tsx');
   assert.match(hardWarn, /mw-house house-hard-session/);

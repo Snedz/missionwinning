@@ -24,15 +24,12 @@ Design Polish C2 Instrument is law.
 
 **Ship:** `.mw-house` remaps to C2
 ground (`#0a0c0f`) with signal press
-(`#ffb000`). One yellow field per
-screen. Today Start, Train Log set,
-Coach Generate, and Victory Next
-recut on those tokens. Week-done is
-selected, not yellow wallpaper. Leftover
-hop: desktop sheet card `#0f1319` on
-void; second `#12161b`; hairline
-`#1e252c`. Field-manual `/private` /
-landing / www untouched.
+(`#ffb000`). HOLD: one filled press
+(Start / Log set / Generate / Victory
+Next). Selected chips default. Log set
+15px on ≥44. Victory remaps nest on
+`.mw-house.house-victory-portal`. Field-manual
+`/private` / landing / www untouched.
 
 Guest. First set ungated. Today still
 one Start. Resume `.963` kept.
