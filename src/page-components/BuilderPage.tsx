@@ -404,8 +404,8 @@ export function BuilderPage() {
       </section>
 
       {savedWorkouts.length === 0 ? (
-        <EmptyState className="house-empty" icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts yet. Build one above or load a template.' })} description={t('builderNoSavedDesc', {
-            defaultValue: 'Build a workout and save it — your routines appear here.',
+        <EmptyState className="house-empty" icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts' })} description={t('builderNoSavedDesc', {
+            defaultValue: 'Build one or load a template.',
           })}
           actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}
           onAction={startBlank}

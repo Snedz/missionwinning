@@ -116,6 +116,10 @@ test('rail + sheet use void / card / raised field — leftover 4', () => {
   );
   assert.doesNotMatch(css, /rgb\(7 7 7/);
   assert.doesNotMatch(css, /border-radius:\s*12px/);
+  assert.match(
+    css,
+    /\.mw-house \.house-guide-card \{[^}]*border-radius:\s*var\(--house-radius\)/,
+  );
 });
 
 test('one yellow field — selected chips, not press fills — HOLD', () => {
@@ -161,6 +165,26 @@ test('one yellow field — selected chips, not press fills — HOLD', () => {
   assert.doesNotMatch(next, /text-\[11px\]/);
   const sheet = read('src/components/workout/WorkoutVictorySheet.tsx');
   assert.match(sheet, /mw-house house-victory-portal/);
+});
+
+test('house empty copy is clinical — leftover 5', () => {
+  const coach = read('src/i18n/coachLocales.ts');
+  assert.match(coach, /coachGenerateEmptyTitle: 'No plan this week'/);
+  assert.match(coach, /coachFreeBetaNextWeek: "From last week's logs\."/);
+  assert.match(coach, /coachGenerateEmptyDesc: 'From your logs\. No wearable\.'/);
+  assert.doesNotMatch(coach, /Free during Alpha/);
+  assert.doesNotMatch(coach, /Free every week/);
+  const builder = read('src/i18n/builderLocales.ts');
+  assert.match(builder, /builderNoSaved: 'No saved workouts'/);
+  assert.match(builder, /builderNoSavedDesc: 'Build one or load a template\.'/);
+  assert.doesNotMatch(builder, /No saved workouts yet/);
+  const coachPage = read('src/page-components/CoachPage.tsx');
+  assert.match(coachPage, /From last week's logs/);
+  assert.match(coachPage, /From your logs\. No wearable\./);
+  assert.doesNotMatch(coachPage, /Free during Alpha/);
+  const builderPage = read('src/page-components/BuilderPage.tsx');
+  assert.match(builderPage, /defaultValue: 'No saved workouts'/);
+  assert.match(builderPage, /defaultValue: 'Build one or load a template\.'/);
 });
 
 test('DESIGN names the C2 token table', () => {

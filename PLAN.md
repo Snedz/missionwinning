@@ -123,12 +123,13 @@ Pick the densest remaining gap, one hop.
 
 | # | Leftover | Status |
 |---|----------|--------|
-| HOLD | One yellow field + on-signal type + scoped Victory remaps | **This hop.** Selected chips default. Log set 15px on ≥44. Victory remaps on `.mw-house.house-victory-portal`. |
+| HOLD | One yellow field + on-signal type + scoped Victory remaps | Done (`a5a91733`). |
+| nits | Guide 8px · DESIGN card 8px · empty button 44 · week-done check ink | Done on HOLD hop. |
 | 1 | Kill zinc/white `#fff` / `#18181b` / `#f4f4f5` inside `.mw-house` | Done. |
 | 2 | Kill 999px pills; radius ≤8px on cards | Done. |
 | 3 | Metric-first set table: TARGET above PREVIOUS | **Do not remount** `SetLogAdjacencyStack`. Deferred. |
 | 4 | House rail + second sheet richer than thin B&W | Done. |
-| 5 | Empty states: clinical short copy, no AI-slop | Deferred until HOLD is green. |
+| 5 | Empty states: clinical short copy, no AI-slop | **This hop.** Coach / Builder house-empty: short fact, no Alpha merch. |
 
 ## Done when
 

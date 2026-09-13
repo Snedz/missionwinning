@@ -24,12 +24,11 @@ Design Polish C2 Instrument is law.
 
 **Ship:** `.mw-house` remaps to C2
 ground (`#0a0c0f`) with signal press
-(`#ffb000`). HOLD: one filled press
-(Start / Log set / Generate / Victory
-Next). Selected chips default. Log set
-15px on ≥44. Victory remaps nest on
-`.mw-house.house-victory-portal`. Field-manual
-`/private` / landing / www untouched.
+(`#ffb000`). HOLD + nits folded. Leftover
+hop: Coach / Builder house-empty is
+clinical short copy (no Alpha merch).
+Field-manual `/private` / landing / www
+untouched.
 
 Guest. First set ungated. Today still
 one Start. Resume `.963` kept.

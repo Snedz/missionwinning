@@ -143,7 +143,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachFreeBetaNextWeek', {
-              defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
+              defaultValue: "From last week's logs.",
             })}
           />
           <ScreenDock>
@@ -151,7 +151,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <p className="house-kicker">{weekEyebrow}</p>
               <p className="house-lede">
                 {t('coachFreeBetaNextWeek', {
-                  defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
+                  defaultValue: "From last week's logs.",
                 })}
               </p>
               <button
@@ -229,9 +229,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachGenerateEmptyDesc', {
-              defaultValue: freeBeta
-                ? 'One week from your logs. Free every week — no wearable.'
-                : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
+              defaultValue: 'From your logs. No wearable.',
             })}
           />
           <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
@@ -240,9 +238,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               <p className="house-kicker">{weekEyebrow}</p>
               <p className="house-lede">
                 {t('coachGenerateEmptyDesc', {
-                  defaultValue: freeBeta
-                    ? 'One week from your logs. Free every week — no wearable.'
-                    : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
+                  defaultValue: 'From your logs. No wearable.',
                 })}
               </p>
               <button
