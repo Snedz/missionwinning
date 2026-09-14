@@ -16,7 +16,7 @@ export function getStripe(): Stripe | null {
     return null;
   }
   stripeSingleton = new Stripe(key, {
-    apiVersion: '2026-08-26.dahlia',
+    apiVersion: '2026-07-29.dahlia',
     typescript: true,
   });
   return stripeSingleton;
