@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1052-for-1069.md](./log/LOG-rotate-1052-for-1069.md) | rotated 2026-09-14 for `.1069` font + i18n CI hygiene (`.1052`) |
 | [log/LOG-rotate-1048-for-1068.md](./log/LOG-rotate-1048-for-1068.md) | rotated 2026-09-14 for `.1068` Mission OS minis (`.1048`) |
 | [log/LOG-rotate-1050-for-1068.md](./log/LOG-rotate-1050-for-1068.md) | rotated 2026-09-14 for `.1068` Mission OS minis (`.1050`) |
 | [log/LOG-rotate-1047-for-1066.md](./log/LOG-rotate-1047-for-1066.md) | rotated 2026-09-13 for `.1066` Victory next-env cite (`.1047`) |
