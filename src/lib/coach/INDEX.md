@@ -13,7 +13,8 @@
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`. Only product caller: `src/hooks/useCoachPlan.ts` (`weekWriter.test.ts`, docs/IA_SKELETON.md WEEK loop).
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
-8a0. `victoryNextEnvCite.ts` — Finish → adapt → Victory muted cite when next session was written from this log (`.1066`)
+8a0. `coachConcept.ts` — discrete `CoachConceptId` + Victory concept-first cite (.1067)
+8a0b. `victoryNextEnvCite.ts` — Finish → adapt → Victory muted cite when next session was written from this log (`.1066`)
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)

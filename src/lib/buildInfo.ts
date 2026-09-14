@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1066` Victory next-env cite; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1066";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1067` CoachConcept + Victory concept cite; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1067";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
