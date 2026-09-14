@@ -43,14 +43,15 @@ const SCRIPT = 'scripts/bundle-budget.mjs';
  * changelog of the debt.
  */
 const HIGH_WATER_KB: Record<string, number> = {
+  // `.1071` HOLD raise — CI #938 TodayDesk concept chip (417.5 / 511.2).
+  // `/log` 417.5 → 418 · `/active` 511.2 → 512 stay HTML. `/` stays 351.
   // `.1070` HOLD raise — CI-measured on #937 (founder: fix/bump).
   // `/` is cookie-dynamic (no index.html). Reconstruct LandingPage + teaser +
   // layout + root runtime (348.5 → 351). Do not union every chunk in the
   // client-reference manifest — that counted House/Today/Train on `/` (458.9).
-  // `/log` 416.7 → 417 · `/active` 510.2 → 511 stay HTML.
   '/': 351,
-  '/log': 417,
-  '/active': 511,
+  '/log': 418,
+  '/active': 512,
 };
 
 function declaredBudgets(): Record<string, number> {
