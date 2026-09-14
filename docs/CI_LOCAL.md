@@ -45,7 +45,7 @@ npm run test:routes
 
 Hero e2e (`npm run e2e:gate`) needs Chromium (`npx playwright install chromium`) and a production server. Skip it on a Cloud agent unless you already installed browsers. The local merge bar above does **not** require e2e while minutes are red.
 
-**Bundle budget is already red on `master`.** A CI-matching `PRIVATE_MODE=false` production build measures `/log` **286.5 KB** (cap 280) and `/active` **448.7 KB** (cap 435). Identical numbers on this branch — not caused by the i18n fill. **Do not raise the caps.** That is a separate size pass. It is not the Cursor-local merge bar while minutes are red.
+**Bundle budget (`.1070` HOLD #937).** Founder authorized a measured bump: `/log` **417**, `/active` **511**, `/` **459** (landing is cookie-dynamic — no `index.html`; reconstructed from the client manifest + root runtime). Those are CI-measured ceils (house chrome + #935), not a size pass. The next win still ratchets **down**. Not the Cursor-local merge bar while minutes are red.
 
 Full local gate (when you have browsers): `npm run gate`.
 

@@ -43,12 +43,12 @@ const SCRIPT = 'scripts/bundle-budget.mjs';
  * changelog of the debt.
  */
 const HIGH_WATER_KB: Record<string, number> = {
-  // `/` is the PRIVATE_MODE=false landing page, which is what the gate builds —
-  // see the note at BUDGETS_KB. A gated production build serves the six-chunk
-  // teaser at 164 KB instead.
-  '/': 262,
-  '/log': 280,
-  '/active': 435,
+  // `.1070` HOLD raise — CI-measured ceil on #937 (founder: fix/bump).
+  // `/` is cookie-dynamic (no index.html); reconstructed from the landing
+  // client manifest + root runtime (458.9 → 459). `/log` / `/active` stay HTML.
+  '/': 459,
+  '/log': 417,
+  '/active': 511,
 };
 
 function declaredBudgets(): Record<string, number> {
@@ -78,6 +78,20 @@ test('the byte caps only ever move down', () => {
         `If the growth is genuinely justified, say so at the constant and raise HIGH_WATER_KB here in the same commit.`
     );
   }
+});
+
+test('cookie-dynamic / still has a measurement path', () => {
+  const src = read(SCRIPT);
+  assert.match(
+    src,
+    /page_client-reference-manifest/,
+    '`/` reads cookies() so index.html never exists — deleting the manifest fallback makes the budget vacuous-red'
+  );
+  assert.match(
+    src,
+    /hasPrivateAccessCookieOnServer/,
+    'the fallback has to name the function that made `/` dynamic, or the next edit will treat missing HTML as "run build"'
+  );
 });
 
 test('the bundle budget runs in the gate', () => {
