@@ -108,6 +108,7 @@
 | [SECURITY_REVIEW_PASS_2026-08.md](SECURITY_REVIEW_PASS_2026-08.md) | Technical review pass after enhance plan |
 | [SECURITY_SERVICE_ROLE_MAP.md](SECURITY_SERVICE_ROLE_MAP.md) | Service-role call sites inventory |
 | [AIKIDO.md](AIKIDO.md) | Aikido Cursor MCP + GitHub Actions CRITICAL-deps gate |
+| [DEPENDABOT_BATCH_1067.md](DEPENDABOT_BATCH_1067.md) | Leftover Dependabot batch (unstamped on `.1067`) — take playwright + posthog + supabase/ssr + i18next; hold stripe; skip eslint 10 |
 | [COMPLIANCE.md](COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
 | [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md) | Phase 0 census + hunt re-verify — frameworks apply/refuse, DSAR, open P1/P2 |
 | [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) | npm audit high triage (Phantom/Solana) |
