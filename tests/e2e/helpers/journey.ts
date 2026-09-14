@@ -19,6 +19,8 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
       'mw_mind_checkins',
       JSON.stringify([{ date: today, sleep: 3, mood: 3, stress: 3, energy: 3 }])
     );
+    // Established-user walks: leftover Got it must not steal More / Start hits.
+    localStorage.setItem('mw_house_guide_dismissed', '1');
   });
 }
 
@@ -55,6 +57,7 @@ export async function seedReadinessPhase(page: Page): Promise<void> {
       'mw_mind_checkins',
       JSON.stringify([{ date: today, sleep: 3, mood: 3, stress: 3, energy: 3 }])
     );
+    localStorage.setItem('mw_house_guide_dismissed', '1');
     localStorage.setItem('mw_learn_completed', JSON.stringify(['seed-lesson']));
     localStorage.setItem('mw_guidebook_progress', JSON.stringify(['seed-section']));
     localStorage.setItem('mw_last_assessment', JSON.stringify({ risk: 'low', date: today }));

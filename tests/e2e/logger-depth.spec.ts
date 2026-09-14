@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
+import { leaveVictoryTowardToday } from './helpers/houseChrome';
 
 /**
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
@@ -68,16 +69,17 @@ test.describe('Logger depth @gate', () => {
     await expect(rest).toBeHidden({ timeout: 5_000 });
 
     await page.getByRole('button', { name: /^finish$/i }).click();
-    await expect(page.getByRole('button', { name: /back to today/i })).toBeVisible({
-      timeout: 15_000,
-    });
+    // GNT-1 keeps this string. Leftover Victory often docks Coach; helper still
+    // looks for /back to today/i then the next dock.
+    await expect(
+      page.getByRole('button', { name: /back to today/i }).or(page.getByTestId('victory-next-dock'))
+    ).toBeVisible({ timeout: 15_000 });
+    await leaveVictoryTowardToday(page);
   });
 
   test('logging a set does not scroll the phone sideways', async ({ page }) => {
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    const justGo = page.getByRole('button', { name: /start just go/i });
-    await expect(justGo).toBeVisible({ timeout: 15_000 });
-    await justGo.click();
+    // `/active` first paint is already a set table — "Start just go" is gone.
+    await startEmptyActiveWorkout(page);
 
     const logBtn = page.getByRole('button', { name: /^log set$/i });
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
@@ -133,8 +135,9 @@ test.describe('Logger resilience @gate', () => {
         page.getByText(/something went wrong|unexpected error/i)
       ).toHaveCount(0);
 
-      // And the bottom bar, which is the thing that used to take the app down.
-      await expect(page.locator('nav[aria-label="Primary"]')).toBeVisible();
+      // Compose Train hides the floor rail. The bar that must not throw is the
+      // leftover compose chrome, not `nav[aria-label=Primary]`.
+      await expect(page.locator('.house-compose-bar')).toBeVisible();
 
       expect(errors, `uncaught page errors: ${errors.join(' · ')}`).toEqual([]);
     });

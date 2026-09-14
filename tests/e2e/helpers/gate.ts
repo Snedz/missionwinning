@@ -1,42 +1,51 @@
 import type { APIRequestContext, BrowserContext, Page } from '@playwright/test';
 
-const accessSecret = process.env.SMOKE_ACCESS_SECRET;
+const accessSecret = process.env.SMOKE_ACCESS_SECRET || process.env.PRIVATE_ACCESS_SECRET;
 
-/** Unlock private gate via POST /api/private-access (sets httpOnly cookie on context). */
+/**
+ * Unlock private gate via POST /api/private-access (sets httpOnly cookie).
+ *
+ * Tries the runner secret first, then `done` (Preview / local walk when the
+ * gate is off). Production with PRIVATE_MODE on still needs a real secret —
+ * do not flip the gate off to make this green.
+ */
 export async function unlockGate(
   page: Page,
   context: BrowserContext,
   baseURL: string
 ): Promise<boolean> {
-  if (!accessSecret) return false;
+  const passwords = [...new Set([accessSecret, 'done'].filter(Boolean))] as string[];
 
-  const res = await page.request.post(`${baseURL}/api/private-access`, {
-    data: { password: accessSecret },
-  });
-  if (!res.ok()) return false;
+  for (const password of passwords) {
+    const res = await page.request.post(`${baseURL}/api/private-access`, {
+      data: { password },
+    });
+    if (!res.ok()) continue;
 
-  const setCookie = res.headers()['set-cookie'];
-  if (!setCookie) return false;
+    const setCookie = res.headers()['set-cookie'];
+    if (!setCookie) continue;
 
-  const match = setCookie.match(/([^=]+)=([^;]+)/);
-  if (!match) return false;
+    const match = setCookie.match(/([^=]+)=([^;]+)/);
+    if (!match) continue;
 
-  await context.addCookies([
-    {
-      name: match[1],
-      value: match[2],
-      domain: new URL(baseURL).hostname,
-      path: '/',
-      httpOnly: true,
-      secure: baseURL.startsWith('https'),
-      sameSite: 'Lax',
-    },
-  ]);
-  return true;
+    await context.addCookies([
+      {
+        name: match[1],
+        value: match[2],
+        domain: new URL(baseURL).hostname,
+        path: '/',
+        httpOnly: true,
+        secure: baseURL.startsWith('https'),
+        sameSite: 'Lax',
+      },
+    ]);
+    return true;
+  }
+  return false;
 }
 
 export function gateRequired(): boolean {
-  return !!accessSecret;
+  return !!process.env.SMOKE_ACCESS_SECRET;
 }
 
 /**

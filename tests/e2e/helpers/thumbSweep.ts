@@ -27,6 +27,14 @@ const CONTROL_SELECTOR =
   'main button, [role="main"] button, #screen-dock button, main select, #screen-dock select';
 
 /**
+ * House leftover chips (`house-state`) are 36px by design. Product actions
+ * (`house-btn`, Log set) stay 44. A sweep that still demands 44 on leftover
+ * chips is asserting the retired chrome.
+ */
+export const HOUSE_PRODUCT_CONTROL_SELECTOR =
+  'main button:not(.house-state):not(.house-guide-x), [role="main"] button:not(.house-state):not(.house-guide-x), #screen-dock button:not(.house-state), main select, #screen-dock select';
+
+/**
  * Overlays are portaled to `document.body` (see `AdaptiveOverlay`), so they sit
  * outside every scope above. A sweep that only knows about `main` reports green
  * on a screen whose sheet is entirely untouched — the `.194` gap again, one

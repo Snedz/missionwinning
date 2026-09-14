@@ -61,13 +61,16 @@ function forceConsentFromQuery(): boolean {
 /** Whether to show the first-visit privacy banner (key or force hook, no choice yet, no DNT). */
 export function shouldShowAnalyticsBanner(): boolean {
   if (typeof window === 'undefined') return false;
+  if (loadAnalyticsPreference() !== null) return false;
+  // QA hook first — `mw_force_consent=1` must still paint the real banner when
+  // Chromium sends DNT (Playwright / some CI images). A choice already stored
+  // above still wins, so the hook cannot override Stay private.
+  if (forceConsentFromQuery()) return true;
   try {
     if (navigator.doNotTrack === '1') return false;
   } catch {
     /* ignore */
   }
-  if (loadAnalyticsPreference() !== null) return false;
-  if (forceConsentFromQuery()) return true;
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return false;
   return true;
 }

@@ -62,6 +62,25 @@ failed at collection. Dropped
 the tail duplicate. Same scan
 once. List uniqueness throws.
 
+HOLD follow-up 5: Hero E2E 37
+fail was house leftover first
+paint, not a cookie-gate.
+CI already builds
+`PRIVATE_MODE=false`. Start is
+`today-start-cta`. Notify is
+`/notify` +
+`[data-mw-launch-notify]`.
+Sitemap `/bundle` 307 →
+`/notify` is FREE_BETA.
+Floor rail is `nav.house-floor`,
+not Primary/Search. Victory
+docks Coach; Back to Today is
+the quiet escape. Zero-state
+red caps lowered (house-press
+is not poster-red). Force
+consent query wins over DNT.
+Do not flip PRIVATE_MODE.
+
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.
 PRIVATE_MODE stays.

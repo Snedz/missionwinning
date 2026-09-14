@@ -3,6 +3,7 @@ import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
 import { UNCONTENDED_HOUR, fixedTimeAt } from './helpers/fixedClock';
+import { leaveVictoryTowardToday, todayStart } from './helpers/houseChrome';
 
 test.describe('Phase H hero flows @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -43,8 +44,9 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(cont).toBeVisible({ timeout: 10_000 });
     await cont.click();
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
-    await expect(page.locator('.primary-action')).toHaveCount(1);
-    await page.locator('.primary-action').first().click();
+    // House leftover Start is `today-start-cta`, not `.primary-action`.
+    await expect(todayStart(page)).toHaveCount(1);
+    await todayStart(page).click();
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
     // Widened with the console recut in `.153` — see the note in first-90.
     await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
@@ -57,8 +59,8 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.locator('body')).toBeVisible();
     const body = await page.textContent('body');
     expect(body).toMatch(/mission|win score|puntuación|misión/i);
-    // D4 composure: at most one emerald primary CTA on Today.
-    await expect(page.locator('.primary-action')).toHaveCount(1);
+    // House leftover: one Start on the desk, not `.primary-action`.
+    await expect(todayStart(page)).toHaveCount(1);
   });
 
   test('workout logger entry — active or builder', async ({ page }) => {
@@ -133,9 +135,8 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.getByRole('timer', { name: /rest/i })).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /finish/i }).first().click();
-    const backToday = page.getByRole('button', { name: /back to today/i });
-    await expect(backToday).toBeVisible({ timeout: 15_000 });
-    await backToday.click();
+    // `.422` keeps Back to Today as a quiet escape; leftover often docks Coach first.
+    await leaveVictoryTowardToday(page);
     await expect(page).toHaveURL(/\/log/);
     // Full dashboard (Mission Score) needs readiness phase + live basic milestone evidence.
     await seedReadinessPhase(page);
