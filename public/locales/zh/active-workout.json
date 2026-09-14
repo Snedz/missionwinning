@@ -32,7 +32,7 @@
   "activeRepeatLastSession": "Repeat last session",
   "activeRepeatLastSessionDesc": "Same exercises and last loads. Log when ready.",
   "activeStartPreviewSession": "Start {{name}} — {{count}} exercises",
-  "activeLastPerformance": "最后：{{reps}} × {{weight}}",
+  "activeLastPerformance": "最后：{{line}}",
   "activeSetLogged": "设置已记录！",
   "activeSetLoggedDesc": "{{reps}} × {{weight}} — {{rest}} 休息",
   "activeWorkoutComplete": "锻炼完成！",

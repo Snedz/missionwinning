@@ -32,7 +32,7 @@
   "activeRepeatLastSession": "Repeat last session",
   "activeRepeatLastSessionDesc": "Same exercises and last loads. Log when ready.",
   "activeStartPreviewSession": "Start {{name}} — {{count}} exercises",
-  "activeLastPerformance": "Terakhir: {{reps}} × {{weight}}",
+  "activeLastPerformance": "Terakhir: {{line}}",
   "activeSetLogged": "Setel dicatat!",
   "activeSetLoggedDesc": "{{reps}} × {{weight}} — {{rest}}s istirahat",
   "activeWorkoutComplete": "Latihan selesai!",

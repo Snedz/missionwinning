@@ -32,7 +32,7 @@
   "activeRepeatLastSession": "Repeat last session",
   "activeRepeatLastSessionDesc": "Same exercises and last loads. Log when ready.",
   "activeStartPreviewSession": "Start {{name}} — {{count}} exercises",
-  "activeLastPerformance": "Zuletzt: {{reps}} × {{weight}}",
+  "activeLastPerformance": "Zuletzt: {{line}}",
   "activeSetLogged": "Satz gespeichert",
   "activeSetLoggedDesc": "{{reps}} × {{weight}} — Pause {{rest}} s",
   "activeWorkoutComplete": "Training abgeschlossen!",
