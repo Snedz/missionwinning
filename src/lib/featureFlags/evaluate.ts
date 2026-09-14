@@ -1,3 +1,4 @@
+import { AUTH_USER_ID_RE } from '@/lib/authUserId';
 import { flagBucket } from './bucket';
 import { catalogEntry, FEATURE_FLAG_CATALOG } from './catalog';
 
@@ -30,13 +31,12 @@ export type FlagDecision = {
 export const MAX_ALLOWLIST = 50;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
-/** Trim + lowercase. Empty becomes null. */
+/** Trim + lowercase. Empty becomes null. UUIDs reuse AUTH_USER_ID_RE. */
 export function normalizeAllowlistEntry(raw: string): string | null {
   const value = raw.trim().toLowerCase();
   if (!value) return null;
-  if (EMAIL_RE.test(value) || UUID_RE.test(value)) return value;
+  if (EMAIL_RE.test(value) || AUTH_USER_ID_RE.test(value)) return value;
   return null;
 }
 

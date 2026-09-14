@@ -66,4 +66,8 @@ export const EXCLUDED_TABLES: Readonly<Record<string, string>> = {
     'Keyed by an opaque install_id with no linkage to auth.users or email — contains no personal data to export or delete.',
   feedback_reviews:
     'Founder-only loop state on a lead (class/dest). No athlete user_id. Deleted by ON DELETE CASCADE when the email-keyed lead is removed. Not exported — it is the founder rating, not the tester\'s data.',
+  feature_flag_overrides:
+    'Founder staged-rollout overrides (percent, allowlist, kill). Service-role only. No athlete user_id. Not the athlete\'s data — DSAR export and delete do not touch them.',
+  feature_flag_events:
+    'Append-only founder audit of percent, allowlist, kill, and unkill. No athlete user_id. Operator history, not a copy of an account, so delete does not wipe it.',
 };

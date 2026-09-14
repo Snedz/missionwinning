@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { evaluateAllFlags, evaluateFlag, isFlagOn, parseAllowlist } from './evaluate';
 import type { FlagOverride, FlagSubject } from './evaluate';
 
-const subject: FlagSubject = { userId: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' };
+const subject: FlagSubject = { userId: '3f9a1c2e-5b7d-4e8f-9a0b-1c2d3e4f5a6b' };
 
 function override(partial: Partial<FlagOverride>): FlagOverride {
   return {
