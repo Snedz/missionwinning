@@ -167,8 +167,19 @@ const FLOORS = {
    * `foodSearch`, `militaryReadinessTests`, `cryptoCheckout/*`, `paypalWebhook`
    * among them). `--list` prints every one. Paying those down is how this number
    * moves the right way again.
+   *
+   * **438 → 493 (`.1070`).** House rule after #935: raise the floor in the same
+   * commit, or add tests. Prefer raise. Measured on master `97491eb6` (`.1069`)
+   * after Mission OS minis landed: **493 untested / floor 438**. The +55 is
+   * #935 capability-bus / minis stubs (`src/lib/minis/registry.ts` and host-shell
+   * types whose decisions already live in `bus.test.ts` / `mw-core` module tests)
+   * plus existing UI Playwright-covered debt (components, page-components, hooks)
+   * that never got a floor bump while Actions minutes were red. Inventing
+   * vacuous unit tests for those files is the CLAUDE.md §6 ban. 493 is what the
+   * suite measures today, stated plainly so the next person ratchets down from a
+   * true number.
    */
-  untestedFiles: 438,
+  untestedFiles: 493,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
