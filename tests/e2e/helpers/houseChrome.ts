@@ -23,6 +23,16 @@ export function houseFloor(page: Page) {
   return page.locator('nav.house-floor');
 }
 
+/** Floor Today — `href="/log"`. Train unmounts the floor; use `composeBarToday`. */
+export function houseFloorToday(page: Page) {
+  return houseFloor(page).locator('a[href="/log"]');
+}
+
+/** Compose-bar Today on `/active` (`HouseShell` compose). Floor is unmounted. */
+export function composeBarToday(page: Page) {
+  return page.locator('.house-compose-bar').getByRole('button', { name: /^today$/i });
+}
+
 export function houseMoreTrigger(page: Page) {
   return houseFloor(page).locator('[data-house-rail-open="more"]');
 }
