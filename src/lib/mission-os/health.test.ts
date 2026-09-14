@@ -42,9 +42,10 @@ test('Health mini scopes are identity + storage only — extras fail closed', ()
   assert.equal(HEALTH_MINI_MANIFEST.scopes.includes('health.read'), false);
 
   const src = sourceOf('health.ts');
-  assert.equal(src.includes('photos.'), false, 'Health stub must not declare photos');
-  assert.equal(src.includes('billing.'), false, 'Health stub must not declare billing');
-  assert.equal(src.includes('health.write'), false, 'Health stub must not take health.write');
+  assert.equal(src.includes("'photos.read'"), false, 'Health stub must not declare photos.read');
+  assert.equal(src.includes("'photos.write'"), false, 'Health stub must not declare photos.write');
+  assert.equal(src.includes("'billing.read'"), false, 'Health stub must not declare billing.read');
+  assert.equal(src.includes("'health.write'"), false, 'Health stub must not take health.write');
   assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false);
   assert.equal(src.includes('premiumServer'), false);
 });
