@@ -62,11 +62,11 @@ module:
 | `storage.write` | Write mini-scoped key-value (capped) |
 | `billing.read` | Read Super Bundle recognition (`none` / `super`). Always muted. Never checkout. Never gates `logSet`. |
 
-Host **denies** undeclared scopes (`scope_denied`). Unknown mini id → `unknown_mini`. `health.train` stays `free_core: true`; a mini cannot override that. Capability bus: `packages/mw-core/src/module/capabilities.ts`. Web stubs: `src/lib/minis/`.
+Host **denies** undeclared scopes (`scope_denied`). Unknown mini id → `unknown_mini`. `health.train` stays `free_core: true`; a mini cannot override that. Capability bus: `packages/mw-core/src/module/capabilities.ts`. Function web stubs: `src/lib/minis/` (#935). Named doors: `src/lib/mission-os/` (`IdentityCapability`, `BillingCapability` Stripe HOLD, `PhotosCapability`, `StorageCapability`, `MiniHost.mount`, `CapResult`).
 
 ## Types
 
-`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`, `assertCapability`, `UTILITY_CLEARSHOT_MANIFEST`, `HOST_SHELL`).
+`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`, `assertCapability`, `UTILITY_CLEARSHOT_MANIFEST`, `HOST_SHELL`). Named host doors: `src/lib/mission-os/` (`MiniHost.mount`, `CapResult`).
 
 ## Agent resume
 

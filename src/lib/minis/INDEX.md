@@ -25,5 +25,6 @@
 | Path | Role |
 |------|------|
 | `packages/mw-core/src/module/` | Manifest + `assertCapability` |
+| `src/lib/mission-os/` | Named doors (`MiniHost.mount`, `.1072`) |
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |

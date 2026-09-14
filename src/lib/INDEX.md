@@ -15,7 +15,7 @@
 | **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Mission Score, coach insight |
 | **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
 | **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card — social projection; Log↔Social via `domainBoundary.ts` |
-| **Mission OS minis** | [`minis/`](minis/INDEX.md), `minisIsolation.test.ts` | Web capability-bus stubs. ClearShot reserved at `mission://minis/clearshot`. No Today/Train UI. Isolation: coach / store / HomePage / ActiveWorkout stay blind. |
+| **Mission OS minis** | [`minis/`](minis/INDEX.md), [`mission-os/`](mission-os/INDEX.md), `minisIsolation.test.ts` | Function bus (`createMiniBus`, #935) + named doors (`MiniHost.mount`, `.1072`). ClearShot reserved at `mission://minis/clearshot`. No Today/Train UI. Isolation: coach / store / HomePage / ActiveWorkout stay blind. |
 | **Mission Server** | [`social/`](social/INDEX.md), `socialSync.ts` | Local-first Garage + signed-in persist via outbox. Isolation: `social/isolation.test.ts`. Rooms: [docs/IA_SKELETON.md](../../docs/IA_SKELETON.md) |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |
 | **Build / public stamp** | `buildInfo.ts`, `buildInfo.test.ts` | Internal `APP_BUILD_LABEL` vs athlete `Alpha 0.1.0` |
@@ -69,6 +69,7 @@
 | `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `minis/` | Capability-bus web stubs — [minis/INDEX.md](minis/INDEX.md) |
+| `mission-os/` | Named host interfaces (`MiniHost.mount`) — [mission-os/INDEX.md](mission-os/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |

@@ -15,9 +15,9 @@
  * `docs/IA_SKELETON.md` states the three product loops. This module states
  * the Log↔Social crossing in a form `domainBoundary.test.ts` can check.
  * Messenger-on-Today is `src/lib/social/isolation.test.ts`.
- * Minis isolation (coach / logger / Today must not import the capability bus)
- * is `src/lib/minisIsolation.test.ts` — comment only; this file does not read
- * mini standing.
+ * Minis isolation (coach / logger / Today must not import the capability bus
+ * or `src/lib/mission-os/`) is `src/lib/minisIsolation.test.ts` — comment only;
+ * this file does not read mini standing.
  *
  * ## Readers and emitters, not import direction
  *
