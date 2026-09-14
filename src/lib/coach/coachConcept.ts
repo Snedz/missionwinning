@@ -20,9 +20,9 @@ export const COACH_CONCEPT_IDS = [
 
 export type CoachConceptId = (typeof COACH_CONCEPT_IDS)[number];
 
-const PUSH = new Set(['Chest', 'Shoulders', 'Triceps']);
-const PULL = new Set(['Back', 'Biceps', 'Rear Delts', 'Traps']);
-const LEGS = new Set(['Quads', 'Hamstrings', 'Glutes', 'Calves', 'Hips']);
+const PUSH = new Set(['Chest', 'Shoulders', 'Arms']);
+const PULL = new Set(['Back']);
+const LEGS = new Set(['Legs']);
 
 export function isCoachConceptId(value: unknown): value is CoachConceptId {
   return (

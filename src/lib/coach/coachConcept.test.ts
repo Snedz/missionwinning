@@ -36,7 +36,7 @@ describe('coachConcept', () => {
   it('derives push/pull/legs from focus or name', () => {
     assert.equal(
       deriveCoachConceptFromSession(
-        sess({ kind: 'strength', focusGroups: ['Chest', 'Triceps'] })
+        sess({ kind: 'strength', focusGroups: ['Chest', 'Shoulders'] })
       ),
       'strength-push'
     );
@@ -48,7 +48,7 @@ describe('coachConcept', () => {
     );
     assert.equal(
       deriveCoachConceptFromSession(
-        sess({ kind: 'strength', focusGroups: ['Quads', 'Glutes'] })
+        sess({ kind: 'strength', focusGroups: ['Legs'] })
       ),
       'strength-legs'
     );
