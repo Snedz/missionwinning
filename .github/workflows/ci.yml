@@ -59,6 +59,31 @@ jobs:
           # made the step below decorative rather than a gate.
           fetch-depth: 0
 
+      # The hardest rule in docs/CLASSIFICATION.md: `ops/` is LOCAL — never git.
+      #
+      # The pathspec is `ops` AND `ops/*`, not `ops/*` alone. `ops/` is a nested
+      # git repository, so the two failure modes are not what you would guess:
+      #   - `git add -f ops/README.md` stages **nothing** — git refuses to add
+      #     files inside an embedded repo. Verified by running it; not a risk.
+      #   - `git add -f ops` stages a **gitlink** named `ops` (mode 160000), and
+      #     `git ls-files 'ops/*'` does not match that path. A check written with
+      #     `ops/*` alone is green over the only way this actually breaks —
+      #     verified by staging the gitlink and watching `ops/*` stay empty.
+      # Placed before `npm ci` so it fails in a second instead of after the install.
+      #
+      # The plaintext denylist check (`names:check`) deliberately does NOT run
+      # here: it reads ops/intel/NAME_DENYLIST.md, which CI has no mount for, so
+      # it exits 0 — a step that always passes. That is the defect this repo
+      # names in scripts/coverage.mjs, and adding it would be a fourth instance.
+      - name: ops/ is not in the product index
+        run: |
+          staged="$(git ls-files 'ops' 'ops/*')"
+          if [ -n "$staged" ]; then
+            echo "ops/ is in the product index — it is LOCAL, never git:"
+            printf '%s\n' "$staged" | head -20
+            exit 1
+          fi
+
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
