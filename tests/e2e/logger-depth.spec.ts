@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
+import { dismissHouseOverlays, leaveVictoryTowardToday } from './helpers/houseChrome';
 
 /**
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
@@ -19,15 +20,19 @@ test.describe('Logger depth @gate', () => {
 
   test('start empty, add push-ups, log set, rest timer, skip rest, finish', async ({ page }) => {
     await startEmptyActiveWorkout(page);
+    await dismissHouseOverlays(page);
 
     // The picker is a sheet as of `.156` — it was an inline `max-h-48` list
     // competing with the session for height. One extra tap to open it; the
     // placeholder, the `option` rows, the `Selected:` line and the
     // `add selected exercise` name are all unchanged.
-    await page.getByRole('button', { name: /^add exercise$/i }).click();
+    // Just Go first paint already has a table; Add exercise still opens the sheet.
+    const addExercise = page.getByRole('button', { name: /^add exercise$/i });
+    await expect(addExercise).toBeVisible({ timeout: 10_000 });
+    await addExercise.click();
 
     const search = page.getByPlaceholder(/search exercises/i);
-    await expect(search).toBeVisible();
+    await expect(search).toBeVisible({ timeout: 10_000 });
     await search.fill('push-ups');
     await page.getByRole('option', { name: /push-ups/i }).first().click();
     await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
@@ -68,16 +73,17 @@ test.describe('Logger depth @gate', () => {
     await expect(rest).toBeHidden({ timeout: 5_000 });
 
     await page.getByRole('button', { name: /^finish$/i }).click();
-    await expect(page.getByRole('button', { name: /back to today/i })).toBeVisible({
-      timeout: 15_000,
-    });
+    // GNT-1 keeps this string. Leftover Victory often docks Coach; helper still
+    // looks for /back to today/i then the next dock.
+    await expect(
+      page.getByRole('button', { name: /back to today/i }).or(page.getByTestId('victory-next-dock'))
+    ).toBeVisible({ timeout: 15_000 });
+    await leaveVictoryTowardToday(page);
   });
 
   test('logging a set does not scroll the phone sideways', async ({ page }) => {
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    const justGo = page.getByRole('button', { name: /start just go/i });
-    await expect(justGo).toBeVisible({ timeout: 15_000 });
-    await justGo.click();
+    // `/active` first paint is already a set table — "Start just go" is gone.
+    await startEmptyActiveWorkout(page);
 
     const logBtn = page.getByRole('button', { name: /^log set$/i });
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
@@ -125,7 +131,7 @@ test.describe('Logger resilience @gate', () => {
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
 
-      await page.goto('/active', { waitUntil: 'networkidle' });
+      await page.goto('/active', { waitUntil: 'domcontentloaded' });
 
       // Something usable rendered — not the generic error screen, and not a blank.
       await expect(page.locator('main, [role="main"]').first()).toBeVisible({ timeout: 15_000 });
@@ -133,8 +139,9 @@ test.describe('Logger resilience @gate', () => {
         page.getByText(/something went wrong|unexpected error/i)
       ).toHaveCount(0);
 
-      // And the bottom bar, which is the thing that used to take the app down.
-      await expect(page.locator('nav[aria-label="Primary"]')).toBeVisible();
+      // Compose Train hides the floor rail. The bar that must not throw is the
+      // leftover compose chrome, not `nav[aria-label=Primary]`.
+      await expect(page.locator('.house-compose-bar')).toBeVisible();
 
       expect(errors, `uncaught page errors: ${errors.join(' · ')}`).toEqual([]);
     });

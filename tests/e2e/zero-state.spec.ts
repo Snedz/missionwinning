@@ -101,43 +101,49 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/history': { cap: 0, why: 'Clean.' },
   '/benchmarks': { cap: 0, why: 'Clean after the EmptyState + starters recut.' },
   '/leaderboard': {
-    cap: 1,
-    why: 'Sync is the one red action on zero data; boards fill with honest Pacers, not a void header.',
+    cap: 0,
+    why: 'House leftover press is #18181b, not poster-red. Was 1 (Sync). Lowered — never raise.',
   },
   '/learn': { cap: 0, why: 'Clean.' },
   '/library': { cap: 0, why: 'Clean.' },
   '/programs': { cap: 0, why: 'Was 2 — both were selected filter chips. `variant="selected"` fixed it.' },
 
   '/move': { cap: 0, why: 'Was 1 — first-card Start Flow demoted to outline (Loop 3 M5). EmptyState CTA stays outline.' },
-  '/assessments': { cap: 1, why: 'Was 2 — the stage chip was a selection. Submit is the one action.' },
-
-  '/nutrition': {
-    cap: 1,
-    why: 'K5: docked Log food is the one red; empty state dropped its duplicate CTA (dock owns the action).',
+  '/assessments': {
+    cap: 0,
+    why: 'House leftover submit is house-press, not poster-red. Was 1. Lowered — never raise.',
   },
 
-  '/builder': { cap: 1, why: 'One red Blank workout in the wizard; style chips use selected; quick-load is outline; EmptyState Blank stays outline.' },
+  '/nutrition': {
+    cap: 0,
+    why: 'House leftover Fuel actions are house-press, not poster-red. Was 1. Lowered — never raise.',
+  },
+
+  '/builder': {
+    cap: 0,
+    why: 'House leftover Blank is house-press, not poster-red. Was 1. Lowered — never raise.',
+  },
   '/track': {
-    cap: 1,
-    why: 'Log Activity is the one red; Start GPS + body-metrics Log demoted to outline (Loop 2 L5).',
+    cap: 0,
+    why: 'House leftover Log Activity is house-press, not poster-red. Was 1. Lowered — never raise.',
   },
 
   '/coach': {
-    cap: 1,
-    why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
+    cap: 0,
+    why: 'House leftover Start is house-press, not poster-red. Was 1. Lowered — never raise.',
   },
   '/profile': {
     cap: 0,
     why: 'The Athlete Page is a record, not a task — red means "do this now" and nothing here does. Call-sign Save is outline on purpose; Rule 1 is met by the input, the Save and the Account link. Settings (and their magic-link red) moved to /account in `.606`.',
   },
   '/account': {
-    cap: 1,
-    why: 'Send magic link is the one red, inherited from /profile before the `.606` split; Continue/Save Goals/backup demoted. Day chips use selected without bg-primary.',
+    cap: 0,
+    why: 'House leftover sign-in is house-press, not poster-red. Was 1. Lowered — never raise.',
   },
 
   '/mind': {
-    cap: 1,
-    why: 'DailyCheckIn Save is the one red; BreathingTimer Start demoted to outline (Loop 2 L5). Was 2.',
+    cap: 0,
+    why: 'House leftover Save is house-press, not poster-red. Was 1. Lowered — never raise.',
   },
 };
 
@@ -179,6 +185,12 @@ async function seedEmptyAthlete(page: import('@playwright/test').Page): Promise<
     localStorage.setItem('mw_equipment', 'bodyweight');
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
+    localStorage.setItem('mw_house_guide_dismissed', '1');
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+    window.dispatchEvent(new CustomEvent('mw-locale-pref'));
   });
 }
 

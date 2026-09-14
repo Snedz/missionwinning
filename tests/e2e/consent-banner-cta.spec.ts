@@ -1,12 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding } from './helpers/journey';
+import { seedConfirmedLocale, seedLegacyOnboarding } from './helpers/journey';
+import { dismissHouseOverlays, todayStart } from './helpers/houseChrome';
 
 /**
  * Preview walk P0-1: on a phone, the analytics consent dialog must not
- * intercept Today's first-set Start. P0-2: landing has a real notify form.
+ * intercept Today's first-set Start. P0-2: Get-notified lives on `/notify`.
  *
  * `@gate` — first-set path. Does not add a tap to first-90. TAP_BUDGET stays 4.
+ *
+ * Landing does not remount the form (F-047). `/notify` is in
+ * PRIVATE_GATE_PUBLIC_PATHS so this stays honest while PRIVATE_MODE is on.
  */
 
 test.describe('Preview walk P0s @gate', () => {
@@ -25,10 +29,10 @@ test.describe('Preview walk P0s @gate', () => {
     await seedLegacyOnboarding(page);
     await page.goto('/log?mw_force_consent=1', { waitUntil: 'domcontentloaded' });
 
-    const banner = page.getByRole('dialog', { name: /product analytics/i });
+    const banner = page.locator('[data-mw-consent-banner]');
     await expect(banner).toBeVisible({ timeout: 15_000 });
 
-    const start = page.locator('.primary-action').first();
+    const start = todayStart(page);
     await expect(start).toBeVisible({ timeout: 15_000 });
 
     const startBox = await start.boundingBox();
@@ -53,21 +57,22 @@ test.describe('Preview walk P0s @gate', () => {
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
   });
 
-  test('public landing has a Get-notified form and no fake checkout', async ({ page }) => {
+  test('public notify page has a Get-notified form and no fake checkout', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    // Chooser fetches /api/geo then opens — dismiss-after-goto loses the race.
+    await seedConfirmedLocale(page);
+    await page.goto('/notify', { waitUntil: 'domcontentloaded' });
+    await dismissHouseOverlays(page);
 
-    const band = page.locator('[data-mw-landing-notify]');
+    const band = page.locator('[data-mw-launch-notify]');
     await expect(band).toBeVisible();
     const email = band.getByRole('textbox');
     await expect(email).toBeVisible();
     await expect(band.getByRole('button', { name: /notify me/i })).toBeVisible();
 
-    await expect(page.locator('.primary-action')).toHaveCount(2);
-
     await email.fill('walker@example.com');
     await band.getByRole('button', { name: /notify me/i }).click();
     await expect(page).not.toHaveURL(/stripe|checkout/i);
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/notify/);
   });
 });

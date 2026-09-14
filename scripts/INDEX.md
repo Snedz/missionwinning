@@ -6,6 +6,7 @@
 
 | Script | Command | When to run |
 |--------|---------|-------------|
+| `bundle-budget.mjs` | `npm run bundle-budget` | Gzipped initial JS on `/` · `/log` · `/active` after `npm run build`. Prefers prerendered HTML; `/` falls back to `page_client-reference-manifest.js` because `cookies()` keeps the door dynamic (no `index.html`). Caps only move down unless `bundleBudget.test.ts` HIGH_WATER is raised in the same commit |
 | `coverage.mjs` | `npm run coverage` | **Coverage over every source file, not only the imported ones.** V8 reports 92% because it reaches 271/657; this counts the other 386 as untested and ratchets on *function* % — the metric that caught `apiSchemas.ts` at 98% lines / 24% functions. Gate step 7 + `ci.yml`. `--list` prints every untested file |
 | `e2e-smoke.mjs` | `npm run e2e` | Extended smoke + screenshots (runs `e2e:critical` first) |
 | `e2e:critical` (npm) | `npm run e2e:critical` | Blocking Playwright specs in `tests/e2e/` |

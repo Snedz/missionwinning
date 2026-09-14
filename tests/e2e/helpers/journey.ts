@@ -5,6 +5,16 @@ import type { Page } from '@playwright/test';
  * Also plants a complete today's mind check-in so Active does not open
  * SessionCheckInSheet (full-viewport overlay that intercepts Finish / picker clicks).
  */
+/** Must run before first goto — stops the first-visit country sheet. */
+export async function seedConfirmedLocale(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+  });
+}
+
 export async function seedLegacyOnboarding(page: Page): Promise<void> {
   await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => {
@@ -12,6 +22,12 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
     localStorage.setItem('mw_equipment', 'bodyweight');
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
+    // Confirmed locale so AnalyticsConsentBanner may mount (provider waits).
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+    window.dispatchEvent(new CustomEvent('mw-locale-pref'));
     // Local YYYY-MM-DD — matches todayCheckInDate in mindCheckIns (not UTC ISO).
     const now = new Date();
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -19,6 +35,8 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
       'mw_mind_checkins',
       JSON.stringify([{ date: today, sleep: 3, mood: 3, stress: 3, energy: 3 }])
     );
+    // Established-user walks: leftover Got it must not steal More / Start hits.
+    localStorage.setItem('mw_house_guide_dismissed', '1');
   });
 }
 
@@ -55,6 +73,7 @@ export async function seedReadinessPhase(page: Page): Promise<void> {
       'mw_mind_checkins',
       JSON.stringify([{ date: today, sleep: 3, mood: 3, stress: 3, energy: 3 }])
     );
+    localStorage.setItem('mw_house_guide_dismissed', '1');
     localStorage.setItem('mw_learn_completed', JSON.stringify(['seed-lesson']));
     localStorage.setItem('mw_guidebook_progress', JSON.stringify(['seed-section']));
     localStorage.setItem('mw_last_assessment', JSON.stringify({ risk: 'low', date: today }));

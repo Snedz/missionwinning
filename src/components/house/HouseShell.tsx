@@ -50,7 +50,13 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
   const openMore = useCallback(() => setMoreOpen(true), []);
-  const closeMore = useCallback(() => setMoreOpen(false), []);
+  const closeMore = useCallback(() => {
+    setMoreOpen(false);
+    const triggers = document.querySelectorAll<HTMLElement>('[data-house-rail-open="more"]');
+    const visible =
+      [...triggers].find((el) => el.getClientRects().length > 0) ?? triggers[0] ?? null;
+    queueMicrotask(() => visible?.focus());
+  }, []);
   const openHome = useCallback(() => {
     setMoreOpen(false);
     router.push(HOUSE_RAIL_HREFS.home);
@@ -73,6 +79,17 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
     setMoreOpen(false);
     recordScreen(pathname);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      e.preventDefault();
+      closeMore();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [moreOpen, closeMore]);
 
   const padClass = [
     'house-canvas-pad',

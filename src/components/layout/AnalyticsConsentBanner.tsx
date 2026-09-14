@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -27,15 +28,18 @@ export { CONSENT_BANNER_HOST_ID };
  */
 export function AnalyticsConsentBanner() {
   const { t } = useTranslation();
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [host, setHost] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
+    // Re-read on path change so `?mw_force_consent=1` after I-Day / seed
+    // still paints. An empty-deps effect froze the first URL (often DNT).
     setVisible(shouldShowAnalyticsBanner());
     const onPref = () => setVisible(shouldShowAnalyticsBanner());
     window.addEventListener('mw-analytics-pref', onPref);
     return () => window.removeEventListener('mw-analytics-pref', onPref);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     setHost(document.getElementById(CONSENT_BANNER_HOST_ID));

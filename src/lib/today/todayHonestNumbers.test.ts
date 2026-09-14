@@ -103,46 +103,45 @@ describe('"This week" can fail visibly', () => {
   });
 });
 
-describe('the hero gate keys off the visible band', () => {
+describe('the hero gate keys off the house desk after a finish', () => {
   /**
-   * `.604` corrects the story `.602` told here. Read this before trusting the
-   * assertions below, because their *reason* changed even though they did not.
+   * `/log` is TodayDesk in every journey phase. `HomeTodayDashboard` (and
+   * `today-score-band`) stays on disk as a leftover shell — it is not this
+   * route. Asserting the band as visible on `/log` is the stale dashboard tour.
    *
-   * `.602` said this spec had been red since `.596` and that keying off a test
-   * id repaired it. Measured on the first real Playwright run this branch could
-   * do — the sandbox had no matching browser binary, and `npm run gate` aborts
-   * at the bundle budget three steps before the e2e lane — **`master`'s version
-   * passes, 71/71.** The old locator was never broken.
-   *
-   * The inference was backwards. `.first()` resolves in DOM order, and
-   * `TodayDashboardHeader`, which renders `MetricsRow`'s literal "Mission Score"
-   * label inside the band, sits *above* `TodayHealthSection`'s collapsed
-   * `<details>` — so `.first()` was selecting the **visible** node, not the
-   * hidden duplicate. The cited facts were all true; only the conclusion was
-   * not, which is the failure mode worth naming: an explanation good enough that
-   * nobody reproduced the defect it explained.
-   *
-   * These assertions stay because the test id is better on its own merits — it
-   * names the band instead of matching prose a kaizen pass is expected to
-   * change, and the spec additionally asserts a real digit, which the old
-   * assertion never did.
+   * The MetricsRow `pending` guards above still apply to that leftover shell.
+   * The hero walk now keys off History + first-rooms progress the desk actually
+   * writes after Finish.
    */
-  it('asserts a test id rather than a text regex that can match hidden copy', () => {
+  it('does not wait for the unmounted dashboard score band on /log', () => {
     const spec = stripComments(read('tests/e2e/hero-flows.spec.ts'));
-    assert.match(spec, /getByTestId\('today-score-band'\)/, 'scope the assertion to the visible band');
+    assert.doesNotMatch(
+      spec,
+      /getByTestId\('today-score-band'\)/,
+      'today-score-band lives on HomeTodayDashboard, which HomePage no longer mounts'
+    );
     assert.doesNotMatch(
       spec,
       /getByText\(\/mission score\|win score\|cross-pillar\/i\)\.first\(\)/,
-      'the broad regex matches prose in two places and orders them by DOM position — a locator whose ' +
-        'correctness depends on which copy renders first is one reorder away from asserting nothing'
+      'the broad regex matches leftover dashboard prose, not the desk'
+    );
+    assert.match(
+      spec,
+      /today-first-steps/,
+      'a finish must tick first rooms on the desk'
+    );
+    assert.match(
+      spec,
+      /a\[href="\/history"\]/,
+      'a finish must write History on the desk'
     );
   });
 
-  it('the band it points at exists', () => {
+  it('the leftover band hook still exists on the unused dashboard shell', () => {
     assert.match(
       stripComments(read('src/components/today/TodayDashboardHeader.tsx')),
       /data-testid="today-score-band"/,
-      'the spec targets a hook the component must actually render'
+      'do not delete the hook while the leftover shell remains on disk'
     );
   });
 

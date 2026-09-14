@@ -134,4 +134,23 @@ describe('analyticsOptOut', () => {
       }
     }
   });
+
+  it('force query still shows the banner when DNT is on', () => {
+    const prev = globalThis.window?.location;
+    Object.defineProperty(globalThis.window, 'location', {
+      configurable: true,
+      value: { search: '?mw_force_consent=1' },
+    });
+    dnt = '1';
+    try {
+      assert.equal(shouldShowAnalyticsBanner(), true);
+    } finally {
+      if (prev !== undefined) {
+        Object.defineProperty(globalThis.window, 'location', {
+          configurable: true,
+          value: prev,
+        });
+      }
+    }
+  });
 });

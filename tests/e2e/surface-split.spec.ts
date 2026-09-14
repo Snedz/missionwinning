@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
+import { todayDesk } from './helpers/houseChrome';
 
 /**
  * The desktop app is handoff 2; the mobile app is handoff 3. They are two
@@ -43,13 +44,12 @@ test.describe('Desktop surface @gate', () => {
   test('shell is the rail, not the tab bar', async ({ page }) => {
     await page.goto('/log');
 
-    // The rail carries all thirteen screens, so there is no tab bar and no
-    // More sheet handle in the header.
-    await expect(page.locator('aside').first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /^more$/i })).toHaveCount(0);
+    // House leftover desktop: side icon rail. Floor hides ≥723. More stays on
+    // the rail (not a compact Search tab). The old AppLayout `aside` is gone.
+    await expect(page.locator('nav.house-rail')).toBeVisible();
+    await expect(page.locator('nav.house-floor')).toBeHidden();
+    await expect(page.locator('nav.house-rail [data-house-rail-open="more"]')).toBeVisible();
 
-    // The brand is a button only on compact — it is the More sheet's handle.
-    // At md+ the mock's header has no menu at all.
     const brandButton = page.getByRole('button', { name: /mission winning/i });
     await expect(brandButton).toHaveCount(0);
   });
@@ -66,7 +66,7 @@ test.describe('Desktop surface @gate', () => {
 
   test('Today fills the column instead of a phone measure', async ({ page }) => {
     await page.goto('/log');
-    const shell = page.locator('.today-shell').first();
+    const shell = todayDesk(page);
     await expect(shell).toBeVisible();
 
     // `max-w-lg` is 512px. Desktop takes AppLayout's container, which is well
@@ -114,7 +114,9 @@ test.describe('Desktop surface @gate', () => {
 
     await addPushUpsInline(page);
 
-    const warmup = page.getByRole('button', { name: /^warm-?up$/i });
+    // Just Go first paint already has a set table — several Warmup chips.
+    // Kind lives on the row (`set-table-tag-warmup`), not in a docked console.
+    const warmup = page.getByTestId('set-table-tag-warmup').first();
     await expect(warmup).toBeVisible({ timeout: 10_000 });
 
     /*

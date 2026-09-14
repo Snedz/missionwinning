@@ -3,6 +3,7 @@ import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
 import { UNCONTENDED_HOUR, fixedTimeAt } from './helpers/fixedClock';
+import { leaveVictoryTowardToday, todayDesk, todayStart } from './helpers/houseChrome';
 
 test.describe('Phase H hero flows @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -43,8 +44,9 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(cont).toBeVisible({ timeout: 10_000 });
     await cont.click();
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
-    await expect(page.locator('.primary-action')).toHaveCount(1);
-    await page.locator('.primary-action').first().click();
+    // House leftover Start is `today-start-cta`, not `.primary-action`.
+    await expect(todayStart(page)).toHaveCount(1);
+    await todayStart(page).click();
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
     // Widened with the console recut in `.153` — see the note in first-90.
     await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
@@ -57,8 +59,8 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.locator('body')).toBeVisible();
     const body = await page.textContent('body');
     expect(body).toMatch(/mission|win score|puntuación|misión/i);
-    // D4 composure: at most one emerald primary CTA on Today.
-    await expect(page.locator('.primary-action')).toHaveCount(1);
+    // House leftover: one Start on the desk, not `.primary-action`.
+    await expect(todayStart(page)).toHaveCount(1);
   });
 
   test('workout logger entry — active or builder', async ({ page }) => {
@@ -105,7 +107,7 @@ test.describe('Phase H hero flows @gate', () => {
     });
   });
 
-  test('workout complete updates Mission Score on Today', async ({ page, context, baseURL }) => {
+  test('workout complete writes History on Today', async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);
     if (gateRequired() && !ok) {
@@ -133,63 +135,32 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.getByRole('timer', { name: /rest/i })).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /finish/i }).first().click();
-    const backToday = page.getByRole('button', { name: /back to today/i });
-    await expect(backToday).toBeVisible({ timeout: 15_000 });
-    await backToday.click();
+    // `.422` keeps Back to Today as a quiet escape; leftover often docks Coach first.
+    await leaveVictoryTowardToday(page);
     await expect(page).toHaveURL(/\/log/);
-    // Full dashboard (Mission Score) needs readiness phase + live basic milestone evidence.
-    await seedReadinessPhase(page);
 
     /*
-     * Pin the hour, because otherwise this test asks what time it is (`.613`).
+     * `/log` is TodayDesk for every journey phase (`todayIsSummary.test.ts`).
+     * `HomeTodayDashboard` — and `today-score-band` — is a leftover shell on
+     * disk, not this route. Waiting for the band is the stale tour.
      *
-     * Today's block budget is `TODAY_MAX_TOP_LEVEL_BLOCKS = 6` and `dashboard`
-     * is priority 32 — behind `day-review` (15, mounts from 18:00) and
-     * `week-recap` (30, mounts when the week has activity **or it is the
-     * week-end**). Kaizen K1 (`.294`) chose that ordering deliberately so the
-     * Mission Score spills into "Today details" on the densest evening rather
-     * than crowding today's session. Spilled, the band renders inside a
-     * collapsed `<details>`: present in the DOM, `hidden` forever.
-     *
-     * So from 18:00 on a week-end this test was reading a real product decision
-     * as a failure. It went red on a Saturday evening having passed all day, in
-     * exactly the shape `.211` hit and `helpers/fixedClock` documents — and the
-     * three commits open at the time were blamed first, because a wall-clock
-     * dependency looks like whatever landed most recently.
-     *
-     * Pinned to a morning hour the block set is uncontended and the band is
-     * above the fold, which is the state this test is named for. The evening
-     * layout is `first-90.spec.ts`'s job — it pins 9:00 *and* 19:00 and asserts
-     * the budget at both.
+     * What a finish actually writes on the desk: History appears, first rooms
+     * tick Log a set (1 of 3), Start stays one. Pin the hour so evening
+     * re-entry cannot crowd the object.
      */
     await page.clock.setFixedTime(fixedTimeAt(UNCONTENDED_HOUR));
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
-    /*
-     * Keyed to the visible band, not to the words.
-     *
-     * This asserted `getByText(/mission score|win score|cross-pillar/i).first()`
-     * and was red from `.596` onward — recorded there as "cause known, repair not
-     * landed". The cause is the `.first()`: `TodayHealthSection` renders the
-     * literal "Cross-pillar Mission Score" inside a `TodaySection`, which is a
-     * native `<details>` with `defaultOpen={false}`. A collapsed `<details>`
-     * keeps its content in the DOM, so that node resolves, sorts first, and
-     * reports `hidden` forever — while the real score band a few hundred pixels
-     * above it was visible the whole time. The product was never broken.
-     *
-     * `.596`'s repair attempt probed `getByRole('group', { name: /today
-     * details/i })`, which found nothing: a `<details>` *is* exposed as a group,
-     * but it is named by its `<summary>` — here "Health scores" — so the name
-     * never existed. Hence a `data-testid` on the band itself, per this file's
-     * own precedent of keying off test ids wherever the visible word is
-     * something a kaizen pass is expected to change.
-     */
-    const band = page.getByTestId('today-score-band');
-    await expect(band).toBeVisible({ timeout: 20_000 });
+    const desk = todayDesk(page);
+    await expect(desk).toBeVisible({ timeout: 15_000 });
+    await expect(todayStart(page)).toHaveCount(1);
 
-    // And the thing the test is actually named for: a real number, not an
-    // em-dash placeholder, after a session has been logged.
-    await expect(band).toHaveText(/\d/, { timeout: 20_000 });
+    const rooms = page.getByTestId('today-first-steps');
+    await expect(rooms).toBeVisible();
+    await expect(rooms.getByText(/1\s+of\s+3/i).first()).toBeVisible();
+
+    await expect(desk.getByRole('heading', { name: /^history$/i })).toBeVisible();
+    await expect(desk.locator('a[href="/history"]').first()).toBeVisible();
   });
 
   test('sign-in sync prompt visible on Fuel', async ({ page }) => {
@@ -200,13 +171,23 @@ test.describe('Phase H hero flows @gate', () => {
 
   test('language switch on account', async ({ page }) => {
     // ProfilePreferencesCard carries the switcher, and it moved to /account in `.606`.
-    await page.goto('/account', { waitUntil: 'networkidle' });
-    const langSelect = page.getByLabel(/change language/i);
-    await expect(langSelect).toBeVisible({ timeout: 15_000 });
-    await langSelect.selectOption('es');
-    await page.waitForTimeout(500);
-    const stored = await page.evaluate(() => localStorage.getItem('i18nextLng'));
-    expect(stored?.startsWith('es')).toBeTruthy();
+    await page.goto('/account', { waitUntil: 'load' });
+    // Scope to the Language card. The select is in the SSR HTML; selectOption
+    // before hydration writes the DOM and React resets it to `en`. Retry until
+    // the client onChange persists.
+    const card = page.getByTestId('account-language-card');
+    await expect(card).toBeVisible({ timeout: 15_000 });
+    const langSelect = card.getByLabel(/change language/i);
+    await expect(langSelect).toBeVisible();
+    await expect
+      .poll(
+        async () => {
+          await langSelect.selectOption('es');
+          return page.evaluate(() => localStorage.getItem('i18nextLng'));
+        },
+        { timeout: 15_000 }
+      )
+      .toMatch(/^es/);
   });
 });
 

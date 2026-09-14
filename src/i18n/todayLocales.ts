@@ -22,6 +22,10 @@ type TodayStrings = {
   todaySavedRoutineKicker: string;
   todaySavedRoutineTitle: string;
   todaySavedRoutineDesc: string;
+  /** Freestyle Just Go hero — TodayDesk / justGoHeroMeta (i18n:coverage `.1070`). */
+  justGoTitle: string;
+  justGoDesc: string;
+  justGoEyebrow: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -337,6 +341,10 @@ const en: TodayStrings = {
   todaySavedRoutineKicker: 'Your routine',
   todaySavedRoutineTitle: '{{name}}',
   todaySavedRoutineDesc: 'The routine you saved — last loads stay on the set row.',
+  justGoTitle: '{{focus}} — Just Go',
+  justGoDesc:
+    "One tap builds today's {{focus}} session from how fresh you are and what you lifted last time.",
+  justGoEyebrow: 'Ready to train',
   todayRepeatLastKicker: 'Train',
   todayRepeatLastTitle: '{{name}}',
   todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
@@ -711,6 +719,10 @@ const es: TodayStrings = {
   todaySavedRoutineKicker: 'Tu rutina',
   todaySavedRoutineTitle: '{{name}}',
   todaySavedRoutineDesc: 'La rutina que guardaste — las cargas quedan en la fila.',
+  justGoTitle: '{{focus}} — Entrenar ya',
+  justGoDesc:
+    'Un toque arma la sesión de {{focus}} de hoy según lo fresco que estás y lo que levantaste la última vez.',
+  justGoEyebrow: 'Listo para entrenar',
   todaySectionProgress: 'Progreso y herramientas',
   todaySectionProgressDesc: 'Preparación, estadísticas e historial',
   todayQuickOptions: 'Opciones rápidas',
@@ -865,6 +877,9 @@ const es: TodayStrings = {
 
 const zh: TodayStrings = {
   todayCoachChipAction: '打开',
+  justGoTitle: en.justGoTitle,
+  justGoDesc: en.justGoDesc,
+  justGoEyebrow: en.justGoEyebrow,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1136,6 +1151,9 @@ const zh: TodayStrings = {
 
 const id: TodayStrings = {
   todayCoachChipAction: 'Buka',
+  justGoTitle: en.justGoTitle,
+  justGoDesc: en.justGoDesc,
+  justGoEyebrow: en.justGoEyebrow,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1422,6 +1440,9 @@ const id: TodayStrings = {
 
 const th: TodayStrings = {
   todayCoachChipAction: 'เปิด',
+  justGoTitle: en.justGoTitle,
+  justGoDesc: en.justGoDesc,
+  justGoEyebrow: en.justGoEyebrow,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1698,6 +1719,9 @@ const th: TodayStrings = {
 
 const ar: TodayStrings = {
   todayCoachChipAction: 'افتح',
+  justGoTitle: en.justGoTitle,
+  justGoDesc: en.justGoDesc,
+  justGoEyebrow: en.justGoEyebrow,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1993,6 +2017,10 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todaySavedRoutineKicker: 'A tua rotina',
     todaySavedRoutineTitle: '{{name}}',
     todaySavedRoutineDesc: 'A rotina que guardaste — as cargas ficam na linha.',
+    justGoTitle: '{{focus}} — Treinar já',
+    justGoDesc:
+      'Um toque monta a sessão de {{focus}} de hoje conforme o quão fresco estás e o que levantaste da última vez.',
+    justGoEyebrow: 'Pronto para treinar',
     todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',
