@@ -143,6 +143,9 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/loopQueue': 'surface',
   'src/lib/mind': 'surface',
   'src/lib/minis': 'surface',
+  // Named host doors (`.1072`). Types + in-memory doubles; nothing renders.
+  // `surface` matches `minis` — the stricter of the two values this map allows.
+  'src/lib/mission-os': 'surface',
   'src/lib/move': 'surface',
   'src/lib/nutrition': 'surface',
   'src/lib/places': 'surface',

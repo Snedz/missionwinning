@@ -17,6 +17,9 @@ export type CapResult<T> = CapabilityResult<T>;
 
 export type { BillingSnapshot, IdentitySnapshot, ModuleManifest };
 
+/** Closed door set. A fifth name is a new PR, not a silent extra method. */
+export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
+
 export interface IdentityCapability {
   read(): CapResult<IdentitySnapshot>;
 }

@@ -8,13 +8,14 @@ import {
   UTILITY_CLEARSHOT_MANIFEST,
 } from '../../../packages/mw-core/src/module';
 import { createBillingHold, createMiniHost } from './host';
-import type {
-  BillingCapability,
-  CapResult,
-  IdentityCapability,
-  MiniHost,
-  PhotosCapability,
-  StorageCapability,
+import {
+  MISSION_OS_CAPABILITIES,
+  type BillingCapability,
+  type CapResult,
+  type IdentityCapability,
+  type MiniHost,
+  type PhotosCapability,
+  type StorageCapability,
 } from './types';
 
 const here = import.meta.dirname;
@@ -24,6 +25,12 @@ function sourceOf(file: string): string {
 }
 
 test('CapResult and the four doors are the host contract', () => {
+  assert.deepEqual([...MISSION_OS_CAPABILITIES], [
+    'identity',
+    'billing',
+    'photos',
+    'storage',
+  ]);
   const host: MiniHost = createMiniHost();
   const mounted = host.mount(UTILITY_CLEARSHOT_MANIFEST);
   assert.equal(mounted.ok, true);
