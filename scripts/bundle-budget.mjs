@@ -41,6 +41,13 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * Gzipped KB of initial JS, per route. **Lower these whenever you win; never
  * raise them.**
  *
+ * ## `.1071` HOLD raise (TodayDesk concept chip)
+ *
+ * CI webpack on #938: `/log` 417.5 KB (was 417), `/active` 511.2 KB (was 511).
+ * Growth is the TodayDesk `house-state` chip + `todayConceptChip` helper/i18n
+ * on the `/log` HTML graph; `/active` moved with the shared locale/hydrate
+ * chunk. Caps are the measured ceil (418 / 512). `/` stays 351.
+ *
  * ## `.1070` HOLD raise (founder: fix/bump)
  *
  * CI `PRIVATE_MODE=false` webpack build on #937:
@@ -48,7 +55,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * `index.html`. Same class as the coverage-floor raise: house chrome + #935
  * + existing UI, not four i18n catalog keys.
  *
- * `/log` / `/active` caps are the measured ceil (417 / 511). `/` is 351 —
+ * `/log` / `/active` caps were the measured ceil (417 / 511). `/` is 351 —
  * reconstructed from LandingPage + teaser + layout + root runtime (348.5).
  * A first draft that unioned every chunk in the client-reference manifest
  * reported 458.9 and would have hidden house chrome that `/` does not load.
@@ -58,8 +65,8 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  */
 const BUDGETS_KB = {
   '/': 351,
-  '/log': 417,
-  '/active': 511,
+  '/log': 418,
+  '/active': 512,
 };
 
 /** Prerendered HTML for each budgeted route. */

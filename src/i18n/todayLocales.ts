@@ -26,6 +26,8 @@ type TodayStrings = {
   justGoTitle: string;
   justGoDesc: string;
   justGoEyebrow: string;
+  /** TodayDesk concept chip — Coach plan next concept (.1071). */
+  todayConceptChip: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -345,6 +347,7 @@ const en: TodayStrings = {
   justGoDesc:
     "One tap builds today's {{focus}} session from how fresh you are and what you lifted last time.",
   justGoEyebrow: 'Ready to train',
+  todayConceptChip: 'Today: {{concept}} · from last log',
   todayRepeatLastKicker: 'Train',
   todayRepeatLastTitle: '{{name}}',
   todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
@@ -723,6 +726,7 @@ const es: TodayStrings = {
   justGoDesc:
     'Un toque arma la sesión de {{focus}} de hoy según lo fresco que estás y lo que levantaste la última vez.',
   justGoEyebrow: 'Listo para entrenar',
+  todayConceptChip: 'Hoy: {{concept}} · del último registro',
   todaySectionProgress: 'Progreso y herramientas',
   todaySectionProgressDesc: 'Preparación, estadísticas e historial',
   todayQuickOptions: 'Opciones rápidas',
@@ -880,6 +884,7 @@ const zh: TodayStrings = {
   justGoTitle: en.justGoTitle,
   justGoDesc: en.justGoDesc,
   justGoEyebrow: en.justGoEyebrow,
+  todayConceptChip: en.todayConceptChip,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1154,6 +1159,7 @@ const id: TodayStrings = {
   justGoTitle: en.justGoTitle,
   justGoDesc: en.justGoDesc,
   justGoEyebrow: en.justGoEyebrow,
+  todayConceptChip: en.todayConceptChip,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1443,6 +1449,7 @@ const th: TodayStrings = {
   justGoTitle: en.justGoTitle,
   justGoDesc: en.justGoDesc,
   justGoEyebrow: en.justGoEyebrow,
+  todayConceptChip: en.todayConceptChip,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1722,6 +1729,7 @@ const ar: TodayStrings = {
   justGoTitle: en.justGoTitle,
   justGoDesc: en.justGoDesc,
   justGoEyebrow: en.justGoEyebrow,
+  todayConceptChip: en.todayConceptChip,
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -2021,6 +2029,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     justGoDesc:
       'Um toque monta a sessão de {{focus}} de hoje conforme o quão fresco estás e o que levantaste da última vez.',
     justGoEyebrow: 'Pronto para treinar',
+    todayConceptChip: 'Hoje: {{concept}} · do último registo',
     todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',

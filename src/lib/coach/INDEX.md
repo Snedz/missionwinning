@@ -14,6 +14,7 @@
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`. Only product caller: `src/hooks/useCoachPlan.ts` (`weekWriter.test.ts`, docs/IA_SKELETON.md WEEK loop).
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8a0. `coachConcept.ts` — discrete `CoachConceptId` + Victory concept-first cite (.1067)
+8a0a. `src/lib/today/todayConceptChip.ts` — TodayDesk glance chip from `nextConceptId` / next open session (`.1071`)
 8a0b. `victoryNextEnvCite.ts` — Finish → adapt → Victory muted cite when next session was written from this log (`.1066`)
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI

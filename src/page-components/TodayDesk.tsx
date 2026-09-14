@@ -44,6 +44,7 @@ import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { HouseFirstRoomsCard } from '@/components/house/HouseFirstRoomsCard';
+import { todayConceptChip } from '@/lib/today/todayConceptChip';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -163,6 +164,8 @@ export function TodayDesk() {
       ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
       : t('justGoEyebrow', { defaultValue: 'Ready to train' });
   const startLabel = t('todayStartCta', { defaultValue: 'Start' });
+  const conceptChip =
+    hasActiveWorkout || !snap ? null : todayConceptChip(plan);
   const todayLabel = formatLocalDateKey(localDateKey(), i18n.language, {
     weekday: 'long',
     month: 'short',
@@ -220,6 +223,21 @@ export function TodayDesk() {
           {sessionTitle}
         </h2>
         <p className="house-lede">{sessionLede}</p>
+        {conceptChip ? (
+          <p className="house-row" style={{ marginTop: 12 }}>
+            <span
+              className="house-state"
+              data-testid="today-concept-chip"
+              data-concept-id={conceptChip.conceptId}
+              style={{ cursor: 'default' }}
+            >
+              {t('todayConceptChip', {
+                defaultValue: 'Today: {{concept}} · from last log',
+                concept: conceptChip.label,
+              })}
+            </span>
+          </p>
+        ) : null}
         <div className="house-row" style={{ marginTop: 18 }}>
           <Link
             href="/active"
