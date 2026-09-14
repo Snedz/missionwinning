@@ -37,6 +37,8 @@ function plan(sessions: PlanSession[], revision = 1): CoachPlan {
     revision,
     generatedAt: '2026-07-06T00:00:00.000Z',
     equipmentProfile: 'full-gym',
+    daysPerWeek: sessions.length || 3,
+    contextHash: 'victory-next-env-test',
     sessions,
   };
 }

@@ -142,6 +142,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   // and `graph` above — it is the stricter of the two values this map allows.
   'src/lib/loopQueue': 'surface',
   'src/lib/mind': 'surface',
+  'src/lib/minis': 'surface',
   'src/lib/move': 'surface',
   'src/lib/nutrition': 'surface',
   'src/lib/places': 'surface',

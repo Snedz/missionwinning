@@ -41,6 +41,10 @@ UI → ViewModel → MwRepository (façade)
 4. **Hilt** for DI; do not construct repositories in Composables.
 5. New UI goes through designsystem (`MwPrimaryButton`, `MwSetRow`, …).
 
+## Mission OS minis (deferred)
+
+ClearShot is reserved at `mission://minis/clearshot` with standalone Play id `com.missionwinning.clearshot` until a host exists. This tree does **not** include `:minis:clearshot` or a second application module yet — web + `mw-core` stubs first. When the library lands, `:app` (`com.missionwinning.app`) must not steal that applicationId; Wear stays `.wear`. Host later depends on the same library. No Activity chrome in this ship.
+
 ## Horizons
 
 | ID | Done when |

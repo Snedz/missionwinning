@@ -2,7 +2,35 @@ export type { ModuleScope, ModuleSurface, ModuleManifest } from './types';
 export {
   isModuleScope,
   parseModuleId,
+  miniSlugFromId,
+  parseMissionMiniEntry,
   assertModuleManifest,
+  MISSION_MINI_PREFIX,
   HEALTH_TRAIN_MANIFEST,
   SOCIAL_SERVER_MANIFEST,
+  HOST_SHELL_ID,
+  HOST_SHELL,
+  UTILITY_CLEARSHOT_MANIFEST,
 } from './types';
+export type {
+  CapabilityDenyCode,
+  CapabilityOk,
+  CapabilityDeny,
+  CapabilityResult,
+  IdentitySnapshot,
+  BillingSnapshot,
+} from './capabilities';
+export {
+  GUEST_IDENTITY,
+  MUTED_BILLING,
+  STORAGE_MAX_KEYS,
+  STORAGE_MAX_VALUE_BYTES,
+  assertCapability,
+  resolveRegisteredMini,
+  readIdentity,
+  readBilling,
+  readPhotos,
+  writePhotos,
+  readStorage,
+  writeStorage,
+} from './capabilities';

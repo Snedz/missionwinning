@@ -179,6 +179,12 @@ Details: [PROTECTION.md](PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md).
 
 ---
 
+## Mission OS minis
+
+Reserved utility manifests (`utility.clearshot` at `mission://minis/clearshot`) and a capability bus live in [`packages/mw-core/src/module/`](../packages/mw-core/src/module/). Web stubs are [`src/lib/minis/`](../src/lib/minis/). Host chrome and ClearShot product UI are later — no Today / Train / More door. Android `:minis:clearshot` is deferred ([apps/android/INDEX.md](../apps/android/INDEX.md)). Isolation: [`src/lib/minisIsolation.test.ts`](../src/lib/minisIsolation.test.ts).
+
+---
+
 ## Related
 
 - [API.md](API.md) — HTTP reference

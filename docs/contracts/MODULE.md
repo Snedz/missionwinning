@@ -1,8 +1,8 @@
 # Contract: Module host (mini-app)
 
 **Version:** 1.0.0  
-**Status:** Spec + types only — host runtime is post-PMF  
-**Horizon:** Types anytime; host implementation Horizon 3+ / platform era
+**Status:** Spec + types + capability-bus stubs — host chrome is later  
+**Horizon:** Types + stubs now; athlete-facing mini host Horizon 3+ / platform era
 
 ---
 
@@ -22,7 +22,7 @@ module:
     - economy.earn
   surfaces: [web, android]
   free_core: true
-  entry: /active
+  entry: /active            # host path, or mission://minis/{slug} for utility minis
 ```
 
 ## Registered module ids (current product)
@@ -40,8 +40,9 @@ module:
 | `id.account` | Settings | yes |
 | `economy.rewards` | Local XP / badges | yes |
 | `social.server` | Garage messenger (rooms + local presence) | **yes** (`free_core: true` — garage itself is not a paywall) |
+| `utility.clearshot` | First utility mini (ClearShot). Entry `mission://minis/clearshot`. Reserved — no product UI this ship. Scopes: `identity.read`, `photos.read`, `photos.write`, `storage.write`. Never `health.write`. | **yes** |
 | `game.*` | Future in-ecosystem games (Age of Empires 2 / Pokémon GO / Clash of Clans analogues) bind the same Mission ID — host runtime is post-PMF; **no UI in this horizon** | reserved |
-| `host.shell` | Future mini-host | n/a |
+| `host.shell` | Future mini-host. Runtime note: reserved id only (`HOST_SHELL` / `HOST_SHELL_ID`). Not a `ModuleManifest` — no fake `/` entry. | n/a |
 
 ## Scopes
 
@@ -55,12 +56,17 @@ module:
 | `economy.read` | Read own points/inventory |
 | `social.project` | Publish allowed projection fields only |
 | `social.channel.write` | Append a text message in a room the athlete already belongs to. Local always; signed-in persist to `social_messages` |
+| `photos.read` | Read on-device photos (stub: `photos_stub`) |
+| `photos.write` | Write on-device photos (stub: `photos_stub`) |
+| `storage.read` | Read mini-scoped key-value (capped) |
+| `storage.write` | Write mini-scoped key-value (capped) |
+| `billing.read` | Read Super Bundle recognition (`none` / `super`). Always muted. Never checkout. Never gates `logSet`. |
 
-Host (future) **denies** undeclared scopes. Today the web monolith is implicit full access inside first-party code; the manifest is the long-term contract.
+Host **denies** undeclared scopes (`scope_denied`). Unknown mini id → `unknown_mini`. `health.train` stays `free_core: true`; a mini cannot override that. Capability bus: `packages/mw-core/src/module/capabilities.ts`. Web stubs: `src/lib/minis/`.
 
 ## Types
 
-`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`).
+`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`, `assertCapability`, `UTILITY_CLEARSHOT_MANIFEST`, `HOST_SHELL`).
 
 ## Agent resume
 
