@@ -16,8 +16,9 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ## 2026-09-14 — Health mini stub mount (`.1073`)
 
-`utility.health` reserved at
-`mission://minis/health`. Manifest
+`health.mini` reserved at
+`mission://minis/mini` (L1 first
+mini, not `utility.*`). Manifest
 scopes are the closed set
 `identity.read` + `storage.read` +
 `storage.write`. `mountHealthMini`

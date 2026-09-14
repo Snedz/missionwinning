@@ -46,14 +46,17 @@ test('Health mini scopes are identity + storage only — extras fail closed', ()
   assert.equal(src.includes("'photos.write'"), false, 'Health stub must not declare photos.write');
   assert.equal(src.includes("'billing.read'"), false, 'Health stub must not declare billing.read');
   assert.equal(src.includes("'health.write'"), false, 'Health stub must not take health.write');
+  assert.equal(src.includes("'utility.health'"), false, 'Health is L1, not utility.*');
+  assert.equal(src.includes("'health.mini'"), true);
   assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false);
   assert.equal(src.includes('premiumServer'), false);
 });
 
-test('Health mini is a reserved stub, not the Train logger', () => {
-  assert.equal(HEALTH_MINI_MANIFEST.id, 'utility.health');
+test('Health mini is a reserved L1 stub, not utility and not the Train logger', () => {
+  assert.equal(HEALTH_MINI_MANIFEST.id, 'health.mini');
+  assert.equal(HEALTH_MINI_MANIFEST.id.startsWith('utility.'), false);
   assert.equal(HEALTH_MINI_MANIFEST.name, 'Health');
-  assert.equal(HEALTH_MINI_MANIFEST.entry, 'mission://minis/health');
+  assert.equal(HEALTH_MINI_MANIFEST.entry, 'mission://minis/mini');
   assert.equal(HEALTH_MINI_MANIFEST.freeCore, true);
   assert.notEqual(HEALTH_MINI_MANIFEST.id, HEALTH_TRAIN_MANIFEST.id);
   assert.notEqual(HEALTH_MINI_MANIFEST.entry, '/active');
@@ -67,7 +70,7 @@ test('mountHealthMini: identity + storage work; photos and billing deny', () => 
   assert.equal(mounted.ok, true);
   if (!mounted.ok) return;
 
-  assert.equal(mounted.value.manifest.id, 'utility.health');
+  assert.equal(mounted.value.manifest.id, 'health.mini');
   assert.deepEqual(mounted.value.identity.read(), {
     ok: true,
     value: { missionId: 3, callSign: '03' },

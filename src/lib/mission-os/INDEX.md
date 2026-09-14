@@ -4,7 +4,7 @@
 
 ## Agent resume card
 
-- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`utility.health`) mounts identity + storage only.
+- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`health.mini`, L1 first mini) mounts identity + storage only.
 - **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK, Health product UI.
 - **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`
 - **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/minisIsolation.test.ts`
