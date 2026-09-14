@@ -32,7 +32,7 @@
   "activeRepeatLastSession": "Repeat last session",
   "activeRepeatLastSessionDesc": "Same exercises and last loads. Log when ready.",
   "activeStartPreviewSession": "Start {{name}} — {{count}} exercises",
-  "activeLastPerformance": "الأخير: {{reps}} × {{weight}}",
+  "activeLastPerformance": "الأخير: {{line}}",
   "activeSetLogged": "تم تسجيل تعيين!",
   "activeSetLoggedDesc": "{{reps}} × {{weight}} — راحة {{rest}}.",
   "activeWorkoutComplete": "اكتمل التمرين!",

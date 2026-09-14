@@ -208,7 +208,7 @@ export function LibraryPage() {
                 key={row.id}
                 className="house-item house-library-hidden-row flex items-center justify-between gap-2"
               >
-                <span className="min-w-0 font-medium">{row.name}</span>
+                <span className="min-w-0 font-semibold">{row.name}</span>
                 <button
                   type="button"
                   className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target"

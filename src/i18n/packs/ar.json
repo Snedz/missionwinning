@@ -9,7 +9,7 @@
   "activeEmptyExercises": "أضف التمارين أعلاه لبدء تسجيل المجموعات.",
   "activeFinish": "ينهي",
   "activeFormGuide": "دليل النموذج",
-  "activeLastPerformance": "الأخير: {{reps}} × {{weight}}",
+  "activeLastPerformance": "الأخير: {{line}}",
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeNoWorkout": "لا تجريب نشط",
   "activeNoWorkoutDesc": "ابدأ تمرينًا سريعًا من اليوم أو قم بتشغيل روتين محفوظ من المنشئ.",
