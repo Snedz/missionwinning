@@ -1,6 +1,6 @@
 # Mission OS minis — architecture freeze (2026-09-14)
 
-**Status:** FROZEN. This file is the plan. Do not implement until a follow-up says BUILD.  
+**Status:** FROZEN contract. BUILD landed in product PR (`.1068`) — stubs + isolation only. No ClearShot UI.  
 **Class:** INTERNAL (canonical home: `mission-ops/memory/strategy/`). Paper architecture — not a product ship.  
 **One concern:** host shell + mini manifest + capability bus. ClearShot is the first *utility* mini **later**, via `mission://minis/clearshot`.  
 **Stamp:** **unstamped.** `.1067` is spent (CoachConcept, `#932`). Do not mint `.1068` on this plan PR. Reserve concept `.1068` Mission OS minis for the **implement** turn only if that turn touches `src|app|scripts|supabase`. Live www stays `2026.07-unified.697`. Paper craft tip stays `.1067`. `PRIVATE_MODE` stays on. `[skip vercel]`.  
@@ -264,3 +264,4 @@ Follow-up command: **BUILD** — implement §4 against §7. Do not start ClearSh
 | Date | Change |
 |------|--------|
 | 2026-09-14 | First freeze — host + manifest + bus; ClearShot reserved at `mission://minis/clearshot`; standalone Play id until host exists; refuse remake / Discord.com / Today feed / tip-promote / PRIVATE_MODE / traction / EIN. PLAN only. |
+| 2026-09-14 | BUILD — mw-core manifest + capability stubs; `src/lib/minis/` adapter; isolation discover test; Android deferred in INDEX; stamp `.1068`. No ClearShot product UI. |

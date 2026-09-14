@@ -20,6 +20,18 @@
 | `:core:network` | Mobile OpenAPI client |
 | `:benchmark` | Macrobenchmark Baseline Profile generator (F2.5) |
 
+## Deferred — Mission OS minis
+
+`:minis:clearshot` is **not** added in this ship. Reason: web + `mw-core` stubs land first (`packages/mw-core/src/module/`, `src/lib/minis/`). The Kotlin library and a standalone Play product stay later.
+
+| Reserved | Rule |
+|----------|------|
+| Library module | `:minis:clearshot` — later. Same module for standalone and host. |
+| Standalone `applicationId` | `com.missionwinning.clearshot` when that APK exists. **Not** `com.missionwinning.app` or `.wear`. |
+| `:app` | Does not merge ClearShot. No Activity chrome, no Gradle `include` this ship. |
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) and product [docs/contracts/MODULE.md](../../docs/contracts/MODULE.md).
+
 ## Wear OS (Phase 6)
 
 - Module: `:wear` (`com.missionwinning.app.wear`) — companion, not standalone
