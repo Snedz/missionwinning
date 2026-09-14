@@ -175,6 +175,8 @@ type ActiveWorkoutStrings = {
   victoryRecoveryDelta: string;
   victoryStreak: string;
   victoryNextLabel: string;
+  /** Finish → adapt cite when next session was written from this log (`.1066`). */
+  victoryNextEnvCite: string;
   victoryBackToday: string;
   victoryViewHistory: string;
   victoryShare: string;
@@ -519,6 +521,7 @@ const en: ActiveWorkoutStrings = {
   victoryRecoveryDelta: 'Recovery {{delta}}',
   victoryStreak: '{{count}}-day streak',
   victoryNextLabel: 'Next',
+  victoryNextEnvCite: 'Next session updated from this workout',
   victoryBackToday: 'Back to Today',
   victoryViewHistory: 'History',
   victoryShare: 'Share',
@@ -791,6 +794,7 @@ const es: ActiveWorkoutStrings = {
   activePrDesc: '{{reps}} × {{weight}} — récord personal en este ejercicio',
   activeVsLastSame: 'igual',
   activeVsLastAria: 'frente a la última {{delta}}',
+  victoryNextEnvCite: 'La siguiente sesión se actualizó con este entrenamiento',
 };
 
 
@@ -944,6 +948,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeReentryStart: 'Começar sessão mais fácil',
     activeReentryStartDesc:
       'Primeira sessão menor na volta — terminável, depois a semana se reconstrói.',
+    victoryNextEnvCite: 'A próxima sessão foi atualizada com este treino',
     hardSessionEyebrow: 'Antes de uma sessão dura',
     hardSessionTitle: 'Parar é permitido',
     hardSessionLead:
