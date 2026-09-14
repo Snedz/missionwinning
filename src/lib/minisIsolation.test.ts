@@ -53,7 +53,17 @@ const read = (file: string): string | null => {
 const exists = (p: string) => read(p) !== null;
 
 const MINIS_ADAPTER = ['src/lib/minis/'] as const;
-const ALLOW_PREFIX = 'src/lib/minis/';
+
+/** Adapter folder + the mw-core bus home (capabilities + barrel re-export). */
+const ALLOWED_BUS_HOME = [
+  'src/lib/minis/',
+  'packages/mw-core/src/module/capabilities.ts',
+  'packages/mw-core/src/module/index.ts',
+] as const;
+
+function isAllowedBusHome(file: string): boolean {
+  return ALLOWED_BUS_HOME.some((p) => (p.endsWith('/') ? file.startsWith(p) : file === p));
+}
 
 /**
  * Value names that *are* the bus. Types (`ModuleManifest`) and reserved
@@ -163,7 +173,7 @@ test('unreviewed importers of the minis adapter fail the scan', () => {
   ];
   const offenders: string[] = [];
   for (const file of product) {
-    if (file.startsWith(ALLOW_PREFIX)) continue;
+    if (isAllowedBusHome(file)) continue;
     const src = read(file);
     if (src === null) continue;
     if (importsMinisBus(file, src)) offenders.push(file);
@@ -171,7 +181,7 @@ test('unreviewed importers of the minis adapter fail the scan', () => {
   assert.deepEqual(
     offenders,
     [],
-    `minis adapter importers must live under ${ALLOW_PREFIX}:\n${offenders.join('\n')}`
+    `minis bus importers must live under ${ALLOWED_BUS_HOME.join(' | ')}:\n${offenders.join('\n')}`
   );
 });
 
