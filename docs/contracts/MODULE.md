@@ -41,7 +41,7 @@ module:
 | `economy.rewards` | Local XP / badges | yes |
 | `social.server` | Garage messenger (rooms + local presence) | **yes** (`free_core: true` — garage itself is not a paywall) |
 | `utility.clearshot` | First utility mini (ClearShot). Entry `mission://minis/clearshot`. Reserved — no product UI this ship. Scopes: `identity.read`, `photos.read`, `photos.write`, `storage.write`. Never `health.write`. | **yes** |
-| `health.mini` | L1 first Health mini stub. Entry `mission://minis/mini`. Reserved — no product UI this ship. Scopes: `identity.read`, `storage.read`, `storage.write`. Never photos, billing, or `health.write`. Not `utility.*` (ClearShot stays that family). Not `health.train`. Mount helper: `src/lib/mission-os/health.ts`. | **yes** |
+| `l1.health` | L1 first Health mini stub. Entry `mission://minis/health`. Reserved — no product UI this ship. Scopes: `identity.read`, `storage.read`, `storage.write`. Never photos, billing, or `health.write`. Not `utility.*` (ClearShot stays that family). Not `health.train`. Not `health.mini` (opaque last-segment `mini`). Mount helper: `src/lib/mission-os/health.ts`. | **yes** |
 | `game.*` | Future in-ecosystem games (Age of Empires 2 / Pokémon GO / Clash of Clans analogues) bind the same Mission ID — host runtime is post-PMF; **no UI in this horizon** | reserved |
 | `host.shell` | Future mini-host. Runtime note: reserved id only (`HOST_SHELL` / `HOST_SHELL_ID`). Not a `ModuleManifest` — no fake `/` entry. | n/a |
 

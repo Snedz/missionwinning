@@ -16,8 +16,11 @@ import {
 test('parseModuleId accepts reverse-dns ids', () => {
   assert.equal(parseModuleId('health.train'), 'health.train');
   assert.equal(parseModuleId('game.racing.gt'), 'game.racing.gt');
+  assert.equal(parseModuleId('l1.health'), 'l1.health');
   assert.equal(parseModuleId('Train'), null);
   assert.equal(parseModuleId('health'), null);
+  assert.equal(miniSlugFromId('l1.health'), 'health');
+  assert.equal(parseMissionMiniEntry('mission://minis/health'), 'health');
 });
 
 test('isModuleScope is closed', () => {
@@ -92,6 +95,17 @@ test('assertModuleManifest accepts matching mission://minis/{slug}', () => {
     assertModuleManifest({
       ...UTILITY_CLEARSHOT_MANIFEST,
       entry: 'mission://minis/clearshot',
+    })
+  );
+  assert.doesNotThrow(() =>
+    assertModuleManifest({
+      id: 'l1.health',
+      name: 'Health',
+      version: '0.1.0',
+      scopes: ['identity.read', 'storage.read', 'storage.write'],
+      surfaces: ['web'],
+      freeCore: true,
+      entry: 'mission://minis/health',
     })
   );
 });
