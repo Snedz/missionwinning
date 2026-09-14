@@ -726,6 +726,10 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(hoodRoute, /dynamic\(|RouteLoading|Suspense/);
   assert.match(hoodRoute, /import \{ UnderTheHoodPage \}/);
   assert.match(spec, /Under the Hood first paint is house leftover/);
+  const flagsRoute = stripComments(read('app/(app)/account/flags/page.tsx'));
+  assert.doesNotMatch(flagsRoute, /dynamic\(|RouteLoading|Suspense/);
+  assert.match(flagsRoute, /import \{ FlagsConsolePage \}/);
+  assert.match(spec, /Flags console first paint is house leftover/);
   const visibilityRoute = stripComments(read('app/(app)/account/transparency/page.tsx'));
   assert.doesNotMatch(visibilityRoute, /dynamic\(|RouteLoading|Suspense/);
   assert.match(visibilityRoute, /import \{ TransparencyPage \}/);

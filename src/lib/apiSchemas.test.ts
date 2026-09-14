@@ -690,6 +690,48 @@ const CASES: Record<string, Case> = {
       { input: { parentEmail: 'parent@example.com', childAge: 0, code: '123456' }, because: 'age 0' },
     ],
   },
+
+  flagsEvalQuerySchema: {
+    valid: [{ deviceId: 'mw-device-1' }],
+    invalid: [
+      {
+        input: { deviceId: 'x'.repeat(65) },
+        because: 'device ids are 64-char client tokens; longer junk must not bucket',
+      },
+    ],
+  },
+
+  flagsAdminPatchSchema: {
+    valid: [
+      {
+        key: 'example_staged',
+        percent: 10,
+        killed: false,
+        allowlist: ['founder@example.com'],
+      },
+    ],
+    invalid: [
+      {
+        input: { key: 'example_staged', percent: 101 },
+        because: 'percent is 0–100; 101 would turn the hash into a no-op always-on',
+      },
+      {
+        input: {
+          key: 'example_staged',
+          allowlist: Array.from({ length: 51 }, (_, i) => `a${i}@x.co`),
+        },
+        because: 'allowlist caps at 50 so the console cannot mint an unbounded cohort',
+      },
+    ],
+  },
+
+  flagsAdminPreviewQuerySchema: {
+    valid: [{ subject: UUID, key: 'example_staged' }],
+    invalid: [
+      { input: { subject: '', key: 'example_staged' }, because: 'an empty subject would preview nobody as if they were everyone' },
+      { input: { subject: UUID }, because: 'preview without a key would invent a flag' },
+    ],
+  },
 };
 
 /**

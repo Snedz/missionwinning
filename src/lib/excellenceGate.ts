@@ -120,6 +120,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/compliance': 'surface',
   'src/lib/cryptoCheckout': 'surface',
   'src/lib/design': 'surface',
+  'src/lib/featureFlags': 'surface',
   'src/lib/fuelCoach': 'surface',
   // Development tooling (graph memory of the dev history), not a user surface —
   // but `surface` is the strictest of the two values this map allows, and
@@ -172,6 +173,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/coach': 'wedge',
   'src/components/crypto': 'surface',
   'src/components/fitness-test': 'surface',
+  'src/components/flags': 'surface',
   'src/components/form': 'surface',
   'src/components/history': 'surface',
   'src/components/house': 'surface',

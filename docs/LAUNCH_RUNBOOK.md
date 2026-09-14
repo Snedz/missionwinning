@@ -90,6 +90,7 @@
    24. **`20260817_school_classes_revoke_anon_select.sql`** — drop the open school_classes SELECT policy and revoke leftover column grants so the published anon key cannot list PE class join codes. Lookups stay on the service-role path in schoolClassServer. Applied 2026-08-17.  
    25. **`20260817_leaderboard_snapshots_server_write.sql`** — drop client INSERT/UPDATE on `leaderboard_snapshots`. **Without it a signed-in PostgREST upsert can publish an arbitrary mission_score.** Writes go through `/api/leaderboard/snapshot` (service role) only. Applied 2026-08-17.  
    26. **`20260824_profiles_open_session.sql`** — `profiles.open_session` jsonb for the in-progress Train session (`.958`). **Without it desk → gym continuity degrades to this-device persist only** (handler ACKs; no backoff). History still syncs. Founder apply.  
+   27. **`20260914_feature_flags.sql`** — `feature_flag_overrides` + `feature_flag_events` for the founder flags console. **Without it the console 503s with flags_unavailable and cannot stage a percent, allowlist, or kill; evaluate then uses catalog defaults (all off).** Train stays ungated either way. Founder apply.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash

@@ -525,6 +525,38 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 
 ## Beta admin
 
+### `GET /api/flags`
+
+| | |
+|--|--|
+| Auth | `session` or optional `deviceId` query |
+| Rate | 60/min/IP |
+| Notes | Boolean map for **this** subject only. No allowlists, percents, or other users. Missing table uses catalog defaults. Never returns a Postgres `error.message`. |
+
+### `GET /api/flags/admin`
+
+| | |
+|--|--|
+| Auth | `session` + beta admin email allowlist, **or** `x-beta-admin-secret` |
+| Response | `{ ok, flags, events }`. Catalog is the key list. **403** not admin · **503** `flags_unavailable` if the table or service role is missing (never an empty catalog) |
+
+### `PATCH /api/flags/admin`
+
+| | |
+|--|--|
+| Auth | same as GET |
+| Rate | 30/min/IP + 8 KiB |
+| Body | Zod `flagsAdminPatchSchema` — `{ key, percent?, killed?, allowlist? }`. Cannot mint or delete keys. |
+| Notes | Hold-to-confirm is UI-only for kill and 100%. Unknown key **400** `unknown_key` before any write. Missing table **503** `flags_unavailable`. Never returns a Postgres `error.message`. |
+
+### `GET /api/flags/admin/preview?subject=&key=`
+
+| | |
+|--|--|
+| Auth | same as GET |
+| Rate | 30/min/IP |
+| Notes | `{ on, bucket, reason }` for one uuid or email against one catalog key. Unknown email still hashes for the percent bucket. |
+
 ### `GET /api/beta/metrics`
 
 | | |

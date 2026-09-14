@@ -54,6 +54,7 @@
 | **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
 | **Feedback triage** | `feedbackTriage.ts`, `feedbackNote.ts`, `feedbackServer.ts`, `feedbackSource.ts` | Classify tester notes; founder dest (craft/voice/park/done); no Grok |
+| **Feature flags** | [`featureFlags/`](featureFlags/INDEX.md) | Closed catalog + percent/allowlist/kill. Console `/account/flags`. Never imported by Train |
 | **Compliance** | `compliance/`, `privacyInstill.test.ts` | Vanta-lite catalog probes + Phase 3 instill — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
@@ -68,6 +69,7 @@
 | `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
+| `featureFlags/` | Closed catalog of staged-rollout flags — [featureFlags/INDEX.md](featureFlags/INDEX.md) |
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |

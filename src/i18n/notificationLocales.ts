@@ -241,6 +241,37 @@ const NOTIFICATION_EN: Record<string, string> = {
     'If you have bleeding, cramping, feel faint, have chest pain, or cannot talk: stop and get help. This app is not emergency services.',
   pregnancyFlagNotCare:
     'This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician.',
+
+  flagsConsoleEyebrow: 'Owner tools',
+  flagsConsoleTitle: 'Feature flags',
+  flagsConsoleSubtitle:
+    'Stage optional surfaces without a redeploy. Never gates Train. Raising percent only adds people; lowering can drop them.',
+  flagsConsoleBack: 'Back to Account',
+  flagsConsoleForbidden: 'This console is for the founder allowlist only.',
+  flagsConsoleUnavailable:
+    'Flag overrides are not available on this install. The catalog still defaults off. This is not an empty rollout.',
+  flagsConsoleOwnerDoor: 'Feature flags',
+  flagsConsoleOwnerCite:
+    'Stage optional surfaces. Closed catalog — cannot mint a flag that gates Train.',
+  flagsConsoleOpen: 'Open flags console',
+  flagsConsoleSavePercent: 'Save percent',
+  flagsConsoleHold100: 'Hold to confirm 100 percent',
+  flagsConsoleKill: 'Kill this flag',
+  flagsConsoleUnkill: 'Restore this flag',
+  flagsConsoleKilled: 'Killed',
+  flagsConsolePercent: '{{percent}}%',
+  flagsConsoleAllowlist: 'Allowlist',
+  flagsConsoleAllowlistCount: '{{count}} on the list',
+  flagsConsoleAllowlistAdd: 'Add email or id',
+  flagsConsoleAllowlistAddBtn: 'Add',
+  flagsConsoleAllowlistRemove: 'Remove',
+  flagsConsolePreview: 'Preview',
+  flagsConsolePreviewSubject: 'Email or user id',
+  flagsConsolePreviewOn: 'On',
+  flagsConsolePreviewOff: 'Off',
+  flagsConsoleAudit: 'Recent changes',
+  flagsConsoleAuditEmpty: 'No changes yet.',
+  flagsConsoleLoweringNote: 'Lowering percent can drop people who were already in.',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

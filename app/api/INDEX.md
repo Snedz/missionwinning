@@ -66,6 +66,14 @@ Legend:
 | `account/delete` | POST | session (id from getUser only) | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); client `userId` rejected; client `deviceId` ignored (P2-1); email-keyed cleanups then linked-device anonymous wipe then `auth.admin.deleteUser` cascade |
 | `account/mission-id` | GET | session | 30/min/user | Sequential integer claim. No client mint. **503** unconfigured · **502** opaque |
 
+### Feature flags
+
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `flags` | GET | session or optional `deviceId` | 60/min/IP | Zod `flagsEvalQuerySchema`. Boolean map for **this** subject only. No allowlists, percents, or other users. Missing table uses catalog defaults |
+| `flags/admin` | GET, PATCH | beta admin email **or** `x-beta-admin-secret` | PATCH 30/min/IP + 8 KiB | GET catalog + overrides + last events. PATCH Zod `flagsAdminPatchSchema`. Cannot mint or delete keys. Missing table **503** `flags_unavailable` (never an empty list). Never returns a Postgres `error.message` |
+| `flags/admin/preview` | GET | beta admin email **or** `x-beta-admin-secret` | 30/min/IP | Zod `flagsAdminPreviewQuerySchema` (`subject` + `key`). `{ on, bucket, reason }` for a uuid or email |
+
 ### Coach
 
 | Route | Methods | Auth | Rate | Body |

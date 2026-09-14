@@ -512,6 +512,30 @@ export const accountDeleteBodySchema = z
   })
   .strict();
 
+/** Athlete evaluate. Session wins; deviceId is this-device only. */
+export const flagsEvalQuerySchema = z.object({
+  deviceId: z.string().min(1).max(64).optional(),
+});
+
+/**
+ * Founder override. Catalog keys only — minting is a 400 in the handler,
+ * not a new row. Allowlist max 50; junk entries fail in parseAllowlist.
+ */
+export const flagsAdminPatchSchema = z
+  .object({
+    key: z.string().trim().min(1).max(80),
+    percent: z.number().int().min(0).max(100).optional(),
+    killed: z.boolean().optional(),
+    allowlist: z.array(z.string().max(320)).max(50).optional(),
+  })
+  .strict();
+
+/** Preview one uuid or email against one catalog key. */
+export const flagsAdminPreviewQuerySchema = z.object({
+  subject: z.string().trim().min(1).max(320),
+  key: z.string().trim().min(1).max(80),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {

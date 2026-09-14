@@ -30,6 +30,7 @@
 | `20260814_social_messages.sql` | Shared Garage rooms + presence + reports (signed-in; guests local) |
 | `20260814_feedback_reviews.sql` | Founder ratings on tester notes (`class` + dest). Applied 2026-08-14 |
 | `20260824_profiles_open_session.sql` | `profiles.open_session` jsonb — in-progress Train session (`.958`). Not applied |
+| `20260914_feature_flags.sql` | `feature_flag_overrides` + `feature_flag_events` — founder staged rollouts (`.1067`). Not applied |
 
 ## Key tables
 
@@ -47,6 +48,8 @@
 | `social_presence` | Signed-in self presence |
 | `social_message_reports` | Reports on another athlete's Garage message |
 | `feedback_reviews` | Founder class/dest on a lead. Cascade-delete with the lead. No athlete `user_id` |
+| `feature_flag_overrides` | Founder percent/allowlist/kill per catalog key. Service role only. |
+| `feature_flag_events` | Append-only audit of flag changes. Service role only. |
 
 ## Related (not here)
 

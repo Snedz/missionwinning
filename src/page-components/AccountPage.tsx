@@ -506,6 +506,20 @@ export function AccountPage({ initialAuthError }: AccountPageProps = {}) {
           <div className="space-y-6 border-t-2 border-border p-4">
             <FounderStatusBoard />
             <BetaAdminPanel enabled={!!email} />
+            <div className="house-card space-y-2">
+              <p className="font-semibold">
+                {t('flagsConsoleOwnerDoor', { defaultValue: 'Feature flags' })}
+              </p>
+              <p className="house-kicker">
+                {t('flagsConsoleOwnerCite', {
+                  defaultValue:
+                    'Stage optional surfaces. Closed catalog — cannot mint a flag that gates Train.',
+                })}
+              </p>
+              <Link href="/account/flags" className="house-btn house-btn-ghost" data-testid="account-flags-door">
+                {t('flagsConsoleOpen', { defaultValue: 'Open flags console' })}
+              </Link>
+            </div>
             <ProfileOwnerTools />
           </div>
         </details>
