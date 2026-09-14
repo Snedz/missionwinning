@@ -43,12 +43,15 @@ TodayDesk craft.
 HOLD follow-up 3: bundle
 budget. `/` is cookie-dynamic
 (no `index.html`) — measure
-via landing client manifest +
-root runtime. Caps to CI
-measured ceil: `/` 459, `/log`
-417, `/active` 511. House
-chrome + #935, not i18n keys.
-No size pass.
+LandingPage + teaser + layout
++ page chunk, not every chunk
+in the client-reference
+manifest (that was 458.9 and
+counted House on `/`). Caps:
+`/` 351, `/log` 417,
+`/active` 511. House chrome +
+#935, not i18n keys. No size
+pass.
 
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.

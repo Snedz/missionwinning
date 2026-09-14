@@ -16,11 +16,12 @@
  * `/` is the exception: `hasPrivateAccessCookieOnServer` always reads
  * `cookies()`, so Next never emits `.next/server/app/index.html`. Measuring
  * that path as "missing" is a vacuous red — the landing still ships JS. When
- * the HTML is absent we reconstruct the initial list from
- * `page_client-reference-manifest.js` plus `build-manifest.json` root runtime
- * (polyfills + `rootMainFiles`). That set is a little wider than a live
- * document (async leftovers stay in the manifest). `/log` and `/active` stay
- * HTML-only.
+ * the HTML is absent we reconstruct the initial list from the `/` surface
+ * modules in `page_client-reference-manifest.js` plus `build-manifest.json`
+ * root runtime (polyfills + `rootMainFiles`) and the real `app/page-*.js`
+ * chunk. Taking *every* `static/chunks` path in that manifest would count
+ * HouseShell / Today / Train on `/` — those are not what the browser fetches
+ * on the landing. `/log` and `/active` stay HTML-only.
  *
  * Ratcheted the `.202` way: the caps only ever move **down**. Lowering one is a
  * one-line change; raising it means editing this file with the reason visible in
@@ -42,17 +43,21 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  *
  * ## `.1070` HOLD raise (founder: fix/bump)
  *
- * CI `PRIVATE_MODE=false` webpack build on #937 tip `96e9c2b7`:
+ * CI `PRIVATE_MODE=false` webpack build on #937:
  * `/log` 416.7 KB (was 280), `/active` 510.2 KB (was 435), `/` had no
  * `index.html`. Same class as the coverage-floor raise: house chrome + #935
- * + existing UI, not four i18n catalog keys. Caps are the measured ceil.
- * `/` uses the dynamic-home reconstruction (see below), measured 458.9 KB.
+ * + existing UI, not four i18n catalog keys.
+ *
+ * `/log` / `/active` caps are the measured ceil (417 / 511). `/` is 351 —
+ * reconstructed from LandingPage + teaser + layout + root runtime (348.5).
+ * A first draft that unioned every chunk in the client-reference manifest
+ * reported 458.9 and would have hidden house chrome that `/` does not load.
  *
  * Previous 2026-07-30 numbers (262 / 280 / 435) assumed prerendered landing
  * HTML and a slimmer house. They had been red on master (`docs/CI_LOCAL.md`).
  */
 const BUDGETS_KB = {
-  '/': 459,
+  '/': 351,
   '/log': 417,
   '/active': 511,
 };
@@ -64,24 +69,76 @@ const ROUTE_HTML = {
   '/active': '.next/server/app/active.html',
 };
 
-const HOME_MANIFEST = '.next/server/app/page_client-reference-manifest.js';
-const BUILD_MANIFEST = '.next/build-manifest.json';
+/**
+ * `/` reads `cookies()` on every request (`hasPrivateAccessCookieOnServer`) so
+ * the door stays dynamic. Next.js therefore emits `ƒ /` and **does not write
+ * `index.html`**. That is not a missing page — `app/page.tsx` still builds
+ * LandingPage / GateTeaser / the `/private` redirect. Measuring a blank file
+ * would be the vacuous-green defect this script exists to refuse.
+ *
+ * Fallback uses the same chunks the browser would fetch: root runtime + the
+ * `/` surface modules in `page_client-reference-manifest.js`. Prefer HTML
+ * when it exists (a later force-static would restore the original path).
+ */
+const DYNAMIC_ROOT_MANIFEST = '.next/server/app/page_client-reference-manifest.js';
+const DYNAMIC_ROOT_PAGE_DIR = '.next/static/chunks/app';
+const DYNAMIC_ROOT_MODULES = [
+  'LandingPage.tsx',
+  'PrivateTeaserClient.tsx',
+  'i18n-pwa-provider.tsx',
+  '/error.tsx',
+  'global-error.tsx',
+  'app-dir/link.js',
+];
 
 function initialChunks(htmlPath) {
   const html = fs.readFileSync(path.join(root, htmlPath), 'utf8');
   return [...new Set([...html.matchAll(/\/_next\/(static\/chunks\/[^"'\\\s]+?\.js)/g)].map((m) => m[1]))];
 }
 
-/** Initial JS for cookie-dynamic `/` when Next emits no index.html. */
-function dynamicHomeChunks() {
-  const manAbs = path.join(root, HOME_MANIFEST);
-  const bmAbs = path.join(root, BUILD_MANIFEST);
-  if (!fs.existsSync(manAbs) || !fs.existsSync(bmAbs)) return null;
-  const man = fs.readFileSync(manAbs, 'utf8');
-  const fromMan = [...man.matchAll(/static\/chunks\/[^"'\\\s]+?\.js/g)].map((m) => m[0]);
-  const bm = JSON.parse(fs.readFileSync(bmAbs, 'utf8'));
-  const rootFiles = [...(bm.polyfillFiles ?? []), ...(bm.rootMainFiles ?? [])];
-  return [...new Set([...fromMan, ...rootFiles])];
+function pageChunkFiles() {
+  const abs = path.join(root, DYNAMIC_ROOT_PAGE_DIR);
+  if (!fs.existsSync(abs)) return [];
+  return fs
+    .readdirSync(abs)
+    .filter((name) => /^page-[^/]+\.js$/.test(name))
+    .map((name) => `static/chunks/app/${name}`);
+}
+
+function chunksNamedInManifest(manifestSrc, suffix) {
+  const escaped = suffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`${escaped}":\\{"id":\\d+,"name":"[^"]+","chunks":\\[(.*?)\\]`);
+  const m = manifestSrc.match(re);
+  if (!m) return [];
+  return [...m[1].matchAll(/static\/chunks\/[^"\\]+\.js/g)].map((x) => x[0]);
+}
+
+/**
+ * Reconstruct `/` initial JS when `index.html` is absent.
+ * Returns `{ chunks, how }` or `null` if the route was not built.
+ */
+function dynamicRootChunks() {
+  const pageChunks = pageChunkFiles();
+  const manifestAbs = path.join(root, DYNAMIC_ROOT_MANIFEST);
+  const buildAbs = path.join(root, '.next/build-manifest.json');
+  if (pageChunks.length === 0 || !fs.existsSync(manifestAbs) || !fs.existsSync(buildAbs)) {
+    return null;
+  }
+  const manifestSrc = fs.readFileSync(manifestAbs, 'utf8');
+  const build = JSON.parse(fs.readFileSync(buildAbs, 'utf8'));
+  const selected = new Set([
+    ...(build.polyfillFiles ?? []),
+    ...(build.rootMainFiles ?? []),
+    ...pageChunks,
+  ]);
+  let surfaceHits = 0;
+  for (const suffix of DYNAMIC_ROOT_MODULES) {
+    const found = chunksNamedInManifest(manifestSrc, suffix);
+    if (found.length > 0) surfaceHits += 1;
+    for (const rel of found) selected.add(rel);
+  }
+  if (surfaceHits === 0) return null;
+  return { chunks: [...selected], how: 'dynamic-root (cookies() — no index.html)' };
 }
 
 function gzippedKb(chunks) {
@@ -118,25 +175,24 @@ console.log('bundle budget — gzipped initial JS per route\n');
 
 for (const [route, budget] of Object.entries(BUDGETS_KB)) {
   const htmlPath = ROUTE_HTML[route];
-  const htmlAbs = path.join(root, htmlPath);
   let chunks;
-  let source = htmlPath;
-
-  if (fs.existsSync(htmlAbs)) {
+  let how = htmlPath;
+  if (fs.existsSync(path.join(root, htmlPath))) {
     chunks = initialChunks(htmlPath);
   } else if (route === '/') {
-    chunks = dynamicHomeChunks();
-    source = `${HOME_MANIFEST} + ${BUILD_MANIFEST}`;
-    if (!chunks) {
+    const fallback = dynamicRootChunks();
+    if (!fallback) {
       console.error(
-        `✗ ${route}: ${htmlPath} is missing and the dynamic-home manifests are missing. ` +
-          `Run \`npm run build\` first — a budget that silently passes when it cannot ` +
-          `measure is the vacuous-green defect .200 was about. \`/\` reads cookies() ` +
-          `(hasPrivateAccessCookieOnServer) so Next never prerenders index.html.`
+        `✗ ${route}: ${htmlPath} is missing and the dynamic-root fallback cannot measure. ` +
+          `Need ${DYNAMIC_ROOT_MANIFEST} plus ${DYNAMIC_ROOT_PAGE_DIR}/page-*.js — ` +
+          `a budget that silently passes when it cannot measure is the vacuous-green defect .200 was about. ` +
+          `Root cause: hasPrivateAccessCookieOnServer() always reads cookies(), so Next emits ƒ / and no index.html.`
       );
       failed = true;
       continue;
     }
+    chunks = fallback.chunks;
+    how = fallback.how;
   } else {
     console.error(
       `✗ ${route}: ${htmlPath} is missing. Run \`npm run build\` first — a budget that ` +
@@ -148,8 +204,10 @@ for (const [route, budget] of Object.entries(BUDGETS_KB)) {
 
   const kb = gzippedKb(chunks);
   const verdict = kb > budget ? '✗' : '✓';
-  console.log(`  ${verdict} ${route.padEnd(8)} ${kb.toFixed(1).padStart(7)} KB  (budget ${budget} KB, ${chunks.length} chunks)`);
-  if (source !== htmlPath) console.log(`      source ${source}`);
+  console.log(
+    `  ${verdict} ${route.padEnd(8)} ${kb.toFixed(1).padStart(7)} KB  (budget ${budget} KB, ${chunks.length} chunks)` +
+      (how !== htmlPath ? `\n      via ${how}` : '')
+  );
 
   if (kb > budget) {
     failed = true;

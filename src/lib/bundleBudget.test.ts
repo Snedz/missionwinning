@@ -43,10 +43,12 @@ const SCRIPT = 'scripts/bundle-budget.mjs';
  * changelog of the debt.
  */
 const HIGH_WATER_KB: Record<string, number> = {
-  // `.1070` HOLD raise — CI-measured ceil on #937 (founder: fix/bump).
-  // `/` is cookie-dynamic (no index.html); reconstructed from the landing
-  // client manifest + root runtime (458.9 → 459). `/log` / `/active` stay HTML.
-  '/': 459,
+  // `.1070` HOLD raise — CI-measured on #937 (founder: fix/bump).
+  // `/` is cookie-dynamic (no index.html). Reconstruct LandingPage + teaser +
+  // layout + root runtime (348.5 → 351). Do not union every chunk in the
+  // client-reference manifest — that counted House/Today/Train on `/` (458.9).
+  // `/log` 416.7 → 417 · `/active` 510.2 → 511 stay HTML.
+  '/': 351,
   '/log': 417,
   '/active': 511,
 };
@@ -80,26 +82,37 @@ test('the byte caps only ever move down', () => {
   }
 });
 
-test('cookie-dynamic / still has a measurement path', () => {
-  const src = read(SCRIPT);
-  assert.match(
-    src,
-    /page_client-reference-manifest/,
-    '`/` reads cookies() so index.html never exists — deleting the manifest fallback makes the budget vacuous-red'
-  );
-  assert.match(
-    src,
-    /hasPrivateAccessCookieOnServer/,
-    'the fallback has to name the function that made `/` dynamic, or the next edit will treat missing HTML as "run build"'
-  );
-});
-
 test('the bundle budget runs in the gate', () => {
   assert.match(
     read('scripts/gate.mjs'),
     /\[\s*'run',\s*'bundle-budget'\s*\]/,
     'the byte budget must run in the gate — it is the only check that can see a 306 KB regression, ' +
       'and 306 KB shipped through a green gate because it did not exist'
+  );
+});
+
+test('cookie-dynamic / still measures the landing, not the whole app graph', () => {
+  const src = read(SCRIPT);
+  assert.match(
+    src,
+    /hasPrivateAccessCookieOnServer/,
+    'the missing-index.html path must name the cookies() reader — otherwise the next author ' +
+      'will invent a blank page to make the file exist'
+  );
+  assert.match(
+    src,
+    /page_client-reference-manifest\.js/,
+    'without the client-reference fallback, `/` fails the budget on every Next 16 build ' +
+      'because the door is ƒ Dynamic and writes no index.html'
+  );
+  assert.ok(
+    src.includes('/^page-[^/]+\\.js$/'),
+    'the fallback must require a real app/page-*.js chunk — a manifest with no page file is a missing route'
+  );
+  assert.match(
+    src,
+    /LandingPage\.tsx/,
+    'the fallback must pin LandingPage — unioning every chunk in the manifest counted House on `/`'
   );
 });
 
