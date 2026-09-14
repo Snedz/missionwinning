@@ -1,4 +1,4 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1070` coverage floor 438→493 + bundle `/` 351 · `/log` 417 · `/active` 511; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1070` coverage floor 438→493 + bundle `/` 351 · `/log` 417 · `/active` 511 + a11y unique `/server` title; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
 export const APP_BUILD_LABEL = "2026.07-unified.1070";
 
 /**

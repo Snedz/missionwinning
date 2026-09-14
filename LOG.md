@@ -53,6 +53,15 @@ counted House on `/`). Caps:
 #935, not i18n keys. No size
 pass.
 
+HOLD follow-up 4: a11y
+`GATED_ROUTES` listed
+`/server` twice, so Playwright
+minted two `axe … /server @a11y`
+titles and Hero path E2E
+failed at collection. Dropped
+the tail duplicate. Same scan
+once. List uniqueness throws.
+
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.
 PRIVATE_MODE stays.

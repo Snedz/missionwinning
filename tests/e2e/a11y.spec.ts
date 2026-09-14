@@ -61,8 +61,16 @@ const GATED_ROUTES = [
   '/calculators',
   '/programs',
   '/guide',
-  '/server',
 ] as const;
+
+{
+  const dupes = GATED_ROUTES.filter((path, i) => GATED_ROUTES.indexOf(path) !== i);
+  if (dupes.length) {
+    throw new Error(
+      `GATED_ROUTES duplicate paths mint colliding Playwright titles: ${dupes.join(', ')}`
+    );
+  }
+}
 
 /**
  * Wait until the page stops animating **and stops loading** before measuring.
