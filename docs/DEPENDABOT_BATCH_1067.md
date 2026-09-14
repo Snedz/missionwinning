@@ -1,9 +1,9 @@
-# Frozen plan — Dependabot leftovers batch (paper stays `.1066`)
+# Frozen plan — Dependabot leftovers batch (unstamped on `.1067`)
 
-**Status: AMENDED after Merge Steward correction.** Filename kept. Do not stamp this chore as `.1067`. Paper stays `.1066` (`97d78155` Victory next-env cite). `.1067` is reserved for CoachConcept + Victory concept-first cite (R-146) from `/workspace/mw1067/` on Mac.
+**Status: AMENDED after Merge Steward correction.** Filename kept. Do not stamp this chore. Paper on master is now `.1067` via CoachConcept `#932` (`58375212`). This leftover train is unstamped on top of that tip. Do not revert CoachConcept. Do not mint `.1068`.
 
 **Branch:** `cursor/dependabot-leftovers-batch-8c8c`  
-**Base:** current `origin/master` (`2df9f3c0` after unstamped `#925`)  
+**Base:** current `origin/master` (`58375212` CoachConcept `.1067`; leftover commits originally branched at `2df9f3c0` / `#925`)  
 **Excellence-Override:** dependabot leftovers batch (non-major, unstamped)  
 **Hard rules:** do not flip `PRIVATE_MODE`; no secrets; no EIN; no traction numbers; `[skip vercel]` on every commit; local `npm test` + lint + typecheck only (no GitHub Actions). Actions red is OK. Do not merge. Do not promote. Live www stays `.697`. Leave the PR **draft** until Merge Steward squash.
 
@@ -67,7 +67,7 @@ Do **not** edit `src/lib/buildInfo.ts`, `CONTEXT.md`, or `LOG.md` for a `.1067` 
 
 - Do not merge the listed Dependabot PRs themselves.
 - Do not take eslint 10, Tailwind 4, or stripe 22.6.2.
-- Do not stamp `.1067`. Paper stays `.1066`.
+- Do not stamp this chore. Do not revert master `.1067` CoachConcept. Do not mint `.1068`.
 - Do not flip `PRIVATE_MODE`.
 - Do not invent traction. No EIN. No promote. Live www stays `.697`.
 - Do not force-push `master` / `main`.
@@ -79,11 +79,11 @@ Do **not** edit `src/lib/buildInfo.ts`, `CONTEXT.md`, or `LOG.md` for a `.1067` 
 
 ## Ship protocol
 
-1. No `APP_BUILD_LABEL` bump. Paper stays `2026.07-unified.1066`.
+1. No `APP_BUILD_LABEL` bump. Paper stays `2026.07-unified.1067` (CoachConcept `#932`).
 2. Commit trailer: `Excellence-Override: dependabot leftovers batch (non-major, unstamped)`
 3. Commit trailer: `[skip vercel]`
-4. Keep one **draft** batch PR on `master` (do not merge). Title: `chore dependabot leftovers batch (paper stays .1066)`.
-5. PR body must say: Do not merge the listed Dependabot PRs; this absorbs/supersedes #923 #926 #927 #928; skip #920 eslint major; stripe #921 HOLD; already-merged #919 #922 #924 #925 do not re-merge; no PRIVATE_MODE flip; no promote; live stays .697; paper stays .1066.
+4. Keep one **draft** batch PR on `master` (do not merge). Title: `chore dependabot leftovers batch (unstamped on .1067)`.
+5. PR body must say: Do not merge the listed Dependabot PRs; this absorbs/supersedes #923 #926 #927 #928; skip #920 eslint major; stripe #921 HOLD; already-merged #919 #922 #924 #925 do not re-merge; no PRIVATE_MODE flip; no promote; live stays .697; paper stays .1067 CoachConcept.
 
 ---
 
@@ -101,7 +101,7 @@ No `npm run gate`, no e2e, no Vercel, no merge. Report results in the batch PR b
 
 ## Done when
 
-- One open **draft** batch PR on `master` with paper still `.1066`, coherent lockfile, taken leftovers applied.
+- One open **draft** batch PR on `master` that does not revert `.1067` CoachConcept, with a coherent lockfile and taken leftovers applied.
 - eslint 10, Tailwind 4, and stripe 22.6.2 absent from the take list.
 - Clear absorb list for Merge Steward: #923 #926 #927 #928 after squash.
 - Local suite result reported in the PR body.
