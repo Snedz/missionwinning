@@ -66,6 +66,13 @@ export interface WorkoutVictorySummary {
    * Victory cites only when true — never invents loads.
    */
   nextEnvFromLog?: boolean;
+  /**
+   * Concept-first muted cite text (.1067). When set with nextEnvFromLog, Victory
+   * prefers this over the default i18n string.
+   */
+  nextEnvCite?: string;
+  /** Discrete next-session concept id (.1067). */
+  nextConceptId?: string;
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */

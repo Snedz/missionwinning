@@ -613,8 +613,12 @@ export function ActiveWorkoutPage() {
       hasCoachPlan: !!plan || !!adapt.plan,
       resolveExerciseName: (id) => exerciseDisplayName(id) || id.replace(/-/g, ' '),
     });
-    if (adapt.wroteNextEnv) {
+        if (adapt.wroteNextEnv) {
       assembled.victorySummary.nextEnvFromLog = true;
+      if (adapt.citeText) assembled.victorySummary.nextEnvCite = adapt.citeText;
+      if (adapt.nextConceptId) {
+        assembled.victorySummary.nextConceptId = adapt.nextConceptId;
+      }
     }
     setDebrief(assembled.debrief);
     setEntryFragments(assembled.entry.fragments);
