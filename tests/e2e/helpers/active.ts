@@ -6,7 +6,9 @@ import { expect } from '@playwright/test';
  * Log set is the product — never Restoring session / disabled Start.
  */
 export async function startEmptyActiveWorkout(page: Page): Promise<void> {
-  await page.goto('/active', { waitUntil: 'networkidle' });
+  // `networkidle` hangs under Turbopack HMR. Production `next start` is
+  // quiet — wait for Log set instead of an empty network.
+  await page.goto('/active', { waitUntil: 'domcontentloaded' });
   const logSet = page
     .getByTestId('set-table-log-set')
     .or(page.getByTestId('log-console-log-set'))

@@ -79,6 +79,12 @@ the quiet escape. Zero-state
 red caps lowered (house-press
 is not poster-red). Force
 consent query wins over DNT.
+Finish writes History on the
+desk — not `today-score-band`
+(`HomeTodayDashboard` is not
+`/log`). `@gate` waits
+`domcontentloaded`, not
+`networkidle` (Turbopack hang).
 Do not flip PRIVATE_MODE.
 
 Paper only. `[skip vercel]`. No

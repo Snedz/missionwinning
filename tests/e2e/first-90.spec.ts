@@ -202,7 +202,7 @@ test.describe('First 90 seconds @gate', () => {
   });
 
   test('the hero demo lets a visitor perform the product claim', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // The claim is "your week rewrites itself". If logging a set does not change what
     // the page says next, the homepage is asserting something it never shows.
@@ -232,7 +232,7 @@ test.describe('First 90 seconds @gate', () => {
     test(`Today shows one red action at ${hour}:00 @gate`, async ({ page }) => {
       await seedEveningReview(page);
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto('/log', { waitUntil: 'networkidle' });
+      await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
       /*
        * The guard asserts its own preconditions, in full.
@@ -260,7 +260,7 @@ test.describe('First 90 seconds @gate', () => {
     // JourneyGuard sends a cold visitor to /welcome; this case is about an
     // established user opening the Train tab.
     await seedLegacyOnboarding(page);
-    await page.goto('/active', { waitUntil: 'networkidle' });
+    await page.goto('/active', { waitUntil: 'domcontentloaded' });
     await expect(
       page.getByTestId('set-table-log-set').or(page.getByTestId('log-console-log-set')).or(page.getByRole('button', { name: /^log set$/i }))
     ).toBeVisible({ timeout: 15_000 });
@@ -304,7 +304,7 @@ test.describe('First 90 seconds @gate', () => {
     test(`Today renders within its block budget at ${hour}:00 @gate`, async ({ page }) => {
       await seedLegacyOnboarding(page);
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto('/log', { waitUntil: 'networkidle' });
+      await page.goto('/log', { waitUntil: 'domcontentloaded' });
       const shell = todayDesk(page);
       await expect(shell).toBeVisible({ timeout: 15_000 });
       const blocks = await shell.locator(':scope > *').count();
@@ -335,7 +335,7 @@ test.describe('First 90 seconds @gate', () => {
       // Fixed clock: the evening surfaces are the ones that were never swept,
       // and "run the suite after 18:00" is not a test strategy.
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto(path, { waitUntil: 'networkidle' });
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
       await dismissHouseOverlays(page);
       await expectThumbSized(page, what, HOUSE_PRODUCT_CONTROL_SELECTOR);
     });
@@ -350,7 +350,7 @@ test.describe('First 90 seconds @gate', () => {
   test('every control in the feedback sheet is thumb-sized @gate', async ({ page }) => {
     await seedLegacyOnboarding(page);
     // The card moved with the settings in the `.606` /profile split.
-    await page.goto('/feedback', { waitUntil: 'networkidle' });
+    await page.goto('/feedback', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('main')).toBeVisible({ timeout: 15_000 });
     const sheet = page.getByRole('dialog');
     if (await sheet.isVisible().catch(() => false)) {
