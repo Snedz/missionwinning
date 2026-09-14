@@ -2,8 +2,9 @@
  * Coach, the logger, and Today stay blind to the minis capability bus.
  *
  * Discover those trees rather than listing two files: a new coach helper that
- * imported `@/lib/minis` would otherwise be invisible. Importers of the adapter
- * must live under `src/lib/minis/` — an unreviewed importer is a fail.
+ * imported `@/lib/minis` or `@/lib/mission-os` would otherwise be invisible.
+ * Importers of the adapter must live under `src/lib/minis/` or
+ * `src/lib/mission-os/` — an unreviewed importer is a fail.
  *
  * Package specifiers (`@missionwinning/mw-core`) do not resolve through
  * `resolveSpecifier`; those spellings are listed and the list is closed against
@@ -52,11 +53,12 @@ const read = (file: string): string | null => {
 
 const exists = (p: string) => read(p) !== null;
 
-const MINIS_ADAPTER = ['src/lib/minis/'] as const;
+const MINIS_ADAPTER = ['src/lib/minis/', 'src/lib/mission-os/'] as const;
 
-/** Adapter folder + the mw-core bus home (capabilities + barrel re-export). */
+/** Adapter folders + the mw-core bus home (capabilities + barrel re-export). */
 const ALLOWED_BUS_HOME = [
   'src/lib/minis/',
+  'src/lib/mission-os/',
   'packages/mw-core/src/module/capabilities.ts',
   'packages/mw-core/src/module/index.ts',
 ] as const;
@@ -68,7 +70,7 @@ function isAllowedBusHome(file: string): boolean {
 /**
  * Value names that *are* the bus. Types (`ModuleManifest`) and reserved
  * constants (`UTILITY_CLEARSHOT_MANIFEST`) may be named from docs/tests;
- * these doors may not be imported outside `src/lib/minis/`.
+ * these doors may not be imported outside `src/lib/minis/` or `src/lib/mission-os/`.
  */
 const BUS_SYMBOLS = new Set([
   'assertCapability',
@@ -82,6 +84,12 @@ const BUS_SYMBOLS = new Set([
   'createMiniBus',
   'lookupMini',
   'MINI_REGISTRY',
+  'createMiniHost',
+  'createBillingHold',
+  'createBillingFake',
+  'createIdentityFake',
+  'createPhotosFake',
+  'createStorageFake',
 ]);
 
 /**
@@ -106,10 +114,13 @@ function importsMinisBus(file: string, source: string): boolean {
   const stripped = stripComments(source);
   for (const edge of importsOf(stripped, file)) {
     if (/@\/lib\/minis/.test(edge.spec)) return true;
+    if (/@\/lib\/mission-os/.test(edge.spec)) return true;
     if (/\/minis\/(?:bus|registry)/.test(edge.spec)) return true;
+    if (/\/mission-os\//.test(edge.spec)) return true;
     if (/module\/capabilities/.test(edge.spec)) return true;
     const next = resolveEdge(edge.spec, file);
     if (next?.startsWith('src/lib/minis/')) return true;
+    if (next?.startsWith('src/lib/mission-os/')) return true;
     if (next === 'packages/mw-core/src/module/capabilities.ts') return true;
     if (isModuleBarrel(edge.spec, next)) {
       const star = new RegExp(
@@ -211,6 +222,23 @@ test('a fake coach import of @/lib/minis is a hit — the walk is not vacuous', 
     importsMinisBus(
       'src/lib/coach/planEngine.ts',
       "import { createMiniBus } from '@/lib/minis/bus';"
+    ),
+    true
+  );
+
+  const os = reaches(
+    'src/lib/coach/planEngine.ts',
+    MINIS_ADAPTER,
+    fake({
+      'src/lib/coach/planEngine.ts': "import { createMiniHost } from '@/lib/mission-os/host';",
+      'src/lib/mission-os/host.ts': '',
+    })
+  );
+  assert.deepEqual(os, ['src/lib/coach/planEngine.ts', 'src/lib/mission-os/host.ts']);
+  assert.equal(
+    importsMinisBus(
+      'src/lib/coach/planEngine.ts',
+      "import { createMiniHost } from '@/lib/mission-os/host';"
     ),
     true
   );

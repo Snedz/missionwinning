@@ -1,0 +1,129 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  HEALTH_TRAIN_MANIFEST,
+  MUTED_BILLING,
+  UTILITY_CLEARSHOT_MANIFEST,
+  type ModuleManifest,
+  type ModuleScope,
+} from '../../../packages/mw-core/src/module';
+import {
+  MISSION_OS_FAKES,
+  createBillingFake,
+  createBillingHold,
+  createIdentityFake,
+  createPhotosFake,
+  createStorageFake,
+} from './fakes';
+
+const here = import.meta.dirname;
+
+function sourceOf(file: string): string {
+  return readFileSync(path.join(here, file), 'utf8');
+}
+
+const HAPPY_SCOPES: readonly ModuleScope[] = [
+  'identity.read',
+  'billing.read',
+  'photos.read',
+  'photos.write',
+  'storage.read',
+  'storage.write',
+];
+
+const HAPPY_MANIFEST: ModuleManifest = {
+  id: 'utility.probe',
+  name: 'Probe',
+  version: '0.1.0',
+  scopes: HAPPY_SCOPES,
+  surfaces: ['web'],
+  freeCore: true,
+  entry: 'mission://minis/probe',
+};
+
+test('four named fakes exist — a missing door is a fail', () => {
+  assert.deepEqual([...MISSION_OS_FAKES], [
+    'createIdentityFake',
+    'createBillingFake',
+    'createPhotosFake',
+    'createStorageFake',
+  ]);
+  const src = sourceOf('fakes.ts');
+  for (const name of MISSION_OS_FAKES) {
+    assert.equal(src.includes(`export function ${name}`), true, `${name} must be exported`);
+  }
+});
+
+test('identity fake: guest is null; injected snapshot is not minted', () => {
+  const guest = createIdentityFake(UTILITY_CLEARSHOT_MANIFEST);
+  assert.deepEqual(guest.read(), { ok: true, value: { missionId: null, callSign: null } });
+
+  const injected = createIdentityFake(UTILITY_CLEARSHOT_MANIFEST, {
+    missionId: 7,
+    callSign: '07',
+  });
+  assert.deepEqual(injected.read(), { ok: true, value: { missionId: 7, callSign: '07' } });
+
+  const train = createIdentityFake(HEALTH_TRAIN_MANIFEST);
+  assert.deepEqual(train.read(), { ok: true, value: { missionId: null, callSign: null } });
+
+  const noIdentity: ModuleManifest = {
+    ...HAPPY_MANIFEST,
+    scopes: HAPPY_SCOPES.filter((s) => s !== 'identity.read'),
+  };
+  assert.deepEqual(createIdentityFake(noIdentity).read(), { ok: false, code: 'scope_denied' });
+});
+
+test('billing fake is Stripe HOLD — muted even when the snapshot looks live', () => {
+  const hold = createBillingHold();
+  assert.deepEqual(hold.read(), { ok: true, value: MUTED_BILLING });
+
+  const scoped = createBillingFake(HAPPY_MANIFEST, { bundle: 'super', muted: false });
+  const shot = scoped.read();
+  assert.deepEqual(shot, { ok: true, value: { bundle: 'super', muted: true } });
+  if (shot.ok) assert.equal(shot.value.muted, true);
+
+  const defaulted = createBillingFake(HAPPY_MANIFEST);
+  assert.deepEqual(defaulted.read(), { ok: true, value: { bundle: 'none', muted: true } });
+
+  assert.deepEqual(createBillingFake(UTILITY_CLEARSHOT_MANIFEST).read(), {
+    ok: false,
+    code: 'scope_denied',
+  });
+});
+
+test('photos fake is always photos_stub when scoped', () => {
+  const photos = createPhotosFake(UTILITY_CLEARSHOT_MANIFEST);
+  assert.deepEqual(photos.read(), { ok: false, code: 'photos_stub' });
+  assert.deepEqual(photos.write(), { ok: false, code: 'photos_stub' });
+  assert.deepEqual(createPhotosFake(HEALTH_TRAIN_MANIFEST).read(), {
+    ok: false,
+    code: 'scope_denied',
+  });
+});
+
+test('storage fake is in-memory and namespaced by the map the caller owns', () => {
+  const store = new Map<string, string>();
+  const storage = createStorageFake(HAPPY_MANIFEST, store);
+  assert.deepEqual(storage.set('note', 'ok'), { ok: true, value: undefined });
+  assert.deepEqual(storage.get('note'), { ok: true, value: 'ok' });
+  assert.equal(store.get('note'), 'ok');
+
+  const other = createStorageFake(HAPPY_MANIFEST);
+  assert.deepEqual(other.get('note'), { ok: true, value: undefined });
+
+  assert.deepEqual(createStorageFake(UTILITY_CLEARSHOT_MANIFEST).get('note'), {
+    ok: false,
+    code: 'scope_denied',
+  });
+});
+
+test('fakes never import Stripe, checkout, or premiumServer', () => {
+  const src = sourceOf('fakes.ts');
+  assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false, 'fakes.ts must not import Stripe');
+  assert.equal(src.includes('premiumServer'), false);
+  assert.equal(/checkout\.sessions/i.test(src), false);
+  assert.equal(src.includes('stripe.com'), false);
+});
