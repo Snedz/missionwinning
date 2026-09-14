@@ -25,6 +25,14 @@ count. No invented unit tests.
 stubs + existing UI
 Playwright-covered debt.
 
+HOLD follow-up: beachhead
+`i18n:parity` (es/pt) under 40%
+for today/nav/activeWorkout/learn.
+`Alpha` allowlisted as stage
+name. Pack overlays only — no
+`export-locales` dump. No
+TodayDesk keys.
+
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.
 PRIVATE_MODE stays.
