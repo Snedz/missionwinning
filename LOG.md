@@ -30,8 +30,15 @@ HOLD follow-up: beachhead
 for today/nav/activeWorkout/learn.
 `Alpha` allowlisted as stage
 name. Pack overlays only — no
-`export-locales` dump. No
-TodayDesk keys.
+`export-locales` dump.
+
+HOLD follow-up 2: catalog
+`justGoTitle`, `justGoDesc`,
+`justGoEyebrow` (today) and
+`victoryNextEnvCite` (active
+workout). es/pt translated so
+beachhead stays ≤40%. No
+TodayDesk craft.
 
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.
