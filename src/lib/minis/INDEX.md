@@ -25,6 +25,6 @@
 | Path | Role |
 |------|------|
 | `packages/mw-core/src/module/` | Manifest + `assertCapability` |
-| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount`, `.1072`) |
+| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount`, `.1072`) + Health stub (`utility.health`, `.1073`) |
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |
