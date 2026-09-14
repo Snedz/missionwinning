@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1070` coverage floor 438→493 + bundle `/` 351 · `/log` 417 · `/active` 511 + a11y unique `/server` + Hero e2e house leftover selectors (desk History not score-band); paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1070";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1071` TodayDesk concept chip (CoachConcept nextConceptId / next open session); paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1071";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

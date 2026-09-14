@@ -14,7 +14,7 @@
 | File | Route |
 |------|-------|
 | `HomePage.tsx` | `/log` (Today) | House desk — one Start, week as work. Not Lean. Segment loading is house leftover — `/log` client nav is not group Loading. |
-| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail. Compact hero Start is `href="/active"` (writes compose on click). |
+| `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail. Compact hero Start is `href="/active"` (writes compose on click). Concept chip (`today-concept-chip`) glances Coach plan truth before Start when a next open session exists (`.1071`). |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
 
