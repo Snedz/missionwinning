@@ -15,7 +15,7 @@ import { openHouseMore, todayDesk } from './helpers/houseChrome';
 test.describe('First Steps reachability @gate', () => {
   test('first rooms live on the desk, not in More @gate', async ({ page }) => {
     await seedLegacyOnboarding(page);
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
     const desk = todayDesk(page);
     await expect(desk).toBeVisible({ timeout: 15_000 });
@@ -34,9 +34,9 @@ test.describe('First Steps reachability @gate', () => {
     page,
   }) => {
     await seedLegacyOnboarding(page);
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    await page.goto('/log', { waitUntil: 'domcontentloaded' });
     await page.evaluate(() => localStorage.setItem('mw_first_steps_dismissed', '1'));
-    await page.reload({ waitUntil: 'networkidle' });
+    await page.reload({ waitUntil: 'domcontentloaded' });
 
     await expect(
       page.getByTestId('today-first-steps'),

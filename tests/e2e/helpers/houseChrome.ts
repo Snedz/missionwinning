@@ -32,7 +32,7 @@ export function houseMoreDialog(page: Page) {
 }
 
 export async function openHouseMore(page: Page) {
-  await page.goto('/log', { waitUntil: 'networkidle' });
+  await page.goto('/log', { waitUntil: 'domcontentloaded' });
   const trigger = houseMoreTrigger(page);
   await expect(trigger).toBeVisible({ timeout: 15_000 });
   await trigger.click();
@@ -65,7 +65,17 @@ export async function dismissHouseGuideIfPresent(page: Page) {
   }
 }
 
+export async function dismissLocaleChooserIfPresent(page: Page) {
+  const chooser = page.getByRole('dialog', { name: /language and country/i });
+  if (!(await chooser.isVisible().catch(() => false))) return;
+  const cont = chooser.getByRole('button', { name: /^continue$/i });
+  if (await cont.isVisible().catch(() => false)) {
+    await cont.click();
+  }
+}
+
 export async function dismissHouseOverlays(page: Page) {
+  await dismissLocaleChooserIfPresent(page);
   await dismissConsentIfPresent(page);
   await dismissHouseGuideIfPresent(page);
 }

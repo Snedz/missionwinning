@@ -100,7 +100,7 @@ test.describe('Mobile navigation @gate', () => {
   });
 
   test('the More sheet closes on Escape and restores focus', async ({ page }) => {
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
     const trigger = houseMoreTrigger(page);
     await expect(trigger).toBeVisible();

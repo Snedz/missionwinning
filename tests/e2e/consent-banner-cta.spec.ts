@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
-import { todayStart } from './helpers/houseChrome';
+import { dismissHouseOverlays, todayStart } from './helpers/houseChrome';
 
 /**
  * Preview walk P0-1: on a phone, the analytics consent dialog must not
@@ -60,6 +60,7 @@ test.describe('Preview walk P0s @gate', () => {
   test('public notify page has a Get-notified form and no fake checkout', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/notify', { waitUntil: 'domcontentloaded' });
+    await dismissHouseOverlays(page);
 
     const band = page.locator('[data-mw-launch-notify]');
     await expect(band).toBeVisible();

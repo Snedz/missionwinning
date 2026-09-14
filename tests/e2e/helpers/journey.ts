@@ -12,6 +12,12 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
     localStorage.setItem('mw_equipment', 'bodyweight');
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
+    // Confirmed locale so AnalyticsConsentBanner may mount (provider waits).
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+    window.dispatchEvent(new CustomEvent('mw-locale-pref'));
     // Local YYYY-MM-DD — matches todayCheckInDate in mindCheckIns (not UTC ISO).
     const now = new Date();
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;

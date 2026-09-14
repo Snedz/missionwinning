@@ -186,6 +186,11 @@ async function seedEmptyAthlete(page: import('@playwright/test').Page): Promise<
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
     localStorage.setItem('mw_house_guide_dismissed', '1');
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+    window.dispatchEvent(new CustomEvent('mw-locale-pref'));
   });
 }
 

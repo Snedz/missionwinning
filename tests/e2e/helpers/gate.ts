@@ -5,16 +5,19 @@ const accessSecret = process.env.SMOKE_ACCESS_SECRET || process.env.PRIVATE_ACCE
 /**
  * Unlock private gate via POST /api/private-access (sets httpOnly cookie).
  *
- * Tries the runner secret first, then `done` (Preview / local walk when the
- * gate is off). Production with PRIVATE_MODE on still needs a real secret —
- * do not flip the gate off to make this green.
+ * Only posts when a runner secret exists. Do not mint `done` on every suite —
+ * that needs PRIVATE_ACCESS_SECRET on the server (500 without it) and would
+ * rewrite local `/` from the teaser to the homepage. CI Hero already builds
+ * PRIVATE_MODE=false; public landing stays public. Production still needs a
+ * real secret — do not flip the gate off to make this green.
  */
 export async function unlockGate(
   page: Page,
   context: BrowserContext,
   baseURL: string
 ): Promise<boolean> {
-  const passwords = [...new Set([accessSecret, 'done'].filter(Boolean))] as string[];
+  if (!accessSecret) return true;
+  const passwords = [accessSecret];
 
   for (const password of passwords) {
     const res = await page.request.post(`${baseURL}/api/private-access`, {
