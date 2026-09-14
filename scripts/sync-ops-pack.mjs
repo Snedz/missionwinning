@@ -38,11 +38,24 @@ function ensureDir(p) {
   mkdirSync(p, { recursive: true });
 }
 
-function write(rel, body) {
+/**
+ * `--force` regenerates the templates below. Without it, an existing file wins.
+ * These are living documents the founder edits in place — STATUS_PRIVATE.md is
+ * documented "Update freely". Overwriting them from a hardcoded literal is data
+ * loss with no undo, so the default is write-if-absent. This mirrors the idiom
+ * already used for docs/OPS_LOCAL.md at the bottom of this file.
+ */
+const FORCE = process.argv.includes('--force');
+
+function writeTemplate(rel, body) {
   const dest = join(ops, rel);
+  if (existsSync(dest) && !FORCE) {
+    console.log('keep (exists — hand-maintained)', relative(root, dest));
+    return;
+  }
   ensureDir(dirname(dest));
   writeFileSync(dest, body, 'utf8');
-  console.log('wrote', relative(root, dest));
+  console.log(FORCE ? 'forced' : 'wrote', relative(root, dest));
 }
 
 function isRelocatedStub(content) {
@@ -76,7 +89,7 @@ function copyIfExists(rel, destRel) {
 ensureDir(ops);
 ensureDir(join(ops, 'strategy'));
 
-write(
+writeTemplate(
   'README.md',
   `# mission-ops (PRIVATE)
 
@@ -89,7 +102,7 @@ Never merge this tree into public \`missionwinning\`.
 |------|---------|
 | VISION_LONG_EVERYTHING.md | Health → WeChat-scale long-term thesis |
 | FOUNDER_CRITICAL_PATH.md | Users / money / legal this week |
-| STATUS_PRIVATE.md | Founder blockers not for public CONTEXT |
+| production/STATUS_PRIVATE.md | Founder blockers not for public CONTEXT |
 | INTERNAL_MANIFEST.md | What must not ship public |
 | strategy/ | Copies of INTERNAL planning docs |
 
@@ -97,7 +110,7 @@ See product \`docs/DUAL_REPO.md\` and \`docs/CLASSIFICATION.md\`.
 `
 );
 
-write(
+writeTemplate(
   'INTERNAL_MANIFEST.md',
   `# INTERNAL manifest
 
@@ -123,7 +136,7 @@ Public-safe product: docs/contracts/*, AGENTS, INDEX, help, architecture, CLASSI
 `
 );
 
-write(
+writeTemplate(
   'FOUNDER_CRITICAL_PATH.md',
   `# Founder critical path — users before everything-app
 
@@ -166,8 +179,10 @@ exists, games / metaverse / mini-hosts are contracts only.
 `
 );
 
-write(
-  'STATUS_PRIVATE.md',
+writeTemplate(
+  // production/, not the ops root: ops/STATUS_PRIVATE.md was never the live file.
+  // Writing it there created a second, empty status doc next to the real one.
+  'production/STATUS_PRIVATE.md',
   `# Private status (not for public CONTEXT.md)
 
 Update freely. Product CONTEXT.md keeps only agent-needed gate facts.
@@ -184,7 +199,7 @@ Update freely. Product CONTEXT.md keeps only agent-needed gate facts.
 `
 );
 
-write(
+writeTemplate(
   'VISION_LONG_EVERYTHING.md',
   `# VISION — Long-term everything (INTERNAL)
 

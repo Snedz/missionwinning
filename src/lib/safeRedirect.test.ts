@@ -44,11 +44,31 @@ describe('sanitizeNextPath', () => {
 
   it('next.config.js dead-alias redirects match DEAD_ALIAS_PATHS', () => {
     const cfg = read('next.config.js');
+    /**
+     * Pair each `source` with the `destination` **in the same object literal**.
+     *
+     * The previous assertion was a single lazy span,
+     * `source:'/today'[\s\S]*?destination:'/log'`. `[\s\S]*?` crosses entry
+     * boundaries, so repointing `/today` at `/log2` still matched: the later
+     * `/dashboard` → `/log` entry satisfied it. The test was green over exactly
+     * the drift it was written to catch. Parse the pairs instead of spanning.
+     */
+    const pairs = new Map<string, string>();
+    for (const m of cfg.matchAll(/\{\s*source:\s*'([^']+)',\s*destination:\s*'([^']+)'/g)) {
+      pairs.set(m[1], m[2]);
+    }
+    assert.ok(
+      pairs.size > 0,
+      'no redirect pairs parsed out of next.config.js — the parse is broken, not the config'
+    );
+
     for (const [alias, canonical] of Object.entries(DEAD_ALIAS_PATHS)) {
-      assert.match(
-        cfg,
-        new RegExp(`source:\\s*'${alias.replace('/', '\\/')}'[\\s\\S]*?destination:\\s*'${canonical.replace('/', '\\/')}'`),
-        `${alias} → ${canonical} missing from next.config.js redirects`
+      assert.equal(
+        pairs.get(alias),
+        canonical,
+        `${alias} must redirect to ${canonical} in next.config.js (found ${
+          pairs.get(alias) ?? 'no entry'
+        })`
       );
     }
   });

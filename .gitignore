@@ -95,3 +95,6 @@ ops/
 # LOCAL graph memory: Neo4j volume, extraction output, real MCP config (never product git)
 .graph/
 .mcp.json
+
+# LOCAL agent memory — working notes, never product git
+.workbuddy-ai/
