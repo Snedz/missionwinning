@@ -114,7 +114,9 @@ test.describe('Desktop surface @gate', () => {
 
     await addPushUpsInline(page);
 
-    const warmup = page.getByRole('button', { name: /^warm-?up$/i });
+    // Just Go first paint already has a set table — several Warmup chips.
+    // Kind lives on the row (`set-table-tag-warmup`), not in a docked console.
+    const warmup = page.getByTestId('set-table-tag-warmup').first();
     await expect(warmup).toBeVisible({ timeout: 10_000 });
 
     /*

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding, seedEveningReview } from './helpers/journey';
+import { seedConfirmedLocale, seedLegacyOnboarding, seedEveningReview } from './helpers/journey';
 import { DIALOG_CONTROL_SELECTOR, expectThumbSized, HOUSE_PRODUCT_CONTROL_SELECTOR } from './helpers/thumbSweep';
 import { expectOneRedAction } from './helpers/redActions';
 import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget';
@@ -156,6 +156,9 @@ test.describe('First 90 seconds @gate', () => {
   test('the content library is reachable on a phone @gate', async ({ page }) => {
     // MarketingNav hid every link behind `sm:flex` with no menu anywhere in the repo, so
     // at 390px a visitor could reach `/` and `/welcome` and nothing else.
+    // Chooser auto-opens on SEO templates (not a first-set path). Seed first
+    // so Escape closes Menu and Radix can restore trigger focus.
+    await seedConfirmedLocale(page);
     await page.goto('/exercises/push-ups', { waitUntil: 'domcontentloaded' });
 
     await dismissHouseOverlays(page);
