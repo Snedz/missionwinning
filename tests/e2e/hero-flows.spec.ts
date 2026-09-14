@@ -171,13 +171,23 @@ test.describe('Phase H hero flows @gate', () => {
 
   test('language switch on account', async ({ page }) => {
     // ProfilePreferencesCard carries the switcher, and it moved to /account in `.606`.
-    await page.goto('/account', { waitUntil: 'domcontentloaded' });
-    const langSelect = page.getByLabel(/change language/i);
-    await expect(langSelect).toBeVisible({ timeout: 15_000 });
-    await langSelect.selectOption('es');
-    await page.waitForTimeout(500);
-    const stored = await page.evaluate(() => localStorage.getItem('i18nextLng'));
-    expect(stored?.startsWith('es')).toBeTruthy();
+    await page.goto('/account', { waitUntil: 'load' });
+    // Scope to the Language card. The select is in the SSR HTML; selectOption
+    // before hydration writes the DOM and React resets it to `en`. Retry until
+    // the client onChange persists.
+    const card = page.getByTestId('account-language-card');
+    await expect(card).toBeVisible({ timeout: 15_000 });
+    const langSelect = card.getByLabel(/change language/i);
+    await expect(langSelect).toBeVisible();
+    await expect
+      .poll(
+        async () => {
+          await langSelect.selectOption('es');
+          return page.evaluate(() => localStorage.getItem('i18nextLng'));
+        },
+        { timeout: 15_000 }
+      )
+      .toMatch(/^es/);
   });
 });
 

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
-import { leaveVictoryTowardToday } from './helpers/houseChrome';
+import { dismissHouseOverlays, leaveVictoryTowardToday } from './helpers/houseChrome';
 
 /**
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
@@ -20,15 +20,19 @@ test.describe('Logger depth @gate', () => {
 
   test('start empty, add push-ups, log set, rest timer, skip rest, finish', async ({ page }) => {
     await startEmptyActiveWorkout(page);
+    await dismissHouseOverlays(page);
 
     // The picker is a sheet as of `.156` — it was an inline `max-h-48` list
     // competing with the session for height. One extra tap to open it; the
     // placeholder, the `option` rows, the `Selected:` line and the
     // `add selected exercise` name are all unchanged.
-    await page.getByRole('button', { name: /^add exercise$/i }).click();
+    // Just Go first paint already has a table; Add exercise still opens the sheet.
+    const addExercise = page.getByRole('button', { name: /^add exercise$/i });
+    await expect(addExercise).toBeVisible({ timeout: 10_000 });
+    await addExercise.click();
 
     const search = page.getByPlaceholder(/search exercises/i);
-    await expect(search).toBeVisible();
+    await expect(search).toBeVisible({ timeout: 10_000 });
     await search.fill('push-ups');
     await page.getByRole('option', { name: /push-ups/i }).first().click();
     await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
