@@ -44,12 +44,11 @@ fails last-segment match.
 CI `offline.spec` @gate leftover:
 hard `goto('/active')` while
 offline is not client nav —
-compose-bar Today +
-`today-start-cta` (Train
-unmounts the floor). Log set
-locator widened to `Log` /
-`Log set` (same class as
-`.1070` Hero).
+stay on leftover Log set
+(widened to `Log` / `Log set`).
+Compose-bar Today while offline
+serves `/offline` (measured).
+Same class as `.1070` Hero.
 
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.

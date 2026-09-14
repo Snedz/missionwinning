@@ -1,11 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { logSetButton, startEmptyActiveWorkout } from './helpers/active';
 import { gateRequired, unlockGate } from './helpers/gate';
-import {
-  composeBarToday,
-  dismissHouseOverlays,
-  todayStart,
-} from './helpers/houseChrome';
+import { dismissHouseOverlays } from './helpers/houseChrome';
 import { seedLegacyOnboarding } from './helpers/journey';
 
 /**
@@ -80,7 +76,7 @@ test.describe('Offline logging @gate', () => {
     await context.setOffline(true);
 
     /**
-     * Client-side house leftover — not a hard `goto` while offline.
+     * Mid-session leftover is Log set on the already-open compose.
      *
      * A hard load of /active after `setOffline` is a document load against
      * Serwist. The old comment called that "client-side navigation"; it
@@ -88,21 +84,14 @@ test.describe('Offline logging @gate', () => {
      * tree, Log set is simply not in the DOM — CI `element(s) not found`,
      * same leftover class as `.1070` Hero (stale Start / `.primary-action`).
      *
-     * Compose-bar Today + `today-start-cta` are the taps an athlete still
-     * has with JS already loaded. Train unmounts `nav.house-floor`. Hard
-     * reload without a network stays the second case in this file.
+     * Compose-bar Today while offline is also the wrong leftover. Train
+     * unmounts the floor; `router.push('/log')` is still a navigation
+     * fetch. Measured: Serwist serves `app/offline` ("You're offline.
+     * The log isn't.") and Start is not in the DOM. Stay on Train.
+     * Hard reload without a network stays the second case in this file.
      */
-    const todayBar = composeBarToday(page);
-    await expect(todayBar).toBeVisible({ timeout: 10_000 });
-    await todayBar.click();
-    await expect(page).toHaveURL(/\/log/);
     await dismissHouseOverlays(page);
-    await expect(page.locator('body')).toBeVisible();
-
-    await expect(todayStart(page)).toBeVisible({ timeout: 15_000 });
-    await todayStart(page).click();
     await expect(page).toHaveURL(/\/active/);
-    await dismissHouseOverlays(page);
 
     const logSet = logSetButton(page);
     await expect(logSet.first()).toBeVisible({ timeout: 15_000 });
