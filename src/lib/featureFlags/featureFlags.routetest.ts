@@ -98,4 +98,17 @@ describe('flags routes', () => {
     );
     assert.equal(res.status, 403);
   });
+
+  it('preview with admin but no table is 503, never a fake on/off', async () => {
+    const res = await previewGet(
+      makeNextRequest(
+        'https://www.missionwinning.com/api/flags/admin/preview?subject=a@x.co&key=example_staged',
+        { headers: adminHeaders() }
+      )
+    );
+    assert.equal(res.status, 503);
+    const body = (await res.json()) as { error?: string; on?: unknown };
+    assert.equal(body.error, 'flags_unavailable');
+    assert.equal(body.on, undefined);
+  });
 });
