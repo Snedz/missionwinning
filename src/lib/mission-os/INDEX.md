@@ -4,10 +4,10 @@
 
 ## Agent resume card
 
-- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`).
-- **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK.
-- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`
-- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/minisIsolation.test.ts`
+- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`health.mini`, L1 first mini) mounts identity + storage only.
+- **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK, Health product UI.
+- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`
+- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/minisIsolation.test.ts`
 - **Forbidden:** Import from `src/lib/coach/`, `src/store/`, `HomePage`, `ActiveWorkoutPage`. Do not import Stripe, `premiumServer`, or `safeStorage`. Never gate `logSet`.
 - **Horizon:** Interfaces + stubs. Host chrome later.
 
@@ -21,6 +21,8 @@
 | storage | `createStorageFake` — in-memory map keyed by mini id. Cap 32 keys / 4KB (mw-core). |
 
 `CapResult<T>` is `CapabilityResult<T>` from mw-core — one shape, two names.
+
+Reserved Health stub: `HEALTH_MINI_MANIFEST` / `mountHealthMini` — scopes `identity.read`, `storage.read`, `storage.write`. Photos and billing stay `scope_denied`. Not `health.train`.
 
 ## Related
 

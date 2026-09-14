@@ -181,7 +181,7 @@ Details: [PROTECTION.md](PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md).
 
 ## Mission OS minis
 
-Reserved utility manifests (`utility.clearshot` at `mission://minis/clearshot`) and a capability bus live in [`packages/mw-core/src/module/`](../packages/mw-core/src/module/). Function web stubs are [`src/lib/minis/`](../src/lib/minis/) (#935). Named doors (`MiniHost.mount`, `CapResult`) and in-memory fakes are [`src/lib/mission-os/`](../src/lib/mission-os/). Host chrome and ClearShot product UI are later — no Today / Train / More door. Android `:minis:clearshot` is deferred ([apps/android/INDEX.md](../apps/android/INDEX.md)). Isolation: [`src/lib/minisIsolation.test.ts`](../src/lib/minisIsolation.test.ts).
+Reserved utility manifests (`utility.clearshot` at `mission://minis/clearshot`) and a capability bus live in [`packages/mw-core/src/module/`](../packages/mw-core/src/module/). Health stub (`health.mini` at `mission://minis/mini` — L1 first mini, not `utility.*`; identity + storage only) mounts via [`src/lib/mission-os/health.ts`](../src/lib/mission-os/health.ts). Function web stubs are [`src/lib/minis/`](../src/lib/minis/) (#935). Named doors (`MiniHost.mount`, `CapResult`) and in-memory fakes are [`src/lib/mission-os/`](../src/lib/mission-os/). Host chrome and ClearShot / Health product UI are later — no Today / Train / More door. Android `:minis:clearshot` is deferred ([apps/android/INDEX.md](../apps/android/INDEX.md)). Isolation: [`src/lib/minisIsolation.test.ts`](../src/lib/minisIsolation.test.ts).
 
 ---
 
