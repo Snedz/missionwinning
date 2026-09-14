@@ -14,6 +14,9 @@ import {
   HEALTH_TRAIN_MANIFEST,
   UTILITY_CLEARSHOT_MANIFEST,
   assertModuleManifest,
+  miniSlugFromId,
+  parseMissionMiniEntry,
+  parseModuleId,
 } from '../../../packages/mw-core/src/module';
 import { createMiniHost } from './host';
 import {
@@ -47,21 +50,39 @@ test('Health mini scopes are identity + storage only — extras fail closed', ()
   assert.equal(src.includes("'billing.read'"), false, 'Health stub must not declare billing.read');
   assert.equal(src.includes("'health.write'"), false, 'Health stub must not take health.write');
   assert.equal(src.includes("'utility.health'"), false, 'Health is L1, not utility.*');
-  assert.equal(src.includes("'health.mini'"), true);
+  assert.equal(src.includes("'l1.health'"), true);
+  assert.equal(src.includes("'health.mini'"), false, 'opaque last-segment mini is gone');
+  assert.equal(src.includes("'mission://minis/mini'"), false);
   assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false);
   assert.equal(src.includes('premiumServer'), false);
 });
 
 test('Health mini is a reserved L1 stub, not utility and not the Train logger', () => {
-  assert.equal(HEALTH_MINI_MANIFEST.id, 'health.mini');
+  assert.equal(HEALTH_MINI_MANIFEST.id, 'l1.health');
+  assert.equal(parseModuleId('health'), null, 'single-segment health fails MODULE_ID');
+  assert.equal(parseModuleId(HEALTH_MINI_MANIFEST.id), 'l1.health');
+  assert.equal(miniSlugFromId(HEALTH_MINI_MANIFEST.id), 'health');
+  assert.equal(parseMissionMiniEntry(HEALTH_MINI_MANIFEST.entry), 'health');
   assert.equal(HEALTH_MINI_MANIFEST.id.startsWith('utility.'), false);
   assert.equal(HEALTH_MINI_MANIFEST.name, 'Health');
-  assert.equal(HEALTH_MINI_MANIFEST.entry, 'mission://minis/mini');
+  assert.equal(HEALTH_MINI_MANIFEST.entry, 'mission://minis/health');
   assert.equal(HEALTH_MINI_MANIFEST.freeCore, true);
   assert.notEqual(HEALTH_MINI_MANIFEST.id, HEALTH_TRAIN_MANIFEST.id);
   assert.notEqual(HEALTH_MINI_MANIFEST.entry, '/active');
   assert.notEqual(HEALTH_MINI_MANIFEST.entry, UTILITY_CLEARSHOT_MANIFEST.entry);
   assert.doesNotThrow(() => assertModuleManifest(HEALTH_MINI_MANIFEST));
+  assert.throws(
+    () => assertModuleManifest({ ...HEALTH_MINI_MANIFEST, entry: 'mission://minis/mini' }),
+    /last segment/
+  );
+  assert.throws(
+    () => assertModuleManifest({ ...HEALTH_MINI_MANIFEST, id: 'health' }),
+    /invalid module id/
+  );
+  assert.throws(
+    () => assertModuleManifest({ ...HEALTH_MINI_MANIFEST, id: 'health.mini' }),
+    /last segment/
+  );
 });
 
 test('mountHealthMini: identity + storage work; photos and billing deny', () => {
@@ -70,7 +91,8 @@ test('mountHealthMini: identity + storage work; photos and billing deny', () => 
   assert.equal(mounted.ok, true);
   if (!mounted.ok) return;
 
-  assert.equal(mounted.value.manifest.id, 'health.mini');
+  assert.equal(mounted.value.manifest.id, 'l1.health');
+  assert.equal(mounted.value.manifest.entry, 'mission://minis/health');
   assert.deepEqual(mounted.value.identity.read(), {
     ok: true,
     value: { missionId: 3, callSign: '03' },

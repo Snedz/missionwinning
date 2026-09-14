@@ -17,17 +17,19 @@ export const HEALTH_MINI_SCOPES = [
 ] as const;
 
 /**
- * Reserved L1 Health mini. Entry slug matches `health.mini` (not `/active`).
- * Host chrome later. Isolation: coach / store / Today / Train stay blind.
+ * Reserved L1 Health mini. Id ends in `.health` so the deep-link slug is
+ * `health` (`mission://minis/health`). Not `/active`. Not `health.mini`
+ * (that last-segment was the opaque `mini`). Host chrome later.
+ * Isolation: coach / store / Today / Train stay blind.
  */
 export const HEALTH_MINI_MANIFEST: ModuleManifest = {
-  id: 'health.mini',
+  id: 'l1.health',
   name: 'Health',
   version: '0.1.0',
   scopes: HEALTH_MINI_SCOPES,
   surfaces: ['web'],
   freeCore: true,
-  entry: 'mission://minis/mini',
+  entry: 'mission://minis/health',
 };
 
 export function mountHealthMini(host: MiniHost): CapResult<MountedMini> {

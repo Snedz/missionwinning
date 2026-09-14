@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { logSetButton, startEmptyActiveWorkout } from './helpers/active';
 import { gateRequired, unlockGate } from './helpers/gate';
+import { dismissHouseOverlays } from './helpers/houseChrome';
 import { seedLegacyOnboarding } from './helpers/journey';
 
 /**
@@ -40,8 +42,10 @@ test.describe('Offline logging @gate', () => {
       test.skip(true, 'No active service worker — build with PRIVATE_MODE=false to cover offline');
     }
 
-    // Warm the logger route while still online so navigation caching has it.
-    await page.goto('/active', { waitUntil: 'networkidle' });
+    // Warm compose online and wait for leftover Log set — `networkidle` is
+    // not first paint. Consent / Got it / locale must not steal the tap.
+    await startEmptyActiveWorkout(page);
+    await dismissHouseOverlays(page);
 
     /**
      * Wait for the warm to actually be *in* a cache before cutting the network.
@@ -71,15 +75,25 @@ test.describe('Offline logging @gate', () => {
 
     await context.setOffline(true);
 
-    // Client-side navigation must keep working with no network.
-    await page.goto('/log', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('body')).toBeVisible();
+    /**
+     * Mid-session leftover is Log set on the already-open compose.
+     *
+     * A hard load of /active after `setOffline` is a document load against
+     * Serwist. The old comment called that "client-side navigation"; it
+     * is not. When the navigation cache has the HTML but not the compose
+     * tree, Log set is simply not in the DOM — CI `element(s) not found`,
+     * same leftover class as `.1070` Hero (stale Start / `.primary-action`).
+     *
+     * Compose-bar Today while offline is also the wrong leftover. Train
+     * unmounts the floor; `router.push('/log')` is still a navigation
+     * fetch. Measured: Serwist serves `app/offline` ("You're offline.
+     * The log isn't.") and Start is not in the DOM. Stay on Train.
+     * Hard reload without a network stays the second case in this file.
+     */
+    await dismissHouseOverlays(page);
+    await expect(page).toHaveURL(/\/active/);
 
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    const logSet = page
-      .getByTestId('set-table-log-set')
-      .or(page.getByTestId('log-console-log-set'))
-      .or(page.getByRole('button', { name: /^log set$/i }));
+    const logSet = logSetButton(page);
     await expect(logSet.first()).toBeVisible({ timeout: 15_000 });
     await expect(logSet.first()).toBeEnabled();
 
