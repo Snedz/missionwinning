@@ -5,6 +5,16 @@ import type { Page } from '@playwright/test';
  * Also plants a complete today's mind check-in so Active does not open
  * SessionCheckInSheet (full-viewport overlay that intercepts Finish / picker clicks).
  */
+/** Must run before first goto — stops the first-visit country sheet. */
+export async function seedConfirmedLocale(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    localStorage.setItem('mw_locale_choice', '1');
+    localStorage.setItem('mw_lang_explicit', '1');
+    localStorage.setItem('mw_country_pref', 'US');
+    localStorage.setItem('i18nextLng', 'en');
+  });
+}
+
 export async function seedLegacyOnboarding(page: Page): Promise<void> {
   await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => {

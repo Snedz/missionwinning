@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding } from './helpers/journey';
+import { seedConfirmedLocale, seedLegacyOnboarding } from './helpers/journey';
 import { dismissHouseOverlays, todayStart } from './helpers/houseChrome';
 
 /**
@@ -59,6 +59,8 @@ test.describe('Preview walk P0s @gate', () => {
 
   test('public notify page has a Get-notified form and no fake checkout', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
+    // Chooser fetches /api/geo then opens — dismiss-after-goto loses the race.
+    await seedConfirmedLocale(page);
     await page.goto('/notify', { waitUntil: 'domcontentloaded' });
     await dismissHouseOverlays(page);
 
