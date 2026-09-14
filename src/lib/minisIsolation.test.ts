@@ -86,6 +86,10 @@ const BUS_SYMBOLS = new Set([
   'MINI_REGISTRY',
   'createMiniHost',
   'createBillingHold',
+  'createBillingFake',
+  'createIdentityFake',
+  'createPhotosFake',
+  'createStorageFake',
 ]);
 
 /**

@@ -6,8 +6,17 @@ import {
   HEALTH_TRAIN_MANIFEST,
   MUTED_BILLING,
   UTILITY_CLEARSHOT_MANIFEST,
+  type ModuleManifest,
+  type ModuleScope,
 } from '../../../packages/mw-core/src/module';
-import { createBillingHold, createMiniHost } from './host';
+import {
+  createBillingFake,
+  createBillingHold,
+  createIdentityFake,
+  createMiniHost,
+  createPhotosFake,
+  createStorageFake,
+} from './host';
 import {
   MISSION_OS_CAPABILITIES,
   type BillingCapability,
@@ -23,6 +32,63 @@ const here = import.meta.dirname;
 function sourceOf(file: string): string {
   return readFileSync(path.join(here, file), 'utf8');
 }
+
+const HAPPY_SCOPES: readonly ModuleScope[] = [
+  'identity.read',
+  'billing.read',
+  'photos.read',
+  'photos.write',
+  'storage.read',
+  'storage.write',
+];
+
+/** Fully-scoped probe — not a product mini. ClearShot stays reserved without billing.read. */
+const HAPPY_MANIFEST: ModuleManifest = {
+  id: 'utility.probe',
+  name: 'Probe',
+  version: '0.1.0',
+  scopes: HAPPY_SCOPES,
+  surfaces: ['web'],
+  freeCore: true,
+  entry: 'mission://minis/probe',
+};
+
+test('MiniHost.mount happy path: all four in-memory fakes', () => {
+  const host = createMiniHost({ identity: { missionId: 7, callSign: '07' } });
+  const mounted = host.mount(HAPPY_MANIFEST);
+  assert.equal(mounted.ok, true);
+  if (!mounted.ok) return;
+
+  assert.deepEqual(mounted.value.identity.read(), {
+    ok: true,
+    value: { missionId: 7, callSign: '07' },
+  });
+  assert.deepEqual(mounted.value.billing.read(), {
+    ok: true,
+    value: { bundle: 'none', muted: true },
+  });
+  assert.deepEqual(mounted.value.photos.read(), { ok: false, code: 'photos_stub' });
+  assert.deepEqual(mounted.value.photos.write(), { ok: false, code: 'photos_stub' });
+  assert.deepEqual(mounted.value.storage.set('note', 'ok'), { ok: true, value: undefined });
+  assert.deepEqual(mounted.value.storage.get('note'), { ok: true, value: 'ok' });
+
+  const identity = createIdentityFake(HAPPY_MANIFEST, { missionId: 7, callSign: '07' });
+  const billing = createBillingFake(HAPPY_MANIFEST);
+  const photos = createPhotosFake(HAPPY_MANIFEST);
+  assert.deepEqual(mounted.value.identity.read(), identity.read());
+  assert.deepEqual(mounted.value.billing.read(), billing.read());
+  assert.deepEqual(mounted.value.photos.read(), photos.read());
+  assert.deepEqual(createStorageFake(HAPPY_MANIFEST).get('note'), {
+    ok: true,
+    value: undefined,
+  });
+
+  const hostSrc = sourceOf('host.ts');
+  assert.equal(hostSrc.includes('createIdentityFake(manifest'), true);
+  assert.equal(hostSrc.includes('createBillingFake(manifest'), true);
+  assert.equal(hostSrc.includes('createPhotosFake(manifest'), true);
+  assert.equal(hostSrc.includes('createStorageFake(manifest'), true);
+});
 
 test('CapResult and the four doors are the host contract', () => {
   assert.deepEqual([...MISSION_OS_CAPABILITIES], [
@@ -96,7 +162,7 @@ test('BillingCapability hold is muted and never Stripe', () => {
     value: { bundle: 'none', muted: true },
   });
 
-  for (const file of ['host.ts', 'types.ts']) {
+  for (const file of ['host.ts', 'types.ts', 'fakes.ts']) {
     const src = sourceOf(file);
     assert.equal(
       /from\s+['"][^'"]*stripe/i.test(src),

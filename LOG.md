@@ -24,18 +24,28 @@ interface only), `PhotosCapability`,
 `StorageCapability`,
 `MiniHost.mount(manifest)`,
 `CapResult` (alias of mw-core
-`CapabilityResult`). In-memory /
-no-op doubles. Continues #935 /
+`CapabilityResult`). Named
+in-memory fakes:
+`createIdentityFake`,
+`createBillingFake` (Stripe HOLD —
+always muted, no Stripe I/O),
+`createPhotosFake`,
+`createStorageFake`. Happy-path
+`MiniHost.mount` unit tests on a
+fully-scoped probe. Continues #935 /
 `.1068` function bus — does not
 replace it. No ClearShot UI. No
-remake of Today. Isolation:
+remake of Today. No ClearShot
+inside the MW APK. Isolation:
 coach / store / HomePage /
 ActiveWorkout stay blind.
 
 **Mutants killed:** `/active`
 entry on ClearShot cannot mount;
 a coach import of
-`@/lib/mission-os` dies.
+`@/lib/mission-os` dies; billing
+fake with `muted: false` still
+reports muted.
 
 Paper only. `[skip vercel]`. No
 tip-promote. Live www stays `.697`.

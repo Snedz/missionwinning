@@ -6,30 +6,29 @@
 
 import {
   GUEST_IDENTITY,
-  MUTED_BILLING,
   assertModuleManifest,
-  readBilling,
-  readIdentity,
-  readPhotos,
-  readStorage,
-  writePhotos,
-  writeStorage,
   type IdentitySnapshot,
   type ModuleManifest,
 } from '../../../packages/mw-core/src/module';
-import type {
-  BillingCapability,
-  CapResult,
-  IdentityCapability,
-  MiniHost,
-  MountedMini,
-  PhotosCapability,
-  StorageCapability,
-} from './types';
+import {
+  createBillingFake,
+  createIdentityFake,
+  createPhotosFake,
+  createStorageFake,
+} from './fakes';
+import type { CapResult, MiniHost, MountedMini } from './types';
 
 export type MiniHostOptions = {
   identity?: IdentitySnapshot;
 };
+
+export {
+  createBillingFake,
+  createBillingHold,
+  createIdentityFake,
+  createPhotosFake,
+  createStorageFake,
+} from './fakes';
 
 function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<string, string> {
   let store = stores.get(id);
@@ -40,40 +39,17 @@ function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<str
   return store;
 }
 
-/** Stripe HOLD double — muted recognition only. Never imports Stripe. */
-export function createBillingHold(): BillingCapability {
-  return {
-    read() {
-      return { ok: true, value: MUTED_BILLING };
-    },
-  };
-}
-
 function bindDoors(
   manifest: ModuleManifest,
   identity: IdentitySnapshot,
   stores: Map<string, Map<string, string>>
 ): MountedMini {
-  const identityDoor: IdentityCapability = {
-    read: () => readIdentity(manifest, identity),
-  };
-  const billingDoor: BillingCapability = {
-    read: () => readBilling(manifest, MUTED_BILLING),
-  };
-  const photosDoor: PhotosCapability = {
-    read: () => readPhotos(manifest),
-    write: () => writePhotos(manifest),
-  };
-  const storageDoor: StorageCapability = {
-    get: (key) => readStorage(manifest, storeFor(stores, manifest.id), key),
-    set: (key, value) => writeStorage(manifest, storeFor(stores, manifest.id), key, value),
-  };
   return {
     manifest,
-    identity: identityDoor,
-    billing: billingDoor,
-    photos: photosDoor,
-    storage: storageDoor,
+    identity: createIdentityFake(manifest, identity),
+    billing: createBillingFake(manifest),
+    photos: createPhotosFake(manifest),
+    storage: createStorageFake(manifest, storeFor(stores, manifest.id)),
   };
 }
 
