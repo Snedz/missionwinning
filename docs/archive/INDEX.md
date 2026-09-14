@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1058-for-1075.md](./log/LOG-rotate-1058-for-1075.md) | rotated 2026-09-14 for `.1075` ClearShot utility mini stub (`.1058`) |
 | [log/LOG-rotate-1057-for-1074.md](./log/LOG-rotate-1057-for-1074.md) | rotated 2026-09-14 for `.1074` Health mini slug (`.1057`) |
 | [log/LOG-rotate-1056-for-1073.md](./log/LOG-rotate-1056-for-1073.md) | rotated 2026-09-14 for `.1073` Health mini stub mount (`.1056`) |
 | [log/LOG-rotate-1055-for-1072.md](./log/LOG-rotate-1055-for-1072.md) | rotated 2026-09-14 for `.1072` Mission OS capability interfaces (`.1055`) |

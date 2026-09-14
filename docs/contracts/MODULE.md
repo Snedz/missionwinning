@@ -40,7 +40,7 @@ module:
 | `id.account` | Settings | yes |
 | `economy.rewards` | Local XP / badges | yes |
 | `social.server` | Garage messenger (rooms + local presence) | **yes** (`free_core: true` — garage itself is not a paywall) |
-| `utility.clearshot` | First utility mini (ClearShot). Entry `mission://minis/clearshot`. Reserved — no product UI this ship. Scopes: `identity.read`, `photos.read`, `photos.write`, `storage.write`. Never `health.write`. | **yes** |
+| `utility.clearshot` | First utility mini (ClearShot). Entry `mission://minis/clearshot` (last-segment `clearshot`). Reserved — no product UI this ship. Scopes: `identity.read`, `photos.read`, `photos.write`, `storage.write`. Never `health.write`. Never `billing.read`. `storage.read` fail-closed. Mount helper: `src/lib/mission-os/clearshot.ts`. | **yes** |
 | `l1.health` | L1 first Health mini stub. Entry `mission://minis/health`. Reserved — no product UI this ship. Scopes: `identity.read`, `storage.read`, `storage.write`. Never photos, billing, or `health.write`. Not `utility.*` (ClearShot stays that family). Not `health.train`. Not `health.mini` (opaque last-segment `mini`). Mount helper: `src/lib/mission-os/health.ts`. | **yes** |
 | `game.*` | Future in-ecosystem games (Age of Empires 2 / Pokémon GO / Clash of Clans analogues) bind the same Mission ID — host runtime is post-PMF; **no UI in this horizon** | reserved |
 | `host.shell` | Future mini-host. Runtime note: reserved id only (`HOST_SHELL` / `HOST_SHELL_ID`). Not a `ModuleManifest` — no fake `/` entry. | n/a |
@@ -63,11 +63,11 @@ module:
 | `storage.write` | Write mini-scoped key-value (capped) |
 | `billing.read` | Read Super Bundle recognition (`none` / `super`). Always muted. Never checkout. Never gates `logSet`. |
 
-Host **denies** undeclared scopes (`scope_denied`). Unknown mini id → `unknown_mini`. `health.train` stays `free_core: true`; a mini cannot override that. Capability bus: `packages/mw-core/src/module/capabilities.ts`. Function web stubs: `src/lib/minis/` (#935). Named doors: `src/lib/mission-os/` (`IdentityCapability`, `BillingCapability` Stripe HOLD, `PhotosCapability`, `StorageCapability`, `MiniHost.mount`, `CapResult`). In-memory fakes: `createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`. Health stub: `HEALTH_MINI_MANIFEST` / `mountHealthMini` (identity + storage only).
+Host **denies** undeclared scopes (`scope_denied`). Unknown mini id → `unknown_mini`. `health.train` stays `free_core: true`; a mini cannot override that. Capability bus: `packages/mw-core/src/module/capabilities.ts`. Function web stubs: `src/lib/minis/` (#935). Named doors: `src/lib/mission-os/` (`IdentityCapability`, `BillingCapability` Stripe HOLD, `PhotosCapability`, `StorageCapability`, `MiniHost.mount`, `CapResult`). In-memory fakes: `createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`. Health stub: `HEALTH_MINI_MANIFEST` / `mountHealthMini` (identity + storage only). ClearShot stub: `CLEARSHOT_MINI_MANIFEST` / `mountClearShotMini` (photos + storage.write; billing `scope_denied`).
 
 ## Types
 
-`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`, `assertCapability`, `UTILITY_CLEARSHOT_MANIFEST`, `HOST_SHELL`). Named host doors: `src/lib/mission-os/` (`MiniHost.mount`, `CapResult`, in-memory fakes, `HEALTH_MINI_MANIFEST` / `mountHealthMini`).
+`@missionwinning/mw-core` → `module` (`ModuleManifest`, `ModuleScope`, `parseModuleId`, `assertCapability`, `UTILITY_CLEARSHOT_MANIFEST`, `HOST_SHELL`). Named host doors: `src/lib/mission-os/` (`MiniHost.mount`, `CapResult`, in-memory fakes, `HEALTH_MINI_MANIFEST` / `mountHealthMini`, `CLEARSHOT_MINI_MANIFEST` / `mountClearShotMini`).
 
 ## Agent resume
 
