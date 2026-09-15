@@ -484,6 +484,6 @@ Label `2026.07-unified.1064`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1045-for-1064.md](docs/archive/log/LOG-rotate-1045-for-1064.md) (`.1045`) and [docs/archive/log/LOG-rotate-1044-for-1064.md](docs/archive/log/LOG-rotate-1044-for-1064.md) (`.1044`).
 
-## 2026-09-13 · `.1062` — empty HOP + CONTEXT Now budget
+## 2026-09-13 — empty HOP + CONTEXT Now budget (`.1062`)
 
 Paper hygiene after `.1061`. Cleared stale `leftover-victory-description` hop (Victory house desc already rode `.1059`). Rotated `.1043`/`.1042` out of `## Now` so budget is 25 again. No product change. Do not promote — live www stays `.697`.
