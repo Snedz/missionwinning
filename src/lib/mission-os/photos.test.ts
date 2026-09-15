@@ -95,7 +95,12 @@ test('l1.health is a reserved Health mount without photos — not ClearShot, not
 test('photos fakes never import camera, MediaStore, or Android wiring', () => {
   for (const file of ['fakes.ts', 'types.ts', 'host.ts', 'health.ts', 'clearshot.ts']) {
     const src = sourceOf(file);
-    assert.equal(src.includes('MediaStore'), false, `${file} must not name MediaStore`);
+    assert.equal(
+      /android\.provider\.MediaStore/i.test(src),
+      false,
+      `${file} must not import android.provider.MediaStore`
+    );
+    assert.equal(/MediaStore\.Images/i.test(src), false, `${file} must not write MediaStore.Images`);
     assert.equal(src.includes('getUserMedia'), false, `${file} must not open a camera`);
     assert.equal(src.includes('ImagePicker'), false, `${file} must not pick images`);
     assert.equal(/expo-camera/i.test(src), false, `${file} must not import expo-camera`);

@@ -48,7 +48,7 @@ export interface BillingCapability {
 /**
  * Photos stub — interface only. Scoped minis stay `photos_stub`.
  * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
- * Never camera. Never MediaStore. Never Android wiring.
+ * Never camera. Never a gallery write. Never Android wiring.
  */
 export interface PhotosCapability {
   read(): CapResult<never>;
