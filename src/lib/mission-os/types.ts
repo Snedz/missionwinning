@@ -7,6 +7,7 @@
  */
 
 import type {
+  BillingActionHold,
   BillingSnapshot,
   CapabilityResult,
   IdentitySnapshot,
@@ -15,7 +16,11 @@ import type {
 
 export type CapResult<T> = CapabilityResult<T>;
 
-export type { BillingSnapshot, IdentitySnapshot, ModuleManifest };
+export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, ModuleManifest };
+
+/** Closed billing methods. A fourth name is a new PR, not a silent extra door. */
+export const BILLING_METHODS = ['read', 'checkout', 'portal'] as const;
+export type BillingMethod = (typeof BILLING_METHODS)[number];
 
 /** Closed door set. A fifth name is a new PR, not a silent extra method. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
@@ -30,6 +35,10 @@ export interface IdentityCapability {
  */
 export interface BillingCapability {
   read(): CapResult<BillingSnapshot>;
+  /** Stripe HOLD — stub success when scoped. Never a checkout session. */
+  checkout(): CapResult<BillingActionHold>;
+  /** Stripe HOLD — stub success when scoped. Never a portal URL. */
+  portal(): CapResult<BillingActionHold>;
 }
 
 export interface PhotosCapability {

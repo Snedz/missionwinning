@@ -10,6 +10,8 @@ import {
   STORAGE_MAX_KEYS,
   STORAGE_MAX_VALUE_BYTES,
   assertCapability,
+  checkoutBilling,
+  portalBilling,
   readBilling,
   readIdentity,
   readPhotos,
@@ -69,6 +71,17 @@ test('billing stub: ClearShot has no billing.read; train never needs it to log',
   const muted = readBilling(withScope, { bundle: 'super', muted: false });
   assert.deepEqual(muted, { ok: true, value: { bundle: 'super', muted: true } });
   assert.equal(MUTED_BILLING.bundle, 'none');
+
+  assert.deepEqual(checkoutBilling(UTILITY_CLEARSHOT_MANIFEST), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(portalBilling(UTILITY_CLEARSHOT_MANIFEST), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(checkoutBilling(withScope), { ok: true, value: { held: true } });
+  assert.deepEqual(portalBilling(withScope), { ok: true, value: { held: true } });
 });
 
 test('photos even when scoped return photos_stub', () => {
