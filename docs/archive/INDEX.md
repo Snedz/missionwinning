@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1067-for-1082.md](./log/LOG-rotate-1067-for-1082.md) | rotated 2026-09-15 for `.1082` identity CapResult deny consistency (`.1067`) |
 | [log/LOG-rotate-1066-for-1081.md](./log/LOG-rotate-1066-for-1081.md) | rotated 2026-09-15 for `.1081` MiniHost.listMounted inventory (`.1066`) |
 | [log/LOG-rotate-1065-for-1080.md](./log/LOG-rotate-1065-for-1080.md) | rotated 2026-09-15 for `.1080` photos CapResult deny consistency (`.1065`) |
 | [log/LOG-rotate-1064-for-1079.md](./log/LOG-rotate-1064-for-1079.md) | rotated 2026-09-15 for `.1079` billing CapResult deny consistency (`.1064`) |

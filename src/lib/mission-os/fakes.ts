@@ -5,6 +5,7 @@
  * reports muted. Photos stay `photos_stub` when scoped; unscoped is
  * `scope_denied` (same CapResult deny as billing). Storage is process-local.
  * Identity is an injected snapshot — guests stay null; nothing is minted.
+ * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  */
 
 import {

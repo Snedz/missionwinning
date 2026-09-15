@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1081` MiniHost.listMounted CapResult inventory on in-memory fakes; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1081";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1082` identity CapResult deny consistency on in-memory fakes; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1082";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
