@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1086` MiniHost already_mounted on in-memory host; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1086";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1087` MiniHost unknown_mini refuse on in-memory host; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1087";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

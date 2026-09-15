@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1072-for-1087.md](./log/LOG-rotate-1072-for-1087.md) | rotated 2026-09-15 for `.1087` MiniHost unknown_mini refuse (`.1072`) |
 | [log/LOG-rotate-1071-for-1086.md](./log/LOG-rotate-1071-for-1086.md) | rotated 2026-09-15 for `.1086` MiniHost already_mounted (`.1071`) |
 | [log/LOG-rotate-1070-for-1085.md](./log/LOG-rotate-1070-for-1085.md) | rotated 2026-09-15 for `.1085` CapResult unknown-method consistency (`.1070`) |
 | [log/LOG-rotate-1069-for-1084.md](./log/LOG-rotate-1069-for-1084.md) | rotated 2026-09-15 for `.1084` CapResult allow-path consistency (`.1069`) |

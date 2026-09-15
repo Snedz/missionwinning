@@ -1,5 +1,6 @@
 /**
- * In-memory Mission OS host — mounts a manifest and binds scoped doors.
+ * In-memory Mission OS host — mounts a known manifest and binds scoped doors.
+ * An id outside the closed allowlist is `unknown_mini` (no partial mount).
  * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
  * read leftovers. `listMounted` is the CapResult inventory (ids + declared
@@ -25,6 +26,26 @@ import {
   createStorageFake,
 } from './fakes';
 import type { CapResult, MiniHost, MountedMini } from './types';
+
+/**
+ * Closed host allowlist. Product stubs + existing test fixtures only.
+ * A new id is a new PR — not a silent mount. Not `MINI_REGISTRY`.
+ */
+export const HOST_MOUNT_ALLOWLIST: ReadonlySet<string> = new Set([
+  'l1.health',
+  'utility.clearshot',
+  'health.train',
+  'test.billing',
+  'test.noidentity',
+  'test.nostorage',
+  'test.granted',
+  'utility.probe',
+  'utility.other',
+]);
+
+export function isKnownMountId(id: string): boolean {
+  return HOST_MOUNT_ALLOWLIST.has(id);
+}
 
 export type MiniHostOptions = {
   identity?: IdentitySnapshot;
@@ -79,11 +100,19 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
   }
 
   return {
-    mount(manifest: ModuleManifest): CapResult<MountedMini> {
+    mount(target: string | ModuleManifest): CapResult<MountedMini> {
+      if (typeof target === 'string') {
+        if (mounted.has(target)) return { ok: false, code: 'already_mounted' };
+        return { ok: false, code: 'unknown_mini' };
+      }
+      const manifest = target;
       try {
         assertModuleManifest(manifest);
       } catch {
         return { ok: false, code: 'stub' };
+      }
+      if (!isKnownMountId(manifest.id)) {
+        return { ok: false, code: 'unknown_mini' };
       }
       if (mounted.has(manifest.id)) {
         return { ok: false, code: 'already_mounted' };

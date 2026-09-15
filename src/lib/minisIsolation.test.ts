@@ -91,6 +91,8 @@ const BUS_SYMBOLS = new Set([
   'lookupMini',
   'MINI_REGISTRY',
   'createMiniHost',
+  'HOST_MOUNT_ALLOWLIST',
+  'isKnownMountId',
   'createBillingHold',
   'createBillingFake',
   'createIdentityFake',
