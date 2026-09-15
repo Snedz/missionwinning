@@ -15,6 +15,7 @@ export type CapabilityDenyCode =
   | 'unknown_method'
   | 'already_mounted'
   | 'not_mounted'
+  | 'bad_deeplink'
   | 'storage_cap';
 
 export type CapabilityOk<T> = { ok: true; value: T };

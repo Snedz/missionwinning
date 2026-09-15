@@ -1,10 +1,10 @@
 /**
- * Last-segment deeplink of an unknown slug is unknown_mini.
+ * Malformed / wrong-scheme / non-minis deeplink is bad_deeplink.
  *
- * Judge ≠ builder: deny codes and the accept entry are hardcoded here,
+ * Judge ≠ builder: deny codes and the accept URIs are hardcoded here,
  * not read back from MINI_LAST_SEGMENT_ROUTES. A refuse that throws,
- * mounts, or reuses not_mounted would mean the table grew a silent
- * invented mini.
+ * mounts, or reuses unknown_mini for a non-minis URI would mean the
+ * shape gate vanished into the table-miss code.
  */
 
 import { test } from 'node:test';
@@ -27,22 +27,19 @@ function sourceOf(file: string): string {
   return readFileSync(path.join(here, file), 'utf8');
 }
 
+const BAD: CapResult<never> = { ok: false, code: 'bad_deeplink' };
 const UNKNOWN: CapResult<never> = { ok: false, code: 'unknown_mini' };
 const ALREADY_MOUNTED: CapResult<never> = { ok: false, code: 'already_mounted' };
 const NOT_MOUNTED: CapResult<never> = { ok: false, code: 'not_mounted' };
+
 const UNKNOWN_ENTRY = 'mission://minis/totally-unknown';
 const HEALTH_ENTRY = 'mission://minis/health';
 const CLEARSHOT_ENTRY = 'mission://minis/clearshot';
 const HEALTH_ID = 'l1.health';
 const CLEARSHOT_ID = 'utility.clearshot';
 
-/** Host-allowlisted test fixtures — last-segment is not a product deeplink. */
-const FIXTURE_ENTRIES = [
-  'mission://minis/billing',
-  'mission://minis/granted',
-  'mission://minis/noidentity',
-  'mission://minis/nostorage',
-] as const;
+/** Accept #1 — not a well-formed mission://minis/<segment>. */
+const BAD_ENTRIES = ['', 'https://evil', 'mission://other/x', 'mission://minis'] as const;
 
 function assertMounted(result: CapResult<MountedMini>): MountedMini {
   assert.equal(result.ok, true, 'mount must succeed');
@@ -50,19 +47,50 @@ function assertMounted(result: CapResult<MountedMini>): MountedMini {
   return result.value;
 }
 
-function assertUnknownMini(result: CapResult<unknown>, label: string): void {
-  assert.deepEqual(result, UNKNOWN, label);
+function assertBadDeeplink(result: CapResult<unknown>, label: string): void {
+  assert.deepEqual(result, BAD, label);
   assert.equal(result.ok, false, label);
   if (result.ok) return;
-  assert.equal(result.code, 'unknown_mini', label);
-  assert.notEqual(result.code, 'bad_deeplink', label);
+  assert.equal(result.code, 'bad_deeplink', label);
+  assert.notEqual(result.code, 'unknown_mini', label);
   assert.notEqual(result.code, 'not_mounted', label);
   assert.notEqual(result.code, 'already_mounted', label);
   assert.notEqual(result.code, 'stub', label);
   assert.notEqual(result.code, 'scope_denied', label);
 }
 
-test('mission://minis/totally-unknown is unknown_mini and does not throw', () => {
+test('empty / https://evil / mission://other/x / mission://minis are bad_deeplink and do not throw', () => {
+  for (const entry of BAD_ENTRIES) {
+    let threw = false;
+    let resolved: CapResult<unknown> | undefined;
+    try {
+      resolved = resolveMiniDeeplink(entry);
+    } catch {
+      threw = true;
+    }
+    assert.equal(threw, false, `${JSON.stringify(entry)} must not throw`);
+    assertBadDeeplink(resolved ?? { ok: true, value: undefined }, JSON.stringify(entry));
+  }
+});
+
+test('mountMiniByDeeplink of a bad URI does not mount', () => {
+  const host = createMiniHost();
+  for (const entry of BAD_ENTRIES) {
+    let threw = false;
+    let refused: CapResult<MountedMini> | undefined;
+    try {
+      refused = mountMiniByDeeplink(host, entry);
+    } catch {
+      threw = true;
+    }
+    assert.equal(threw, false, `${JSON.stringify(entry)} must not throw`);
+    assertBadDeeplink(refused ?? { ok: true, value: undefined }, `mount ${JSON.stringify(entry)}`);
+  }
+  assert.deepEqual(host.listMounted(), { ok: true, value: [] });
+  assert.deepEqual(host.listMounted('totally.unknown'), UNKNOWN);
+});
+
+test('mission://minis/totally-unknown stays unknown_mini', () => {
   let threw = false;
   let resolved: CapResult<unknown> | undefined;
   try {
@@ -71,38 +99,14 @@ test('mission://minis/totally-unknown is unknown_mini and does not throw', () =>
     threw = true;
   }
   assert.equal(threw, false);
-  assertUnknownMini(resolved ?? { ok: true, value: undefined }, UNKNOWN_ENTRY);
-});
+  assert.deepEqual(resolved, UNKNOWN);
+  if (!resolved || resolved.ok) return;
+  assert.equal(resolved.code, 'unknown_mini');
+  assert.notEqual(resolved.code, 'bad_deeplink');
 
-test('mountMiniByDeeplink of totally-unknown does not mount', () => {
   const host = createMiniHost();
-  let threw = false;
-  let refused: CapResult<MountedMini> | undefined;
-  try {
-    refused = mountMiniByDeeplink(host, UNKNOWN_ENTRY);
-  } catch {
-    threw = true;
-  }
-  assert.equal(threw, false);
-  assertUnknownMini(refused ?? { ok: true, value: undefined }, 'mount deeplink');
-  assert.deepEqual(host.listMounted(), { ok: true, value: [] });
-  assert.deepEqual(host.listMounted('totally.unknown'), UNKNOWN);
-});
-
-test('valid slug not in the deeplink table is unknown_mini', () => {
-  assertUnknownMini(resolveMiniByLastSegment('totallyunknown'), 'totallyunknown');
-  assertUnknownMini(resolveMiniDeeplink('mission://minis/totallyunknown'), 'totallyunknown entry');
-  const host = createMiniHost();
-  assertUnknownMini(mountMiniByDeeplink(host, 'mission://minis/totallyunknown'), 'mount totallyunknown');
-  assert.deepEqual(host.listMounted(), { ok: true, value: [] });
-});
-
-test('host-allowlisted fixture slugs do not resolve via deeplink', () => {
-  const host = createMiniHost();
-  for (const entry of FIXTURE_ENTRIES) {
-    assertUnknownMini(resolveMiniDeeplink(entry), entry);
-    assertUnknownMini(mountMiniByDeeplink(host, entry), `mount ${entry}`);
-  }
+  const mounted = mountMiniByDeeplink(host, UNKNOWN_ENTRY);
+  assert.deepEqual(mounted, UNKNOWN);
   assert.deepEqual(host.listMounted(), { ok: true, value: [] });
 });
 
@@ -138,9 +142,10 @@ test('known mission://minis/health and mission://minis/clearshot still mount', (
   );
 });
 
-test('mount / call / unmount CapResult codes from .1078–.1089 stay', () => {
+test('unknown_mini / already_mounted / not_mounted stay unchanged', () => {
   const host = createMiniHost();
-  assertUnknownMini(resolveMiniDeeplink(UNKNOWN_ENTRY), 'unknown still unknown_mini');
+  assert.deepEqual(resolveMiniDeeplink(UNKNOWN_ENTRY), UNKNOWN);
+  assert.deepEqual(resolveMiniByLastSegment('totallyunknown'), UNKNOWN);
   assert.deepEqual(host.mount('totally.unknown'), UNKNOWN);
   assert.deepEqual(host.unmount(HEALTH_ID), NOT_MOUNTED);
   assert.deepEqual(host.call(HEALTH_ID, 'identity', 'read'), NOT_MOUNTED);
@@ -169,14 +174,16 @@ test('mount / call / unmount CapResult codes from .1078–.1089 stay', () => {
   assert.notEqual(leftover.value, 'health-only');
 });
 
-test('deeplink unknown refuse never imports Stripe, camera, or Android wiring', () => {
+test('deeplink bad_deeplink refuse never imports Stripe, camera, or Android wiring', () => {
   const src = sourceOf('deeplink.ts');
   assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false);
   assert.equal(src.includes('premiumServer'), false);
   assert.equal(src.includes('getUserMedia'), false);
   assert.equal(/android\.provider\.MediaStore/i.test(src), false);
   assert.equal(src.includes('apps/android'), false);
+  assert.equal(src.includes("code: 'bad_deeplink'"), true);
   assert.equal(src.includes("code: 'unknown_mini'"), true);
   assert.equal(src.includes(UNKNOWN_ENTRY), false);
+  assert.equal(src.includes('https://evil'), false);
   assert.equal(src.includes('MINI_LAST_SEGMENT_ROUTES'), true);
 });

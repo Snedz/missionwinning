@@ -93,22 +93,29 @@ test('mission://minis/clearshot mounts utility.clearshot', () => {
 
 test('long opaque last-segments do not resolve to ClearShot', () => {
   const host = createMiniHost();
-  const opaque = [
+  const opaqueUnknown = [
     'mission://minis/utility.clearshot',
     'mission://minis/utilityclearshot',
     'mission://minis/utility-clearshot',
-    '/minis/clearshot',
     'mission://minis/mini',
-    'clearshot',
-    'utility.clearshot',
   ];
-  for (const entry of opaque) {
+  for (const entry of opaqueUnknown) {
     assert.deepEqual(
       resolveMiniDeeplink(entry),
       { ok: false, code: 'unknown_mini' },
       `${entry} must not be a last-segment ClearShot route`
     );
     assert.deepEqual(mountMiniByDeeplink(host, entry), { ok: false, code: 'unknown_mini' });
+  }
+
+  const opaqueBad = ['/minis/clearshot', 'clearshot', 'utility.clearshot'];
+  for (const entry of opaqueBad) {
+    assert.deepEqual(
+      resolveMiniDeeplink(entry),
+      { ok: false, code: 'bad_deeplink' },
+      `${entry} is not mission://minis/<segment>`
+    );
+    assert.deepEqual(mountMiniByDeeplink(host, entry), { ok: false, code: 'bad_deeplink' });
   }
 
   assert.deepEqual(resolveMiniByLastSegment('utilityclearshot'), {
