@@ -75,6 +75,10 @@ function isAllowedBusHome(file: string): boolean {
 const BUS_SYMBOLS = new Set([
   'assertCapability',
   'resolveRegisteredMini',
+  'inventoryFromManifest',
+  'listMountedInventory',
+  'peekMountedInventory',
+  'peekMountedScope',
   'readIdentity',
   'readBilling',
   'checkoutBilling',

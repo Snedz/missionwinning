@@ -25,6 +25,6 @@
 | Path | Role |
 |------|------|
 | `packages/mw-core/src/module/` | Manifest + `assertCapability` |
-| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount` / `unmount`, `.1072` / `.1078`) + Health stub (`l1.health` at `mission://minis/health`, `.1074`) + ClearShot stub (`utility.clearshot` at `mission://minis/clearshot`, `.1075`) + mount isolation tests (`.1076`) + last-segment deeplink (`mission://minis/clearshot` → `utility.clearshot`, `.1077`) + unmount leftover isolation (`.1078`) + billing CapResult deny consistency (`.1079`) + photos CapResult deny consistency (`.1080`) |
+| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount` / `unmount` / `listMounted`, `.1072` / `.1078` / `.1081`) + Health stub (`l1.health` at `mission://minis/health`, `.1074`) + ClearShot stub (`utility.clearshot` at `mission://minis/clearshot`, `.1075`) + mount isolation tests (`.1076`) + last-segment deeplink (`mission://minis/clearshot` → `utility.clearshot`, `.1077`) + unmount leftover isolation (`.1078`) + billing CapResult deny consistency (`.1079`) + photos CapResult deny consistency (`.1080`) + listMounted CapResult inventory (`.1081`) |
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |

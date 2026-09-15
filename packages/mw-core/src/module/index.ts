@@ -20,6 +20,7 @@ export type {
   IdentitySnapshot,
   BillingSnapshot,
   BillingActionHold,
+  MiniInventoryEntry,
 } from './capabilities';
 export {
   GUEST_IDENTITY,
@@ -29,6 +30,10 @@ export {
   STORAGE_MAX_VALUE_BYTES,
   assertCapability,
   resolveRegisteredMini,
+  inventoryFromManifest,
+  listMountedInventory,
+  peekMountedInventory,
+  peekMountedScope,
   readIdentity,
   readBilling,
   checkoutBilling,

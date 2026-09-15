@@ -58,6 +58,52 @@ export function resolveRegisteredMini(
   return { ok: true, value: hit };
 }
 
+/** Mounted mini inventory row — id + declared scopes only. */
+export type MiniInventoryEntry = {
+  id: string;
+  scopes: readonly ModuleScope[];
+};
+
+export function inventoryFromManifest(manifest: ModuleManifest): MiniInventoryEntry {
+  return { id: manifest.id, scopes: [...manifest.scopes] };
+}
+
+export function listMountedInventory(
+  table: ReadonlyMap<string, MiniInventoryEntry>
+): CapabilityResult<readonly MiniInventoryEntry[]> {
+  return {
+    ok: true,
+    value: [...table.values()].map((row) => ({
+      id: row.id,
+      scopes: [...row.scopes],
+    })),
+  };
+}
+
+export function peekMountedInventory(
+  table: ReadonlyMap<string, MiniInventoryEntry>,
+  id: string
+): CapabilityResult<MiniInventoryEntry> {
+  const hit = table.get(id);
+  if (!hit) return { ok: false, code: 'unknown_mini' };
+  return { ok: true, value: { id: hit.id, scopes: [...hit.scopes] } };
+}
+
+/**
+ * Peek one declared scope on a mounted mini.
+ * Never-mounted → `unknown_mini` (id first). Undeclared → `scope_denied`.
+ */
+export function peekMountedScope(
+  table: ReadonlyMap<string, MiniInventoryEntry>,
+  id: string,
+  scope: ModuleScope
+): CapabilityResult<void> {
+  const hit = table.get(id);
+  if (!hit) return { ok: false, code: 'unknown_mini' };
+  if (!hit.scopes.includes(scope)) return { ok: false, code: 'scope_denied' };
+  return { ok: true, value: undefined };
+}
+
 export function readIdentity(
   manifest: ModuleManifest,
   snapshot: IdentitySnapshot = GUEST_IDENTITY
