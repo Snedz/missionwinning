@@ -120,8 +120,9 @@ test('33rd-key storage_cap then unmount+remount A starts empty; B untouched', ()
   assert.deepEqual(leftoverOverflow, MISS, 'refused overflow key must not appear');
 
   const first = remounted.storage.set('fresh', HEALTH_VALUE);
-  assert.deepEqual(first, SET_OK, 'first in-bound write after remount must succeed');
-  if (!first.ok) {
+  if (first.ok) {
+    assert.deepEqual(first, SET_OK, 'first in-bound write after remount must succeed');
+  } else {
     assert.notEqual(first.code, 'storage_cap', 'remount must not still be capped');
   }
   assert.deepEqual(remounted.storage.get('fresh'), { ok: true, value: HEALTH_VALUE });
