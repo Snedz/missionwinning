@@ -66,7 +66,7 @@ function callBilling(billing: BillingCapability, method: BillingMethod): CapResu
   return billing[method]();
 }
 
-function callPhotos(photos: PhotosCapability, method: PhotosMethod): CapResult<never> {
+function callPhotos(photos: PhotosCapability, method: PhotosMethod): CapResult<unknown> {
   return photos[method]();
 }
 

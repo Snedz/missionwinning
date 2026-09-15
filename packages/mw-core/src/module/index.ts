@@ -19,12 +19,14 @@ export type {
   CapabilityResult,
   IdentitySnapshot,
   BillingSnapshot,
+  PhotosSnapshot,
   BillingActionHold,
   MiniInventoryEntry,
 } from './capabilities';
 export {
   GUEST_IDENTITY,
   MUTED_BILLING,
+  STUB_PHOTOS,
   BILLING_ACTION_HOLD,
   STORAGE_MAX_KEYS,
   STORAGE_MAX_VALUE_BYTES,

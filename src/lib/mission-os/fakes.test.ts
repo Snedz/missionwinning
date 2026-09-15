@@ -17,6 +17,7 @@ import {
   createIdentityFake,
   injectIdentitySnapshot,
   createPhotosFake,
+  injectPhotosSnapshot,
   createStorageFake,
 } from './fakes';
 
@@ -144,6 +145,21 @@ test('photos fake is always photos_stub when scoped', () => {
     ok: false,
     code: 'scope_denied',
   });
+});
+
+test('injectPhotosSnapshot changes only that fake', () => {
+  const a = createPhotosFake(UTILITY_CLEARSHOT_MANIFEST, { album: 'shot', stub: true });
+  const b = createPhotosFake(HAPPY_MANIFEST, { album: 'granted', stub: true });
+  injectPhotosSnapshot(a, { album: 'shot', stub: false });
+  assert.deepEqual(a.read(), { ok: true, value: { album: 'shot', stub: true } });
+  assert.deepEqual(b.read(), { ok: true, value: { album: 'granted', stub: true } });
+  injectPhotosSnapshot(a, { album: 'shot-2', stub: false });
+  assert.deepEqual(a.read(), { ok: true, value: { album: 'shot-2', stub: true } });
+  assert.deepEqual(a.write(), { ok: true, value: { album: 'shot-2', stub: true } });
+  assert.deepEqual(b.read(), { ok: true, value: { album: 'granted', stub: true } });
+  injectPhotosSnapshot(b, { album: 'shot', stub: true });
+  assert.deepEqual(b.read(), { ok: true, value: { album: 'shot', stub: true } });
+  assert.deepEqual(a.read(), { ok: true, value: { album: 'shot-2', stub: true } });
 });
 
 test('storage fake is in-memory and namespaced by the map the caller owns', () => {

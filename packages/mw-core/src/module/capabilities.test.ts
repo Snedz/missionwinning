@@ -151,6 +151,35 @@ test('photos: scoped stays photos_stub; unscoped is the same scope_denied', () =
   });
 });
 
+test('photos: injected snapshots isolate; unscoped stays scope_denied', () => {
+  const shot = { album: 'shot', stub: false };
+  const granted = { album: 'granted', stub: false };
+  assert.deepEqual(readPhotos(UTILITY_CLEARSHOT_MANIFEST, shot), {
+    ok: true,
+    value: { album: 'shot', stub: true },
+  });
+  assert.deepEqual(writePhotos(UTILITY_CLEARSHOT_MANIFEST, shot), {
+    ok: true,
+    value: { album: 'shot', stub: true },
+  });
+  assert.deepEqual(readPhotos(UTILITY_CLEARSHOT_MANIFEST, granted), {
+    ok: true,
+    value: { album: 'granted', stub: true },
+  });
+  assert.notDeepEqual(
+    readPhotos(UTILITY_CLEARSHOT_MANIFEST, shot),
+    readPhotos(UTILITY_CLEARSHOT_MANIFEST, granted)
+  );
+  assert.deepEqual(readPhotos(HEALTH_TRAIN_MANIFEST, shot), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(writePhotos(HEALTH_TRAIN_MANIFEST, granted), {
+    ok: false,
+    code: 'scope_denied',
+  });
+});
+
 test('unscoped storage is scope_denied on every method and does not write', () => {
   const store = new Map<string, string>();
   assert.deepEqual(readStorage(HEALTH_TRAIN_MANIFEST, store, 'k'), {
