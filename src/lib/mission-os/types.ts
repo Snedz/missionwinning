@@ -60,6 +60,7 @@ export type CallDoorArgs = {
  * Identity stub — interface only. Scoped minis get the injected snapshot
  * for that mount (host-wide default, or fake-only per-mini override).
  * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
+ * Remount after inject rebinds the host snapshot (`.1102`).
  * Never mint. Never auth UI. Never Supabase.
  */
 export interface IdentityCapability {
