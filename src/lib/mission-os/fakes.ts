@@ -2,7 +2,8 @@
  * In-memory Mission OS capability fakes.
  *
  * Stripe HOLD: billing never imports Stripe, never opens checkout, always
- * reports muted. Photos stay `photos_stub`. Storage is process-local.
+ * reports muted. Photos stay `photos_stub` when scoped; unscoped is
+ * `scope_denied` (same CapResult deny as billing). Storage is process-local.
  * Identity is an injected snapshot — guests stay null; nothing is minted.
  */
 

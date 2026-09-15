@@ -84,7 +84,7 @@ test('billing stub: ClearShot has no billing.read; train never needs it to log',
   assert.deepEqual(portalBilling(withScope), { ok: true, value: { held: true } });
 });
 
-test('photos even when scoped return photos_stub', () => {
+test('photos: scoped stays photos_stub; unscoped is the same scope_denied', () => {
   assert.deepEqual(readPhotos(UTILITY_CLEARSHOT_MANIFEST), {
     ok: false,
     code: 'photos_stub',
@@ -94,6 +94,10 @@ test('photos even when scoped return photos_stub', () => {
     code: 'photos_stub',
   });
   assert.deepEqual(readPhotos(HEALTH_TRAIN_MANIFEST), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(writePhotos(HEALTH_TRAIN_MANIFEST), {
     ok: false,
     code: 'scope_denied',
   });

@@ -106,12 +106,20 @@ export function portalBilling(
   return { ok: true, value: BILLING_ACTION_HOLD };
 }
 
+/**
+ * Photos read. Scoped minis stay `photos_stub` — never a camera.
+ * Unscoped minis get the same CapResult deny as `readBilling`.
+ */
 export function readPhotos(manifest: ModuleManifest): CapabilityResult<never> {
   const gate = assertCapability(manifest, 'photos.read');
   if (!gate.ok) return gate;
   return { ok: false, code: 'photos_stub' };
 }
 
+/**
+ * Photos write. Scoped minis stay `photos_stub` — never MediaStore.
+ * Unscoped minis get the same CapResult deny as `readPhotos`.
+ */
 export function writePhotos(manifest: ModuleManifest): CapabilityResult<never> {
   const gate = assertCapability(manifest, 'photos.write');
   if (!gate.ok) return gate;
