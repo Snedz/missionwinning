@@ -1,4 +1,4 @@
-# Paper .1083 — Storage CapResult deny consistency
+# Paper .1084 — CapResult allow-path consistency
 
 ONE hop. Stubs stay stubby — no UI, no Stripe, no camera, no tip-promote.
 ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays. No
@@ -6,35 +6,37 @@ ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays. No
 
 ## Claim
 
-When a mini lacks `storage.write` (test-only mini without storage),
-every storage method on the fake bus (`get` / `set`) returns the same
-CapResult deny (`scope_denied`). Product minis with storage keep stub
-success: `l1.health` (read + write) and `utility.clearshot` (write;
-read stays `scope_denied` because ClearShot does not declare
-`storage.read`). No product mini lacks storage — test-only
-`test.nostorage` is the deny fixture.
+When a mini **declares** billing / photos / identity / storage, every
+granted method on that door returns the same existing stub-success
+envelope. Deny stays `.1079`–`.1083`. This hop is the allow-path
+mirror: one shape per door, not a second success code.
 
 ## Accept
 
-1. Closed storage methods are `get` and `set`. A third method is a new PR.
-2. `test.nostorage` (not a product mount): every storage method is
-   `{ ok: false, code: 'scope_denied' }` — not `photos_stub`, not
-   `stub`, not a throw. Deny does not write the map.
-3. `test.billing` (already unscoped for storage) returns the same deny
-   — the code is not hardcoded to one id.
-4. `l1.health`: `get` and `set` are stub success (in-memory map).
-5. `utility.clearshot`: `set` is stub success; `get` stays
-   `scope_denied` (no `storage.read`).
-6. `test.nostorage` is unknown to the deeplink table and
-   `MINI_REGISTRY`.
-7. Stubs stay stubby: no `safeStorage`, no raw `localStorage`, no
-   Stripe, no camera, no Android.
+1. Closed methods stay `identity.read`, billing `read` / `checkout` /
+   `portal`, photos `read` / `write`, storage `get` / `set`.
+2. Test-only `test.granted` (not a product mount) declares all four
+   doors. Granted envelopes are hardcoded:
+   - identity `read` → `{ ok: true, value: { missionId: null, callSign: null } }`
+     (or the injected snapshot). Nothing is minted.
+   - billing `read` → `{ ok: true, value: { bundle: 'none', muted: true } }`;
+     `checkout` / `portal` → `{ ok: true, value: { held: true } }`.
+   - photos `read` / `write` → `{ ok: false, code: 'photos_stub' }`
+     (existing scoped stub — not `ok: true`, not `scope_denied`).
+   - storage `get` / `set` → `{ ok: true, … }` on the in-memory map.
+3. Product minis keep the same granted stubs they already use:
+   `l1.health` (identity + storage), `utility.clearshot` (identity +
+   photos_stub + storage.write), `test.billing` (billing).
+4. `test.granted` is unknown to the deeplink table and `MINI_REGISTRY`.
+5. Stubs stay stubby: no Stripe, camera, MediaStore, Supabase, or
+   Android Photos / Billing.
 
-Judge ≠ builder: expected snapshots and deny codes are hardcoded in
-the test, not read back from production constants.
+Judge ≠ builder: expected envelopes are hardcoded in the test, not
+read back from production constants.
 
 ## Non-goals
 
 No product UI. No Today / Train door. No Stripe. No camera.
 No `PRIVATE_MODE` flip. No tip-promote. Live www stays `.697`.
 ClearShot Android cash stays Next ONE.
+No deny-shape rewrite. No photos `ok: true`.

@@ -164,6 +164,38 @@ test('unscoped storage is scope_denied on every method and does not write', () =
   assert.equal(store.has('k'), false);
 });
 
+test('allow-path: declared scopes return the existing stub envelopes', () => {
+  const granted = {
+    ...UTILITY_CLEARSHOT_MANIFEST,
+    id: 'utility.probe',
+    name: 'Probe',
+    entry: 'mission://minis/probe',
+    scopes: [
+      'identity.read',
+      'billing.read',
+      'photos.read',
+      'photos.write',
+      'storage.read',
+      'storage.write',
+    ] as const,
+  };
+  assertModuleManifest(granted);
+
+  assert.deepEqual(readIdentity(granted), {
+    ok: true,
+    value: { missionId: null, callSign: null },
+  });
+  assert.deepEqual(readBilling(granted), { ok: true, value: { bundle: 'none', muted: true } });
+  assert.deepEqual(checkoutBilling(granted), { ok: true, value: { held: true } });
+  assert.deepEqual(portalBilling(granted), { ok: true, value: { held: true } });
+  assert.deepEqual(readPhotos(granted), { ok: false, code: 'photos_stub' });
+  assert.deepEqual(writePhotos(granted), { ok: false, code: 'photos_stub' });
+
+  const store = new Map<string, string>();
+  assert.deepEqual(writeStorage(granted, store, 'note', 'ok'), { ok: true, value: undefined });
+  assert.deepEqual(readStorage(granted, store, 'note'), { ok: true, value: 'ok' });
+});
+
 test('storage write is capped; ClearShot cannot read without storage.read', () => {
   const store = new Map<string, string>();
   const wrote = writeStorage(UTILITY_CLEARSHOT_MANIFEST, store, 'k', 'v');

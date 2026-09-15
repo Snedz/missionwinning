@@ -4,10 +4,10 @@
 
 ## Agent resume card
 
-- **Purpose:** `IdentityCapability` (`read`), `BillingCapability` (Stripe HOLD — `read` / `checkout` / `portal`, interface only), `PhotosCapability` (`read` / `write`), `StorageCapability` (`get` / `set`), `MiniHost.mount(manifest)`, `MiniHost.unmount(id)`, `MiniHost.listMounted`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only. ClearShot utility stub (`utility.clearshot` at `mission://minis/clearshot`) mounts photos + storage.write. Last-segment deeplink table (`health` / `clearshot`) resolves `mission://minis/{slug}` to the reserved mount. In-memory unmount clears that mini's fake keyspace (`.1078`). Billing CapResult deny is the same shape on every method when unscoped (`.1079`). Photos CapResult deny is the same shape on every method when unscoped; scoped stays `photos_stub` (`.1080`). `listMounted` is the CapResult inventory — mounted ids + declared scopes only; undeclared peek → `scope_denied`; never-mounted id → `unknown_mini` (`.1081`). Identity CapResult deny is the same shape on every method when unscoped; Health + ClearShot keep stub success (`.1082`). Storage CapResult deny is the same shape on every method when unscoped (`test.nostorage`, `test.billing`); Health keeps stub success; ClearShot `set` succeeds, `get` stays `scope_denied` (`.1083`).
+- **Purpose:** `IdentityCapability` (`read`), `BillingCapability` (Stripe HOLD — `read` / `checkout` / `portal`, interface only), `PhotosCapability` (`read` / `write`), `StorageCapability` (`get` / `set`), `MiniHost.mount(manifest)`, `MiniHost.unmount(id)`, `MiniHost.listMounted`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only. ClearShot utility stub (`utility.clearshot` at `mission://minis/clearshot`) mounts photos + storage.write. Last-segment deeplink table (`health` / `clearshot`) resolves `mission://minis/{slug}` to the reserved mount. In-memory unmount clears that mini's fake keyspace (`.1078`). Billing CapResult deny is the same shape on every method when unscoped (`.1079`). Photos CapResult deny is the same shape on every method when unscoped; scoped stays `photos_stub` (`.1080`). `listMounted` is the CapResult inventory — mounted ids + declared scopes only; undeclared peek → `scope_denied`; never-mounted id → `unknown_mini` (`.1081`). Identity CapResult deny is the same shape on every method when unscoped; Health + ClearShot keep stub success (`.1082`). Storage CapResult deny is the same shape on every method when unscoped (`test.nostorage`, `test.billing`); Health keeps stub success; ClearShot `set` succeeds, `get` stays `scope_denied` (`.1083`). Allow-path consistency: when a mini declares billing / photos / identity / storage, granted methods return the existing stub envelopes (`.1084`).
 - **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK, Health product UI, auth UI, Supabase.
-- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`, `clearshot.ts`, `deeplink.ts`, `billingProbe.ts` (test-only), `identityProbe.ts` (test-only), `storageProbe.ts` (test-only)
-- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/mission-os/clearshot.test.ts`, `src/lib/mission-os/mountIsolation.test.ts`, `src/lib/mission-os/deeplink.test.ts`, `src/lib/mission-os/billing.test.ts`, `src/lib/mission-os/photos.test.ts`, `src/lib/mission-os/listMounted.test.ts`, `src/lib/mission-os/identity.test.ts`, `src/lib/mission-os/storage.test.ts`, `src/lib/minisIsolation.test.ts`
+- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`, `clearshot.ts`, `deeplink.ts`, `billingProbe.ts` (test-only), `identityProbe.ts` (test-only), `storageProbe.ts` (test-only), `allowProbe.ts` (test-only)
+- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/mission-os/clearshot.test.ts`, `src/lib/mission-os/mountIsolation.test.ts`, `src/lib/mission-os/deeplink.test.ts`, `src/lib/mission-os/billing.test.ts`, `src/lib/mission-os/photos.test.ts`, `src/lib/mission-os/listMounted.test.ts`, `src/lib/mission-os/identity.test.ts`, `src/lib/mission-os/storage.test.ts`, `src/lib/mission-os/allow.test.ts`, `src/lib/minisIsolation.test.ts`
 - **Forbidden:** Import from `src/lib/coach/`, `src/store/`, `HomePage`, `ActiveWorkoutPage`. Do not import Stripe, `premiumServer`, or `safeStorage`. Never gate `logSet`.
 - **Horizon:** Interfaces + stubs. Host chrome later.
 
@@ -34,6 +34,8 @@ Test-only identity deny probe: `TEST_NO_IDENTITY_MANIFEST` / `mountTestNoIdentit
 
 Test-only no-storage probe: `TEST_NO_STORAGE_MANIFEST` / `mountTestNoStorageMini` (`test.nostorage` at `mission://minis/nostorage`). Not a product mount. Not in the deeplink table. Not in `MINI_REGISTRY`. Declares `identity.read` only so every storage method is `scope_denied`.
 
+Test-only allow-path probe: `TEST_GRANTED_MANIFEST` / `mountTestGrantedMini` (`test.granted` at `mission://minis/granted`). Not a product mount. Not in the deeplink table. Not in `MINI_REGISTRY`. Declares identity + billing + photos + storage so granted stub envelopes can be asserted together.
+
 ## Related
 
 | Path | Role |
@@ -48,8 +50,10 @@ Test-only no-storage probe: `TEST_NO_STORAGE_MANIFEST` / `mountTestNoStorageMini
 | `listMounted.test.ts` | MiniHost.listMounted CapResult inventory — declared scopes only; undeclared peek `scope_denied`; never-mounted `unknown_mini` (`.1081`) |
 | `identity.test.ts` | Identity CapResult deny consistency — test-only `test.noidentity` `scope_denied`; Health + ClearShot stub success (`.1082`) |
 | `storage.test.ts` | Storage CapResult deny consistency — unscoped `scope_denied` (no write); Health stub success; ClearShot write-only (`.1083`) |
-| `PLAN.md` | `.1083` Storage CapResult deny consistency claim |
+| `allow.test.ts` | CapResult allow-path consistency — test-only `test.granted` returns existing stub envelopes on every declared door (`.1084`) |
+| `PLAN.md` | `.1084` CapResult allow-path consistency claim |
 | `deeplink.ts` | Last-segment `clearshot` → `utility.clearshot` mount |
 | `billingProbe.ts` | Test-only `test.billing` — not a product mount |
 | `identityProbe.ts` | Test-only `test.noidentity` — not a product mount |
 | `storageProbe.ts` | Test-only `test.nostorage` — not a product mount |
+| `allowProbe.ts` | Test-only `test.granted` — not a product mount |
