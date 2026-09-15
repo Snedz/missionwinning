@@ -35,7 +35,9 @@ function sourceOf(file: string): string {
 const SCOPE_DENIED: CapResult<never> = { ok: false, code: 'scope_denied' };
 
 function callStorage(storage: StorageCapability, method: StorageMethod): CapResult<unknown> {
-  return method === 'get' ? storage.get('note') : storage.set('note', 'ok');
+  if (method === 'get') return storage.get('note');
+  if (method === 'set') return storage.set('note', 'ok');
+  return storage.remove('note');
 }
 
 function assertMounted<T extends { ok: boolean }>(
@@ -56,17 +58,18 @@ function assertEveryStorageDenied(storage: StorageCapability, label: string): vo
   }
 }
 
-test('closed storage methods are get + set', () => {
-  assert.deepEqual([...STORAGE_METHODS], ['get', 'set']);
+test('closed storage methods are get + set + remove', () => {
+  assert.deepEqual([...STORAGE_METHODS], ['get', 'set', 'remove']);
   const fake = createStorageFake(HEALTH_MINI_MANIFEST);
   assert.deepEqual(Object.keys(fake).sort(), [...STORAGE_METHODS].sort());
 });
 
 test('test.nostorage: every storage method is scope_denied and does not write', () => {
   const store = new Map<string, string>();
+  store.set('note', 'secret');
   const fake = createStorageFake(TEST_NO_STORAGE_MANIFEST, store);
   assertEveryStorageDenied(fake, 'test.nostorage fake');
-  assert.equal(store.has('note'), false, 'deny must not write the map');
+  assert.equal(store.get('note'), 'secret', 'deny must not write or delete');
 
   const mounted = mountTestNoStorageMini(createMiniHost());
   assertMounted(mounted);
@@ -76,9 +79,10 @@ test('test.nostorage: every storage method is scope_denied and does not write', 
 
 test('test.billing: every storage method is scope_denied — not one-id hardcoded', () => {
   const store = new Map<string, string>();
+  store.set('note', 'secret');
   const fake = createStorageFake(TEST_BILLING_MANIFEST, store);
   assertEveryStorageDenied(fake, 'test.billing fake');
-  assert.equal(store.has('note'), false, 'deny must not write the map');
+  assert.equal(store.get('note'), 'secret', 'deny must not write or delete');
 
   const mounted = mountTestBillingMini(createMiniHost());
   assertMounted(mounted);
@@ -86,7 +90,7 @@ test('test.billing: every storage method is scope_denied — not one-id hardcode
   assertEveryStorageDenied(mounted.value.storage, 'test.billing host');
 });
 
-test('Health: get and set are stub success', () => {
+test('Health: get, set, and remove are stub success', () => {
   const mounted = mountHealthMini(createMiniHost());
   assertMounted(mounted);
   assert.equal(mounted.value.manifest.id, 'l1.health');
@@ -105,6 +109,7 @@ test('ClearShot: set is stub success; get stays scope_denied', () => {
   assert.deepEqual(mounted.value.storage.set('note', 'ok'), { ok: true, value: undefined });
   const read = mounted.value.storage.get('note');
   assert.deepEqual(read, SCOPE_DENIED);
+  assert.deepEqual(mounted.value.storage.remove('note'), { ok: true, value: undefined });
   assert.equal(read.ok, false);
   if (read.ok) return;
   assert.equal(read.code, 'scope_denied');

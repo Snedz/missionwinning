@@ -20,6 +20,7 @@ import {
   readIdentity,
   readPhotos,
   readStorage,
+  removeStorage,
   resolveRegisteredMini,
   writePhotos,
   writeStorage,
@@ -182,6 +183,7 @@ test('photos: injected snapshots isolate; unscoped stays scope_denied', () => {
 
 test('unscoped storage is scope_denied on every method and does not write', () => {
   const store = new Map<string, string>();
+  store.set('k', 'secret');
   assert.deepEqual(readStorage(HEALTH_TRAIN_MANIFEST, store, 'k'), {
     ok: false,
     code: 'scope_denied',
@@ -190,7 +192,11 @@ test('unscoped storage is scope_denied on every method and does not write', () =
     ok: false,
     code: 'scope_denied',
   });
-  assert.equal(store.has('k'), false);
+  assert.deepEqual(removeStorage(HEALTH_TRAIN_MANIFEST, store, 'k'), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.equal(store.get('k'), 'secret');
 });
 
 test('allow-path: declared scopes return the existing stub envelopes', () => {
@@ -223,6 +229,9 @@ test('allow-path: declared scopes return the existing stub envelopes', () => {
   const store = new Map<string, string>();
   assert.deepEqual(writeStorage(granted, store, 'note', 'ok'), { ok: true, value: undefined });
   assert.deepEqual(readStorage(granted, store, 'note'), { ok: true, value: 'ok' });
+  assert.deepEqual(removeStorage(granted, store, 'note'), { ok: true, value: undefined });
+  assert.deepEqual(readStorage(granted, store, 'note'), { ok: true, value: undefined });
+  assert.deepEqual(removeStorage(granted, store, 'note'), { ok: true, value: undefined });
 });
 
 test('storage write is capped; ClearShot cannot read without storage.read', () => {
