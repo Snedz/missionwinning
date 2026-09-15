@@ -175,7 +175,7 @@ export function createPhotosFake(
   return cap;
 }
 
-/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). */
+/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). Remount after cap starts empty (`.1099`). */
 export function createStorageFake(
   manifest: ModuleManifest,
   store: Map<string, string> = new Map()
