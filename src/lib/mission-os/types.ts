@@ -29,9 +29,18 @@ export type BillingMethod = (typeof BILLING_METHODS)[number];
 export const PHOTOS_METHODS = ['read', 'write'] as const;
 export type PhotosMethod = (typeof PHOTOS_METHODS)[number];
 
+/** Closed identity methods. A second name is a new PR, not a silent extra door. */
+export const IDENTITY_METHODS = ['read'] as const;
+export type IdentityMethod = (typeof IDENTITY_METHODS)[number];
+
 /** Closed door set. A fifth name is a new PR, not a silent extra method. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
 
+/**
+ * Identity stub — interface only. Scoped minis get the injected snapshot.
+ * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
+ * Never mint. Never auth UI. Never Supabase.
+ */
 export interface IdentityCapability {
   read(): CapResult<IdentitySnapshot>;
 }

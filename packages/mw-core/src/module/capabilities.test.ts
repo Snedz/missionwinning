@@ -94,6 +94,19 @@ test('identity stub: guest snapshot is null / null; write is denied', () => {
   assert.deepEqual(write, { ok: false, code: 'scope_denied' });
 });
 
+test('identity: unscoped is the same scope_denied as billing / photos', () => {
+  const noIdentity = {
+    ...UTILITY_CLEARSHOT_MANIFEST,
+    scopes: UTILITY_CLEARSHOT_MANIFEST.scopes.filter((s) => s !== 'identity.read'),
+  };
+  assert.equal(noIdentity.scopes.includes('identity.read'), false);
+  assert.deepEqual(readIdentity(noIdentity), { ok: false, code: 'scope_denied' });
+  assert.deepEqual(readIdentity(noIdentity, { missionId: 7, callSign: '07' }), {
+    ok: false,
+    code: 'scope_denied',
+  });
+});
+
 test('billing stub: ClearShot has no billing.read; train never needs it to log', () => {
   const clearshot = readBilling(UTILITY_CLEARSHOT_MANIFEST);
   assert.deepEqual(clearshot, { ok: false, code: 'scope_denied' });
