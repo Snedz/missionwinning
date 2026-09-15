@@ -45,7 +45,7 @@ export type IdentityMethod = (typeof IDENTITY_METHODS)[number];
 export const STORAGE_METHODS = ['get', 'set'] as const;
 export type StorageMethod = (typeof STORAGE_METHODS)[number];
 
-/** Closed door set. A fifth name is a new PR, not a silent extra method. */
+/** Closed door set. A fifth name is `unknown_capability`, not a silent extra door. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
 export type MissionOsDoor = (typeof MISSION_OS_CAPABILITIES)[number];
 
@@ -137,11 +137,13 @@ export interface MiniHost {
   /**
    * Dispatch a closed-door method by mini id.
    * Not currently mounted → `not_mounted`. Does not throw.
-   * Does not auto-mount. Mounted ids keep `.1079`–`.1087` envelopes.
+   * Does not auto-mount. A door name outside the closed set is
+   * `unknown_capability`. Mounted ids keep `.1079`–`.1095` envelopes
+   * on known doors.
    */
   call(
     id: string,
-    door: MissionOsDoor,
+    door: string,
     method: string,
     args?: CallDoorArgs
   ): CapResult<unknown>;

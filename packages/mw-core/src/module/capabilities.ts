@@ -13,6 +13,7 @@ export type CapabilityDenyCode =
   | 'photos_stub'
   | 'unknown_mini'
   | 'unknown_method'
+  | 'unknown_capability'
   | 'already_mounted'
   | 'not_mounted'
   | 'bad_deeplink'

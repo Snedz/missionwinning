@@ -13,6 +13,7 @@
  * A's `photos.read` is not B's; injecting A does not change B (`.1095`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
+ * A door name outside the closed set is `unknown_capability` (`.1096`).
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
  * No ClearShot UI. No Today / Train door. No Stripe.
  */
@@ -39,7 +40,7 @@ import {
   createStorageFake,
 } from './fakes';
 import { callMountedDoor } from './call';
-import type { CallDoorArgs, CapResult, MiniHost, MissionOsDoor, MountedMini } from './types';
+import type { CallDoorArgs, CapResult, MiniHost, MountedMini } from './types';
 
 /**
  * Closed host allowlist. Product stubs + existing test fixtures only.
@@ -200,7 +201,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
     listMounted,
     call(
       id: string,
-      door: MissionOsDoor,
+      door: string,
       method: string,
       args: CallDoorArgs = {}
     ): CapResult<unknown> {
