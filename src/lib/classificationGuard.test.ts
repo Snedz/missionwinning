@@ -62,10 +62,34 @@ test('ops/ private war-room staging is not tracked', () => {
   );
 });
 
-test('.gitignore forbids hermes and ops', () => {
+/**
+ * The `mission-ops/` (hyphen) sibling of `ops/` was the hole this guard had.
+ *
+ * `ops/` was covered; `mission-ops/` was not — so an INTERNAL architecture
+ * freeze whose own header says *"canonical home: mission-ops/memory/strategy/"*
+ * was committed into this **public** tree by a typo (the author meant the
+ * gitignored staging path `ops/`). A guard that enumerates two paths instead of
+ * the class of path will always be one typo behind. This test closes the class:
+ * any top-level `mission-ops/` content is war-room text and must not be tracked.
+ */
+test('mission-ops/ private war-room text is not tracked', () => {
+  const tracked = gitLsFiles().filter(
+    (f) => f === 'mission-ops' || f.startsWith('mission-ops/')
+  );
+  assert.deepEqual(
+    tracked,
+    [],
+    `mission-ops/ is INTERNAL war-room text and must not live in the product tree. Tracked:\n  ` +
+      `${tracked.join('\n  ')}\n` +
+      `Remove with: git rm -r mission-ops && ensure .gitignore lists mission-ops/`
+  );
+});
+
+test('.gitignore forbids hermes, ops and mission-ops', () => {
   const gi = readFileSync(path.join(root, '.gitignore'), 'utf8');
   assert.match(gi, /^\.hermes\/?$/m, '.gitignore must list .hermes/');
   assert.match(gi, /^ops\/?$/m, '.gitignore must list ops/');
+  assert.match(gi, /^mission-ops\/?$/m, '.gitignore must list mission-ops/');
 });
 
 test('classification + dual-repo docs exist', () => {
