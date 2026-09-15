@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1075-for-1090.md](./log/LOG-rotate-1075-for-1090.md) | rotated 2026-09-15 for `.1090` deeplink unknown last-segment (`.1075`) |
 | [log/LOG-rotate-1074-for-1089.md](./log/LOG-rotate-1074-for-1089.md) | rotated 2026-09-15 for `.1089` CapResult call not_mounted (`.1074`) |
 | [log/LOG-rotate-1073-for-1088.md](./log/LOG-rotate-1073-for-1088.md) | rotated 2026-09-15 for `.1088` MiniHost.unmount not_mounted (`.1073`) |
 | [log/LOG-rotate-1072-for-1087.md](./log/LOG-rotate-1072-for-1087.md) | rotated 2026-09-15 for `.1087` MiniHost unknown_mini refuse (`.1072`) |
