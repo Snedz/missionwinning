@@ -1,5 +1,6 @@
 /**
  * In-memory Mission OS host — mounts a manifest and binds scoped doors.
+ * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
  * read leftovers. `listMounted` is the CapResult inventory (ids + declared
  * scopes only). No ClearShot UI. No Today / Train door. No Stripe.
@@ -83,6 +84,9 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         assertModuleManifest(manifest);
       } catch {
         return { ok: false, code: 'stub' };
+      }
+      if (mounted.has(manifest.id)) {
+        return { ok: false, code: 'already_mounted' };
       }
       mounted.set(manifest.id, inventoryFromManifest(manifest));
       return { ok: true, value: bindDoors(manifest, identity, stores) };

@@ -90,6 +90,10 @@ export interface MountedMini {
 }
 
 export interface MiniHost {
+  /**
+   * Bind a valid manifest. A second mount of the same id while mounted
+   * is `already_mounted` — does not replace the live instance.
+   */
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
   /** In-memory teardown. Clears that mini's fake keyspace. Not product chrome. */
   unmount(id: string): CapResult<void>;

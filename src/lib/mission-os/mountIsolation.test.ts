@@ -104,7 +104,16 @@ test('utility.clearshot mount: photos + storage.write granted; billing denied', 
 test('CapResult sandbox: one mini cannot read another mini storage keyspace', () => {
   const host = createMiniHost();
   const health = assertMounted(mountHealthMini(host));
-  const shot = assertMounted(mountClearShotMini(host));
+  const probeScopes: readonly ModuleScope[] = [
+    ...CLEARSHOT_MINI_MANIFEST.scopes,
+    'storage.read',
+  ];
+  const shot = assertMounted(
+    host.mount({
+      ...CLEARSHOT_MINI_MANIFEST,
+      scopes: probeScopes,
+    })
+  );
 
   assert.equal(health.storage.set('secret', 'health-only').ok, true);
   assert.equal(shot.storage.set('secret', 'shot-only').ok, true);
@@ -115,28 +124,15 @@ test('CapResult sandbox: one mini cannot read another mini storage keyspace', ()
   assert.deepEqual(health.storage.get('health-key'), { ok: true, value: 'from-health' });
   assert.deepEqual(health.storage.get('shot-key'), { ok: true, value: undefined });
 
-  assert.deepEqual(shot.storage.get('secret'), { ok: false, code: 'scope_denied' });
-
-  const probeScopes: readonly ModuleScope[] = [
-    ...CLEARSHOT_MINI_MANIFEST.scopes,
-    'storage.read',
-  ];
-  const probe = assertMounted(
-    host.mount({
-      ...CLEARSHOT_MINI_MANIFEST,
-      scopes: probeScopes,
-    })
-  );
-  const probeSecret = probe.storage.get('secret');
+  const probeSecret = shot.storage.get('secret');
   assert.deepEqual(probeSecret, { ok: true, value: 'shot-only' });
   if (!probeSecret.ok) return;
   assert.equal(probeSecret.value, 'shot-only');
   assert.notEqual(probeSecret.value, 'health-only');
-  assert.deepEqual(probe.storage.get('shot-key'), { ok: true, value: 'from-shot' });
-  assert.deepEqual(probe.storage.get('health-key'), { ok: true, value: undefined });
+  assert.deepEqual(shot.storage.get('shot-key'), { ok: true, value: 'from-shot' });
+  assert.deepEqual(shot.storage.get('health-key'), { ok: true, value: undefined });
 
-  const healthAgain = assertMounted(mountHealthMini(host));
-  const healthSecret = healthAgain.storage.get('secret');
+  const healthSecret = health.storage.get('secret');
   assert.deepEqual(healthSecret, { ok: true, value: 'health-only' });
   if (!healthSecret.ok) return;
   assert.equal(healthSecret.value, 'health-only');
@@ -170,24 +166,23 @@ test('torn-down handle cannot read leftover values after unmount', () => {
 test('unmount Health does not wipe ClearShot keyspace', () => {
   const host = createMiniHost();
   const health = assertMounted(mountHealthMini(host));
-  const shot = assertMounted(mountClearShotMini(host));
+  const probeScopes: readonly ModuleScope[] = [
+    ...CLEARSHOT_MINI_MANIFEST.scopes,
+    'storage.read',
+  ];
+  const shot = assertMounted(
+    host.mount({
+      ...CLEARSHOT_MINI_MANIFEST,
+      scopes: probeScopes,
+    })
+  );
 
   assert.equal(health.storage.set('secret', 'health-only').ok, true);
   assert.equal(shot.storage.set('secret', 'shot-only').ok, true);
 
   assert.deepEqual(host.unmount('l1.health'), { ok: true, value: undefined });
 
-  const probeScopes: readonly ModuleScope[] = [
-    ...CLEARSHOT_MINI_MANIFEST.scopes,
-    'storage.read',
-  ];
-  const probe = assertMounted(
-    host.mount({
-      ...CLEARSHOT_MINI_MANIFEST,
-      scopes: probeScopes,
-    })
-  );
-  const probeSecret = probe.storage.get('secret');
+  const probeSecret = shot.storage.get('secret');
   assert.deepEqual(probeSecret, { ok: true, value: 'shot-only' });
   if (!probeSecret.ok) return;
   assert.equal(probeSecret.value, 'shot-only');

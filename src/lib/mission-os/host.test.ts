@@ -177,9 +177,13 @@ test('BillingCapability hold is muted and never Stripe', () => {
 
 test('storage is namespaced per mini id and stays in memory', () => {
   const host = createMiniHost();
-  const a = host.mount(UTILITY_CLEARSHOT_MANIFEST);
-  const b = host.mount({
+  const reader = {
     ...UTILITY_CLEARSHOT_MANIFEST,
+    scopes: [...UTILITY_CLEARSHOT_MANIFEST.scopes, 'storage.read' as const],
+  };
+  const a = host.mount(reader);
+  const b = host.mount({
+    ...reader,
     id: 'utility.other',
     name: 'Other',
     entry: 'mission://minis/other',
@@ -189,12 +193,6 @@ test('storage is namespaced per mini id and stays in memory', () => {
   if (!a.ok || !b.ok) return;
   assert.equal(a.value.storage.set('note', 'clear').ok, true);
   assert.equal(b.value.storage.set('note', 'other').ok, true);
-  const reader = {
-    ...UTILITY_CLEARSHOT_MANIFEST,
-    scopes: [...UTILITY_CLEARSHOT_MANIFEST.scopes, 'storage.read' as const],
-  };
-  const readA = host.mount(reader);
-  assert.equal(readA.ok, true);
-  if (!readA.ok) return;
-  assert.deepEqual(readA.value.storage.get('note'), { ok: true, value: 'clear' });
+  assert.deepEqual(a.value.storage.get('note'), { ok: true, value: 'clear' });
+  assert.deepEqual(b.value.storage.get('note'), { ok: true, value: 'other' });
 });
