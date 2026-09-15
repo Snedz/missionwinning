@@ -5,6 +5,8 @@
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
  * read leftovers. Two live mounts keep isolated maps — set on A is
  * invisible to get on B; unmount A does not wipe B (`.1092`).
+ * Two live mounts with identity scope keep isolated snapshots —
+ * A's `identity.read` is not B's; injecting A does not change B (`.1093`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
@@ -53,16 +55,29 @@ export function isKnownMountId(id: string): boolean {
 }
 
 export type MiniHostOptions = {
+  /** Host-wide default snapshot when no per-mini row is set. */
   identity?: IdentitySnapshot;
+  /**
+   * Fake-only per-mini snapshots keyed by mount id.
+   * Not production auth. Not a second user system.
+   */
+  identities?: Readonly<Partial<Record<string, IdentitySnapshot>>>;
 };
 
 export {
   createBillingFake,
   createBillingHold,
   createIdentityFake,
+  injectIdentitySnapshot,
   createPhotosFake,
   createStorageFake,
 } from './fakes';
+
+function snapshotFor(opts: MiniHostOptions, id: string): IdentitySnapshot {
+  const perMini = opts.identities?.[id];
+  if (perMini) return perMini;
+  return opts.identity ?? GUEST_IDENTITY;
+}
 
 /** Per-mount keyspace. Dual-mount isolation is this map keyed by id. */
 function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<string, string> {
@@ -89,7 +104,6 @@ function bindDoors(
 }
 
 export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
-  const identity = opts.identity ?? GUEST_IDENTITY;
   const stores = new Map<string, Map<string, string>>();
   const mounted = new Map<string, MiniInventoryEntry>();
   const instances = new Map<string, MountedMini>();
@@ -124,7 +138,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       if (mounted.has(manifest.id)) {
         return { ok: false, code: 'already_mounted' };
       }
-      const mini = bindDoors(manifest, identity, stores);
+      const mini = bindDoors(manifest, snapshotFor(opts, manifest.id), stores);
       mounted.set(manifest.id, inventoryFromManifest(manifest));
       instances.set(manifest.id, mini);
       return { ok: true, value: mini };

@@ -49,7 +49,7 @@ module:
 
 | Scope | Allows |
 |-------|--------|
-| `identity.read` | Read public Mission ID / card cosmetics. Named fake method `read` returns `CapResult` — unscoped is `scope_denied`; scoped is the injected snapshot (guests `null` / `null`). Never mint. Never auth UI. Never Supabase. |
+| `identity.read` | Read public Mission ID / card cosmetics. Named fake method `read` returns `CapResult` — unscoped is `scope_denied`; scoped is the injected snapshot (guests `null` / `null`). Two live mounts keep isolated snapshots — A's read is not B's; injecting A does not change B (`.1093`). Never mint. Never auth UI. Never Supabase. |
 | `identity.write` | Change call sign / card picks (local) |
 | `health.read` | Read workouts / logs (user-owned) |
 | `health.write` | Append logs |

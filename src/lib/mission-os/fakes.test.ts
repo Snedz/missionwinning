@@ -14,6 +14,7 @@ import {
   createBillingFake,
   createBillingHold,
   createIdentityFake,
+  injectIdentitySnapshot,
   createPhotosFake,
   createStorageFake,
 } from './fakes';
@@ -74,6 +75,14 @@ test('identity fake: guest is null; injected snapshot is not minted', () => {
     scopes: HAPPY_SCOPES.filter((s) => s !== 'identity.read'),
   };
   assert.deepEqual(createIdentityFake(noIdentity).read(), { ok: false, code: 'scope_denied' });
+});
+
+test('injectIdentitySnapshot changes only that fake', () => {
+  const a = createIdentityFake(UTILITY_CLEARSHOT_MANIFEST, { missionId: 11, callSign: 'alpha' });
+  const b = createIdentityFake(UTILITY_CLEARSHOT_MANIFEST, { missionId: 22, callSign: 'bravo' });
+  injectIdentitySnapshot(a, { missionId: 33, callSign: 'alpha-2' });
+  assert.deepEqual(a.read(), { ok: true, value: { missionId: 33, callSign: 'alpha-2' } });
+  assert.deepEqual(b.read(), { ok: true, value: { missionId: 22, callSign: 'bravo' } });
 });
 
 test('billing fake is Stripe HOLD — muted even when the snapshot looks live', () => {
