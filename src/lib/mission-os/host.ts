@@ -3,7 +3,9 @@
  * An id outside the closed allowlist is `unknown_mini` (no partial mount).
  * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
- * read leftovers. An id that is not currently mounted is `not_mounted`
+ * read leftovers. Two live mounts keep isolated maps — set on A is
+ * invisible to get on B; unmount A does not wipe B (`.1092`).
+ * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
  * No ClearShot UI. No Today / Train door. No Stripe.
@@ -62,6 +64,7 @@ export {
   createStorageFake,
 } from './fakes';
 
+/** Per-mount keyspace. Dual-mount isolation is this map keyed by id. */
 function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<string, string> {
   let store = stores.get(id);
   if (!store) {
