@@ -2,7 +2,8 @@
  * Named Mission OS capability doors.
  *
  * One shape: `CapResult` is `CapabilityResult` from mw-core (`.1068` / #935).
- * This folder is the interface host (`MiniHost.mount` / `MiniHost.unmount`).
+ * This folder is the interface host (`MiniHost.mount` / `MiniHost.unmount` /
+ * `MiniHost.listMounted`).
  * The function bus stays in `src/lib/minis/`. Stripe stays HOLD — no checkout here.
  */
 
@@ -11,12 +12,14 @@ import type {
   BillingSnapshot,
   CapabilityResult,
   IdentitySnapshot,
+  MiniInventoryEntry,
   ModuleManifest,
+  ModuleScope,
 } from '../../../packages/mw-core/src/module';
 
 export type CapResult<T> = CapabilityResult<T>;
 
-export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, ModuleManifest };
+export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, MiniInventoryEntry, ModuleManifest };
 
 /** Closed billing methods. A fourth name is a new PR, not a silent extra door. */
 export const BILLING_METHODS = ['read', 'checkout', 'portal'] as const;
@@ -72,4 +75,13 @@ export interface MiniHost {
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
   /** In-memory teardown. Clears that mini's fake keyspace. Not product chrome. */
   unmount(id: string): CapResult<void>;
+  /** Inventory of currently mounted minis — id + declared scopes only. */
+  listMounted(): CapResult<readonly MiniInventoryEntry[]>;
+  /** Peek one mounted mini. Never-mounted → unknown_mini. */
+  listMounted(id: string): CapResult<MiniInventoryEntry>;
+  /**
+   * Peek a declared scope. Never-mounted → unknown_mini.
+   * Undeclared → scope_denied.
+   */
+  listMounted(id: string, scope: ModuleScope): CapResult<void>;
 }

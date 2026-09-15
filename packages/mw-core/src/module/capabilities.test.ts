@@ -11,6 +11,10 @@ import {
   STORAGE_MAX_VALUE_BYTES,
   assertCapability,
   checkoutBilling,
+  inventoryFromManifest,
+  listMountedInventory,
+  peekMountedInventory,
+  peekMountedScope,
   portalBilling,
   readBilling,
   readIdentity,
@@ -43,6 +47,37 @@ test('unknown mini id is a typed deny', () => {
   assert.deepEqual(miss, { ok: false, code: 'unknown_mini' });
   const hit = resolveRegisteredMini('utility.clearshot', registry);
   assert.equal(hit.ok, true);
+});
+
+test('listMounted inventory: declared scopes only; undeclared peek is scope_denied', () => {
+  const table = new Map([
+    [UTILITY_CLEARSHOT_MANIFEST.id, inventoryFromManifest(UTILITY_CLEARSHOT_MANIFEST)],
+  ]);
+  const listed = listMountedInventory(table);
+  assert.equal(listed.ok, true);
+  if (!listed.ok) return;
+  assert.equal(listed.value.length, 1);
+  assert.equal(listed.value[0]?.id, 'utility.clearshot');
+  assert.equal(listed.value[0]?.scopes.includes('billing.read'), false);
+  assert.equal(listed.value[0]?.scopes.includes('storage.read'), false);
+
+  assert.deepEqual(listMountedInventory(new Map()), { ok: true, value: [] });
+  assert.deepEqual(peekMountedInventory(table, 'utility.probe'), {
+    ok: false,
+    code: 'unknown_mini',
+  });
+  assert.deepEqual(peekMountedScope(table, 'utility.probe', 'identity.read'), {
+    ok: false,
+    code: 'unknown_mini',
+  });
+  assert.deepEqual(peekMountedScope(table, 'utility.clearshot', 'billing.read'), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(peekMountedScope(table, 'utility.clearshot', 'identity.read'), {
+    ok: true,
+    value: undefined,
+  });
 });
 
 test('identity stub: guest snapshot is null / null; write is denied', () => {
