@@ -17,7 +17,6 @@ test('keeps product, tests, and archive rotation history', () => {
     'docs/archive/log/LOG-rotate-912-for-927.md',
     'docs/archive/INDEX.md',
     'docs/archive/CONTEXT-now-2026-07-30.md',
-    'docs/THESIS.md',
     'docs/applications/README.md',
     'docs/gauntlet/INDEX.md',
     'docs/design/INDEX.md',
@@ -48,6 +47,41 @@ test('drops leftover plans, hop folders, and craft stills', () => {
   for (const p of drop) {
     assert.equal(isDenied(p), true, `should drop ${p}`);
   }
+});
+
+/**
+ * Added 2026-09-15. `docs/THESIS.md` was previously asserted KEPT; the exposure
+ * audit found it publishing a competitive self-assessment ("no defensible moat")
+ * and the region-block policy. It is strategy, so it is now denied and the
+ * assertion moved here. If this ever flips back, say why in the commit.
+ */
+test('drops strategy and operating material', () => {
+  const drop = [
+    'vision.md',
+    'ORCHESTRATION.md',
+    'CONTEXT.md',
+    'LOG.md',
+    'INDEX.md',
+    'CLAUDE.md',
+    'AGENTS.md',
+    'GEMINI.md',
+    'docs/THESIS.md',
+    'docs/CREATIVE_MONOPOLY.md',
+    'seo/competitors/INDEX.md',
+    'seo/outreach/PLAN.md',
+    'seo/launch/CHECKLIST.md',
+    'seo/FOUNDER_SIGNOFF.md',
+  ];
+  for (const p of drop) {
+    assert.equal(isDenied(p), true, `should drop ${p}`);
+  }
+});
+
+test('archive rotation history survives the strategy deny (exact-match, not prefix)', () => {
+  // CONTEXT.md is denied at the root only; archived snapshots must still ship.
+  assert.equal(isDenied('docs/archive/CONTEXT-now-2026-07-30.md'), false);
+  assert.equal(isDenied('docs/archive/log/LOG-rotate-912-for-927.md'), false);
+  assert.equal(isDenied('CONTEXT.md'), true);
 });
 
 test('never copies secrets or ops even if staged', () => {

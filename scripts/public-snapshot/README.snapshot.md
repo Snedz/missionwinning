@@ -28,11 +28,19 @@ The inspectable Alpha: Next.js 16 PWA, Mission Coach engine, Android Compose und
 
 Operator secrets and the founder war room are not in this snapshot.
 
-| Kept private | Where |
-|--------------|--------|
-| Strategy, red-team full text, capital, outreach | Private mission-ops (this tree keeps **stubs** only) |
-| Vercel / GitHub secrets, Stripe keys, production DB | Operator vaults — [docs/SECRETS.md](docs/SECRETS.md) |
+| Not exported | Why |
+|--------------|-----|
+| `vision.md`, `ORCHESTRATION.md`, `PLAN.md`, `IMPROVEMENT_LOG.md` | Strategy and future direction — private working tree only |
+| `CONTEXT.md`, `LOG.md`, `INDEX.md` | Operating state and history — private working tree only |
+| `docs/THESIS.md`, `docs/CREATIVE_MONOPOLY.md` | Competitive positioning and self-assessment |
+| `seo/` — competitor sets, outreach, launch plan, keywords | GTM intelligence |
+| `CLAUDE.md`, `AGENTS.md`, `GEMINI.md` | Internal agent operating manual |
+| Vercel / GitHub secrets, Stripe keys, production DB | Operator vaults — see [docs/SECRETS.md](docs/SECRETS.md) |
 | EIN, personal email, postal, phone | Never in git |
+
+This is enforced by [`scripts/public-snapshot/deny.mjs`](scripts/public-snapshot/deny.mjs) and
+checked by `npm run snapshot:check`. **The control is a denylist** — a new root-level file ships
+unless it is named there, so treat "is this internal?" as a decision, not a default.
 
 Site gate (`PRIVATE_MODE`) is separate from GitHub visibility and is founder-owned.
 
