@@ -17,7 +17,7 @@ import {
 } from './deeplink';
 import { createMiniHost } from './host';
 import { mountHealthMini } from './health';
-import type { CapResult, MountedMini } from './types';
+import type { CapResult, ModuleManifest, MountedMini } from './types';
 
 const here = import.meta.dirname;
 const repoRoot = path.join(here, '..', '..', '..');
@@ -72,7 +72,7 @@ function assertAlreadyMounted(result: CapResult<unknown>, label: string): void {
 test('resolve of a known URI does not mount', () => {
   const host = createMiniHost();
   let threw = false;
-  let resolved: CapResult<unknown> | undefined;
+  let resolved: CapResult<ModuleManifest> | undefined;
   try {
     resolved = resolveMiniDeeplink(HEALTH_ENTRY);
   } catch {
