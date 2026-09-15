@@ -2,8 +2,8 @@
  * Named Mission OS capability doors.
  *
  * One shape: `CapResult` is `CapabilityResult` from mw-core (`.1068` / #935).
- * This folder is the interface host (`MiniHost.mount`). The function bus
- * stays in `src/lib/minis/`. Stripe stays HOLD — no checkout here.
+ * This folder is the interface host (`MiniHost.mount` / `MiniHost.unmount`).
+ * The function bus stays in `src/lib/minis/`. Stripe stays HOLD — no checkout here.
  */
 
 import type {
@@ -52,4 +52,6 @@ export interface MountedMini {
 
 export interface MiniHost {
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
+  /** In-memory teardown. Clears that mini's fake keyspace. Not product chrome. */
+  unmount(id: string): CapResult<void>;
 }

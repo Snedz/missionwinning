@@ -1,7 +1,7 @@
 /**
  * In-memory Mission OS host — mounts a manifest and binds scoped doors.
- *
- * No ClearShot UI. No Today / Train door. No Stripe. Storage is process-local.
+ * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
+ * read leftovers. No ClearShot UI. No Today / Train door. No Stripe.
  */
 
 import {
@@ -65,6 +65,13 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         return { ok: false, code: 'stub' };
       }
       return { ok: true, value: bindDoors(manifest, identity, stores) };
+    },
+    unmount(id: string): CapResult<void> {
+      const store = stores.get(id);
+      if (!store) return { ok: false, code: 'unknown_mini' };
+      store.clear();
+      stores.delete(id);
+      return { ok: true, value: undefined };
     },
   };
 }
