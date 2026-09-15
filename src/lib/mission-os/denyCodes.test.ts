@@ -14,6 +14,7 @@ import path from 'node:path';
 import {
   CAPABILITY_DENY_CODES,
   HOST_LIFECYCLE_DENY_CODES,
+  type ModuleManifest,
 } from '../../../packages/mw-core/src/module';
 import { createMiniHost } from './host';
 import { mountHealthMini } from './health';
@@ -168,15 +169,15 @@ test('each frozen host-lifecycle deny is emitted live — not a list that never 
   assert.deepEqual(health.identity.read(), GUEST_STUB);
   assert.deepEqual(health.storage.get('k'), { ok: true, value: undefined });
 
-  const bad = host.mount({
+  const invalid: ModuleManifest = {
     id: 'totally.unknown',
     version: '1.0.0',
     scopes: ['identity.read'],
     surfaces: ['web'],
-    free_core: true,
+    freeCore: true,
     entry: 'active',
-  });
-  assert.deepEqual(bad, STUB);
+  };
+  assert.deepEqual(host.mount(invalid), STUB);
 });
 
 test('production code: literals stay inside the closed complete set', () => {
