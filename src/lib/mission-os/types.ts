@@ -93,7 +93,8 @@ export interface PhotosCapability {
 /**
  * Closed to `STORAGE_METHODS`. A third method is a new PR.
  * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
- * Scoped minis use the in-memory map. Never a durable browser write.
+ * Scoped minis use the in-memory map. Overflow is `storage_cap` (`.1097`).
+ * Never a durable browser write.
  */
 export interface StorageCapability {
   get(key: string): CapResult<string | undefined>;

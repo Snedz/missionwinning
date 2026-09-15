@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1082-for-1097.md](./log/LOG-rotate-1082-for-1097.md) | rotated 2026-09-15 for `.1097` CapResult storage_cap (`.1082`) |
 | [log/LOG-rotate-1081-for-1096.md](./log/LOG-rotate-1081-for-1096.md) | rotated 2026-09-15 for `.1096` CapResult unknown_capability (`.1081`) |
 | [log/LOG-rotate-1080-for-1095.md](./log/LOG-rotate-1080-for-1095.md) | rotated 2026-09-15 for `.1095` dual-mount photos isolation (`.1080`) |
 | [log/LOG-rotate-1079-for-1094.md](./log/LOG-rotate-1079-for-1094.md) | rotated 2026-09-15 for `.1094` dual-mount billing isolation (`.1079`) |
