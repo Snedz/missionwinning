@@ -151,6 +151,19 @@ test('photos: scoped stays photos_stub; unscoped is the same scope_denied', () =
   });
 });
 
+test('unscoped storage is scope_denied on every method and does not write', () => {
+  const store = new Map<string, string>();
+  assert.deepEqual(readStorage(HEALTH_TRAIN_MANIFEST, store, 'k'), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(writeStorage(HEALTH_TRAIN_MANIFEST, store, 'k', 'v'), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.equal(store.has('k'), false);
+});
+
 test('storage write is capped; ClearShot cannot read without storage.read', () => {
   const store = new Map<string, string>();
   const wrote = writeStorage(UTILITY_CLEARSHOT_MANIFEST, store, 'k', 'v');

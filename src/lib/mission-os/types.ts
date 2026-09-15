@@ -33,6 +33,10 @@ export type PhotosMethod = (typeof PHOTOS_METHODS)[number];
 export const IDENTITY_METHODS = ['read'] as const;
 export type IdentityMethod = (typeof IDENTITY_METHODS)[number];
 
+/** Closed storage methods. A third name is a new PR, not a silent extra door. */
+export const STORAGE_METHODS = ['get', 'set'] as const;
+export type StorageMethod = (typeof STORAGE_METHODS)[number];
+
 /** Closed door set. A fifth name is a new PR, not a silent extra method. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
 
@@ -67,6 +71,11 @@ export interface PhotosCapability {
   write(): CapResult<never>;
 }
 
+/**
+ * Closed to `STORAGE_METHODS`. A third method is a new PR.
+ * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
+ * Scoped minis use the in-memory map. Never a durable browser write.
+ */
 export interface StorageCapability {
   get(key: string): CapResult<string | undefined>;
   set(key: string, value: string): CapResult<void>;
