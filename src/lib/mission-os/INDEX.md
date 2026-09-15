@@ -4,10 +4,10 @@
 
 ## Agent resume card
 
-- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `MiniHost.unmount(id)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only. ClearShot utility stub (`utility.clearshot` at `mission://minis/clearshot`) mounts photos + storage.write. Last-segment deeplink table (`health` / `clearshot`) resolves `mission://minis/{slug}` to the reserved mount. In-memory unmount clears that mini's fake keyspace (`.1078`).
+- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — `read` / `checkout` / `portal`, interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `MiniHost.unmount(id)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only. ClearShot utility stub (`utility.clearshot` at `mission://minis/clearshot`) mounts photos + storage.write. Last-segment deeplink table (`health` / `clearshot`) resolves `mission://minis/{slug}` to the reserved mount. In-memory unmount clears that mini's fake keyspace (`.1078`). Billing CapResult deny is the same shape on every method when unscoped (`.1079`).
 - **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK, Health product UI.
-- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`, `clearshot.ts`, `deeplink.ts`
-- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/mission-os/clearshot.test.ts`, `src/lib/mission-os/mountIsolation.test.ts`, `src/lib/mission-os/deeplink.test.ts`, `src/lib/minisIsolation.test.ts`
+- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`, `clearshot.ts`, `deeplink.ts`, `billingProbe.ts` (test-only)
+- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/mission-os/clearshot.test.ts`, `src/lib/mission-os/mountIsolation.test.ts`, `src/lib/mission-os/deeplink.test.ts`, `src/lib/mission-os/billing.test.ts`, `src/lib/minisIsolation.test.ts`
 - **Forbidden:** Import from `src/lib/coach/`, `src/store/`, `HomePage`, `ActiveWorkoutPage`. Do not import Stripe, `premiumServer`, or `safeStorage`. Never gate `logSet`.
 - **Horizon:** Interfaces + stubs. Host chrome later.
 
@@ -16,7 +16,7 @@
 | Door | Stub |
 |------|------|
 | identity | `createIdentityFake` — injected `{ missionId, callSign }`. Guests are `null`. Never mint. |
-| billing | `createBillingFake` / `createBillingHold`. Always muted. Never checkout. Never Stripe. |
+| billing | `createBillingFake` / `createBillingHold`. Closed methods `read` / `checkout` / `portal`. Unscoped → `scope_denied`. Scoped → muted read + `{ held: true }` stub. Never Stripe. |
 | photos | `createPhotosFake` — always `photos_stub` when scoped. |
 | storage | `createStorageFake` — in-memory map keyed by mini id. Cap 32 keys / 4KB (mw-core). `MiniHost.unmount(id)` clears that map so remount cannot read leftovers. |
 
@@ -28,6 +28,8 @@ Reserved ClearShot stub: `CLEARSHOT_MINI_MANIFEST` / `mountClearShotMini` — re
 
 Last-segment deeplink: `resolveMiniDeeplink` / `mountMiniByDeeplink` — closed table `health` → `l1.health`, `clearshot` → `utility.clearshot`. Long opaque paths (`mission://minis/utility.clearshot`) are `unknown_mini`.
 
+Test-only billing probe: `TEST_BILLING_MANIFEST` / `mountTestBillingMini` (`test.billing` at `mission://minis/billing`). Not a product mount. Not in the deeplink table. Not in `MINI_REGISTRY`. Grants `billing.read` so the stub success path can be asserted.
+
 ## Related
 
 | Path | Role |
@@ -37,5 +39,7 @@ Last-segment deeplink: `resolveMiniDeeplink` / `mountMiniByDeeplink` — closed 
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |
 | `mountIsolation.test.ts` | Health + ClearShot mount grant/deny + storage keyspace (`.1076`) + unmount/remount leftovers (`.1078`) |
-| `PLAN.md` | `.1078` MiniHost unmount/remount isolation claim |
+| `billing.test.ts` | Billing CapResult deny consistency + test-only grant (`.1079`) |
+| `PLAN.md` | `.1079` billing CapResult deny consistency claim |
 | `deeplink.ts` | Last-segment `clearshot` → `utility.clearshot` mount |
+| `billingProbe.ts` | Test-only `test.billing` — not a product mount |

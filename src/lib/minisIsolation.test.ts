@@ -77,6 +77,8 @@ const BUS_SYMBOLS = new Set([
   'resolveRegisteredMini',
   'readIdentity',
   'readBilling',
+  'checkoutBilling',
+  'portalBilling',
   'readPhotos',
   'writePhotos',
   'readStorage',

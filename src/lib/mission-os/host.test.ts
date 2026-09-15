@@ -148,6 +148,8 @@ test('ClearShot cannot call health.write or billing through mount', () => {
 test('BillingCapability hold is muted and never Stripe', () => {
   const hold: BillingCapability = createBillingHold();
   assert.deepEqual(hold.read(), { ok: true, value: MUTED_BILLING });
+  assert.deepEqual(hold.checkout(), { ok: true, value: { held: true } });
+  assert.deepEqual(hold.portal(), { ok: true, value: { held: true } });
 
   const withScope = {
     ...HEALTH_TRAIN_MANIFEST,

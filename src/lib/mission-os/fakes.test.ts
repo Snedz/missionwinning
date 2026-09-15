@@ -92,6 +92,18 @@ test('billing fake is Stripe HOLD — muted even when the snapshot looks live', 
     ok: false,
     code: 'scope_denied',
   });
+  assert.deepEqual(createBillingFake(UTILITY_CLEARSHOT_MANIFEST).checkout(), {
+    ok: false,
+    code: 'scope_denied',
+  });
+  assert.deepEqual(createBillingFake(UTILITY_CLEARSHOT_MANIFEST).portal(), {
+    ok: false,
+    code: 'scope_denied',
+  });
+
+  const granted = createBillingFake(HAPPY_MANIFEST);
+  assert.deepEqual(granted.checkout(), { ok: true, value: { held: true } });
+  assert.deepEqual(granted.portal(), { ok: true, value: { held: true } });
 });
 
 test('photos fake is always photos_stub when scoped', () => {

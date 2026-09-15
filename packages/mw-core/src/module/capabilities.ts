@@ -31,6 +31,10 @@ export type BillingSnapshot = {
 export const GUEST_IDENTITY: IdentitySnapshot = { missionId: null, callSign: null };
 export const MUTED_BILLING: BillingSnapshot = { bundle: 'none', muted: true };
 
+/** Stub hold for checkout / portal. Never a Stripe session. */
+export type BillingActionHold = { held: true };
+export const BILLING_ACTION_HOLD: BillingActionHold = { held: true };
+
 /** In-memory cap for mini key-value. One small bound, tested. */
 export const STORAGE_MAX_KEYS = 32;
 export const STORAGE_MAX_VALUE_BYTES = 4096;
@@ -76,6 +80,30 @@ export function readBilling(
     ok: true,
     value: { bundle: snapshot.bundle, muted: true },
   };
+}
+
+/**
+ * Stripe HOLD checkout. Scoped minis get a stub hold — never a session.
+ * Unscoped minis get the same deny as `readBilling`.
+ */
+export function checkoutBilling(
+  manifest: ModuleManifest
+): CapabilityResult<BillingActionHold> {
+  const gate = assertCapability(manifest, 'billing.read');
+  if (!gate.ok) return gate;
+  return { ok: true, value: BILLING_ACTION_HOLD };
+}
+
+/**
+ * Stripe HOLD portal. Scoped minis get a stub hold — never a portal URL.
+ * Unscoped minis get the same deny as `readBilling`.
+ */
+export function portalBilling(
+  manifest: ModuleManifest
+): CapabilityResult<BillingActionHold> {
+  const gate = assertCapability(manifest, 'billing.read');
+  if (!gate.ok) return gate;
+  return { ok: true, value: BILLING_ACTION_HOLD };
 }
 
 export function readPhotos(manifest: ModuleManifest): CapabilityResult<never> {

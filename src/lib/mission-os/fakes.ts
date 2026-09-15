@@ -7,8 +7,11 @@
  */
 
 import {
+  BILLING_ACTION_HOLD,
   GUEST_IDENTITY,
   MUTED_BILLING,
+  checkoutBilling,
+  portalBilling,
   readBilling,
   readIdentity,
   readPhotos,
@@ -54,14 +57,22 @@ export function createBillingFake(
   const hold: BillingSnapshot = { bundle: snapshot.bundle, muted: true };
   return {
     read: () => readBilling(manifest, hold),
+    checkout: () => checkoutBilling(manifest),
+    portal: () => portalBilling(manifest),
   };
 }
 
-/** Unscoped HOLD double — muted recognition only. Never needs a manifest. */
+/** Unscoped HOLD double — muted recognition + stub actions. Never needs a manifest. */
 export function createBillingHold(): BillingCapability {
   return {
     read() {
       return { ok: true, value: MUTED_BILLING };
+    },
+    checkout() {
+      return { ok: true, value: BILLING_ACTION_HOLD };
+    },
+    portal() {
+      return { ok: true, value: BILLING_ACTION_HOLD };
     },
   };
 }

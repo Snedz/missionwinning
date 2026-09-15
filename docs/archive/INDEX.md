@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1064-for-1079.md](./log/LOG-rotate-1064-for-1079.md) | rotated 2026-09-15 for `.1079` billing CapResult deny consistency (`.1064`) |
 | [log/LOG-rotate-1062-for-1078.md](./log/LOG-rotate-1062-for-1078.md) | rotated 2026-09-15 for `.1078` MiniHost unmount/remount isolation (`.1062`) |
 | [log/LOG-rotate-1061-for-1077.md](./log/LOG-rotate-1061-for-1077.md) | rotated 2026-09-15 for `.1077` ClearShot mini deeplink (`.1061`) |
 | [log/LOG-rotate-1059-for-1076.md](./log/LOG-rotate-1059-for-1076.md) | rotated 2026-09-15 for `.1076` Mission OS mini mount isolation (`.1059`) |
