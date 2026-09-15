@@ -14,6 +14,7 @@
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
+ * A scoped storage write over 32 keys / 4KB is `storage_cap` (`.1097`).
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
  * No ClearShot UI. No Today / Train door. No Stripe.
  */
