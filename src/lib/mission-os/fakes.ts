@@ -7,6 +7,8 @@
  * Identity is an injected snapshot — guests stay null; nothing is minted.
  * Each fake copies its snapshot so injecting A cannot change B.read.
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
+ * Billing is an injected muted snapshot — each fake copies so injecting
+ * A cannot change B.read. Unscoped billing stays `scope_denied`.
  */
 
 import {
@@ -44,6 +46,10 @@ function copyIdentity(snapshot: IdentitySnapshot): IdentitySnapshot {
   return { missionId: snapshot.missionId, callSign: snapshot.callSign };
 }
 
+function copyBilling(snapshot: BillingSnapshot): BillingSnapshot {
+  return { bundle: snapshot.bundle, muted: true };
+}
+
 /**
  * Fake-only per-capability inject. Not production auth. Not on MiniHost.
  * Replacing A's snapshot must not change B.read — each fake copies.
@@ -74,19 +80,40 @@ export function createIdentityFake(
 }
 
 /**
+ * Fake-only per-capability inject. Not Stripe. Not on MiniHost.
+ * Replacing A's snapshot must not change B.read — each fake copies
+ * and forces muted.
+ */
+const billingInjectors = new WeakMap<BillingCapability, (next: BillingSnapshot) => void>();
+
+export function injectBillingSnapshot(
+  billing: BillingCapability,
+  snapshot: BillingSnapshot
+): void {
+  const inject = billingInjectors.get(billing);
+  if (!inject) return;
+  inject(copyBilling(snapshot));
+}
+
+/**
  * Stripe HOLD fake. Scoped `billing.read` may report recognition, but
  * `muted` is forced true here (and again in mw-core). No Stripe I/O.
+ * Each fake copies its snapshot so injecting A cannot change B.read.
  */
 export function createBillingFake(
   manifest: ModuleManifest,
   snapshot: BillingSnapshot = MUTED_BILLING
 ): BillingCapability {
-  const hold: BillingSnapshot = { bundle: snapshot.bundle, muted: true };
-  return {
-    read: () => readBilling(manifest, hold),
+  let current = copyBilling(snapshot);
+  const cap: BillingCapability = {
+    read: () => readBilling(manifest, current),
     checkout: () => checkoutBilling(manifest),
     portal: () => portalBilling(manifest),
   };
+  billingInjectors.set(cap, (next) => {
+    current = next;
+  });
+  return cap;
 }
 
 /** Unscoped HOLD double — muted recognition + stub actions. Never needs a manifest. */

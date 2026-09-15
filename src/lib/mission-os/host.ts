@@ -7,6 +7,8 @@
  * invisible to get on B; unmount A does not wipe B (`.1092`).
  * Two live mounts with identity scope keep isolated snapshots —
  * A's `identity.read` is not B's; injecting A does not change B (`.1093`).
+ * Two live mounts with billing scope keep isolated muted snapshots —
+ * A's `billing.read` is not B's; injecting A does not change B (`.1094`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
@@ -15,11 +17,13 @@
 
 import {
   GUEST_IDENTITY,
+  MUTED_BILLING,
   assertModuleManifest,
   inventoryFromManifest,
   listMountedInventory,
   peekMountedInventory,
   peekMountedScope,
+  type BillingSnapshot,
   type IdentitySnapshot,
   type MiniInventoryEntry,
   type ModuleManifest,
@@ -62,11 +66,19 @@ export type MiniHostOptions = {
    * Not production auth. Not a second user system.
    */
   identities?: Readonly<Partial<Record<string, IdentitySnapshot>>>;
+  /** Host-wide default muted billing snapshot when no per-mini row is set. */
+  billing?: BillingSnapshot;
+  /**
+   * Fake-only per-mini billing snapshots keyed by mount id.
+   * Not Stripe. Not a live checkout.
+   */
+  billings?: Readonly<Partial<Record<string, BillingSnapshot>>>;
 };
 
 export {
   createBillingFake,
   createBillingHold,
+  injectBillingSnapshot,
   createIdentityFake,
   injectIdentitySnapshot,
   createPhotosFake,
@@ -77,6 +89,12 @@ function snapshotFor(opts: MiniHostOptions, id: string): IdentitySnapshot {
   const perMini = opts.identities?.[id];
   if (perMini) return perMini;
   return opts.identity ?? GUEST_IDENTITY;
+}
+
+function billingSnapshotFor(opts: MiniHostOptions, id: string): BillingSnapshot {
+  const perMini = opts.billings?.[id];
+  if (perMini) return perMini;
+  return opts.billing ?? MUTED_BILLING;
 }
 
 /** Per-mount keyspace. Dual-mount isolation is this map keyed by id. */
@@ -92,12 +110,13 @@ function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<str
 function bindDoors(
   manifest: ModuleManifest,
   identity: IdentitySnapshot,
+  billing: BillingSnapshot,
   stores: Map<string, Map<string, string>>
 ): MountedMini {
   return {
     manifest,
     identity: createIdentityFake(manifest, identity),
-    billing: createBillingFake(manifest),
+    billing: createBillingFake(manifest, billing),
     photos: createPhotosFake(manifest),
     storage: createStorageFake(manifest, storeFor(stores, manifest.id)),
   };
@@ -138,7 +157,12 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       if (mounted.has(manifest.id)) {
         return { ok: false, code: 'already_mounted' };
       }
-      const mini = bindDoors(manifest, snapshotFor(opts, manifest.id), stores);
+      const mini = bindDoors(
+        manifest,
+        snapshotFor(opts, manifest.id),
+        billingSnapshotFor(opts, manifest.id),
+        stores
+      );
       mounted.set(manifest.id, inventoryFromManifest(manifest));
       instances.set(manifest.id, mini);
       return { ok: true, value: mini };
