@@ -1,13 +1,16 @@
 /**
  * String-dispatch onto a mounted mini's closed doors.
  *
- * Scope gate first: an undeclared door is `scope_denied` even when the
- * method name is unknown (deny-before-unknown). A declared door + a
- * name outside the closed set is `unknown_method`. Known methods
- * forward to the existing fake — `.1079`–`.1084` envelopes stay.
+ * Door-set first: a name outside `identity` / `billing` / `photos` /
+ * `storage` is `unknown_capability` (`.1096`). Then scope: an
+ * undeclared *known* door is `scope_denied` even when the method
+ * name is unknown (deny-before-unknown). A declared door + a name
+ * outside the closed set is `unknown_method`. Known methods forward
+ * to the existing fake — `.1079`–`.1095` envelopes stay.
  * Never throws. Never returns undefined.
  * Host-level `callMountedDoor` refuses a missing id with `not_mounted`
  * (same code as `MiniHost.unmount`, `.1088`). Does not auto-mount.
+ * Lifecycle (`not_mounted`) wins over `unknown_capability`.
  */
 
 import type { ModuleManifest } from '../../../packages/mw-core/src/module';
@@ -47,10 +50,13 @@ export function doorIsDeclared(manifest: ModuleManifest, door: MissionOsDoor): b
 
 export function callDoor(
   mini: MountedMini,
-  door: MissionOsDoor,
+  door: string,
   method: string,
   args: CallDoorArgs = {}
 ): CapResult<unknown> {
+  if (!isMissionOsDoor(door)) {
+    return { ok: false, code: 'unknown_capability' };
+  }
   if (!doorIsDeclared(mini.manifest, door)) {
     return { ok: false, code: 'scope_denied' };
   }
@@ -88,7 +94,7 @@ function dispatchKnown(
 export function callMountedDoor(
   table: ReadonlyMap<string, MountedMini>,
   id: string,
-  door: MissionOsDoor,
+  door: string,
   method: string,
   args: CallDoorArgs = {}
 ): CapResult<unknown> {
