@@ -228,18 +228,18 @@ test('ClearShot probe after Health unmount cannot read Health leftovers', () => 
   assert.notEqual(probeSecret.value, 'health-only');
 });
 
-test('unmount of a never-mounted id is unknown_mini', () => {
+test('unmount of a never-mounted id is not_mounted', () => {
   const host = createMiniHost();
-  assert.deepEqual(host.unmount('l1.health'), { ok: false, code: 'unknown_mini' });
-  assert.deepEqual(host.unmount('utility.clearshot'), { ok: false, code: 'unknown_mini' });
-  assert.deepEqual(host.unmount('utility.probe'), { ok: false, code: 'unknown_mini' });
+  assert.deepEqual(host.unmount('l1.health'), { ok: false, code: 'not_mounted' });
+  assert.deepEqual(host.unmount('utility.clearshot'), { ok: false, code: 'not_mounted' });
+  assert.deepEqual(host.unmount('utility.probe'), { ok: false, code: 'not_mounted' });
 });
 
-test('second unmount of the same id is unknown_mini', () => {
+test('second unmount of the same id is not_mounted', () => {
   const host = createMiniHost();
   assertMounted(mountHealthMini(host));
   assert.deepEqual(host.unmount('l1.health'), { ok: true, value: undefined });
-  assert.deepEqual(host.unmount('l1.health'), { ok: false, code: 'unknown_mini' });
+  assert.deepEqual(host.unmount('l1.health'), { ok: false, code: 'not_mounted' });
 });
 
 test('unmount then remount: new writes land and stay namespaced', () => {
