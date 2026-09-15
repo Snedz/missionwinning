@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1077` ClearShot last-segment deeplink `mission://minis/clearshot` → `utility.clearshot`; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1077";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1078` MiniHost unmount/remount isolation on in-memory fakes; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1078";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

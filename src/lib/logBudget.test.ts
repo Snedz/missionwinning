@@ -205,6 +205,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       '`.1061` as the live floor without a missing section.',
   },
   {
+    from: 1063,
+    to: 1063,
+    why:
+      'Master jumped `.1062` (empty HOP) → `.1064` (Astro AVIF). No LOG heading on master ever ' +
+      'ended in `.1063`, so rotating `.1062` leaves `.1064` as the live floor without a missing ' +
+      'section.',
+  },
+  {
     from: 990,
     to: 990,
     why:

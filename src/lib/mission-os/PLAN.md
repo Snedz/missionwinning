@@ -1,35 +1,33 @@
-# Paper .1077 — ClearShot mini deeplink last-segment
+# Paper .1078 — MiniHost unmount/remount isolation
 
-ONE hop. Mirror Health. Stubs stay stubby — no real Photos / Billing /
-Android. ClearShot Android cash stays Next ONE. No tip-promote.
-`PRIVATE_MODE` stays.
+ONE hop. Stubs stay stubby — no real Photos / Billing / Android.
+ClearShot Android cash stays Next ONE. No tip-promote.
+`PRIVATE_MODE` stays. No `mission-ops/` in this public repo.
 
 ## Claim
 
-Last-segment `clearshot` is the ClearShot entry, so the deep link is
-`mission://minis/clearshot` (not a long opaque path). That route
-resolves to the reserved `utility.clearshot` mount on existing MiniHost
-+ bus fakes.
-
-Health already uses this grammar: last-segment `health` →
-`mission://minis/health` → `l1.health`. ClearShot joins the same
-closed last-segment table.
+After `MiniHost.unmount` (smallest in-memory teardown), a remounted mini
+must not read prior storage keyspace leftovers from another mini or from
+its own previous mount. `.1076` still holds: remount *without* unmount
+keeps the same mini's keyspace.
 
 ## Accept
 
-1. `parseMissionMiniEntry('mission://minis/clearshot')` is `clearshot`.
-2. `miniSlugFromId('utility.clearshot')` is `clearshot`.
-3. `mountMiniByDeeplink(host, 'mission://minis/clearshot')` mounts
-   `utility.clearshot` (same reserved row as `mountClearShotMini`).
-4. Long / opaque last-segments fail `unknown_mini`:
-   `mission://minis/utility.clearshot`, `mission://minis/utilityclearshot`,
-   `/minis/clearshot`, `mission://minis/mini`.
-5. Last-segment `health` still resolves to `l1.health`, not ClearShot.
+1. `MiniHost` exposes `unmount(id)` on the in-memory host/fakes only.
+2. Health writes a key, `unmount('l1.health')`, remount → `get` is
+   `undefined` (not the leftover value).
+3. Unmounting Health does not wipe ClearShot keys (and the reverse).
+4. A ClearShot probe with `storage.read` after Health unmount cannot
+   read Health leftovers.
+5. Unmount of a never-mounted id, and a second unmount of the same id,
+   are `unknown_mini`.
+6. Stubs stay stubby: no Stripe, camera, or Android Photos / Billing.
 
-Judge ≠ builder: expected id / deny code are hardcoded in the test.
+Judge ≠ builder: leftover values and deny codes are hardcoded in the
+test, not read back from production constants.
 
 ## Non-goals
 
-No ClearShot / Health UI. No Android `:minis:clearshot`. No Photos /
-Billing wiring. No Today / Train door. No Stripe. No `PRIVATE_MODE`
-flip. No tip-promote. Live www stays `.697`.
+No product UI. No Today / Train door. No Photos / Billing / Android
+wiring. No Stripe. No `PRIVATE_MODE` flip. No tip-promote. Live www
+stays `.697`.
