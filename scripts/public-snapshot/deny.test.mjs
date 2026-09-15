@@ -14,13 +14,10 @@ test('keeps product, tests, and archive rotation history', () => {
     'app/(app)/active/page.tsx',
     'packages/mw-core/src/index.ts',
     'apps/android/app/src/main/AndroidManifest.xml',
-    'docs/archive/log/LOG-rotate-912-for-927.md',
-    'docs/archive/INDEX.md',
-    'docs/archive/CONTEXT-now-2026-07-30.md',
-    'docs/applications/README.md',
-    'docs/gauntlet/INDEX.md',
-    'docs/design/INDEX.md',
-    'docs/design/concepts/05-exquisite.html',
+    'docs/help/getting-started.md',
+    'docs/contracts/IDENTITY.md',
+    'docs/ARCHITECTURE.md',
+    'docs/API.md',
     'README.md',
     'package.json',
     '.env.example',
@@ -77,10 +74,35 @@ test('drops strategy and operating material', () => {
   }
 });
 
-test('archive rotation history survives the strategy deny (exact-match, not prefix)', () => {
-  // CONTEXT.md is denied at the root only; archived snapshots must still ship.
-  assert.equal(isDenied('docs/archive/CONTEXT-now-2026-07-30.md'), false);
-  assert.equal(isDenied('docs/archive/log/LOG-rotate-912-for-927.md'), false);
+/**
+ * The guard is the DEFAULT, not the list. None of these strings appear anywhere
+ * in `deny.mjs` — if this test ever goes red, the control has regressed from an
+ * allowlist to an enumeration, which is how 826 planning files shipped while
+ * this suite stayed green.
+ */
+test('an unknown strategy doc is denied WITHOUT being named (the default is the guard)', () => {
+  for (const p of [
+    'docs/BRAND_NEW_STRATEGY.md',
+    'docs/Q1_2027_PLAN.md',
+    'ORCHESTRATION_V2.md',
+    'seo/report.md',
+    'docs/archive/CONTEXT-now-2026-07-30.md',
+    'docs/archive/log/LOG-rotate-912-for-927.md',
+    'docs/archive/INDEX.md',
+    'docs/THESIS.md',
+    'docs/PLAN.md',
+    'docs/gauntlet/INDEX.md',
+  ]) {
+    assert.equal(isDenied(p), true, `LEAK: ${p} ships by default`);
+  }
+});
+
+test('docs/archive/ no longer ships — it is the same documents, rotated', () => {
+  // Previously asserted KEPT on the claim that budget tests needed it. Verified
+  // false: those tests read the working tree, not the snapshot. `docs/archive/`
+  // held 771 rotated copies of files this control already denied at the root.
+  assert.equal(isDenied('docs/archive/CONTEXT-now-2026-07-30.md'), true);
+  assert.equal(isDenied('docs/archive/log/LOG-rotate-912-for-927.md'), true);
   assert.equal(isDenied('CONTEXT.md'), true);
 });
 
@@ -94,7 +116,14 @@ test('never copies secrets or ops even if staged', () => {
   assert.equal(isNever('.env.example'), false);
 });
 
-test('selectSnapshotPaths is deny, not allow — unknown product files survive', () => {
+/**
+ * Renamed 2026-09-15. It used to read "is deny, not allow — unknown product files
+ * survive", which is now the opposite of the truth: under the allowlist an unnamed
+ * file survives only because its *directory* is promoted, never because it was
+ * merely not named. A test whose name contradicts the rule it guards is how a
+ * control drifts without anyone noticing the suite go red.
+ */
+test('selectSnapshotPaths is allow-by-prefix — new code ships, new prose does not', () => {
   const selected = selectSnapshotPaths([
     'src/lib/brandNewModule.ts',
     'PLAN.md',
@@ -102,6 +131,18 @@ test('selectSnapshotPaths is deny, not allow — unknown product files survive',
     'docs/gauntlet/foo.png',
   ]);
   assert.deepEqual(selected, ['src/lib/brandNewModule.ts']);
+
+  // The paired half of the claim: a brand-new file under a NON-promoted path is
+  // refused even though nothing anywhere has ever named it.
+  assert.deepEqual(
+    selectSnapshotPaths([
+      'src/lib/brandNewModule.ts',
+      'docs/brandNewDoc.md',
+      'seo/brandNewReport.md',
+      'brandNewRootFile.md',
+    ]),
+    ['src/lib/brandNewModule.ts']
+  );
 });
 
 test('a mutant that lets PLAN.md through is red', () => {

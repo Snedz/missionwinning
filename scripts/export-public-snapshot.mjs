@@ -20,7 +20,7 @@ import {
 } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isDenied, selectSnapshotPaths } from './public-snapshot/deny.mjs';
+import { isAllowed, isDenied, selectSnapshotPaths } from './public-snapshot/deny.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_OUT = join(root, '..', 'missionwinning-public-snapshot');
@@ -98,18 +98,19 @@ function restoreSnapshotRemotes(dir, remotes) {
 }
 
 function proveAbsences(outAbs, copied) {
-  const forbidden = [
-    'PLAN.md',
-    'IMPROVEMENT_LOG.md',
-    'ops',
-    '.hermes',
-    '.env.local',
-    'docs/overnight',
-    'docs/places',
-    'docs/plans',
-  ];
-  for (const rel of forbidden) {
+  // Belt: these must never exist in the output, whatever the allowlist says.
+  for (const rel of ['ops', '.hermes', '.env.local']) {
     if (existsSync(join(outAbs, rel))) die(`snapshot still contains ${rel}`);
+  }
+  // The control: default-deny. The old hand-list named 8 paths; the 2026-09-15
+  // audit measured 826 planning-layer files shipping under it. So scan the
+  // selection against the allowlist instead of a remembered list of names.
+  const notAllowed = copied.filter((p) => !isAllowed(p));
+  if (notAllowed.length) {
+    die(
+      `snapshot contains ${notAllowed.length} path(s) outside the allowlist:\n  ` +
+        notAllowed.slice(0, 20).join('\n  ')
+    );
   }
   const leaked = copied.filter(isDenied);
   if (leaked.length) die(`deny list leaked:\n  ${leaked.slice(0, 20).join('\n  ')}`);

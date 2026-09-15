@@ -30,10 +30,26 @@ Open source is a **trust product** for the free core. It is not a reason to publ
 | `docs/help/`, `docs/ARCHITECTURE.md`, `docs/API.md`, `docs/DESIGN_*` | Customer + engineering |
 | `docs/contracts/` | Interop specs for multi-agent / multi-module future |
 | `docs/CLASSIFICATION.md`, `docs/DUAL_REPO.md`, `docs/OPEN_SOURCE.md`, `docs/SECRETS.md` | Security posture. Snapshot refresh: `npm run snapshot:public` |
-| `AGENTS.md`, `INDEX.md`, `vision.md` (constitution), `CONTRIBUTING.md` | Agent spine |
-| `CONTEXT.md` | Product status only — no private capital/personal PII |
-| `ORCHESTRATION.md` | Horizon gates (product discipline, not competitive intel dumps) |
-| `LOG.md` | Ship log (product facts) |
+| `CONTRIBUTING.md` | Contributor entry point |
+
+**Default is INTERNAL.** Since 2026-09-15 the snapshot is controlled by an **allowlist**
+(`scripts/public-snapshot/deny.mjs`): a path ships only if it is named in `ALLOW_ROOT`,
+`ALLOW_PREFIXES`, `ALLOW_DOCS` or `ALLOW_DOCS_PREFIXES`. **A new file is INTERNAL until
+someone adds a line for it**, and adding that line is a reviewed act — say why in the commit.
+
+The previous revision of this table listed the paths below as PUBLIC. It was the instruction
+an agent followed, and it disagreed with the denylist — which is how 826 planning-layer files
+shipped while the guard stayed green. They are **INTERNAL**, and the control now agrees:
+
+| Path | Why it is INTERNAL |
+|------|--------------------|
+| `vision.md` | Product constitution — direction, not source |
+| `ORCHESTRATION.md` | Roadmap, horizon gates, YC gate numbers, pricing, 90-day calendar |
+| `CONTEXT.md` | Operating status and gate state |
+| `LOG.md` | Full ship history |
+| `INDEX.md`, `AGENTS.md` | Internal task routing and agent process |
+| `docs/THESIS.md` | Competitive self-assessment |
+| `docs/archive/**` | 771 rotated copies of the documents above |
 
 ## INTERNAL (full text only in mission-ops)
 
@@ -82,6 +98,7 @@ See [SECRETS.md](SECRETS.md). Plus:
 | Check | How |
 |-------|-----|
 | Secrets | `npm run secrets:scan`, gitleaks CI |
+| Snapshot allowlist | `npm run snapshot:check` (also runs inside `npm test`). **Default-deny** — a strategy doc nobody named is refused. Verified by mutation: disabling the rule turns 6 of 8 tests red. |
 | Hermes not tracked | `src/lib/classificationGuard.test.ts` |
 | Pre-public scrub | [DUAL_REPO.md](DUAL_REPO.md) § Pre-public checklist · [SECRETS.md](SECRETS.md) |
 

@@ -5,49 +5,74 @@
  * Gitignored secrets (ops/, .hermes/, .env.local) never appear there;
  * NEVER_PREFIXES is a belt in case they ever get staged.
  *
- * docs/archive/ stays. logBudget + contextBudget tests require the rotation
- * history; it is already on the working public copy and is not war-room.
+ * docs/archive/ does NOT stay. It was previously claimed to be required by the
+ * logBudget + contextBudget tests; verified otherwise — those tests read the
+ * WORKING TREE (readFileSync(root + 'docs/archive/...')), not the snapshot. No
+ * test constrains the snapshot's contents, so the archive is free to leave it.
+ * It held 771 rotated copies of documents this file already denied at the root.
  */
 
 /**
- * Strategy and operating material. Added 2026-09-15 after an exposure audit found
- * the public snapshot serving `vision.md`, `ORCHESTRATION.md`, a 53 KB
- * `CONTEXT.md`, `LOG.md`, `seo/` (competitors, outreach, launch) and
- * `docs/THESIS.md` — including a publicly searchable self-assessment
- * ("no defensible moat"). Making the working repo private did not remove any of
- * it, because the snapshot is a *generated export* of this tree.
+ * The public snapshot is a SOURCE MIRROR, not a progress report.
  *
- * ⚠ THIS IS STILL A DENYLIST. A new strategy file leaks by default. The real fix
- * is to invert the control: default INTERNAL, explicitly promote to PUBLIC (see
- * the exposure audit §4). Until then, anything strategic added at the root must
- * be named here or it ships.
+ * Everything is INTERNAL by default. A path ships only if it matches below, and
+ * adding a line is a deliberate, reviewed act. This inverts the old denylist,
+ * which shipped anything nobody had remembered to name — on 2026-09-15 that
+ * denylist shipped 826 planning-layer files while its own test stayed green.
+ *
+ * The test asserts the DEFAULT, so a new strategy doc is denied without anyone
+ * editing this file. If you are adding a path here, you are promoting it to
+ * public: say why in the commit.
+ *
+ * Replaced 2026-09-15 per
+ * `mission-ops/memory/craft/2026-09-15-public-snapshot-allowlist-spec.md` §3.
  */
-export const DENY_EXACT = new Set([
-  'PLAN.md',
-  'IMPROVEMENT_LOG.md',
-  // Strategy / future direction
-  'vision.md',
-  'ORCHESTRATION.md',
-  // Operating state + history
-  'CONTEXT.md',
-  'LOG.md',
-  'INDEX.md',
-  // Agent operating manual — internal process, not product
-  'CLAUDE.md',
-  'AGENTS.md',
-  'GEMINI.md',
-  // Strategy docs (competitive self-assessment, wedge, ICP, region policy)
-  'docs/THESIS.md',
-  'docs/CREATIVE_MONOPOLY.md',
+
+/** Root files that ship. Anything else at the root is denied. */
+export const ALLOW_ROOT = new Set([
+  // Governance + licensing
+  'LICENSE', 'README.md', 'CHANGELOG.md', 'CONTRIBUTING.md',
+  'CODE_OF_CONDUCT.md', 'SECURITY.md', 'PUBLIC_SNAPSHOT.md',
+  // Build + tooling config
+  'package.json', 'package-lock.json', 'tsconfig.json', 'next.config.js',
+  'tailwind.config.js', 'postcss.config.js', 'eslint.config.js',
+  'playwright.config.ts', 'components.json', 'vercel.json',
+  'docker-compose.graph.yml', 'instrumentation.ts', 'proxy.ts',
+  'sentry.client.config.ts', 'sentry.edge.config.ts', 'sentry.server.config.ts',
+  'skills-lock.json',
+  // Templates + ignore rules (no secrets)
+  '.gitignore', '.vercelignore', '.gitleaks.toml', '.env.example',
+  '.mcp.json.example',
 ]);
 
-export const DENY_PREFIXES = [
-  'docs/overnight/',
-  'docs/places/',
-  'docs/plans/',
-  // GTM intelligence: competitor sets, outreach, launch plan, keywords
-  'seo/',
+/** Directories that ship recursively. Anything else is denied. */
+export const ALLOW_PREFIXES = [
+  'src/', 'app/', 'apps/', 'packages/', 'tests/', 'scripts/',
+  'supabase/', 'public/', '.github/',
 ];
+
+/**
+ * docs/ is NOT allowed wholesale — it holds ~110 files and the planning layer is
+ * most of them (docs/PLAN.md, docs/THESIS.md, docs/archive/). Product docs only,
+ * named. Founded on the same audit that found `docs/archive/` publishing 771
+ * rotated copies of documents the denylist had already denied at the root.
+ */
+export const ALLOW_DOCS = new Set([
+  'docs/README.md', 'docs/INDEX.md', 'docs/ARCHITECTURE.md', 'docs/API.md',
+  'docs/API_MOBILE.md', 'docs/DESIGN_SYSTEM.md', 'docs/COMPLIANCE.md',
+  'docs/LEGAL_SAFETY.md', 'docs/OWASP_AUDIT.md', 'docs/ENV.md',
+]);
+export const ALLOW_DOCS_PREFIXES = ['docs/help/', 'docs/contracts/'];
+
+export function isAllowed(rel) {
+  const n = normalizeRel(rel);
+  if (!n) return false;
+  if (ALLOW_ROOT.has(n)) return true;
+  if (ALLOW_PREFIXES.some((p) => n.startsWith(p))) return true;
+  if (ALLOW_DOCS.has(n)) return true;
+  if (ALLOW_DOCS_PREFIXES.some((p) => n.startsWith(p))) return true;
+  return false;
+}
 
 export const DENY_MEDIA_UNDER = [
   {
@@ -87,9 +112,8 @@ export function isNever(rel) {
 export function isDenied(rel) {
   const n = normalizeRel(rel);
   if (!n) return true;
-  if (isNever(n)) return true;
-  if (DENY_EXACT.has(n)) return true;
-  if (DENY_PREFIXES.some((p) => n === p.slice(0, -1) || n.startsWith(p))) return true;
+  if (isNever(n)) return true;          // ops/, .hermes/, .env.* — unchanged belt
+  if (!isAllowed(n)) return true;       // <-- THE RULE: default deny, explicit promote
   for (const { prefix, suffixes } of DENY_MEDIA_UNDER) {
     if (n.startsWith(prefix) && suffixes.some((s) => n.toLowerCase().endsWith(s))) {
       return true;

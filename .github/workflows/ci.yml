@@ -120,6 +120,12 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      # `npm test` already runs this suite; it is named here as its own step so the
+      # public-export allowlist has a green/red line in the CI log. A control that
+      # only runs as a side effect of another job is invisible when it goes silent.
+      - name: Public snapshot allowlist
+        run: npm run snapshot:check
+
       - name: Route contract tests
         run: npm run test:routes
 

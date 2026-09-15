@@ -39,8 +39,10 @@ Operator secrets and the founder war room are not in this snapshot.
 | EIN, personal email, postal, phone | Never in git |
 
 This is enforced by [`scripts/public-snapshot/deny.mjs`](scripts/public-snapshot/deny.mjs) and
-checked by `npm run snapshot:check`. **The control is a denylist** — a new root-level file ships
-unless it is named there, so treat "is this internal?" as a decision, not a default.
+checked by `npm run snapshot:check`. **The control is an allowlist** — a file ships only if its
+path is explicitly promoted (`src/`, `app/`, `apps/`, `packages/`, `tests/`, `scripts/`,
+`supabase/`, `public/`, `.github/`, and a named root set). Anything unnamed is refused by
+default, so "is this internal?" is the default, not a decision someone has to remember to make.
 
 Site gate (`PRIVATE_MODE`) is separate from GitHub visibility and is founder-owned.
 
