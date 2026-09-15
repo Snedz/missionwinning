@@ -17,7 +17,7 @@
 |------|------|
 | identity | Injected `{ missionId, callSign }`. Guests are `null`. Never mint. |
 | billing | Injected `{ bundle, muted: true }`. Never checkout. |
-| photos | Always `photos_stub` when scoped. |
+| photos | `photos_stub` when scoped. Unscoped → `scope_denied` (same CapResult deny as billing). |
 | storage | In-memory map keyed by mini id. Cap 32 keys / 4KB. |
 
 ## Related
@@ -25,6 +25,6 @@
 | Path | Role |
 |------|------|
 | `packages/mw-core/src/module/` | Manifest + `assertCapability` |
-| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount` / `unmount`, `.1072` / `.1078`) + Health stub (`l1.health` at `mission://minis/health`, `.1074`) + ClearShot stub (`utility.clearshot` at `mission://minis/clearshot`, `.1075`) + mount isolation tests (`.1076`) + last-segment deeplink (`mission://minis/clearshot` → `utility.clearshot`, `.1077`) + unmount leftover isolation (`.1078`) + billing CapResult deny consistency (`.1079`) |
+| `src/lib/mission-os/` | Named doors + in-memory fakes (`MiniHost.mount` / `unmount`, `.1072` / `.1078`) + Health stub (`l1.health` at `mission://minis/health`, `.1074`) + ClearShot stub (`utility.clearshot` at `mission://minis/clearshot`, `.1075`) + mount isolation tests (`.1076`) + last-segment deeplink (`mission://minis/clearshot` → `utility.clearshot`, `.1077`) + unmount leftover isolation (`.1078`) + billing CapResult deny consistency (`.1079`) + photos CapResult deny consistency (`.1080`) |
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |

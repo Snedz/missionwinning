@@ -22,6 +22,10 @@ export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, ModuleManife
 export const BILLING_METHODS = ['read', 'checkout', 'portal'] as const;
 export type BillingMethod = (typeof BILLING_METHODS)[number];
 
+/** Closed photos methods. A third name is a new PR, not a silent extra door. */
+export const PHOTOS_METHODS = ['read', 'write'] as const;
+export type PhotosMethod = (typeof PHOTOS_METHODS)[number];
+
 /** Closed door set. A fifth name is a new PR, not a silent extra method. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
 
@@ -41,6 +45,11 @@ export interface BillingCapability {
   portal(): CapResult<BillingActionHold>;
 }
 
+/**
+ * Photos stub — interface only. Scoped minis stay `photos_stub`.
+ * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
+ * Never camera. Never MediaStore. Never Android wiring.
+ */
 export interface PhotosCapability {
   read(): CapResult<never>;
   write(): CapResult<never>;

@@ -1,32 +1,32 @@
-# Paper .1079 — Billing CapResult deny consistency
+# Paper .1080 — Photos CapResult deny consistency
 
-ONE hop. Stubs stay stubby — no Stripe keys, no product UI, no tip-promote.
-ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays.
-No `mission-ops/` in this public repo.
+ONE hop. Stubs stay stubby — no camera, no MediaStore, no product UI,
+no tip-promote. ClearShot Android cash stays Next ONE. `PRIVATE_MODE`
+stays. No `mission-ops/` in this public repo.
 
 ## Claim
 
-When a mini lacks billing scope (`utility.clearshot` and `l1.health` as
-designed), every billing method on the fake bus returns the same
-`CapResult` deny (`scope_denied`). A test-only mini granted `billing.read`
-gets a stub success path without Stripe.
+When a mini lacks photos scope (`l1.health` as designed), every photos
+method on the fake bus returns the same `CapResult` deny
+(`scope_denied`). `utility.clearshot`, which declares photos, stays
+`photos_stub` on every method (existing).
 
 ## Accept
 
-1. Closed billing methods on the named fake: `read`, `checkout`, `portal`.
-   A fourth name is a fail.
-2. ClearShot and Health: every method returns `{ ok: false, code: 'scope_denied' }`
-   — not `photos_stub`, not `stub`, not a throw.
-3. `test.billing` (test-only, not a product mount, not in the deeplink
-   table or `MINI_REGISTRY`) gets stub success: `read` is muted
-   recognition; `checkout` / `portal` are `{ held: true }`.
-4. No Stripe import, no checkout session, no billing portal URL, no
-   product UI.
+1. Closed photos methods on the named fake: `read`, `write`.
+   A third name is a fail.
+2. Health (`l1.health`): every method returns
+   `{ ok: false, code: 'scope_denied' }` — not `photos_stub`, not
+   `stub`, not a throw.
+3. ClearShot (`utility.clearshot`): every method returns
+   `{ ok: false, code: 'photos_stub' }` — not `ok: true`, not a camera.
+4. No camera import, no MediaStore, no Android wiring, no product UI.
 
-Judge ≠ builder: deny codes and the granted hold value are hardcoded in
+Judge ≠ builder: deny codes and the scoped stub code are hardcoded in
 the test, not read back from production constants.
 
 ## Non-goals
 
-No product UI. No Today / Train door. No Stripe. No `PRIVATE_MODE` flip.
-No tip-promote. Live www stays `.697`. ClearShot Android cash stays Next ONE.
+No product UI. No Today / Train door. No camera. No MediaStore.
+No `PRIVATE_MODE` flip. No tip-promote. Live www stays `.697`.
+ClearShot Android cash stays Next ONE.

@@ -114,6 +114,10 @@ test('photos fake is always photos_stub when scoped', () => {
     ok: false,
     code: 'scope_denied',
   });
+  assert.deepEqual(createPhotosFake(HEALTH_TRAIN_MANIFEST).write(), {
+    ok: false,
+    code: 'scope_denied',
+  });
 });
 
 test('storage fake is in-memory and namespaced by the map the caller owns', () => {
