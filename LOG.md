@@ -531,7 +531,7 @@ Label `2026.07-unified.1066`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1047-for-1066.md](docs/archive/log/LOG-rotate-1047-for-1066.md) (`.1047`).
 
-## 2026-09-13 · `.1065` — sharp libheif GHSA (Dependabot #99)
+## 2026-09-13 — sharp libheif GHSA (`.1065`)
 
 High Dependabot alert #99 / GHSA-rgj7-g3m4-5g8c:
 sharp bundled libheif vulns (GHSA-g89c-p67h-r497 / GHSA-2jg2-4ch7-h545).
