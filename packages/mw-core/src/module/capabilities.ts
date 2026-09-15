@@ -32,8 +32,14 @@ export type BillingSnapshot = {
   muted: boolean;
 };
 
+export type PhotosSnapshot = {
+  album: string;
+  stub: boolean;
+};
+
 export const GUEST_IDENTITY: IdentitySnapshot = { missionId: null, callSign: null };
 export const MUTED_BILLING: BillingSnapshot = { bundle: 'none', muted: true };
+export const STUB_PHOTOS: PhotosSnapshot = { album: 'none', stub: true };
 
 /** Stub hold for checkout / portal. Never a Stripe session. */
 export type BillingActionHold = { held: true };
@@ -156,24 +162,39 @@ export function portalBilling(
   return { ok: true, value: BILLING_ACTION_HOLD };
 }
 
-/**
- * Photos read. Scoped minis stay `photos_stub` — never a camera.
- * Unscoped minis get the same CapResult deny as `readBilling`.
- */
-export function readPhotos(manifest: ModuleManifest): CapabilityResult<never> {
-  const gate = assertCapability(manifest, 'photos.read');
+function photosEnvelope(
+  manifest: ModuleManifest,
+  scope: 'photos.read' | 'photos.write',
+  snapshot?: PhotosSnapshot
+): CapabilityResult<PhotosSnapshot> {
+  const gate = assertCapability(manifest, scope);
   if (!gate.ok) return gate;
-  return { ok: false, code: 'photos_stub' };
+  if (!snapshot) return { ok: false, code: 'photos_stub' };
+  return { ok: true, value: { album: snapshot.album, stub: true } };
 }
 
 /**
- * Photos write. Scoped minis stay `photos_stub` — never MediaStore.
+ * Photos read. No snapshot → scoped minis stay `photos_stub` — never a camera.
+ * Injected snapshot → isolated stub envelope (`stub` forced true).
+ * Unscoped minis get the same CapResult deny as `readBilling`.
+ */
+export function readPhotos(
+  manifest: ModuleManifest,
+  snapshot?: PhotosSnapshot
+): CapabilityResult<PhotosSnapshot> {
+  return photosEnvelope(manifest, 'photos.read', snapshot);
+}
+
+/**
+ * Photos write. No snapshot → scoped minis stay `photos_stub` — never MediaStore.
+ * Injected snapshot → isolated stub envelope (`stub` forced true).
  * Unscoped minis get the same CapResult deny as `readPhotos`.
  */
-export function writePhotos(manifest: ModuleManifest): CapabilityResult<never> {
-  const gate = assertCapability(manifest, 'photos.write');
-  if (!gate.ok) return gate;
-  return { ok: false, code: 'photos_stub' };
+export function writePhotos(
+  manifest: ModuleManifest,
+  snapshot?: PhotosSnapshot
+): CapabilityResult<PhotosSnapshot> {
+  return photosEnvelope(manifest, 'photos.write', snapshot);
 }
 
 function utf8Bytes(value: string): number {

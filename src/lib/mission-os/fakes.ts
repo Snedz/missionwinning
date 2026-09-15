@@ -9,6 +9,9 @@
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  * Billing is an injected muted snapshot — each fake copies so injecting
  * A cannot change B.read. Unscoped billing stays `scope_denied`.
+ * Photos is an injected stub snapshot — each fake copies so injecting
+ * A cannot change B.read. No snapshot stays `photos_stub`. Unscoped
+ * photos stays `scope_denied`.
  */
 
 import {
@@ -26,6 +29,7 @@ import {
   type BillingSnapshot,
   type IdentitySnapshot,
   type ModuleManifest,
+  type PhotosSnapshot,
 } from '../../../packages/mw-core/src/module';
 import type {
   BillingCapability,
@@ -48,6 +52,10 @@ function copyIdentity(snapshot: IdentitySnapshot): IdentitySnapshot {
 
 function copyBilling(snapshot: BillingSnapshot): BillingSnapshot {
   return { bundle: snapshot.bundle, muted: true };
+}
+
+function copyPhotos(snapshot: PhotosSnapshot): PhotosSnapshot {
+  return { album: snapshot.album, stub: true };
 }
 
 /**
@@ -131,11 +139,40 @@ export function createBillingHold(): BillingCapability {
   };
 }
 
-export function createPhotosFake(manifest: ModuleManifest): PhotosCapability {
-  return {
-    read: () => readPhotos(manifest),
-    write: () => writePhotos(manifest),
+/**
+ * Fake-only per-capability inject. Not camera. Not on MiniHost.
+ * Replacing A's snapshot must not change B.read — each fake copies
+ * and forces stub.
+ */
+const photosInjectors = new WeakMap<PhotosCapability, (next: PhotosSnapshot) => void>();
+
+export function injectPhotosSnapshot(
+  photos: PhotosCapability,
+  snapshot: PhotosSnapshot
+): void {
+  const inject = photosInjectors.get(photos);
+  if (!inject) return;
+  inject(copyPhotos(snapshot));
+}
+
+/**
+ * Photos stub fake. No snapshot → scoped stays `photos_stub`.
+ * Injected snapshot → isolated stub envelope. Never camera.
+ * Each fake copies its snapshot so injecting A cannot change B.read.
+ */
+export function createPhotosFake(
+  manifest: ModuleManifest,
+  snapshot?: PhotosSnapshot
+): PhotosCapability {
+  let current = snapshot ? copyPhotos(snapshot) : undefined;
+  const cap: PhotosCapability = {
+    read: () => readPhotos(manifest, current),
+    write: () => writePhotos(manifest, current),
   };
+  photosInjectors.set(cap, (next) => {
+    current = next;
+  });
+  return cap;
 }
 
 export function createStorageFake(

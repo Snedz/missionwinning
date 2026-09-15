@@ -33,7 +33,7 @@ function sourceOf(file: string): string {
 const SCOPE_DENIED: CapResult<never> = { ok: false, code: 'scope_denied' };
 const PHOTOS_STUB: CapResult<never> = { ok: false, code: 'photos_stub' };
 
-function callPhotos(photos: PhotosCapability, method: PhotosMethod): CapResult<never> {
+function callPhotos(photos: PhotosCapability, method: PhotosMethod): CapResult<unknown> {
   return photos[method]();
 }
 

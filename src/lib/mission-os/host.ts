@@ -9,6 +9,8 @@
  * A's `identity.read` is not B's; injecting A does not change B (`.1093`).
  * Two live mounts with billing scope keep isolated muted snapshots —
  * A's `billing.read` is not B's; injecting A does not change B (`.1094`).
+ * Two live mounts with photos scope keep isolated stub snapshots —
+ * A's `photos.read` is not B's; injecting A does not change B (`.1095`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
@@ -28,6 +30,7 @@ import {
   type MiniInventoryEntry,
   type ModuleManifest,
   type ModuleScope,
+  type PhotosSnapshot,
 } from '../../../packages/mw-core/src/module';
 import {
   createBillingFake,
@@ -73,6 +76,13 @@ export type MiniHostOptions = {
    * Not Stripe. Not a live checkout.
    */
   billings?: Readonly<Partial<Record<string, BillingSnapshot>>>;
+  /** Host-wide default photos snapshot when no per-mini row is set. */
+  photos?: PhotosSnapshot;
+  /**
+   * Fake-only per-mini photos snapshots keyed by mount id.
+   * Not camera. Not MediaStore.
+   */
+  photoses?: Readonly<Partial<Record<string, PhotosSnapshot>>>;
 };
 
 export {
@@ -82,6 +92,7 @@ export {
   createIdentityFake,
   injectIdentitySnapshot,
   createPhotosFake,
+  injectPhotosSnapshot,
   createStorageFake,
 } from './fakes';
 
@@ -95,6 +106,12 @@ function billingSnapshotFor(opts: MiniHostOptions, id: string): BillingSnapshot 
   const perMini = opts.billings?.[id];
   if (perMini) return perMini;
   return opts.billing ?? MUTED_BILLING;
+}
+
+function photosSnapshotFor(opts: MiniHostOptions, id: string): PhotosSnapshot | undefined {
+  const perMini = opts.photoses?.[id];
+  if (perMini) return perMini;
+  return opts.photos;
 }
 
 /** Per-mount keyspace. Dual-mount isolation is this map keyed by id. */
@@ -111,13 +128,14 @@ function bindDoors(
   manifest: ModuleManifest,
   identity: IdentitySnapshot,
   billing: BillingSnapshot,
+  photos: PhotosSnapshot | undefined,
   stores: Map<string, Map<string, string>>
 ): MountedMini {
   return {
     manifest,
     identity: createIdentityFake(manifest, identity),
     billing: createBillingFake(manifest, billing),
-    photos: createPhotosFake(manifest),
+    photos: createPhotosFake(manifest, photos),
     storage: createStorageFake(manifest, storeFor(stores, manifest.id)),
   };
 }
@@ -161,6 +179,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         manifest,
         snapshotFor(opts, manifest.id),
         billingSnapshotFor(opts, manifest.id),
+        photosSnapshotFor(opts, manifest.id),
         stores
       );
       mounted.set(manifest.id, inventoryFromManifest(manifest));

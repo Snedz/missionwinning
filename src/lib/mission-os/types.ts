@@ -15,11 +15,19 @@ import type {
   MiniInventoryEntry,
   ModuleManifest,
   ModuleScope,
+  PhotosSnapshot,
 } from '../../../packages/mw-core/src/module';
 
 export type CapResult<T> = CapabilityResult<T>;
 
-export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, MiniInventoryEntry, ModuleManifest };
+export type {
+  BillingActionHold,
+  BillingSnapshot,
+  IdentitySnapshot,
+  MiniInventoryEntry,
+  ModuleManifest,
+  PhotosSnapshot,
+};
 
 /** Closed billing methods. A fourth name is `unknown_method`, not a silent extra door. */
 export const BILLING_METHODS = ['read', 'checkout', 'portal'] as const;
@@ -71,13 +79,15 @@ export interface BillingCapability {
 }
 
 /**
- * Photos stub — interface only. Scoped minis stay `photos_stub`.
- * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
- * Never camera. Never a gallery write. Never Android wiring.
+ * Photos stub — interface only. No snapshot → scoped stays `photos_stub`.
+ * Injected snapshot → isolated stub envelope for that mount (host-wide
+ * default, or fake-only per-mini override). Unscoped minis get the same
+ * CapResult deny as billing (`scope_denied`). Never camera. Never a
+ * gallery write. Never Android wiring.
  */
 export interface PhotosCapability {
-  read(): CapResult<never>;
-  write(): CapResult<never>;
+  read(): CapResult<PhotosSnapshot>;
+  write(): CapResult<PhotosSnapshot>;
 }
 
 /**

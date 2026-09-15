@@ -11,7 +11,7 @@
 | `@missionwinning/mw-core/workout` | Victory next-action (Coach wedge) |
 | `@missionwinning/mw-core/identity` | Athlete Card cosmetics / tier pure rules |
 | `@missionwinning/mw-core/economy` | Points/inventory interop types (contracts) |
-| `@missionwinning/mw-core/module` | Mini-app manifest types + `health.train` seed + `social.server` messenger + capability bus (`assertCapability`, `readIdentity`, `readBilling` / `checkoutBilling` / `portalBilling`, `readPhotos` / `writePhotos`, `readStorage` / `writeStorage`, `listMountedInventory` / `peekMountedInventory` / `peekMountedScope`, deny codes include `unknown_method` / `already_mounted` / `not_mounted` / `bad_deeplink`) + reserved `UTILITY_CLEARSHOT_MANIFEST` (`mission://minis/clearshot`) + `HOST_SHELL` |
+| `@missionwinning/mw-core/module` | Mini-app manifest types + `health.train` seed + `social.server` messenger + capability bus (`assertCapability`, `readIdentity`, `readBilling` / `checkoutBilling` / `portalBilling`, `readPhotos` / `writePhotos` (optional isolated `PhotosSnapshot`), `readStorage` / `writeStorage`, `listMountedInventory` / `peekMountedInventory` / `peekMountedScope`, deny codes include `unknown_method` / `already_mounted` / `not_mounted` / `bad_deeplink`) + reserved `UTILITY_CLEARSHOT_MANIFEST` (`mission://minis/clearshot`) + `HOST_SHELL` |
 
 ## Rule
 
