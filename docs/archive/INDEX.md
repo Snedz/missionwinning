@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1087-for-1102.md](./log/LOG-rotate-1087-for-1102.md) | rotated 2026-09-15 for `.1102` identity remount after inject (`.1087`) |
 | [log/LOG-rotate-1086-for-1101.md](./log/LOG-rotate-1086-for-1101.md) | rotated 2026-09-15 for `.1101` deeplink remount already_mounted (`.1086`) |
 | [log/LOG-rotate-1085-for-1100.md](./log/LOG-rotate-1085-for-1100.md) | rotated 2026-09-15 for `.1100` storage.remove CapResult consistency (`.1085`) |
 | [log/LOG-rotate-1084-for-1099.md](./log/LOG-rotate-1084-for-1099.md) | rotated 2026-09-15 for `.1099` remount after storage_cap (`.1084`) |
