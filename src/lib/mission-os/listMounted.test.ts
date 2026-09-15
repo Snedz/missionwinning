@@ -200,7 +200,9 @@ test('returned scopes are a copy — mutating them does not rewrite the host', (
   const first = assertOk(host.listMounted(HEALTH_ID));
   (first.scopes as string[]).push('billing.read');
   const listed = assertOk(host.listMounted());
-  listed[0] && ((listed[0].scopes as string[]).push('photos.read'));
+  const firstRow = listed[0];
+  assert.ok(firstRow);
+  (firstRow.scopes as string[]).push('photos.read');
 
   const again = assertOk(host.listMounted(HEALTH_ID));
   assert.deepEqual([...again.scopes], [...HEALTH_DECLARED]);
