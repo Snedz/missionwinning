@@ -118,12 +118,6 @@ test('test.granted: every billing method is the muted / held stub', () => {
   for (const method of BILLING_METHODS) {
     const result = callBilling(mounted.value.billing, method);
     assert.equal(result.ok, true, `${method} must stub-succeed when granted`);
-    if (!result.ok) {
-      assert.notEqual(result.code, 'scope_denied');
-      assert.notEqual(result.code, 'photos_stub');
-      assert.notEqual(result.code, 'stub');
-      return;
-    }
   }
 });
 
