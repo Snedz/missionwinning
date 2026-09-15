@@ -10,6 +10,10 @@
  * A well-formed last-segment that is not in this table is
  * `unknown_mini` (.1090) — same code as MiniHost.mount of an
  * unknown id (.1087). Does not throw. Does not mount.
+ * Resolve is a lookup — it does not mount. A second
+ * `mountMiniByDeeplink` of a live id is `already_mounted`
+ * (.1101) — same code as MiniHost.mount remount (.1086).
+ * Does not throw. Does not replace the live instance.
  * Test-fixture slugs stay out of this table.
  *
  * No product UI. No Photos / Billing / Android wiring.
