@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1078-for-1093.md](./log/LOG-rotate-1078-for-1093.md) | rotated 2026-09-15 for `.1093` dual-mount identity isolation (`.1078`) |
 | [log/LOG-rotate-1077-for-1092.md](./log/LOG-rotate-1077-for-1092.md) | rotated 2026-09-15 for `.1092` dual-mount storage isolation (`.1077`) |
 | [log/LOG-rotate-1076-for-1091.md](./log/LOG-rotate-1076-for-1091.md) | rotated 2026-09-15 for `.1091` deeplink bad_deeplink (`.1076`) |
 | [log/LOG-rotate-1075-for-1090.md](./log/LOG-rotate-1075-for-1090.md) | rotated 2026-09-15 for `.1090` deeplink unknown last-segment (`.1075`) |

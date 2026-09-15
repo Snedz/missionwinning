@@ -5,6 +5,7 @@
  * reports muted. Photos stay `photos_stub` when scoped; unscoped is
  * `scope_denied` (same CapResult deny as billing). Storage is process-local.
  * Identity is an injected snapshot — guests stay null; nothing is minted.
+ * Each fake copies its snapshot so injecting A cannot change B.read.
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  */
 
@@ -39,13 +40,37 @@ export const MISSION_OS_FAKES = [
   'createStorageFake',
 ] as const;
 
+function copyIdentity(snapshot: IdentitySnapshot): IdentitySnapshot {
+  return { missionId: snapshot.missionId, callSign: snapshot.callSign };
+}
+
+/**
+ * Fake-only per-capability inject. Not production auth. Not on MiniHost.
+ * Replacing A's snapshot must not change B.read — each fake copies.
+ */
+const identityInjectors = new WeakMap<IdentityCapability, (next: IdentitySnapshot) => void>();
+
+export function injectIdentitySnapshot(
+  identity: IdentityCapability,
+  snapshot: IdentitySnapshot
+): void {
+  const inject = identityInjectors.get(identity);
+  if (!inject) return;
+  inject(copyIdentity(snapshot));
+}
+
 export function createIdentityFake(
   manifest: ModuleManifest,
   snapshot: IdentitySnapshot = GUEST_IDENTITY
 ): IdentityCapability {
-  return {
-    read: () => readIdentity(manifest, snapshot),
+  let current = copyIdentity(snapshot);
+  const cap: IdentityCapability = {
+    read: () => readIdentity(manifest, current),
   };
+  identityInjectors.set(cap, (next) => {
+    current = next;
+  });
+  return cap;
 }
 
 /**
