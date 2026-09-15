@@ -1,74 +1,82 @@
-# Paper .1100 — storage.remove CapResult consistency
+# Paper .1101 — Deeplink remount already_mounted
 
 ONE hop. Stubs stay stubby — no UI, no Stripe, no camera, no tip-promote.
 ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays. No
 `mission-ops/` in this public repo. `docs/harness/HOP.md` stays the empty
 template — the claim lives only here.
 
-`.1083` closed get/set deny. `.1085` left `storage.clear` as
-`unknown_method`. `.1098` / `.1099` named `storage.remove` as a
-non-goal. This hop adds that one closed method.
+`.1086` closed `already_mounted` on `MiniHost.mount`. `.1090` /
+`.1091` closed unknown / bad deeplink. `.1098` froze the eight
+host-lifecycle codes. This hop closes the leftover composition:
+resolve a known URI, then remount that same id via the deeplink
+door.
 
 ## Goal
 
-Close the missing-method hole on the storage door: `remove(key)` is
-now a known method with the same CapResult consistency as get / set.
-`ok` when scoped for write (deletes the key, or is a no-op miss).
-`scope_denied` when unscoped (does not delete). `not_mounted` when
-the id is not live. `storage.clear` / `storage.delete` stay
-`unknown_method`. Distinct from remount-after-cap (`.1099`). Distinct
-from the deny-code freeze (`.1098`). No ninth deny code.
+Close the deeplink-remount hole `.1086` + `.1090` left implicit:
+`resolveMiniDeeplink` of `mission://minis/health` or
+`mission://minis/clearshot` is a lookup — it does not mount.
+`mountMiniByDeeplink` of that same URI while the id is live
+returns `{ ok: false, code: 'already_mounted' }`. Does not throw.
+Does not replace the live instance. Does not wipe storage.
+`listMounted` stays one row for that id. Distinct from direct
+`MiniHost.mount` remount (`.1086`). Distinct from unknown /
+bad deeplink (`.1090` / `.1091`). Distinct from remount-after-cap
+(`.1099`) and `storage.remove` (`.1100`). No ninth deny code.
 
 ## Claim
 
-`storage.remove` is the third closed storage method. On MiniHost /
-`call` / the fake:
+After `resolveMiniDeeplink` of a known last-segment URI succeeds
+(Health `mission://minis/health` → `l1.health`, ClearShot
+`mission://minis/clearshot` → `utility.clearshot`):
 
-- scoped write (`storage.write`): remove of a live key is
-  `{ ok: true, value: undefined }`; a following get is a miss
-  (Health / `test.granted`). ClearShot remove succeeds; get stays
-  `scope_denied`. Occupancy drops — after a 32-key fill, the 33rd
-  set is still `storage_cap`; remove one key; the next in-bound set
-  is `ok`
-- scoped write: remove of a missing key is the same `ok` envelope
-  (idempotent). Does not throw
-- unscoped (`test.nostorage`, `test.billing`): every storage method
-  including `remove` is `{ ok: false, code: 'scope_denied' }` and
-  does not delete a seeded key
-- unmounted id: `host.call(id, 'storage', 'remove', { key })` is
-  `{ ok: false, code: 'not_mounted' }` — does not throw, does not
-  auto-mount
-- `storage.clear` and `storage.delete` stay `unknown_method` on a
-  declared door; undeclared door + those names stay `scope_denied`
-  (deny-before-unknown, `.1085`)
+- resolve does not mount — `listMounted` stays empty until
+  `mountMiniByDeeplink`
+- first `mountMiniByDeeplink` of that URI is `ok`
+- resolve of the same URI while mounted is still `ok` (lookup
+  is not a remount) and does not wipe storage
+- second `mountMiniByDeeplink` of the same URI is
+  `{ ok: false, code: 'already_mounted' }` — does not throw,
+  does not replace the live instance, does not wipe keys
+  written before the remount attempt, does not grow
+  `listMounted`
+- `host.mount(resolved.value)` of a live id is the same
+  `already_mounted` envelope as `mountMiniByDeeplink`
+- Health remount-via-deeplink does not touch a live ClearShot
+  (and the reverse)
+- after unmount, the same deeplink remounts empty — prior
+  keys miss
 
-Dual-mount isolation stays (`.1092`): A.remove(k) does not delete
-B's k. Remount-after-cap stays (`.1099`). Host-lifecycle deny codes
-stay the frozen eight (`.1098`) — no silent ninth code. No
-`storage.clear` as a known method. No minis function-bus rewrite.
+Unknown last-segment stays `unknown_mini` (`.1090`). Malformed
+URI stays `bad_deeplink` (`.1091`). Direct `mountHealthMini`
+remount stays `already_mounted` (`.1086`). Host-lifecycle deny
+codes stay the frozen eight (`.1098`) — no silent ninth code.
+No `storage.clear` as a known method. No remount-after-cap
+rewrite. No identity / billing / photos remount-after-cap.
 
-CapResult envelopes for known methods stay `.1079`–`.1099`
-(`scope_denied` / `photos_stub` / stub success / `unknown_method` /
-`unknown_capability` / `already_mounted` / `unknown_mini` /
+CapResult envelopes for known methods stay `.1079`–`.1100`
+(`scope_denied` / `photos_stub` / stub success / `unknown_method`
+/ `unknown_capability` / `already_mounted` / `unknown_mini` /
 `not_mounted` / `bad_deeplink` / `storage_cap` / storage miss /
-identity / billing / photos isolation).
+identity / billing / photos isolation / `storage.remove`).
 
 ## Accept
 
-1. Closed `STORAGE_METHODS` is exactly `get` / `set` / `remove`
-   (hardcoded). Fake keys match. `storage.clear` / `storage.delete`
-   stay `unknown_method` on a declared door.
-2. Health / `test.granted`: set then remove is `ok`; get after is
-   miss; remove of a missing key is `ok`. Fill 32; 33rd is
-   `storage_cap`; remove one; next in-bound set is `ok`. Hardcoded
-   envelopes.
-3. Unscoped remove is `scope_denied` and does not delete a seeded
-   key. Unmounted `host.call` remove is `not_mounted`. ClearShot
-   remove is `ok`; get stays `scope_denied`. A.remove does not
-   delete B's key. `host.call` matches the fake.
+1. Resolve `mission://minis/health` does not mount. First
+   `mountMiniByDeeplink` is `ok`. Second is hardcoded
+   `{ ok: false, code: 'already_mounted' }`. Does not throw.
+   Live storage / identity stay. `listMounted` is one Health
+   row. Same sequence for `mission://minis/clearshot`.
+2. Resolve while mounted is still `ok` and does not wipe
+   keys. `host.mount(resolved.value)` of the live id is
+   `already_mounted`. Health remount-via-deeplink leaves
+   ClearShot untouched (and the reverse).
+3. After unmount, the same deeplink remounts; prior keys
+   miss. Unknown / bad deeplink stay `.1090` / `.1091`.
+   Direct remount stays `.1086`. No ninth deny code.
 4. Unit tests under `src/lib/mission-os/`; judge ≠ builder —
-   expected codes hardcoded in tests, not read back from production
-   as the source of truth.
+   expected codes hardcoded in tests, not read back from
+   production as the source of truth.
 5. `docs/harness/HOP.md` stays the empty template.
 
 ## Non-goals
@@ -76,10 +84,10 @@ identity / billing / photos isolation).
 No product UI. No Today / Train door. No Stripe. No camera.
 No MediaStore. No Supabase. No `PRIVATE_MODE` flip. No tip-promote.
 Live www stays `.697`. ClearShot Android cash stays Next ONE.
-No new product mini. No Android product work. No `storage.clear` /
-`delete` as a known method. No new deny code. No raising the
-storage cap. No remount-after-cap rewrite. No minis function-bus
-`storageRemove`. No change to `.1079`–`.1099` envelopes.
+No new product mini. No Android product work. No `storage.clear`
+/ `delete` as a known method. No new deny code. No remount-after-cap
+rewrite. No identity / billing / photos remount-after-cap. No
+change to `.1079`–`.1100` envelopes.
 
 ## Refuse
 
