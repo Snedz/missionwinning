@@ -95,6 +95,7 @@ export interface PhotosCapability {
  * Closed to `STORAGE_METHODS`. A third method is a new PR.
  * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
  * Scoped minis use the in-memory map. Overflow is `storage_cap` (`.1097`).
+ * Remount after that refuse starts empty (`.1099`).
  * Never a durable browser write.
  */
 export interface StorageCapability {
@@ -124,7 +125,8 @@ export interface MiniHost {
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
   /**
    * In-memory teardown. Not currently mounted → `not_mounted`.
-   * Does not throw. Clears that mini's fake keyspace.
+   * Does not throw. Clears that mini's fake keyspace — including after
+   * a `storage_cap` refuse, so remount is not still capped (`.1099`).
    */
   unmount(id: string): CapResult<void>;
   /** Inventory of currently mounted minis — id + declared scopes only. */

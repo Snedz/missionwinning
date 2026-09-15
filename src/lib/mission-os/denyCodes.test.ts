@@ -208,7 +208,7 @@ test('production code: literals stay inside the closed complete set', () => {
 
 test('PLAN.md names every frozen host-lifecycle code; HOP.md stays empty', () => {
   const plan = readFileSync(path.join(here, 'PLAN.md'), 'utf8');
-  assert.match(plan, /Paper \.1098/);
+  assert.match(plan, /Paper \.1099/);
   assert.match(plan, /no silent ninth code/i);
   for (const code of HOST_LIFECYCLE) {
     assert.equal(plan.includes(`\`${code}\``), true, `PLAN.md must name ${code}`);
@@ -219,7 +219,7 @@ test('PLAN.md names every frozen host-lifecycle code; HOP.md stays empty', () =>
   assert.match(hop, /^ticket:\n/m);
   assert.match(hop, /^done_means:\n/m);
   assert.match(hop, /^accept:\n/m);
-  assert.equal(hop.includes('1098'), false);
+  assert.equal(hop.includes('1099'), false);
   assert.equal(hop.includes('storage_cap'), false);
   assert.equal(hop.includes('unknown_capability'), false);
   assert.equal(hop.includes('l1.health'), false);

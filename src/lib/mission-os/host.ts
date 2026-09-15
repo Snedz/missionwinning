@@ -3,8 +3,10 @@
  * An id outside the closed allowlist is `unknown_mini` (no partial mount).
  * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
- * read leftovers. Two live mounts keep isolated maps — set on A is
- * invisible to get on B; unmount A does not wipe B (`.1092`).
+ * read leftovers. After a `storage_cap` refuse, remount still starts
+ * empty — no leftover overflow occupancy (`.1099`). Two live mounts
+ * keep isolated maps — set on A is invisible to get on B; unmount A
+ * does not wipe B (`.1092`).
  * Two live mounts with identity scope keep isolated snapshots —
  * A's `identity.read` is not B's; injecting A does not change B (`.1093`).
  * Two live mounts with billing scope keep isolated muted snapshots —
@@ -15,6 +17,7 @@
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
  * A scoped storage write over 32 keys / 4KB is `storage_cap` (`.1097`).
+ * Remount after that refuse starts empty (`.1099`).
  * Host-lifecycle deny codes are frozen (`.1098`) — no silent ninth code.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
  * No ClearShot UI. No Today / Train door. No Stripe.
@@ -191,6 +194,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
     },
     unmount(id: string): CapResult<void> {
       if (!mounted.has(id)) return { ok: false, code: 'not_mounted' };
+      // Drop occupancy even after a storage_cap refuse so remount is not still capped (.1099).
       const store = stores.get(id);
       if (store) {
         store.clear();
