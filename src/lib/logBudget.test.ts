@@ -197,6 +197,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       '(`9c3b2ce6`); this ship stamp is `.988`. No LOG heading on master ever ended in `.987`.',
   },
   {
+    from: 1060,
+    to: 1060,
+    why:
+      'Next 16.3.3 paper (#911) minted `.1060` without a LOG heading. Align hop `.1061` is the ' +
+      'live heading. No LOG heading on master ever ended in `.1060`, so rotating `.1059` leaves ' +
+      '`.1061` as the live floor without a missing section.',
+  },
+  {
     from: 990,
     to: 990,
     why:
