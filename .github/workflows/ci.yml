@@ -126,6 +126,13 @@ jobs:
       - name: Public snapshot allowlist
         run: npm run snapshot:check
 
+      # A SKILL.md is auto-loaded into the system prompt — instruction text that
+      # runs before anyone reads it. skills-lock.json recorded a computedHash per
+      # skill and nothing verified it until 2026-09-15. --strict: every auto-loaded
+      # skill needs a provenance record, in the vendor lock or skills-baseline.json.
+      - name: Skill provenance
+        run: npm run skills:check -- --strict
+
       - name: Route contract tests
         run: npm run test:routes
 
