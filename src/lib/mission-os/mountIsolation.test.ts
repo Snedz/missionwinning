@@ -54,13 +54,16 @@ test('l1.health mount: identity + storage granted; photos and billing denied', (
 });
 
 test('retired health.mini is not the live Health mount', () => {
-  assert.equal(HEALTH_MINI_MANIFEST.id, 'l1.health');
-  assert.equal(HEALTH_MINI_MANIFEST.id === 'health.mini', false);
+  const liveId: string = HEALTH_MINI_MANIFEST.id;
+  assert.equal(liveId, 'l1.health');
+  assert.notEqual(liveId, 'health.mini');
 
   const host = createMiniHost();
   const live = assertMounted(mountHealthMini(host));
   assert.equal(live.manifest.id, 'l1.health');
 
+  // Retired slug from `.1073`. Last-segment `mini` no longer matches
+  // `mission://minis/health`. Not a live swap.
   const retired: ModuleManifest = {
     ...HEALTH_MINI_MANIFEST,
     id: 'health.mini',
