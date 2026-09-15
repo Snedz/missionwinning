@@ -12,6 +12,7 @@ export type CapabilityDenyCode =
   | 'stub'
   | 'photos_stub'
   | 'unknown_mini'
+  | 'unknown_method'
   | 'storage_cap';
 
 export type CapabilityOk<T> = { ok: true; value: T };

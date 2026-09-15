@@ -21,19 +21,19 @@ export type CapResult<T> = CapabilityResult<T>;
 
 export type { BillingActionHold, BillingSnapshot, IdentitySnapshot, MiniInventoryEntry, ModuleManifest };
 
-/** Closed billing methods. A fourth name is a new PR, not a silent extra door. */
+/** Closed billing methods. A fourth name is `unknown_method`, not a silent extra door. */
 export const BILLING_METHODS = ['read', 'checkout', 'portal'] as const;
 export type BillingMethod = (typeof BILLING_METHODS)[number];
 
-/** Closed photos methods. A third name is a new PR, not a silent extra door. */
+/** Closed photos methods. A third name is `unknown_method`, not a silent extra door. */
 export const PHOTOS_METHODS = ['read', 'write'] as const;
 export type PhotosMethod = (typeof PHOTOS_METHODS)[number];
 
-/** Closed identity methods. A second name is a new PR, not a silent extra door. */
+/** Closed identity methods. A second name is `unknown_method`, not a silent extra door. */
 export const IDENTITY_METHODS = ['read'] as const;
 export type IdentityMethod = (typeof IDENTITY_METHODS)[number];
 
-/** Closed storage methods. A third name is a new PR, not a silent extra door. */
+/** Closed storage methods. A third name is `unknown_method`, not a silent extra door. */
 export const STORAGE_METHODS = ['get', 'set'] as const;
 export type StorageMethod = (typeof STORAGE_METHODS)[number];
 
