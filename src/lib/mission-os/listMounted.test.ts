@@ -165,7 +165,7 @@ test('never-mounted id + any scope is unknown_mini (id first)', () => {
   assert.notEqual(miss.code, 'scope_denied');
 });
 
-test('unmount drops that id; remount without unmount stays one row', () => {
+test('unmount drops that id; remount without unmount is already_mounted and stays one row', () => {
   const host = createMiniHost();
   assert.equal(mountHealthMini(host).ok, true);
   assert.equal(mountClearShotMini(host).ok, true);
@@ -178,7 +178,8 @@ test('unmount drops that id; remount without unmount stays one row', () => {
   assert.deepEqual(host.listMounted(HEALTH_ID), UNKNOWN);
   assert.deepEqual(host.listMounted(HEALTH_ID, 'identity.read'), UNKNOWN);
 
-  assert.equal(mountClearShotMini(host).ok, true);
+  const remount = mountClearShotMini(host);
+  assert.deepEqual(remount, { ok: false, code: 'already_mounted' });
   const remounted = assertOk(host.listMounted());
   assert.equal(remounted.filter((row) => row.id === CLEARSHOT_ID).length, 1);
 });

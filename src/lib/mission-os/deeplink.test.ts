@@ -78,9 +78,8 @@ test('mission://minis/clearshot mounts utility.clearshot', () => {
   assert.notEqual(mounted.value.manifest.id, 'l1.health');
 
   const direct = mountClearShotMini(host);
-  assert.equal(direct.ok, true);
-  if (!direct.ok) return;
-  assert.equal(mounted.value.manifest, direct.value.manifest);
+  assert.deepEqual(direct, { ok: false, code: 'already_mounted' });
+  assert.equal(mounted.value.manifest.id, 'utility.clearshot');
 
   assert.deepEqual(mounted.value.identity.read(), {
     ok: true,
