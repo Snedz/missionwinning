@@ -37,5 +37,5 @@ Last-segment deeplink: `resolveMiniDeeplink` / `mountMiniByDeeplink` — closed 
 | `docs/contracts/MODULE.md` | Contract |
 | `src/lib/minisIsolation.test.ts` | Coach / logger / Today stay blind |
 | `mountIsolation.test.ts` | Health + ClearShot mount grant/deny + storage keyspace (`.1076`) |
-| `PLAN.md` | `.1077` ClearShot last-segment deeplink claim |
+| `PLAN.md` | `.1078` MiniHost unmount/remount isolation claim |
 | `deeplink.ts` | Last-segment `clearshot` → `utility.clearshot` mount |
