@@ -3,7 +3,7 @@
  *
  * One shape: `CapResult` is `CapabilityResult` from mw-core (`.1068` / #935).
  * This folder is the interface host (`MiniHost.mount` / `MiniHost.unmount` /
- * `MiniHost.listMounted`).
+ * `MiniHost.listMounted` / `MiniHost.call`).
  * The function bus stays in `src/lib/minis/`. Stripe stays HOLD — no checkout here.
  */
 
@@ -39,6 +39,13 @@ export type StorageMethod = (typeof STORAGE_METHODS)[number];
 
 /** Closed door set. A fifth name is a new PR, not a silent extra method. */
 export const MISSION_OS_CAPABILITIES = ['identity', 'billing', 'photos', 'storage'] as const;
+export type MissionOsDoor = (typeof MISSION_OS_CAPABILITIES)[number];
+
+/** Optional args for host-level `call` / `callDoor` (storage get/set). */
+export type CallDoorArgs = {
+  key?: string;
+  value?: string;
+};
 
 /**
  * Identity stub — interface only. Scoped minis get the injected snapshot.
@@ -115,4 +122,15 @@ export interface MiniHost {
    * Undeclared → scope_denied.
    */
   listMounted(id: string, scope: ModuleScope): CapResult<void>;
+  /**
+   * Dispatch a closed-door method by mini id.
+   * Not currently mounted → `not_mounted`. Does not throw.
+   * Does not auto-mount. Mounted ids keep `.1079`–`.1087` envelopes.
+   */
+  call(
+    id: string,
+    door: MissionOsDoor,
+    method: string,
+    args?: CallDoorArgs
+  ): CapResult<unknown>;
 }
