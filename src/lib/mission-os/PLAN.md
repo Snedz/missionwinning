@@ -1,36 +1,35 @@
-# Paper .1076 — Mission OS mini mount isolation
+# Paper .1077 — ClearShot mini deeplink last-segment
 
-ONE hop. Tests only. Stubs stay stubby — no real Photos / Billing wiring.
-ClearShot Android cash stays Next ONE. No tip-promote. `PRIVATE_MODE` stays.
+ONE hop. Mirror Health. Stubs stay stubby — no real Photos / Billing /
+Android. ClearShot Android cash stays Next ONE. No tip-promote.
+`PRIVATE_MODE` stays.
 
 ## Claim
 
-`MiniHost` + in-memory bus fakes isolate Health (`l1.health`, not retired
-`health.mini`) and ClearShot (`utility.clearshot`) by `CapResult`: granted
-doors work as designed; denied doors are `scope_denied` (or scoped
-`photos_stub`); one mini cannot read the other's storage keyspace.
+Last-segment `clearshot` is the ClearShot entry, so the deep link is
+`mission://minis/clearshot` (not a long opaque path). That route
+resolves to the reserved `utility.clearshot` mount on existing MiniHost
++ bus fakes.
 
-## Test matrix
+Health already uses this grammar: last-segment `health` →
+`mission://minis/health` → `l1.health`. ClearShot joins the same
+closed last-segment table.
 
-| Mount | identity | storage.write | storage.read | photos | billing |
-|-------|----------|---------------|--------------|--------|---------|
-| `l1.health` / `mountHealthMini` | granted | granted | granted | `scope_denied` (not `photos_stub`) | `scope_denied` |
-| `health.mini` (retired slug) | not the live mount — last-segment `mini` is gone | — | — | — | — |
-| `utility.clearshot` / `mountClearShotMini` | granted | granted | `scope_denied` (by design) | `photos_stub` (scoped; not a camera) | `scope_denied` |
+## Accept
 
-## Isolation (same host, two mounts)
+1. `parseMissionMiniEntry('mission://minis/clearshot')` is `clearshot`.
+2. `miniSlugFromId('utility.clearshot')` is `clearshot`.
+3. `mountMiniByDeeplink(host, 'mission://minis/clearshot')` mounts
+   `utility.clearshot` (same reserved row as `mountClearShotMini`).
+4. Long / opaque last-segments fail `unknown_mini`:
+   `mission://minis/utility.clearshot`, `mission://minis/utilityclearshot`,
+   `/minis/clearshot`, `mission://minis/mini`.
+5. Last-segment `health` still resolves to `l1.health`, not ClearShot.
 
-1. Health writes `secret=health-only`. ClearShot writes `secret=shot-only`.
-2. Health.get(`secret`) is `health-only`.
-3. ClearShot.get(`secret`) is `scope_denied` (no `storage.read` on the reserved row).
-4. Probe remount of the ClearShot id **plus** `storage.read` (test-only; production
-   scopes stay closed) sees `shot-only`, never `health-only`.
-5. Health still sees `health-only` after the probe.
-
-Judge ≠ builder: expected grant/deny codes are hardcoded in the test, not read
-back from production scope constants.
+Judge ≠ builder: expected id / deny code are hardcoded in the test.
 
 ## Non-goals
 
-No Health / ClearShot UI. No Android `:minis:clearshot`. No Today / Train door.
-No Stripe. No `PRIVATE_MODE` flip. No tip-promote. Live www stays `.697`.
+No ClearShot / Health UI. No Android `:minis:clearshot`. No Photos /
+Billing wiring. No Today / Train door. No Stripe. No `PRIVATE_MODE`
+flip. No tip-promote. Live www stays `.697`.

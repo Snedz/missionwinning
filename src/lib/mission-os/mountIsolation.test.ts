@@ -144,7 +144,7 @@ test('CapResult sandbox: one mini cannot read another mini storage keyspace', ()
 });
 
 test('stubs stay stubby — no Stripe, camera, or Android Photos/Billing wiring', () => {
-  for (const file of ['health.ts', 'clearshot.ts', 'host.ts', 'fakes.ts']) {
+  for (const file of ['health.ts', 'clearshot.ts', 'host.ts', 'fakes.ts', 'deeplink.ts']) {
     const src = sourceOf(file);
     assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false, `${file} must not import Stripe`);
     assert.equal(src.includes('premiumServer'), false, `${file} must not import premiumServer`);
