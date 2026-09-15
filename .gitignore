@@ -93,6 +93,14 @@ mission-ops/
 .gstack/
 .local-preview/
 
+# LOCAL agent working memory (INTERNAL — never product git, never the snapshot)
+# Agent memory holds exposure findings, sovereignty analysis and founder-only
+# items. `ops/` and `mission-ops/` are ignored but this directory was not, so a
+# single `git add -A` would have committed it — and the snapshot exporter's
+# DENYLIST does not name it, so it would have shipped to the public org repo.
+# Same class of defect as the `mission-ops/` typo that leaked INTERNAL text.
+.workbuddy-ai/
+
 # LOCAL graph memory: Neo4j volume, extraction output, real MCP config (never product git)
 .graph/
 .mcp.json
