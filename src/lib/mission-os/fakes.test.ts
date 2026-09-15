@@ -13,6 +13,7 @@ import {
   MISSION_OS_FAKES,
   createBillingFake,
   createBillingHold,
+  injectBillingSnapshot,
   createIdentityFake,
   injectIdentitySnapshot,
   createPhotosFake,
@@ -83,6 +84,22 @@ test('injectIdentitySnapshot changes only that fake', () => {
   injectIdentitySnapshot(a, { missionId: 33, callSign: 'alpha-2' });
   assert.deepEqual(a.read(), { ok: true, value: { missionId: 33, callSign: 'alpha-2' } });
   assert.deepEqual(b.read(), { ok: true, value: { missionId: 22, callSign: 'bravo' } });
+});
+
+test('injectBillingSnapshot changes only that fake', () => {
+  const a = createBillingFake(HAPPY_MANIFEST, { bundle: 'none', muted: true });
+  const b = createBillingFake(HAPPY_MANIFEST, { bundle: 'super', muted: true });
+  injectBillingSnapshot(a, { bundle: 'none', muted: false });
+  assert.deepEqual(a.read(), { ok: true, value: { bundle: 'none', muted: true } });
+  assert.deepEqual(b.read(), { ok: true, value: { bundle: 'super', muted: true } });
+  injectBillingSnapshot(a, { bundle: 'super', muted: false });
+  assert.deepEqual(a.read(), { ok: true, value: { bundle: 'super', muted: true } });
+  assert.deepEqual(b.read(), { ok: true, value: { bundle: 'super', muted: true } });
+  injectBillingSnapshot(b, { bundle: 'none', muted: true });
+  assert.deepEqual(b.read(), { ok: true, value: { bundle: 'none', muted: true } });
+  assert.deepEqual(a.read(), { ok: true, value: { bundle: 'super', muted: true } });
+  assert.deepEqual(a.checkout(), { ok: true, value: { held: true } });
+  assert.deepEqual(b.portal(), { ok: true, value: { held: true } });
 });
 
 test('billing fake is Stripe HOLD — muted even when the snapshot looks live', () => {
