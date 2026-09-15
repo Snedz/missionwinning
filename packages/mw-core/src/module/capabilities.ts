@@ -244,3 +244,19 @@ export function writeStorage(
   store.set(key, value);
   return { ok: true, value: undefined };
 }
+
+/**
+ * Delete one key. Requires `storage.write` (same gate as set).
+ * Missing key is `ok` — idempotent, does not throw.
+ * Unscoped is `scope_denied` and does not mutate the map.
+ */
+export function removeStorage(
+  manifest: ModuleManifest,
+  store: Map<string, string>,
+  key: string
+): CapabilityResult<void> {
+  const gate = assertCapability(manifest, 'storage.write');
+  if (!gate.ok) return gate;
+  store.delete(key);
+  return { ok: true, value: undefined };
+}

@@ -26,6 +26,7 @@ import {
   readStorage,
   writePhotos,
   writeStorage,
+  removeStorage,
   type BillingSnapshot,
   type IdentitySnapshot,
   type ModuleManifest,
@@ -175,7 +176,7 @@ export function createPhotosFake(
   return cap;
 }
 
-/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). Remount after cap starts empty (`.1099`). */
+/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). Remount after cap starts empty (`.1099`). `remove` is a closed write (`.1100`). */
 export function createStorageFake(
   manifest: ModuleManifest,
   store: Map<string, string> = new Map()
@@ -183,5 +184,6 @@ export function createStorageFake(
   return {
     get: (key) => readStorage(manifest, store, key),
     set: (key, value) => writeStorage(manifest, store, key, value),
+    remove: (key) => removeStorage(manifest, store, key),
   };
 }

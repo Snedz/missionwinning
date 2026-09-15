@@ -89,11 +89,11 @@ function assertCapResult(result: CapResult<unknown>): void {
   assert.equal(typeof result.ok, 'boolean');
 }
 
-test('closed methods stay identity.read, billing trio, photos pair, storage pair', () => {
+test('closed methods stay identity.read, billing trio, photos pair, storage trio', () => {
   assert.deepEqual([...IDENTITY_METHODS], ['read']);
   assert.deepEqual([...BILLING_METHODS], ['read', 'checkout', 'portal']);
   assert.deepEqual([...PHOTOS_METHODS], ['read', 'write']);
-  assert.deepEqual([...STORAGE_METHODS], ['get', 'set']);
+  assert.deepEqual([...STORAGE_METHODS], ['get', 'set', 'remove']);
   assert.deepEqual([...MISSION_OS_CAPABILITIES], ['identity', 'billing', 'photos', 'storage']);
 });
 
@@ -174,6 +174,8 @@ test('known methods keep .1079–.1084 envelopes through callDoor', () => {
   assert.deepEqual(callDoor(granted.value, 'photos', 'write'), PHOTOS_STUB);
   assert.deepEqual(callDoor(granted.value, 'storage', 'set'), STORAGE_SET_OK);
   assert.deepEqual(callDoor(granted.value, 'storage', 'get'), { ok: true, value: 'ok' });
+  assert.deepEqual(callDoor(granted.value, 'storage', 'remove'), STORAGE_SET_OK);
+  assert.deepEqual(callDoor(granted.value, 'storage', 'get'), { ok: true, value: undefined });
 
   const health = mountHealthMini(createMiniHost());
   assertMounted(health);
@@ -182,11 +184,15 @@ test('known methods keep .1079–.1084 envelopes through callDoor', () => {
   assert.deepEqual(callDoor(health.value, 'photos', 'read'), SCOPE_DENIED);
   assert.deepEqual(callDoor(health.value, 'storage', 'set'), STORAGE_SET_OK);
   assert.deepEqual(callDoor(health.value, 'storage', 'get'), { ok: true, value: 'ok' });
+  assert.deepEqual(callDoor(health.value, 'storage', 'remove'), STORAGE_SET_OK);
+  assert.deepEqual(callDoor(health.value, 'storage', 'get'), { ok: true, value: undefined });
 
   const shot = mountClearShotMini(createMiniHost());
   assertMounted(shot);
   assert.deepEqual(callDoor(shot.value, 'photos', 'write'), PHOTOS_STUB);
   assert.deepEqual(callDoor(shot.value, 'storage', 'set'), STORAGE_SET_OK);
+  assert.deepEqual(callDoor(shot.value, 'storage', 'get'), SCOPE_DENIED);
+  assert.deepEqual(callDoor(shot.value, 'storage', 'remove'), STORAGE_SET_OK);
   assert.deepEqual(callDoor(shot.value, 'storage', 'get'), SCOPE_DENIED);
   assert.deepEqual(callDoor(shot.value, 'billing', 'checkout'), SCOPE_DENIED);
 });

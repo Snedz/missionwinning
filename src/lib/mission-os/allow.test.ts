@@ -71,7 +71,9 @@ function callPhotos(photos: PhotosCapability, method: PhotosMethod): CapResult<u
 }
 
 function callStorage(storage: StorageCapability, method: StorageMethod): CapResult<unknown> {
-  return method === 'get' ? storage.get('note') : storage.set('note', 'ok');
+  if (method === 'get') return storage.get('note');
+  if (method === 'set') return storage.set('note', 'ok');
+  return storage.remove('note');
 }
 
 function assertMounted<T extends { ok: boolean }>(
@@ -80,11 +82,11 @@ function assertMounted<T extends { ok: boolean }>(
   assert.equal(result.ok, true, 'mount must succeed');
 }
 
-test('closed methods stay identity.read, billing trio, photos pair, storage pair', () => {
+test('closed methods stay identity.read, billing trio, photos pair, storage trio', () => {
   assert.deepEqual([...IDENTITY_METHODS], ['read']);
   assert.deepEqual([...BILLING_METHODS], ['read', 'checkout', 'portal']);
   assert.deepEqual([...PHOTOS_METHODS], ['read', 'write']);
-  assert.deepEqual([...STORAGE_METHODS], ['get', 'set']);
+  assert.deepEqual([...STORAGE_METHODS], ['get', 'set', 'remove']);
 
   const identity = createIdentityFake(TEST_GRANTED_MANIFEST);
   const billing = createBillingFake(TEST_GRANTED_MANIFEST);

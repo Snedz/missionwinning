@@ -168,6 +168,9 @@ test('storage fake is in-memory and namespaced by the map the caller owns', () =
   assert.deepEqual(storage.set('note', 'ok'), { ok: true, value: undefined });
   assert.deepEqual(storage.get('note'), { ok: true, value: 'ok' });
   assert.equal(store.get('note'), 'ok');
+  assert.deepEqual(storage.remove('note'), { ok: true, value: undefined });
+  assert.deepEqual(storage.get('note'), { ok: true, value: undefined });
+  assert.equal(store.has('note'), false);
 
   const other = createStorageFake(HAPPY_MANIFEST);
   assert.deepEqual(other.get('note'), { ok: true, value: undefined });

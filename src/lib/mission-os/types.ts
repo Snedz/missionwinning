@@ -42,8 +42,8 @@ export type PhotosMethod = (typeof PHOTOS_METHODS)[number];
 export const IDENTITY_METHODS = ['read'] as const;
 export type IdentityMethod = (typeof IDENTITY_METHODS)[number];
 
-/** Closed storage methods. A third name is `unknown_method`, not a silent extra door. */
-export const STORAGE_METHODS = ['get', 'set'] as const;
+/** Closed storage methods. A fourth name is `unknown_method`, not a silent extra door. */
+export const STORAGE_METHODS = ['get', 'set', 'remove'] as const;
 export type StorageMethod = (typeof STORAGE_METHODS)[number];
 
 /** Closed door set. A fifth name is `unknown_capability`, not a silent extra door. */
@@ -92,15 +92,17 @@ export interface PhotosCapability {
 }
 
 /**
- * Closed to `STORAGE_METHODS`. A third method is a new PR.
+ * Closed to `STORAGE_METHODS`. A fourth method is a new PR.
  * Unscoped minis get the same CapResult deny as billing (`scope_denied`).
  * Scoped minis use the in-memory map. Overflow is `storage_cap` (`.1097`).
  * Remount after that refuse starts empty (`.1099`).
+ * `remove` deletes one key when `storage.write` is declared (`.1100`).
  * Never a durable browser write.
  */
 export interface StorageCapability {
   get(key: string): CapResult<string | undefined>;
   set(key: string, value: string): CapResult<void>;
+  remove(key: string): CapResult<void>;
 }
 
 export interface MountedMini {

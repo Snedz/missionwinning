@@ -82,7 +82,9 @@ function dispatchKnown(
     case 'photos':
       return mini.photos[method as PhotosMethod]();
     case 'storage':
-      return method === 'get' ? mini.storage.get(key) : mini.storage.set(key, value);
+      if (method === 'get') return mini.storage.get(key);
+      if (method === 'set') return mini.storage.set(key, value);
+      return mini.storage.remove(key);
   }
 }
 

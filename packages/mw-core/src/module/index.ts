@@ -47,4 +47,5 @@ export {
   writePhotos,
   readStorage,
   writeStorage,
+  removeStorage,
 } from './capabilities';
