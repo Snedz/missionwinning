@@ -503,7 +503,7 @@ Label `2026.07-unified.1065`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1046-for-1065.md](docs/archive/log/LOG-rotate-1046-for-1065.md) (`.1046`).
 
-## 2026-09-13 · `.1064` — Astro AVIF RCE (Dependabot #87)
+## 2026-09-13 — Astro AVIF RCE (`.1064`)
 
 Critical Dependabot alert #87 / GHSA-26w7-cxv4-gfx2:
 Astro RCE via AVIF image optimization (`libheif` / Sharp).
