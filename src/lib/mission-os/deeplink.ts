@@ -5,6 +5,10 @@
  * ClearShot joins the same grammar: last-segment `clearshot` →
  * `mission://minis/clearshot` → `utility.clearshot` mount.
  *
+ * An unknown last-segment (not in this table) is `unknown_mini` —
+ * same code as MiniHost.mount of an unknown id (.1087). Does not
+ * throw. Does not mount. Test-fixture slugs stay out of this table.
+ *
  * No product UI. No Photos / Billing / Android wiring.
  */
 
