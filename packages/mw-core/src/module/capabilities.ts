@@ -7,17 +7,32 @@
 
 import type { ModuleManifest, ModuleScope } from './types';
 
-export type CapabilityDenyCode =
-  | 'scope_denied'
-  | 'stub'
-  | 'photos_stub'
-  | 'unknown_mini'
-  | 'unknown_method'
-  | 'unknown_capability'
-  | 'already_mounted'
-  | 'not_mounted'
-  | 'bad_deeplink'
-  | 'storage_cap';
+/**
+ * Closed host-lifecycle CapResult denies (`.1098`). A ninth code is a
+ * PLAN hop, not a silent extra string. Order is the freeze — do not
+ * reshuffle without the hop.
+ */
+export const HOST_LIFECYCLE_DENY_CODES = [
+  'scope_denied',
+  'unknown_method',
+  'unknown_capability',
+  'not_mounted',
+  'already_mounted',
+  'unknown_mini',
+  'bad_deeplink',
+  'storage_cap',
+] as const;
+
+/** Scoped-stub envelopes. Not host-lifecycle. Not a license for a tenth code. */
+export const SCOPED_STUB_DENY_CODES = ['stub', 'photos_stub'] as const;
+
+/** Complete CapResult deny set. Type is derived — a new member must land here. */
+export const CAPABILITY_DENY_CODES = [
+  ...HOST_LIFECYCLE_DENY_CODES,
+  ...SCOPED_STUB_DENY_CODES,
+] as const;
+
+export type CapabilityDenyCode = (typeof CAPABILITY_DENY_CODES)[number];
 
 export type CapabilityOk<T> = { ok: true; value: T };
 export type CapabilityDeny = { ok: false; code: CapabilityDenyCode };

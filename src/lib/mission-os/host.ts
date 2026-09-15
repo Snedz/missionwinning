@@ -15,6 +15,7 @@
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
  * A scoped storage write over 32 keys / 4KB is `storage_cap` (`.1097`).
+ * Host-lifecycle deny codes are frozen (`.1098`) — no silent ninth code.
  * `listMounted` is the CapResult inventory (ids + declared scopes only).
  * No ClearShot UI. No Today / Train door. No Stripe.
  */

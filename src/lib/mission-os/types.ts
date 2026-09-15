@@ -4,6 +4,7 @@
  * One shape: `CapResult` is `CapabilityResult` from mw-core (`.1068` / #935).
  * This folder is the interface host (`MiniHost.mount` / `MiniHost.unmount` /
  * `MiniHost.listMounted` / `MiniHost.call`).
+ * Host-lifecycle deny codes are frozen (`.1098`).
  * The function bus stays in `src/lib/minis/`. Stripe stays HOLD — no checkout here.
  */
 

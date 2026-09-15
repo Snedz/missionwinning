@@ -24,6 +24,9 @@ export type {
   MiniInventoryEntry,
 } from './capabilities';
 export {
+  CAPABILITY_DENY_CODES,
+  HOST_LIFECYCLE_DENY_CODES,
+  SCOPED_STUB_DENY_CODES,
   GUEST_IDENTITY,
   MUTED_BILLING,
   STUB_PHOTOS,
