@@ -3,8 +3,9 @@
  * An id outside the closed allowlist is `unknown_mini` (no partial mount).
  * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
- * read leftovers. `listMounted` is the CapResult inventory (ids + declared
- * scopes only). No ClearShot UI. No Today / Train door. No Stripe.
+ * read leftovers. An id that is not currently mounted is `not_mounted`
+ * (not `unknown_mini`). `listMounted` is the CapResult inventory (ids +
+ * declared scopes only). No ClearShot UI. No Today / Train door. No Stripe.
  */
 
 import {
@@ -121,7 +122,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       return { ok: true, value: bindDoors(manifest, identity, stores) };
     },
     unmount(id: string): CapResult<void> {
-      if (!mounted.has(id)) return { ok: false, code: 'unknown_mini' };
+      if (!mounted.has(id)) return { ok: false, code: 'not_mounted' };
       const store = stores.get(id);
       if (store) {
         store.clear();

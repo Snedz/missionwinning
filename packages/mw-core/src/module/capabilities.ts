@@ -14,6 +14,7 @@ export type CapabilityDenyCode =
   | 'unknown_mini'
   | 'unknown_method'
   | 'already_mounted'
+  | 'not_mounted'
   | 'storage_cap';
 
 export type CapabilityOk<T> = { ok: true; value: T };

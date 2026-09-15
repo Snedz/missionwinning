@@ -1,4 +1,4 @@
-# Paper .1087 — MiniHost unknown-id refuse
+# Paper .1088 — MiniHost.unmount not_mounted
 
 ONE hop. Stubs stay stubby — no UI, no Stripe, no camera, no tip-promote.
 ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays. No
@@ -7,32 +7,31 @@ template — the claim lives only here.
 
 ## Goal
 
-Close the host-lifecycle hole `.1086` left open: `MiniHost.mount` of an
-id that is not in the known mini allowlist must refuse. Same CapResult
-deny shape as never-mounted peek / unmount (`unknown_mini`). Does not
-throw. Does not create a partial mount.
+Close the host-lifecycle hole `.1087` left open: `MiniHost.unmount(id)`
+when the id is not currently mounted must refuse with a consistent
+CapResult, not reuse `unknown_mini` (that code is for mount / peek of
+an id the host does not know). Does not throw. Live unmount still
+succeeds and clears storage (`.1078`).
 
 ## Claim
 
-`MiniHost.mount` of an id that is not in the closed host allowlist
-returns `{ ok: false, code: 'unknown_mini' }`. Caller cannot invent a
-mini by passing a valid-looking unknown manifest. Known test minis
-still mount. `already_mounted` (`.1086`) and unmount isolation
-(`.1078`) stay unchanged for known ids.
+`MiniHost.unmount(id)` when the id is not currently mounted returns
+`{ ok: false, code: 'not_mounted' }`. Same CapResult deny shape as
+the other host errors. Does not throw. Unmount of a live mount still
+returns ok and clears that mini's fake keyspace (`.1078`).
+`unknown_mini` (`.1087`) and `already_mounted` (`.1086`) stay unchanged.
 
-Manifest validation stays first: a bad entry is still `stub` and does
-not list. `unknown_mini` is the next gate, after a valid manifest,
-when the id is not allowlisted. `already_mounted` stays after that,
-when `mounted.has(id)`.
+`not_mounted` is a lifecycle refuse — the id is not in the mounted
+table right now. It is not `unknown_mini` (allowlist / peek miss) and
+not `already_mounted` (second mount while live).
 
 ## Accept
 
-1. `mount('totally.unknown')` → `{ ok: false, code: 'unknown_mini' }`
+1. `unmount('never.mounted')` → `{ ok: false, code: 'not_mounted' }`
    — hardcoded in tests. Does not throw.
-2. No entry appears in `listMounted` after a failed unknown mount
-   (empty list; peek of that id is `unknown_mini`).
-3. Known test minis still mount / `already_mounted` / unmount as
-   before (`l1.health`, `utility.clearshot`, existing test fixtures).
+2. Unmount after a successful mount → ok; `listMounted` is empty;
+   remount cannot read leftover storage (`.1078`).
+3. Double-unmount: the second call → `not_mounted`.
 4. Unit tests under `src/lib/mission-os/`; judge ≠ builder —
    expected codes hardcoded in tests.
 5. `docs/harness/HOP.md` stays the empty template.
@@ -42,9 +41,8 @@ when `mounted.has(id)`.
 No product UI. No Today / Train door. No Stripe. No camera.
 No MediaStore. No Supabase. No `PRIVATE_MODE` flip. No tip-promote.
 Live www stays `.697`. ClearShot Android cash stays Next ONE.
-No new product mini. No Android product work. Test fixtures already
-used by the host stay allowlisted; they are not product mounts and
-stay out of `MINI_REGISTRY`.
+No new product mini. No Android product work. No change to
+`unknown_mini` on mount / peek. No change to `already_mounted`.
 
 ## Refuse
 

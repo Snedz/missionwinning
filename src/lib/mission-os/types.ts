@@ -101,7 +101,10 @@ export interface MiniHost {
    * — does not replace the live instance.
    */
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
-  /** In-memory teardown. Clears that mini's fake keyspace. Not product chrome. */
+  /**
+   * In-memory teardown. Not currently mounted → `not_mounted`.
+   * Does not throw. Clears that mini's fake keyspace.
+   */
   unmount(id: string): CapResult<void>;
   /** Inventory of currently mounted minis — id + declared scopes only. */
   listMounted(): CapResult<readonly MiniInventoryEntry[]>;
