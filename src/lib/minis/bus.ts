@@ -18,6 +18,7 @@ import {
   type BillingSnapshot,
   type CapabilityResult,
   type IdentitySnapshot,
+  type PhotosSnapshot,
 } from '../../../packages/mw-core/src/module';
 import { lookupMini } from './registry';
 
@@ -51,7 +52,7 @@ export function createMiniBus(opts: MiniBusOptions = {}) {
       if (!mini.ok) return mini;
       return readBilling(mini.value, billing);
     },
-    photos(id: string, mode: 'read' | 'write'): CapabilityResult<never> {
+    photos(id: string, mode: 'read' | 'write'): CapabilityResult<PhotosSnapshot> {
       const mini = lookupMini(id);
       if (!mini.ok) return mini;
       return mode === 'write' ? writePhotos(mini.value) : readPhotos(mini.value);
