@@ -70,7 +70,8 @@ export interface IdentityCapability {
 /**
  * Stripe HOLD — interface only. No checkout, no Stripe I/O, no new SKU.
  * A hold double may report muted Super Bundle recognition for that mount
- * (host-wide default, or fake-only per-mini override). Never gates `logSet`.
+ * (host-wide default, or fake-only per-mini override). Remount after
+ * inject rebinds the host muted snapshot (`.1103`). Never gates `logSet`.
  */
 export interface BillingCapability {
   read(): CapResult<BillingSnapshot>;

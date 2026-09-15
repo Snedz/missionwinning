@@ -7,7 +7,7 @@
  * Identity is an injected snapshot — guests stay null; nothing is minted.
  * Each fake copies its snapshot so injecting A cannot change B.read.
  * Remount after inject binds a new fake from host options — leftover
- * inject dies (`.1102`).
+ * inject dies (`.1102` identity · `.1103` billing).
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  * Billing is an injected muted snapshot — each fake copies so injecting
  * A cannot change B.read. Unscoped billing stays `scope_denied`.
@@ -94,7 +94,8 @@ export function createIdentityFake(
 /**
  * Fake-only per-capability inject. Not Stripe. Not on MiniHost.
  * Replacing A's snapshot must not change B.read — each fake copies
- * and forces muted.
+ * and forces muted. Remount creates a new fake; leftover inject
+ * dies (`.1103`).
  */
 const billingInjectors = new WeakMap<BillingCapability, (next: BillingSnapshot) => void>();
 

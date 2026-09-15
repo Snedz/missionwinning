@@ -13,6 +13,8 @@
  * dies; B.read stays (`.1102`).
  * Two live mounts with billing scope keep isolated muted snapshots —
  * A's `billing.read` is not B's; injecting A does not change B (`.1094`).
+ * Remount after billing inject rebinds the host muted snapshot —
+ * leftover inject dies; B.read stays (`.1103`).
  * Two live mounts with photos scope keep isolated stub snapshots —
  * A's `photos.read` is not B's; injecting A does not change B (`.1095`).
  * An id that is not currently mounted is `not_mounted`
@@ -184,6 +186,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         return { ok: false, code: 'already_mounted' };
       }
       // Remount rebinds identity from host options — leftover inject dies (.1102).
+      // Remount rebinds billing from host options — leftover inject dies (.1103).
       const mini = bindDoors(
         manifest,
         snapshotFor(opts, manifest.id),
