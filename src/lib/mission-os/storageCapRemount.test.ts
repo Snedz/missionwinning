@@ -136,6 +136,8 @@ test('remount after 33rd-key cap can fill 32 again; 33rd is still storage_cap', 
 
   assert.deepEqual(host.unmount(HEALTH_ID), { ok: true, value: undefined });
   const remounted = assertMounted(mountHealthMini(host));
+  assert.deepEqual(remounted.storage.get('k0'), MISS, 'refill must start from empty');
+  assert.deepEqual(remounted.storage.get('k31'), MISS);
 
   fillKeys(remounted, MAX_KEYS);
   assert.deepEqual(remounted.storage.get('k0'), { ok: true, value: 'v' });
