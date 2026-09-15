@@ -6,6 +6,8 @@
  * name outside the closed set is `unknown_method`. Known methods
  * forward to the existing fake — `.1079`–`.1084` envelopes stay.
  * Never throws. Never returns undefined.
+ * Host-level `callMountedDoor` refuses a missing id with `not_mounted`
+ * (same code as `MiniHost.unmount`, `.1088`). Does not auto-mount.
  */
 
 import type { ModuleManifest } from '../../../packages/mw-core/src/module';
@@ -16,13 +18,15 @@ import {
   PHOTOS_METHODS,
   STORAGE_METHODS,
   type BillingMethod,
+  type CallDoorArgs,
   type CapResult,
   type IdentityMethod,
+  type MissionOsDoor,
   type MountedMini,
   type PhotosMethod,
 } from './types';
 
-export type MissionOsDoor = (typeof MISSION_OS_CAPABILITIES)[number];
+export type { CallDoorArgs, MissionOsDoor };
 
 const CLOSED_METHODS: Record<MissionOsDoor, readonly string[]> = {
   identity: IDENTITY_METHODS,
@@ -40,11 +44,6 @@ export function doorIsDeclared(manifest: ModuleManifest, door: MissionOsDoor): b
   const prefix = `${door}.`;
   return manifest.scopes.some((scope) => scope.startsWith(prefix));
 }
-
-export type CallDoorArgs = {
-  key?: string;
-  value?: string;
-};
 
 export function callDoor(
   mini: MountedMini,
@@ -79,4 +78,21 @@ function dispatchKnown(
     case 'storage':
       return method === 'get' ? mini.storage.get(key) : mini.storage.set(key, value);
   }
+}
+
+/**
+ * Host-level dispatch. Missing / unmounted id is `not_mounted` —
+ * same code as `MiniHost.unmount` (`.1088`). Does not throw.
+ * Does not auto-mount. A live row forwards to `callDoor`.
+ */
+export function callMountedDoor(
+  table: ReadonlyMap<string, MountedMini>,
+  id: string,
+  door: MissionOsDoor,
+  method: string,
+  args: CallDoorArgs = {}
+): CapResult<unknown> {
+  const mini = table.get(id);
+  if (!mini) return { ok: false, code: 'not_mounted' };
+  return callDoor(mini, door, method, args);
 }

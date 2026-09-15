@@ -4,8 +4,9 @@
  * A second mount of the same id while mounted is `already_mounted`.
  * `unmount(id)` tears down that mini's fake keyspace so a remount cannot
  * read leftovers. An id that is not currently mounted is `not_mounted`
- * (not `unknown_mini`). `listMounted` is the CapResult inventory (ids +
- * declared scopes only). No ClearShot UI. No Today / Train door. No Stripe.
+ * (not `unknown_mini`) — same code for `call(id, door, method)`.
+ * `listMounted` is the CapResult inventory (ids + declared scopes only).
+ * No ClearShot UI. No Today / Train door. No Stripe.
  */
 
 import {
@@ -26,7 +27,8 @@ import {
   createPhotosFake,
   createStorageFake,
 } from './fakes';
-import type { CapResult, MiniHost, MountedMini } from './types';
+import { callMountedDoor } from './call';
+import type { CallDoorArgs, CapResult, MiniHost, MissionOsDoor, MountedMini } from './types';
 
 /**
  * Closed host allowlist. Product stubs + existing test fixtures only.
@@ -87,6 +89,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
   const identity = opts.identity ?? GUEST_IDENTITY;
   const stores = new Map<string, Map<string, string>>();
   const mounted = new Map<string, MiniInventoryEntry>();
+  const instances = new Map<string, MountedMini>();
 
   function listMounted(): CapResult<readonly MiniInventoryEntry[]>;
   function listMounted(id: string): CapResult<MiniInventoryEntry>;
@@ -118,8 +121,10 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       if (mounted.has(manifest.id)) {
         return { ok: false, code: 'already_mounted' };
       }
+      const mini = bindDoors(manifest, identity, stores);
       mounted.set(manifest.id, inventoryFromManifest(manifest));
-      return { ok: true, value: bindDoors(manifest, identity, stores) };
+      instances.set(manifest.id, mini);
+      return { ok: true, value: mini };
     },
     unmount(id: string): CapResult<void> {
       if (!mounted.has(id)) return { ok: false, code: 'not_mounted' };
@@ -129,8 +134,17 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         stores.delete(id);
       }
       mounted.delete(id);
+      instances.delete(id);
       return { ok: true, value: undefined };
     },
     listMounted,
+    call(
+      id: string,
+      door: MissionOsDoor,
+      method: string,
+      args: CallDoorArgs = {}
+    ): CapResult<unknown> {
+      return callMountedDoor(instances, id, door, method, args);
+    },
   };
 }
