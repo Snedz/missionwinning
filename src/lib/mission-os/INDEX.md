@@ -4,10 +4,10 @@
 
 ## Agent resume card
 
-- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only.
+- **Purpose:** `IdentityCapability`, `BillingCapability` (Stripe HOLD — interface only), `PhotosCapability`, `StorageCapability`, `MiniHost.mount(manifest)`, `CapResult`. Named in-memory fakes (`createIdentityFake`, `createBillingFake`, `createPhotosFake`, `createStorageFake`). Health mini stub (`l1.health` at `mission://minis/health`, L1 first mini) mounts identity + storage only. ClearShot utility stub (`utility.clearshot` at `mission://minis/clearshot`) mounts photos + storage.write.
 - **Non-goals:** ClearShot product UI, Today/More door, `app/(app)/minis/`, camera, Stripe checkout, cloud photos, remake of Today, ClearShot inside the MW APK, Health product UI.
-- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`
-- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/minisIsolation.test.ts`
+- **Entry files:** `types.ts`, `fakes.ts`, `host.ts`, `health.ts`, `clearshot.ts`
+- **Tests to run:** `src/lib/mission-os/fakes.test.ts`, `src/lib/mission-os/host.test.ts`, `src/lib/mission-os/health.test.ts`, `src/lib/mission-os/clearshot.test.ts`, `src/lib/minisIsolation.test.ts`
 - **Forbidden:** Import from `src/lib/coach/`, `src/store/`, `HomePage`, `ActiveWorkoutPage`. Do not import Stripe, `premiumServer`, or `safeStorage`. Never gate `logSet`.
 - **Horizon:** Interfaces + stubs. Host chrome later.
 
@@ -23,6 +23,8 @@
 `CapResult<T>` is `CapabilityResult<T>` from mw-core — one shape, two names.
 
 Reserved Health stub: `HEALTH_MINI_MANIFEST` / `mountHealthMini` — scopes `identity.read`, `storage.read`, `storage.write`. Photos and billing stay `scope_denied`. Not `health.train`.
+
+Reserved ClearShot stub: `CLEARSHOT_MINI_MANIFEST` / `mountClearShotMini` — reuses `UTILITY_CLEARSHOT_MANIFEST`. Scopes `identity.read`, `photos.read`, `photos.write`, `storage.write`. Photos stay `photos_stub`. Billing, `storage.read`, and `health.write` stay `scope_denied`. Not `l1.health`. Not `health.train`.
 
 ## Related
 

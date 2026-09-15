@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1074` Health mini slug `l1.health` at `mission://minis/health`; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1074";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1075` ClearShot utility stub `utility.clearshot` at `mission://minis/clearshot`; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1075";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
