@@ -8,31 +8,9 @@ import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLink
 /**
  * The chrome for every public SEO surface — exercises, hubs, compare, paths.
  *
- * Replaces `PublicSeoHeader` + `PublicSeoFooter`, which between them shipped three
- * defects across ~250 URLs:
- *
- * 1. The `h1` was `text-2xl … sm:text-3xl md:text-4xl` with no `font-display`, so it
- *    rendered in Inter. That is precisely the bug `.126` fixed on the landing page and
- *    left everywhere else — one URL fixed, 250 not.
- * 2. The header hardcoded `max-w-4xl` while six of eight bodies were `max-w-3xl`, so the
- *    headline sat outdented from the text beneath it. `maxWidth` here is applied to the
- *    header *and* passed back for the body, so the two cannot drift again.
- * 3. The footer was five dot-separated links: no legal, no `©`, and no medical
- *    disclaimer — missing on exactly the pages that give exercise instructions
- *    (docs/LEGAL_SAFETY.md §"educational only · not medical advice").
- *
- * **This is a Server Component on purpose.** `ExercisePublicPage`,
- * `ExercisesPublicIndexPage` and both exercise hubs have no `'use client'`, and they are
- * ~235 of the ~250 URLs. Note the reason is *not* "otherwise react-i18next loads" —
- * `app/layout.tsx` wraps every route in `I18nPwaProvider`, so the i18n runtime is
- * already on these pages. The saving is the chrome's own markup and JS, which would
- * otherwise ship twice: once in the RSC payload and once as a client bundle. So chrome
- * strings arrive as props with English defaults and only `PublicNavMenu` hydrates.
- *
- * English chrome on this surface is forced, not chosen: every SEO route is
- * `force-static` and `app/layout.tsx` hardcodes `lang="en"`, so there is exactly one
- * build-time language. Real translation here means `/es/exercises/[id]` + hreflang,
- * which is Horizon 3 i18n depth. See docs/DESIGN_SYSTEM.md § Shell rules.
+ * Server Component on purpose. Header and body share `maxWidth` so they
+ * cannot drift. Chrome strings arrive as props with English defaults;
+ * only `PublicNavMenu` hydrates.
  */
 
 /** Container measure. Shared by the header and the page body so they stay registered. */

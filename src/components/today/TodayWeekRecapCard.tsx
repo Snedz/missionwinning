@@ -22,27 +22,9 @@ export function TodayWeekRecapCard({ recap }: Props) {
  const [expanded, setExpanded] = useState(false);
  const [viewed, setViewed] = useState(false);
 
- /*
-  * One read of the day, shared with every other Today card.
-  *
-  * This component used to call `loadCheckIns()` three times in one render and
-  * run `computeBehaviorImpacts` over the result — the same call, with the same
-  * arguments, that `TodayDayReviewCard` was making beside it. Per-card memos
-  * cached each of those correctly and still ran all of them.
-  *
-  * `debrief` is null on any day that is not Sunday or Monday: the hook decides
-  * that from the date and never imports `weeklyDebrief` otherwise, so a Tuesday
-  * no longer downloads and runs the whole module to be told it is not the weekend.
-  */
+ // One read of the day, shared with every other Today card (`useTodayDigest`).
  const { debrief, impacts, establishedBehaviorImpacts, behaviorImpacts } = useTodayDigest();
 
- /*
-  * A `forceFull` prop lived here for dev/QA and had **zero callers anywhere** —
-  * the `.195` orphan class, so it is gone rather than carried. `isFullDebrief`
-  * is now redundant with `debrief` being non-null at all (the digest only builds
-  * it on a debrief day), but it stays read here so the card keeps agreeing with
-  * the debrief's own answer rather than inferring it.
-  */
  const full = !!debrief?.isFullDebrief;
  const units = useUnits();
 

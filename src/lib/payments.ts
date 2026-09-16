@@ -1,12 +1,5 @@
 // Payments — Stripe Checkout Sessions (+ Payment Link fallback) + webhook enrollment.
 // See docs/STRIPE_PREMIUM_SETUP.md.
-//
-// Core is free for everyone (per vision.md).
-// Preferred path: UnlockButton → POST /api/checkout → Stripe hosted Checkout
-//   (card, wallets, PayPal, USDC when enabled in Dashboard).
-// Fallback: NEXT_PUBLIC_STRIPE_LINK_* Payment Links when Sessions are unconfigured.
-// Webhooks grant rows in Supabase `enrollments`; usePremium reads /api/premium/status.
-// Without either path, UI falls back to an honest founders waitlist (dev: grantPremiumDemo).
 
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { writeRaw } from '@/lib/storage/safeStorage';

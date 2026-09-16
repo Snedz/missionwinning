@@ -3,33 +3,11 @@
 /**
  * A month of training, marking only what happened.
  *
- * The vocabulary and the reasoning behind it live in
- * [`monthGrid.ts`](../../lib/history/monthGrid.ts) — read that first. In short:
- * ink fill = trained, a small ink rule = logged something else, 2px poster
- * outline = today, and everything else is blank paper. **No day is ever marked
- * missed**, because a month of red ✕ would be both shaming and untrue: only one
- * coach plan is persisted and it is overwritten every Monday, so what an athlete
- * *meant* to do in March cannot be recovered.
- *
- * Colour is never the only carrier (WCAG 1.4.1): a trained day is an ink fill
- * *and* a dumbbell glyph, today is an outline *and* an `aria-current`, and every
- * cell has a full text label for screen readers.
- *
- * Weekday initials and the month name come from `i18n.language`, not the browser
- * locale. It was the only formatter in the repo that did: `.242` swept the
- * other 42 sites onto `useLocaleFormat()` and deleted `utils.formatDate`, whose
- * `undefined` first argument silently meant *ask the browser*. Monday-first,
- * matching `startOfLocalWeek` and every other week in the app.
- *
- * Month they own: a day is a button. Tap lists that day's live History
- * rows. Session count is a fact, not a fire count. Tombs stay out.
- * Start-from fold does not hide a mark. Viewed `monthKey` is lifted so
- * Save this month (`.1029`) writes the month on screen. After paging
- * prev/next, **This month** (`.1031`) jumps back to the current local
- * month and today. A trained day prints how many live sessions
- * (`.1032`) with the dumbbell — not a fire, not missed ✕. The
- * month on screen prints how many live sessions (`.1033`) — not
- * a fire, not a training-day stand-in.
+ * Vocabulary lives in `monthGrid.ts`: ink fill = trained, a small ink
+ * rule = logged something else, 2px poster outline = today, everything
+ * else is blank paper. No day is marked missed. Colour is never the
+ * only carrier (WCAG 1.4.1). Weekday initials and the month name come
+ * from `i18n.language`.
  */
 
 import { useMemo } from 'react';

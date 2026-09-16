@@ -2,33 +2,10 @@
 /**
  * Who you are, on your own page.
  *
- * The call sign already existed — `operatorName`, 24 chars, in
- * `leaderboard/computeLocalStats.ts` — but the only place to set it was a field
- * on `/leaderboard`, a parkable surface most athletes never open. Identity was
- * therefore editable only from the one screen that ranks people, which is
- * exactly backwards for a product whose whole social thesis is
- * profile-not-feed (docs/IDENTITY_SOCIAL_PLAN.md).
- *
- * **S2.5** adds the call-sign number (00–99, CLUB_PLAN Athlete Card) and a
- * derived signature line so the first viewport reads as a person, not a
- * settings remnant. Number is picks-from-set, stored with card cosmetics,
- * always available (not tier-gated). Signature is career counts only — never
- * rank or XP (C4 spirit on-surface).
- *
- * Storage is unchanged and shared for the name: `saveOperatorName` is still the
- * single writer. Number rides `athleteCard` config so share and this editor
- * cannot drift.
- *
- * **No red action.** This is a record, not a task — red means "do this now"
- * (DESIGN_REVIEW colour semantics), and a name field never does. The Save is an
- * outline button, which is what pins `/profile` at a red-action cap of 0.
- *
- * **The verdict is shown, never swallowed.** `.611` made `saveOperatorName`
- * return a `DisplayNameCheck` — it rejects impersonation, links and bidi/control
- * characters before a name can reach a board. An editor that discards that return
- * value looks like it saved and did not: the field snaps back to the old name with
- * no reason given, which is the worst version of a validated field. Each rejection
- * reason gets its own line.
+ * Call sign via `saveOperatorName` (single writer). Number rides
+ * `athleteCard` config. Signature is career counts only — never rank
+ * or XP. No red CTA: this is a record, not a task; Save is outline.
+ * The verdict from `saveOperatorName` is shown, never swallowed.
  */
 
 import { useEffect, useMemo, useState } from 'react';

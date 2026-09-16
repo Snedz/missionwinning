@@ -1,32 +1,7 @@
 'use client';
 
 /**
- * Edit the sets on a finished History log (`.997`).
- * Reorder lifts while editing (`.1034`). Replace a lift
- * while editing (`.1036`) — sets stay. Add a lift while
- * editing (`.1037`) — empty 0/0, then they type evidence.
- * Remove a lift while editing (`.1038`) when two or more
- * remain — last remaining is delete-session. Set kind
- * while editing (`.1039`) — warmup they logged as work,
- * or the reverse. Same W/D/F as live. Optional 1–10 RPE
- * while editing (`.1040`) — empty is valid (clear).
- * Optional 0–5 RIR while editing (`.1041`) — empty is
- * valid (clear). Never replaces RPE.
- * Optional L / R / Alt while editing (`.1042`) —
- * empty is valid (clear). Only on a unilateral
- * lift. Never a SetKind.
- * Optional e-p-c tempo while editing (`.1043`) —
- * empty is valid (clear). Never required.
- * Optional % of a known 1-rep max while
- * editing (`.1044`) — empty is valid (clear).
- * Weight rows only. Never rewrites kg from %.
- * Optional per-lift diary while editing
- * (`.1045`) — empty is valid (clear). Never
- * required. Over-cap truncates at 200.
- * Optional exercise group while editing
- * (`.1047`) — pair this lift with the next
- * when 2+ lifts. Unpair clears this lift
- * then strips orphans. Draft only.
+ * Edit the sets on a finished History log.
  * Confirm before a destructive change. Empty invents nothing.
  * Not Resume. Not a public URL. Not the Today Start.
  */
