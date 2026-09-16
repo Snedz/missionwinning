@@ -26,7 +26,10 @@ export async function persistYouthConsent(
     { onConflict: 'user_id' }
   );
 
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error('[youth/consent] %s', error.message);
+    return { ok: false, error: 'db_error' };
+  }
   return { ok: true };
 }
 

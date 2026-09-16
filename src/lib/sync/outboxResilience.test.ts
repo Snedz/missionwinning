@@ -303,6 +303,106 @@ describe('server errors', () => {
   });
 });
 
+/**
+ * The route scan cannot see a helper that returns `{ error: error.message }`
+ * for `route.ts` to forward. School / youth / wearables did exactly that —
+ * parked surfaces, still a schema map in source. Discover every `src/lib`
+ * module that actually talks to the service-role client.
+ */
+describe('admin-helper errors', () => {
+  function libTsFiles(dir = 'src/lib', out: string[] = []): string[] {
+    for (const entry of readdirSync(path.join(root, dir))) {
+      const rel = `${dir}/${entry}`;
+      if (statSync(path.join(root, rel)).isDirectory()) libTsFiles(rel, out);
+      else if (
+        entry.endsWith('.ts') &&
+        !entry.endsWith('.test.ts') &&
+        !entry.endsWith('.routetest.ts')
+      ) {
+        out.push(rel);
+      }
+    }
+    return out;
+  }
+
+  /** Same shapes the route scan uses — property name and status do not matter. */
+  const LEAK = /(?:[A-Za-z_$][\w$]*\s*:\s*|\$\{\s*|\.\.\.[^,}]*,\s*)(?:\w*[Ee]rror)\.message\b/;
+
+  /**
+   * Helpers allowed to echo a message, each with a written reason. Empty
+   * today — same mechanism as the health-probe row on the route scan.
+   */
+  const LEAK_OK: { file: string; reason: string }[] = [];
+
+  /** Files that import or define the service-role client, found rather than listed. */
+  function adminHelperFiles(): string[] {
+    return libTsFiles().filter((f) => {
+      const src = read(f);
+      return (
+        /from ['"][^'"]*supabaseAdmin['"]/.test(src) || /\bexport function getSupabaseAdmin\b/.test(src)
+      );
+    });
+  }
+
+  function lineLeaks(line: string): boolean {
+    return !/console\.(error|warn|log)/.test(line) && LEAK.test(line);
+  }
+
+  it('never return the database its own words from a getSupabaseAdmin helper', () => {
+    const files = adminHelperFiles();
+    assert.ok(
+      files.length > 8,
+      `only found ${files.length} admin helpers — discovery is broken`
+    );
+
+    const offenders = files.filter((f) => {
+      if (LEAK_OK.some((e) => e.file === f)) return false;
+      return stripComments(read(f)).split('\n').some(lineLeaks);
+    });
+
+    assert.deepEqual(
+      offenders,
+      [],
+      'a helper that returns error.message is the same schema map as a leaky route, ' +
+        `one hop further from the scan that only opened route.ts:\n  ${offenders.join('\n  ')}`
+    );
+  });
+
+  it('every helper LEAK_OK row is live and reasoned', () => {
+    const files = new Set(adminHelperFiles());
+    for (const { file, reason } of LEAK_OK) {
+      assert.ok(reason.trim().length > 0, `${file} has no reason`);
+      assert.ok(files.has(file), `${file} is exempted but is not an admin helper — the row exempts nothing`);
+      assert.ok(
+        stripComments(read(file)).split('\n').some(lineLeaks),
+        `${file} is exempted but no longer leaks — delete the row so the list stays real gaps`
+      );
+    }
+  });
+
+  it('the matcher sees the school helper spelling', () => {
+    // Planted mutant of the live defect: `schoolClassServer` returned
+    // `{ ok: false, error: error.message, status: 500 }` and the route
+    // forwarded it. A matcher that only knows NextResponse.json would
+    // stay green over that helper.
+    for (const shape of [
+      'if (error) return { ok: false, error: error.message, status: 500 };',
+      'if (error) return { ok: false, error: error.message };',
+      'if (error) return { inserted: 0, error: error.message };',
+      'return { error: error.message };',
+    ]) {
+      assert.ok(LEAK.test(shape), `matcher does not catch: ${shape}`);
+    }
+    for (const safe of [
+      "if (error) return { ok: false, error: 'db_error', status: 500 };",
+      "if (!admin) return { ok: false, error: 'not_configured' };",
+      "console.error('[school/class] %s', error.message);",
+    ]) {
+      assert.ok(!lineLeaks(safe), `matcher false-positives on: ${safe}`);
+    }
+  });
+});
+
 describe('the teacher PIN', () => {
   /**
    * `verify` rate-limits PIN attempts at 5/minute; `stats`, `leaderboard` and

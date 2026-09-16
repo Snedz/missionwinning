@@ -166,7 +166,10 @@ export async function upsertSchoolClass(
 
   const { error } = await admin.from('school_classes').upsert(payload, { onConflict: 'code' });
 
-  if (error) return { ok: false, error: error.message, status: 500 };
+  if (error) {
+    console.error('[school/class] %s', error.message);
+    return { ok: false, error: 'db_error', status: 500 };
+  }
   return { ok: true };
 }
 

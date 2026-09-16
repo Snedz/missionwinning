@@ -58,7 +58,10 @@ export async function upsertOAuthConnection(args: {
     },
     { onConflict: 'user_id,provider' }
   );
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error('[wearables/oauth] %s', error.message);
+    return { ok: false, error: 'db_error' };
+  }
   return { ok: true };
 }
 
@@ -75,7 +78,10 @@ export async function disconnectProvider(
     .delete()
     .eq('user_id', userId)
     .eq('provider', provider);
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error('[wearables/disconnect] %s', error.message);
+    return { ok: false, error: 'db_error' };
+  }
 
   if (deleteSamples) {
     await admin.from('wearable_samples').delete().eq('user_id', userId).eq('source', provider);
@@ -107,7 +113,10 @@ export async function insertSamples(
     .upsert(rows, { onConflict: 'user_id,source,external_id', ignoreDuplicates: false })
     .select('id');
 
-  if (error) return { inserted: 0, error: error.message };
+  if (error) {
+    console.error('[wearables/samples] %s', error.message);
+    return { inserted: 0, error: 'db_error' };
+  }
   return { inserted: data?.length ?? rows.length };
 }
 
