@@ -390,6 +390,57 @@ guard the surface already owns.
 
 ---
 
+## 18. Nightly code cleanup
+
+Overnight hygiene. Not a harness hop: do **not** add a GRAPH_LOOP letter,
+do **not** fill `HOP.md`, do **not** treat this as recipe 11/15/16.
+
+Cursor Marketplace “deslop / vuln-scan / feature-flag cleanup” templates
+are the analogue. This repo cannot take them verbatim — ship-history
+comments are often **test locks**, and Mission OS paper hops are the live
+queue.
+
+**Required reads:** [CONTEXT.md](../CONTEXT.md) `## Now` · this recipe ·
+the folder `INDEX.md` you will edit.
+
+1. **Research the surface.** Open PRs only for high-confidence, low-risk
+   slop. A durability hole that needs a new `OutboxKind` is a feature PR,
+   not cleanup.
+2. **One concern per PR.** Stack branches if they all bump
+   `APP_BUILD_LABEL` — parallel branches from `master` mint the same label
+   and conflict.
+3. **Security first when it is cheap:** Postgres `error.message` must not
+   reach a client. Discover `src/lib/**` helpers that import
+   `getSupabaseAdmin` / `supabaseAdmin`, not only `app/api/**/route.ts`.
+   `console.error` the detail; return an opaque code (`db_error`). Keep
+   `'not_configured'` distinct. Leave Resend / non-Postgres senders alone.
+4. **Deslop comments that tests do not `read()`.** Keep contracts that
+   encode a live rule.
+5. **Split a helper bag behind a barrel** only when import paths can stay
+   stable and no Train/Today UI moves.
+6. Put the **merge bar** in the PR body (tests + mutant kill). Do not
+   merge without that proof. Auto-merge is a founder Cursor setting.
+
+**Never**
+
+- Delete comments that `read('…')` tests lock — named lock:
+  [`src/lib/firstSetUngated.ts`](../src/lib/firstSetUngated.ts) (the
+  `.958`–`.1048` “Never a login wall” ledger). Replacing it needs a real
+  exported table, not a night pass.
+- Collapse [`src/lib/mission-os/*.test.ts`](../src/lib/mission-os/INDEX.md)
+  CapResult paper files into one table — that is the live hop process.
+- Split Train/Today UI, `HistoryPage`, `SetLogTable`, or `workoutStore`
+  on a night pass (the free logger is never gated).
+- Touch Fuel `saveNutritionEntry` fire-and-forget unless the founder
+  asks — that is a new `OutboxKind`, not slop.
+- Flip `PRIVATE_MODE`, restamp excellence, or edit GRAPH_LOOP / `HOP.md`.
+
+**Required tests:** targeted `npx tsx --test` on the touched files +
+`npm run typecheck` when a split or label bump is in the PR. Non-UI
+cleanup does not need a browser video.
+
+---
+
 ## Quick commands
 
 ```bash

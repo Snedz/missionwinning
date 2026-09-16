@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1089-for-1104.md](./log/LOG-rotate-1089-for-1104.md) | rotated 2026-09-16 for `.1104` opaque Postgres errors in admin helpers (`.1089`) |
 | [log/LOG-rotate-1088-for-1103.md](./log/LOG-rotate-1088-for-1103.md) | rotated 2026-09-15 for `.1103` billing remount after inject (`.1088`) |
 | [log/LOG-rotate-1087-for-1102.md](./log/LOG-rotate-1087-for-1102.md) | rotated 2026-09-15 for `.1102` identity remount after inject (`.1087`) |
 | [log/LOG-rotate-1086-for-1101.md](./log/LOG-rotate-1086-for-1101.md) | rotated 2026-09-15 for `.1101` deeplink remount already_mounted (`.1086`) |

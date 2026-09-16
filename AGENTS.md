@@ -134,6 +134,7 @@ When you add a feature folder, add or update its `INDEX.md`.
 | **Next graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) — one open loop per PR; recipe 11 |
 | **Gauntlet campaign round** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) — LEAD / BUILDER / CRITIC; recipe 12 |
 | **Competitor names** | `npm run names:check` when `ops/` is mounted. Named intel only in `ops/intel/`. |
+| **Nightly code cleanup** | Recipe 18 in [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md). One concern per PR; never delete `firstSetUngated.ts` ledger comments; never collapse mission-os CapResult files; never split Train/Today UI or `workoutStore` overnight |
 
 Full playbooks: [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md).
 

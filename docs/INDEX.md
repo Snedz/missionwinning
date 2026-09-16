@@ -44,7 +44,7 @@
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
-| [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
+| [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks (recipe 18 = nightly cleanup) |
 | [GRAPH_MEMORY.md](GRAPH_MEMORY.md) | Agent graph memory of this repo's history — dev tooling, not product |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
