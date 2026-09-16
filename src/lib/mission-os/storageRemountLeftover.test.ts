@@ -32,7 +32,6 @@ function sourceOf(file: string): string {
 const MAX_KEYS = 32;
 
 const HEALTH_ID = 'l1.health';
-const GRANTED_ID = 'test.granted';
 const CLEARSHOT_ID = 'utility.clearshot';
 const NOSTORAGE_ID = 'test.nostorage';
 const BILLING_ID = 'test.billing';
