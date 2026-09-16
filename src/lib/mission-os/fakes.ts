@@ -7,7 +7,7 @@
  * Identity is an injected snapshot — guests stay null; nothing is minted.
  * Each fake copies its snapshot so injecting A cannot change B.read.
  * Remount after inject binds a new fake from host options — leftover
- * inject dies (`.1102` identity · `.1103` billing).
+ * inject dies (`.1102` identity · `.1103` billing · `.1107` photos).
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  * Billing is an injected muted snapshot — each fake copies so injecting
  * A cannot change B.read. Unscoped billing stays `scope_denied`.
@@ -147,7 +147,8 @@ export function createBillingHold(): BillingCapability {
 /**
  * Fake-only per-capability inject. Not camera. Not on MiniHost.
  * Replacing A's snapshot must not change B.read — each fake copies
- * and forces stub.
+ * and forces stub. Remount creates a new fake; leftover inject
+ * dies (`.1107`).
  */
 const photosInjectors = new WeakMap<PhotosCapability, (next: PhotosSnapshot) => void>();
 

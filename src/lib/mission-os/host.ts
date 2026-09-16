@@ -17,6 +17,8 @@
  * leftover inject dies; B.read stays (`.1103`).
  * Two live mounts with photos scope keep isolated stub snapshots —
  * A's `photos.read` is not B's; injecting A does not change B (`.1095`).
+ * Remount after photos inject rebinds the host stub snapshot —
+ * leftover inject dies; B.read stays (`.1107`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
@@ -187,6 +189,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       }
       // Remount rebinds identity from host options — leftover inject dies (.1102).
       // Remount rebinds billing from host options — leftover inject dies (.1103).
+      // Remount rebinds photos from host options — leftover inject dies (.1107).
       const mini = bindDoors(
         manifest,
         snapshotFor(opts, manifest.id),
