@@ -87,7 +87,8 @@
     "ops:session": "node ops/scripts/new-session.mjs",
     "snapshot:public": "node scripts/export-public-snapshot.mjs --out ../missionwinning-public-snapshot --git --force",
     "snapshot:check": "node --test scripts/public-snapshot/deny.test.mjs",
-    "skills:check": "node scripts/check-skill-hashes.mjs"
+    "skills:check": "node scripts/check-skill-hashes.mjs",
+    "skills:content": "node scripts/check-skill-content.mjs"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",
