@@ -18,7 +18,8 @@ import { mountClearShotMini } from './clearshot';
 import { mountTestBillingMini } from './billingProbe';
 import { mountTestGrantedMini } from './allowProbe';
 import { resolveMiniDeeplink } from './deeplink';
-import type { CapResult, ModuleManifest, ModuleScope, MountedMini } from './types';
+import type { ModuleScope } from '../../../packages/mw-core/src/module';
+import type { CapResult, ModuleManifest, MountedMini } from './types';
 
 const here = import.meta.dirname;
 const repoRoot = path.join(here, '..', '..', '..');
@@ -259,7 +260,7 @@ test('test.billing remount still has billing — leftover Health extras cannot s
 test('known-method envelopes stay .1079–.1108 after leftover Health extras', () => {
   const host = createMiniHost();
   const doc = mutableHealth(['billing.read']);
-  const health = assertMounted(host.mount(doc));
+  assertMounted(host.mount(doc));
   const granted = assertMounted(mountTestGrantedMini(host));
   const shot = assertMounted(mountClearShotMini(host));
 
@@ -303,6 +304,11 @@ test('bind copies + freezes Health scopes — leftover extras die', () => {
   assert.equal(src.includes("manifest.id === 'l1.health'"), true);
   assert.equal(src.includes('Object.freeze'), true);
   assert.equal(src.includes('.1109'), true);
+  assert.equal(src.includes('createIdentityFake(bound'), true);
+  assert.equal(src.includes('createBillingFake(bound'), true);
+  assert.equal(src.includes('createPhotosFake(bound'), true);
+  assert.equal(src.includes('createStorageFake(bound'), true);
+  assert.equal(src.includes('storeFor(stores, bound.id)'), true);
   assert.equal(src.includes("inventoryFromManifest(mini.manifest)"), true);
   assert.equal(/from\s+['"][^'"]*stripe/i.test(src), false);
   assert.equal(src.includes('createClient'), false);

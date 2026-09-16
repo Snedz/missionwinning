@@ -224,7 +224,7 @@ test('docs/harness/HOP.md stays the empty template', () => {
 
 test('host isolates stores by mount id — unmount drops only that map', () => {
   const src = sourceOf('host.ts');
-  assert.equal(src.includes('storeFor(stores, manifest.id)'), true);
+  assert.equal(src.includes('storeFor(stores, bound.id)'), true);
   assert.equal(src.includes('stores.delete(id)'), true);
   assert.equal(src.includes('store.clear()'), true);
   assert.equal(src.includes('stores.clear()'), false);

@@ -298,7 +298,7 @@ test('docs/harness/HOP.md stays the empty template', () => {
 
 test('remount binds a new store — leftover old-fake writes die', () => {
   const src = sourceOf('host.ts');
-  assert.equal(src.includes('storeFor(stores, manifest.id)'), true);
+  assert.equal(src.includes('storeFor(stores, bound.id)'), true);
   assert.equal(src.includes('stores.delete(id)'), true);
   assert.equal(src.includes('store.clear()'), true);
   assert.equal(src.includes('stores.clear()'), false);

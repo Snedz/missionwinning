@@ -84,10 +84,10 @@ test('MiniHost.mount happy path: all four in-memory fakes', () => {
   });
 
   const hostSrc = sourceOf('host.ts');
-  assert.equal(hostSrc.includes('createIdentityFake(manifest'), true);
-  assert.equal(hostSrc.includes('createBillingFake(manifest'), true);
-  assert.equal(hostSrc.includes('createPhotosFake(manifest'), true);
-  assert.equal(hostSrc.includes('createStorageFake(manifest'), true);
+  assert.equal(hostSrc.includes('createIdentityFake(bound'), true);
+  assert.equal(hostSrc.includes('createBillingFake(bound'), true);
+  assert.equal(hostSrc.includes('createPhotosFake(bound'), true);
+  assert.equal(hostSrc.includes('createStorageFake(bound'), true);
 });
 
 test('CapResult and the four doors are the host contract', () => {
