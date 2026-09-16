@@ -84,7 +84,8 @@ export interface BillingCapability {
 /**
  * Photos stub — interface only. No snapshot → scoped stays `photos_stub`.
  * Injected snapshot → isolated stub envelope for that mount (host-wide
- * default, or fake-only per-mini override). Unscoped minis get the same
+ * default, or fake-only per-mini override). Remount after inject
+ * rebinds the host snapshot (`.1107`). Unscoped minis get the same
  * CapResult deny as billing (`scope_denied`). Never camera. Never a
  * gallery write. Never Android wiring.
  */
