@@ -27,7 +27,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9b. `victoryReceipt.ts` — vs-last session totals by **shape** (sorted unique lift ids, `.944`) + per-lift rows (`.713`). Close receipt ready-gate + private text keep (`.956`). Session notes ride the keep when present (`.982`)
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)
 9d. `sessionNote.ts` — optional private session diary; empty invents nothing; cloud upsert omits it (`.982`); History detail can patch a finished log (`.1046`)  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover); Prev matches working-set index and stays quiet on warmup (`.966`)  
+10. `activeWorkoutHelpers.ts` — barrel (`.1106`). Bodies: `activeSessionView.ts` (next-set, open-idx, progress, post-session path), `activeDial.ts` (last-session / prev / dial / next-target / logged-line), `activeConsole.ts` (`buildConsoleSet` / dock / form-guide / swap rank), `activeMenuGates.ts` (`shouldShow*` / skip / volume-trim). Import paths stay on the barrel. `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939`); Prev matches working-set index and stays quiet on warmup (`.966`)  
 10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
@@ -69,7 +69,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
-19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+19. `activeWorkoutHelpers.ts` — barrel still re-exports `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`). Split files named in row 10.
 20. `exerciseNote.ts` — this-session diary on the lift (unset vs clear). Appearance drops a leaked note; last History is not a pin (`.748` / `.996`). History edit can correct a logged lift note via `normalizeExerciseNote` (`.1045`)
 20b. `exercisePin.ts` — pinned reminder per lift id. Returns next session. Not History (`.996`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
@@ -135,7 +135,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `sessionNote.test.ts` | Optional session diary; empty omit; merge keeps local note; text keep only when present (`.982`) |
 | `sessionNoteSurface.test.ts` | Notes stay off Today / `/private`; jot off Active first paint; receipt field is not Start (`.982`) |
 | `activeSessionFinish.test.ts` | Log-set rest/PR + Victory assembly including receipt |
-| `activeWorkoutHelpers.test.ts` | Next set, last session stats |
+| `activeWorkoutHelpers.test.ts` | Next set, last session stats — imports the barrel; bodies in `activeSessionView` / `activeDial` / `activeConsole` / `activeMenuGates` (`.1106`) |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `honorSavedRoutine.test.ts` | Save then Start uses their routine; Wednesday cite does not overwrite a saved PPL; empty invents nothing (`.960`) |
 | `startAgain.test.ts` | Finished log → Start; empty / live-keep invent nothing (`.991`) |

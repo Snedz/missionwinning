@@ -235,7 +235,7 @@ test('cite / ghost / Prev are not remounted as a second Prev', () => {
 });
 
 test('resolveSetInput does not apply a program bump on the dial', () => {
-  const src = read('src/lib/workout/activeWorkoutHelpers.ts');
+  const src = read('src/lib/workout/activeDial.ts');
   const fn = src.slice(src.indexOf('export function resolveSetInput'));
   const body = fn.slice(0, fn.indexOf('\nexport function formatLoggedSetLine'));
   assert.doesNotMatch(body, /if \(suggestion\)/);

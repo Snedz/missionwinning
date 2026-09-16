@@ -171,6 +171,10 @@ describe('set row tags (.966)', () => {
       'src/lib/workout/setKind.ts',
       'src/lib/workout/historyRetrain.ts',
       'src/lib/workout/activeWorkoutHelpers.ts',
+      'src/lib/workout/activeSessionView.ts',
+      'src/lib/workout/activeDial.ts',
+      'src/lib/workout/activeConsole.ts',
+      'src/lib/workout/activeMenuGates.ts',
       'src/components/workout/SetLogTable.tsx',
       'src/store/workoutStore.ts',
     ];

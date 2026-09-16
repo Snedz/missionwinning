@@ -28,6 +28,10 @@ test('plus-load logger files never import premium or trial', () => {
   const files = [
     'src/lib/workout/bodyweightLoad.ts',
     'src/lib/workout/activeWorkoutHelpers.ts',
+    'src/lib/workout/activeSessionView.ts',
+    'src/lib/workout/activeDial.ts',
+    'src/lib/workout/activeConsole.ts',
+    'src/lib/workout/activeMenuGates.ts',
     'src/page-components/ActiveWorkoutPage.tsx',
     ...workoutUiFiles(),
   ];
@@ -52,7 +56,7 @@ test('LogConsole plus-load keeps the stepper at 0 — skip is leave load at 0', 
 });
 
 test('formatters share formatSetLoadLine — no second private copy', () => {
-  const helpers = read('src/lib/workout/activeWorkoutHelpers.ts');
+  const helpers = read('src/lib/workout/activeDial.ts');
   const cue = read('src/lib/workout/progressiveOverloadCue.ts');
   assert.match(helpers, /formatSetLoadLine\(/);
   assert.match(cue, /formatSetLoadLine\(/);
