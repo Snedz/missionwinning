@@ -9,6 +9,8 @@
  * Remount after inject binds a new fake from host options — leftover
  * inject dies (`.1102` identity · `.1103` billing · `.1107` photos).
  * Remount leftover set/remove on the old storage fake dies (`.1108`).
+ * Host bind copies + freezes scopes — leftover extras on a Health-shaped
+ * document cannot grant billing through these fakes (`.1109`).
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  * Billing is an injected muted snapshot — each fake copies so injecting
  * A cannot change B.read. Unscoped billing stays `scope_denied`.

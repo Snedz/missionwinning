@@ -126,6 +126,8 @@ export interface MiniHost {
    * Bind a known valid manifest. Unknown id → `unknown_mini`.
    * A second mount of the same id while mounted is `already_mounted`
    * — does not replace the live instance.
+   * Bind copies + freezes scopes. Leftover extras on a Health-shaped
+   * manifest cannot grant billing (`.1109`).
    */
   mount(manifest: ModuleManifest): CapResult<MountedMini>;
   /**

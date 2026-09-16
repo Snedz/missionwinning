@@ -266,7 +266,7 @@ test('docs/harness/HOP.md stays the empty template', () => {
 
 test('unmount still drops only that map after a cap refuse — no leftover occupancy', () => {
   const src = sourceOf('host.ts');
-  assert.equal(src.includes('storeFor(stores, manifest.id)'), true);
+  assert.equal(src.includes('storeFor(stores, bound.id)'), true);
   assert.equal(src.includes('stores.delete(id)'), true);
   assert.equal(src.includes('store.clear()'), true);
   assert.equal(src.includes('stores.clear()'), false);
