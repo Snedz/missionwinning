@@ -21,6 +21,8 @@
  * leftover inject dies; B.read stays (`.1107`).
  * Remount leftover old-fake storage writes die — set/remove on the
  * unmounted fake does not write remounted; B untouched (`.1108`).
+ * Bind copies + freezes scopes. Leftover extras on a Health-shaped
+ * manifest cannot grant billing — live or remount (`.1109`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
@@ -138,6 +140,27 @@ function storeFor(stores: Map<string, Map<string, string>>, id: string): Map<str
   return store;
 }
 
+/**
+ * Reserved Health scopes. Leftover extras on a Health-shaped
+ * document cannot grant billing (`.1109`). Judge ≠ builder: tests
+ * hardcode this list; they do not import it as truth.
+ */
+const HEALTH_BOUND_SCOPES: readonly ModuleScope[] = [
+  'identity.read',
+  'storage.read',
+  'storage.write',
+];
+
+/** Copy + freeze scopes. Health pins reserved scopes — extras die. */
+function bindManifest(manifest: ModuleManifest): ModuleManifest {
+  const scopes = manifest.id === 'l1.health' ? HEALTH_BOUND_SCOPES : manifest.scopes;
+  return Object.freeze({
+    ...manifest,
+    scopes: Object.freeze([...scopes]),
+    surfaces: Object.freeze([...manifest.surfaces]),
+  });
+}
+
 function bindDoors(
   manifest: ModuleManifest,
   identity: IdentitySnapshot,
@@ -145,12 +168,13 @@ function bindDoors(
   photos: PhotosSnapshot | undefined,
   stores: Map<string, Map<string, string>>
 ): MountedMini {
+  const bound = bindManifest(manifest);
   return {
-    manifest,
-    identity: createIdentityFake(manifest, identity),
-    billing: createBillingFake(manifest, billing),
-    photos: createPhotosFake(manifest, photos),
-    storage: createStorageFake(manifest, storeFor(stores, manifest.id)),
+    manifest: bound,
+    identity: createIdentityFake(bound, identity),
+    billing: createBillingFake(bound, billing),
+    photos: createPhotosFake(bound, photos),
+    storage: createStorageFake(bound, storeFor(stores, bound.id)),
   };
 }
 
@@ -193,6 +217,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       // Remount rebinds billing from host options — leftover inject dies (.1103).
       // Remount rebinds photos from host options — leftover inject dies (.1107).
       // Remount binds a new store — leftover set/remove on the old fake dies (.1108).
+      // Bind copies + freezes scopes. Health leftover extras cannot grant billing (.1109).
       const mini = bindDoors(
         manifest,
         snapshotFor(opts, manifest.id),
@@ -200,7 +225,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
         photosSnapshotFor(opts, manifest.id),
         stores
       );
-      mounted.set(manifest.id, inventoryFromManifest(manifest));
+      mounted.set(manifest.id, inventoryFromManifest(mini.manifest));
       instances.set(manifest.id, mini);
       return { ok: true, value: mini };
     },

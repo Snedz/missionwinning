@@ -1,51 +1,52 @@
-# Paper .1108 — Storage remount leftover old-fake writes
+# Paper .1109 — Leftover Health extras cannot grant billing
 
 ONE hop. Stubs stay stubby — no UI, no Stripe, no camera, no tip-promote.
 ClearShot Android cash stays Next ONE. `PRIVATE_MODE` stays. No
 `mission-ops/` in this public repo. `docs/harness/HOP.md` stays the empty
 template — the claim lives only here.
 
-`.1092` closed dual-mount storage isolation while both live.
-`.1078` / `.1099` closed remount starting empty (including after
-`storage_cap`). `.1102` / `.1103` / `.1107` closed leftover inject
-dying on remount for identity / billing / photos. Storage has no
-inject. This hop closes that leftover on **one door** — storage
-writes on the old fake after remount.
+`.1079` closed unscoped billing deny. `.1094` / `.1103` closed live
+isolation and remount leftover inject on billing-scoped minis.
+`.1108` closed leftover storage writes on the old fake. Bind still
+stored the live grant document. Leftover extras on a Health-shaped
+manifest could grant `billing.read`. This hop closes that leftover
+on **one door** — billing on Health.
 
 ## Goal
 
-Close the storage remount hole `.1078` + `.1092` + `.1099` + the
-snapshot remount hops left implicit: `storage.set` / `storage.remove`
-on a live fake is per-instance. `unmount` + remount binds a **new**
-store. Leftover writes on the old fake die — remounted `get` /
-occupancy is the empty host-bound map, not the leftover set.
-Sibling storage stays. Distinct from live dual-mount isolation
-(`.1092`). Distinct from remount-after-cap emptiness (`.1099`).
-Distinct from snapshot remount-after-inject (`.1102` / `.1103` /
-`.1107`). No ninth deny code. No `storage.clear` as a known method.
+Close the Health billing-grant hole leftover inject / leftover
+writes left implicit: `MiniHost.mount` binds a **copy** of declared
+scopes and pins reserved Health scopes. Leftover extras on the
+passed document — live push, first-mount extras, or remount of
+the mutated object — cannot grant `billing.read` / checkout /
+portal. Granted sibling stays. Distinct from live billing isolation
+(`.1094`). Distinct from billing remount-after-inject (`.1103`).
+Distinct from leftover old-fake storage writes (`.1108`). No ninth
+deny code. ClearShot remount leftover extras on a mutated
+ClearShot-shaped document stay the next hop.
 
 ## Claim
 
-After Health and `test.granted` mount with isolated storage maps:
+After Health and `test.granted` mount:
 
-- set on Health writes Health only
-- Granted.get stays miss / Granted's own value
-- unmount Health — Granted stays; health.call is
+- extras on a Health-shaped document (`billing.read` already on
+  the passed scopes) do not grant Health billing
+- leftover push on the passed document after mount does not grant
+- leftover push on the bound manifest does not grant (frozen copy)
+- unmount Health — Granted.read stays; health.call billing is
   `{ ok: false, code: 'not_mounted' }`
-- remount Health starts empty — not the leftover set (`.1078`)
-- remounted storage is a new instance — set / remove on the old
-  fake does not write remounted
-- set on remounted still does not change Granted
-- after a `storage_cap` refuse + unmount+remount, old-fake set
-  does not write remounted and does not re-cap remounted
-  (storage remount-after-cap stays `.1099`)
-- `host.call` storage.get / set after remount matches the fake
-- ClearShot remount: old-fake set does not occupy remounted
-  (get stays `scope_denied`; remounted can still fill 32)
-- `test.nostorage` remount stays `{ ok: false, code: 'scope_denied' }`
-  — leftover set cannot grant write
-- `test.billing` remount stays `{ ok: false, code: 'scope_denied' }`
-  (no storage scope — leftover set cannot grant write)
+- remount of the leftover extras document still cannot grant
+  billing — remounted is reserved Health scopes
+- `host.call` billing.read after remount is `scope_denied`
+- `listMounted` peek of `billing.read` stays `scope_denied`
+- after a `storage_cap` refuse + leftover extras + remount,
+  billing is still denied (storage remount-after-cap stays `.1099`)
+- ClearShot live leftover extras cannot grant billing (bound
+  copy is frozen); reserved helper remount stays `scope_denied`
+- `test.billing` remount still has billing — leftover Health
+  extras cannot steal it
+- Health remount stays `{ ok: false, code: 'scope_denied' }`
+  on billing even with leftover extras
 
 Host-lifecycle deny codes stay the frozen eight (`.1098`):
 
@@ -59,32 +60,30 @@ Host-lifecycle deny codes stay the frozen eight (`.1098`):
 - `storage_cap`
 
 No silent ninth code. No `storage.clear` as a known method. No
-new product mini. No Stripe I/O. No camera. No MediaStore.
+ClearShot remount leftover extras rewrite. No Stripe I/O.
 
-CapResult envelopes for known methods stay `.1079`–`.1107`
+CapResult envelopes for known methods stay `.1079`–`.1108`
 (`scope_denied` / `photos_stub` / stub success / `unknown_method`
 / `unknown_capability` / `already_mounted` / `unknown_mini` /
 `not_mounted` / `bad_deeplink` / `storage_cap` / storage miss /
 identity / billing / photos isolation / `storage.remove` /
 deeplink remount / identity remount / billing remount /
-photos remount).
+photos remount / leftover storage writes).
 
 ## Accept
 
-1. Set Health, unmount, remount: remounted.get is miss, not the
-   leftover value. Set on the old fake after remount does not
-   write remounted. Does not throw. Granted is unchanged.
-   `host.call` matches.
-2. Remove on the old fake after remount does not delete
-   remounted keys. Set on remounted does not change Granted.
-   After `storage_cap` + remount, old-fake set does not write
-   remounted and remounted is not still capped.
-3. ClearShot remount: old-fake set does not occupy remounted
-   (get stays `scope_denied`; remounted can fill 32).
-   `test.nostorage` / `test.billing` remount stay `scope_denied`.
-   Dual-mount isolation (`.1092`), remount-after-cap (`.1099`),
-   and snapshot remount-after-inject (`.1102` / `.1103` /
-   `.1107`) stay. No ninth deny code.
+1. Mount a Health-shaped document that already lists
+   `billing.read`: Health billing is `scope_denied`. Does not
+   throw. Granted.read is the muted envelope. `host.call` matches.
+   `listMounted` peek of billing stays `scope_denied`.
+2. Leftover push on the passed document after mount does not
+   grant. Leftover push on the bound manifest does not grant.
+   Remount of the leftover extras document still cannot grant.
+   After `storage_cap` + extras + remount, billing is still denied.
+3. ClearShot live leftover extras cannot grant billing.
+   `test.billing` remount still has billing. Dual-mount billing
+   isolation (`.1094`), billing remount (`.1103`), and leftover
+   storage writes (`.1108`) stay. No ninth deny code.
 4. Unit tests under `src/lib/mission-os/`; judge ≠ builder —
    expected envelopes hardcoded in tests, not read back from
    production as the source of truth.
@@ -97,7 +96,8 @@ No MediaStore. No Supabase. No `PRIVATE_MODE` flip. No tip-promote.
 Live www stays `.697`. ClearShot Android cash stays Next ONE.
 No new product mini. No Android product work. No `storage.clear`
 / `delete` as a known method. No new deny code. No change to
-`.1079`–`.1107` envelopes. No snapshot-inject rewrite.
+`.1079`–`.1108` envelopes. No ClearShot remount leftover extras
+pin. No snapshot-inject rewrite.
 
 ## Refuse
 

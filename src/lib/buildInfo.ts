@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1108` storage remount leftover old-fake writes; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
-export const APP_BUILD_LABEL = "2026.07-unified.1108";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1109` leftover Health extras cannot grant billing; paper only; do not promote; live www stays `.697`; PRIVATE_MODE stays; [skip vercel]. */
+export const APP_BUILD_LABEL = "2026.07-unified.1109";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

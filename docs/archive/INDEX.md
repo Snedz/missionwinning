@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1094-for-1109.md](./log/LOG-rotate-1094-for-1109.md) | rotated 2026-09-16 for `.1109` leftover Health extras cannot grant billing (`.1094`) |
 | [log/LOG-rotate-1093-for-1108.md](./log/LOG-rotate-1093-for-1108.md) | rotated 2026-09-16 for `.1108` storage remount leftover old-fake writes (`.1093`) |
 | [log/LOG-rotate-1092-for-1107.md](./log/LOG-rotate-1092-for-1107.md) | rotated 2026-09-16 for `.1107` photos remount after inject (`.1092`) |
 | [log/LOG-rotate-1091-for-1106.md](./log/LOG-rotate-1091-for-1106.md) | rotated 2026-09-16 for `.1106` split activeWorkoutHelpers behind a barrel (`.1091`) |
