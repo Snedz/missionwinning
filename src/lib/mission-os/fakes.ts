@@ -8,6 +8,7 @@
  * Each fake copies its snapshot so injecting A cannot change B.read.
  * Remount after inject binds a new fake from host options — leftover
  * inject dies (`.1102` identity · `.1103` billing · `.1107` photos).
+ * Remount leftover set/remove on the old storage fake dies (`.1108`).
  * Unscoped identity is `scope_denied` (same CapResult deny as billing).
  * Billing is an injected muted snapshot — each fake copies so injecting
  * A cannot change B.read. Unscoped billing stays `scope_denied`.
@@ -181,7 +182,7 @@ export function createPhotosFake(
   return cap;
 }
 
-/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). Remount after cap starts empty (`.1099`). `remove` is a closed write (`.1100`). */
+/** In-memory map. Overflow (32 keys / 4KB) is `storage_cap` (`.1097`). Remount after cap starts empty (`.1099`). `remove` is a closed write (`.1100`). Remount leftover set/remove on the old fake dies (`.1108`). */
 export function createStorageFake(
   manifest: ModuleManifest,
   store: Map<string, string> = new Map()

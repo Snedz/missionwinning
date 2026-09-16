@@ -19,6 +19,8 @@
  * A's `photos.read` is not B's; injecting A does not change B (`.1095`).
  * Remount after photos inject rebinds the host stub snapshot —
  * leftover inject dies; B.read stays (`.1107`).
+ * Remount leftover old-fake storage writes die — set/remove on the
+ * unmounted fake does not write remounted; B untouched (`.1108`).
  * An id that is not currently mounted is `not_mounted`
  * (not `unknown_mini`) — same code for `call(id, door, method)`.
  * A door name outside the closed set is `unknown_capability` (`.1096`).
@@ -190,6 +192,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
       // Remount rebinds identity from host options — leftover inject dies (.1102).
       // Remount rebinds billing from host options — leftover inject dies (.1103).
       // Remount rebinds photos from host options — leftover inject dies (.1107).
+      // Remount binds a new store — leftover set/remove on the old fake dies (.1108).
       const mini = bindDoors(
         manifest,
         snapshotFor(opts, manifest.id),
@@ -204,6 +207,7 @@ export function createMiniHost(opts: MiniHostOptions = {}): MiniHost {
     unmount(id: string): CapResult<void> {
       if (!mounted.has(id)) return { ok: false, code: 'not_mounted' };
       // Drop occupancy even after a storage_cap refuse so remount is not still capped (.1099).
+      // Detach the map so leftover set/remove on the old fake cannot write remounted (.1108).
       const store = stores.get(id);
       if (store) {
         store.clear();

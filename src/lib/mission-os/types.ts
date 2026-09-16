@@ -132,6 +132,8 @@ export interface MiniHost {
    * In-memory teardown. Not currently mounted → `not_mounted`.
    * Does not throw. Clears that mini's fake keyspace — including after
    * a `storage_cap` refuse, so remount is not still capped (`.1099`).
+   * Remount leftover set/remove on the old fake does not write
+   * remounted (`.1108`).
    */
   unmount(id: string): CapResult<void>;
   /** Inventory of currently mounted minis — id + declared scopes only. */
