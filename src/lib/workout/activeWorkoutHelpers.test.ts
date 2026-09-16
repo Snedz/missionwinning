@@ -132,7 +132,7 @@ describe('activeWorkoutHelpers', () => {
 
   it('getLastSessionSets uses lastLiveSessionForExercise — no second last-session loop', () => {
     const helpers = readFileSync(
-      path.join(import.meta.dirname, 'activeWorkoutHelpers.ts'),
+      path.join(import.meta.dirname, 'activeDial.ts'),
       'utf8'
     );
     const code = helpers.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
@@ -1372,7 +1372,7 @@ describe('firstPlannedSetIdx', () => {
 
   it('resolveExerciseNextTarget owns firstPlannedSetIdx; the card does not re-find', () => {
     const helpers = readFileSync(
-      path.join(import.meta.dirname, 'activeWorkoutHelpers.ts'),
+      path.join(import.meta.dirname, 'activeDial.ts'),
       'utf8'
     );
     const card = readFileSync(

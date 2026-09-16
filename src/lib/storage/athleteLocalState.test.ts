@@ -290,6 +290,10 @@ test('Train/Coach history readers stay store-keyed — no owner gate', () => {
   const files = [
     'src/lib/workout/setRowAdjacency.ts',
     'src/lib/workout/activeWorkoutHelpers.ts',
+    'src/lib/workout/activeSessionView.ts',
+    'src/lib/workout/activeDial.ts',
+    'src/lib/workout/activeConsole.ts',
+    'src/lib/workout/activeMenuGates.ts',
     'src/lib/coach/contextBuilder.ts',
     'src/lib/coach/weekRationale.ts',
   ];

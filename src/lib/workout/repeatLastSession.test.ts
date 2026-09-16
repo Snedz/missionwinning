@@ -166,7 +166,7 @@ describe('wiring: one control, compose with F-013, do not rewrite #489', () => {
   });
 
   it('does not rewrite resolveSetInput order (F-013 / #489 compose)', () => {
-    const src = read('src/lib/workout/activeWorkoutHelpers.ts');
+    const src = read('src/lib/workout/activeDial.ts');
     const fn = src.slice(src.indexOf('export function resolveSetInput'));
     const body = fn.slice(0, fn.indexOf('\nexport function'));
     assert.match(body, /if \(manual\) return manual/);

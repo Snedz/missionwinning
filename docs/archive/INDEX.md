@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1091-for-1106.md](./log/LOG-rotate-1091-for-1106.md) | rotated 2026-09-16 for `.1106` split activeWorkoutHelpers behind a barrel (`.1091`) |
 | [log/LOG-rotate-1090-for-1105.md](./log/LOG-rotate-1090-for-1105.md) | rotated 2026-09-16 for `.1105` unlocked comment deslop (`.1090`) |
 | [log/LOG-rotate-1089-for-1104.md](./log/LOG-rotate-1089-for-1104.md) | rotated 2026-09-16 for `.1104` opaque Postgres errors in admin helpers (`.1089`) |
 | [log/LOG-rotate-1088-for-1103.md](./log/LOG-rotate-1088-for-1103.md) | rotated 2026-09-15 for `.1103` billing remount after inject (`.1088`) |
