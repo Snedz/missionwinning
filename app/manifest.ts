@@ -1,5 +1,18 @@
 import type { MetadataRoute } from 'next';
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { pwaStartUrl } from '@/lib/pwaStartUrl';
+
+/**
+ * Capability claim in the installable manifest description.
+ * Same flag as Serwist / NEXT_PUBLIC_PWA_ENABLED — never assert offline
+ * installability while PRIVATE_MODE disables the service worker.
+ */
+function manifestDescription(): string {
+  if (isOfflineInstallable()) {
+    return 'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.';
+  }
+  return 'Free workout logger + adaptive Mission Coach from your logs — free core forever.';
+}
 
 // Installable PWA manifest (vision.md: "Full PWA experience: installable,
 // offline-first, low-data, works on any device/browser anywhere").
@@ -8,8 +21,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Mission Winning — Log a set. Offline.',
     short_name: 'Mission Winning',
-    description:
-      'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',
+    description: manifestDescription(),
     // id pins install identity — do not change without product sign-off.
     id: '/log',
     // Same predicate as Serwist disable in next.config.js. Gated → /private
