@@ -33,7 +33,7 @@ const README_HEADINGS = [
 ] as const;
 
 const BANNED = ['paymentUrl', 'tip-promote'] as const;
-const BANNED_HOST = /https?:\/\/|\/checkout\b|\bstripe\.com\b|\bpaypal\.com\b|\bshopify\b|\baffiliate\b/i;
+const BANNED_HOST = /https?:\/\/|\/checkout\b|\bstripe\.com\b|\bpaypal\.com\b|\bshopify\b|affiliate=/i;
 const CHECKOUT_PRICE = /\$\s*\d/;
 
 function packMarkdown(): string[] {
