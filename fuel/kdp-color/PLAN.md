@@ -1,6 +1,6 @@
 # PLAN — kdp-color honest fuel (Builder-2)
 
-**Status:** FROZEN 2026-09-18. Implement only this file.  
+**Status:** IMPLEMENTED 2026-09-18 (frozen list unchanged). Builder-2 only.  
 **Seat:** Builder-2 (parallel to resume-kit / invoice-lite). Trinity: Builder only — no self-LGTM as Judge.  
 **SKU:** `kdp-color` · public name **Open Plate**  
 **Not** root `PLAN.md` (stale house-skin freeze) · **not** `docs/PLAN.md` (build phases A–I).
