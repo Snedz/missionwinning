@@ -28,9 +28,13 @@ const required = [
   'interiors/book.html',
   'gtm/ICP.md',
   'gtm/OUTREACH_DRAFTS.md',
+  'gtm/COVER_BRIEF.md',
+  'gtm/KEYWORDS.md',
+  'HOP-B.md',
   'pages/index.html',
   'pages/listing.html',
   'pages/icp.html',
+  'pages/outreach.html',
   'scripts/verify.mjs',
 ];
 
@@ -79,9 +83,12 @@ const corpus = [
   'export/NOTES.md',
   'gtm/ICP.md',
   'gtm/OUTREACH_DRAFTS.md',
+  'gtm/COVER_BRIEF.md',
+  'gtm/KEYWORDS.md',
   'pages/index.html',
   'pages/listing.html',
   'pages/icp.html',
+  'pages/outreach.html',
   'interiors/book.html',
 ]
   .map(read)
@@ -111,9 +118,11 @@ check(sendCount >= 4, `outreach needs the header plus 3 drafts marked DO NOT SEN
 check(!/paymentUrl\s*[:=]\s*["']https?:/.test(read('config.js')), 'config.js must not set a http paymentUrl');
 check(!/ClearShot/.test(corpus), 'ClearShot stays parked — do not mention it in this pack');
 
-const pages = ['pages/index.html', 'pages/listing.html', 'pages/icp.html'].map(read).join('\n');
+const pages = ['pages/index.html', 'pages/listing.html', 'pages/icp.html', 'pages/outreach.html'].map(read).join('\n');
 check(!/<button[^>]*>/i.test(pages), 'static pages must not ship a button (no buy control)');
 check(!/type=["']submit["']/.test(pages), 'no submit controls');
+check(!/mailto:/i.test(pages), 'no mailto: — drafts must not send');
+check((read('pages/outreach.html').match(/DO NOT SEND/g) || []).length >= 4, 'outreach.html must mark header + 3 drafts');
 
 if (failures.length) {
   console.error(`verify failed (${failures.length}):`);

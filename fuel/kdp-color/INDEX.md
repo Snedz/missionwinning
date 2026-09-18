@@ -5,6 +5,7 @@ Honest, unpublished KDP color-interior starter. One concern: this SKU only.
 | File | Concern |
 |------|---------|
 | [PLAN.md](PLAN.md) | Frozen Builder-2 list |
+| [HOP-B.md](HOP-B.md) | GTM leftover freeze |
 | [README.md](README.md) | What this is / is not |
 | [config.js](config.js) | Local row — `paymentUrl` is `""` |
 | [listing.md](listing.md) | Unpublished KDP listing draft |
@@ -15,9 +16,12 @@ Honest, unpublished KDP color-interior starter. One concern: this SKU only.
 | [interiors/book.html](interiors/book.html) | 24-page 8.5×11 assembly |
 | [gtm/ICP.md](gtm/ICP.md) | Who this is for |
 | [gtm/OUTREACH_DRAFTS.md](gtm/OUTREACH_DRAFTS.md) | One-channel drafts — do not send |
+| [gtm/COVER_BRIEF.md](gtm/COVER_BRIEF.md) | Cover/spine brief — no wrap file |
+| [gtm/KEYWORDS.md](gtm/KEYWORDS.md) | Backend slots — no invented volumes |
 | [pages/index.html](pages/index.html) | Product hub (no buy control) |
 | [pages/listing.html](pages/listing.html) | Listing as a page |
 | [pages/icp.html](pages/icp.html) | ICP as a page |
+| [pages/outreach.html](pages/outreach.html) | Drafts on a page — do not send |
 | [scripts/verify.mjs](scripts/verify.mjs) | Honesty + file checks |
 
 Not in this folder: resume-kit, invoice-lite, shared `fuel/config.js`, Mission Winning app routes.

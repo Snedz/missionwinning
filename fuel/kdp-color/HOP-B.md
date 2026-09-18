@@ -1,6 +1,6 @@
 # HOP-B — GTM leftovers (Builder-B continue)
 
-**Status:** FROZEN 2026-09-18. Implement only this hop.  
+**Status:** IMPLEMENTED 2026-09-18 (frozen list unchanged).  
 **Seat:** Builder-B. No Judge self-cert.  
 **Clock:** continue until ~19:31 ET, then stop.
 

@@ -24,6 +24,10 @@
 
 - No paymentUrl, no plates copied from Open Plate, no help-FAQ edits, no ClearShot, no fake sales.
 
+## Leftover (HOP-B)
+
+GTM / export pages only. Still no plates. See [../kdp-color/HOP-B.md](../kdp-color/HOP-B.md).
+
 ## Done when
 
 Files exist, `paymentUrl === ""`, hub has no buy control.
