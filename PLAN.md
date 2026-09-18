@@ -1,141 +1,157 @@
-# PLAN — house black+yellow 4th skin density (`.1059`)
+# PLAN — Mission HOME / Program 67 RedNote 适我主义 steal
 
-**Status:** FROZEN (rev. C2). Implement only what this file names.  
-**Base:** `cursor/active-compose-first-paint` @ `23d4b13c` (`.1058` set table).  
-**Paper:** stamp `.1059`. Master paper stays `.1057` (`f302f40f`). Do not promote.  
-**Law:** Design Polish **C2 · Instrument** (`scripts/design-variants/themes.mjs` id `c2-instrument`, `docs/design/variants/c2-instrument.html`). Token conflict resolved: C2 wins. Not the research brief `#F5C400` / `#0A0A0A` table. Not zinc `#f5c518`.  
-**Scope (lineage review):** this craft = `.mw-house` only. Do not restyle `/private` or public www. Field-manual paper/ink stays on those surfaces. Recreate Today / house rail+sheet / `/log` / `/active` set table / Victory / Coach, plus Library / Builder if they already ride house chrome.  
-**Not** `docs/PLAN.md` (build phases A–I). This file is the craft-window freeze.
+**Status:** FROZEN 2026-09-18. Implement only this document.  
+**Lane:** Builder / docs. Not a product surface.  
+**Ship label (if `src/` is touched):** `2026.07-unified.1111`.  
+**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). This file is the craft-window freeze.
+
+Do **not** edit this file in implementation commits. Build against it.
 
 ---
 
 ## Goal
 
-Elevate the signed-in house beyond thin black/white. Keep modernist IA (rooms, Start, set table) and Patreon-class structure (72 icon rail, 264 second bar, hover labels) without copying Patreon pixels. Recreate Today / `/log` / Train set table / Victory / Coach (and Library / Builder if they already ride house chrome) as a **full C2 black + signal-yellow suit** — instrument density, not a costume paste.
+Public-safe **RedNote / 适我主义 home design steal** + Mission HOME doc pack for **Program 67**. Honest renovation **pattern notes**. Not a shopping scam.
+
+The pack records how a CoS / Founder **tasteful loft** can steal circulation and material patterns from Xiaohongshu (RedNote) 适我主义 — and which photo-first tropes to skip.
 
 ## One concern
 
-House 4th-skin materials and first-paint density on the real Train / Today / Victory / Coach loops. Nothing else.
+`mission-home/` pattern notes + a tiny README-section lock. Nothing else.
 
-## Token table (C2 · Instrument)
+## What this is not
 
-Source: `scripts/design-variants/themes.mjs` id `c2-instrument` + `docs/design/variants/c2-instrument.html`.
+| Refuse | Why |
+|--------|-----|
+| `paymentUrl` | No checkout, affiliate, or pay link |
+| **ClearShot** | No camera / photos mini / MediaStore shopping |
+| **Fake ET** | No invented contractor hours or “done by Friday” theater |
+| **tip-promote** | No Super Bundle, tip jar, or founder-tip CTA |
+| **Invented product prices as checkout** | No SKU, no `$1,299 island`, no fake cart |
 
-| Role | Hex |
-|------|-----|
-| Ground / paper | `#0a0c0f` |
-| Ink | `#e6ebef` |
-| Quiet | `#7d8a95` |
-| Rule / hairline | `#1e252c` |
-| Field / raised | `#12161b` |
-| Card | `#0f1319` |
-| Signal yellow | `#ffb000` |
-| Signal deep | `#c98a00` |
-| Signal tint | `#1a1607` |
-| On-signal | `#0a0c0f` |
+Also refuse: street address, unit number, personal photos, named contractors, Stripe, Train/Today UI, `PRIVATE_MODE` flip, America marketing, a second design system.
 
-Do **not** rematch to research `#F5C400` / `#0A0A0A` or zinc `#f5c518`. Prefer `#ffb000` over COD `#ffd000`.
+---
 
-Scoped to `.mw-house` only. Field-manual `src/index.css` / `/private` / landing / www stay paper/ink.
+## Files to create
 
-| Token | Value | C2 role |
-|-------|-------|---------|
-| `--house-void` | `#0a0c0f` | Ground / paper |
-| `--house-stage` | `#0a0c0f` | Same as void |
-| `--house-paper` | `#0a0c0f` | Canvas (ground) |
-| `--house-soft` | `#0f1319` | Card |
-| `--house-chip` | `#12161b` | Field / raised / hover |
-| `--house-selected` | `#1a2028` | Selected row / rail mark |
-| `--house-ink` | `#e6ebef` | Primary text |
-| `--house-muted` | `#7d8a95` | Quiet |
-| `--house-faint` | `#5f6b75` | Disabled |
-| `--house-line` | `#1e252c` | 1px hairline |
-| `--house-press` | `#ffb000` | Signal yellow — **one filled field per screen** |
-| `--house-press-deep` | `#c98a00` | Signal deep (hover) |
-| `--house-press-tint` | `#1a1607` | Signal tint |
-| `--house-press-ink` | `#0a0c0f` | On-signal |
-| `--house-amber` | `#ffb000` | Alias of press (metrics ≥19px only) |
-| `--house-live` | `#ae1800` | Train pulse **only** (unchanged) |
+Create `mission-home/` at the repo root (does not exist today). Do not put the pack under `docs/` — keep it a named Program 67 folder.
 
-Radii max **8px** on cards. Kill `999px` pills on primary — `--house-pill: 8px`. Rail widths 72 / 264 / 300 and motion stay.
+| Path | Concern |
+|------|---------|
+| `mission-home/INDEX.md` | Folder map. One concern. Read-order. |
+| `mission-home/README.md` | Loft rooms. Required `##` headings listed below. |
+| `mission-home/REDNOTE_SHIWO.md` | 适我主义 vocabulary + STEAL / SKIP |
+| `mission-home/MATERIALS.md` | oak · limewash · brass · soapstone · 2700K |
+| `mission-home/SEARCH_SEEDS.md` | Chinese + EN RedNote queries |
+| `src/lib/missionHomePack.test.ts` | Tiny lock: README sections exist; pack stays public-safe |
 
-Type: **Archivo 400/600/800** (already loaded — do not add a second face in `app/layout.tsx`). System mono for telemetry numerals only. Drop the thin system-ui-first stack as the *display* face; keep `ui-sans-serif` as fallback so leftover pins still see it.
+Routing (one row each, no essay):
 
-Inherited shadcn HSL inside `.mw-house` remaps to the same C2 ground + `#ffb000` so History / Library / Coach / set table pick it up.
+- Root [INDEX.md](INDEX.md) §2 — “Mission HOME / Program 67”
+- [docs/INDEX.md](docs/INDEX.md) — pointer to `../mission-home/`
+- [src/lib/INDEX.md](src/lib/INDEX.md) — one row for the pack test
 
-### One yellow field per screen
+---
 
-Filled `--house-press` is Start / Log set / Generate / Victory Next / live cue only. Never yellow wallpaper. Never yellow body text under ~19px. Prefer `#ffb000` over COD `#ffd000`. Week-done and first-rooms ticks use selected / ink, not a yellow flood.
+## README.md — required sections
 
-## Files to touch
+Use these exact `##` headings (the test pins the strings):
 
-### Skin + spec
+1. `## What this is`
+2. `## Refuse`
+3. `## Coffee fuel wall`
+4. `## Spiral stair`
+5. `## Island`
+6. `## Library`
+7. `## Shoe closet`
+8. `## Sliding wardrobe`
 
-- `src/components/house/house.css` — C2 token remapping; pill 8px; Archivo; remake leftover `#ffffff` / `#27272a` / zinc chrome; recreate the rooms below; remake `.mw-house .poster-field` so portaled Victory Next is not field-manual red.
-- `src/components/house/DESIGN.md` — token table + C2 note. Keep leftover sentences that tests pin (`#eee` selected *role* copy stays).
-- `src/components/house/INDEX.md` — one-line: 4th skin is C2 instrument dark + `#ffb000`, scoped to `.mw-house`.
+Each room section states **steal** (pattern) and **skip** (photo-first / housework / checkout). No prices. No ET. Tone: tasteful loft, paper notes, not a moodboard dump.
 
-### Surface recreation (CSS-first; JSX only if a hook class is missing)
+Open with: CoS / Founder loft. Program 67. Public-safe. Link the sibling files.
 
-1. **Today / `/log`** — Start is the one filled yellow action. Week strip: today = press hairline + soft fill; done = selected fill + ink (not yellow wallpaper). First-rooms ticks use press color on the mark only, not a yellow cell.
-2. **Train / `/active`** — set table on C2 ground; Log set = `--house-press` (the one fill). Number cells tabular + mono. Completed row uses press-tint, not a yellow flood. Train plus is selected/chip, not a second yellow circle. Prev / vs-last stay muted cites. Set-table IA stays the `.1058` leftover (Set · Prev · load · Reps · Log). Do not rewrite columns to a Bevel TARGET-above-PREVIOUS costume.
-3. **Victory** — receipt + stats on dark; volume / stat numerals ≥19px may use amber; labels stay `--house-muted`. Next strip: add `mw-house` hook on `VictoryNextActionStrip` (dialog portals outside the shell). Poster-field remakes to dark card + yellow primary (not `#ae1800` wallpaper).
-4. **Coach** — empty mark uses press-tint + press icon (not a yellow disc flood). Generate dock stays the one filled yellow action.
-5. **Library / Builder** — inherit via remapped tokens only. No JSX rewrite.
+---
 
-Do **not** rewrite `TodayDesk.tsx` / `CoachPage.tsx` / Victory sheet JSX except the missing `mw-house` hook on the Next strip. Recreate via existing leftovers (`house-week-cell`, `house-set-log`, `house-victory*`, `house-empty`, `house-generate-dock`, `house-btn-primary`, `poster-field`).
+## REDNOTE_SHIWO.md — required concepts
 
-- `src/components/workout/VictoryNextActionStrip.tsx` — add `mw-house` on the poster-field wrapper so C2 tokens apply when Radix portals to `body`. DialogContent stays not-`mw-house` (existing pin).
+Name Xiaohongshu / RedNote as the **research surface**, not a shop. 适我主义 is Xiaohongshu’s 2026 living-trend language (space fits the inhabitant; not a second style catalog).
 
-### Tests (color pins must move with C2)
+Write a STEAL / SKIP table for each:
 
-- `src/lib/houseChrome.test.ts` — paper `#0a0c0f`; selected `#1a2028`; radius 8px / `--radius: 0.5rem`; week today still press hairline; week-done / set-done not a yellow flood pin if they use selected/tint.
-- `src/lib/workout/setTableLogSetHousePress.test.ts` — `--house-press: #ffb000`.
-- `src/lib/workout/logConsoleLogSetHousePress.test.ts` — same.
-- `src/lib/houseSkinDensity.test.ts` — press `#ffb000`; paper/void `#0a0c0f`; Start / Log set / Generate use press; Victory Next remake uses press; no leftover `#f5c518` / `#ffffff` paper; `/private` + `LandingPage` + `sites/www` unchanged.
-- `src/lib/workout/INDEX.md` — press hex `#ffb000`.
+| Term | Honest meaning (do not invent a brand) |
+|------|----------------------------------------|
+| **适我主义** | The house fits real habits. Not “no trend,” not a product SKU. |
+| **去家务化动线** | Circulation that deletes extra housework steps (entry dirt-lock, laundry hand-off, kitchen reach). |
+| **容乱区** | A closed volume that may look lived-in so the visual field can stay calm. |
+| **能量场** | Morning light, warm kelvin, ritual objects, less visual noise. Not crystals-as-checkout. |
+| **早C岛台** | Island as the morning coffee / start station (C = coffee / 晨间 C 位). Not a second unused sink for photos. |
 
-### Ship protocol (visual only)
+Also name **适懒化** / 不弯腰垃圾桶 / 无拖延症动线 as supporting notes if they earn a line — they are the same 去家务化 family, not extra rooms.
 
-- `src/lib/buildInfo.ts` — keep `2026.07-unified.1059`.
-- `LOG.md` — update the `.1059` heading to name C2 / `#ffb000`.
-- `CONTEXT.md` `## Now` — `.1059` bullet names C2 tokens.
-- No new rotate unless the file goes over 15 entries.
+Close with a short **attribution**: pattern language from public 2026 Xiaohongshu living-trend coverage. Not a scrape. Not affiliate.
 
-## Refuse list
+---
 
-- Do not merge. Do not promote. Do not flip `PRIVATE_MODE`.
-- Do not touch `LandingPage`, `sites/www`, `/private`, or field-manual `src/index.css` `:root`.
-- No Discord / DMs / Feed / costume boards / Studio / bell on Today.
-- No Hevy / ChatGPT finish-workout as Coach identity.
-- No Android / Expo / iOS restyle.
-- No new rooms, tabs, locales, America, F5.
-- Do not invent traction.
-- Prefer `[skip vercel]`. One Preview max if the founder asks.
-- Do not copy Patreon pixels or Bevel brand marks. Density only.
-- No Bevel strain rings as home. No wearable-as-permission.
-- No yellow wallpaper. No SpaceX D-DIN. No COD yellow everywhere.
-- No glow / gradient blobs / glass.
+## MATERIALS.md — required materials
 
-## Leftover hops (same branch, founder window)
+One section each:
 
-Pick the densest remaining gap, one hop.
+- Oak (floor / millwork continuity; skip fake-oak vinyl as “the look”)
+- Limewash (soft bounce; skip if the loft already has a sealed industrial coat you will not maintain)
+- Brass (small hardware; skip a gold explosion)
+- Soapstone (island that may patina — 容乱 at material level; skip if the brief wants a showroom shine)
+- 2700K lighting (evening field; cooler only on a task; skip gallery cool-white)
 
-| # | Leftover | Status |
-|---|----------|--------|
-| HOLD | One yellow field + on-signal type + scoped Victory remaps | Done (`a5a91733`). |
-| nits | Guide 8px · DESIGN card 8px · empty button 44 · week-done check ink | Done on HOLD hop. |
-| 1 | Kill zinc/white `#fff` / `#18181b` / `#f4f4f5` inside `.mw-house` | Done. |
-| 2 | Kill 999px pills; radius ≤8px on cards | Done. |
-| 3 | Metric-first set table: TARGET above PREVIOUS | **Do not remount** `SetLogAdjacencyStack`. Deferred. |
-| 4 | House rail + second sheet richer than thin B&W | Done. |
-| 5 | Empty states: clinical short copy, no AI-slop | **This hop.** Coach / Builder house-empty: short fact, no Alpha merch. |
+No SKUs. No “buy this $X slab.” Ranges like “warm dim, not office 4000K” are notes, not checkout.
 
-## Done when
+---
 
-- This PLAN.md is frozen at C2, then implemented without expanding the file list beyond what this revision names.
-- Visual PR open vs `cursor/active-compose-first-paint`, labeled `visual` + `do-not-merge` + `do-not-promote`.
-- Title: `house: black+yellow 4th skin density (.1059)`.
-- PR body lists screens touched + this refuse list.
-- `/active`, `/log`, Victory, Coach first paints read as C2 instrument (ground `#0a0c0f` + signal `#ffb000`) vs thin B&W.
-- Guest. First set ungated. Today still one Start. Live www stays `.696`.
+## SEARCH_SEEDS.md
+
+Two lists: **中文** (Xiaohongshu / 小红书 query seeds) and **English** (RedNote / Xiaohongshu EN). Queries only — no account handles, no affiliate URLs, no `paymentUrl`.
+
+Must cover: 适我主义, 去家务化动线, 容乱区, 能量场, 早C岛台, 咖啡墙, 旋转楼梯 / 螺旋楼梯, 岛台, 书柜, 进门鞋柜, 推拉衣柜, oak limewash brass soapstone 2700K loft.
+
+---
+
+## Test
+
+`src/lib/missionHomePack.test.ts` (picked up by `npm test`):
+
+1. `mission-home/README.md` contains every required `##` heading above.
+2. Every pack `.md` exists.
+3. Pack files do **not** contain `paymentUrl`, `tip-promote`, or `https://` checkout/affiliate hosts. The word **ClearShot** may appear only inside a Refuse heading/table (document the refuse; do not shop it).
+4. Pack files do not invent checkout prices (`$` + digits as a buy line). Material notes may say “do not invent a price.”
+5. Discover the pack directory (`readdir`) rather than a silent allowlist of four files — a new unreviewed `.md` fails until the test names it.
+
+Falsify: delete `## Island` → red. Add `paymentUrl=https://…` → red. Drop a fifth unreviewed `.md` → red.
+
+---
+
+## Ship protocol (because the test lives under `src/`)
+
+Hard rule 5 in the **same implementation commit** as the test:
+
+- `APP_BUILD_LABEL` → `2026.07-unified.1111`
+- `LOG.md` heading ending in (`.1111`); rotate oldest live entry (`.1096`) to `docs/archive/log/LOG-rotate-1096-for-1111.md` + [docs/archive/INDEX.md](docs/archive/INDEX.md)
+- `CONTEXT.md` `## Now` mentions `2026.07-unified.1111`; rotate oldest *shipped* bullet (`.1095`); keep ≤25 bullets; Status table untouched
+- `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+---
+
+## Verify
+
+```bash
+npx tsx --test src/lib/missionHomePack.test.ts
+npm test -- src/lib/missionHomePack.test.ts src/lib/contextBudget.test.ts src/lib/logBudget.test.ts src/lib/buildInfo.test.ts
+node scripts/check-build-label.mjs
+```
+
+No UI. No e2e. No browser.
+
+---
+
+## Out of scope
+
+UI, tokens, Train / Today / Coach, Stripe, camera, ClearShot host, fake contractor ET, product prices, tipping, America, locales, F5, `PRIVATE_MODE`.
