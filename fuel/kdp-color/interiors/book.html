@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Plate — 24-page interior (unpublished draft)</title>
+  <style>
+    :root { color: #111; background: #fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 16px/1.45 Georgia, "Times New Roman", serif; }
+    .toolbar {
+      position: sticky; top: 0; z-index: 2;
+      padding: 0.6rem 1rem; border-bottom: 1px solid #111;
+      background: #f4f1ea; font: 13px/1.4 ui-sans-serif, system-ui, sans-serif;
+    }
+    .toolbar strong { font-weight: 650; }
+    .sheet {
+      width: 8.5in; height: 11in; margin: 12px auto;
+      border: 1px solid #bbb; page-break-after: always;
+      position: relative; overflow: hidden; background: #fff;
+    }
+    .safe { position: absolute; inset: 0.25in; }
+    .matter { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0.4in; }
+    h1 { font-size: 36px; font-weight: 600; margin: 0 0 0.4rem; letter-spacing: 0.02em; }
+    h2 { font-size: 22px; font-weight: 600; margin: 0 0 0.8rem; }
+    p, li { font-size: 15px; }
+    .kicker { font: 12px/1.3 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 1rem; }
+    .muted { color: #333; }
+    img.plate { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .notes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 1rem; }
+    .swatch { border: 1.5px solid #111; height: 72px; }
+    .rules { border-top: 1px solid #111; height: 28px; }
+    .folio {
+      position: absolute; bottom: 0.18in; left: 0; right: 0;
+      text-align: center; font: 11px/1 ui-sans-serif, system-ui, sans-serif;
+    }
+    @media print {
+      .toolbar { display: none; }
+      body { background: #fff; }
+      .sheet { margin: 0; border: 0; width: 8.5in; height: 11in; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong>Open Plate</strong> — unpublished 24-page color-interior proof.
+    No checkout. Print to PDF from this file (see export/NOTES.md).
+  </div>
+
+  <section class="sheet" data-page="1" data-kind="front">
+    <div class="safe matter">
+      <p class="kicker">Color interior · 8.5 × 11 · draft</p>
+      <h1>Open Plate</h1>
+      <p class="muted">A coloring book interior. Twelve original plates. Not a live Amazon listing.</p>
+    </div>
+    <div class="folio">1</div>
+  </section>
+
+  <section class="sheet" data-page="2" data-kind="front">
+    <div class="safe matter">
+      <h2>Copyright</h2>
+      <p>Line art in this pack is original geometry for this SKU. No licensed characters.</p>
+      <p>This file is an unpublished draft. It has no ISBN and no ASIN. Do not invent either.</p>
+      <p>Printing a personal proof is fine. Selling a copy requires a real KDP upload by the rights holder.</p>
+    </div>
+    <div class="folio">2</div>
+  </section>
+
+  <section class="sheet" data-page="3" data-kind="front">
+    <div class="safe matter">
+      <h2>How to use this book</h2>
+      <ol>
+        <li>Color inside the closed shapes. Lines are black so any medium reads.</li>
+        <li>Notes pages (16–21) are for palettes and ideas — not leftover blanks.</li>
+        <li>Stay off the outer quarter-inch if you scan pages later.</li>
+      </ol>
+    </div>
+    <div class="folio">3</div>
+  </section>
+
+  <section class="sheet" data-page="4" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-01.svg" alt="Plate 01 nested hex grid" /></div><div class="folio">4</div></section>
+  <section class="sheet" data-page="5" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-02.svg" alt="Plate 02 climbing vine" /></div><div class="folio">5</div></section>
+  <section class="sheet" data-page="6" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-03.svg" alt="Plate 03 window grid" /></div><div class="folio">6</div></section>
+  <section class="sheet" data-page="7" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-04.svg" alt="Plate 04 wave bands" /></div><div class="folio">7</div></section>
+  <section class="sheet" data-page="8" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-05.svg" alt="Plate 05 star tiling" /></div><div class="folio">8</div></section>
+  <section class="sheet" data-page="9" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-06.svg" alt="Plate 06 radial leaves" /></div><div class="folio">9</div></section>
+  <section class="sheet" data-page="10" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-07.svg" alt="Plate 07 block plan" /></div><div class="folio">10</div></section>
+  <section class="sheet" data-page="11" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-08.svg" alt="Plate 08 flower wheel" /></div><div class="folio">11</div></section>
+  <section class="sheet" data-page="12" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-09.svg" alt="Plate 09 ridgelines" /></div><div class="folio">12</div></section>
+  <section class="sheet" data-page="13" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-10.svg" alt="Plate 10 interlace" /></div><div class="folio">13</div></section>
+  <section class="sheet" data-page="14" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-11.svg" alt="Plate 11 circle pack" /></div><div class="folio">14</div></section>
+  <section class="sheet" data-page="15" data-kind="plate"><div class="safe"><img class="plate" src="plates/plate-12.svg" alt="Plate 12 fern unfurl" /></div><div class="folio">15</div></section>
+
+  <section class="sheet" data-page="16" data-kind="notes">
+    <div class="safe matter">
+      <h2>Palette test A</h2>
+      <p>Try two colors in the boxes. Write the names you actually used.</p>
+      <div class="notes-grid">
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+      </div>
+    </div>
+    <div class="folio">16</div>
+  </section>
+  <section class="sheet" data-page="17" data-kind="notes">
+    <div class="safe matter">
+      <h2>Palette test B</h2>
+      <p>Warm row, cool row. Leave one box empty on purpose.</p>
+      <div class="notes-grid">
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+      </div>
+    </div>
+    <div class="folio">17</div>
+  </section>
+  <section class="sheet" data-page="18" data-kind="notes">
+    <div class="safe matter">
+      <h2>Swatch strip</h2>
+      <p>One medium per box. Date the page if the ink shifts.</p>
+      <div class="notes-grid">
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+        <div class="swatch"></div><div class="swatch"></div><div class="swatch"></div><div class="swatch"></div>
+      </div>
+    </div>
+    <div class="folio">18</div>
+  </section>
+  <section class="sheet" data-page="19" data-kind="notes">
+    <div class="safe matter">
+      <h2>Notes</h2>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+    </div>
+    <div class="folio">19</div>
+  </section>
+  <section class="sheet" data-page="20" data-kind="notes">
+    <div class="safe matter">
+      <h2>More notes</h2>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+    </div>
+    <div class="folio">20</div>
+  </section>
+  <section class="sheet" data-page="21" data-kind="notes">
+    <div class="safe matter">
+      <h2>Ideas for the next plate</h2>
+      <p>Write one subject you still want drawn. Do not copy a licensed character.</p>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div>
+    </div>
+    <div class="folio">21</div>
+  </section>
+
+  <section class="sheet" data-page="22" data-kind="back">
+    <div class="safe matter">
+      <h2>About the plates</h2>
+      <p>Twelve subjects: hex grid, vine, windows, waves, stars, radial leaves, block plan, flower wheel, ridgelines, interlace, circle pack, fern.</p>
+      <p>None of these pages is a repeat of another plate.</p>
+    </div>
+    <div class="folio">22</div>
+  </section>
+  <section class="sheet" data-page="23" data-kind="back">
+    <div class="safe matter">
+      <h2>Blank notes</h2>
+      <p class="muted">A working leaf, not a cloned drawing.</p>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div><div class="rules"></div>
+      <div class="rules"></div><div class="rules"></div>
+    </div>
+    <div class="folio">23</div>
+  </section>
+  <section class="sheet" data-page="24" data-kind="back">
+    <div class="safe matter">
+      <h2>End of the interior</h2>
+      <p>Open Plate · unpublished draft · no checkout in this file.</p>
+    </div>
+    <div class="folio">24</div>
+  </section>
+</body>
+</html>
