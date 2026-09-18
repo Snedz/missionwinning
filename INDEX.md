@@ -27,6 +27,7 @@
 | **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master |
 | **Generating the next idea** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) (protocol) · graph [docs/mechanics/INDEX.md](docs/mechanics/INDEX.md) | Treating it as a second queue; emitting more than one row; letting the model that wrote a candidate judge it; targeting the loop's own process as a behaviour |
 | **Running a gauntlet campaign** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) after GRAPH_LOOP · workbench [docs/gauntlet/INDEX.md](docs/gauntlet/INDEX.md) | Builder grading its own work; treating the workbench as a second queue or status block; bars invented mid-round |
+| **Mission GALAXY (Directory / Blue Book paper)** | [mission-galaxy/README.md](mission-galaxy/README.md) · freeze [mission-galaxy/PLAN.md](mission-galaxy/PLAN.md) | Claiming ET proof; inventing `paymentUrl` / checkout; unparking ClearShot; treating this as athlete UI |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
 | **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P10 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
@@ -120,6 +121,7 @@
 | State | [src/store/INDEX.md](src/store/INDEX.md) | Zustand workout store |
 | API handlers | [app/api/INDEX.md](app/api/INDEX.md) | Route inventory + auth |
 | Reference docs | [docs/INDEX.md](docs/INDEX.md) | Help, architecture, ops, legal |
+| Mission GALAXY (paper) | [mission-galaxy/INDEX.md](mission-galaxy/INDEX.md) | Directory tickets + Blue Book anomaly pipeline (public-safe) |
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "id": "bb-trinity-fail",
+  "stage": "UNKNOWN",
+  "classification": "UNKNOWN",
+  "trinity": {
+    "builder": "same.role",
+    "judge": "same.role",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "unknownRationale": "Would be a valid UNKNOWN if TRINITY were distinct.",
+  "createdAt": "2026-09-18T21:16:00.000Z"
+}

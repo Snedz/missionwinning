@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "tiers": ["host", "known", "unknown", "quarantine", "archive"],
+  "tickets": [
+    {
+      "id": "tkt-unk-breachless",
+      "tier": "known",
+      "status": "open",
+      "subject": "Unknown actor treated as trusted",
+      "submittedBy": { "kind": "unknown" },
+      "capabilityAllowlist": ["identity.read"],
+      "presumeBreach": false,
+      "store": "directory",
+      "createdAt": "2026-09-18T21:06:00.000Z"
+    }
+  ]
+}

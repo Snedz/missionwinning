@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://missionwinning.com/schemas/mission-galaxy/bluebook/case.json",
+  "title": "Mission GALAXY Blue Book case",
+  "description": "Anomaly case. UNKNOWN is first-class. Not ET proof. TRINITY roles must be distinct (enforced by validate.mjs). antiSamson and infiniteLife stay true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "stage",
+    "classification",
+    "trinity",
+    "antiSamson",
+    "infiniteLife",
+    "unexplainedQuotaNote",
+    "createdAt"
+  ],
+  "not": {
+    "anyOf": [
+      { "required": ["paymentUrl"] },
+      { "required": ["checkout"] },
+      { "required": ["etProof"] },
+      { "required": ["alienConfirmed"] },
+      { "required": ["traction"] }
+    ]
+  },
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "ticketId": { "type": "string", "minLength": 1 },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "INGEST",
+        "CLASSIFY",
+        "INSTRUMENT",
+        "RESOLVE",
+        "UNKNOWN",
+        "INSUFFICIENT",
+        "ARCHIVE"
+      ]
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["KNOWN_PROSAIC", "UNKNOWN", "INSUFFICIENT"]
+    },
+    "trinity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["builder", "judge", "canary"],
+      "description": "TRINITY: builder, judge, and canary must be three distinct ids.",
+      "properties": {
+        "builder": { "type": "string", "minLength": 1 },
+        "judge": { "type": "string", "minLength": 1 },
+        "canary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "antiSamson": { "type": "boolean", "const": true },
+    "infiniteLife": { "type": "boolean", "const": true },
+    "unexplainedQuotaNote": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Policy text naming the ~20% unexplained allowance. Not a live counter."
+    },
+    "prosaicHypothesis": { "type": "string", "minLength": 1 },
+    "unknownRationale": { "type": "string", "minLength": 1 },
+    "gap": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "minLength": 10 },
+    "archivedAt": { "type": "string", "minLength": 10 }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "classification": { "const": "KNOWN_PROSAIC" } },
+        "required": ["classification"]
+      },
+      "then": { "required": ["prosaicHypothesis"] }
+    },
+    {
+      "if": {
+        "properties": { "classification": { "const": "UNKNOWN" } },
+        "required": ["classification"]
+      },
+      "then": { "required": ["unknownRationale"] }
+    },
+    {
+      "if": {
+        "properties": { "classification": { "const": "INSUFFICIENT" } },
+        "required": ["classification"]
+      },
+      "then": { "required": ["gap"] }
+    }
+  ]
+}

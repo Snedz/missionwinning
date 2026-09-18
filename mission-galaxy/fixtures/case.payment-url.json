@@ -1,0 +1,16 @@
+{
+  "id": "bb-pay-fail",
+  "stage": "RESOLVE",
+  "classification": "KNOWN_PROSAIC",
+  "trinity": {
+    "builder": "builder.alpha",
+    "judge": "judge.beta",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "prosaicHypothesis": "Must not land with a payment rail attached.",
+  "paymentUrl": "https://example.invalid/checkout",
+  "createdAt": "2026-09-18T21:18:00.000Z"
+}

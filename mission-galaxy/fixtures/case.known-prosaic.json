@@ -1,0 +1,16 @@
+{
+  "id": "bb-prosaic-1",
+  "ticketId": "tkt-known-1",
+  "stage": "RESOLVE",
+  "classification": "KNOWN_PROSAIC",
+  "trinity": {
+    "builder": "builder.alpha",
+    "judge": "judge.beta",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "prosaicHypothesis": "Clock skew on a leftover hop stamp, not a new actor.",
+  "createdAt": "2026-09-18T21:12:00.000Z"
+}

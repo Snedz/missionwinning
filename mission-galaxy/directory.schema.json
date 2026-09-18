@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://missionwinning.com/schemas/mission-galaxy/directory.json",
+  "title": "Mission GALAXY Directory",
+  "description": "Closed inventory of tiers and tickets. Unknown submitters presume breach and live in quarantine. No ambient authority. No paymentUrl/checkout.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tiers", "tickets"],
+  "not": {
+    "anyOf": [
+      { "required": ["paymentUrl"] },
+      { "required": ["checkout"] },
+      { "required": ["clearshot"] },
+      { "required": ["traction"] }
+    ]
+  },
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tiers": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "enum": ["host", "known", "unknown", "quarantine", "archive"]
+      }
+    },
+    "tickets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ticket" }
+    }
+  },
+  "$defs": {
+    "ticket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "tier",
+        "status",
+        "subject",
+        "submittedBy",
+        "capabilityAllowlist",
+        "presumeBreach",
+        "store",
+        "createdAt"
+      ],
+      "not": {
+        "anyOf": [
+          { "required": ["paymentUrl"] },
+          { "required": ["checkout"] },
+          { "required": ["clearshot"] },
+          { "required": ["traction"] }
+        ]
+      },
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "tier": {
+          "type": "string",
+          "enum": ["host", "known", "unknown", "quarantine", "archive"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "quarantined", "resolved", "archived"]
+        },
+        "subject": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "submittedBy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": { "type": "string", "enum": ["allowlisted", "unknown"] },
+            "agentId": { "type": "string", "minLength": 1 }
+          }
+        },
+        "capabilityAllowlist": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Explicit grants only. Empty is the default. Missing grant = deny."
+        },
+        "presumeBreach": { "type": "boolean" },
+        "store": {
+          "type": "string",
+          "enum": ["directory", "quarantine", "archive"]
+        },
+        "createdAt": { "type": "string", "minLength": 10 }
+      },
+      "if": {
+        "properties": {
+          "submittedBy": {
+            "properties": { "kind": { "const": "unknown" } },
+            "required": ["kind"]
+          }
+        },
+        "required": ["submittedBy"]
+      },
+      "then": {
+        "properties": {
+          "presumeBreach": { "const": true },
+          "tier": { "type": "string", "enum": ["unknown", "quarantine"] },
+          "store": { "const": "quarantine" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "bb-unk-1",
+  "ticketId": "tkt-unk-1",
+  "stage": "UNKNOWN",
+  "classification": "UNKNOWN",
+  "trinity": {
+    "builder": "builder.alpha",
+    "judge": "judge.beta",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "unknownRationale": "Instrument trail does not fit a named prosaic cause. UNKNOWN stays first-class.",
+  "createdAt": "2026-09-18T21:10:00.000Z"
+}
