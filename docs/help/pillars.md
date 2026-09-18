@@ -17,12 +17,13 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 
 **Route:** `/nutrition` (nav label: **Fuel**)
 
-Nutrition pillar — daily macros, water, quick logging, barcode lookup, and photo meal estimate.
+Nutrition pillar — daily macros, water, quick logging, barcode lookup, and photo meal estimate. Estimates are **tools**, not a food lab.
 
-- Free: manual logging, basic targets, simple recipes, this week's restock list you copy
+- Free: manual logging, basic targets, simple recipes, this week's restock list you copy. The app does not order groceries.
+- Low / rough drafts keep **Log meal** off until you edit (edit-before-log). Photo vision is optional; otherwise a heuristic.
 - Premium: deeper meal plans and full recipe library
 
-See [fuel-and-nutrition.md](fuel-and-nutrition.md).
+See [fuel-and-nutrition.md](fuel-and-nutrition.md) and [faq.md](faq.md) Fuel.
 
 ## Move
 

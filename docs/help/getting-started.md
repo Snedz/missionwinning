@@ -51,12 +51,13 @@ Bring an existing workout CSV (English export) on **Account → Import workout C
 
 ## What's free vs premium
 
-**Always free:** Workout logger, exercise library, basic nutrition log, calculators, history, benchmarks, and most of Today.
+**Always free:** Workout logger, exercise library, basic nutrition log, calculators, history, benchmarks, and most of Today. Fuel estimates are review-then-log, not a food lab — see [fuel-and-nutrition.md](fuel-and-nutrition.md).
 
 **Premium (Super Bundle):** Mission Coach weekly plan, advanced recipes/programs, guided mind sessions, and deeper guidebook content. See [premium-and-billing.md](premium-and-billing.md).
 
 ## Next steps
 
 - [pillars.md](pillars.md) — explore all six pillars
+- [fuel-and-nutrition.md](fuel-and-nutrition.md) — Fuel log, estimates, restock (does not order)
 - [mission-coach.md](mission-coach.md) — if you upgraded to Coach
-- [faq.md](faq.md) — common questions
+- [faq.md](faq.md) — common questions, including Fuel honesty

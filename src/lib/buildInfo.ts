@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1110` Craft: gate web-manifest description on isOfflineInstallable() — no offline claim while PRIVATE_MODE disables Serwist. start_url/id untouched. */
-export const APP_BUILD_LABEL = "2026.07-unified.1110";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1111` Craft: Fuel help FAQ honesty — edit-before-log, vision-vs-heuristic, restock does not order, not clinical. */
+export const APP_BUILD_LABEL = "2026.07-unified.1111";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

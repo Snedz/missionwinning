@@ -4,6 +4,17 @@ The **Fuel** tab (`/nutrition`) helps you log what you eat and stay on target fo
 
 Estimates are **tools**, not medical advice. Always review macros before logging when the app asks you to.
 
+## Honesty
+
+Four facts the logger already enforces. Short answers also live under [faq.md](faq.md) Fuel.
+
+1. **Edit-before-log** — low-confidence or rough/heuristic drafts keep **Log meal** disabled until you touch a field or scale servings. The app will not log a guess you have not reviewed.
+2. **Vision vs heuristic** — photo **Vision AI** runs only if the founder set `MEAL_VISION_*`. Otherwise filename/color heuristic. Not clinical. Not competition prep.
+3. **Restock does not order** — this week's restock is a copy/download list. You shop. The app does not order groceries.
+4. **Not medical** — targets and estimates are starting tools. Train-day flex comes from your **local workout log**, not a wearable.
+
+First session: [getting-started.md](getting-started.md) (Train). Weekly plan: [mission-coach.md](mission-coach.md). Fuel does not replace either. Free recipe floor stays **48**; Super Bundle premium floor stays **140**. Checkout is muted. No payment URL.
+
 ## Daily log
 
 1. **Targets** — Edit daily calories, protein, carbs, and fat (stored on this device), or **Set from goal** (lose / maintain / gain → Mifflin-style estimate from weight + activity).

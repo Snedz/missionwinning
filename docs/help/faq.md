@@ -83,11 +83,31 @@ No. Sets save without a place. Explore is optional and lives under Account, not 
 
 ## Fuel
 
+More: [fuel-and-nutrition.md](fuel-and-nutrition.md). Estimates are tools, not medical advice.
+
 **Why didn't barcode scan find my food?**  
 Open Food Facts may not list every regional product — log manually.
 
 **How accurate is photo estimate?**  
-Rough heuristic for convenience — not for clinical or competition prep.
+Not clinical. Not competition prep. **Vision AI** runs only if the founder set `MEAL_VISION_*` on the server. Otherwise the photo path is a filename/color heuristic. Review the draft either way.
+
+**Why is Log meal disabled?**  
+**Edit-before-log.** Low-confidence or rough/heuristic drafts keep **Log meal** disabled until you touch a field or scale servings away from 1×. The app will not log a guess you have not reviewed.
+
+**Do train-day calories come from my watch?**  
+No. The flex is from your **local workout log** (same rules as Fuel Coach). No wearable required.
+
+**Does this week's restock order groceries?**  
+No. Restock is a copy/download list of meals you logged (or typed). You shop. The app does not order.
+
+**Is Fuel logging free?**  
+Yes — logger, search, barcode, and the photo path stay free. Super Bundle is optional recipe/plan depth. Checkout is muted (Get notified). There is no payment URL on Fuel.
+
+**Are estimates medical advice?**  
+No. Not clinical. Not a dietitian. Edit the numbers before you trust them.
+
+**First workout first?**  
+Train is [getting-started.md](getting-started.md). Weekly plan is [mission-coach.md](mission-coach.md). Fuel does not replace either.
 
 ## School / PFT
 
