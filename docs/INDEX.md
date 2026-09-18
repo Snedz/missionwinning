@@ -39,6 +39,7 @@
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) | Frozen `.752` messenger (MSN rooms + presence; continues #518) |
 | [IA_SKELETON.md](IA_SKELETON.md) | CoS freeze — LOG / WEEK / GARAGE; Today · Train · Coach (AI) · History · Library. Official catalog = Library + Builder; later-door object model; `/explore` is places |
+| [../mission-home/INDEX.md](../mission-home/INDEX.md) | Program 67 public-safe loft pattern notes (RedNote / 适我主义). Not a shop. |
 | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Chip floorplan — dies, buses, critical path, dual pads |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
