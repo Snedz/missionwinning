@@ -10,10 +10,11 @@ If the user asks you to “implement Dual Capture+” or “ship ClearShot,” *
 
 | Path | State |
 |------|--------|
-| `RESEARCH/BANGERS/README.md` | Portfolio + rules |
-| 10 slug folders | Each has `FRAMEWORK.md`, `SELL_FIRST.md`, `BUILD_LATER.md`, `CURSOR_TODO.md`, `SOURCES.md` |
-| Deep fill | `dual-capture-plus`, `clearshot-ios`, `token-router-pipeline` |
-| Thin fill | the other seven — complete contract, lighter proof tables |
+| `RESEARCH/BANGERS/README.md` | Portfolio + rules + 6-file contract |
+| `RESEARCH/BANGERS/OVERNIGHT_GLM53.md` | GLM 5.3 overnight: lanes A–D, complementary rule |
+| 10 slug folders | Each has `FRAMEWORK.md`, `SELL_FIRST.md`, `BUILD_LATER.md`, `CURSOR_TODO.md`, `SOURCES.md`, **`GLM53.md`** |
+| Lanes A–C | `dual-capture-plus`, `clearshot-ios`, `token-router-pipeline` — deep + overnight brief |
+| Lane D | ideas 04–10 — same six files, full incumbent / lander / kill-bar shape |
 
 Do **not** recreate this pack in `docs/STRATEGY.md` or mission-ops stubs. Do **not** put consumer fitness rival names in this tree.
 
@@ -92,7 +93,9 @@ That reply is not a charge.
 Default recommendation from the rank table: **clearshot-ios** (easiest ask).  
 If the founder wants the richest camera wedge: **dual-capture-plus** — but expect the free-incumbent objection.
 
-Run **one** slug at a time. Two concurrent asks dilute the bar.
+**14-day money asks:** one slug at a time. Two concurrent asks dilute the bar.
+
+**Overnight paper (GLM 5.3):** four lanes may run in parallel — [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md). That is research structure, not four live checkouts.
 
 ---
 

@@ -58,7 +58,7 @@
 | [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Alpha social copy kit + growth grain (social is the door; Today Start is the calendar) |
-| [../RESEARCH/BANGERS/README.md](../RESEARCH/BANGERS/README.md) | Program 67 cash experiments — sell-first pack (not MW roadmap) |
+| [../RESEARCH/BANGERS/README.md](../RESEARCH/BANGERS/README.md) | Program 67 cash experiments — sell-first pack (not MW roadmap) · overnight [OVERNIGHT_GLM53.md](../RESEARCH/BANGERS/OVERNIGHT_GLM53.md) |
 | [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) | Form / Learn / art / social asset pipeline · Google Flow daily credits · [`media/manifest.json`](../media/manifest.json) · [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) |
 | [MASCOT.md](MASCOT.md) | Kalligator — brand mascot (placement, voice, anti-guilt) |
 | [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` · AI prompt block · Kalligator → [MASCOT.md](MASCOT.md) |

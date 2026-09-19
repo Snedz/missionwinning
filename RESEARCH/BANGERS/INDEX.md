@@ -1,12 +1,13 @@
 # RESEARCH/BANGERS/
 
-Program 67 cash-experiment pack. **Read [README.md](README.md) first.** Follow-on agent instructions: [CURSOR_HANDOFF.md](CURSOR_HANDOFF.md).
+Program 67 cash-experiment pack. **Read [README.md](README.md) first.** Overnight GLM 5.3: [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md). Daytime follow-on: [CURSOR_HANDOFF.md](CURSOR_HANDOFF.md).
 
 This folder is **not** Mission Winning product roadmap. It is sell-first research for adjacent cash experiments. Do not invent checkout URLs, MRR, or buyer counts.
 
 | Path | Concern |
 |------|---------|
-| [README.md](README.md) | Portfolio of 10 ideas · 14-day ranking · rules |
+| [README.md](README.md) | Portfolio of 10 ideas · 14-day ranking · 6-file contract |
+| [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md) | GLM 5.3 lanes A–D · complementary rule |
 | [CURSOR_HANDOFF.md](CURSOR_HANDOFF.md) | Next GLM / Cursor turn |
 | [dual-capture-plus/](dual-capture-plus/) | Dual cam on A12+ · layouts · stems |
 | [clearshot-ios/](clearshot-ios/) | Paid screenshot cleaner |

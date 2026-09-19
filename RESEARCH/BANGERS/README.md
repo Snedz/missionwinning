@@ -6,6 +6,8 @@ These ten ideas sit **beside** Mission Winning. They do not replace the Train + 
 
 **Kill metric for every row:** **5 cold pays in 14 days.**
 
+**Overnight:** [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md) — GLM 5.3 parallel lanes (A Dual Capture+ · B ClearShot · C token-router · D ideas 04–10). **6-file contract** per slug.
+
 | Term | Means here |
 |------|------------|
 | **Cold pay** | Money moved (Stripe / App Store / invoice) from someone who is not family, not a friend, and not a MW tester the founder already knows. A waitlist email is **not** a pay. |
@@ -29,20 +31,20 @@ These ten ideas sit **beside** Mission Winning. They do not replace the Train + 
 
 ## Portfolio (ranked by “5 cold pays / 14 days”)
 
-Rank is **how likely a cold stranger pays in two weeks**, not fill-depth and not long-term TAM. Fill-depth (how complete this pack is) is a separate column.
+Rank is **how likely a cold stranger pays in two weeks**, not overnight lane number and not long-term TAM. **Idea #** (01–10) is the overnight fill order in [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md). Do not mix the two.
 
-| Rank | Slug | One-line offer | 14-day bar | Why this rank | Fill |
-|------|------|----------------|------------|---------------|------|
-| 1 | [clearshot-ios](clearshot-ios/) | On-device screenshot cleaner: redact, blur, share-sheet. | Easier | People already pay $20–50 lifetime in this category. Share-sheet mental model is cheap to explain. | Deep |
-| 2 | [screenshot-stack-pages](screenshot-stack-pages/) | Store-ready screenshot stacks / templates for one app. | Medium | Indie iOS/Android devs already buy $19–49/mo or one-time kits. A template pack can sell before a generator. | Thin |
-| 3 | [receipt-ocr-shots](receipt-ocr-shots/) | Photo or screenshot of a receipt → CSV. Not an expense suite. | Medium | Receipt OCR is a proven paid category; the suite incumbents are heavy. “Shots not suite” is the wedge. Buyer density **UNKNOWN**. | Thin |
-| 4 | [unlock-code-utils](unlock-code-utils/) | Pull Wi-Fi / gift / backup codes from a screenshot and format them. | Medium-hard | Impulse utility. App Store / security review is a real kill risk. | Thin |
-| 5 | [tutor-repair-dualcam](tutor-repair-dualcam/) | Dual-cam presets for tutors and bench repair. | Medium-hard | Narrow ICP is DM-able. Still fights free dual-cam apps. | Thin |
-| 6 | [dual-capture-plus](dual-capture-plus/) | Dual Capture on A12+ with layouts Apple does not ship, plus separate stems. | Hard | Apple’s Dual Capture is **free on iPhone 17 only**. FiLMiC DoubleTake and RØDE Capture are already **free** on older A12+ phones. Paid wedge must be layouts / stems / vertical presets — or the bar fails. | Deep |
-| 7 | [token-router-pipeline](token-router-pipeline/) | Local disk router: meter usage, fail free → BYOK paid. Not a new OpenRouter. | Hard | B2B / indie-dev cycle. OpenRouter already sells “one key, many models.” Differentiator is **on-disk meter + free-first failover you own**. | Deep |
-| 8 | [ai-edit-auditor](ai-edit-auditor/) | Prove an AI edit matched the brief (diff + checklist). | Hard | Category is unproven. Agencies might pay; **UNKNOWN**. | Thin |
-| 9 | [center-stage-coach](center-stage-coach/) | Framing coach for Apple Center Stage (device-gated). | Hard | Hardware-gated (iPhone 17 / supported iPad). Name collision with Mission Coach. | Thin |
-| 10 | [agent-job-bus](agent-job-bus/) | Cheap durable job bus for indie agents. | Hardest | Inngest / Trigger.dev / Temporal already exist. Longest sales cycle. | Thin |
+| Rank | Idea # | Slug | One-line offer | 14-day bar | Why this rank | Structure |
+|------|--------|------|----------------|------------|---------------|-----------|
+| 1 | 02 | [clearshot-ios](clearshot-ios/) | On-device screenshot cleaner: redact, blur, share-sheet. | Easier | People already pay $20–50 lifetime in this category. Share-sheet mental model is cheap to explain. | 6-file |
+| 2 | 10 | [screenshot-stack-pages](screenshot-stack-pages/) | Store-ready screenshot stacks / templates for one app. | Medium | Indie iOS/Android devs already buy $19–49/mo or one-time kits. A template pack can sell before a generator. | 6-file |
+| 3 | 04 | [receipt-ocr-shots](receipt-ocr-shots/) | Photo or screenshot of a receipt → CSV. Not an expense suite. | Medium | Receipt OCR is a proven paid category; the suite incumbents are heavy. “Shots not suite” is the wedge. Buyer density **UNKNOWN**. | 6-file |
+| 4 | 08 | [unlock-code-utils](unlock-code-utils/) | Pull Wi-Fi / gift / backup codes from a screenshot and format them. | Medium-hard | Impulse utility. App Store / security review is a real kill risk. | 6-file |
+| 5 | 05 | [tutor-repair-dualcam](tutor-repair-dualcam/) | Dual-cam presets for tutors and bench repair. | Medium-hard | Narrow ICP is DM-able. Still fights free dual-cam apps. | 6-file |
+| 6 | 01 | [dual-capture-plus](dual-capture-plus/) | Dual Capture on A12+ with layouts Apple does not ship, plus separate stems. | Hard | Apple’s Dual Capture is **free on iPhone 17 only**. FiLMiC DoubleTake and RØDE Capture are already **free** on older A12+ phones. Paid wedge must be layouts / stems / vertical presets — or the bar fails. | 6-file |
+| 7 | 03 | [token-router-pipeline](token-router-pipeline/) | Local disk router: meter usage, fail free → BYOK paid. Not a new OpenRouter. | Hard | B2B / indie-dev cycle. OpenRouter already sells “one key, many models.” Differentiator is **on-disk meter + free-first failover you own**. | 6-file |
+| 8 | 06 | [ai-edit-auditor](ai-edit-auditor/) | Prove an AI edit matched the brief (diff + checklist). | Hard | Category is unproven. Agencies might pay; **UNKNOWN**. | 6-file |
+| 9 | 07 | [center-stage-coach](center-stage-coach/) | Framing marks for Apple Center Stage (device-gated). | Hard | Hardware-gated (iPhone 17 / supported iPad). Name collision with Mission Coach. | 6-file |
+| 10 | 09 | [agent-job-bus](agent-job-bus/) | Cheap durable job bus for indie agents. | Hardest | Inngest / Trigger.dev / Temporal already exist. Longest sales cycle. | 6-file |
 
 **Do not reorder this table because an idea is more fun to build.** Reorder only after a 14-day test writes a result into that folder’s `SELL_FIRST.md`.
 
@@ -56,15 +58,18 @@ lander (no fake pay) → 14-day ask → count cold pays
   → ≥5: BUILD_LATER.md becomes allowed
 ```
 
-Each slug has the same five files:
+Each slug has the same **six** files (overnight contract — [OVERNIGHT_GLM53.md](OVERNIGHT_GLM53.md)):
 
 | File | Owns |
 |------|------|
-| `FRAMEWORK.md` | Claim, buyer, wedge, risks, MW relationship |
+| `FRAMEWORK.md` | Claim, buyer, wedge, incumbent table, risks, MW relationship |
 | `SELL_FIRST.md` | Lander blurbs, ask, kill bar, payment honesty |
 | `BUILD_LATER.md` | What is forbidden until the bar passes |
 | `CURSOR_TODO.md` | Next agent checklist |
 | `SOURCES.md` | Real URLs. UNKNOWN rows stay UNKNOWN |
+| `GLM53.md` | Tonight’s GLM 5.3 work order + night log |
+
+Overlapping ideas (camera, screenshots, LLM infra) **link** instead of copying. Complementary docs win over a rewrite.
 
 ---
 
