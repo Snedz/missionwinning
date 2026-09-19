@@ -88,3 +88,13 @@ None in code. Camera experiment. Do not add AVFoundation to the PWA. Do not star
 ## Price hypothesis (not a fact)
 
 **HYPOTHESIS:** $9–19 one-time IAP or preorder. Subscription is the wrong shape for a camera utility this small. Do not print a Stripe URL.
+
+---
+
+## Overnight notes (GLM 5.3)
+
+Checked **2026-09-19**. Does not replace the incumbent table above.
+
+- **DoubleTake** (FiLMiC / Bending Spoons) and **RØDE Capture** are still **free** to download. Dual cam on A12+ is already free. This slug is layouts + stems + a vertical — or it dies. See [GLM53.md](GLM53.md).
+- **4K dual-cam** (third-party MultiCam) stays **UNKNOWN** until measured on current iOS. Apple’s “Dual Capture up to 4K Dolby Vision at 30 fps” is **stock Camera on 17 / Air**, not a promise we can print.
+- **No payment URL.** Checkout none. Pays 0. Do not invent Stripe / Gumroad / App Store product links.

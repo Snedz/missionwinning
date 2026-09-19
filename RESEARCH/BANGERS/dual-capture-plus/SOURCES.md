@@ -27,3 +27,20 @@ Checked **2026-09-19**. Re-verify before quoting prices or device lists.
 | Exact MultiCam resolution cap on iOS 26 | FiLMiC’s 1080p note may be stale. Measure. |
 | Buyer count who will pay $12 given free apps | Untested. That is the 14-day bar. |
 | Final App Store name (trademark vs “Dual Capture”) | Counsel. |
+
+## Overnight re-open (GLM 5.3 · 2026-09-19)
+
+Complement only. Existing rows above stay. Full check table: [GLM53.md](GLM53.md).
+
+| # | What | URL | Notes |
+|---|------|-----|-------|
+| 13 | `AVCaptureMultiCamSession` (Apple docs) | https://developer.apple.com/documentation/avfoundation/avcapturemulticamsession | Official API. `isMultiCamSupported` / hardware cost. |
+| 14 | `supportedMultiCamDeviceSets` (Apple docs) | https://developer.apple.com/documentation/avfoundation/avcapturedevice/discoverysession/supportedmulticamdevicesets | Query combinations; do not hard-code. |
+| 15 | iPhone 17 tech specs | https://support.apple.com/en-us/125089 | Dual Capture up to 4K Dolby Vision at 30 fps — **stock Camera**. |
+| 16 | iPhone 17 Pro tech specs | https://support.apple.com/en-us/125090 | Same Dual Capture 4K line. |
+| 17 | iPhone 17 Pro Max tech specs | https://support.apple.com/en-us/125091 | Same Dual Capture 4K line. |
+| 18 | iPhone Air tech specs | https://support.apple.com/en-us/125092 | Same Dual Capture 4K line. |
+| 19 | iPhone 16 tech specs | https://support.apple.com/en-us/121029 | **No** Dual Capture line (gap holds). |
+| 20 | Record a video (iOS 26 guide) | https://support.apple.com/guide/iphone/record-a-video-iph61f49e4bb/26/ios/26 | Still names 17 / 17 Pro / 17 Pro Max / Air. |
+
+Listing refreshes (same URLs as #7, #9, #11, #12): DoubleTake still **Free** + IAP; RØDE Capture still **Free**; MultiCam+ storefront showed **$1.99**; DuoCam still Free + IAP (Pro $0.99 / $9.99 / $12.99 listed). IAP dollars move — do not freeze them in the lander.
