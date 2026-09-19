@@ -85,6 +85,7 @@
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference); product path is Android Compose |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android get-started + AI orchestration · Play |
 | [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md) | iOS playbook — deferred until Android accepted + week-4 retention |
+| [RESEARCH/BANGERS/](../RESEARCH/BANGERS/INDEX.md) | Sell-first bets outside the MW wedge. Track 02: [clearshot-ios](../RESEARCH/BANGERS/clearshot-ios/INDEX.md). Not permission to start `apps/ios` |
 | [openapi-mobile.yaml](openapi-mobile.yaml) | Mobile client contract (Coach / workouts) |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Optional web PWA packaging (not the product path) |
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |

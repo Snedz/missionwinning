@@ -46,6 +46,7 @@ User guides in plain language (no code paths):
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference only) |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android Compose get-started + AI orchestration |
 | [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md) | iOS playbook — deferred until Accept B + week-4 + founder gate |
+| [RESEARCH/BANGERS/](../RESEARCH/BANGERS/INDEX.md) | Sell-first bets outside the MW wedge (track 02: ClearShot iOS). Not `apps/ios` |
 | [API_MOBILE.md](API_MOBILE.md) | `/api/mobile/*` Coach + workouts |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
