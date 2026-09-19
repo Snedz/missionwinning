@@ -16,7 +16,7 @@ Ordered. Checkboxes that are founder-owned stay unchecked by agents.
 - [x] Write `SOURCES.md` (citations + competitor / ASO).
 - [x] Write `SPIKE_PLAN.md` (falsifiable spikes).
 - [x] Index the folder; route from root `INDEX.md` + `docs/INDEX.md`.
-- [ ] Open draft PR titled `research(bangers): clearshot-ios framework`.
+- [x] Open draft PR titled `research(bangers): clearshot-ios framework` (#989).
 - [ ] **Do not merge.** Founder reviews.
 
 ---
