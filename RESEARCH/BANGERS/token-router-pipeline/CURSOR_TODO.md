@@ -15,7 +15,7 @@ Status: `open` | `blocked` | `done`
 | T03-M0-01 | Create `RESEARCH/BANGERS/token-router-pipeline/` file contract | done (this PR) | FRAMEWORK, SELL_FIRST, BUILD_LATER, HOW_IT_GETS_DONE, CURSOR_TODO, SOURCES, INDUSTRY_LANDSCAPE, registry.schema.yaml, INDEX |
 | T03-M0-02 | Route the tree from `RESEARCH/INDEX.md`, `RESEARCH/BANGERS/INDEX.md`, root `INDEX.md` | done (this PR) | Do not restamp CONTEXT `## Now` or mint a build label |
 | T03-M0-03 | Parse-check `registry.schema.yaml` (YAML loads; required keys present) | done (this PR) | PyYAML load; `$defs` Hatch/Caps/Claim/Receipt present |
-| T03-M0-04 | Draft PR titled `research(bangers): token-router-pipeline framework` | open in this PR | Do not merge |
+| T03-M0-04 | Draft PR titled `research(bangers): token-router-pipeline framework` | done (this PR) | Draft. Do not merge |
 
 Agents on M0 do not edit `app/`, `src/`, `packages/`, `apps/`, `supabase/`.
 
