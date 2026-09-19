@@ -132,3 +132,67 @@ Banned keys: `paymentUrl`, `checkout`, `etProof`, `alienConfirmed`, `traction`.
 - `node mission-galaxy/validate.mjs` and `node --test mission-galaxy/validate.test.mjs` exit 0.
 - PR open vs `master` with verify steps. Draft. No self Judge LGTM.
 - Hard window: finish substantive work, then stop.
+
+---
+
+## Harden pass (validator only)
+
+**Status:** FROZEN for this Builder seat. Scaffold (#983) already landed the slice. This pass hardens `validate.mjs` + tests. No ClearShot. No `paymentUrl`. No tip-promote. No `mission-home/` collision. Builder ≠ Judge.
+
+### One concern
+
+Trust-tier coupling, `UNKNOWN` as a first-class Blue Book state, capability-ticket shape, and no poison restore — enforced in the validator, not as prose.
+
+### Files that may change
+
+| Path | Change |
+|------|--------|
+| `mission-galaxy/PLAN.md` | This section |
+| `mission-galaxy/validate.mjs` | `TRUST_TIER_RULES`, `validateCapabilityTicket`, stage↔class, pattern, unique ids, poison-restore |
+| `mission-galaxy/validate.test.mjs` | Pins for the new rules (must go red if the rule is deleted) |
+| `mission-galaxy/directory.schema.json` | Closed grant enum, ISO `createdAt`, allowlisted `agentId`, unknown may archive |
+| `mission-galaxy/bluebook/case.schema.json` | Classification required after `INGEST`; `UNKNOWN` forbids a prosaic cover story |
+| `mission-galaxy/fixtures/` | Add the four files below; keep discover-vs-allowlist |
+| `mission-galaxy/README.md` | Trust-tier coupling table (validator-facing) |
+| `mission-galaxy/INDEX.md` | Point at new exports |
+| `mission-galaxy/capability-world.md` | Archive allowlist is empty (no poison restore) |
+| `mission-galaxy/bluebook/pipeline.md` | Stage ↔ classification table |
+
+Do **not** edit `src/`, `app/`, `scripts/`, `supabase/`, `mission-home/`, ClearShot, or any checkout URL.
+
+### New fixtures (closed additions)
+
+| File | Expect |
+|------|--------|
+| `fixtures/directory.poison-restore.json` | refuse (archive + grants, or a restore key) |
+| `fixtures/directory.tier-store-mismatch.json` | refuse (`known` ticket in `quarantine` store) |
+| `fixtures/case.unknown-cover-story.json` | refuse (`UNKNOWN` + `prosaicHypothesis`) |
+| `fixtures/case.unknown-archived.json` | accept (`UNKNOWN` classification + `ARCHIVE` stage) |
+
+Existing seven fixtures stay. Discover extras / stale allowlist entries.
+
+### Extra contracts (must land)
+
+**Trust tiers** — `TRUST_TIER_RULES` is the one table. Ticket `tier` picks store, submitter kind, status, `presumeBreach`, and whether grants may be non-empty.
+
+| Tier | Store | Submitter | Status | Grants |
+|------|-------|-----------|--------|--------|
+| `host` | `directory` | allowlisted + `agentId` | `open` \| `resolved` | closed or `[]`; `presumeBreach: false` |
+| `known` | `directory` | allowlisted + `agentId` | `open` \| `resolved` | closed or `[]`; `presumeBreach: false` |
+| `unknown` | `quarantine` | `unknown` | `open` \| `quarantined` | `[]`; `presumeBreach: true` |
+| `quarantine` | `quarantine` | `unknown` | `quarantined` | `[]`; `presumeBreach: true` |
+| `archive` | `archive` | either; unknown still `presumeBreach: true` | `archived` | `[]` (no poison restore) |
+
+Unknown submitter may sit in `quarantine` **or** `archive` (tier `archive`, status `archived`, empty allowlist). That is the only change to the original "unknown ⇒ quarantine" rule.
+
+**UNKNOWN first-class** — `UNKNOWN` is a valid terminal classification **and** a valid terminal stage. Stage `UNKNOWN` requires classification `UNKNOWN`. Classification `UNKNOWN` forbids `prosaicHypothesis` (cover story) and forbids stage `RESOLVE`. Stage `ARCHIVE` may keep classification `UNKNOWN`. `INGEST` may omit classification.
+
+**Capability ticket shape** — `validateCapabilityTicket(ticket)` is the single-ticket checker. Required fields unchanged. `capabilityAllowlist` items ∈ `CLOSED_GRANTS`. Ticket ids unique in a Directory. `createdAt` is `YYYY-MM-DDTHH:mm:ss[.sss]Z`.
+
+**No poison restore** — archive tickets have empty allowlists. Banned keys add `restore`, `poisonRestore`, `unpark`, `promoteLive`, `tipPromote`.
+
+### Done when (this pass)
+
+- `node mission-galaxy/validate.mjs` and `node --test mission-galaxy/validate.test.mjs` exit 0.
+- Mutants named in the PR: drop `TRUST_TIER_RULES` coupling, accept `UNKNOWN`+cover story, accept archive grants.
+- Draft PR vs `master`. Builder only. No merge. No Live promote. `[skip vercel]`.
