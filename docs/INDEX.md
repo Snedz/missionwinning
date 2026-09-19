@@ -167,3 +167,4 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 
 - Agent conventions: [AGENTS.md](../AGENTS.md)
 - Code indexes: [app/INDEX.md](../app/INDEX.md), [src/lib/INDEX.md](../src/lib/INDEX.md)
+- BANGERS side-tracks (not MW product): [RESEARCH/BANGERS/](../RESEARCH/BANGERS/) — track 01 Dual Capture+ is paper / sell-first only
