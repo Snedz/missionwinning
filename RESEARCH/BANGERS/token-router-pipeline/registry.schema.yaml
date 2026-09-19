@@ -1,0 +1,521 @@
+# Proposed on-disk schema for the disk-first indie token router (BANGERS track 03).
+# Paper only — 2026-09-19. Not loaded by Mission Winning.
+# Source of truth for shapes named in FRAMEWORK.md and HOW_IT_GETS_DONE.md.
+# JSON Schema draft 2020-12, YAML-encoded.
+
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://missionwinning.com/research/bangers/token-router-pipeline/registry.schema.yaml
+title: TokenRouterDiskRegistry
+description: >
+  Closed shapes for registry, hatch, health, score, claim, dispatch attempt,
+  and receipt. M1 rejects unknown fields at the document root of registry.yaml
+  and hatch.yaml so a second hatch spelling cannot hide.
+type: object
+additionalProperties: false
+properties:
+  meta:
+    $ref: "#/$defs/Meta"
+  hatch:
+    $ref: "#/$defs/Hatch"
+  caps:
+    $ref: "#/$defs/Caps"
+  providers:
+    type: array
+    maxItems: 16
+    items:
+      $ref: "#/$defs/Provider"
+  health:
+    $ref: "#/$defs/HealthRecord"
+  score:
+    $ref: "#/$defs/ScoreRecord"
+  claim:
+    $ref: "#/$defs/Claim"
+  dispatch_attempt:
+    $ref: "#/$defs/DispatchAttempt"
+  receipt:
+    $ref: "#/$defs/Receipt"
+required:
+  - meta
+  - hatch
+  - caps
+  - providers
+
+$defs:
+  Meta:
+    type: object
+    additionalProperties: false
+    required: [schema_version, kind]
+    properties:
+      schema_version:
+        type: integer
+        const: 1
+      kind:
+        type: string
+        const: token-router-registry
+      operator_id:
+        type: string
+        description: Local operator label. Not an athlete identity.
+      created_at:
+        type: string
+        format: date-time
+
+  Hatch:
+    type: object
+    additionalProperties: false
+    required: [allow_paid]
+    description: >
+      ALLOW_PAID hatch. Default locked. Env ALLOW_PAID=true cannot open this
+      object; env false/unset forces locked even if allow_paid is true.
+    properties:
+      allow_paid:
+        type: boolean
+        default: false
+      opened_at:
+        type: ["string", "null"]
+        format: date-time
+      opened_by:
+        type: ["string", "null"]
+      reason:
+        type: ["string", "null"]
+        minLength: 8
+        description: Required non-null when allow_paid is true.
+
+  Caps:
+    type: object
+    additionalProperties: false
+    description: >
+      M1 pressure-relief valves. 0 on a paid cap means refuse, not unlimited.
+      Negative values are invalid. No -1 sentinel.
+    required:
+      - version
+      - max_open_claims
+      - max_providers
+      - max_local_tokens_per_day
+      - max_free_tokens_per_day
+      - max_paid_usd_cents_per_day
+      - max_paid_usd_cents_per_claim
+      - max_attempts_per_claim
+      - health_ttl_sec
+      - claim_ttl_sec
+      - receipt_retain_days
+      - max_body_bytes
+    properties:
+      version:
+        type: integer
+        const: 1
+      max_open_claims:
+        type: integer
+        minimum: 1
+        maximum: 64
+        default: 4
+      max_providers:
+        type: integer
+        minimum: 1
+        maximum: 16
+        default: 16
+      max_local_tokens_per_day:
+        type: integer
+        minimum: 0
+        default: 2000000
+      max_free_tokens_per_day:
+        type: integer
+        minimum: 0
+        default: 200000
+      max_paid_usd_cents_per_day:
+        type: integer
+        minimum: 0
+        default: 0
+        description: Treated as 0 while hatch is locked, regardless of stored value.
+      max_paid_usd_cents_per_claim:
+        type: integer
+        minimum: 0
+        maximum: 500
+        default: 5
+      max_attempts_per_claim:
+        type: integer
+        minimum: 1
+        maximum: 4
+        default: 2
+      health_ttl_sec:
+        type: integer
+        minimum: 5
+        maximum: 600
+        default: 60
+      claim_ttl_sec:
+        type: integer
+        minimum: 10
+        maximum: 600
+        default: 120
+      receipt_retain_days:
+        type: integer
+        minimum: 1
+        maximum: 365
+        default: 30
+      max_body_bytes:
+        type: integer
+        minimum: 1024
+        maximum: 4194304
+        default: 1048576
+
+  CostClass:
+    type: string
+    enum: [local, free, credits_owned, paid]
+    description: >
+      credits_owned is still paid-class for the hatch (money already left).
+      Municipal / ad-supported products are not a class — they are forbidden ids.
+
+  Capability:
+    type: string
+    enum: [chat, tools, vision, json, long_context]
+
+  ProviderKind:
+    type: string
+    enum: [ollama, openai_compat]
+
+  Provider:
+    type: object
+    additionalProperties: false
+    required: [id, kind, class, base_url, capabilities]
+    properties:
+      id:
+        type: string
+        pattern: "^[a-z][a-z0-9_-]{1,62}$"
+        not:
+          enum:
+            - freebuff
+            - codebuff
+            - chatgpt-web
+            - gemini-web
+            - claude-web
+        description: Municipal / unofficial-web ids are rejected by schema.
+      display_name:
+        type: string
+      kind:
+        $ref: "#/$defs/ProviderKind"
+      class:
+        $ref: "#/$defs/CostClass"
+      base_url:
+        type: string
+        description: Origin only (scheme+host+port). Path is implied by kind.
+      auth:
+        $ref: "#/$defs/AuthRef"
+      capabilities:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          $ref: "#/$defs/Capability"
+      model:
+        type: string
+        description: Model slug the well expects (e.g. llama3.2, grok-4.6).
+      tos_url:
+        type: string
+        description: Required when class is free — cite the free-tier terms.
+      free_tier_notes:
+        type: string
+        description: Required when class is free.
+      notes:
+        type: string
+    allOf:
+      - if:
+          properties:
+            class:
+              const: free
+        then:
+          required: [tos_url, free_tier_notes]
+      - if:
+          properties:
+            class:
+              enum: [paid, credits_owned]
+        then:
+          required: [auth]
+
+  AuthRef:
+    type: object
+    additionalProperties: false
+    required: [env]
+    properties:
+      env:
+        type: string
+        pattern: "^[A-Z][A-Z0-9_]{1,63}$"
+        description: Name of a variable in secrets.env. Never a literal key.
+
+  HealthStatus:
+    type: string
+    enum: [up, degraded, down, unknown]
+
+  HealthRecord:
+    type: object
+    additionalProperties: false
+    required: [provider_id, status, checked_at, expires_at]
+    properties:
+      provider_id:
+        type: string
+      status:
+        $ref: "#/$defs/HealthStatus"
+      latency_ms:
+        type: ["integer", "null"]
+        minimum: 0
+      checked_at:
+        type: string
+        format: date-time
+      expires_at:
+        type: string
+        format: date-time
+      error_class:
+        type: ["string", "null"]
+        enum: [timeout, auth, rate_limit, "5xx", dns, protocol, null]
+      error_note:
+        type: string
+        description: Opaque; no secret echo.
+
+  ScoreRejectReason:
+    type: string
+    enum:
+      - capability_miss
+      - health_down
+      - health_unknown
+      - hatch_locked
+      - paid_cap_zero
+      - token_cap
+      - class_forbidden
+
+  ScoreRecord:
+    type: object
+    additionalProperties: false
+    required: [request_id, created_at, eligible, rejected, hatch_allow_paid]
+    properties:
+      request_id:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      hatch_allow_paid:
+        type: boolean
+      eligible:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [provider_id, class, rank]
+          properties:
+            provider_id:
+              type: string
+            class:
+              $ref: "#/$defs/CostClass"
+            rank:
+              type: integer
+              minimum: 1
+            reasons:
+              type: array
+              items:
+                type: string
+      rejected:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [provider_id, reason]
+          properties:
+            provider_id:
+              type: string
+            reason:
+              $ref: "#/$defs/ScoreRejectReason"
+
+  ClaimStatus:
+    type: string
+    enum: [open, closed, refunded, breached]
+
+  Claim:
+    type: object
+    additionalProperties: false
+    required:
+      - claim_id
+      - request_id
+      - request_hash
+      - status
+      - provider_id
+      - class
+      - max_prompt_tokens
+      - max_completion_tokens
+      - max_reasoning_tokens
+      - max_usd_cents
+      - max_attempts
+      - created_at
+      - deadline_at
+    properties:
+      claim_id:
+        type: string
+        pattern: "^clm_[a-z0-9]{8,40}$"
+      request_id:
+        type: string
+      request_hash:
+        type: string
+        pattern: "^[a-f0-9]{64}$"
+      status:
+        $ref: "#/$defs/ClaimStatus"
+      provider_id:
+        type: string
+      failover:
+        type: array
+        items:
+          type: string
+        description: Already-scored ids. Same envelope. Not a new claim.
+      class:
+        $ref: "#/$defs/CostClass"
+      max_prompt_tokens:
+        type: integer
+        minimum: 0
+      max_completion_tokens:
+        type: integer
+        minimum: 0
+      max_reasoning_tokens:
+        type: integer
+        minimum: 0
+      max_usd_cents:
+        type: integer
+        minimum: 0
+        description: Must be 0 unless hatch open and class is paid or credits_owned.
+      max_attempts:
+        type: integer
+        minimum: 1
+        maximum: 4
+      created_at:
+        type: string
+        format: date-time
+      deadline_at:
+        type: string
+        format: date-time
+
+  DispatchAttempt:
+    type: object
+    additionalProperties: false
+    required: [claim_id, attempt, provider_id, state, started_at]
+    properties:
+      claim_id:
+        type: string
+      attempt:
+        type: integer
+        minimum: 1
+      provider_id:
+        type: string
+      state:
+        type: string
+        enum: [starting, done, error]
+      started_at:
+        type: string
+        format: date-time
+      ended_at:
+        type: ["string", "null"]
+        format: date-time
+      http_status:
+        type: ["integer", "null"]
+      error_class:
+        type: ["string", "null"]
+      usage:
+        $ref: "#/$defs/Usage"
+
+  UsageSource:
+    type: string
+    enum: [provider, estimated]
+
+  Usage:
+    type: object
+    additionalProperties: false
+    required: [source, prompt_tokens, completion_tokens, reasoning_tokens, usd_cents]
+    properties:
+      source:
+        $ref: "#/$defs/UsageSource"
+      prompt_tokens:
+        type: integer
+        minimum: 0
+      completion_tokens:
+        type: integer
+        minimum: 0
+      reasoning_tokens:
+        type: integer
+        minimum: 0
+      usd_cents:
+        type: integer
+        minimum: 0
+        description: 0 for local/free. Estimated at claim max when source=estimated.
+
+  ReceiptStatus:
+    type: string
+    enum: [closed, refunded, breached, denied]
+
+  DenialCode:
+    type: string
+    enum:
+      - no_eligible_provider
+      - paid_hatch_closed
+      - cap
+      - hatch_disagree
+      - body_too_large
+
+  Receipt:
+    type: object
+    additionalProperties: false
+    required: [receipt_id, created_at, status]
+    properties:
+      receipt_id:
+        type: string
+        pattern: "^rec_[a-z0-9]{8,40}$"
+      claim_id:
+        type: ["string", "null"]
+        description: Null when status is denied before a claim existed.
+      request_id:
+        type: string
+      request_hash:
+        type: string
+        pattern: "^[a-f0-9]{64}$"
+      created_at:
+        type: string
+        format: date-time
+      status:
+        $ref: "#/$defs/ReceiptStatus"
+      denial:
+        $ref: "#/$defs/DenialCode"
+      provider_id:
+        type: ["string", "null"]
+      class:
+        $ref: "#/$defs/CostClass"
+      usage:
+        $ref: "#/$defs/Usage"
+      supersedes:
+        type: string
+        description: Prior receipt id if this is a correction. Prior file stays.
+      notes:
+        type: string
+
+  ExampleRegistry:
+    description: Illustrative default (not a required property). Local only, hatch locked.
+    type: object
+    properties:
+      comment:
+        type: string
+# Example documents (comments for humans; not validated as instances here):
+#
+# registry.yaml
+#   meta: { schema_version: 1, kind: token-router-registry, operator_id: laptop }
+#   hatch: { allow_paid: false, opened_at: null, opened_by: null, reason: null }
+#   caps: { version: 1, max_open_claims: 4, max_providers: 16,
+#           max_local_tokens_per_day: 2000000, max_free_tokens_per_day: 200000,
+#           max_paid_usd_cents_per_day: 0, max_paid_usd_cents_per_claim: 5,
+#           max_attempts_per_claim: 2, health_ttl_sec: 60, claim_ttl_sec: 120,
+#           receipt_retain_days: 30, max_body_bytes: 1048576 }
+#   providers:
+#     - id: ollama-local
+#       kind: ollama
+#       class: local
+#       base_url: http://127.0.0.1:11434
+#       capabilities: [chat]
+#       model: llama3.2
+#     # paid row is added by the operator, still ineligible until hatch open:
+#     # - id: xai-grok
+#     #   kind: openai_compat
+#     #   class: paid
+#     #   base_url: https://api.x.ai
+#     #   auth: { env: COACH_LLM_API_KEY }
+#     #   capabilities: [chat, tools, json]
+#     #   model: grok-4.6

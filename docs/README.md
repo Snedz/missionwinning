@@ -32,6 +32,7 @@ User guides in plain language (no code paths):
 | Doc | Purpose |
 |-----|---------|
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Long-term horizons, gates, what to build next |
+| [../RESEARCH/BANGERS/INDEX.md](../RESEARCH/BANGERS/INDEX.md) | Side-bet research tracks (not a ship). Track 03: token-router-pipeline |
 | [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue — one concern per loop |
 | [IDEA_LOOP.md](IDEA_LOOP.md) | Generation protocol — what deserves to exist |
 | [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) | Grading protocol — builder never grades itself |

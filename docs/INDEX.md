@@ -47,6 +47,7 @@
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks (recipe 18 = nightly cleanup) |
 | [GRAPH_MEMORY.md](GRAPH_MEMORY.md) | Agent graph memory of this repo's history — dev tooling, not product |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
+| [../RESEARCH/BANGERS/INDEX.md](../RESEARCH/BANGERS/INDEX.md) | Side-bet research tracks — not a ship. Track 03: [token-router-pipeline](../RESEARCH/BANGERS/token-router-pipeline/INDEX.md) |
 
 ---
 

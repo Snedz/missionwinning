@@ -26,6 +26,7 @@
 | **Nightly code cleanup (3AM / deslop)** | Recipe 18 in [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) | Deleting the `firstSetUngated.ts` ledger comments; collapsing mission-os CapResult paper files; splitting Train/Today UI or `workoutStore`; Fuel `saveNutritionEntry` outbox as “slop”; Marketplace deslop/vuln-scan templates verbatim; a GRAPH_LOOP letter for hygiene |
 | **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master |
 | **Generating the next idea** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) (protocol) · graph [docs/mechanics/INDEX.md](docs/mechanics/INDEX.md) | Treating it as a second queue; emitting more than one row; letting the model that wrote a candidate judge it; targeting the loop's own process as a behaviour |
+| **BANGERS side-bet research** | [RESEARCH/BANGERS/INDEX.md](RESEARCH/BANGERS/INDEX.md) · track 03 [token-router-pipeline](RESEARCH/BANGERS/token-router-pipeline/INDEX.md) | Treating paper as a product ship; wiring a router into Coach from this tree; wrapping ad-supported inference |
 | **Running a gauntlet campaign** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) after GRAPH_LOOP · workbench [docs/gauntlet/INDEX.md](docs/gauntlet/INDEX.md) | Builder grading its own work; treating the workbench as a second queue or status block; bars invented mid-round |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
@@ -143,7 +144,7 @@
 
 ## 5. Planning docs (root spine + docs/)
 
-Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORCHESTRATION · LOG · CONTRIBUTING · SECURITY (+ CLAUDE/GEMINI tool pointers). Everything else lives under `docs/`.
+Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORCHESTRATION · LOG · CONTRIBUTING · SECURITY (+ CLAUDE/GEMINI tool pointers). Product docs live under `docs/`. Side-bet research lives under [RESEARCH/](RESEARCH/INDEX.md) so it cannot be read as a PLAN or harness ticket.
 
 | File | Purpose |
 |------|---------|
