@@ -55,10 +55,10 @@ Think of each product as a **pipe** (where tokens flow), a **meter** (who sees t
 |------|----------|------|-------|-------|--------------------------|
 | **OpenRouter** | https://openrouter.ai/pricing | Hosted aggregator | Activity logs; credit wallet | Auto-routing, budgets on paid plans | Standard **5.5%** on credit buy ($0.80 min). Business **8%**. Free: 50 req/day, 25+ free models |
 | **LiteLLM** | https://docs.litellm.ai/docs/simple_proxy | OSS OpenAI-compatible proxy | Spend per virtual key / user | Budgets, rate limits, fallbacks in config | Software free (MIT). You pay infra. Enterprise is sales-quoted |
-| **Portkey** | https://portkey.ai/ · pricing on site | Gateway + governance | Logs (plan-capped) | Guardrails, RBAC, virtual keys | Third-party summaries: Developer free (10k logs); Production **$49/mo**. **Re-open portkey.ai/pricing** |
+| **Portkey** | https://portkey.ai/ · pricing on site | Gateway + governance | Logs (plan-capped) | Guardrails, RBAC, virtual keys | First-party 2026-09-19: Developer free (10k logs); Production **$49/mo**. Homepage banners PRISMA AIRS rename |
 | **Helicone** | https://www.helicone.ai/pricing | Observability-first + gateway | Requests, HQL, retention by plan | Caching, rate limits, fallbacks | Hobby free (10k req/mo). Pro **$79/mo**. Team **$799/mo**. Usage-based after includes |
 | **Martian** | https://docs.withmartian.com/ | Quality/cost **router** | Their routing | Pick model per request | Directory sites cite 2,500 free req then ~$20 / 5k. **Confirm on Martian’s own pricing page** (not found as a stable public table in this pass) |
-| **Cloudflare AI Gateway** | https://developers.cloudflare.com/ai-gateway/ | Edge proxy | Analytics, logs | Cache, rate limit, retry, model fallback | Docs: available on all CF plans. Unified Billing fee cited by third parties as **5%** — **re-open CF billing docs** |
+| **Cloudflare AI Gateway** | https://developers.cloudflare.com/ai-gateway/ | Edge proxy | Analytics, logs | Cache, rate limit, retry, model fallback | Docs: available on all CF plans. Unified Billing **5%** first-party (`/ai-gateway/reference/pricing`) |
 | **FreeBuff** | https://freebuff.com/ | Ad-supported **coding agent CLI** | Ads between turns | Not a public `/v1` gateway | Free for humans. **No official developer API.** Unofficial proxies exist and violate the spirit/ToS — **out** |
 
 Other names you will hit (not in the user list): Vercel AI Gateway, Kong AI Gateway, Bifrost, Requesty, RouteLLM. Do not add them to a lander unless we add a source row.
@@ -106,3 +106,13 @@ LiteLLM already does spend tracking and fallbacks. The **only** reason to charge
 ## Price hypothesis
 
 **HYPOTHESIS:** $29 one-time for the binary + a one-page policy template. Not a % of tokens.
+
+---
+
+## Overnight notes (GLM 5.3)
+
+**2026-09-19 · Lane C.** Complementary only — the OpenRouter-vs-indie table above is unchanged. We are still **not** a new OpenRouter.
+
+**03 vs 09:** this slug meters **tokens** (disk ledger + free→BYOK hop). Idea 09 [agent-job-bus](../agent-job-bus/FRAMEWORK.md) queues **jobs** (enqueue / lease / retry / dead-letter). Same indie-builder ICP is expected; the offers stay two SKUs. Do not merge into an “agent platform.”
+
+**First-party re-open (do not rewrite the landscape table):** Portkey Production **$49/mo** is now on `portkey.ai/pricing` (was secondary). Cloudflare Unified Billing **5%** is now on `developers.cloudflare.com/ai-gateway/reference/pricing` (was third-party). Martian `withmartian.com/plan-pricing` **404** — directory $20/5k stays UNKNOWN. FreeBuff unofficial `/v1` proxies stay **out**. Detail: [GLM53.md](GLM53.md).
