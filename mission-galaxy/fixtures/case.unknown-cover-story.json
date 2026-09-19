@@ -1,0 +1,16 @@
+{
+  "id": "bb-unk-cover",
+  "stage": "UNKNOWN",
+  "classification": "UNKNOWN",
+  "trinity": {
+    "builder": "builder.alpha",
+    "judge": "judge.beta",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "unknownRationale": "No named prosaic cause yet.",
+  "prosaicHypothesis": "Forced cover story so UNKNOWN would not stay first-class.",
+  "createdAt": "2026-09-18T21:32:00.000Z"
+}

@@ -12,15 +12,15 @@ Freeze: [PLAN.md](PLAN.md). Folder card: [INDEX.md](INDEX.md).
 
 The Directory is the closed inventory of **who may act** and **where their tickets live**.
 
-Closed **tiers** (see [directory.schema.json](directory.schema.json)):
+Closed **trust tiers** (see [directory.schema.json](directory.schema.json); coupling in `TRUST_TIER_RULES`):
 
-| Tier | Meaning |
-|------|---------|
-| `host` | The capability world itself. No ambient grants. |
-| `known` | Allowlisted actor. Still no grant beyond `capabilityAllowlist`. |
-| `unknown` | First-class. Unsigned / unallowlisted. **Presume breach.** |
-| `quarantine` | Isolated store. Cannot call host doors. |
-| `archive` | Closed tickets and cases. Append-only history. |
+| Tier | Store | Submitter | Status | Grants |
+|------|-------|-----------|--------|--------|
+| `host` | `directory` | allowlisted + `agentId` | `open` \| `resolved` | closed or `[]` |
+| `known` | `directory` | allowlisted + `agentId` | `open` \| `resolved` | closed or `[]` |
+| `unknown` | `quarantine` | `unknown` | `open` \| `quarantined` | `[]` · presume breach |
+| `quarantine` | `quarantine` | `unknown` | `quarantined` | `[]` · presume breach |
+| `archive` | `archive` | either (unknown still presume breach) | `archived` | `[]` — no poison restore |
 
 A Directory document is `{ schemaVersion, tiers, tickets[] }`. Tiers on the document are exactly the five names above, in that order.
 
@@ -33,12 +33,14 @@ Required fields: `id`, `tier`, `status` (`open` \| `quarantined` \| `resolved` \
 `submittedBy.kind` is `allowlisted` or `unknown`. An `unknown` submitter:
 
 - must set `presumeBreach: true`
-- must use `tier` `unknown` or `quarantine`
-- must use `store` `quarantine`
+- must use `tier` `unknown` or `quarantine`, or `archive` once closed
+- must use `store` `quarantine` or `archive` (archive ⇒ status `archived`, empty allowlist)
+
+`createdAt` is an ISO-8601 instant (`…Z`). Ticket ids are unique. Shape is `validateCapabilityTicket`.
 
 Empty `capabilityAllowlist` is the default. Missing grant = deny. See [capability-world.md](capability-world.md).
 
-Banned ticket/document keys: `paymentUrl`, `checkout`, `clearshot`, `traction`.
+Banned ticket/document keys: `paymentUrl`, `checkout`, `clearshot`, `traction`, `restore`, `poisonRestore`, `unpark`, `promoteLive`, `tipPromote`.
 
 ## Stores
 
@@ -48,7 +50,7 @@ Three stores. A ticket names exactly one.
 |-------|--------|
 | `directory` | Allowlisted, in-flight tickets |
 | `quarantine` | Unknown-submitter tickets and anything that presumed breach |
-| `archive` | Resolved or abandoned tickets (and archived Blue Book cases) |
+| `archive` | Closed tickets. Allowlist must be `[]` — grants do not walk back (no poison restore) |
 
 Quarantine is a **store**, not a classification. A quarantined ticket may later become a Blue Book case. It does not gain host doors by moving.
 
@@ -70,7 +72,7 @@ Closed **classifications:**
 | `UNKNOWN` | First-class unexplained. Not a defect. Not ET proof | `unknownRationale` |
 | `INSUFFICIENT` | Cannot classify yet | `gap` |
 
-`UNKNOWN` must not require a prosaic cover story. A closed program may leave a **minority (~20%)** of cases unexplained. Forcing `KNOWN_PROSAIC` to hit 0% is the failure mode this slice exists to prevent.
+`UNKNOWN` must not carry a `prosaicHypothesis` cover story. Stage `UNKNOWN` requires classification `UNKNOWN`. Stage `ARCHIVE` may keep classification `UNKNOWN`. `INGEST` may omit classification. A closed program may leave a **minority (~20%)** of cases unexplained. Forcing `KNOWN_PROSAIC` to hit 0% is the failure mode this slice exists to prevent.
 
 Pipeline:
 
@@ -80,7 +82,7 @@ INGEST → CLASSIFY → INSTRUMENT → RESOLVE | UNKNOWN | INSUFFICIENT → ARCH
 
 Every case carries **TRINITY** `{ builder, judge, canary }` — three distinct role ids. Builder does not self-LGTM. `antiSamson` and `infiniteLife` are required `true`: classification is not a kill switch, and rebuild is not scorched earth.
 
-Banned case keys: `paymentUrl`, `checkout`, `etProof`, `alienConfirmed`, `traction`.
+Banned case keys: `paymentUrl`, `checkout`, `etProof`, `alienConfirmed`, `traction`, `restore`, `unpark`, `promoteLive`, `tipPromote`.
 
 ## Rebuild
 

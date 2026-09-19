@@ -3,6 +3,17 @@
   "tiers": ["host", "known", "unknown", "quarantine", "archive"],
   "tickets": [
     {
+      "id": "tkt-host-1",
+      "tier": "host",
+      "status": "open",
+      "subject": "Host capability world paper",
+      "submittedBy": { "kind": "allowlisted", "agentId": "host.keeper" },
+      "capabilityAllowlist": [],
+      "presumeBreach": false,
+      "store": "directory",
+      "createdAt": "2026-09-18T20:55:00.000Z"
+    },
+    {
       "id": "tkt-known-1",
       "tier": "known",
       "status": "open",
@@ -23,6 +34,17 @@
       "presumeBreach": true,
       "store": "quarantine",
       "createdAt": "2026-09-18T21:05:00.000Z"
+    },
+    {
+      "id": "tkt-unk-arch-1",
+      "tier": "archive",
+      "status": "archived",
+      "subject": "Unsigned hop archived after quarantine",
+      "submittedBy": { "kind": "unknown" },
+      "capabilityAllowlist": [],
+      "presumeBreach": true,
+      "store": "archive",
+      "createdAt": "2026-09-18T21:20:00.000Z"
     }
   ]
 }

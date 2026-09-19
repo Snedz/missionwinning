@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://missionwinning.com/schemas/mission-galaxy/directory.json",
   "title": "Mission GALAXY Directory",
-  "description": "Closed inventory of tiers and tickets. Unknown submitters presume breach and live in quarantine. No ambient authority. No paymentUrl/checkout.",
+  "description": "Closed inventory of trust tiers and capability tickets. Unknown submitters presume breach. Archive allowlists stay empty (no poison restore). No paymentUrl/checkout.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "tiers", "tickets"],
@@ -11,7 +11,12 @@
       { "required": ["paymentUrl"] },
       { "required": ["checkout"] },
       { "required": ["clearshot"] },
-      { "required": ["traction"] }
+      { "required": ["traction"] },
+      { "required": ["restore"] },
+      { "required": ["poisonRestore"] },
+      { "required": ["unpark"] },
+      { "required": ["promoteLive"] },
+      { "required": ["tipPromote"] }
     ]
   },
   "properties": {
@@ -53,7 +58,12 @@
           { "required": ["paymentUrl"] },
           { "required": ["checkout"] },
           { "required": ["clearshot"] },
-          { "required": ["traction"] }
+          { "required": ["traction"] },
+          { "required": ["restore"] },
+          { "required": ["poisonRestore"] },
+          { "required": ["unpark"] },
+          { "required": ["promoteLive"] },
+          { "required": ["tipPromote"] }
         ]
       },
       "properties": {
@@ -78,32 +88,63 @@
         },
         "capabilityAllowlist": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "description": "Explicit grants only. Empty is the default. Missing grant = deny."
+          "items": {
+            "type": "string",
+            "enum": ["identity.read", "storage.read", "storage.write"]
+          },
+          "description": "Explicit grants only. Empty is the default. Missing grant = deny. Archive must be empty."
         },
         "presumeBreach": { "type": "boolean" },
         "store": {
           "type": "string",
           "enum": ["directory", "quarantine", "archive"]
         },
-        "createdAt": { "type": "string", "minLength": 10 }
+        "createdAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$"
+        }
       },
-      "if": {
-        "properties": {
-          "submittedBy": {
-            "properties": { "kind": { "const": "unknown" } },
-            "required": ["kind"]
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "submittedBy": {
+                "properties": { "kind": { "const": "unknown" } },
+                "required": ["kind"]
+              }
+            },
+            "required": ["submittedBy"]
+          },
+          "then": {
+            "properties": {
+              "presumeBreach": { "const": true },
+              "tier": { "type": "string", "enum": ["unknown", "quarantine", "archive"] },
+              "store": { "type": "string", "enum": ["quarantine", "archive"] }
+            }
           }
         },
-        "required": ["submittedBy"]
-      },
-      "then": {
-        "properties": {
-          "presumeBreach": { "const": true },
-          "tier": { "type": "string", "enum": ["unknown", "quarantine"] },
-          "store": { "const": "quarantine" }
+        {
+          "if": {
+            "properties": {
+              "submittedBy": {
+                "properties": { "kind": { "const": "allowlisted" } },
+                "required": ["kind"]
+              }
+            },
+            "required": ["submittedBy"]
+          },
+          "then": {
+            "properties": {
+              "presumeBreach": { "const": false },
+              "tier": { "type": "string", "enum": ["host", "known", "archive"] },
+              "submittedBy": {
+                "type": "object",
+                "required": ["kind", "agentId"]
+              }
+            }
+          }
         }
-      }
+      ]
     }
   }
 }

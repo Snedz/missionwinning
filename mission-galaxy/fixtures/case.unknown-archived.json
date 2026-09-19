@@ -1,0 +1,17 @@
+{
+  "id": "bb-unk-arch-1",
+  "ticketId": "tkt-unk-1",
+  "stage": "ARCHIVE",
+  "classification": "UNKNOWN",
+  "trinity": {
+    "builder": "builder.alpha",
+    "judge": "judge.beta",
+    "canary": "canary.gamma"
+  },
+  "antiSamson": true,
+  "infiniteLife": true,
+  "unexplainedQuotaNote": "Closed program may leave ~20% of cases UNKNOWN. Do not force KNOWN_PROSAIC.",
+  "unknownRationale": "Archived unexplained. UNKNOWN stays first-class; no cover story.",
+  "archivedAt": "2026-09-18T21:40:00.000Z",
+  "createdAt": "2026-09-18T21:10:00.000Z"
+}

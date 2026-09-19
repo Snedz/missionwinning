@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "tiers": ["host", "known", "unknown", "quarantine", "archive"],
+  "tickets": [
+    {
+      "id": "tkt-poison",
+      "tier": "archive",
+      "status": "archived",
+      "subject": "Archived grants walked back to live",
+      "submittedBy": { "kind": "allowlisted", "agentId": "builder.alpha" },
+      "capabilityAllowlist": ["identity.read"],
+      "presumeBreach": false,
+      "store": "archive",
+      "createdAt": "2026-09-18T21:30:00.000Z"
+    }
+  ]
+}

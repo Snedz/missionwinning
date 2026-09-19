@@ -6,7 +6,7 @@ Closed path for an anomaly case. Schema: [case.schema.json](case.schema.json). M
 INGEST → CLASSIFY → INSTRUMENT → RESOLVE | UNKNOWN | INSUFFICIENT → ARCHIVE
 ```
 
-`UNKNOWN` is a **terminal classification**, not a waiting room you must exit. `INSUFFICIENT` is a holding classification: the case may return to `CLASSIFY` when the named `gap` closes. `RESOLVE` is the prosaic exit (`KNOWN_PROSAIC`).
+`UNKNOWN` is a **terminal classification and a terminal stage**, not a waiting room you must exit. Stage `UNKNOWN` requires classification `UNKNOWN`. Classification `UNKNOWN` forbids `prosaicHypothesis` and forbids stage `RESOLVE`. Stage `ARCHIVE` may keep classification `UNKNOWN`. `INGEST` may omit classification. `INSUFFICIENT` is a holding classification: the case may return to `CLASSIFY` when the named `gap` closes. `RESOLVE` is the prosaic exit (`KNOWN_PROSAIC` only).
 
 ---
 

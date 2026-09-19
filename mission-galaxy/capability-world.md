@@ -36,7 +36,7 @@ Billing and photos already have host-lifecycle envelopes in Mission OS. This pap
 |-------|-----------------|---------------------|
 | `directory` | Yes, from the closed list | Paper only — no runtime in this ship |
 | `quarantine` | Must be `[]` | No |
-| `archive` | Frozen snapshot of what was granted | No |
+| `archive` | Must be `[]` — no poison restore of grants | No |
 
 Unknown submitter ⇒ `store: quarantine` ⇒ empty allowlist. Presume breach.
 

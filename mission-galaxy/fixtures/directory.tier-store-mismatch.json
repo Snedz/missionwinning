@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "tiers": ["host", "known", "unknown", "quarantine", "archive"],
+  "tickets": [
+    {
+      "id": "tkt-known-in-q",
+      "tier": "known",
+      "status": "open",
+      "subject": "Allowlisted ticket parked in quarantine store",
+      "submittedBy": { "kind": "allowlisted", "agentId": "builder.alpha" },
+      "capabilityAllowlist": ["identity.read"],
+      "presumeBreach": false,
+      "store": "quarantine",
+      "createdAt": "2026-09-18T21:31:00.000Z"
+    }
+  ]
+}
