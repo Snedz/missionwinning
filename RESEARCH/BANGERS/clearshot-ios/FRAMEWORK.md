@@ -72,3 +72,37 @@ Easiest bar in this pack. See [SELL_FIRST.md](SELL_FIRST.md).
 ## Price hypothesis
 
 **HYPOTHESIS:** $9.99 one-time or $19.99 lifetime. Do not undercut into $0.99 race. Do not invent an App Store product id.
+
+---
+
+## Overnight notes (GLM 5.3)
+
+Dated **2026-09-19**. Complementary only. Does **not** change the claim, wedge, incumbent rows, or price HYPOTHESIS above. Pays stay **0**. Checkout URL stays **none**.
+
+### Sibling offers — link, do not merge
+
+| Slug | Job | Why this folder stays separate |
+|------|-----|--------------------------------|
+| [unlock-code-utils](../unlock-code-utils/) (idea 08) | Pull Wi-Fi / gift / backup **codes** from a screenshot and format them | Opposite verb: they **copy out** a secret; we **redact** so it never leaves. Same share-sheet habit. Prefer a later *mode* only if both 14-day bars pass — not a second brand this week. |
+| [screenshot-stack-pages](../screenshot-stack-pages/) (idea 10) | Store-ready **mockup stacks** for one app listing | Beautify / frame / locale. We stay **redact-first**. Shotpop already sells both; we do not ship a megapp lander. |
+
+Do not merge the three offers into one “screenshot studio.”
+
+### MW stub (unchanged)
+
+`utility.clearshot` at `mission://minis/clearshot` stays a **reserved stub** — photos scopes, **never** `billing.read`, no UI. This paper is a standalone App Store experiment first. Do not mount the mini. Do not tell buyers it already ships in Mission Winning.
+
+### Trademark
+
+**CleanShot / ClearShot shipped-name clearance: UNKNOWN.** Official USPTO TSDR did not return a readable case row (JS client). Status API returned **401**. Secondary aggregator pages are not counsel. Working folder name stays `clearshot-ios`. Do not file as CleanShot.
+
+### IAP re-verify (first-party, this night)
+
+Confirms the competitor table; does not invent our SKU or a pay URL.
+
+| Source | Opened | Money seen |
+|--------|--------|------------|
+| Shotpop site | shotpop.app | $4.99/mo · $24.99/yr · $49.99 lifetime — unchanged |
+| ScreenCut listing | App Store `id6480429347` | IAP $5.99–$24.99 — unchanged |
+| Screenshot Editor – Blur Text | App Store `id6757922494` | $1.99 / $12.99 / Pro Lifetime $29.99 — unchanged |
+| CleanShot X pricing | cleanshot.com/pricing | Basic **$35** once; Pro **$10**/user/mo annual. Mac only. Fills the prior “open pricing before quoting” gap. Not iOS. Not our checkout. |
