@@ -166,6 +166,9 @@ test('trainer files do not brand the product or invent a checkout', () => {
     'app/api/coach/trainer/route.ts',
     'src/components/workout/SessionTrainerAsk.tsx',
     'src/components/workout/ActiveExerciseCard.tsx',
+    'src/components/coach/CoachTrainerDoor.tsx',
+    'src/components/coach/CoachFreeFormAskPanel.tsx',
+    'src/components/coach/CoachLiveVoice.tsx',
   ];
   for (const file of files) {
     const src = read(file);
@@ -179,4 +182,13 @@ test('trainer files do not brand the product or invent a checkout', () => {
   const card = read('src/components/workout/ActiveExerciseCard.tsx');
   assert.match(card, /SessionTrainerAsk/);
   assert.match(read('src/components/workout/SessionTrainerAsk.tsx'), /data-testid="trainer-ask"/);
+  const door = read('src/components/coach/CoachTrainerDoor.tsx');
+  assert.match(door, /SessionTrainerAsk/);
+  assert.match(door, /href="\/active"/);
+  assert.equal(door.includes('/bundle'), false);
+  const live = read('src/components/coach/CoachLiveVoice.tsx');
+  assert.equal((live.match(/<CoachTrainerDoor/g) ?? []).length, 2);
+  const form = read('src/components/coach/CoachFreeFormAskPanel.tsx');
+  assert.match(form, /CoachTrainerDoor/);
+  assert.equal(form.includes('/bundle'), false);
 });

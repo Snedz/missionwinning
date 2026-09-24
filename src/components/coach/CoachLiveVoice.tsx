@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mic } from 'lucide-react';
-import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
+import { CoachTrainerDoor } from '@/components/coach/CoachTrainerDoor';
 import type { PlanSession } from '@/lib/coach/types';
 import {
   buildCoachChatRequestContext,
@@ -310,7 +310,15 @@ export function CoachLiveVoice({
   };
 
   if (access === 'locked') {
-    return <CoachSoftBundleChatTip className={className} />;
+    return (
+      <section
+        id="coach-live"
+        data-testid="coach-live-voice"
+        className={cn('house-card house-live-voice', className)}
+      >
+        <CoachTrainerDoor exerciseName={todaySession?.name ?? ''} />
+      </section>
+    );
   }
 
   const status =
@@ -401,6 +409,7 @@ export function CoachLiveVoice({
           ) : null}
         </div>
       ) : null}
+      <CoachTrainerDoor exerciseName={todaySession?.name ?? ''} />
     </section>
   );
 }

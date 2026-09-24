@@ -42,6 +42,14 @@ exists. No session. No premium
 filled action stays Log set.
 Free. Offline rules still
 paint before the ask returns.
+Coach uses the same ask.
+It sits on the live voice
+surface, and on form cues
+for `/coach?ask=`. Train
+on that door opens `/active`.
+Talk still uses the premium
+chat seat. No bundle link
+on the free ask.
 
 **Mutants killed:** Gemini
 HTTP error dropping the set

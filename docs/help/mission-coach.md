@@ -21,6 +21,8 @@ If Coach shows a lock icon, see [premium-and-billing.md](premium-and-billing.md)
 
 Chat on `/coach` is Super Bundle chrome. It does not replace the week.
 
+The free **AI personal trainer** ask sits on Coach and on the open set in Train. Ask posts to the free trainer route. With no model key the set line comes back. Train on that door opens the logger. There is no checkout on that ask.
+
 ## Daily insight vs weekly plan
 
 | Feature | Where | What |
