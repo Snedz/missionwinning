@@ -131,9 +131,11 @@ export function TodayDesk() {
     };
     window.addEventListener('storage', onStorage);
     window.addEventListener('mw-journey-event', refresh);
+    window.addEventListener('mw-coach-plan-changed', refresh);
     return () => {
       window.removeEventListener('storage', onStorage);
       window.removeEventListener('mw-journey-event', refresh);
+      window.removeEventListener('mw-coach-plan-changed', refresh);
     };
   }, [refresh]);
 
