@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Optional one-line note on the Victory receipt (`.1112`).
+ * Optional one-line note on the Victory receipt (`.1114`).
  * Local. Empty is valid. Never required to leave the receipt.
  */
 

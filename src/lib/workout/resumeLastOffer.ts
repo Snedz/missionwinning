@@ -1,5 +1,5 @@
 /**
- * Resume last completed — Train chip (`.1112`).
+ * Resume last completed — Train chip (`.1114`).
  *
  * Not `sessionResume.ts`. That file keeps the open session on this device
  * (`.963`). This chip copies the newest finished log in `workoutHistory`

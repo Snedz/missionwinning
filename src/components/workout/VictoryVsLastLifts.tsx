@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Top lifts vs the previous session of the same name (`.1112`).
+ * Top lifts vs the previous session of the same name (`.1114`).
  * Up is green. Even or down is amber. First time has no status color.
  */
 
