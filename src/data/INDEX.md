@@ -11,8 +11,9 @@
 
 | File(s) | Content |
 |---------|---------|
-| `exercises.ts` | Base catalog; extended/volume-2 via `ensureFullExerciseCatalog()` |
-| `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional exercises (dynamic import from `exercises.ts`) |
+| `exercises.ts` | Base catalog; extended/volume-2/free-exercise-db via `ensureFullExerciseCatalog()` |
+| `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional house exercises (dynamic import from `exercises.ts`) |
+| `freeExerciseDb.ts`, `freeExerciseDb.curated.json`, `exercisesFreeDb.ts` | Curated Unlicense subset (`fedb-` ids). Attribution: `free-exercise-db/NOTICE.md` |
 | `exerciseEnrichment.ts` | Tags, levels, alternatives |
 | `programTemplates.ts` | Builder program templates (lazy-loaded on `/builder`) |
 | `starterPrograms.ts` | Free starter programs |

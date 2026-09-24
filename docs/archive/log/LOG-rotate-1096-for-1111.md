@@ -1,4 +1,4 @@
-Superseded live LOG section rotated 2026-09-24 for `.1112` workout CSV into local History.
+Superseded live LOG section rotated 2026-09-24 for `.1111` Library free-exercise-db absorb.
 
 ## 2026-09-15 — CapResult unknown_capability / closed door set (`.1096`)
 
