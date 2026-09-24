@@ -113,6 +113,7 @@
     "next": "^16.3.4",
     "posthog-js": "^1.434.0",
     "react": "^19.2.8",
+    "react-body-highlighter": "^2.0.5",
     "react-dom": "^19.2.8",
     "react-i18next": "^17.0.13",
     "recharts": "^2.15.4",
