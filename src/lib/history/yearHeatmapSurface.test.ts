@@ -27,6 +27,15 @@ test('History paints the year grid above the list, outside import', () => {
   assert.doesNotMatch(read('src/components/history/HistoryImport.tsx'), /HistoryYearHeatmap|yearHeatmap/);
 });
 
+test('the day page hosts the same year grid from workoutHistory', () => {
+  const page = read('src/page-components/HistoryDayPage.tsx');
+  assert.match(page, /<HistoryYearHeatmap\b/);
+  assert.match(page, /history=\{workoutHistory\}/);
+  const heat = page.indexOf('<HistoryYearHeatmap');
+  const list = page.indexOf('history-day-list');
+  assert.ok(heat >= 0 && list > heat, 'heatmap is above that day');
+});
+
 test('the grid component reads buildYearHeatmap and does not slice ISO dates', () => {
   const ui = read('src/components/history/HistoryYearHeatmap.tsx');
   assert.match(ui, /buildYearHeatmap/);

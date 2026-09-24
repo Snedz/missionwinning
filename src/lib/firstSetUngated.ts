@@ -77,7 +77,7 @@
  * `.1046` — session note on a finished History session. Never a login wall.
  * `.1047` — superset on a finished History session. Never a login wall.
  * `.1048` — open empty load is blank, not 0. Never a login wall.
- * `.1111` — year of logged days on History. Never a login wall.
+ * `.1111` — year of logged days on History and the day page. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

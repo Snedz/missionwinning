@@ -20,7 +20,8 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-09-24 — History year of logged days (`.1112`)
 
 `/history` paints a Monday-first
-year above the session list.
+year above the session list
+and above that day's rows.
 Cells are live sessions from
 `workoutHistory`
 (`workout-tracker-storage`),

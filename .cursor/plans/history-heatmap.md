@@ -14,6 +14,7 @@ History shows a Monday-first year of days that have logged sessions, above the s
 ## Placement
 
 - `HistoryYearHeatmap` mounts on `/history` after persist hydrate, above the empty invitation and above the session list.
+- The same grid mounts on `/history/[date]` after hydrate, above that day's rows. Intensity is sessions per local day, not set count.
 - The week strip scrolls to the current week on mount so a phone shows the days just logged.
 - Import stays the existing confirm dialog. The grid is not inside `HistoryImport`.
 - The month calendar, charts, and journal stay in Show all.
