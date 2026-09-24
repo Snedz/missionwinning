@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1114` Craft: open lift states this set. Empty barbell is not bodyweight. */
-export const APP_BUILD_LABEL = "2026.07-unified.1114";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1115` Craft: AI personal trainer on the open set. Dark seat stays the set line. */
+export const APP_BUILD_LABEL = "2026.07-unified.1115";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
