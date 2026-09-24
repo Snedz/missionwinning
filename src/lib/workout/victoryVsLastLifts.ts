@@ -129,7 +129,9 @@ export function topLiftDeltas(
   if (mine.size === 0) return [];
   const prior = pickPriorSameTemplate(current, history);
   const theirs = volumeByExercise(prior);
-  const ranked = [...mine.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  const ranked = [...mine.entries()].sort(
+    (a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)
+  );
   return ranked.slice(0, Math.max(0, limit)).map(([exerciseId, volume]) => {
     const priorVolume = prior && theirs.has(exerciseId) ? theirs.get(exerciseId)! : null;
     const delta = priorVolume == null ? null : volume - priorVolume;
