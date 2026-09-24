@@ -214,6 +214,11 @@ type ActiveWorkoutStrings = {
   activeAddExerciseTitle: string;
   activeApplyAllTargets: string;
   activeAskAboutForm: string;
+  /** Open-set AI personal trainer (.1115). */
+  trainerAskLabel: string;
+  trainerAskPlaceholder: string;
+  trainerAskSubmit: string;
+  trainerAskPending: string;
   activeCloseMenu: string;
   activeCoachNotesDefault: string;
   activeCoachNotesHighEffort: string;
@@ -560,6 +565,10 @@ const en: ActiveWorkoutStrings = {
   activeAddExerciseTitle: 'Add exercise',
   activeApplyAllTargets: 'Apply targets',
   activeAskAboutForm: 'Ask about form',
+  trainerAskLabel: 'AI personal trainer',
+  trainerAskPlaceholder: 'Ask about this set',
+  trainerAskSubmit: 'Ask',
+  trainerAskPending: 'Asking…',
   activeCloseMenu: 'Close menu',
   activeCoachNotesDefault: 'Rate Easy / Med / Hard after each set so Coach can learn.',
   activeCoachNotesHighEffort: 'Hard sets stacking up — leave a little in the tank if form slips.',
@@ -702,6 +711,10 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  trainerAskLabel: 'Entrenador personal con IA',
+  trainerAskPlaceholder: 'Pregunta sobre esta serie',
+  trainerAskSubmit: 'Preguntar',
+  trainerAskPending: 'Preguntando…',
   activeExerciseRestWork: 'Descanso de trabajo',
   activeExerciseRestWarmup: 'Descanso de calentamiento',
   activeExerciseRestSetAria: 'Fijar {{lane}} en {{clock}}',
@@ -937,6 +950,10 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    trainerAskLabel: 'Treinador pessoal com IA',
+    trainerAskPlaceholder: 'Pergunta sobre esta série',
+    trainerAskSubmit: 'Perguntar',
+    trainerAskPending: 'A perguntar…',
     activeExerciseRestWork: 'Descanso de trabalho',
     activeExerciseRestWarmup: 'Descanso de aquecimento',
     activeExerciseRestSetAria: 'Definir {{lane}} para {{clock}}',

@@ -28,6 +28,7 @@
 8e2. `nextDayFromLogs.ts` — stable next day (Wednesday) from the live diary, or the live plan when it owns the next calendar day (`.955`). Warmup-only sessions are not a day; mixed templates drop W (`.966`). Thin diary (1–2 live sessions) invents nothing (`.971`). Does not call `generateWeek`
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` + `postCoachChatMessage` (.445/.453/.909)
 8g. `agent/` — local RAG + MCP-shaped tools + ReAct loop for premium chat (ZDR one-shot only) — [agent/INDEX.md](agent/INDEX.md)
+8h. `trainerReply.ts` — free AI personal trainer for the open set and Coach (`.1115`). Gemini Flash when `GEMINI_API_KEY` is set, else `COACH_LLM_*`, else `sessionCoachLine`. No premium check. No checkout URL. Route: `POST /api/coach/trainer`. UI: `SessionTrainerAsk` on Train; `CoachTrainerDoor` on Coach.
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)

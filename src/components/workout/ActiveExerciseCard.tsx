@@ -2,6 +2,8 @@
 
 /**
  * One exercise block in the active logger (header + set rows + actions).
+ * Open lift states this set before the table (`.1114`).
+ * Ask under that line is the AI personal trainer (`.1115`).
  * Open lift: short written cues in-set (`.973`). Their note + pin (`.996`).
  * Quiet diary PR on the live set (`.999`).
  * Full Form guide stays behind Info. Actions in overflow.
@@ -23,7 +25,10 @@ import {
   activeSetIdxForExercise,
   resolveExerciseNextTarget,
   formatPrevSetLabels,
+  sessionSetStats,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { sessionCoachLine } from '@/lib/workout/sessionCoachLine';
+import { SessionTrainerAsk } from '@/components/workout/SessionTrainerAsk';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
 import { formatInSetPrLabels } from '@/lib/workout/inSetPr';
@@ -305,6 +310,24 @@ export function ActiveExerciseCard({
   );
   const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
   const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
+  const hardCount = sessionSetStats(exercises).hardCount;
+  const historyCite = liveSetIdx >= 0 ? prevLabels[liveSetIdx] : null;
+  const coachLine =
+    holdsActiveSet && liveSetIdx >= 0
+      ? sessionCoachLine({
+          exerciseName: exercise.name,
+          setNumber: liveSetIdx + 1,
+          setCount: exLog.sets.length,
+          reps: setInput.reps,
+          weight: setInput.weight,
+          unitLabel,
+          kind: activeSetKind,
+          rowType,
+          durationSeconds: setInput.durationSeconds,
+          hardCount,
+          bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+        })
+      : null;
   const livePlateOffer =
     holdsActiveSet && liveSetIdx >= 0
       ? setRowPlateBreakdown({
@@ -366,6 +389,30 @@ export function ActiveExerciseCard({
       />
       {skipped ? null : (
       <div className="house-exercise-body min-w-0 space-y-2">
+        {coachLine ? (
+          <>
+            <p className="house-lede house-session-coach" data-testid="session-coach-line">
+              {coachLine}
+            </p>
+            <SessionTrainerAsk
+              rulesLine={coachLine}
+              facts={{
+                exerciseName: exercise.name,
+                setNumber: liveSetIdx + 1,
+                setCount: exLog.sets.length,
+                reps: setInput.reps,
+                weight: setInput.weight,
+                unitLabel,
+                kind: activeSetKind,
+                rowType,
+                durationSeconds: setInput.durationSeconds,
+                hardCount,
+                bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+                ...(historyCite ? { historyLine: historyCite.slice(0, 160) } : {}),
+              }}
+            />
+          </>
+        ) : null}
         {showInSetCues ? (
           <InSetCueList
             lines={inSetCues.lines}

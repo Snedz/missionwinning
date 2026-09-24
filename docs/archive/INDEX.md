@@ -12,6 +12,10 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-1100-for-1115.md](./log/LOG-rotate-1100-for-1115.md) | rotated 2026-09-24 for `.1115` AI personal trainer on the open set (`.1100`) |
+| [CONTEXT-now-1099.md](./CONTEXT-now-1099.md) | `.1115` rotated the `.1099` Now bullet (remount after storage_cap) |
+| [log/LOG-rotate-1099-for-1114.md](./log/LOG-rotate-1099-for-1114.md) | rotated 2026-09-24 for `.1114` open-set coach line (`.1099`) |
+| [CONTEXT-now-1098.md](./CONTEXT-now-1098.md) | `.1114` rotated the `.1098` Now bullet (CapResult deny-code freeze) |
 | [log/LOG-rotate-1098-for-1113.md](./log/LOG-rotate-1098-for-1113.md) | rotated 2026-09-24 for `.1113` History year of logged days (`.1098`; `.1097` already filed by `.1112`) |
 | [CONTEXT-now-1097.md](./CONTEXT-now-1097.md) | `.1113` rotated the `.1097` Now bullet (CapResult storage_cap) |
 | [log/LOG-rotate-1097-for-1112.md](./log/LOG-rotate-1097-for-1112.md) | rotated 2026-09-24 for `.1112` workout CSV into local History (`.1097`; `.1096` already filed by `.1111`) |
