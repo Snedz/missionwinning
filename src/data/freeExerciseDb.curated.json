@@ -1,0 +1,1656 @@
+[
+  {
+    "id": "fedb-3-4-sit-up",
+    "name": "3/4 Sit-Up",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie down on the floor and secure your feet."
+  },
+  {
+    "id": "fedb-alternate-hammer-curl",
+    "name": "Alternate Hammer Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up with your torso upright and a dumbbell in each hand being held at arms length."
+  },
+  {
+    "id": "fedb-anti-gravity-press",
+    "name": "Anti-Gravity Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Back",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place a bar on the ground behind the head of an incline bench."
+  },
+  {
+    "id": "fedb-alternating-cable-shoulder-press",
+    "name": "Alternating Cable Shoulder Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Move the cables to the bottom of the tower and select an appropriate weight."
+  },
+  {
+    "id": "fedb-back-flyes-with-bands",
+    "name": "Back Flyes - With Bands",
+    "muscleGroups": [
+      "Shoulders",
+      "Back",
+      "Arms"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Run a band around a stationary post like that of a squat rack."
+  },
+  {
+    "id": "fedb-advanced-kettlebell-windmill",
+    "name": "Advanced Kettlebell Windmill",
+    "muscleGroups": [
+      "Core",
+      "Legs",
+      "Shoulders"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Clean and press a kettlebell overhead with one arm."
+  },
+  {
+    "id": "fedb-ab-crunch-machine",
+    "name": "Ab Crunch Machine",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Select a light resistance and sit down on the ab machine placing your feet under the pads provided and grabbing the top handles."
+  },
+  {
+    "id": "fedb-air-bike",
+    "name": "Air Bike",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie flat on the floor with your lower back pressed to the ground."
+  },
+  {
+    "id": "fedb-alternate-incline-dumbbell-curl",
+    "name": "Alternate Incline Dumbbell Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Sit down on an incline bench with a dumbbell in each hand being held at arms length."
+  },
+  {
+    "id": "fedb-barbell-ab-rollout",
+    "name": "Barbell Ab Rollout",
+    "muscleGroups": [
+      "Core",
+      "Back",
+      "Shoulders"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "For this exercise you will need to get into a pushup position, but instead of having your hands of the floor, you will be grabbing on to an Olympic barbell (loaded with 5-10 lbs on each side) instead."
+  },
+  {
+    "id": "fedb-bent-over-low-pulley-side-lateral",
+    "name": "Bent Over Low-Pulley Side Lateral",
+    "muscleGroups": [
+      "Shoulders",
+      "Back"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Select a weight and hold the handle of the low pulley with your right hand."
+  },
+  {
+    "id": "fedb-band-hip-adductions",
+    "name": "Band Hip Adductions",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Anchor a band around a solid post or other object."
+  },
+  {
+    "id": "fedb-alternating-floor-press",
+    "name": "Alternating Floor Press",
+    "muscleGroups": [
+      "Chest",
+      "Core",
+      "Shoulders"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on the floor with two kettlebells next to your shoulders."
+  },
+  {
+    "id": "fedb-butterfly",
+    "name": "Butterfly",
+    "muscleGroups": [
+      "Chest"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Sit on the machine with your back flat on the pad."
+  },
+  {
+    "id": "fedb-alternate-heel-touchers",
+    "name": "Alternate Heel Touchers",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on the floor with the knees bent and the feet on the floor around 18-24 inches apart."
+  },
+  {
+    "id": "fedb-alternating-deltoid-raise",
+    "name": "Alternating Deltoid Raise",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "In a standing position, hold a pair of dumbbells at your side."
+  },
+  {
+    "id": "fedb-barbell-ab-rollout-on-knees",
+    "name": "Barbell Ab Rollout - On Knees",
+    "muscleGroups": [
+      "Core",
+      "Back",
+      "Shoulders"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "advanced",
+    "cues": "Hold an Olympic barbell loaded with 5-10lbs on each side and kneel on the floor."
+  },
+  {
+    "id": "fedb-bosu-ball-cable-crunch-with-side-bends",
+    "name": "Bosu Ball Cable Crunch With Side Bends",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Connect a standard handle to each arm of a cable machine, and position them in the most downward position."
+  },
+  {
+    "id": "fedb-band-skull-crusher",
+    "name": "Band Skull Crusher",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure a band to the base of a rack or the bench."
+  },
+  {
+    "id": "fedb-alternating-hang-clean",
+    "name": "Alternating Hang Clean",
+    "muscleGroups": [
+      "Legs",
+      "Arms",
+      "Back"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place two kettlebells between your feet."
+  },
+  {
+    "id": "fedb-calf-press",
+    "name": "Calf Press",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Adjust the seat so that your legs are only slightly bent in the start position."
+  },
+  {
+    "id": "fedb-bent-knee-hip-raise",
+    "name": "Bent-Knee Hip Raise",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lay flat on the floor with your arms next to your sides."
+  },
+  {
+    "id": "fedb-arnold-dumbbell-press",
+    "name": "Arnold Dumbbell Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Sit on an exercise bench with back support and hold two dumbbells in front of you at about upper chest level with your palms facing your body and your elbows bent."
+  },
+  {
+    "id": "fedb-barbell-bench-press-medium-grip",
+    "name": "Barbell Bench Press - Medium Grip",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie back on a flat bench."
+  },
+  {
+    "id": "fedb-cable-chest-press",
+    "name": "Cable Chest Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Adjust the weight to an appropriate amount and be seated, grasping the handles."
+  },
+  {
+    "id": "fedb-bench-press-with-bands",
+    "name": "Bench Press - With Bands",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Using a flat bench secure a band under the leg of the bench that is nearest to your head."
+  },
+  {
+    "id": "fedb-alternating-kettlebell-press",
+    "name": "Alternating Kettlebell Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Clean two kettlebells to your shoulders."
+  },
+  {
+    "id": "fedb-calf-press-on-the-leg-press-machine",
+    "name": "Calf Press On The Leg Press Machine",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Using a leg press machine, sit down on the machine and place your legs on the platform directly in front of you at a medium (shoulder width) foot stance."
+  },
+  {
+    "id": "fedb-body-tricep-press",
+    "name": "Body Tricep Press",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Position a bar in a rack at chest height."
+  },
+  {
+    "id": "fedb-around-the-worlds",
+    "name": "Around The Worlds",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Lay down on a flat bench holding a dumbbell in each hand with the palms of the hands facing towards the ceiling."
+  },
+  {
+    "id": "fedb-barbell-curl",
+    "name": "Barbell Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up with your torso upright while holding a barbell at a shoulder-width grip."
+  },
+  {
+    "id": "fedb-cable-deadlifts",
+    "name": "Cable Deadlifts",
+    "muscleGroups": [
+      "Legs",
+      "Arms",
+      "Back"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Move the cables to the bottom of the towers and select an appropriate weight."
+  },
+  {
+    "id": "fedb-calf-raises-with-bands",
+    "name": "Calf Raises - With Bands",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Grab an exercise band and stand on it with your toes making sure that the length of the band between the foot and the arms is the same for both sides."
+  },
+  {
+    "id": "fedb-alternating-kettlebell-row",
+    "name": "Alternating Kettlebell Row",
+    "muscleGroups": [
+      "Back",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place two kettlebells in front of your feet."
+  },
+  {
+    "id": "fedb-calf-machine-shoulder-shrug",
+    "name": "Calf-Machine Shoulder Shrug",
+    "muscleGroups": [
+      "Back"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Position yourself on the calf machine so that the shoulder pads are above your shoulders."
+  },
+  {
+    "id": "fedb-body-up",
+    "name": "Body-Up",
+    "muscleGroups": [
+      "Arms",
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Assume a plank position on the ground."
+  },
+  {
+    "id": "fedb-bent-over-dumbbell-rear-delt-raise-with-head-on-bench",
+    "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up straight while holding a dumbbell in each hand and with an incline bench in front of you."
+  },
+  {
+    "id": "fedb-barbell-curls-lying-against-an-incline",
+    "name": "Barbell Curls Lying Against An Incline",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie against an incline bench, with your arms holding a barbell and hanging down in a horizontal line."
+  },
+  {
+    "id": "fedb-cable-hammer-curls-rope-attachment",
+    "name": "Cable Hammer Curls - Rope Attachment",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Attach a rope attachment to a low pulley and stand facing the machine about 12 inches away from it."
+  },
+  {
+    "id": "fedb-cross-over-with-bands",
+    "name": "Cross Over - With Bands",
+    "muscleGroups": [
+      "Chest",
+      "Arms",
+      "Shoulders"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure an exercise band around a stationary post."
+  },
+  {
+    "id": "fedb-alternating-renegade-row",
+    "name": "Alternating Renegade Row",
+    "muscleGroups": [
+      "Back",
+      "Core",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "advanced",
+    "cues": "Place two kettlebells on the floor about shoulder width apart."
+  },
+  {
+    "id": "fedb-chair-squat",
+    "name": "Chair Squat",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "To begin, first set the bar to a position that best matches your height."
+  },
+  {
+    "id": "fedb-bodyweight-squat",
+    "name": "Bodyweight Squat",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand with your feet shoulder width apart."
+  },
+  {
+    "id": "fedb-bent-over-two-dumbbell-row",
+    "name": "Bent Over Two-Dumbbell Row",
+    "muscleGroups": [
+      "Back",
+      "Arms",
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "With a dumbbell in each hand (palms facing your torso), bend your knees slightly and bring your torso forward by bending at the waist; as you bend make sure to keep your back straight until it is almost parallel to the floor."
+  },
+  {
+    "id": "fedb-barbell-deadlift",
+    "name": "Barbell Deadlift",
+    "muscleGroups": [
+      "Back",
+      "Legs",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Stand in front of a loaded barbell."
+  },
+  {
+    "id": "fedb-cable-hip-adduction",
+    "name": "Cable Hip Adduction",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand in front of a low pulley facing forward with one leg next to the pulley and the other one away."
+  },
+  {
+    "id": "fedb-external-rotation-with-band",
+    "name": "External Rotation with Band",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Choke the band around a post."
+  },
+  {
+    "id": "fedb-bent-press",
+    "name": "Bent Press",
+    "muscleGroups": [
+      "Core",
+      "Legs",
+      "Back"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "advanced",
+    "cues": "Clean a kettlebell to your shoulder."
+  },
+  {
+    "id": "fedb-decline-smith-press",
+    "name": "Decline Smith Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place a decline bench underneath the Smith machine."
+  },
+  {
+    "id": "fedb-bottoms-up",
+    "name": "Bottoms Up",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Begin by lying on your back on the ground."
+  },
+  {
+    "id": "fedb-bent-over-two-dumbbell-row-with-palms-in",
+    "name": "Bent Over Two-Dumbbell Row With Palms In",
+    "muscleGroups": [
+      "Back",
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "With a dumbbell in each hand (palms facing each other), bend your knees slightly and bring your torso forward, by bending at the waist, while keeping the back straight until it is almost parallel to the floor."
+  },
+  {
+    "id": "fedb-barbell-full-squat",
+    "name": "Barbell Full Squat",
+    "muscleGroups": [
+      "Legs",
+      "Back"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "This exercise is best performed inside a squat rack for safety purposes."
+  },
+  {
+    "id": "fedb-cable-incline-pushdown",
+    "name": "Cable Incline Pushdown",
+    "muscleGroups": [
+      "Back"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on incline an bench facing away from a high pulley machine that has a straight bar attachment on it."
+  },
+  {
+    "id": "fedb-hip-extension-with-bands",
+    "name": "Hip Extension with Bands",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure one end of the band to the lower portion of a post and attach the other to one ankle."
+  },
+  {
+    "id": "fedb-bottoms-up-clean-from-the-hang-position",
+    "name": "Bottoms-Up Clean From The Hang Position",
+    "muscleGroups": [
+      "Arms",
+      "Shoulders"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Initiate the exercise by standing upright with a kettlebell in one hand."
+  },
+  {
+    "id": "fedb-dip-machine",
+    "name": "Dip Machine",
+    "muscleGroups": [
+      "Arms",
+      "Chest",
+      "Shoulders"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Sit securely in a dip machine, select the weight and firmly grasp the handles."
+  },
+  {
+    "id": "fedb-butt-lift-bridge",
+    "name": "Butt Lift (Bridge)",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie flat on the floor on your back with the hands by your side and your knees bent."
+  },
+  {
+    "id": "fedb-bent-arm-dumbbell-pullover",
+    "name": "Bent-Arm Dumbbell Pullover",
+    "muscleGroups": [
+      "Chest",
+      "Back",
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place a dumbbell standing up on a flat bench."
+  },
+  {
+    "id": "fedb-barbell-guillotine-bench-press",
+    "name": "Barbell Guillotine Bench Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Using a medium width grip (a grip that creates a 90-degree angle in the middle of the movement between the forearms and the upper arms), lift the bar from the rack and hold it straight over your neck with your arms locked."
+  },
+  {
+    "id": "fedb-cable-incline-triceps-extension",
+    "name": "Cable Incline Triceps Extension",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on incline an bench facing away from a high pulley machine that has a straight bar attachment on it."
+  },
+  {
+    "id": "fedb-hip-flexion-with-band",
+    "name": "Hip Flexion with Band",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure one end of the band to the lower portion of a post and attach the other to one ankle."
+  },
+  {
+    "id": "fedb-double-kettlebell-alternating-hang-clean",
+    "name": "Double Kettlebell Alternating Hang Clean",
+    "muscleGroups": [
+      "Legs",
+      "Arms",
+      "Back"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place two kettlebells between your feet."
+  },
+  {
+    "id": "fedb-hack-squat",
+    "name": "Hack Squat",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place the back of your torso against the back pad of the machine and hook your shoulders under the shoulder pads provided."
+  },
+  {
+    "id": "fedb-butt-ups",
+    "name": "Butt-Ups",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Begin a pushup position but with your elbows on the ground and resting on your forearms."
+  },
+  {
+    "id": "fedb-calf-raise-on-a-dumbbell",
+    "name": "Calf Raise On A Dumbbell",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Hang on to a sturdy object for balance and stand on a dumbbell handle, preferably one with round plates so that it rolls as in this manner you have to work harder to stabilize yourself; thus increasing the effectiveness of the exercise."
+  },
+  {
+    "id": "fedb-barbell-hack-squat",
+    "name": "Barbell Hack Squat",
+    "muscleGroups": [
+      "Legs",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Stand up straight while holding a barbell behind you at arms length and your feet at shoulder width."
+  },
+  {
+    "id": "fedb-cable-internal-rotation",
+    "name": "Cable Internal Rotation",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Sit next to a low pulley sideways (with legs stretched in front of you or crossed) and grasp the single hand cable attachment with the arm nearest to the cable."
+  },
+  {
+    "id": "fedb-internal-rotation-with-band",
+    "name": "Internal Rotation with Band",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Choke the band around a post."
+  },
+  {
+    "id": "fedb-double-kettlebell-jerk",
+    "name": "Double Kettlebell Jerk",
+    "muscleGroups": [
+      "Shoulders",
+      "Legs",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Hold a kettlebell by the handle in each hand."
+  },
+  {
+    "id": "fedb-leg-extensions",
+    "name": "Leg Extensions",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "For this exercise you will need to use a leg extension machine."
+  },
+  {
+    "id": "fedb-clock-push-up",
+    "name": "Clock Push-Up",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Move into a prone position on the floor, supporting your weight on your hands and toes."
+  },
+  {
+    "id": "fedb-close-grip-dumbbell-press",
+    "name": "Close-Grip Dumbbell Press",
+    "muscleGroups": [
+      "Arms",
+      "Chest",
+      "Shoulders"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place a dumbbell standing up on a flat bench."
+  },
+  {
+    "id": "fedb-barbell-incline-bench-press-medium-grip",
+    "name": "Barbell Incline Bench Press - Medium Grip",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie back on an incline bench."
+  },
+  {
+    "id": "fedb-cable-iron-cross",
+    "name": "Cable Iron Cross",
+    "muscleGroups": [
+      "Chest"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Begin by moving the pulleys to the high position, select the resistance to be used, and take a handle in each hand."
+  },
+  {
+    "id": "fedb-lateral-raise-with-bands",
+    "name": "Lateral Raise - With Bands",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "To begin, stand on an exercise band so that tension begins at arm's length."
+  },
+  {
+    "id": "fedb-double-kettlebell-push-press",
+    "name": "Double Kettlebell Push Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Legs",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Clean two kettlebells to your shoulders."
+  },
+  {
+    "id": "fedb-leverage-chest-press",
+    "name": "Leverage Chest Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat for your height."
+  },
+  {
+    "id": "fedb-close-grip-push-up-off-of-a-dumbbell",
+    "name": "Close-Grip Push-Up off of a Dumbbell",
+    "muscleGroups": [
+      "Arms",
+      "Core",
+      "Chest"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Lie on the floor and place your hands on an upright dumbbell."
+  },
+  {
+    "id": "fedb-concentration-curls",
+    "name": "Concentration Curls",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Sit down on a flat bench with one dumbbell in front of you between your legs."
+  },
+  {
+    "id": "fedb-barbell-incline-shoulder-raise",
+    "name": "Barbell Incline Shoulder Raise",
+    "muscleGroups": [
+      "Shoulders",
+      "Chest"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie back on an Incline Bench."
+  },
+  {
+    "id": "fedb-cable-judo-flip",
+    "name": "Cable Judo Flip",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Connect a rope attachment to a tower, and move the cable to the lowest pulley position."
+  },
+  {
+    "id": "fedb-shoulder-press-with-bands",
+    "name": "Shoulder Press - With Bands",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "To begin, stand on an exercise band so that tension begins at arm's length."
+  },
+  {
+    "id": "fedb-double-kettlebell-snatch",
+    "name": "Double Kettlebell Snatch",
+    "muscleGroups": [
+      "Shoulders",
+      "Legs"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "advanced",
+    "cues": "Place two kettlebells behind your feet."
+  },
+  {
+    "id": "fedb-leverage-deadlift",
+    "name": "Leverage Deadlift",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load the pins to an appropriate weight."
+  },
+  {
+    "id": "fedb-cocoons",
+    "name": "Cocoons",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Begin by lying on your back on the ground."
+  },
+  {
+    "id": "fedb-cross-body-hammer-curl",
+    "name": "Cross Body Hammer Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up straight with a dumbbell in each hand."
+  },
+  {
+    "id": "fedb-barbell-lunge",
+    "name": "Barbell Lunge",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "This exercise is best performed inside a squat rack for safety purposes."
+  },
+  {
+    "id": "fedb-cable-lying-triceps-extension",
+    "name": "Cable Lying Triceps Extension",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on a flat bench and grasp the straight bar attachment of a low pulley with a narrow overhand grip."
+  },
+  {
+    "id": "fedb-speed-band-overhead-triceps",
+    "name": "Speed Band Overhead Triceps",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "For this exercise anchor a band to the ground."
+  },
+  {
+    "id": "fedb-double-kettlebell-windmill",
+    "name": "Double Kettlebell Windmill",
+    "muscleGroups": [
+      "Core",
+      "Legs",
+      "Shoulders"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place a kettlebell in front of your front foot and clean and press a kettlebell overhead with your opposite arm."
+  },
+  {
+    "id": "fedb-leverage-decline-chest-press",
+    "name": "Leverage Decline Chest Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat for your height."
+  },
+  {
+    "id": "fedb-cross-body-crunch",
+    "name": "Cross-Body Crunch",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie flat on your back and bend your knees about 60 degrees."
+  },
+  {
+    "id": "fedb-decline-dumbbell-bench-press",
+    "name": "Decline Dumbbell Bench Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure your legs at the end of the decline bench and lie down with a dumbbell on each hand on top of your thighs."
+  },
+  {
+    "id": "fedb-barbell-rear-delt-row",
+    "name": "Barbell Rear Delt Row",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms",
+      "Back"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up straight while holding a barbell using a wide (higher than shoulder width) and overhand (palms facing your body) grip."
+  },
+  {
+    "id": "fedb-cable-one-arm-tricep-extension",
+    "name": "Cable One Arm Tricep Extension",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "With your right hand, grasp a single handle attached to the high-cable pulley using a supinated (underhand; palms facing up) grip."
+  },
+  {
+    "id": "fedb-squats-with-bands",
+    "name": "Squats - With Bands",
+    "muscleGroups": [
+      "Legs",
+      "Back"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "To start out, make sure that the exercise band is at an even split between both the left and right side of the body."
+  },
+  {
+    "id": "fedb-extended-range-one-arm-kettlebell-floor-press",
+    "name": "Extended Range One-Arm Kettlebell Floor Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on the floor and position a kettlebell for one arm to press."
+  },
+  {
+    "id": "fedb-leverage-high-row",
+    "name": "Leverage High Row",
+    "muscleGroups": [
+      "Back"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat height so that you can just reach the handles above you."
+  },
+  {
+    "id": "fedb-crunch-hands-overhead",
+    "name": "Crunch - Hands Overhead",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie on the floor with your back flat and knees bent with around a 60-degree angle between the hamstrings and the calves."
+  },
+  {
+    "id": "fedb-decline-dumbbell-flyes",
+    "name": "Decline Dumbbell Flyes",
+    "muscleGroups": [
+      "Chest"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure your legs at the end of the decline bench and lie down with a dumbbell on each hand on top of your thighs."
+  },
+  {
+    "id": "fedb-barbell-rollout-from-bench",
+    "name": "Barbell Rollout from Bench",
+    "muscleGroups": [
+      "Core",
+      "Legs",
+      "Back"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place a loaded barbell on the ground, near the end of a bench."
+  },
+  {
+    "id": "fedb-cable-preacher-curl",
+    "name": "Cable Preacher Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place a preacher bench about 2 feet in front of a pulley machine."
+  },
+  {
+    "id": "fedb-upright-row-with-bands",
+    "name": "Upright Row - With Bands",
+    "muscleGroups": [
+      "Back",
+      "Shoulders"
+    ],
+    "equipment": "Band",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "To begin, stand on an exercise band so that tension begins at arm's length."
+  },
+  {
+    "id": "fedb-front-squats-with-two-kettlebells",
+    "name": "Front Squats With Two Kettlebells",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Clean two kettlebells to your shoulders."
+  },
+  {
+    "id": "fedb-leverage-incline-chest-press",
+    "name": "Leverage Incline Chest Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat for your height."
+  },
+  {
+    "id": "fedb-crunch-legs-on-exercise-ball",
+    "name": "Crunch - Legs On Exercise Ball",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie flat on your back with your feet resting on an exercise ball and your knees bent at a 90 degree angle."
+  },
+  {
+    "id": "fedb-decline-dumbbell-triceps-extension",
+    "name": "Decline Dumbbell Triceps Extension",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure your legs at the end of the decline bench and lie down with a dumbbell on each hand on top of your thighs."
+  },
+  {
+    "id": "fedb-barbell-seated-calf-raise",
+    "name": "Barbell Seated Calf Raise",
+    "muscleGroups": [
+      "Legs"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Place a block about 12 inches in front of a flat bench."
+  },
+  {
+    "id": "fedb-cable-rear-delt-fly",
+    "name": "Cable Rear Delt Fly",
+    "muscleGroups": [
+      "Shoulders"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Adjust the pulleys to the appropriate height and adjust the weight."
+  },
+  {
+    "id": "fedb-kettlebell-arnold-press",
+    "name": "Kettlebell Arnold Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Clean a kettlebell to your shoulder."
+  },
+  {
+    "id": "fedb-leverage-iso-row",
+    "name": "Leverage Iso Row",
+    "muscleGroups": [
+      "Back",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat height so that the handles are at chest level."
+  },
+  {
+    "id": "fedb-decline-crunch",
+    "name": "Decline Crunch",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Secure your legs at the end of the decline bench and lie down."
+  },
+  {
+    "id": "fedb-dumbbell-alternate-bicep-curl",
+    "name": "Dumbbell Alternate Bicep Curl",
+    "muscleGroups": [
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand (torso upright) with a dumbbell in each hand held at arms length."
+  },
+  {
+    "id": "fedb-barbell-shoulder-press",
+    "name": "Barbell Shoulder Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Chest",
+      "Arms"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Sit on a bench with back support in a squat rack."
+  },
+  {
+    "id": "fedb-cable-reverse-crunch",
+    "name": "Cable Reverse Crunch",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Cable",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Connect an ankle strap attachment to a low pulley cable and position a mat on the floor in front of it."
+  },
+  {
+    "id": "fedb-kettlebell-dead-clean",
+    "name": "Kettlebell Dead Clean",
+    "muscleGroups": [
+      "Legs",
+      "Back"
+    ],
+    "equipment": "Kettlebell",
+    "tags": [
+      "strength"
+    ],
+    "level": "intermediate",
+    "cues": "Place kettlebell between your feet."
+  },
+  {
+    "id": "fedb-leverage-shoulder-press",
+    "name": "Leverage Shoulder Press",
+    "muscleGroups": [
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Machine",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Load an appropriate weight onto the pins and adjust the seat for your height."
+  },
+  {
+    "id": "fedb-decline-oblique-crunch",
+    "name": "Decline Oblique Crunch",
+    "muscleGroups": [
+      "Core"
+    ],
+    "equipment": "Bodyweight",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Secure your legs at the end of the decline bench and slowly lay down on the bench."
+  },
+  {
+    "id": "fedb-dumbbell-bench-press",
+    "name": "Dumbbell Bench Press",
+    "muscleGroups": [
+      "Chest",
+      "Shoulders",
+      "Arms"
+    ],
+    "equipment": "Dumbbells",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Lie down on a flat bench with a dumbbell in each hand resting on top of your thighs."
+  },
+  {
+    "id": "fedb-barbell-shrug",
+    "name": "Barbell Shrug",
+    "muscleGroups": [
+      "Back"
+    ],
+    "equipment": "Barbell",
+    "tags": [
+      "strength"
+    ],
+    "level": "beginner",
+    "cues": "Stand up straight with your feet at shoulder width as you hold a barbell with both hands in front of you using a pronated grip (palms facing the thighs)."
+  }
+]

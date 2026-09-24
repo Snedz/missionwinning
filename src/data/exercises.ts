@@ -159,19 +159,21 @@ export const EXERCISES: Exercise[] = enrichExercises(dedupeExercises(EXERCISE_EN
 let extendedCatalogLoaded = false;
 let extendedCatalogPromise: Promise<void> | null = null;
 
-/** Lazy-load extended + volume-2 catalogs (large JSON modules). Safe to call repeatedly. */
+/** Lazy-load extended, volume-2, and the free-exercise-db subset. Safe to call repeatedly. */
 export function ensureFullExerciseCatalog(): Promise<void> {
   if (extendedCatalogLoaded) return Promise.resolve();
   if (!extendedCatalogPromise) {
     extendedCatalogPromise = Promise.all([
       import('@/data/exercisesExtended'),
       import('@/data/exercisesVolume2'),
-    ]).then(([extended, volume2]) => {
+      import('@/data/exercisesFreeDb'),
+    ]).then(([extended, volume2, freeDb]) => {
       const merged = enrichExercises(
         dedupeExercises([
           ...EXERCISE_ENTRIES,
           ...extended.EXERCISES_EXTENDED,
           ...volume2.EXERCISES_VOLUME_2,
+          ...freeDb.EXERCISES_FREE_DB,
         ])
       );
       EXERCISES.splice(0, EXERCISES.length, ...merged);

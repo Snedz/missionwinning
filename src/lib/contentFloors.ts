@@ -44,10 +44,12 @@ export const CONTENT_FLOORS = {
    */
   guidebookFreeChapters: 6,
   /**
-   * Public `/exercises/<id>` pages — the deduped catalog after
+   * Public `/exercises/<id>` pages — the deduped house catalog after
    * `ensureFullExerciseCatalog()` (126 base + 99 extended + 30 volume 2 = 254 raw,
-   * 26 ids shared, 228 unique). `app/sitemap.ts:33` awaits the splice before
-   * mapping, so this is the page count and not just an array length.
+   * 26 ids shared, 228 unique). `app/sitemap.ts` awaits the splice before
+   * mapping. The free-exercise-db subset (`fedb-` ids) is spliced in the same
+   * call and sits above this floor. The floor stays 228 so landing copy
+   * under-promises; raising it is a separate marketing edit.
    *
    * `compareStories.ts` advertised **217** in four places. The comment in
    * `app/sitemap.ts:25-31` records the *other* direction of this same bug — the
