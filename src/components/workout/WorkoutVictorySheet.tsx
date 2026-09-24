@@ -37,6 +37,8 @@ import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
+import { VictoryVsLastLifts } from '@/components/workout/VictoryVsLastLifts';
+import { VictoryDiaryLine } from '@/components/workout/VictoryDiaryLine';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { HistorySessionName } from '@/components/history/HistorySessionName';
 import { historySessionLabel } from '@/lib/workout/nameFinishedSession';
@@ -64,6 +66,8 @@ import {
   buildCloseReceiptDownload,
   triggerCloseReceiptDownload,
 } from '@/lib/workout/victoryReceipt';
+import { topLiftDeltas } from '@/lib/workout/victoryVsLastLifts';
+import { normalizeVictoryDiaryLine } from '@/lib/workout/victoryDiaryLine';
 
 type Props = {
   open: boolean;
@@ -137,6 +141,11 @@ export function WorkoutVictorySheet({
       moveSurfaceEnabled: isSurfaceEnabled('move'),
     });
   }, [summary]);
+
+  const vsLastLifts = useMemo(
+    () => (finishedLog ? topLiftDeltas(finishedLog, workoutHistory) : []),
+    [finishedLog, workoutHistory]
+  );
 
   if (!summary) return null;
 
@@ -333,6 +342,17 @@ export function WorkoutVictorySheet({
           formatVolume={(n) => fmt.num(n)}
           vsLast={summary.receipt?.vsLast ?? null}
         />
+
+        <VictoryVsLastLifts lifts={vsLastLifts} />
+
+        {workoutId ? (
+          <VictoryDiaryLine
+            value={normalizeVictoryDiaryLine(finishedLog?.sessionNote ?? '')}
+            onChange={(line) => {
+              setHistorySessionNote(workoutId, line);
+            }}
+          />
+        ) : null}
 
         {summary.receipt ? (
           <VictoryReceiptStrip

@@ -29,7 +29,10 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9d. `sessionNote.ts` — optional private session diary; empty invents nothing; cloud upsert omits it (`.982`); History detail can patch a finished log (`.1046`)  
 10. `activeWorkoutHelpers.ts` — barrel (`.1106`). Bodies: `activeSessionView.ts` (next-set, open-idx, progress, post-session path), `activeDial.ts` (last-session / prev / dial / next-target / logged-line), `activeConsole.ts` (`buildConsoleSet` / dock / form-guide / swap rank), `activeMenuGates.ts` (`shouldShow*` / skip / volume-trim). Import paths stay on the barrel. `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939`); Prev matches working-set index and stays quiet on warmup (`.966`)  
 10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
-10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
+10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)
+10a0. `resumeLastOffer.ts` — Train chip when history has a finished log and today has no logged set (`.1112`). Prefill keeps last weights editable. Tone is Session 2 — lock the habit. Logged work is not replaced.
+10a0b. `victoryVsLastLifts.ts` — top lifts vs the previous session of the same template name (`.1112`). Up is green, even or down is amber, first time has no status color.
+10a0c. `victoryDiaryLine.ts` — optional one-line Victory note (`.1112`). Empty is valid. Never blocks save.  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10a2b. `writeTodayComposeSession.ts` — Start writes today's session before Train opens. Honor saved → last → Coach peek → Just Go with last loads. `/active` writes this in `useLayoutEffect` (hydrate does not own the canvas). `composeNextSet` paints Log set from the compose when the store is empty — persist does not own first paint. `composeSidecarWorkout` paints the sidecar the same way. `composeFormGuideSheet` opens Form guide from the painted compose. Overlay portals when open — no mount wait. Persist merge keeps that compose over a null rehydrate. Empty active sessions are replaced.  
 10a4. `startAgain.ts` — session-out Start this again from a finished log (`.991`). Wraps `templateFromCompletedLog` + `protectLiveStart`. Empty invents nothing. Not a shop.  
@@ -137,6 +140,9 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeSessionFinish.test.ts` | Log-set rest/PR + Victory assembly including receipt |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats — imports the barrel; bodies in `activeSessionView` / `activeDial` / `activeConsole` / `activeMenuGates` (`.1106`) |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
+| `resumeLastOffer.test.ts` | Prefill weights stay editable; logged work hides the chip (`.1112`) |
+| `resumeLastSurface.test.ts` | Train chip + Victory green/amber + diary does not gate Next (`.1112`) |
+| `victoryVsLastLifts.test.ts` | Same-name volume delta; first time has no red class; diary never blocks save (`.1112`) |
 | `honorSavedRoutine.test.ts` | Save then Start uses their routine; Wednesday cite does not overwrite a saved PPL; empty invents nothing (`.960`) |
 | `startAgain.test.ts` | Finished log → Start; empty / live-keep invent nothing (`.991`) |
 | `startAgainSurface.test.ts` | Receipt keeps Start this again; History Repeat is `.1026`; Today stays one Start (`.991`) |

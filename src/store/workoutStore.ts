@@ -64,6 +64,10 @@ import { applyMoveSessionDay } from "@/lib/workout/moveSessionDay";
 import { applyCopySessionDay } from "@/lib/workout/copySessionDay";
 import { localDateKey } from "@/lib/time/localDate";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
+import {
+  nextActiveFromResumeLast,
+  sessionHasLoggedWork,
+} from "@/lib/workout/resumeLastOffer";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites } from "@/store/persistDedupe";
@@ -126,6 +130,8 @@ interface WorkoutState {
   deleteSavedWorkout: (id: string) => void;
   startWorkout: (name: string, exercises: WorkoutExerciseTemplate[], workoutId?: string) => void;
   startEmptyWorkout: () => void;
+  /** Replace an unlogged live session with the last finished list. Logged work stays. */
+  applyResumeLastPrefill: (name: string, exercises: WorkoutExerciseTemplate[]) => boolean;
   cancelActiveWorkout: () => void;
   completeActiveWorkout: () => CompletedWorkoutLog | null;
   addExerciseToActive: (exerciseId: string, muscleGroups?: import('@/types').MuscleGroup[]) => void;
@@ -375,6 +381,25 @@ export const useWorkoutStore = create<WorkoutState>()(
           pendingRemoteOpenSession: null,
         });
         enqueueOpenSession(snapshotFromActive(active));
+      },
+
+      applyResumeLastPrefill: (name, exercises) => {
+        if (!exercises.length || sessionHasLoggedWork(get().activeWorkout)) return false;
+        const live = get().activeWorkout;
+        if (!live) {
+          get().startWorkout(name, exercises);
+          return !!get().activeWorkout && !sessionHasLoggedWork(get().activeWorkout);
+        }
+        const next = nextActiveFromResumeLast(live, {
+          name,
+          exercises,
+          weightsEditable: true,
+        });
+        if (!next) return false;
+        const active = touchOpenSession(next);
+        set({ activeWorkout: active });
+        enqueueOpenSession(snapshotFromActive(active));
+        return true;
       },
 
       cancelActiveWorkout: () => {
