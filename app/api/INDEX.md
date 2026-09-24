@@ -70,6 +70,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
+| `coach/session-trainer` | POST | LLM branch: app access + premium + `daily_insight` cap. Signed-out gets the library answer | 12/min + 8 KiB | Zod `sessionTrainerSchema`. Free model `gemini-2.5-flash` when a Gemini key is set; else `COACH_LLM_*` |
 | `coach/daily-insight` | POST | session or gate app access; **LLM branch: premium + daily quota** (`.188`) | 12/min + 32 KiB + daily quota | Zod |
 | `coach/plan-voice` | POST | session or gate app access + premium (LLM branch only) + daily quota | 6/min + 64 KiB | Zod |
 | `coach/trainer` | POST | public (no session, no premium) | 12/min + 8 KiB | Zod `coachTrainerSchema`; Gemini Flash if `GEMINI_API_KEY`, else `COACH_LLM_*`, else the set line; no 402 |
