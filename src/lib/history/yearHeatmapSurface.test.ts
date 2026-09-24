@@ -6,6 +6,25 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import i18n from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { HistoryYearHeatmap } from '@/components/history/HistoryYearHeatmap';
+
+i18n.use(initReactI18next).init({
+  lng: 'en',
+  fallbackLng: 'en',
+  resources: { en: { translation: {} } },
+  interpolation: { escapeValue: false },
+  initImmediate: false,
+});
+
+function paint(history: { completedAt: string; deletedAt?: string | null }[]) {
+  return renderToStaticMarkup(
+    createElement(I18nextProvider, { i18n }, createElement(HistoryYearHeatmap, { history }))
+  );
+}
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (rel: string) => readFileSync(path.join(root, rel), 'utf8');
@@ -34,6 +53,25 @@ test('the day page hosts the same year grid from workoutHistory', () => {
   const heat = page.indexOf('<HistoryYearHeatmap');
   const list = page.indexOf('history-day-list');
   assert.ok(heat >= 0 && list > heat, 'heatmap is above that day');
+});
+
+test('the grid component paints an empty year and a live day', () => {
+  const empty = paint([]);
+  assert.match(empty, /data-testid="history-year-heatmap"/);
+  assert.match(empty, /data-empty="true"/);
+  assert.match(empty, /No sessions in this year/);
+  assert.doesNotMatch(empty, /href="\/history\//);
+
+  const filled = paint([
+    { completedAt: new Date().toISOString() },
+    { completedAt: new Date().toISOString(), deletedAt: new Date().toISOString() },
+  ]);
+  assert.match(filled, /data-empty="false"/);
+  assert.match(filled, /data-sessions="1"/);
+  assert.match(filled, /data-days="1"/);
+  assert.match(filled, /1 day/);
+  assert.match(filled, /data-sessions="1" data-level="1"/);
+  assert.match(filled, /href="\/history\/\d{4}-\d{2}-\d{2}"/);
 });
 
 test('the grid component reads buildYearHeatmap and does not slice ISO dates', () => {
