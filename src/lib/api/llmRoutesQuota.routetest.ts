@@ -212,8 +212,11 @@ describe('LLM route spend gates (.188 wiring)', () => {
     planLabel: 'Legs',
   };
 
-  it('session-trainer: a signed-out caller gets the library answer and does not call a model', async () => {
-    setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
+  it('session-trainer: no key stays on the library line and does not call a model', async () => {
+    setTestEnv('GEMINI_API_KEY', undefined);
+    setTestEnv('GOOGLE_GENERATIVE_AI_API_KEY', undefined);
+    setTestEnv('COACH_LLM_API_URL', undefined);
+    setTestEnv('COACH_LLM_API_KEY', undefined);
     let calls = 0;
     const original = globalThis.fetch;
     globalThis.fetch = async () => {
@@ -238,16 +241,40 @@ describe('LLM route spend gates (.188 wiring)', () => {
     }
   });
 
+  it('session-trainer: free beta off, signed-out, does not spend', async () => {
+    setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
+    setTestEnv('NEXT_PUBLIC_FREE_BETA', 'false');
+    let calls = 0;
+    const original = globalThis.fetch;
+    globalThis.fetch = async () => {
+      calls += 1;
+      throw new Error('model should not be called');
+    };
+    try {
+      const res = await post(
+        sessionTrainerPost,
+        'http://localhost/api/coach/session-trainer',
+        TRAINER_BODY,
+        '10.2.0.4'
+      );
+      assert.equal(res.status, 200);
+      const data = (await res.json()) as { source: string };
+      assert.equal(data.source, 'library');
+      assert.equal(calls, 0);
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
+
   it('session-trainer: an exhausted daily cap degrades to library, never 429', async () => {
     setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
     setTestEnv('LLM_DAILY_CAP_DAILY_INSIGHT', '0');
-    const res = await post(
-      sessionTrainerPost,
-      'http://localhost/api/coach/session-trainer',
-      TRAINER_BODY,
-      '10.2.0.2',
-      { cookies: gateCookies() }
-    );
+      const res = await post(
+        sessionTrainerPost,
+        'http://localhost/api/coach/session-trainer',
+        TRAINER_BODY,
+        '10.2.0.2'
+      );
     assert.equal(res.status, 200);
     const data = (await res.json()) as { source: string; reason?: string; model: string | null };
     assert.equal(data.source, 'library');
@@ -287,8 +314,7 @@ describe('LLM route spend gates (.188 wiring)', () => {
         sessionTrainerPost,
         'http://localhost/api/coach/session-trainer',
         TRAINER_BODY,
-        '10.2.0.3',
-        { cookies: gateCookies() }
+        '10.2.0.3'
       );
       assert.equal(res.status, 200);
       const data = (await res.json()) as { source: string; model: string; line: string };

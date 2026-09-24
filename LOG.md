@@ -35,13 +35,21 @@ if that is configured. Else
 the library line. A model
 line that changes the lift
 or the load is dropped.
-Signed-out callers and an
-exhausted daily cap stay on
-the library answer (200, not
-401 or 429). The cap is the
-existing daily-insight
+The free logger does not
+need a gate cookie. Free
+beta entitles the signed-out
+caller, so the same Flash
+line is the one they hear.
+Beta off and signed-out
+stays on the library line.
+An exhausted daily cap stays
+on the library answer (200,
+not 401 or 429). The cap is
+the existing daily-insight
 window so the ledger feature
-list stays closed.
+list stays closed. The card
+sends `deviceId` for that
+meter only.
 
 The card does not add a
 filled action. Library is a
@@ -54,8 +62,9 @@ weight printed as 0 kg; a
 model line with a different
 load kept; another product
 name kept; a signed-out
-caller still hitting the
-model; quota exhaustion
+caller hitting the model
+with free beta off; a call
+with no key; quota exhaustion
 returning 429; `GEMINI_MODEL`
 pointing off the Gemini host.
 

@@ -155,7 +155,7 @@ All LLM branches are metered per identity since `.188`: token counts (never cont
 
 | | |
 |--|--|
-| Auth | LLM branch: `hasAppAccess` + premium (free-beta bypass counts) + the `daily_insight` daily cap. Signed-out callers still get `{ source: 'library', line: null }` — the card already has the set, the cue, and the plan |
+| Auth | No gate cookie. LLM branch: a configured key + premium (free-beta bypass counts, so the signed-out logger gets the line) + the `daily_insight` daily cap. No key, beta off, or over cap: `{ source: 'library', line: null }` |
 | Rate | 12/min/IP + daily cap on the LLM branch (shared with daily insight; no new ledger feature) |
 | Schema | `sessionTrainerSchema` |
 | Model | `gemini-2.5-flash` (`generateContent`) when `GEMINI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is set. Else `COACH_LLM_*`. A line that changes the lift or the load is dropped |

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import {
   formatTrainerLoad,
   libraryFormCue,
@@ -97,6 +98,7 @@ export function SessionTrainerCard({ seed, surface }: Props) {
             setsLeft,
             formCue: cue,
             planLabel,
+            deviceId: getOrCreateDeviceId(),
           }),
         });
         if (!res.ok) return;
