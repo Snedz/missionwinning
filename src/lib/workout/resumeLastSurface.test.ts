@@ -27,6 +27,9 @@ test('Train mounts Resume last and the copy stays calm', () => {
     .filter((line) => /RESUME_LAST_(CHIP_LABEL|SAME_LABEL|TONE) =/.test(line));
   assert.equal(copyLines.length, 3);
   assert.doesNotMatch(copyLines.join('\n'), GUILT);
+  assert.match(offer, /from '@\/lib\/workout\/historyRetrain'/);
+  const offerImports = offer.split('\n').filter((line) => line.startsWith('import '));
+  assert.doesNotMatch(offerImports.join('\n'), /sessionResume|decideThisDeviceResume|protectLiveStart/);
   assert.doesNotMatch(chip, /getUser\(|SignInPrompt|paymentUrl/);
   assert.doesNotMatch(page, /free-exercise-db/);
 });

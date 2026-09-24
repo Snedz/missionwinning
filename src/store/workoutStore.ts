@@ -384,6 +384,9 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       applyResumeLastPrefill: (name, exercises) => {
+        // Last completed log as a new unlogged template. Not decideThisDeviceResume.
+        // Logged sets stay. An empty compose is rewritten in place so Start's
+        // protectLiveStart keep does not mint a second open session.
         if (!exercises.length || sessionHasLoggedWork(get().activeWorkout)) return false;
         const live = get().activeWorkout;
         if (!live) {

@@ -1,14 +1,14 @@
 /**
- * Resume last — Train chip (`.1112`).
+ * Resume last completed — Train chip (`.1112`).
  *
- * History has a finished session and today has no logged sets: offer the
- * prior exercise list with last weights. Those numbers are a starting point.
- * The set row can change them. Empty invents nothing. The tone line does not scold.
+ * Not `sessionResume.ts`. That file keeps the open session on this device
+ * (`.963`). This chip copies the newest finished log in `workoutHistory`
+ * through `templateFromCompletedLog` and starts that list unlogged.
+ * Weights stay editable. Empty invents nothing. The tone line does not scold.
  */
 
 import type { ActiveWorkout, CompletedWorkoutLog, WorkoutExerciseTemplate } from '@/types';
-import { workingSets } from '@/lib/workout/setMath';
-import { stripOrphanGroups } from '@/lib/workout/superset';
+import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 
 export const RESUME_LAST_CHIP_LABEL = 'Resume last';
 export const RESUME_LAST_SAME_LABEL = 'Same as last time';
@@ -50,36 +50,17 @@ export function resumeLastCopyIsCalm(): boolean {
 }
 
 /**
- * Newest viable log → template. Warmup-only and tombstones invent nothing.
- * Reps stay the logged count. Weight stays the logged load, including 0.
+ * One finished log → start template. Warmup-only and tombstones invent nothing.
+ * Structure comes from `templateFromCompletedLog` (same lift ids, working sets,
+ * last loads). This does not restore an open session.
  */
 export function prefillFromPriorSession(
   log: Pick<CompletedWorkoutLog, 'workoutName' | 'exercises' | 'deletedAt'> | null | undefined
 ): ResumeLastPrefill | null {
-  if (!log || log.deletedAt) return null;
-  if (!log.exercises?.length) return null;
-
-  const exercises: WorkoutExerciseTemplate[] = [];
-  for (const ex of log.exercises) {
-    if (!ex.exerciseId) continue;
-    const sets = workingSets(ex.sets ?? [])
-      .map((s) => ({
-        reps: typeof s.reps === 'number' && s.reps > 0 ? s.reps : 0,
-        weight: typeof s.weight === 'number' && s.weight >= 0 ? s.weight : 0,
-      }))
-      .filter((s) => s.reps > 0);
-    if (sets.length === 0) continue;
-    exercises.push({
-      exerciseId: ex.exerciseId,
-      sets,
-      ...(ex.supersetGroup?.trim() ? { supersetGroup: ex.supersetGroup.trim() } : {}),
-    });
-  }
-
-  const kept = stripOrphanGroups(exercises);
-  if (kept.length === 0) return null;
-  const name = (log.workoutName || 'Session').trim() || 'Session';
-  return { name, exercises: kept, weightsEditable: true };
+  if (!log) return null;
+  const template = templateFromCompletedLog(log);
+  if (!template) return null;
+  return { name: template.name, exercises: template.exercises, weightsEditable: true };
 }
 
 function completedAtMs(log: CompletedWorkoutLog): number {
