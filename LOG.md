@@ -17,6 +17,59 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-09-24 — Open set states what to do (`.1114`)
+
+On Train, the open lift
+states this set in one line:
+the number, the movement,
+and the load on the dial.
+A blank name is silence.
+An empty barbell is not
+bodyweight and not `0 kg`.
+Warm-up, drop, and a last
+clean rep say so. After
+several hard sets a work
+set says to leave a little
+if the bar slows. Warm-up,
+drop, and last-clean-rep
+do not add that tail.
+The sentence is
+`sessionCoachLine`. The
+card does not keep a second
+copy. Log set stays the
+filled action. Free. Offline.
+No account. No model.
+
+The shape follows two
+license-fit peers and copies
+neither: free-exercise-db
+(Unlicense) keeps one short
+sentence or nothing;
+sets-n-reps (MIT) treats a
+set as the weight and reps
+already on the row, and a
+null weight stays unset.
+
+**Mutants killed:** blank
+name still speaks; set 0 or
+past the end still speaks;
+barbell weight 0 says BW or
+`0 kg`; warmup with hard
+sets still adds the tank
+line; a failure set says
+"failure"; hard-count 3 on
+a work set drops the tank
+line; a line breaks the
+return-tone contract.
+
+`[skip vercel]`. No
+tip-promote. Live www stays `.697`.
+PRIVATE_MODE stays.
+
+Label `2026.07-unified.1114`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1102-for-1122.md](docs/archive/log/LOG-rotate-1102-for-1122.md) (`.1102`), for the ≤15 entry budget.
+
 ## 2026-09-24 — Resume last chip and Victory vs-last (`.1120`)
 
 Train showed Repeat last as the
@@ -579,47 +632,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1103`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1088-for-1103.md](docs/archive/log/LOG-rotate-1088-for-1103.md) (`.1088`).
-
-## 2026-09-15 — Identity remount after inject (`.1102`)
-
-`injectIdentitySnapshot` on a
-live Health fake is
-per-instance. Unmount + remount
-binds the host snapshot again.
-Leftover inject dies —
-remounted `identity.read` is
-the host-bound envelope, not
-the override. Inject on the old
-fake after remount does not
-change remounted.read. B.read
-stays. After `storage_cap` +
-inject + remount, identity is
-still host-bound. ClearShot
-remount after inject rebinds
-its host snapshot.
-`test.noidentity` remount stays
-`scope_denied`. `.1093` closed
-live dual-mount isolation.
-`.1099` closed leftover
-storage occupancy. Isolation:
-coach / store / HomePage /
-ActiveWorkout stay blind.
-
-**Mutants killed:** remount
-returning leftover inject or
-throwing; remount rewriting
-B.read; old-fake inject after
-remount leaking; cap+inject
-leftover surviving remount;
-ClearShot leftover inject
-surviving; noidentity remount
-gaining a snapshot; HOP.md
-carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1102`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1087-for-1102.md](docs/archive/log/LOG-rotate-1087-for-1102.md) (`.1087`).
