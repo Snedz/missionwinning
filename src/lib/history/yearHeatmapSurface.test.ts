@@ -12,12 +12,11 @@ import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { HistoryYearHeatmap } from '@/components/history/HistoryYearHeatmap';
 
-i18n.use(initReactI18next).init({
+void i18n.use(initReactI18next).init({
   lng: 'en',
   fallbackLng: 'en',
   resources: { en: { translation: {} } },
   interpolation: { escapeValue: false },
-  initImmediate: false,
 });
 
 function paint(history: { completedAt: string; deletedAt?: string | null }[]) {
