@@ -8,15 +8,16 @@
 2. `searchHistory.ts` — find a past session (`.1008`); empty query invents nothing
 3. `exportDiary.ts` — export this diary (`.1011`); empty invents nothing
 4. `importDiary.ts` — import that file back (`.1013`); confirm-gated; empty invents nothing
-5. `exportSession.ts` — this session as a file they own (`.1016`); empty / tomb invents nothing
-6. `monthTheyOwn.ts` — tap a live day (`.1018`); empty-day log (`.1028`); tombs out; start-from never erases the month
-7. `exportMonth.ts` — this month as a file they own (`.1029`); empty / junk invents nothing
-8. `thisMonthCalendar.ts` — This month on the calendar (`.1031`); empty / junk invents nothing; already-this-month is noop
-9. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
-10. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
-11. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
-12. `yearHeatmap.ts` — 53 Monday-first weeks of live session counts (`.1111`); blank is not missed
-13. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
+5. `importSessionCsv.ts` — workout CSV into local History (`.1112`); session export, set-table on the same parser; confirm-gated merge; empty invents nothing
+6. `exportSession.ts` — this session as a file they own (`.1016`); empty / tomb invents nothing
+7. `monthTheyOwn.ts` — tap a live day (`.1018`); empty-day log (`.1028`); tombs out; start-from never erases the month
+8. `exportMonth.ts` — this month as a file they own (`.1029`); empty / junk invents nothing
+9. `thisMonthCalendar.ts` — This month on the History calendar (`.1031`); empty / junk invents nothing; already-this-month is noop
+10. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
+11. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
+12. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
+13. `yearHeatmap.ts` — 53 Monday-first weeks of live session counts (`.1113`); blank is not missed
+14. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 
@@ -26,6 +27,7 @@
 | `searchHistory.ts` | Find a past session (`.1008`). Empty query invents nothing. Title / template / date / lift / note. Tombs stay out. |
 | `exportDiary.ts` | Export this diary (`.1011`). Honest logged fields. Tombs stay out. Start-from does not shrink the file. Empty invents nothing. |
 | `importDiary.ts` | Our export comes back (`.1013`). Confirm-gated merge of the file export wrote. Empty invents nothing. |
+| `importSessionCsv.ts` | Workout CSV into local History (`.1112`). Session export, plus set-table on the same parser. Confirm-gated merge. Library id when the name matches loosely. Empty invents nothing. |
 | `exportSession.ts` | This session as a file they own (`.1016`). One finished History log. Reuses `decideExportDiary` columns. Empty / missing / tomb invents nothing. |
 | `monthTheyOwn.ts` | Month they own (`.1018`). Live-day facts + tap select. Empty-day log onto that date (`.1028`). Tombs out. Start-from ignored. Empty invents nothing. Not a fire count. |
 | `exportMonth.ts` | This month as a file they own (`.1029`). Reuses `decideExportDiary` columns. Empty / junk invents nothing. |
@@ -33,7 +35,7 @@
 | `daySessionCount.ts` | Trained day live session count (`.1032`). Prints how many live sessions with the dumbbell. Empty / junk invents nothing. Never a fire. |
 | `monthSessionCount.ts` | Month live session count (`.1033`). Prints how many live sessions for the month on screen. Empty / junk invents nothing. Never a fire-zero. Sessions, not training days. |
 | `monthGrid.ts` | Month grid vocabulary |
-| `yearHeatmap.ts` | Year of logged days (`.1111`). Reuses `trainedDayKeys`. 53 Monday-first weeks. Blank is not missed. |
+| `yearHeatmap.ts` | Year of logged days (`.1113`). Reuses `trainedDayKeys`. 53 Monday-first weeks. Blank is not missed. |
 | `guideHistory561.test.ts` | History empty-copy honesty |
 | `emptyDayLogSurface.test.ts` | Empty month day plus / log-onto-this-day; overflow `.1000` stays; Today one Start (`.1028`) |
 | `exportMonth.test.ts` | This month as a file they own: empty disables Save; paging changes the file (`.1029`) |

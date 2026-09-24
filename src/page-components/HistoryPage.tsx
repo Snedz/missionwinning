@@ -60,6 +60,7 @@ import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercise
 import { HistoryStartFrom } from '@/components/history/HistoryStartFrom';
 import { HistoryExport } from '@/components/history/HistoryExport';
 import { HistoryImport } from '@/components/history/HistoryImport';
+import { HistorySessionCsvImport } from '@/components/history/HistorySessionCsvImport';
 import {
   decideEditSave,
   type FinishedSessionDraft,
@@ -142,6 +143,7 @@ export function HistoryPage() {
   const [startFromOpen, setStartFromOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [sessionCsvOpen, setSessionCsvOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
@@ -203,6 +205,12 @@ export function HistoryPage() {
 
   const openImport = () => {
     setImportOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const openSessionCsv = () => {
+    setSessionCsvOpen(true);
     setSelected(null);
     setEditing(false);
   };
@@ -519,6 +527,14 @@ export function HistoryPage() {
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
           </button>
+          <button
+            type="button"
+            className="house-btn house-btn-ghost mt-2 min-h-[44px] w-full tap-target"
+            data-testid="session-history-csv-open"
+            onClick={openSessionCsv}
+          >
+            {t('historySessionCsv', { defaultValue: 'Import workout CSV' })}
+          </button>
           {deletedHistory.length > 0 ? (
             <button
               type="button"
@@ -571,6 +587,14 @@ export function HistoryPage() {
             onClick={openImport}
           >
             {t('historyImport', { defaultValue: 'Import this diary' })}
+          </button>
+          <button
+            type="button"
+            className="house-btn house-btn-ghost min-h-[44px] w-full tap-target"
+            data-testid="session-history-csv-open"
+            onClick={openSessionCsv}
+          >
+            {t('historySessionCsv', { defaultValue: 'Import workout CSV' })}
           </button>
           {deletedHistory.length > 0 ? (
             <button
@@ -1347,6 +1371,35 @@ export function HistoryPage() {
                 setImportOpen(false);
               }}
               onCancel={() => setImportOpen(false)}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={sessionCsvOpen} onOpenChange={(open) => !open && setSessionCsvOpen(false)}>
+        <DialogContent
+          className="max-w-md max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-csv-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historySessionCsvTitle', { defaultValue: 'Import a workout CSV' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historySessionCsvDesc', {
+                defaultValue:
+                  'Bring a workout CSV onto this device. No account. Confirm before it writes. The file you saved here still uses Import this diary.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {sessionCsvOpen ? (
+            <HistorySessionCsvImport
+              history={workoutHistory}
+              onApply={(next) => {
+                applyImportedHistory(next);
+                setSessionCsvOpen(false);
+              }}
+              onCancel={() => setSessionCsvOpen(false)}
             />
           ) : null}
         </DialogContent>

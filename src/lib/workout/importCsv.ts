@@ -133,31 +133,79 @@ export function detectCsvFormat(text: string): CsvFormat | null {
 }
 
 /**
- * Catalog match by normalised name, with the equipment parenthetical stripped —
- * the set-table logger writes "Bench Press (Barbell)", the catalog says "Bench Press". A name that
- * matches nothing becomes a slug id, which is how custom exercises already work; the
- * set is preserved either way. Matching must never be the reason a set is lost.
+ * Catalog match by normalised name. Parenthetical equipment is ignored
+ * (`Bench Press (Barbell)` → `Bench Press`). A unique singular/plural hits
+ * (`Squat` → `Squats` when that is the only catalog name). A miss becomes a
+ * slug, which is how custom exercises already work; the set is preserved
+ * either way. Matching must never be the reason a set is lost.
+ *
+ * The index is rebuilt when `EXERCISES.length` changes so a later catalog
+ * splice is visible. This function does not edit the seed list. House names
+ * stay first: the first id for a normalised name wins.
  */
-const CATALOG_BY_NAME = new Map<string, string>(
-  EXERCISES.map((e) => [e.name.trim().toLowerCase(), e.id])
-);
 const CATALOG_BY_ID = new Map<string, string>(EXERCISES.map((e) => [e.id, e.name]));
+
+function normalizeExerciseLookupName(raw: string): string {
+  return raw
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function singularExercisePhrase(phrase: string): string {
+  return phrase
+    .split(' ')
+    .map((word) =>
+      word.length > 3 && word.endsWith('s') && !word.endsWith('ss') ? word.slice(0, -1) : word
+    )
+    .join(' ');
+}
+
+type CatalogNameIndex = {
+  size: number;
+  byName: Map<string, string>;
+  bySingular: Map<string, string>;
+};
+
+let catalogNameIndex: CatalogNameIndex | null = null;
+
+function catalogNameIndexNow(): CatalogNameIndex {
+  if (catalogNameIndex && catalogNameIndex.size === EXERCISES.length) return catalogNameIndex;
+  const byName = new Map<string, string>();
+  const singularOwners = new Map<string, string[]>();
+  for (const exercise of EXERCISES) {
+    const norm = normalizeExerciseLookupName(exercise.name);
+    if (norm && !byName.has(norm)) byName.set(norm, exercise.id);
+    const singular = singularExercisePhrase(norm);
+    if (!singular) continue;
+    const owners = singularOwners.get(singular) ?? [];
+    owners.push(exercise.id);
+    singularOwners.set(singular, owners);
+  }
+  const bySingular = new Map<string, string>();
+  for (const [singular, owners] of singularOwners) {
+    const unique = [...new Set(owners)];
+    if (unique.length === 1) bySingular.set(singular, unique[0]);
+  }
+  catalogNameIndex = { size: EXERCISES.length, byName, bySingular };
+  return catalogNameIndex;
+}
 
 export function exerciseNameForId(id: string): string {
   return CATALOG_BY_ID.get(id) ?? id;
 }
 
 export function exerciseIdForName(rawName: string): string {
-  const name = rawName.trim();
-  const lower = name.toLowerCase();
-  const direct = CATALOG_BY_NAME.get(lower);
+  const norm = normalizeExerciseLookupName(rawName);
+  if (!norm) return 'unknown-exercise';
+  const index = catalogNameIndexNow();
+  const direct = index.byName.get(norm);
   if (direct) return direct;
-  const stripped = lower.replace(/\s*\([^)]*\)\s*$/, '').trim();
-  const viaStripped = CATALOG_BY_NAME.get(stripped);
-  if (viaStripped) return viaStripped;
-  const slug = stripped
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+  const viaSingular = index.bySingular.get(singularExercisePhrase(norm));
+  if (viaSingular) return viaSingular;
+  const slug = norm.replace(/ /g, '-');
   return slug || 'unknown-exercise';
 }
 
@@ -375,6 +423,7 @@ function parseSetTableA(records: string[][], units: UnitsPref, newId: () => stri
   const iLbs = idx('weight_lbs');
   const iReps = idx('reps');
   const iRpe = idx('rpe');
+  const iNote = idx('exercise_notes');
   if (iTitle < 0 || iEx < 0) {
     return { workouts: [], format: 'set-table-a', skippedRows: 0, error: 'missing_columns' };
   }
@@ -402,6 +451,7 @@ function parseSetTableA(records: string[][], units: UnitsPref, newId: () => stri
       weight: toWebWeight(num(col(iKg)), num(col(iLbs)), units),
       kind: mapSetType(col(iType)),
       rpe: rpeNumberToCategory(num(col(iRpe))),
+      note: col(iNote) || undefined,
     });
   }
 
@@ -419,6 +469,7 @@ function parseSetTableB(records: string[][], units: UnitsPref, newId: () => stri
   const iUnit = idx('weight unit');
   const iReps = idx('reps');
   const iRpe = idx('rpe');
+  const iNote = idx('notes');
   if (iDate < 0 || iEx < 0) {
     return { workouts: [], format: 'set-table-b', skippedRows: 0, error: 'missing_columns' };
   }
@@ -453,6 +504,7 @@ function parseSetTableB(records: string[][], units: UnitsPref, newId: () => stri
       weight: toWebWeight(kg, lbs, units),
       kind: 'normal',
       rpe: rpeNumberToCategory(num(col(iRpe))),
+      note: col(iNote) || undefined,
     });
   }
 

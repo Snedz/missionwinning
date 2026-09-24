@@ -1,4 +1,4 @@
-Superseded live LOG section rotated 2026-09-24 for `.1112` History year of logged days.
+Superseded live LOG section rotated 2026-09-24 for `.1112` workout CSV into local History.
 `.1096` was already filed by `.1111`.
 
 ## 2026-09-15 — CapResult storage_cap / MiniHost write bound (`.1097`)

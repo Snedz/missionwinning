@@ -199,6 +199,16 @@ type HistoryStrings = {
   historyImportReplace: string;
   historyImportReplaceConfirm: string;
   historyImportEmptyDesc: string;
+  /** `.1112` — session-export / set-table CSV into local History. No account. */
+  historySessionCsv: string;
+  historySessionCsvTitle: string;
+  historySessionCsvDesc: string;
+  historySessionCsvPick: string;
+  historySessionCsvReady: string;
+  historySessionCsvConfirm: string;
+  historySessionCsvEmpty: string;
+  historySessionCsvUnmatched: string;
+  historySessionCsvAlready: string;
   historyStartFromCancel: string;
   /** `.1016` — one finished session as a local file. */
   historySessionFileSave: string;
@@ -215,7 +225,7 @@ type HistoryStrings = {
   /** `.1033` — live session count for the month on screen. */
   historyCalSessions: string;
   historyCalSessionsOne: string;
-  /** `.1111` — year of logged days above the History list. */
+  /** `.1113` — year of logged days above the History list. */
   historyYearHeatLabel: string;
   historyYearHeatEmpty: string;
   historyYearHeatSummary: string;
@@ -418,6 +428,19 @@ const en: HistoryStrings = {
   historyImportReplace: 'Replace diary with this file…',
   historyImportReplaceConfirm: 'Replace the diary with {{count}} sessions from this file',
   historyImportEmptyDesc: 'Empty invents nothing — pick the CSV or JSON you saved.',
+  historySessionCsv: 'Import workout CSV',
+  historySessionCsvTitle: 'Import a workout CSV',
+  historySessionCsvDesc:
+    'Bring a workout CSV onto this device. No account. Confirm before it writes. The file you saved here still uses Import this diary.',
+  historySessionCsvPick: 'Choose workout CSV',
+  historySessionCsvReady:
+    'Merge {{count}} sessions ({{sets}} sets). {{skipped}} rows skipped. Existing sessions stay.',
+  historySessionCsvConfirm: 'Merge {{count}} sessions from this file',
+  historySessionCsvEmpty:
+    'Empty invents nothing. This door reads a session export (Date, Workout Name, Exercise Name, Set Order, Weight, Reps) or a set-table export (exercise_title, set_index).',
+  historySessionCsvUnmatched:
+    '{{count}} exercise names are not in the library. The sets stay under the name in the file.',
+  historySessionCsvAlready: 'Those sessions are already in this diary. Nothing new to merge.',
   historySessionFileSave: 'Save this session CSV',
   historySessionFileJson: 'Save this session JSON',
   historyMonthEmpty: 'Nothing logged this month.',
