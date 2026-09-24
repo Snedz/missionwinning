@@ -195,6 +195,18 @@ type CoachStrings = {
   coachVoiceDeload: string;
   coachVoiceRecovery: string;
   coachVoiceHighVolume: string;
+  /** Personal trainer card — next set, library cue, plan. */
+  sessionTrainerKicker: string;
+  sessionTrainerNext: string;
+  sessionTrainerForm: string;
+  sessionTrainerPlan: string;
+  sessionTrainerNoSet: string;
+  sessionTrainerNoCue: string;
+  sessionTrainerNoPlan: string;
+  sessionTrainerLine: string;
+  sessionTrainerLineCue: string;
+  sessionTrainerLineName: string;
+  sessionTrainerLibrary: string;
   coachWhyConservative: string;
   coachAdjustTitle: string;
   coachAdjustToday: string;
@@ -626,6 +638,17 @@ const en: CoachStrings = {
   coachLoading: 'Looking at your week…',
   coachWeekDiffHeadlineOne: '1 session → {{after}}',
   coachWeekDiffHeadlineMany: '{{before}} sessions → {{after}}',
+  sessionTrainerKicker: 'Personal trainer',
+  sessionTrainerNext: 'Next set',
+  sessionTrainerForm: 'Form',
+  sessionTrainerPlan: 'Plan',
+  sessionTrainerNoSet: 'No set in front of you yet.',
+  sessionTrainerNoCue: 'No library cue for this lift.',
+  sessionTrainerNoPlan: 'No week plan yet. Log sets and Coach writes the week from your logs.',
+  sessionTrainerLine: 'Next: {{name}}, {{load}}. Log it when the rep is yours.',
+  sessionTrainerLineCue: 'Next: {{name}}, {{load}}. {{cue}}',
+  sessionTrainerLineName: 'Next: {{name}}. Log it when the rep is yours.',
+  sessionTrainerLibrary: 'Library',
 };
 
 const es: CoachStrings = {

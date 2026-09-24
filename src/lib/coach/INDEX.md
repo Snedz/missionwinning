@@ -27,6 +27,7 @@
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next); `coachSheetSessions` is that one session for first paint
 8e2. `nextDayFromLogs.ts` — stable next day (Wednesday) from the live diary, or the live plan when it owns the next calendar day (`.955`). Warmup-only sessions are not a day; mixed templates drop W (`.966`). Thin diary (1–2 live sessions) invents nothing (`.971`). Does not call `generateWeek`
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` + `postCoachChatMessage` (.445/.453/.909)
+8f2. `sessionTrainer.ts` — next set + library cue + plan facts for the personal trainer card (`.1114`). `sessionTrainerServer.ts` speaks a line via `gemini-2.5-flash` when a Gemini key is set
 8g. `agent/` — local RAG + MCP-shaped tools + ReAct loop for premium chat (ZDR one-shot only) — [agent/INDEX.md](agent/INDEX.md)
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history

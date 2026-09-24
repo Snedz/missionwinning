@@ -23,6 +23,7 @@
 | `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |
 | `CoachChatComposer.tsx` | Premium input + send/stop (`.448`) |
 | `CoachLiveVoice.tsx` | Live voice is house leftover. Talk is house-btn, not a second filled action. After this week’s session — not above the strip |
+| `SessionTrainerCard.tsx` | Next set, library form cue, and plan on Today / Train / Coach. Ghost Library link. No second filled action (`.1114`) |
 
 ## Related
 

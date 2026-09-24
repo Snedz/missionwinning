@@ -70,6 +70,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
+| `coach/session-trainer` | POST | No gate cookie. LLM when a key is set and the caller is entitled (free beta counts) + `daily_insight` cap. No key or over cap: library answer | 12/min + 8 KiB | Zod `sessionTrainerSchema`. Free model `gemini-2.5-flash` when a Gemini key is set; else `COACH_LLM_*` |
 | `coach/daily-insight` | POST | session or gate app access; **LLM branch: premium + daily quota** (`.188`) | 12/min + 32 KiB + daily quota | Zod |
 | `coach/plan-voice` | POST | session or gate app access + premium (LLM branch only) + daily quota | 6/min + 64 KiB | Zod |
 | `coach/chat` | POST | app access + premium | 10/min + 32 KiB + daily quota | Zod `coachChatSchema` (compact citations, never raw logs); ReAct + local RAG; 402 free; 503 offline; 429 `coach_quota` |

@@ -48,6 +48,8 @@ Add these for **Production** and **Preview**:
 | `COACH_LLM_REASONING_EFFORT` | Optional | `low` (default) or `medium`. `high` / `xhigh` are ignored unless `COACH_LLM_ALLOW_HIGH_REASONING=true` — 4.6 defaults high and reasoning tokens are not capped by `max_tokens` |
 | `COACH_LLM_ALLOW_HIGH_REASONING` | Optional | Founder override. Leave unset. High reasoning is the silent bill on 4.6 |
 | `COACH_LLM_REQUIRE_ZDR` | Optional | `true` recommended in production when using xAI: fail closed unless response header `x-zero-data-retention: true` |
+| `GEMINI_API_KEY` | Optional | Google AI Studio key for the session trainer. Free-tier model in code is `gemini-2.5-flash`. Never `NEXT_PUBLIC_`. `GOOGLE_GENERATIVE_AI_API_KEY` is the same key under the other common name |
+| `GEMINI_MODEL` | Optional | `gemini-*` slug only. Unset stays `gemini-2.5-flash`. A non-gemini value is ignored |
 | `LLM_DAILY_CAP_COACH_CHAT` | Optional | Per-identity daily LLM request cap (default 60). `0` disables the feature's LLM branch. Same family: `LLM_DAILY_CAP_DAILY_INSIGHT` (30) · `LLM_DAILY_CAP_PLAN_VOICE` (20) · `LLM_DAILY_CAP_DEBRIEF_VOICE` (10) · `LLM_DAILY_CAP_MEAL_VISION` (20). See `src/lib/llm/quota.ts`; spend rows land in `llm_usage` (migration `20260731`). **Daily windows need Upstash env to be real across serverless instances** — without `UPSTASH_REDIS_REST_URL`/`_TOKEN` the counter is per-instance memory (soft) |
 | `LLM_DAILY_USD_CENTS` | Optional | Per-identity daily Grok **dollar** cap in whole cents (default **15** = $0.15/day). `0` kills all LLM spend. Fail-closed if the store throws. Lifetime uses this same cap — not unlimited 4.6 |
 | `LLM_ORG_DAILY_USD_CENTS` | Optional | Org-wide daily breaker in cents (default **2500** = $25). `0` kills all LLM spend |

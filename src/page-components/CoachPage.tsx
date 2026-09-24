@@ -30,6 +30,9 @@ import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { nextDayFromLogs } from '@/lib/coach/nextDayFromLogs';
 import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { useUnits } from '@/hooks/useUnits';
+import { SessionTrainerCard } from '@/components/coach/SessionTrainerCard';
+import { sessionTrainerSeedFromPlan } from '@/lib/coach/sessionTrainer';
 
 const CoachVoiceCard = dynamic(
   () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
@@ -89,6 +92,12 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           : 'mixed strength & recovery';
 
   const freeBeta = isFreeBeta();
+  const units = useUnits();
+  const trainerSeed = sessionTrainerSeedFromPlan(
+    plan,
+    todayOffset,
+    units === 'imperial' ? 'lb' : 'kg'
+  );
   const weekEyebrow = t('coachWeekEyebrow', { defaultValue: 'This week' });
   const nextDay = nextDayFromLogs({
     history: ctx.history,
@@ -302,6 +311,10 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
         </div>
       )}
+
+      {!loading ? (
+        <SessionTrainerCard surface="coach" seed={trainerSeed} />
+      ) : null}
 
       {!loading ? (
         <CoachLiveVoice
