@@ -22,9 +22,9 @@ History shows a Monday-first year of days that have logged sessions, above the s
 ## Out of scope
 
 - Library / `src/data/free-exercise-db/`
-- Strong CSV import and the import dialog body
+- Workout CSV import and the import dialog body
 - `PRIVATE_MODE`, payments, tip-promote, program-67
-- Copying aceberg/ExerciseDiary. The grid is ours.
+- Vendored chart source. The year grid is MW-owned History UI.
 
 ## Accept
 

@@ -35,8 +35,9 @@ Fill height is the count
 (1 / 2 / 3 / 4+). The strip
 opens on the current week.
 Import stays the confirm
-dialog. Own grid.
-No ExerciseDiary paste.
+dialog. MW-owned History
+grid. No vendored chart
+source.
 
 **Mutants killed:** two same-day
 sessions counted as one; a
