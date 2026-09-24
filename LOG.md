@@ -57,8 +57,9 @@ equipment word is not stripped.
 Diary-file import is unchanged.
 Native and program-log CSV
 stay on Account. No exercise
-seed edit (library absorb
-#998).
+seed edit (Library catalog,
+#998, license and NOTICE
+unchanged).
 
 **Mutants killed:** singular
 match forced off (`Squat`

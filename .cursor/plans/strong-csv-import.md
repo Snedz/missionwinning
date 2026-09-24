@@ -32,7 +32,7 @@ One dialect first: **session export** (`set-table-b` in `src/lib/workout/importC
 2. Unique singular/plural: `Squat (Barbell)` → `squats` because the catalog name is `Squats` and no other name singularizes to `squat`. `Front Squat` stays `front-squat` (exact), not `squats`.
 3. Otherwise a slug (`Zercher Carry` → `zercher-carry`). Sets are kept. The preview says how many names missed the library.
 
-Sibling library absorb (PR #998) owns exercise seed files. This plan does not touch `src/data/exercises*.ts` or `src/data/free-exercise-db/`.
+Library catalog work (PR #998) owns exercise seed files. This plan does not touch `src/data/exercises*.ts` or `src/data/free-exercise-db/`. Upstream exercise data stays under its own license and NOTICE.
 
 ## Files
 
