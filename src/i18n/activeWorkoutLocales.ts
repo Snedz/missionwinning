@@ -71,7 +71,7 @@ type ActiveWorkoutStrings = {
   /** Empty-state Start when a last completed session exists (.717). Not last set. */
   activeRepeatLastSession: string;
   activeRepeatLastSessionDesc: string;
-  /** Train chip when history exists and today has no logged set (`.1112`). */
+  /** Train chip when history exists and today has no logged set (`.1114`). */
   resumeLastChip: string;
   resumeLastTone: string;
   /** Empty-state Start when a saved routine owns the tap (`.960`). */
@@ -362,7 +362,7 @@ type ActiveWorkoutStrings = {
   victoryDeltaWeight: string;
   victoryDeltaReps: string;
   victoryReceiptLabel: string;
-  /** Top lifts vs the previous same-name session (`.1112`). */
+  /** Top lifts vs the previous same-name session (`.1114`). */
   victoryVsLastLiftsLabel: string;
   victoryVsLastFirst: string;
   /** Optional one-line receipt note. Never required. */

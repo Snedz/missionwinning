@@ -1,5 +1,5 @@
 /**
- * One-line Victory diary (`.1112`).
+ * One-line Victory diary (`.1114`).
  *
  * Optional. Local. Empty is a valid save. The line never gates Finish or Next.
  */

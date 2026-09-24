@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Train chip — prefill the last finished session (`.1112`).
+ * Train chip — prefill the last finished session (`.1114`).
  * Weights stay editable on the set row. The tone line is the habit, not a scolding.
  */
 
