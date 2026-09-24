@@ -21,6 +21,7 @@
 | **Build / public stamp** | `buildInfo.ts`, `buildInfo.test.ts` | Internal `APP_BUILD_LABEL` vs athlete `Alpha 0.1.0` |
 | **Mission Coach (daily)** | `coachDailyServer.ts` | LLM daily insight API — not weekly plan |
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
+| **Muscle balance map** | [`bodyHighlighter/`](bodyHighlighter/INDEX.md) | Anterior/posterior frequency from recent logs. Display only — not a planner input. |
 | **Mission Coach (chat)** | `coachChatServer.ts`, `coach/agent/` | Premium chat — local RAG + ReAct; never vendor Collections — [coach/agent/INDEX.md](coach/agent/INDEX.md) |
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
 | **Durable sync** | `sync/outbox.ts` | Queue every cloud write — survives the tab closing |
