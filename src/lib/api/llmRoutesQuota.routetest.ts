@@ -25,6 +25,7 @@ import assert from 'node:assert/strict';
 import { POST as dailyInsightPost } from '../../../app/api/coach/daily-insight/route.ts';
 import { POST as planVoicePost } from '../../../app/api/coach/plan-voice/route.ts';
 import { POST as chatPost } from '../../../app/api/coach/chat/route.ts';
+import { POST as sessionTrainerPost } from '../../../app/api/coach/session-trainer/route.ts';
 import { makeNextRequest } from '@/lib/api/testRequest';
 import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
 import { restoreEnv, setTestEnv, snapshotEnv } from '@/lib/testEnv.ts';
@@ -198,6 +199,107 @@ describe('LLM route spend gates (.188 wiring)', () => {
     assert.equal(res.status, 503);
     const data = (await res.json()) as { error: string };
     assert.equal(data.error, 'coach_offline');
+  });
+
+  const TRAINER_BODY = {
+    exerciseId: 'squats',
+    exerciseName: 'Back Squat',
+    weight: 60,
+    reps: 8,
+    unit: 'kg' as const,
+    setsLeft: 3,
+    formCue: 'Brace, then drive the floor away.',
+    planLabel: 'Legs',
+  };
+
+  it('session-trainer: a signed-out caller gets the library answer and does not call a model', async () => {
+    setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
+    let calls = 0;
+    const original = globalThis.fetch;
+    globalThis.fetch = async () => {
+      calls += 1;
+      throw new Error('model should not be called');
+    };
+    try {
+      const res = await post(
+        sessionTrainerPost,
+        'http://localhost/api/coach/session-trainer',
+        TRAINER_BODY,
+        '10.2.0.1'
+      );
+      assert.equal(res.status, 200);
+      const data = (await res.json()) as { source: string; line: string | null; reason?: string };
+      assert.equal(data.source, 'library');
+      assert.equal(data.line, null);
+      assert.equal(data.reason, undefined);
+      assert.equal(calls, 0);
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
+
+  it('session-trainer: an exhausted daily cap degrades to library, never 429', async () => {
+    setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
+    setTestEnv('LLM_DAILY_CAP_DAILY_INSIGHT', '0');
+    const res = await post(
+      sessionTrainerPost,
+      'http://localhost/api/coach/session-trainer',
+      TRAINER_BODY,
+      '10.2.0.2',
+      { cookies: gateCookies() }
+    );
+    assert.equal(res.status, 200);
+    const data = (await res.json()) as { source: string; reason?: string; model: string | null };
+    assert.equal(data.source, 'library');
+    assert.equal(data.reason, 'quota');
+    assert.equal(data.model, null);
+  });
+
+  it('session-trainer: Gemini Flash is the free model that gets called', async () => {
+    setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
+    const urls: string[] = [];
+    const original = globalThis.fetch;
+    globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+      urls.push(String(input));
+      const headers = new Headers(init?.headers);
+      assert.equal(headers.get('x-goog-api-key'), 'test-gemini-key');
+      assert.equal(String(init?.body ?? '').includes('test-gemini-key'), false);
+      return new Response(
+        JSON.stringify({
+          candidates: [
+            {
+              content: {
+                parts: [
+                  {
+                    text: '{"line":"Back Squat, 60 kg for 8. Brace, then drive the floor away."}',
+                  },
+                ],
+              },
+            },
+          ],
+          usageMetadata: { promptTokenCount: 11, candidatesTokenCount: 14, totalTokenCount: 25 },
+        }),
+        { status: 200, headers: { 'content-type': 'application/json' } }
+      );
+    };
+    try {
+      const res = await post(
+        sessionTrainerPost,
+        'http://localhost/api/coach/session-trainer',
+        TRAINER_BODY,
+        '10.2.0.3',
+        { cookies: gateCookies() }
+      );
+      assert.equal(res.status, 200);
+      const data = (await res.json()) as { source: string; model: string; line: string };
+      assert.equal(data.source, 'llm');
+      assert.equal(data.model, 'gemini-2.5-flash');
+      assert.match(data.line, /Back Squat/);
+      assert.equal(urls.length, 1);
+      assert.match(urls[0], /\/models\/gemini-2\.5-flash:generateContent$/);
+    } finally {
+      globalThis.fetch = original;
+    }
   });
 
   it('every LLM route refuses an unauthorized caller before spending anything', async () => {

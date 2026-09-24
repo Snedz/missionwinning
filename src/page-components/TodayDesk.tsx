@@ -44,6 +44,9 @@ import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { HouseFirstRoomsCard } from '@/components/house/HouseFirstRoomsCard';
+import { SessionTrainerCard } from '@/components/coach/SessionTrainerCard';
+import { sessionTrainerSeedFromPlan } from '@/lib/coach/sessionTrainer';
+import { useUnits } from '@/hooks/useUnits';
 import { todayConceptChip } from '@/lib/today/todayConceptChip';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
 
@@ -98,6 +101,7 @@ function readDeskSnap(): DeskSnap {
 export function TodayDesk() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const units = useUnits();
   const hasActiveWorkout = useActiveWorkoutPulse();
   const liveName = useWorkoutStore((s) => s.activeWorkout?.workoutName);
   const startCoach = useStartCoachSession();
@@ -266,6 +270,15 @@ export function TodayDesk() {
           </div>
         ) : null}
       </section>
+
+      <SessionTrainerCard
+        surface="today"
+        seed={
+          snap
+            ? sessionTrainerSeedFromPlan(plan, todayOff, units === 'imperial' ? 'lb' : 'kg')
+            : null
+        }
+      />
 
       <HouseFirstRoomsCard
         loggedSet={finished.length > 0}

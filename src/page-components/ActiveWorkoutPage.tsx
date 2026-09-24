@@ -106,6 +106,9 @@ import {
   writeTodayComposeSession,
 } from '@/lib/workout/writeTodayComposeSession';
 import { track } from '@/lib/analytics';
+import { SessionTrainerCard } from '@/components/coach/SessionTrainerCard';
+import { sessionTrainerSeedFromPlan } from '@/lib/coach/sessionTrainer';
+import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
 import type { SetKind } from '@/types';
 
 export function ActiveWorkoutPage() {
@@ -798,6 +801,31 @@ export function ActiveWorkoutPage() {
           pendingRemoteOpenSession ? acceptPendingRemoteOpenSession : undefined
         }
         onLogPastSession={() => router.push('/history?backfill=1')}
+      />
+
+      <SessionTrainerCard
+        surface="train"
+        seed={(() => {
+          const unit = units === 'imperial' ? 'lb' : 'kg';
+          const fromPlan = sessionTrainerSeedFromPlan(
+            plan,
+            todayDayOffset(currentWeekStart()),
+            unit
+          );
+          if (!nextSet || !nextCue) {
+            return { ...fromPlan, planLabel: fromPlan.planLabel ?? session.workoutName };
+          }
+          const exLog = session.exercises[nextSet.exIdx];
+          return {
+            exerciseId: exLog?.exerciseId ?? fromPlan.exerciseId,
+            exerciseName: nextCue.exerciseName,
+            weight: nextCue.weight ?? null,
+            reps: nextCue.reps ?? null,
+            unit,
+            setsLeft: Math.max(0, totalSets - completedSets),
+            planLabel: fromPlan.planLabel ?? session.workoutName,
+          };
+        })()}
       />
 
       {!activeSessionHasExercises(session.exercises) ? (

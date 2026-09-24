@@ -21,6 +21,16 @@ If Coach shows a lock icon, see [premium-and-billing.md](premium-and-billing.md)
 
 Chat on `/coach` is Super Bundle chrome. It does not replace the week.
 
+## Personal trainer
+
+Today, Train, and Coach show a personal trainer card for the set in front of you:
+
+- **Next set** — the lift and the load you are about to log (or the first lift of today’s plan).
+- **Form** — a cue from the exercise library. Open Library on that card when you want the full page.
+- **Plan** — the name of the session, or a plain line when there is no week yet.
+
+The sentence is written from those facts on this device. When a live model is configured it may rewrite the sentence; it does not change the lift or the load. Logging stays free. The card is not a checkout.
+
 ## Daily insight vs weekly plan
 
 | Feature | Where | What |

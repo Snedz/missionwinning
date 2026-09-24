@@ -17,6 +17,56 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-09-24 — Personal trainer on the set in front of you (`.1114`)
+
+Today, Train, and Coach show one
+card: the next set, a Library
+form cue, and the plan name.
+The sentence is composed on
+the device from those facts.
+A live line is optional.
+
+Free model: `gemini-2.5-flash`
+via Google `generateContent`
+when `GEMINI_API_KEY` or
+`GOOGLE_GENERATIVE_AI_API_KEY`
+is set. Else `COACH_LLM_*`
+if that is configured. Else
+the library line. A model
+line that changes the lift
+or the load is dropped.
+Signed-out callers and an
+exhausted daily cap stay on
+the library answer (200, not
+401 or 429). The cap is the
+existing daily-insight
+window so the ledger feature
+list stays closed.
+
+The card does not add a
+filled action. Library is a
+ghost link to `/exercises/[id]`.
+No checkout URL.
+
+**Mutants killed:** a missing
+plan inventing a lift; zero
+weight printed as 0 kg; a
+model line with a different
+load kept; another product
+name kept; a signed-out
+caller still hitting the
+model; quota exhaustion
+returning 429; `GEMINI_MODEL`
+pointing off the Gemini host.
+
+`[skip vercel]`. No
+tip-promote. Live www stays `.697`.
+PRIVATE_MODE stays.
+
+Label `2026.07-unified.1114`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1099-for-1114.md](docs/archive/log/LOG-rotate-1099-for-1114.md) (`.1099`).
+
 ## 2026-09-24 — History year of logged days (`.1113`)
 
 `/history` paints a Monday-first
@@ -639,50 +689,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1100`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1085-for-1100.md](docs/archive/log/LOG-rotate-1085-for-1100.md) (`.1085`).
-
-## 2026-09-15 — Remount after storage_cap (`.1099`)
-
-After mini A hits CapResult
-`storage_cap` on a scoped
-`storage.set` (33rd key or a
-value over 4KB), unmount then
-remount A starts empty. Prior
-keys miss. The first in-bound
-write after remount is `ok` —
-overflow occupancy does not
-survive teardown. B's
-keyspace is untouched through
-A's cap, unmount, and remount.
-The bound stays 32 keys /
-4KB; remount does not lift it.
-No leftover overflow state.
-No ninth deny code. No
-`storage.remove`. `.1092`
-closed remount-empty after a
-successful write; `.1097`
-closed the refuse while both
-still live; `.1098` named this
-composition and left it open.
-Isolation: coach / store /
-HomePage / ActiveWorkout stay
-blind.
-
-**Mutants killed:** remount
-reusing the 32-key map (first
-new write is still
-`storage_cap`); remount
-reading leftover keys from
-before the refuse; unmount A
-after cap wiping B; remount
-after oversized still holding
-the prior valid key; a ninth
-`leftover_overflow` code;
-HOP.md carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1099`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1084-for-1099.md](docs/archive/log/LOG-rotate-1084-for-1099.md) (`.1084`).
