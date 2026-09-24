@@ -19,6 +19,7 @@ import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { CoachLoadBand } from '@/components/coach/CoachLoadBand';
+import { MuscleBalanceMap } from '@/components/coach/MuscleBalanceMap';
 import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -425,6 +426,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           </details>
         </div>
       )}
+
+      {!loading ? <MuscleBalanceMap /> : null}
     </PillarPageShell>
   );
 }

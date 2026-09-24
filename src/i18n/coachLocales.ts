@@ -283,6 +283,11 @@ type CoachStrings = {
   coachLoading: string;
   coachWeekDiffHeadlineOne: string;
   coachWeekDiffHeadlineMany: string;
+  /** Anterior/posterior session frequency on /coach. */
+  coachMuscleBalanceTitle: string;
+  coachMuscleBalanceLead: string;
+  coachMuscleBalanceEmpty: string;
+  coachMuscleBalanceSessions: string;
 };
 
 const en: CoachStrings = {
@@ -626,6 +631,11 @@ const en: CoachStrings = {
   coachLoading: 'Looking at your week…',
   coachWeekDiffHeadlineOne: '1 session → {{after}}',
   coachWeekDiffHeadlineMany: '{{before}} sessions → {{after}}',
+  coachMuscleBalanceTitle: 'Muscle balance',
+  coachMuscleBalanceLead:
+    'Front and back from completed sessions in the last {{days}} days. Darker is more sessions.',
+  coachMuscleBalanceEmpty: 'No completed sessions in this window. The map fills from your logs.',
+  coachMuscleBalanceSessions: '{{count}} sessions',
 };
 
 const es: CoachStrings = {
@@ -664,6 +674,12 @@ const es: CoachStrings = {
     'Habla con tu coach sobre técnica, nutrición y recuperación. El núcleo gratis mantiene el plan y los ajustes offline.',
   coachChatOffline: 'Coach offline — tu plan y ajustes siguen funcionando.',
   coachChatOpen: 'Pregunta a tu coach',
+  coachMuscleBalanceTitle: 'Equilibrio muscular',
+  coachMuscleBalanceLead:
+    'Frente y espalda de las sesiones completadas en los últimos {{days}} días. Más oscuro, más sesiones.',
+  coachMuscleBalanceEmpty:
+    'No hay sesiones completadas en esta ventana. El mapa se llena con tus registros.',
+  coachMuscleBalanceSessions: '{{count}} sesiones',
 };
 
 
@@ -713,6 +729,12 @@ const de: CoachStrings = {
     'Die Bereitschaft ist niedriger — priorisiere Mobilität und saubere Reps. Kraft kommt mit der Erholung zurück.',
   coachVoiceHighVolume:
     'Eine volle Trainingswoche liegt vor dir. Ernähre dich gut, schlaf regelmäßig und vertrau der Progression.',
+  coachMuscleBalanceTitle: 'Muskelbalance',
+  coachMuscleBalanceLead:
+    'Vorne und hinten aus abgeschlossenen Einheiten der letzten {{days}} Tage. Dunkler heißt mehr Einheiten.',
+  coachMuscleBalanceEmpty:
+    'Keine abgeschlossenen Einheiten in diesem Fenster. Die Karte füllt sich aus deinen Logs.',
+  coachMuscleBalanceSessions: '{{count}} Einheiten',
 };
 
 const LOCALES: Partial<Record<string, CoachStrings>> = { en, es, de };
