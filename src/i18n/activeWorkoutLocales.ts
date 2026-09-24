@@ -71,6 +71,9 @@ type ActiveWorkoutStrings = {
   /** Empty-state Start when a last completed session exists (.717). Not last set. */
   activeRepeatLastSession: string;
   activeRepeatLastSessionDesc: string;
+  /** Train chip when history exists and today has no logged set (`.1112`). */
+  resumeLastChip: string;
+  resumeLastTone: string;
   /** Empty-state Start when a saved routine owns the tap (`.960`). */
   activeSavedRoutineStart: string;
   activeSavedRoutineDesc: string;
@@ -359,6 +362,12 @@ type ActiveWorkoutStrings = {
   victoryDeltaWeight: string;
   victoryDeltaReps: string;
   victoryReceiptLabel: string;
+  /** Top lifts vs the previous same-name session (`.1112`). */
+  victoryVsLastLiftsLabel: string;
+  victoryVsLastFirst: string;
+  /** Optional one-line receipt note. Never required. */
+  victoryDiaryLabel: string;
+  victoryDiaryPlaceholder: string;
   victoryPrsOne: string;
   victoryPrsMany: string;
   victoryPrBadge: string;
@@ -432,6 +441,8 @@ const en: ActiveWorkoutStrings = {
   activeRepeatLast: 'Repeat last set',
   activeRepeatLastSession: 'Repeat last session',
   activeRepeatLastSessionDesc: 'Same exercises and last loads. Log when ready.',
+  resumeLastChip: 'Resume last',
+  resumeLastTone: 'Session 2 — lock the habit',
   activeSavedRoutineStart: 'Start {{name}}',
   activeSavedRoutineDesc: 'Your saved routine — last loads stay on the set row.',
   activeStartPreviewSession: 'Start {{name}} — {{count}} exercises',
@@ -689,6 +700,10 @@ const en: ActiveWorkoutStrings = {
   victoryDeltaWeight: '{{signed}} {{unit}}',
   victoryDeltaReps: '{{signed}} reps',
   victoryReceiptLabel: 'This session',
+  victoryVsLastLiftsLabel: 'Vs last',
+  victoryVsLastFirst: 'First time',
+  victoryDiaryLabel: 'Note',
+  victoryDiaryPlaceholder: 'One line. Optional.',
   victoryPrsOne: '1 PR',
   victoryPrsMany: '{{count}} PRs',
   victoryPrBadge: 'PR',
@@ -702,6 +717,12 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  resumeLastChip: 'Retomar la última',
+  resumeLastTone: 'Sesión 2 — fija el hábito',
+  victoryVsLastLiftsLabel: 'Vs la última',
+  victoryVsLastFirst: 'Primera vez',
+  victoryDiaryLabel: 'Nota',
+  victoryDiaryPlaceholder: 'Una línea. Opcional.',
   activeExerciseRestWork: 'Descanso de trabajo',
   activeExerciseRestWarmup: 'Descanso de calentamiento',
   activeExerciseRestSetAria: 'Fijar {{lane}} en {{clock}}',
@@ -937,6 +958,12 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    resumeLastChip: 'Retomar a última',
+    resumeLastTone: 'Sessão 2 — fixa o hábito',
+    victoryVsLastLiftsLabel: 'Vs a última',
+    victoryVsLastFirst: 'Primeira vez',
+    victoryDiaryLabel: 'Nota',
+    victoryDiaryPlaceholder: 'Uma linha. Opcional.',
     activeExerciseRestWork: 'Descanso de trabalho',
     activeExerciseRestWarmup: 'Descanso de aquecimento',
     activeExerciseRestSetAria: 'Definir {{lane}} para {{clock}}',

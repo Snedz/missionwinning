@@ -27,6 +27,7 @@ import {
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { Plus } from 'lucide-react';
 import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
+import { ResumeLastChip } from '@/components/workout/ResumeLastChip';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
@@ -98,6 +99,8 @@ import {
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { isSessionClockPaused, readSessionClock } from '@/lib/workout/sessionClock';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
+import { decideResumeLast } from '@/lib/workout/resumeLastOffer';
+import { localDateKey } from '@/lib/time/localDate';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import {
   composeFormGuideSheet,
@@ -127,6 +130,7 @@ export function ActiveWorkoutPage() {
   const workClockRemaining = useWorkoutStore((s) => s.workClockRemaining);
   const startEmptyWorkout = useWorkoutStore((s) => s.startEmptyWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const applyResumeLastPrefill = useWorkoutStore((s) => s.applyResumeLastPrefill);
   const cancelActiveWorkout = useWorkoutStore((s) => s.cancelActiveWorkout);
   const completeActiveWorkout = useWorkoutStore((s) => s.completeActiveWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
@@ -691,6 +695,33 @@ export function ActiveWorkoutPage() {
     router.push(activePostSessionPath('history'));
   };
 
+  const resumeOffer = useMemo(
+    () =>
+      parseSeoExerciseParam(searchParams)
+        ? ({ show: false } as const)
+        : decideResumeLast({
+            history: workoutHistory,
+            active: activeWorkout,
+            todayKey: localDateKey(),
+          }),
+    [searchParams, workoutHistory, activeWorkout]
+  );
+
+  const handleResumeLast = () => {
+    if (!resumeOffer.show) return;
+    const applied = applyResumeLastPrefill(
+      resumeOffer.prefill.name,
+      resumeOffer.prefill.exercises
+    );
+    if (!applied) return;
+    setVictoryOpen(false);
+    setSetInputs({});
+    track('history_train_again', {
+      exerciseCount: resumeOffer.prefill.exercises.length,
+      from: 'resume_last_chip',
+    });
+  };
+
   const handleEmptyStart = () => {
     /*
      * set-table empty start: copy the last completed session when one exists.
@@ -752,6 +783,8 @@ export function ActiveWorkoutPage() {
         debrief={debrief}
         fragments={entryFragments}
         workoutId={victoryWorkoutId ?? undefined}
+        resumeOffer={resumeOffer.show ? resumeOffer : null}
+        onResumeLast={handleResumeLast}
       />
     );
   }
@@ -799,6 +832,10 @@ export function ActiveWorkoutPage() {
         }
         onLogPastSession={() => router.push('/history?backfill=1')}
       />
+
+      {resumeOffer.show ? (
+        <ResumeLastChip offer={resumeOffer} onResume={handleResumeLast} />
+      ) : null}
 
       {!activeSessionHasExercises(session.exercises) ? (
         /* Was the logger's own dashed box — the system has no dashed borders
