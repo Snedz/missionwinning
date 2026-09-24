@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1113` Craft: year of logged days on History, from workoutHistory. Blank is not missed. */
-export const APP_BUILD_LABEL = "2026.07-unified.1113";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1114` Craft: open lift states this set. Empty barbell is not bodyweight. */
+export const APP_BUILD_LABEL = "2026.07-unified.1114";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -1106,6 +1106,13 @@
   color: var(--house-muted);
 }
 
+.mw-house .house-compose-live .house-session-coach.house-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: inherit;
+  color: var(--house-ink);
+}
+
 /* Portaled Victory Content is not `.mw-house` (leftover pin). An inner
    `.house-victory-portal` remaps inherited HSL so `bg-card` is C2 ground. */
 .mw-house.house-victory-portal {
