@@ -6,12 +6,20 @@
  */
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from "next/dynamic";
 import { PenTool, ChevronRight } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
+import { ProgramShellPanel } from "@/components/builder/ProgramShellPanel";
+import {
+  sessionToTrainDraft,
+  type Program as ShellProgram,
+  type ProgramSession as ShellSession,
+} from "@/lib/programShell";
+import { protectLiveStart } from "@/lib/workout/sessionResume";
 
 const ProgramTemplatesPanel = dynamic(
   () =>
@@ -53,6 +61,7 @@ import {
 } from "@/components/builder/BuilderArrangeStep";
 
 export function BuilderPage() {
+  const router = useRouter();
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
@@ -400,6 +409,23 @@ export function BuilderPage() {
           onLoadSession={loadSessionAndAdvance}
           onSaveAllSessions={saveAllProgramSessions}
           onViewDetails={setDetailProgram}
+        />
+        <ProgramShellPanel
+          onStartSession={(program: ShellProgram, session: ShellSession) => {
+            const draft = sessionToTrainDraft(session);
+            if (draft.length === 0) return;
+            if (protectLiveStart(useWorkoutStore.getState().activeWorkout) === 'keep') {
+              toast({
+                title: t('programShellLive', {
+                  defaultValue: 'A session is already open. Train keeps it.',
+                }),
+              });
+              router.push('/active');
+              return;
+            }
+            startWorkout(`${program.title} — ${session.title}`, draft);
+            router.push('/active');
+          }}
         />
       </section>
 

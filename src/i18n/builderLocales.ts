@@ -105,6 +105,28 @@ type BuilderStrings = {
   honorSaveAsRoutine: string;
   honorSaveEmpty: string;
   honorSaveEmptyDesc: string;
+  programShellKicker: string;
+  programShellLead: string;
+  programShellMeta: string;
+  programShellStart: string;
+  programShellNew: string;
+  programShellName: string;
+  programShellSave: string;
+  programShellSaved: string;
+  programShellSaveFail: string;
+  programShellNameRequired: string;
+  programShellWeek: string;
+  programShellSets: string;
+  programShellEquipment: string;
+  programShellPerWeek: string;
+  programShellIntermediate: string;
+  programShellEqBarbell: string;
+  programShellEqDumbbell: string;
+  programShellEqBodyweight: string;
+  programShellEqBand: string;
+  programShellEqBench: string;
+  programShellEqPullup: string;
+  programShellLive: string;
 };
 
 const en: BuilderStrings = {
@@ -214,6 +236,28 @@ const en: BuilderStrings = {
   honorSaveAsRoutine: 'Save as routine',
   honorSaveEmpty: 'Nothing to save',
   honorSaveEmptyDesc: 'A routine needs a name and at least one lift.',
+  programShellKicker: 'Offline program',
+  programShellLead: 'Template on this device. Suggested sets are not a logged workout.',
+  programShellMeta: '{{weeks}} weeks · {{perWeek}} a week · {{level}}',
+  programShellStart: 'Start in Train',
+  programShellNew: 'New program',
+  programShellName: 'Program name',
+  programShellSave: 'Save on this device',
+  programShellSaved: 'Saved on this device.',
+  programShellSaveFail: 'Could not save on this device.',
+  programShellNameRequired: 'Name the program.',
+  programShellWeek: 'Week {{n}}',
+  programShellSets: '{{count}} suggested sets',
+  programShellEquipment: 'Equipment',
+  programShellPerWeek: '{{count}} a week',
+  programShellIntermediate: 'Intermediate',
+  programShellEqBarbell: 'Barbell',
+  programShellEqDumbbell: 'Dumbbell',
+  programShellEqBodyweight: 'Bodyweight',
+  programShellEqBand: 'Band',
+  programShellEqBench: 'Bench',
+  programShellEqPullup: 'Pull-up bar',
+  programShellLive: 'A session is already open. Train keeps it.',
 };
 
 const es: BuilderStrings = {
@@ -231,6 +275,28 @@ const es: BuilderStrings = {
   honorSaveAsRoutine: 'Guardar como rutina',
   honorSaveEmpty: 'Nada que guardar',
   honorSaveEmptyDesc: 'Una rutina necesita un nombre y al menos un ejercicio.',
+  programShellKicker: 'Programa sin conexión',
+  programShellLead: 'Plantilla en este dispositivo. Las series sugeridas no son un entreno registrado.',
+  programShellMeta: '{{weeks}} semanas · {{perWeek}} por semana · {{level}}',
+  programShellStart: 'Empezar en Train',
+  programShellNew: 'Nuevo programa',
+  programShellName: 'Nombre del programa',
+  programShellSave: 'Guardar en este dispositivo',
+  programShellSaved: 'Guardado en este dispositivo.',
+  programShellSaveFail: 'No se pudo guardar en este dispositivo.',
+  programShellNameRequired: 'Ponle nombre al programa.',
+  programShellWeek: 'Semana {{n}}',
+  programShellSets: '{{count}} series sugeridas',
+  programShellEquipment: 'Equipo',
+  programShellPerWeek: '{{count}} por semana',
+  programShellIntermediate: 'Intermedio',
+  programShellEqBarbell: 'Barra',
+  programShellEqDumbbell: 'Mancuerna',
+  programShellEqBodyweight: 'Peso corporal',
+  programShellEqBand: 'Banda',
+  programShellEqBench: 'Banco',
+  programShellEqPullup: 'Barra de dominadas',
+  programShellLive: 'Ya hay una sesión abierta. Train la conserva.',
   builderTitle: 'Constructor de entrenamientos',
   builderTabBeginner: 'Principiante',
   builderTabAdvanced: 'Avanzado',

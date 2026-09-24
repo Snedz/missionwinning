@@ -9,3 +9,5 @@
 3. `builderShowAllDoor.test.ts` — Builder Show-all door is house leftover (`.1058`)
 
 The page lives in `src/page-components/BuilderPage.tsx`.
+
+Offline program templates (week → session → suggested sets) live in [../programShell/INDEX.md](../programShell/INDEX.md) and render inside Show all. They are not the flat cycles in `src/data/programTemplates.ts`.
