@@ -5,7 +5,7 @@
  * The set line stays visible. A dark seat returns that same line.
  */
 
-import { useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { SetKind, SetRowType } from '@/types';
 
@@ -32,6 +32,7 @@ export function SessionTrainerAsk({
   rulesLine: string;
 }) {
   const { t } = useTranslation();
+  const fieldId = useId();
   const [question, setQuestion] = useState('');
   const [reply, setReply] = useState<string | null>(null);
   const [source, setSource] = useState<string | null>(null);
@@ -73,11 +74,11 @@ export function SessionTrainerAsk({
 
   return (
     <form className="house-trainer-ask" data-testid="trainer-ask" onSubmit={onAsk}>
-      <label className="house-trainer-label" htmlFor="trainer-ask-q">
+      <label className="house-trainer-label" htmlFor={fieldId}>
         {t('trainerAskLabel', { defaultValue: 'AI personal trainer' })}
       </label>
       <input
-        id="trainer-ask-q"
+        id={fieldId}
         className="house-field"
         data-testid="trainer-ask-input"
         value={question}

@@ -5,13 +5,12 @@
  */
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CoachTrainerDoor } from '@/components/coach/CoachTrainerDoor';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { cn } from '@/lib/utils';
-import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachFreeFormAskPanel({
   askExerciseId,
@@ -66,22 +65,7 @@ export function CoachFreeFormAskPanel({
             })}
           </p>
         )}
-        <p className="text-xs text-muted-foreground">
-          {isFreeBeta()
-            ? t('coachFreeFormChatHintFree', {
-                defaultValue: 'Your weekly plan and Adjust today stay free. Live chat opens later in beta.',
-              })
-            : (
-              <>
-                {t('coachFreeFormChatHint', {
-                  defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
-                })}{' '}
-                <Link href="/bundle" className="text-primary hover:underline">
-                  {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-                </Link>
-              </>
-            )}
-        </p>
+        <CoachTrainerDoor exerciseName={name} />
       </CardContent>
     </Card>
   );

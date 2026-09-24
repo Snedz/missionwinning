@@ -1120,7 +1120,40 @@
   margin: 0;
 }
 
-.mw-house .house-compose-live .house-trainer-ask .house-trainer-label {
+.mw-house .house-compose-live .house-trainer-ask .house-trainer-label,
+.mw-house .coach-trainer-door .house-trainer-label {
+  margin: 0;
+  font-size: 14px;
+  line-height: inherit;
+  color: var(--house-ink);
+}
+
+.mw-house .coach-trainer-door {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mw-house .coach-trainer-door .house-trainer-ask {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.mw-house .coach-trainer-door .house-field {
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+  font-size: 14px;
+}
+
+.mw-house .coach-trainer-door .house-session-coach.house-lede {
   margin: 0;
   font-size: 14px;
   line-height: inherit;
