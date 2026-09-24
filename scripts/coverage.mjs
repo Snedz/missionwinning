@@ -178,8 +178,12 @@ const FLOORS = {
    * vacuous unit tests for those files is the CLAUDE.md §6 ban. 493 is what the
    * suite measures today, stated plainly so the next person ratchets down from a
    * true number.
+   *
+   * **493 → 494 (`.1112`).** HistorySessionCsvImport.tsx — History CSV door UI;
+   * Playwright surface, no unit harness. Decisions stay in unit-tested
+   * `importSessionCsv.ts`.
    */
-  untestedFiles: 493,
+  untestedFiles: 494,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
