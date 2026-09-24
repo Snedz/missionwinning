@@ -215,6 +215,18 @@ type HistoryStrings = {
   /** `.1033` — live session count for the month on screen. */
   historyCalSessions: string;
   historyCalSessionsOne: string;
+  /** `.1111` — year of logged days above the History list. */
+  historyYearHeatLabel: string;
+  historyYearHeatEmpty: string;
+  historyYearHeatSummary: string;
+  historyYearHeatLegend: string;
+  historyYearHeatLevel0: string;
+  historyYearHeatLevel1: string;
+  historyYearHeatLevel2: string;
+  historyYearHeatLevel3: string;
+  historyYearHeatLevel4: string;
+  historyYearHeatDay: string;
+  historyYearHeatDayOne: string;
 };
 
 const en: HistoryStrings = {
@@ -415,6 +427,17 @@ const en: HistoryStrings = {
   historyCalThisMonth: 'This month',
   historyCalSessions: '{{count}} sessions',
   historyCalSessionsOne: '1 session',
+  historyYearHeatLabel: 'Days you logged',
+  historyYearHeatEmpty: 'No sessions in this year.',
+  historyYearHeatSummary: '{{days}} days · {{sessions}} sessions',
+  historyYearHeatLegend: 'More sessions',
+  historyYearHeatLevel0: 'None',
+  historyYearHeatLevel1: '1',
+  historyYearHeatLevel2: '2',
+  historyYearHeatLevel3: '3',
+  historyYearHeatLevel4: '4+',
+  historyYearHeatDay: '{{date}}, {{count}} sessions',
+  historyYearHeatDayOne: '{{date}}, 1 session',
 };
 
 const es: HistoryStrings = {

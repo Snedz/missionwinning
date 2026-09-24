@@ -66,7 +66,7 @@
 | `move/` | Quiet rest-day log + mobility filters — [move/INDEX.md](move/INDEX.md) |
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
 | `builder/` | Blank first; templates in Show all — [builder/INDEX.md](builder/INDEX.md) |
-| `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
+| `history/` | Session list, month grid, year of logged days — [history/INDEX.md](history/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `minis/` | Capability-bus web stubs — [minis/INDEX.md](minis/INDEX.md) |
 | `mission-os/` | Named host interfaces + in-memory fakes (`MiniHost.mount` / `unmount`) — [mission-os/INDEX.md](mission-os/INDEX.md) |
