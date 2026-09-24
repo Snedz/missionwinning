@@ -77,6 +77,7 @@
  * `.1046` — session note on a finished History session. Never a login wall.
  * `.1047` — superset on a finished History session. Never a login wall.
  * `.1048` — open empty load is blank, not 0. Never a login wall.
+ * `.1112` — import a workout CSV into local History. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

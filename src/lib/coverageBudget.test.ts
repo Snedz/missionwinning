@@ -65,8 +65,11 @@ const HIGH_WATER = {
    * vs floor 438 on master `97491eb6`. Capability-bus / minis stubs plus
    * existing UI Playwright-covered debt. No invented unit tests. See
    * `FLOORS.untestedFiles`.
+   *
+   * **494 (`.1112`)** — HistorySessionCsvImport.tsx — History CSV door UI;
+   * Playwright surface, no unit harness.
    */
-  untestedFiles: 493,
+  untestedFiles: 494,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

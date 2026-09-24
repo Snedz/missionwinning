@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1111` Library: curated free-exercise-db subset (Unlicense, no images) spliced into the exercise catalog. */
-export const APP_BUILD_LABEL = "2026.07-unified.1111";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1112` Craft: guest History imports a session-export workout CSV into local history. Set-table export uses the same parser. No account. */
+export const APP_BUILD_LABEL = "2026.07-unified.1112";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
