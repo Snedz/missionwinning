@@ -323,4 +323,13 @@ describe('firstSetUngated wiring', () => {
     const src = read('src/lib/firstSetUngated.ts');
     assert.match(src, /`\.1048` — open empty load is blank, not 0/);
   });
+
+  it('resume last and victory vs same name stay ungated (.1114)', () => {
+    const src = read('src/lib/firstSetUngated.ts');
+    assert.match(src, /`\.1114` — Resume last chip and Victory vs same name/);
+    const chip = read('src/components/workout/ResumeLastChip.tsx');
+    const diary = read('src/components/workout/VictoryDiaryLine.tsx');
+    assert.doesNotMatch(chip, /getUser\(|SignInPrompt/);
+    assert.doesNotMatch(diary, /getUser\(|SignInPrompt/);
+  });
 });
