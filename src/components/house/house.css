@@ -2079,6 +2079,18 @@
   padding: 10px 12px;
 }
 
+.mw-house .house-builder .program-shell .house-field {
+  min-height: 44px;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--house-line);
+  background: var(--house-paper);
+  color: var(--house-ink);
+  border-radius: var(--house-radius-sm);
+  font: inherit;
+}
+
 .mw-house .house-profile [data-athlete-block] {
   border-color: var(--house-line);
 }

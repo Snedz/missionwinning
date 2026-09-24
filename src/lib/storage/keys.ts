@@ -40,6 +40,11 @@ export const STORAGE_KEYS = {
    */
   customExercises: 'mw_custom_exercises',
   /**
+   * `.1111` — offline program templates (week → session → suggested sets).
+   * Not workout history. Not a premium gate.
+   */
+  programShell: 'mw_program_shell',
+  /**
    * `.1004` — exercise ids hidden from Add / search / picker.
    * History / PRs / notes stay. Empty invents nothing.
    */

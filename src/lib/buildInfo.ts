@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1115` Coach muscle balance map — anterior/posterior frequency from recent completed sessions. MIT react-body-highlighter. Paper only. Rebased onto `.1113`; `.1114` belongs to #1001 (Resume last / Victory vs-last), so this takes the next free label instead of colliding with it. */
-export const APP_BUILD_LABEL = "2026.07-unified.1115";
+</** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1116` Offline program shell. Rebased onto `.1115` (Coach muscle balance map, #1002); `.1114` belongs to #1001 (Resume last / Victory vs-last), so this takes the next free label instead of colliding with them. */
+export const APP_BUILD_LABEL = "2026.07-unified.1116";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
