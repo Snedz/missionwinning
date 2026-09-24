@@ -1,8 +1,9 @@
 /**
  * Personal trainer line for the set in front of the athlete.
- * Auth: app access gates the LLM only. Signed-out callers get the library
- * answer (no model call). LLM: Gemini Flash when a free key is set, else
- * COACH_LLM. Quota shares daily_insight so the ledger feature list stays closed.
+ * The free logger does not need a gate cookie. When a Gemini key (or
+ * COACH_LLM) is set and the caller is entitled — free beta counts —
+ * the line is gemini-2.5-flash. Otherwise the library answer.
+ * Quota shares daily_insight so the ledger feature list stays closed.
  * Rate: 12/min/IP + daily quota on the LLM branch.
  * See: app/api/INDEX.md, src/lib/coach/sessionTrainerServer.ts
  */
@@ -10,7 +11,6 @@ import { NextRequest, NextResponse, after } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
-import { hasAppAccess } from '@/lib/requestAccess';
 import { parseJsonBody, sessionTrainerSchema } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { readCoachLlmEnv } from '@/lib/coachLlmClient';
@@ -64,20 +64,19 @@ export const POST = withApiLogging('coach/session-trainer', async (request: Next
   const facts = factsFromBody(body);
 
   /*
-   * The library answer is the product: next set, cue, and plan are already
-   * on the client. A missing gate cookie must not 401 that path. The model
-   * call is the only thing behind access, premium, and the daily cap.
-   * The cap is `daily_insight` — one short coach line, same ledger feature —
-   * so this route does not add a migration.
+   * The library answer is always the product. The free model is the
+   * live line for the same athlete — no private-gate cookie. Free beta
+   * entitles the signed-out logger. After the beta, only premium does.
+   * The cap is `daily_insight` — one short coach line, same ledger
+   * feature — so this route does not add a migration.
    */
-  const appAccess = await hasAppAccess(request);
   const geminiKey = Boolean(readGeminiApiKey());
   const coachEnv = readCoachLlmEnv();
   const llmConfigured = geminiKey || Boolean(coachEnv.apiUrl && coachEnv.apiKey);
   let quotaExceeded = false;
   let useLlm = false;
   let caller: Awaited<ReturnType<typeof resolveLlmCaller>> | null = null;
-  if (appAccess && llmConfigured) {
+  if (llmConfigured) {
     caller = await resolveLlmCaller(request, body.deviceId);
     if (caller.premium) {
       const quota = await allowLlmInference('daily_insight', caller);
