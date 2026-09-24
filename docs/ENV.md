@@ -44,6 +44,8 @@ Add these for **Production** and **Preview**:
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `?access=` bypass in production (deprecated; prefer `/private` form + share code out-of-band) |
 | `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
 | `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
+| `GEMINI_API_KEY` | Optional | Free-pool key for the Train AI personal trainer (`POST /api/coach/trainer`). When set, this seat wins over `COACH_LLM_*`. **Never** `NEXT_PUBLIC_` |
+| `GEMINI_MODEL` | Optional | Default `gemini-2.5-flash`. Override if the free Flash alias moves |
 | `COACH_LLM_MODEL` | Optional | Model slug. Default in code is `grok-4.6`. Confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models) |
 | `COACH_LLM_REASONING_EFFORT` | Optional | `low` (default) or `medium`. `high` / `xhigh` are ignored unless `COACH_LLM_ALLOW_HIGH_REASONING=true` — 4.6 defaults high and reasoning tokens are not capped by `max_tokens` |
 | `COACH_LLM_ALLOW_HIGH_REASONING` | Optional | Founder override. Leave unset. High reasoning is the silent bill on 4.6 |

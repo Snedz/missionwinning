@@ -72,6 +72,7 @@ Legend:
 |-------|---------|------|------|------|
 | `coach/daily-insight` | POST | session or gate app access; **LLM branch: premium + daily quota** (`.188`) | 12/min + 32 KiB + daily quota | Zod |
 | `coach/plan-voice` | POST | session or gate app access + premium (LLM branch only) + daily quota | 6/min + 64 KiB | Zod |
+| `coach/trainer` | POST | public (no session, no premium) | 12/min + 8 KiB | Zod `coachTrainerSchema`; Gemini Flash if `GEMINI_API_KEY`, else `COACH_LLM_*`, else the set line; no 402 |
 | `coach/chat` | POST | app access + premium | 10/min + 32 KiB + daily quota | Zod `coachChatSchema` (compact citations, never raw logs); ReAct + local RAG; 402 free; 503 offline; 429 `coach_quota` |
 | `coach/debrief-voice` | POST | app access + premium (LLM branch) + daily quota | 6/min + 16 KiB | Zod; rules fallback when free / dark / over quota |
 | `referral` | GET/POST | session | 20/min GET · 5/min POST | Lazy MW-code; redeem ≤7d; service role |

@@ -189,6 +189,19 @@ All LLM branches are metered per identity since `.188`: token counts (never cont
 | Errors | 503 `coach_offline` (LLM unconfigured / ZDR fail-closed), 502 other LLM fail, 429 `coach_quota` + `retryAfterSec` (daily limit; stream emits `[[error:coach_quota]]`) |
 | Notes | No rules fallback. ZDR one-shot via `coachLlmClient` + in-process RAG/ReAct (`src/lib/coach/agent/`). Transcript not stored server-side. |
 
+### `POST /api/coach/trainer`
+
+| | |
+|--|--|
+| Auth | None. The free logger has no account. The private gate still covers production. |
+| Rate | 12/min/IP |
+| Body cap | 8KB |
+| Schema | `coachTrainerSchema` — open-set facts (name, index, dial, kind, row type), optional history cite ≤160, optional question ≤280. Strict. No checkout field. |
+| Success | `{ text, source: 'gemini' \| 'coach_llm' \| 'rules', model? }` |
+| Seat | `GEMINI_API_KEY` → Gemini Flash (`gemini-2.5-flash`, override `GEMINI_MODEL`) via generateContent. Else `COACH_LLM_API_URL` + `COACH_LLM_API_KEY`. Else the rules set line. A model error, a link, or a refused product name returns the set line with `source: 'rules'`. |
+| Errors | 400 invalid body, 413 oversized, 429 rate limit |
+| Notes | Not premium. Does not return `premium_required`. Does not mint a payment URL. |
+
 ---
 
 ## Growth

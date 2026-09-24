@@ -17,6 +17,46 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-09-24 — AI personal trainer on the open set (`.1115`)
+
+On Train the open lift
+still states this set. Ask
+under that line is the AI
+personal trainer. The post
+is `POST /api/coach/trainer`.
+Seat order: Gemini Flash
+when `GEMINI_API_KEY` is set
+(`gemini-2.5-flash`, override
+`GEMINI_MODEL`) via
+generateContent; else the
+existing `COACH_LLM_*` seat;
+else the same set line
+(`source: rules`). A model
+error, a link in the reply,
+or a refused product name
+returns the set line. History
+cite from the previous column
+rides the prompt when one
+exists. No session. No premium
+402. No checkout URL. The
+filled action stays Log set.
+Free. Offline rules still
+paint before the ask returns.
+
+**Mutants killed:** Gemini
+HTTP error dropping the set
+line; a model link kept as
+the reply; Gemini skipped
+when both keys are set.
+
+`[skip vercel]`. No tip-promote.
+Live www stays `.697`.
+PRIVATE_MODE stays.
+
+Label `2026.07-unified.1115`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.
+
 ## 2026-09-24 — Open set states what to do (`.1114`)
 
 On Train, the open lift
@@ -585,50 +625,3 @@ www stays `.697`. PRIVATE_MODE stays.
 Label `2026.07-unified.1104`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1089-for-1104.md](docs/archive/log/LOG-rotate-1089-for-1104.md) (`.1089`).
-
-## 2026-09-15 — Billing remount after inject (`.1103`)
-
-`injectBillingSnapshot` on a
-live `test.billing` fake is
-per-instance. Unmount + remount
-binds the host muted snapshot
-again. Leftover inject dies —
-remounted `billing.read` is the
-host-bound envelope, not the
-override. Inject on the old
-fake after remount does not
-change remounted.read. B.read
-stays. After `storage_cap` +
-inject + remount, billing is
-still host-bound. ClearShot
-remount after inject rebinds
-its host billing snapshot
-(leftover inject dies; billing
-stays `scope_denied`). Health
-remount stays `scope_denied`.
-`.1094` closed live dual-mount
-isolation. `.1099` closed
-leftover storage occupancy.
-`.1102` closed identity remount.
-Isolation: coach / store /
-HomePage / ActiveWorkout stay
-blind.
-
-**Mutants killed:** remount
-returning leftover inject or
-throwing; remount rewriting
-B.read; old-fake inject after
-remount leaking; cap+inject
-leftover surviving remount;
-ClearShot leftover inject
-granting billing; Health remount
-gaining a billing snapshot;
-HOP.md carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1103`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1088-for-1103.md](docs/archive/log/LOG-rotate-1088-for-1103.md) (`.1088`).

@@ -92,6 +92,28 @@ export const coachPlanVoiceSchema = z.object({
   deviceId: z.string().min(1).max(64).optional(),
 });
 
+/**
+ * Free AI personal trainer on the open set. Facts already on the dial,
+ * plus an optional history cite and a short question. No checkout field.
+ */
+export const coachTrainerSchema = z
+  .object({
+    exerciseName: z.string().trim().min(1).max(120),
+    setNumber: z.number().int().min(1).max(40),
+    setCount: z.number().int().min(1).max(40),
+    reps: z.number().min(0).max(200).default(0),
+    weight: z.number().min(0).max(2000).default(0),
+    unitLabel: z.string().max(12).default('kg'),
+    kind: z.enum(['normal', 'warmup', 'failure', 'drop']).optional(),
+    rowType: z.enum(['weight', 'bodyweight', 'duration', 'assisted']),
+    durationSeconds: z.number().min(0).max(3600).optional(),
+    hardCount: z.number().int().min(0).max(200).default(0),
+    bodyweightLabel: z.string().max(12).optional(),
+    historyLine: z.string().max(160).optional(),
+    question: z.string().max(280).optional(),
+  })
+  .strict();
+
 /** Premium coach chat — compact citations only (never raw workout logs). */
 export const coachChatSchema = z.object({
   message: z.string().min(1).max(1000),
