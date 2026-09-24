@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1111` Library: curated free-exercise-db subset (Unlicense, no images) spliced into the exercise catalog. */
-export const APP_BUILD_LABEL = "2026.07-unified.1111";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1112` Offline program shell: local Program → Week → Session → suggested sets. One template in Builder Show all. Start opens Train. No billing. */
+export const APP_BUILD_LABEL = "2026.07-unified.1112";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
