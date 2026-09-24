@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { HistoryYearHeatmap } from '@/components/history/HistoryYearHeatmap';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { buildDayRecord, isDayKey } from '@/lib/journey/dayRecord';
@@ -51,6 +52,7 @@ export function HistoryDayPage({ date }: Props) {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const [tick, setTick] = useState(0);
@@ -89,6 +91,8 @@ export function HistoryDayPage({ date }: Props) {
       <p className="house-kicker">{t('historyDayEyebrow', { defaultValue: 'On this day' })}</p>
       <h1 className="house-title">{heading}</h1>
       {position ? <p className="house-lede">{position}</p> : null}
+
+      {hasHydrated ? <HistoryYearHeatmap history={workoutHistory} /> : null}
 
       {!valid ? (
         <p className="house-lede">

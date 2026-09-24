@@ -16,7 +16,8 @@
 10. `daySessionCount.ts` — trained day live session count (`.1032`); empty / junk invents nothing; never a fire
 11. `monthSessionCount.ts` — month live session count (`.1033`); empty / junk invents nothing; never a fire-zero
 12. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
-13. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
+13. `yearHeatmap.ts` — 53 Monday-first weeks of live session counts (`.1113`); blank is not missed
+14. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 
@@ -34,6 +35,7 @@
 | `daySessionCount.ts` | Trained day live session count (`.1032`). Prints how many live sessions with the dumbbell. Empty / junk invents nothing. Never a fire. |
 | `monthSessionCount.ts` | Month live session count (`.1033`). Prints how many live sessions for the month on screen. Empty / junk invents nothing. Never a fire-zero. Sessions, not training days. |
 | `monthGrid.ts` | Month grid vocabulary |
+| `yearHeatmap.ts` | Year of logged days (`.1113`). Reuses `trainedDayKeys`. 53 Monday-first weeks. Blank is not missed. |
 | `guideHistory561.test.ts` | History empty-copy honesty |
 | `emptyDayLogSurface.test.ts` | Empty month day plus / log-onto-this-day; overflow `.1000` stays; Today one Start (`.1028`) |
 | `exportMonth.test.ts` | This month as a file they own: empty disables Save; paging changes the file (`.1029`) |

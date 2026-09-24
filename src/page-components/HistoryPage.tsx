@@ -31,6 +31,7 @@ import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
 import { JournalTimeline } from '@/components/history/JournalTimeline';
 import { HistoryCalendar } from '@/components/history/HistoryCalendar';
+import { HistoryYearHeatmap } from '@/components/history/HistoryYearHeatmap';
 import { HistoryMonthFile } from '@/components/history/HistoryMonthFile';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
@@ -469,7 +470,10 @@ export function HistoryPage() {
     >
       {!hasHydrated ? (
         <div className="house-empty" aria-busy="true" data-testid="history-first-paint" />
-      ) : liveHistory.length === 0 ? (
+      ) : (
+        <div className="space-y-3">
+          <HistoryYearHeatmap history={workoutHistory} />
+          {liveHistory.length === 0 ? (
         <div data-testid="session-history-empty">
           <EmptyState
             className="house-empty"
@@ -736,6 +740,8 @@ export function HistoryPage() {
               </button>
             ) : null}
             </div>
+          )}
+        </div>
           )}
         </div>
       )}
