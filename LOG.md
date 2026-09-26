@@ -17,8 +17,6 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
-## 2026-09-26 — PR #1004 (`.1122`)
-
 ## 2026-09-24 — AI personal trainer on the open set (`.1117`)
 
 On Train the open lift
@@ -67,7 +65,7 @@ Label `2026.07-unified.1117`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.
 
-## 2026-09-24 — Open set states what to do (`.1114`)
+## 2026-09-24 — Open set states what to do (`.1122`)
 
 On Train, the open lift
 states this set in one line:
