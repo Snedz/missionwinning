@@ -17,9 +17,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
-## 2026-09-26 — PR #1001 (`.1120`)
-
-## 2026-09-24 — Resume last chip and Victory vs-last (`.1114`)
+## 2026-09-24 — Resume last chip and Victory vs-last (`.1120`)
 
 Train showed Repeat last as the
 empty Start, and Victory compared

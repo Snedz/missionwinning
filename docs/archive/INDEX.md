@@ -12,7 +12,6 @@ When adding a doc:
 
 - [`LOG-rotate-1101-for-1120.md`](docs/archive/log/LOG-rotate-1101-for-1120.md) — rotated by `.1120`, to keep the <=15 entry budget.
 - [`LOG-rotate-1100-for-1116.md`](docs/archive/log/LOG-rotate-1100-for-1116.md) — rotated by `.1116`, to keep the <=15 entry budget.
-- [`LOG-rotate-1115-for-1115.md`](docs/archive/log/LOG-rotate-1115-for-1115.md) — rotated on this ship, to keep the <=15 entry budget.
 
 | File | Absorbed by / note |
 |------|---------------------|
