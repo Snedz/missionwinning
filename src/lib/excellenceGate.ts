@@ -114,6 +114,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/ideaGraph': 'surface',
   'src/lib/api': 'surface',
   'src/lib/beta': 'surface',
+  'src/lib/bodyHighlighter': 'surface',
   'src/lib/builder': 'surface',
   'src/lib/checkout': 'surface',
   'src/lib/coach': 'wedge',

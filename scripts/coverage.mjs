@@ -182,8 +182,14 @@ const FLOORS = {
    * **493 → 494 (`.1112`).** HistorySessionCsvImport.tsx — History CSV door UI;
    * Playwright surface, no unit harness. Decisions stay in unit-tested
    * `importSessionCsv.ts`.
+   *
+   * **494 → 495 (`.1115`).** MuscleBalanceMap.tsx — Coach muscle balance UI;
+   * this repo has no component unit harness (zero `.test.tsx`), its mount on
+   * `/coach` is asserted in `bodyHighlighter/muscleBalance.test.ts` and rendered
+   * by the four `/coach` Playwright specs, and its decisions stay in unit-tested
+   * `bodyHighlighter/muscleBalance.ts`.
    */
-  untestedFiles: 494,
+  untestedFiles: 495,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
