@@ -17,6 +17,8 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-09-26 — PR #1001 (`.1120`)
+
 ## 2026-09-24 — Resume last chip and Victory vs-last (`.1114`)
 
 Train showed Repeat last as the
@@ -62,7 +64,7 @@ import stay as they landed.
 Live www stays `.697`.
 PRIVATE_MODE stays.
 
-Label `2026.07-unified.1114`.
+Label `2026.07-unified.1120`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1101-for-1120.md](docs/archive/log/LOG-rotate-1101-for-1120.md) (`.1101`), for the ≤15 entry budget. Refiled `.1099` → [docs/archive/log/LOG-rotate-1099-for-1114.md](docs/archive/log/LOG-rotate-1099-for-1114.md); `.1098` was already rotated by `.1113`.
 
