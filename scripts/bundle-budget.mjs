@@ -62,7 +62,9 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  *
  * Previous 2026-07-30 numbers (262 / 280 / 435) assumed prerendered landing
  * HTML and a slimmer house. They had been red on master (`docs/CI_LOCAL.md`).
- */
+ *
+ * ## `#1001` measured raise (Resume last chip / Victory vs-last)
+ *
  * **418 -> 419 (`/log`), 512 -> 514 (`/active`), 2026-09-26, #1001.** Measured on this
  * branch, not asserted: /log 418.1 KB, /active 512.8 KB gzipped initial JS. #1001 adds
  * two real surfaces to those two routes -- `ResumeLastChip` and `VictoryVsLastLifts`
