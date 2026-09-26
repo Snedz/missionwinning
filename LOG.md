@@ -17,7 +17,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
-## 2026-09-24 — AI personal trainer on the open set (`.1115`)
+## 2026-09-24 — AI personal trainer on the open set (`.1117`)
 
 On Train the open lift
 still states this set. Ask
@@ -61,7 +61,7 @@ when both keys are set.
 Live www stays `.697`.
 PRIVATE_MODE stays.
 
-Label `2026.07-unified.1115`.
+Label `2026.07-unified.1117`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.
 
