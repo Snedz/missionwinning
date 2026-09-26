@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1115-for-1115.md`](docs/archive/log/LOG-rotate-1115-for-1115.md) — rotated on this ship, to keep the <=15 entry budget.
+
 | File | Absorbed by / note |
 |------|---------------------|
 | [log/LOG-rotate-1098-for-1113.md](./log/LOG-rotate-1098-for-1113.md) | rotated 2026-09-24 for `.1113` History year of logged days (`.1098`; `.1097` already filed by `.1112`) |

@@ -2,6 +2,7 @@
 
 One screen of truth for any AI tool or human joining cold. Read this, then [AGENTS.md](AGENTS.md), then [INDEX.md](INDEX.md). Keep `## Now` current: update it on every ship, in the same commit as the [LOG.md](LOG.md) entry.
 
+- **2026.07-unified.1115** — Coach muscle balance map. Rebased and label re-minted past master so it cannot collide with the other open PRs.
 ---
 
 ## What this is
