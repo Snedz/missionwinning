@@ -14,6 +14,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [CONTEXT-now-669.md](./CONTEXT-now-669.md) | `.1115` rotated the `.669` Now bullet (Excellence RESULT + agent stop-rule) |
 | [log/LOG-rotate-1098-for-1113.md](./log/LOG-rotate-1098-for-1113.md) | rotated 2026-09-24 for `.1113` History year of logged days (`.1098`; `.1097` already filed by `.1112`) |
 | [CONTEXT-now-1097.md](./CONTEXT-now-1097.md) | `.1113` rotated the `.1097` Now bullet (CapResult storage_cap) |
 | [log/LOG-rotate-1097-for-1112.md](./log/LOG-rotate-1097-for-1112.md) | rotated 2026-09-24 for `.1112` workout CSV into local History (`.1097`; `.1096` already filed by `.1111`) |

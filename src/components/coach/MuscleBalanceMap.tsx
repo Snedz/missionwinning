@@ -10,6 +10,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Model from 'react-body-highlighter';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import type { IExerciseData, Muscle } from 'react-body-highlighter';
 import {
   MUSCLE_BALANCE_WINDOW_DAYS,
@@ -57,6 +58,13 @@ export function MuscleBalanceMap() {
                 'Front and back from completed sessions in the last {{days}} days. Darker is more sessions.',
             })}
       </p>
+      {/*
+        This section says the map comes from the athlete's logs, so it owes the
+        log beside the claim — `logCitation.test.ts` fails the component
+        otherwise. It reads the persist blob itself and owns the no-logs case,
+        so it renders in both branches above.
+      */}
+      <CoachLogCite className="mt-1" />
       <div className="mt-3 grid grid-cols-2 gap-4" aria-hidden>
         <figure>
           <figcaption className="mb-1 text-center text-[10px] uppercase tracking-wide text-muted-foreground">

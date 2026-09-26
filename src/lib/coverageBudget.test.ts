@@ -68,8 +68,13 @@ const HIGH_WATER = {
    *
    * **494 (`.1112`)** — HistorySessionCsvImport.tsx — History CSV door UI;
    * Playwright surface, no unit harness.
+   *
+   * **495 (`.1115`)** — MuscleBalanceMap.tsx — Coach muscle balance UI; no
+   * component unit harness in this repo, mount asserted by
+   * `bodyHighlighter/muscleBalance.test.ts`, render covered by the `/coach`
+   * Playwright specs.
    */
-  untestedFiles: 494,
+  untestedFiles: 495,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted
