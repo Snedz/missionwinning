@@ -51,12 +51,28 @@ export function geminiGenerateUrl(model: string): string {
 
 type FetchLike = typeof fetch;
 
+/**
+ * The subset of Gemini's `generateContent` response metadata this server meters.
+ *
+ * Declared as a named type rather than inlined at the cast, on purpose.
+ * `launchTruth.test.ts` fails a build on an inline cast that *invents* a property
+ * on a value -- that shape is how `weeklyDebrief.personalRecords` hid a field no
+ * code in this repo ever writes, which left a PR line and a Today row permanently
+ * unreachable. A cast to a named type is ordinary and passes, and it is also just
+ * better here: the three fields below are the entire metering contract, so naming
+ * them puts the boundary in one place instead of restating it at each read.
+ *
+ * Every field is `unknown` because the value crosses the network unvalidated; the
+ * `typeof === 'number'` guards at each read are what make it safe to meter.
+ */
+type GeminiUsageMetadata = {
+  promptTokenCount?: unknown;
+  candidatesTokenCount?: unknown;
+  totalTokenCount?: unknown;
+};
+
 function geminiUsage(meta: unknown, prompt: string, completion: string): LlmUsage {
-  const m = meta as {
-    promptTokenCount?: unknown;
-    candidatesTokenCount?: unknown;
-    totalTokenCount?: unknown;
-  } | null;
+  const m = meta as GeminiUsageMetadata | null;
   const promptTokens = typeof m?.promptTokenCount === 'number' ? m.promptTokenCount : null;
   const completionTokens = typeof m?.candidatesTokenCount === 'number' ? m.candidatesTokenCount : null;
   const totalTokens = typeof m?.totalTokenCount === 'number' ? m.totalTokenCount : null;
