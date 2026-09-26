@@ -193,7 +193,7 @@ label master had already passed. This takes the next free one so two branches ca
 announce the same number — the exact failure `check-build-label.mjs` was written to
 prevent.
 
-## 2026-09-24 — Personal trainer on the set in front of you (`.1118`)
+## 2026-09-24 — Personal trainer on the set in front of you (`.1123`)
 
 Today, Train, and Coach show one
 card: the next set, a Library
@@ -248,7 +248,7 @@ pointing off the Gemini host.
 tip-promote. Live www stays `.697`.
 PRIVATE_MODE stays.
 
-Label `2026.07-unified.1118`.
+Label `2026.07-unified.1123`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1104-for-1123.md](docs/archive/log/LOG-rotate-1104-for-1123.md) (`.1104`), for the ≤15 entry budget.
 
