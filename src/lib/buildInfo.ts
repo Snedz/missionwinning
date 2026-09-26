@@ -1,4 +1,4 @@
-</** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1116` Offline program shell. Rebased onto `.1115` (Coach muscle balance map, #1002); `.1114` belongs to #1001 (Resume last / Victory vs-last), so this takes the next free label instead of colliding with them. */
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1116` Offline program shell. Rebased onto `.1115` (Coach muscle balance map, #1002); `.1114` belongs to #1001 (Resume last / Victory vs-last), so this takes the next free label instead of colliding with them. */
 export const APP_BUILD_LABEL = "2026.07-unified.1116";
 
 /**
