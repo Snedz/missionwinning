@@ -77,18 +77,20 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  *
  * ## `#1005` measured raise (Personal trainer on the set in front of you)
  *
- * **419 -> 420 (`/log`), 514 -> 515 (`/active`), 2026-09-27, #1005.** Measured on this
- * branch, not asserted: /log 419.4 KB, /active 514.7 KB gzipped initial JS. #1005 adds
- * the personal-trainer card to those two routes (`SessionTrainerCard` + its seed) so
- * they grew 0.4 KB and 0.7 KB: 0.10% and 0.14% of budget. The caps move to the next
- * integer (the measured ceil), which is 1 KB of headroom on each -- a cost to a user
- * on a slow connection, deliberately paid and not rounded away. `/` measured 347.8
- * against its 351 cap and does not move.
+ * **419 -> 420 (`/log`), 514 -> 516 (`/active`), 2026-09-27, #1005.** Measured, not
+ * asserted. Local (macOS): /log 419.4 KB, /active 514.7 KB gzipped initial JS; CI
+ * (ubuntu, its zlib): 419.8 KB / 515.4 KB, which is the enforcing number. #1005 adds
+ * the personal-trainer card to those two routes (`SessionTrainerCard` + its seed), so
+ * they grew ~0.4 KB and ~0.7 KB over the #1001 caps: 0.10% and 0.14% of budget. Caps
+ * are the ceil of the CI measurement (gzip of identical bytes is deterministic per
+ * runner image, so 419.8 / 515.4 are stable), which is +0.2 KB and +0.6 KB of headroom
+ * on the enforcing runner. A cost to a user on a slow connection, deliberately paid.
+ * `/` measured 348.6 on CI against its 351 cap and does not move.
  */
 const BUDGETS_KB = {
   '/': 351,
   '/log': 420,
-  '/active': 515,
+  '/active': 516,
 };
 
 /** Prerendered HTML for each budgeted route. */
