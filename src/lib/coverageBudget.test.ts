@@ -92,8 +92,14 @@ const HIGH_WATER = {
    * `src/lib/workout/sessionCoachLine.test.ts` and
    * `src/lib/coach/trainerReply.test.ts` (+ its route test), and Train/Coach is
    * a Playwright surface. See `FLOORS.untestedFiles`.
+   *
+   * **502 (`.1123`)** — SessionTrainerCard.tsx — the Train/Today/Coach
+   * personal-trainer card; no component unit harness (zero `.test.tsx`), its
+   * decisions stay in unit-tested `src/lib/coach/sessionTrainer.test.ts` +
+   * `sessionTrainerSurface.test.ts`, and Train/Today/Coach is a Playwright
+   * surface. See `FLOORS.untestedFiles`.
    */
-  untestedFiles: 501,
+  untestedFiles: 502,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

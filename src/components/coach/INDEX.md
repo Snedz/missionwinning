@@ -25,6 +25,7 @@
 | `CoachLiveVoice.tsx` | Live voice is house leftover. Talk is house-btn, not a second filled action. After this week’s session — not above the strip. The free AI personal trainer ask sits on this surface (`.1115`) |
 | `CoachTrainerDoor.tsx` | Same free ask as Train, plus a Train link. No checkout |
 | `CoachFreeFormAskPanel.tsx` | Form cues for `/coach?ask=` plus the same free ask. No bundle link |
+| `SessionTrainerCard.tsx` | Next set, library form cue, and plan on Today / Train / Coach. Ghost Library link. No second filled action (`.1114`) |
 
 ## Related
 

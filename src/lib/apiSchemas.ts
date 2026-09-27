@@ -74,6 +74,20 @@ export const coachDailyContextSchema = z.object({
   deviceId: z.string().min(1).max(64).optional(),
 });
 
+/** Session trainer — the set in front of you, a library cue, and the plan name. */
+export const sessionTrainerSchema = z.object({
+  exerciseId: z.string().max(80).nullable().optional(),
+  exerciseName: z.string().max(80).nullable().optional(),
+  weight: z.number().min(0).max(2000).nullable().optional(),
+  reps: z.number().min(0).max(100).nullable().optional(),
+  unit: z.enum(['kg', 'lb']).optional(),
+  setsLeft: z.number().int().min(0).max(100).nullable().optional(),
+  formCue: z.string().max(240).nullable().optional(),
+  planLabel: z.string().max(80).nullable().optional(),
+  /** Metering identity only — counts, never content. */
+  deviceId: z.string().min(1).max(64).optional(),
+});
+
 export const coachPlanVoiceSchema = z.object({
   plan: z.object({
     weekStart: z.string().max(20),

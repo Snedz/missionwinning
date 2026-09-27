@@ -151,6 +151,16 @@ curl -X POST "$BASE/api/private-access/session" \
 
 All LLM branches are metered per identity since `.188`: token counts (never content) recorded to `llm_usage` via the service role, and a per-identity **daily** request quota (`LLM_DAILY_CAP_*`, `src/lib/llm/quota.ts`) on top of the per-IP minute limits. Quota keys prefer signed-in user > `deviceId` (optional in each schema, metering identity only) > IP. On every route except chat, quota exhaustion and non-premium degrade to the rules/heuristic answer — never an error.
 
+### `POST /api/coach/session-trainer`
+
+| | |
+|--|--|
+| Auth | No gate cookie. LLM branch: a configured key + premium (free-beta bypass counts, so the signed-out logger gets the line) + the `daily_insight` daily cap. No key, beta off, or over cap: `{ source: 'library', line: null }` |
+| Rate | 12/min/IP + daily cap on the LLM branch (shared with daily insight; no new ledger feature) |
+| Schema | `sessionTrainerSchema` |
+| Model | `gemini-2.5-flash` (`generateContent`) when `GEMINI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is set. Else `COACH_LLM_*`. A line that changes the lift or the load is dropped |
+| Success | `{ source: 'library' \| 'llm', model, line }` · quota exhaustion adds `reason: 'quota'` and stays 200 |
+
 ### `POST /api/coach/daily-insight`
 
 | | |

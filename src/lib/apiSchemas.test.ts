@@ -99,6 +99,44 @@ const CASES: Record<string, Case> = {
     ],
   },
 
+  sessionTrainerSchema: {
+    valid: [
+      {
+        exerciseId: 'bench-press',
+        exerciseName: 'Bench press',
+        weight: 100,
+        reps: 5,
+        unit: 'kg',
+        setsLeft: 3,
+        formCue: 'pause the descent',
+        planLabel: 'Push A',
+        deviceId: 'dev-abc123',
+      },
+      // every field is optional+nullable, so the "just started a set" body is legal too --
+      // the route is called mid-set and must not 400 on a partially-filled payload.
+      { exerciseId: 'bench-press' },
+      {},
+    ],
+    invalid: [
+      {
+        input: { unit: 'stone' },
+        because: 'unit is an enum of kg|lb; a third unit silently becomes a wrong-number problem',
+      },
+      {
+        input: { weight: -1 },
+        because: 'weight is .min(0) -- a negative load is a client bug, not a coaching cue',
+      },
+      {
+        input: { setsLeft: 2.5 },
+        because: 'setsLeft is .int(); a fractional count means the client lost track mid-set',
+      },
+      {
+        input: { deviceId: '' },
+        because: 'deviceId is .min(1); it is the metering identity, so an empty one bills nobody',
+      },
+    ],
+  },
+
   weekLoggedBodySchema: {
     valid: [{ isoWeek: '2026-W33' }],
     invalid: [

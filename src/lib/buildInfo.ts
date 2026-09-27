@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1122` Open set states what to do + AI personal trainer on the open set (#1004), on top of `.1120` Resume last chip and Victory vs-last (#1001). */
-export const APP_BUILD_LABEL = "2026.07-unified.1122";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1123` Personal trainer on the set in front of you (#1005), on top of `.1122` Open set states what to do + AI personal trainer on the open set (#1004). */
+export const APP_BUILD_LABEL = "2026.07-unified.1123";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

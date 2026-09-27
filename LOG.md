@@ -193,6 +193,65 @@ label master had already passed. This takes the next free one so two branches ca
 announce the same number — the exact failure `check-build-label.mjs` was written to
 prevent.
 
+## 2026-09-24 — Personal trainer on the set in front of you (`.1123`)
+
+Today, Train, and Coach show one
+card: the next set, a Library
+form cue, and the plan name.
+The sentence is composed on
+the device from those facts.
+A live line is optional.
+
+Free model: `gemini-2.5-flash`
+via Google `generateContent`
+when `GEMINI_API_KEY` or
+`GOOGLE_GENERATIVE_AI_API_KEY`
+is set. Else `COACH_LLM_*`
+if that is configured. Else
+the library line. A model
+line that changes the lift
+or the load is dropped.
+The free logger does not
+need a gate cookie. Free
+beta entitles the signed-out
+caller, so the same Flash
+line is the one they hear.
+Beta off and signed-out
+stays on the library line.
+An exhausted daily cap stays
+on the library answer (200,
+not 401 or 429). The cap is
+the existing daily-insight
+window so the ledger feature
+list stays closed. The card
+sends `deviceId` for that
+meter only.
+
+The card does not add a
+filled action. Library is a
+ghost link to `/exercises/[id]`.
+No checkout URL.
+
+**Mutants killed:** a missing
+plan inventing a lift; zero
+weight printed as 0 kg; a
+model line with a different
+load kept; another product
+name kept; a signed-out
+caller hitting the model
+with free beta off; a call
+with no key; quota exhaustion
+returning 429; `GEMINI_MODEL`
+pointing off the Gemini host.
+
+`[skip vercel]`. No
+tip-promote. Live www stays `.697`.
+PRIVATE_MODE stays.
+
+Label `2026.07-unified.1123`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1104-for-1123.md](docs/archive/log/LOG-rotate-1104-for-1123.md) (`.1104`), for the ≤15 entry budget.
+
 ## 2026-09-24 — History year of logged days (`.1113`)
 
 `/history` paints a Monday-first
@@ -592,44 +651,3 @@ www stays `.697`. PRIVATE_MODE stays.
 Label `2026.07-unified.1105`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1090-for-1105.md](docs/archive/log/LOG-rotate-1090-for-1105.md) (`.1090`).
-
-## 2026-09-16 — Opaque Postgres errors in admin helpers (`.1104`)
-
-The route scan never returned the
-database its own words — and it only
-opened `app/api/**/route.ts`. Helpers
-that import `getSupabaseAdmin` could
-return `error.message` and the route
-would forward it, green the whole time.
-
-School class upsert, youth consent
-persist, and wearables oauth /
-disconnect / samples did exactly that.
-Parked surfaces; still a schema map
-in source.
-
-Fix: `console.error` the detail, return
-opaque `db_error`. `not_configured`
-stays distinct. Resend (`emailServer`)
-is not Postgres and was left alone.
-
-Guard: discover `src/lib/**/*.ts` that
-import or define the service-role
-client. Same matcher as the route
-scan. Empty `LEAK_OK` with a written
-reason. **Mutants killed:** live
-school / youth / wearables leaks;
-planted `return { error: error.message }`
-in `schoolClassServer`; matcher
-narrowed off the school helper
-spelling.
-
-Recipe 18 (nightly cleanup) + INDEX
-routing. No GRAPH_LOOP letter. No UI.
-
-`[skip vercel]`. No tip-promote. Live
-www stays `.697`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1104`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1089-for-1104.md](docs/archive/log/LOG-rotate-1089-for-1104.md) (`.1089`).
