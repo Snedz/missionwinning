@@ -10,10 +10,12 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1100-for-1116.md`](docs/archive/log/LOG-rotate-1100-for-1116.md) — rotated by `.1116`, to keep the <=15 entry budget.
 - [`LOG-rotate-1115-for-1115.md`](docs/archive/log/LOG-rotate-1115-for-1115.md) — rotated on this ship, to keep the <=15 entry budget.
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [CONTEXT-now-1098.md](./CONTEXT-now-1098.md) | `.1116` rotated the `.1098` Now bullet (CapResult deny-code set freeze) |
 | [CONTEXT-now-669.md](./CONTEXT-now-669.md) | `.1115` rotated the `.669` Now bullet (Excellence RESULT + agent stop-rule) |
 | [log/LOG-rotate-1098-for-1113.md](./log/LOG-rotate-1098-for-1113.md) | rotated 2026-09-24 for `.1113` History year of logged days (`.1098`; `.1097` already filed by `.1112`) |
 | [CONTEXT-now-1097.md](./CONTEXT-now-1097.md) | `.1113` rotated the `.1097` Now bullet (CapResult storage_cap) |

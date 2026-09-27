@@ -151,6 +151,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/nutrition': 'surface',
   'src/lib/places': 'surface',
   'src/lib/premium': 'surface',
+  'src/lib/programShell': 'surface',
   'src/lib/rewards': 'surface',
   'src/lib/share': 'surface',
   'src/lib/social': 'surface',

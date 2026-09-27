@@ -16,7 +16,7 @@
 | `auth/` | Sign-in panel |
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner, `FeedbackNoteRow` (rate dest) |
-| `builder/` | Workout builder panels |
+| `builder/` | Workout builder panels. `ProgramShellPanel` browses one offline program template inside Show all |
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
