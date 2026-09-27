@@ -74,11 +74,21 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * mechanical one; the headroom added is 1 KB and 2 KB, not a round number upward.
  * A follow-up should try to win the /active bytes back by code-splitting the victory
  * surfaces behind the set-complete transition, which is where they are actually used.
+ *
+ * ## `#1005` measured raise (Personal trainer on the set in front of you)
+ *
+ * **419 -> 420 (`/log`), 514 -> 515 (`/active`), 2026-09-27, #1005.** Measured on this
+ * branch, not asserted: /log 419.4 KB, /active 514.7 KB gzipped initial JS. #1005 adds
+ * the personal-trainer card to those two routes (`SessionTrainerCard` + its seed) so
+ * they grew 0.4 KB and 0.7 KB: 0.10% and 0.14% of budget. The caps move to the next
+ * integer (the measured ceil), which is 1 KB of headroom on each -- a cost to a user
+ * on a slow connection, deliberately paid and not rounded away. `/` measured 347.8
+ * against its 351 cap and does not move.
  */
 const BUDGETS_KB = {
   '/': 351,
-  '/log': 419,
-  '/active': 514,
+  '/log': 420,
+  '/active': 515,
 };
 
 /** Prerendered HTML for each budgeted route. */

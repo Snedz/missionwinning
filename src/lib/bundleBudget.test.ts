@@ -50,8 +50,11 @@ const HIGH_WATER_KB: Record<string, number> = {
   // layout + root runtime (348.5 → 351). Do not union every chunk in the
   // client-reference manifest — that counted House/Today/Train on `/` (458.9).
   '/': 351,
-  '/log': 419,
-  '/active': 514,
+  // `.1123` #1005 measured raise — SessionTrainerCard on /log + /active
+  // (419.4 / 514.7). `/log` 419 → 420 · `/active` 514 → 515 stay the measured
+  // ceil; `/` measured 347.8 and stays 351.
+  '/log': 420,
+  '/active': 515,
 };
 
 function declaredBudgets(): Record<string, number> {
