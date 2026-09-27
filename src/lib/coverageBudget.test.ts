@@ -73,8 +73,13 @@ const HIGH_WATER = {
    * component unit harness in this repo, mount asserted by
    * `bodyHighlighter/muscleBalance.test.ts`, render covered by the `/coach`
    * Playwright specs.
+   *
+   * **496 (`.1116`)** — ProgramShellPanel.tsx — Builder "Show all" program
+   * shell UI; no component unit harness (zero `.test.tsx`), its decisions live
+   * in unit-tested `src/lib/programShell/programShell.test.ts`, its mount is in
+   * the Builder Playwright surface.
    */
-  untestedFiles: 495,
+  untestedFiles: 496,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

@@ -188,8 +188,13 @@ const FLOORS = {
    * `/coach` is asserted in `bodyHighlighter/muscleBalance.test.ts` and rendered
    * by the four `/coach` Playwright specs, and its decisions stay in unit-tested
    * `bodyHighlighter/muscleBalance.ts`.
+   *
+   * **495 → 496 (`.1116`).** ProgramShellPanel.tsx — Builder "Show all" program
+   * shell UI; no component unit harness (zero `.test.tsx`), its decisions stay
+   * in unit-tested `src/lib/programShell/programShell.test.ts`, and Builder is a
+   * Playwright surface.
    */
-  untestedFiles: 495,
+  untestedFiles: 496,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
