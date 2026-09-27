@@ -114,7 +114,7 @@ return-tone contract.
 tip-promote. Live www stays `.697`.
 PRIVATE_MODE stays.
 
-Label `2026.07-unified.1114`.
+Label `2026.07-unified.1122`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1102-for-1122.md](docs/archive/log/LOG-rotate-1102-for-1122.md) (`.1102`), for the ≤15 entry budget.
 

@@ -18,6 +18,7 @@ When adding a doc:
 | File | Absorbed by / note |
 |------|---------------------|
 | [log/LOG-rotate-1099-for-1114.md](./log/LOG-rotate-1099-for-1114.md) | rotated 2026-09-24 for `.1114` Resume last chip and Victory vs-last (`.1099`; `.1098` already filed by `.1113`) |
+| [CONTEXT-now-1101.md](./CONTEXT-now-1101.md) | `.1122` rotated the `.1101` + `.1100` Now bullets (Deeplink already_mounted, CapResult storage.remove) |
 | [CONTEXT-now-1099.md](./CONTEXT-now-1099.md) | `.1120` rotated the `.1099` Now bullet (Remount after storage_cap) |
 | [CONTEXT-now-1098.md](./CONTEXT-now-1098.md) | `.1116` rotated the `.1098` Now bullet (CapResult deny-code set freeze) |
 | [CONTEXT-now-669.md](./CONTEXT-now-669.md) | `.1115` rotated the `.669` Now bullet (Excellence RESULT + agent stop-rule) |
