@@ -207,8 +207,14 @@ const FLOORS = {
    * `src/lib/workout/sessionCoachLine.test.ts` and
    * `src/lib/coach/trainerReply.test.ts` (+ its route test), and Train/Coach is
    * a Playwright surface.
+   *
+   * **501 → 502 (`.1123`).** SessionTrainerCard.tsx — the Train/Today/Coach
+   * personal-trainer card; no component unit harness (zero `.test.tsx`), its
+   * decisions stay in unit-tested `src/lib/coach/sessionTrainer.test.ts` +
+   * `sessionTrainerSurface.test.ts`, and Train/Today/Coach is a Playwright
+   * surface.
    */
-  untestedFiles: 501,
+  untestedFiles: 502,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
