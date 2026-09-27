@@ -288,6 +288,18 @@ type CoachStrings = {
   coachMuscleBalanceLead: string;
   coachMuscleBalanceEmpty: string;
   coachMuscleBalanceSessions: string;
+  /** `.1123` — the personal-trainer card rows (Next set / Form / Plan). */
+  sessionTrainerKicker: string;
+  sessionTrainerNoSet: string;
+  sessionTrainerLineCue: string;
+  sessionTrainerLine: string;
+  sessionTrainerLineName: string;
+  sessionTrainerNext: string;
+  sessionTrainerForm: string;
+  sessionTrainerNoCue: string;
+  sessionTrainerPlan: string;
+  sessionTrainerNoPlan: string;
+  sessionTrainerLibrary: string;
 };
 
 const en: CoachStrings = {
@@ -636,6 +648,17 @@ const en: CoachStrings = {
     'Front and back from completed sessions in the last {{days}} days. Darker is more sessions.',
   coachMuscleBalanceEmpty: 'No completed sessions in this window. The map fills from your logs.',
   coachMuscleBalanceSessions: '{{count}} sessions',
+  sessionTrainerKicker: 'Personal trainer',
+  sessionTrainerNoSet: 'No set in front of you yet.',
+  sessionTrainerLineCue: 'Next: {{name}}, {{load}}. {{cue}}',
+  sessionTrainerLine: 'Next: {{name}}, {{load}}. Log it when the rep is yours.',
+  sessionTrainerLineName: 'Next: {{name}}. Log it when the rep is yours.',
+  sessionTrainerNext: 'Next set',
+  sessionTrainerForm: 'Form',
+  sessionTrainerNoCue: 'No library cue for this lift.',
+  sessionTrainerPlan: 'Plan',
+  sessionTrainerNoPlan: 'No week plan yet. Log sets and Coach writes the week from your logs.',
+  sessionTrainerLibrary: 'Library',
 };
 
 const es: CoachStrings = {
@@ -680,6 +703,17 @@ const es: CoachStrings = {
   coachMuscleBalanceEmpty:
     'No hay sesiones completadas en esta ventana. El mapa se llena con tus registros.',
   coachMuscleBalanceSessions: '{{count}} sesiones',
+  sessionTrainerKicker: 'Entrenador personal',
+  sessionTrainerNoSet: 'Aún no hay ninguna serie delante de ti.',
+  sessionTrainerLineCue: 'A continuación: {{name}}, {{load}}. {{cue}}',
+  sessionTrainerLine: 'A continuación: {{name}}, {{load}}. Regístrala cuando la repetición sea tuya.',
+  sessionTrainerLineName: 'A continuación: {{name}}. Regístrala cuando la repetición sea tuya.',
+  sessionTrainerNext: 'Próxima serie',
+  sessionTrainerForm: 'Técnica',
+  sessionTrainerNoCue: 'Sin indicación de la biblioteca para este ejercicio.',
+  sessionTrainerPlan: 'Plan',
+  sessionTrainerNoPlan: 'Aún no hay plan semanal. Registra series y Coach escribe la semana con tus registros.',
+  sessionTrainerLibrary: 'Biblioteca',
 };
 
 
@@ -735,6 +769,17 @@ const de: CoachStrings = {
   coachMuscleBalanceEmpty:
     'Keine abgeschlossenen Einheiten in diesem Fenster. Die Karte füllt sich aus deinen Logs.',
   coachMuscleBalanceSessions: '{{count}} Einheiten',
+  sessionTrainerKicker: 'Persönlicher Trainer',
+  sessionTrainerNoSet: 'Noch keine Wiederholung vor dir.',
+  sessionTrainerLineCue: 'Als Nächstes: {{name}}, {{load}}. {{cue}}',
+  sessionTrainerLine: 'Als Nächstes: {{name}}, {{load}}. Logge sie, wenn der Satz dir gehört.',
+  sessionTrainerLineName: 'Als Nächstes: {{name}}. Logge sie, wenn der Satz dir gehört.',
+  sessionTrainerNext: 'Nächster Satz',
+  sessionTrainerForm: 'Form',
+  sessionTrainerNoCue: 'Kein Bibliothekshinweis für diese Übung.',
+  sessionTrainerPlan: 'Plan',
+  sessionTrainerNoPlan: 'Noch kein Wochenplan. Logge Sätze, dann schreibt Coach die Woche aus deinen Logs.',
+  sessionTrainerLibrary: 'Bibliothek',
 };
 
 const LOCALES: Partial<Record<string, CoachStrings>> = { en, es, de };
