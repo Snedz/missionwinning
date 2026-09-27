@@ -78,8 +78,15 @@ const HIGH_WATER = {
    * shell UI; no component unit harness (zero `.test.tsx`), its decisions live
    * in unit-tested `src/lib/programShell/programShell.test.ts`, its mount is in
    * the Builder Playwright surface.
+   *
+   * **499 (`.1120`)** — ResumeLastChip.tsx, VictoryDiaryLine.tsx,
+   * VictoryVsLastLifts.tsx — Train Resume-last chip and Victory vs-last strips;
+   * no component unit harness (zero `.test.tsx`), their decisions stay in
+   * unit-tested `src/lib/workout/` (`resumeLastOffer`, `victoryVsLastLifts`,
+   * `victoryDiaryLine`), and Train/Victory is a Playwright surface
+   * (`logger-depth.spec.ts` leaves Victory toward Today).
    */
-  untestedFiles: 496,
+  untestedFiles: 499,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted
