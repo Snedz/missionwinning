@@ -200,8 +200,15 @@ const FLOORS = {
    * unit-tested `src/lib/workout/` (`resumeLastOffer`, `victoryVsLastLifts`,
    * `victoryDiaryLine`), and Train/Victory is a Playwright surface
    * (`logger-depth.spec.ts` leaves Victory toward Today).
+   *
+   * **499 → 501 (`.1122`).** SessionTrainerAsk.tsx + CoachTrainerDoor.tsx —
+   * Train's ask-under-the-set-line and Coach's trainer door; no component unit
+   * harness (zero `.test.tsx`), their decisions stay in unit-tested
+   * `src/lib/workout/sessionCoachLine.test.ts` and
+   * `src/lib/coach/trainerReply.test.ts` (+ its route test), and Train/Coach is
+   * a Playwright surface.
    */
-  untestedFiles: 499,
+  untestedFiles: 501,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
