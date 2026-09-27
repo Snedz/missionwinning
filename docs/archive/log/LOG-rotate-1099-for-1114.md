@@ -1,3 +1,5 @@
+Superseded live LOG section rotated 2026-09-24 for `.1114` Resume last chip and Victory vs-last.
+`.1098` was already filed by `.1113`.
 
 ## 2026-09-15 — Remount after storage_cap (`.1099`)
 

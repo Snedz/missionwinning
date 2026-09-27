@@ -62,11 +62,23 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  *
  * Previous 2026-07-30 numbers (262 / 280 / 435) assumed prerendered landing
  * HTML and a slimmer house. They had been red on master (`docs/CI_LOCAL.md`).
+ *
+ * ## `#1001` measured raise (Resume last chip / Victory vs-last)
+ *
+ * **418 -> 419 (`/log`), 512 -> 514 (`/active`), 2026-09-26, #1001.** Measured on this
+ * branch, not asserted: /log 418.1 KB, /active 512.8 KB gzipped initial JS. #1001 adds
+ * two real surfaces to those two routes -- `ResumeLastChip` and `VictoryVsLastLifts`
+ * (+`HistorySessionCsvImport` behind the /log History door) -- so the routes grew by
+ * 0.1 KB and 0.8 KB: 0.02% and 0.16% of budget. This is a cost to a user on a slow
+ * connection, so unlike the coverage ratchet it is a deliberate bump and not a
+ * mechanical one; the headroom added is 1 KB and 2 KB, not a round number upward.
+ * A follow-up should try to win the /active bytes back by code-splitting the victory
+ * surfaces behind the set-complete transition, which is where they are actually used.
  */
 const BUDGETS_KB = {
   '/': 351,
-  '/log': 418,
-  '/active': 512,
+  '/log': 419,
+  '/active': 514,
 };
 
 /** Prerendered HTML for each budgeted route. */

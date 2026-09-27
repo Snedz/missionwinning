@@ -7,6 +7,8 @@
 
 import { useTranslation } from 'react-i18next';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
+import { ResumeLastChip } from '@/components/workout/ResumeLastChip';
+import type { ResumeLastOffer } from '@/lib/workout/resumeLastOffer';
 import type { Debrief } from '@/lib/coach/debrief';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 
@@ -26,6 +28,8 @@ type Props = {
   debrief?: Debrief | null;
   fragments?: string[];
   workoutId?: string;
+  resumeOffer?: Extract<ResumeLastOffer, { show: true }> | null;
+  onResumeLast?: () => void;
 };
 
 export function TrainComposeEmpty({
@@ -44,6 +48,8 @@ export function TrainComposeEmpty({
   workoutId,
   onViewToday,
   onViewHistory,
+  resumeOffer = null,
+  onResumeLast,
 }: Props) {
   const { t } = useTranslation();
   const start = !savedRoutineName && !hasLastSession && onPreviewStart ? onPreviewStart : onStart;
@@ -70,6 +76,9 @@ export function TrainComposeEmpty({
       <p className="house-kicker">{t('navTrain', { defaultValue: 'Train' })}</p>
       <h1 className="house-title">{title}</h1>
       <p className="house-lede">{lede}</p>
+      {resumeOffer && onResumeLast ? (
+        <ResumeLastChip offer={resumeOffer} onResume={onResumeLast} />
+      ) : null}
       <div className="house-row" style={{ marginTop: 22 }}>
         <button
           type="button"

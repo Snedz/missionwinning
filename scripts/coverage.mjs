@@ -193,8 +193,15 @@ const FLOORS = {
    * shell UI; no component unit harness (zero `.test.tsx`), its decisions stay
    * in unit-tested `src/lib/programShell/programShell.test.ts`, and Builder is a
    * Playwright surface.
+   *
+   * **496 → 499 (`.1120`).** ResumeLastChip.tsx, VictoryDiaryLine.tsx,
+   * VictoryVsLastLifts.tsx — Train Resume-last chip and Victory vs-last strips;
+   * no component unit harness (zero `.test.tsx`), their decisions stay in
+   * unit-tested `src/lib/workout/` (`resumeLastOffer`, `victoryVsLastLifts`,
+   * `victoryDiaryLine`), and Train/Victory is a Playwright surface
+   * (`logger-depth.spec.ts` leaves Victory toward Today).
    */
-  untestedFiles: 496,
+  untestedFiles: 499,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
