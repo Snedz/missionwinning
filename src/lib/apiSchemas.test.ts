@@ -50,6 +50,55 @@ const UUID_2 = '7c1e4b90-2a3d-4f56-8b9c-0d1e2f3a4b5c';
 const SIG = 'z'.repeat(88);
 
 const CASES: Record<string, Case> = {
+  coachTrainerSchema: {
+    valid: [
+      {
+        exerciseName: 'Bench press',
+        setNumber: 2,
+        setCount: 4,
+        reps: 8,
+        weight: 100,
+        unitLabel: 'kg',
+        kind: 'normal',
+        rowType: 'weight',
+        hardCount: 1,
+        // The house rule is that the valid case supplies EVERY declared key, not just the
+        // required ones -- so that removing a field is caught here rather than silently
+        // stripped by zod at runtime. These four are declared, so the fixture sends them.
+        bodyweightLabel: '',
+        durationSeconds: 0,
+        historyLine: 'Bench 100kg x8, 4 sets',
+        question: 'should I add weight next set?',
+      },
+      // the minimum the schema will accept: the 4 required keys, defaults filling the rest.
+      { exerciseName: 'Deadlift', setNumber: 1, setCount: 1, rowType: 'weight' },
+      // bodyweight sets legitimately carry no load at all.
+      { exerciseName: 'Pull-up', setNumber: 3, setCount: 3, reps: 12, rowType: 'bodyweight' },
+    ],
+    invalid: [
+      {
+        input: { exerciseName: '   ', setNumber: 1, setCount: 1, rowType: 'weight' },
+        because: 'exerciseName is .trim().min(1) -- whitespace is not a name, and a blank one reaches the LLM',
+      },
+      {
+        input: { exerciseName: 'Bench', setNumber: 0, setCount: 1, rowType: 'weight' },
+        because: 'setNumber is .min(1); set 0 means the client lost count, and "how did set 0 go" is not a question',
+      },
+      {
+        input: { exerciseName: 'Bench', setNumber: 1, setCount: 1, rowType: 'bench' },
+        because: 'rowType is an enum; an unknown row type silently drops the set from every total',
+      },
+      {
+        input: { exerciseName: 'Bench', setNumber: 1, setCount: 1, rowType: 'weight', durationSeconds: 4000 },
+        because: 'durationSeconds is .max(3600); past an hour this is a timer bug, not a set',
+      },
+      {
+        input: { exerciseName: 'Bench', setNumber: 1, setCount: 1, rowType: 'weight', notes: 'felt heavy' },
+        because: 'the schema is .strict(); an undeclared key is a client/field drift, not a free-text note',
+      },
+    ],
+  },
+
   weekLoggedBodySchema: {
     valid: [{ isoWeek: '2026-W33' }],
     invalid: [

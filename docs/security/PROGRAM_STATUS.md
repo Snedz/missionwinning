@@ -38,7 +38,11 @@ Known-open partials: MW-PLAY-001 (Play form). Founder manuals include ACCESS-004
 
 ## Attack surface (code, this tip)
 
-**76** `app/api/**/route.ts` (discovered). Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth. Count is enforced by `src/lib/apiInventory.test.ts`.
+**77** `app/api/**/route.ts` (discovered). Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth. Count is enforced by `src/lib/apiInventory.test.ts`.
+> `.1117` (#1004): census **76 -> 77**. The coach free-trainer session route is the
+> newest `app/api/**/route.ts`. The count is discovered from the tree, not hand-kept,
+> so it moves when a route lands; noted so the jump is not read as a privacy-surface
+> change. Perimeter order (isPathEnabled -> PRIVATE_MODE -> handler auth) is unchanged.
 
 | Bucket | Count | Notes |
 |--------|------:|-------|

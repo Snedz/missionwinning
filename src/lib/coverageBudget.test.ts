@@ -85,8 +85,15 @@ const HIGH_WATER = {
    * unit-tested `src/lib/workout/` (`resumeLastOffer`, `victoryVsLastLifts`,
    * `victoryDiaryLine`), and Train/Victory is a Playwright surface
    * (`logger-depth.spec.ts` leaves Victory toward Today).
+   *
+   * **501 (`.1122`)** — SessionTrainerAsk.tsx + CoachTrainerDoor.tsx — Train's
+   * ask-under-the-set-line and Coach's trainer door; no component unit harness
+   * (zero `.test.tsx`), their decisions stay in unit-tested
+   * `src/lib/workout/sessionCoachLine.test.ts` and
+   * `src/lib/coach/trainerReply.test.ts` (+ its route test), and Train/Coach is
+   * a Playwright surface. See `FLOORS.untestedFiles`.
    */
-  untestedFiles: 499,
+  untestedFiles: 501,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted
