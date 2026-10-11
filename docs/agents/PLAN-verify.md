@@ -13,7 +13,7 @@ Fail-fast chain, in order:
 3. `npm run lint`
 4. `npm run typecheck`
 5. `npm test`
-6. Start `next dev` on `VERIFY_PORT` (default **3099**, hostname `127.0.0.1`). Shallow `GET /api/health` must return HTTP 200, JSON `ok === true`, and a non-empty `build` string. Then kill that server.
+6. Start `next dev` on `VERIFY_PORT` (default **3099**, hostname `127.0.0.1`). Shallow `GET /api/health` must return HTTP 200, JSON `ok === true`, and a non-empty `build` string. Then kill that server. `next dev` appends its agent-rules block to `AGENTS.md` when the block is missing. Verify snapshots `AGENTS.md` and `CLAUDE.md` before the boot and writes the originals back after the kill, so the smoke does not dirty the tree. It does not set `agentRules: false` in `next.config`.
 
 Each step prints PASS or FAIL with its seconds. Steps after the first failure are SKIP. The last lines are `VERIFY PASS` or `VERIFY FAIL` and the total wall time. Exit 0 only when every step passed.
 

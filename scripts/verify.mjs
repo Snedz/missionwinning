@@ -11,6 +11,7 @@
  */
 
 import { spawn, spawnSync } from 'node:child_process';
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import process from 'node:process';
 
 const PORT = Number(process.env.VERIFY_PORT ?? 3099);
@@ -51,6 +52,36 @@ function stopServer(child) {
   }
 }
 
+function pause(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+/**
+ * `next dev` appends a rules block to AGENTS.md (or CLAUDE.md) when it
+ * is missing. The smoke must not leave that edit behind.
+ */
+const AGENT_DOC_NAMES = ['AGENTS.md', 'CLAUDE.md'];
+let agentDocs = null;
+
+function snapshotAgentDocs() {
+  agentDocs = new Map(
+    AGENT_DOC_NAMES.map((name) => [name, existsSync(name) ? readFileSync(name) : null])
+  );
+}
+
+function restoreAgentDocs() {
+  if (!agentDocs) return;
+  for (const [name, before] of agentDocs) {
+    const exists = existsSync(name);
+    if (before === null) {
+      if (exists) unlinkSync(name);
+      continue;
+    }
+    const now = exists ? readFileSync(name) : null;
+    if (now === null || !now.equals(before)) writeFileSync(name, before);
+  }
+}
+
 async function portBusy(port) {
   try {
     await fetch(`http://127.0.0.1:${port}/`, { signal: AbortSignal.timeout(1500) });
@@ -75,6 +106,7 @@ async function smokeHealth() {
     return false;
   }
 
+  snapshotAgentDocs();
   const logs = [];
   const child = spawn(
     process.execPath,
@@ -95,7 +127,12 @@ async function smokeHealth() {
   child.stdout?.on('data', keep);
   child.stderr?.on('data', keep);
 
-  const stop = () => stopServer(child);
+  const stop = () => {
+    stopServer(child);
+    // Let SIGKILL land before we put the agent docs back.
+    pause(50);
+    restoreAgentDocs();
+  };
   process.on('exit', stop);
   process.on('SIGINT', () => {
     stop();

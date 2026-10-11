@@ -26,6 +26,9 @@ typecheck, and `npm test`, then
 a shallow local GET /api/health
 on next dev (port 3099).
 It does not nest `npm run gate`.
+next dev would append its rules
+block to AGENTS.md. The smoke
+puts that file back.
 
 Docs: docs/agents/TEST_AUDIT.md
 and docs/agents/DONE_CONTRACT.md.
