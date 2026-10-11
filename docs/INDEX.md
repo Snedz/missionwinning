@@ -78,6 +78,7 @@
 | [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — problem register, 7-step process, flow/state/content standards, research ops, redesign track |
 | [GRAPH_LOOP.md](GRAPH_LOOP.md) | Harness execution queue — live row from `npm run harness`, never restated here |
 | [harness/INDEX.md](harness/INDEX.md) | Live hop contract (`HOP.md`) + compaction pin (`PINNED.md`). Closer: `npm run harness:done` |
+| [agents/DONE_CONTRACT.md](agents/DONE_CONTRACT.md) | Builder is done only when `npm run verify` passes and the output is pasted. Test bar: [agents/TEST_AUDIT.md](agents/TEST_AUDIT.md). Plan: [agents/PLAN-verify.md](agents/PLAN-verify.md) |
 | [IDEA_LOOP.md](IDEA_LOOP.md) | Idea generation protocol — one row per run into GRAPH_LOOP |
 | [mechanics/INDEX.md](mechanics/INDEX.md) | The idea graph — behaviours, mechanics, hypotheses, constraints |
 | [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) | Gauntlet grading protocol |

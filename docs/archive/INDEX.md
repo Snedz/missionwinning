@@ -10,6 +10,7 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1105-for-1124.md`](docs/archive/log/LOG-rotate-1105-for-1124.md) — rotated by `.1124`, to keep the <=15 entry budget.
 - [`LOG-rotate-1104-for-1123.md`](docs/archive/log/LOG-rotate-1104-for-1123.md) — rotated by `.1123`, to keep the <=15 entry budget.
 - [`LOG-rotate-1103-for-1122.md`](docs/archive/log/LOG-rotate-1103-for-1122.md) — rotated by `.1122`, to keep the <=15 entry budget.
 - [`LOG-rotate-1102-for-1122.md`](docs/archive/log/LOG-rotate-1102-for-1122.md) — rotated by `.1122`, to keep the <=15 entry budget.
@@ -19,6 +20,7 @@ When adding a doc:
 | File | Absorbed by / note |
 |------|---------------------|
 | [log/LOG-rotate-1099-for-1114.md](./log/LOG-rotate-1099-for-1114.md) | rotated 2026-09-24 for `.1114` Resume last chip and Victory vs-last (`.1099`; `.1098` already filed by `.1113`) |
+| [CONTEXT-now-1102.md](./CONTEXT-now-1102.md) | `.1124` rotated the `.1102` Now bullet (Identity remount after inject) |
 | [CONTEXT-now-1104.md](./CONTEXT-now-1104.md) | `.1123` rotated the `.1104` Now bullet (Opaque Postgres errors in admin helpers) |
 | [CONTEXT-now-1101.md](./CONTEXT-now-1101.md) | `.1122` rotated the `.1101` + `.1100` Now bullets (Deeplink already_mounted, CapResult storage.remove) |
 | [CONTEXT-now-1099.md](./CONTEXT-now-1099.md) | `.1120` rotated the `.1099` Now bullet (Remount after storage_cap) |

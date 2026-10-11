@@ -16,6 +16,7 @@
 | `compliance-status.ts` | `npm run compliance:status` | Vanta-lite control report (`--ci`, `--write-md`) |
 | `growth-smoke.mjs` | `npm run growth-smoke` | Leads/unsub/welcome perimeter (Wave 2) |
 | `check-build-label.mjs` | `npm run check-build-label` | **Hard rule 5, executable.** Label must exceed `origin/master`'s and be cited in LOG.md + CONTEXT.md. Gate step 2 — before the build, so an unbumped label doesn't cost 3 min |
+| `verify.mjs` | `npm run verify` | Merge bar: label + excellence + lint + typecheck + `npm test` + shallow local `/api/health`. Does not nest `npm run gate`. See [docs/agents/PLAN-verify.md](../docs/agents/PLAN-verify.md) |
 | `queue-next.ts` | `npm run harness` | Names the live GRAPH_LOOP ticket and route. Prints, never writes. `graph` / `queue:next` are aliases |
 | `graph-hop-done.ts` | `npm run harness:done` | Mechanical hop closer. HOP.md ticket must match the live GRAPH_LOOP row; `accept` must exit 0. Does not write the queue. `graph:done` is an alias |
 | `week4-smoke.mjs` | `npm run week4-smoke` | Weekly-digest dryRun + optional `mw_week4_retention` RPC |

@@ -71,11 +71,24 @@ npm run typecheck    # tsc --noEmit (tests + app)
 npm test             # unit tests (src/lib/**/*.test.ts)
 npm run build        # production build
 npm run lint         # eslint
+npm run verify       # merge bar: label + excellence + lint + typecheck + test + local /api/health
 npm run gate         # FULL local gate: lint + typecheck + tests + i18n + display-type + token-sync + build + hero e2e
 npm run e2e          # Playwright smoke (needs SMOKE_BASE_URL)
 npm run gate-smoke   # curl deploy checks (needs SMOKE_BASE_URL)
 npm run check-env    # verify .env.local
 ```
+
+---
+
+## Verify gate
+
+Before opening or merging any PR, run `npm run verify` and paste the summary (`VERIFY PASS` or `VERIFY FAIL`, each step, and the wall time) in the PR body and in the builder's final message.
+
+`npm run verify` is the merge bar: `check-build-label`, `check-excellence-gate`, `lint`, `typecheck`, `npm test`, then a shallow `GET /api/health` on a `next dev` this command starts (port 3099). It exits non-zero on the first failure.
+
+`npm run gate` stays the full local gate (coverage, i18n, security, design, production build, bundle budget, Playwright `@gate` and `@a11y`). Verify does not nest gate. Chromium is not required for verify. See [docs/CI_LOCAL.md](docs/CI_LOCAL.md).
+
+Follow [docs/agents/TEST_AUDIT.md](docs/agents/TEST_AUDIT.md) for every new test and [docs/agents/DONE_CONTRACT.md](docs/agents/DONE_CONTRACT.md) for when a builder is done. After 3 failed verify attempts, stop and name the blocker. Never lower a coverage floor, bundle budget, or test threshold to get green. Plan: [docs/agents/PLAN-verify.md](docs/agents/PLAN-verify.md).
 
 ---
 
@@ -160,6 +173,6 @@ Durable, non-obvious notes for agents on a VM where the update script (`npm inst
 - **No env vars are needed to run or test the web app in dev.** `npm run dev` boots with an empty/absent `.env.local`. In dev the private gate is **off** (`isPrivateModeEnabled()` is only true in a production build with `PRIVATE_MODE` unset/true), free-beta is **on** so premium depth is unlocked, and Supabase/Stripe/Redis/LLM all degrade gracefully (localStorage "demo mode", in-memory rate limits, rule-based coach). Add Supabase URL + anon key to `.env.local` only when testing auth/cloud-sync/enrollment flows.
 - **Hello-world flow:** `/active` is the free Train logger. From a fresh state I-Day is Begin → Continue (lands `/log`); Today Start opens Train. Log a set by entering weight/reps and clicking **Log set**. No account. No Skip-sign-in step.
 - **`npm install` prints a harmless `EBADENGINE` warning** for `lighthouse` (wants Node ≥22.19; only used by the optional `npm run lighthouse-budget`). It does not affect install, dev, test, or build.
-- **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
+- **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser. **`npm run verify` does not need Chromium** — it is the merge bar (label, excellence, lint, typecheck, unit tests, shallow `/api/health`).
 - **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). `[skip vercel]` on every commit unless the founder asked for a Preview. Do not treat `build-and-test` red as a product fail.
 
