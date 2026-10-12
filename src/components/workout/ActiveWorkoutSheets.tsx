@@ -4,9 +4,9 @@
  * Overlay sheet cluster for ActiveWorkoutPage — check-in, form, add, plates, victory (.450).
  */
 
+import dynamic from 'next/dynamic';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
-import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { SessionCheckInSheet } from '@/components/workout/SessionCheckInSheet';
 import { HardSessionWarningSheet } from '@/components/workout/HardSessionWarningSheet';
@@ -20,6 +20,12 @@ import {
 } from '@/lib/workout/activeSetInputPatches';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import type { ActiveExerciseLog, MuscleGroup } from '@/types';
+
+const PlateCalculatorSheet = dynamic(
+  () =>
+    import('@/components/workout/PlateCalculatorSheet').then((m) => m.PlateCalculatorSheet),
+  { ssr: false }
+);
 
 type FormGuideView = {
   exerciseId: string;
@@ -124,19 +130,21 @@ export function ActiveWorkoutSheets({
         }}
       />
 
-      <PlateCalculatorSheet
-        open={plateCalcOpen}
-        onClose={onClosePlateCalc}
-        initialTarget={plateCalcInitialWeight({
-          nextSet,
-          exercises,
-          resolveInput,
-        })}
-        onApplyTarget={(weight) => {
-          if (!nextSet) return;
-          onApplyPlateWeight(nextSet.exIdx, nextSet.setIdx, weight);
-        }}
-      />
+      {plateCalcOpen ? (
+        <PlateCalculatorSheet
+          open
+          onClose={onClosePlateCalc}
+          initialTarget={plateCalcInitialWeight({
+            nextSet,
+            exercises,
+            resolveInput,
+          })}
+          onApplyTarget={(weight) => {
+            if (!nextSet) return;
+            onApplyPlateWeight(nextSet.exIdx, nextSet.setIdx, weight);
+          }}
+        />
+      ) : null}
 
       <WorkoutVictorySheet
         open={victoryOpen}

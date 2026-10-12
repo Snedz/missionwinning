@@ -4,12 +4,15 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   calculatePlatesPerSide,
+  defaultPlateInventory,
   formatBothSidesPlateCounts,
   IMPERIAL_BAR_LBS,
   IMPERIAL_PLATES_LBS,
   isBarLoadedEquipment,
   METRIC_BAR_KG,
   METRIC_PLATES_KG,
+  nearestBarLoad,
+  parsePlateInventory,
   parseBarWeightPref,
   resolveBarWeight,
   setRowPlateBreakdown,
@@ -34,6 +37,97 @@ describe('plateCalculator', () => {
     const r = calculatePlatesPerSide(102.5, METRIC_BAR_KG, METRIC_PLATES_KG);
     assert.ok(r.remainder >= 0);
     assert.ok(r.achievedWeight <= 102.5);
+  });
+});
+
+describe('nearestBarLoad', () => {
+  it('loads 100 kg as 25 + 15 on each side of a 20 kg bar', () => {
+    const r = nearestBarLoad(100, METRIC_BAR_KG, defaultPlateInventory('metric'));
+    assert.equal(r.exact, true);
+    assert.equal(r.achievedWeight, 100);
+    assert.equal(r.delta, 0);
+    assert.deepEqual(r.perSide, [25, 15]);
+  });
+
+  it('loads 225 lb as two 45s on each side of a 45 lb bar', () => {
+    const r = nearestBarLoad(225, IMPERIAL_BAR_LBS, defaultPlateInventory('imperial'));
+    assert.equal(r.exact, true);
+    assert.equal(r.achievedWeight, 225);
+    assert.deepEqual(r.perSide, [45, 45]);
+  });
+
+  it('loads 135 lb as one 45 on each side', () => {
+    const r = nearestBarLoad(135, IMPERIAL_BAR_LBS, defaultPlateInventory('imperial'));
+    assert.equal(r.exact, true);
+    assert.deepEqual(r.perSide, [45]);
+  });
+
+  it('picks 100 kg when 101 kg cannot be made', () => {
+    const r = nearestBarLoad(101, METRIC_BAR_KG, defaultPlateInventory('metric'));
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, 100);
+    assert.equal(r.delta, -1);
+    assert.deepEqual(r.perSide, [25, 15]);
+  });
+
+  it('loads one 25 per side when that is closer than the empty bar', () => {
+    const r = nearestBarLoad(60, METRIC_BAR_KG, [{ weight: 25, pairs: 2 }]);
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, 70);
+    assert.equal(r.delta, 10);
+    assert.deepEqual(r.perSide, [25]);
+  });
+
+  it('treats a target under the bar as unreachable and keeps the empty bar', () => {
+    const r = nearestBarLoad(10, METRIC_BAR_KG, defaultPlateInventory('metric'));
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, METRIC_BAR_KG);
+    assert.equal(r.delta, 10);
+    assert.deepEqual(r.perSide, []);
+  });
+
+  it('treats a target past an empty rack as unreachable and keeps the empty bar', () => {
+    const r = nearestBarLoad(200, METRIC_BAR_KG, [{ weight: 25, pairs: 0 }]);
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, METRIC_BAR_KG);
+    assert.deepEqual(r.perSide, []);
+    assert.equal(r.delta, -180);
+  });
+
+  it('uses a 35 lb bar so 135 is 45 + 5 per side', () => {
+    const r = nearestBarLoad(135, 35, defaultPlateInventory('imperial'));
+    assert.equal(r.exact, true);
+    assert.equal(r.achievedWeight, 135);
+    assert.deepEqual(r.perSide, [45, 5]);
+  });
+
+  it('refuses a second 45 per side when the rack has one pair', () => {
+    const r = nearestBarLoad(225, IMPERIAL_BAR_LBS, [{ weight: 45, pairs: 1 }]);
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, 135);
+    assert.deepEqual(r.perSide, [45]);
+  });
+
+  it('prefers the lighter total when two loads are equally far', () => {
+    const r = nearestBarLoad(25, METRIC_BAR_KG, [{ weight: 5, pairs: 2 }]);
+    assert.equal(r.exact, false);
+    assert.equal(r.achievedWeight, 20);
+    assert.equal(r.delta, -5);
+    assert.deepEqual(r.perSide, []);
+  });
+});
+
+describe('parsePlateInventory', () => {
+  it('fills a missing rack from the defaults and clamps a huge pair count', () => {
+    const missing = parsePlateInventory(null);
+    assert.equal(missing.metric.find((row) => row.weight === 25)?.pairs, 4);
+    assert.equal(missing.imperial.find((row) => row.weight === 45)?.pairs, 6);
+    const clamped = parsePlateInventory({
+      metric: [{ weight: 25, pairs: 99 }],
+      imperial: 'nope',
+    });
+    assert.equal(clamped.metric.find((row) => row.weight === 25)?.pairs, 12);
+    assert.equal(clamped.imperial.find((row) => row.weight === 45)?.pairs, 6);
   });
 });
 

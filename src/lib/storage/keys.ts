@@ -162,6 +162,11 @@ export const STORAGE_KEYS = {
    * `{ metric, imperial }`. Missing / invalid falls back to 20 / 45.
    */
   barWeight: 'mw_bar_weight',
+  /**
+   * Pairs of each plate, per unit. Shape `{ metric, imperial }`.
+   * Missing / invalid falls back to the default rack.
+   */
+  plateInventory: 'mw_plate_inventory',
   unitsExplicit: 'mw_units_explicit',
   langExplicit: 'mw_lang_explicit',
   /** Explicit first-visit language choice (not detector drift). */
