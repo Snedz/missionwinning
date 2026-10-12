@@ -1,9 +1,10 @@
 /**
  * Pregnancy / miscarriage / postpartum safety — v1.
  *
- * Athlete-owned flag, never inferred, never a logger gate. The flag changes
- * exactly one product behavior: which stop-symptoms line appears on the
- * hard-session warning sheet. See docs/PREGNANCY_SAFETY.md.
+ * Athlete-owned flag, never inferred, never a logger gate. The flag picks the
+ * hard-session stop line and, with other safety screens, withholds train-now
+ * recommendations. It does not change prescriptions or block Log set.
+ * See docs/PREGNANCY_SAFETY.md.
  *
  * Counsel reviews copy before production (same hold as PT safety).
  */

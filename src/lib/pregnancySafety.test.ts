@@ -188,7 +188,7 @@ describe('pregnancy safety wiring v1', () => {
     assert.doesNotMatch(home, /ProfilePregnancyCard/);
   });
 
-  it('Log set does not read the flag; Coach does not mount a hold note or hide CTAs', () => {
+  it('Log set does not read the flag; recommendation surfaces consult the gate', () => {
     const active = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
       'utf8'
@@ -202,7 +202,20 @@ describe('pregnancy safety wiring v1', () => {
     assert.doesNotMatch(store, /pregnancySafety/);
 
     const coach = readFileSync(path.join(root, 'src/page-components/CoachPage.tsx'), 'utf8');
-    assert.doesNotMatch(coach, /PregnancyHoldNote|pregnancySafety/);
+    assert.doesNotMatch(coach, /PregnancyHoldNote/);
+    const today = readFileSync(path.join(root, 'src/page-components/TodayDesk.tsx'), 'utf8');
+    assert.match(today, /guardHeroCopy/);
+    assert.match(today, /withholdHero \? '\/move'/);
+    const planCard = readFileSync(
+      path.join(root, 'src/components/coach/PlanSessionCard.tsx'),
+      'utf8'
+    );
+    assert.match(planCard, /useTrainCta/);
+    const train = readFileSync(
+      path.join(root, 'src/components/house/TrainComposeEmpty.tsx'),
+      'utf8'
+    );
+    assert.match(train, /logger: true/);
 
     const pft = readFileSync(
       path.join(root, 'src/components/fitness-test/FitnessTestRunner.tsx'),
@@ -218,7 +231,7 @@ describe('pregnancy safety wiring v1', () => {
     assert.doesNotMatch(programs, /pregnancySafety|hideMaxEffort|isMaxEffortSessionName/);
   });
 
-  it('hard-session sheet uses the stop-line selector — the one v1 behavior', () => {
+  it('hard-session sheet still uses the stop-line selector and does not hide the session', () => {
     const sheet = readFileSync(
       path.join(root, 'src/components/workout/HardSessionWarningSheet.tsx'),
       'utf8'

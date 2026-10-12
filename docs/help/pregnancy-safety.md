@@ -12,9 +12,9 @@ If you have **bleeding, cramping, chest pain, feel faint or dizzy, have severe s
 
 ## What the status changes
 
-If you set that status, the **hard-session warning** (the sheet before a max-effort or timed test) uses a stop line that also names bleeding, cramping, and dizziness. That is the only product change.
+If you set that status, the **hard-session warning** (the sheet before a max-effort or timed test) uses a stop line that also names bleeding, cramping, and dizziness.
 
-The status does not change Mission Coach prescriptions. It does not hide start buttons. You can still log a normal set.
+Today, Coach, and other “start a session” prompts use that same stop line instead of telling you to go train. You can still log a normal set. The status does not change the week Mission Coach already wrote.
 
 This app is **not miscarriage prevention** and does not claim you are medically cleared to train. Pregnancy, miscarriage, and postpartum decisions belong to you and your clinician.
 

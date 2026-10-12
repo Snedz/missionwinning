@@ -15,6 +15,8 @@
 
 import Link from 'next/link';
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
 import { loadBands } from '@/lib/coach/load';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -35,8 +37,13 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { plan, todaySession, loading, locked, generate, needsParq } = useCoachPlan();
   const startCoachSession = useStartCoachSession();
+  const { cta } = useTrainCta(
+    { labelKey: 'coachStartSession', defaultLabel: 'Start this session' },
+    todaySession?.name
+  );
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -91,6 +98,10 @@ export function CoachTodayCard() {
   if (loading) return null;
 
   const startToday = () => {
+    if (!cta.startsWorkout) {
+      router.push(cta.href ?? '/move');
+      return;
+    }
     if (!todaySession) return;
     startCoachSession(todaySession, { from: 'home' });
   };
@@ -244,8 +255,9 @@ export function CoachTodayCard() {
             {todaySession.status !== 'done' && (
               <>
                 <Button variant="outline" size="sm" className="w-full min-h-[44px] tap-target" onClick={startToday}>
-                  {t('coachStartSession', { defaultValue: 'Start this session' })}
+                  {t(cta.labelKey, { defaultValue: cta.defaultLabel })}
                 </Button>
+                {cta.note ? <p className="text-xs text-muted-foreground">{cta.note}</p> : null}
                 <Link
                   href="/coach"
                   className="block text-center text-sm text-primary min-h-[44px] leading-[44px] hover:underline"

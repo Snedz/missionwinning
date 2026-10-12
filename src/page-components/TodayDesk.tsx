@@ -40,6 +40,13 @@ import {
 import type { CompletedWorkoutLog } from '@/types';
 import { isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from '@/lib/justGoHeroMeta';
+import {
+  CLEAR_SAFETY_TRAIN,
+  guardHeroCopy,
+  loadSafetyTrainDecision,
+  presentTrainCta,
+  type SafetyTrainDecision,
+} from '@/lib/safetyTrainGuidance';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
@@ -58,6 +65,7 @@ type DeskSnap = {
   action: JourneyAction;
   journey: JourneyState;
   copy: JustGoHeroCopy | null;
+  safety: SafetyTrainDecision;
 };
 
 function readDeskSnap(): DeskSnap {
@@ -86,15 +94,18 @@ function readDeskSnap(): DeskSnap {
     repeatLastName: lastSession?.name ?? null,
     savedRoutineName: honored?.name ?? null,
   });
-  const copy = meta
+  const safety = loadSafetyTrainDecision(meta?.sessionName ?? null);
+  const rawCopy = meta
     ? resolveJustGoHeroCopy(meta, { completedSessions: workoutHistory.length })
     : null;
+  const copy = rawCopy ? guardHeroCopy(rawCopy, safety) : null;
   return {
     history: workoutHistory,
     plan,
     action,
     journey,
     copy,
+    safety,
   };
 }
 
@@ -144,6 +155,12 @@ export function TodayDesk() {
   const _action = snap?.action ?? null;
   const journey = snap?.journey ?? getDefaultJourneyState();
   const copy = snap?.copy ?? null;
+  const safety = hasActiveWorkout ? CLEAR_SAFETY_TRAIN : (snap?.safety ?? CLEAR_SAFETY_TRAIN);
+  const heroCta = presentTrainCta(safety, {
+    labelKey: copy?.labelKey ?? 'todayStartCta',
+    defaultLabel: copy?.defaultLabel ?? 'Start',
+  });
+  const withholdHero = !heroCta.startsWorkout;
 
   const handleStart = () => {
     writeTodayComposeSession();
@@ -152,24 +169,32 @@ export function TodayDesk() {
 
   const sessionTitle = hasActiveWorkout
     ? liveName || t('navTrain', { defaultValue: 'Train' })
-    : copy
-      ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
-      : t('justGoTitle', { defaultValue: 'Training — Just Go', focus: 'Training' });
+    : safety.mode === 'withhold' && safety.copy
+      ? safety.copy
+      : copy
+        ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
+        : t('justGoTitle', { defaultValue: 'Training — Just Go', focus: 'Training' });
   const sessionLede = hasActiveWorkout
     ? t('todayStartCta', { defaultValue: 'Start' })
-    : copy
-      ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
-      : t('justGoDesc', {
-          defaultValue:
-            "One tap builds today's training session from how fresh you are and what you lifted last time.",
-          focus: 'Training',
-        });
+    : safety.mode !== 'clear' && safety.copy
+      ? safety.copy
+      : copy
+        ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
+        : t('justGoDesc', {
+            defaultValue:
+              "One tap builds today's training session from how fresh you are and what you lifted last time.",
+            focus: 'Training',
+          });
   const sessionKicker = hasActiveWorkout
     ? t('navTrain', { defaultValue: 'Train' })
-    : copy
-      ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
-      : t('justGoEyebrow', { defaultValue: 'Ready to train' });
-  const startLabel = t('todayStartCta', { defaultValue: 'Start' });
+    : safety.mode !== 'clear' && safety.copy
+      ? safety.copy
+      : copy
+        ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
+        : t('justGoEyebrow', { defaultValue: 'Ready to train' });
+  const startLabel = hasActiveWorkout
+    ? t('todayStartCta', { defaultValue: 'Start' })
+    : t(heroCta.labelKey, { defaultValue: heroCta.defaultLabel });
   const conceptChip =
     hasActiveWorkout || !snap ? null : todayConceptChip(plan);
   const todayLabel = formatLocalDateKey(localDateKey(), i18n.language, {
@@ -204,6 +229,10 @@ export function TodayDesk() {
   const openDay = (session: PlanSession | null, offset: number) => {
     if (hasActiveWorkout && offset === todayOff) {
       router.push('/active');
+      return;
+    }
+    if (withholdHero) {
+      router.push('/move');
       return;
     }
     if (session && session.exercises.length > 0) {
@@ -246,10 +275,11 @@ export function TodayDesk() {
         ) : null}
         <div className="house-row" style={{ marginTop: 18 }}>
           <Link
-            href="/active"
+            href={withholdHero ? '/move' : '/active'}
             className="house-btn house-btn-primary"
             data-testid="today-start-cta"
             onClick={() => {
+              if (withholdHero) return;
               writeTodayComposeSession();
             }}
           >

@@ -1,4 +1,9 @@
 import type { BodyScores, CoachInsight, RecommendedFocus } from './score';
+import { SAFETY_HELD_MESSAGE_KEYS } from './safetyTrainGuidance';
+
+function safetyHeld(insight: CoachInsight): boolean {
+  return (SAFETY_HELD_MESSAGE_KEYS as readonly string[]).includes(insight.messageKey);
+}
 
 export interface PillarWeekContext {
   moveFlows?: number;
@@ -21,7 +26,7 @@ export function applyCrossPillarCoachRules(
   pillars: PillarWeekContext,
   opts?: { assessmentRisk?: string }
 ): CoachInsight {
-  if (opts?.assessmentRisk === 'high') return insight;
+  if (opts?.assessmentRisk === 'high' || safetyHeld(insight)) return insight;
 
   const move = pillars.moveFlows ?? 0;
   const mind = pillars.mindSessions ?? 0;
@@ -76,9 +81,9 @@ export function applyCrossPillarCoachRules(
 export function listCrossPillarCoachSuggestions(
   scores: BodyScores,
   pillars: PillarWeekContext,
-  opts?: { assessmentRisk?: string }
+  opts?: { assessmentRisk?: string; withholdTrain?: boolean }
 ): CoachInsight[] {
-  if (opts?.assessmentRisk === 'high') return [];
+  if (opts?.assessmentRisk === 'high' || opts?.withholdTrain) return [];
 
   const move = pillars.moveFlows ?? 0;
   const mind = pillars.mindSessions ?? 0;

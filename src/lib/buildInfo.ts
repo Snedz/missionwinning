@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1126` Next 16.4 initial JS — Just Go keeps six starter programs; challenges do not ship the guidebook. */
-export const APP_BUILD_LABEL = "2026.07-unified.1126";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1127` safety flags withhold train-now guidance; Log set stays open. */
+export const APP_BUILD_LABEL = "2026.07-unified.1127";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

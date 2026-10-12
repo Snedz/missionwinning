@@ -7,6 +7,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -31,6 +32,10 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const startCoachSession = useStartCoachSession();
+  const { cta } = useTrainCta(
+    { labelKey: 'coachNextDayStart', defaultLabel: `Start ${cite?.name ?? ''}`.trim() },
+    cite?.name
+  );
   const honored = honorCiteStart({
     cite: cite ?? null,
     saved: savedWorkouts,
@@ -63,6 +68,10 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const start = () => {
     if (protectLiveStart(activeWorkout) === 'keep') {
       router.push('/active');
+      return;
+    }
+    if (!cta.startsWorkout) {
+      router.push(cta.href ?? '/move');
       return;
     }
     if (honored?.source === 'saved') {
@@ -112,11 +121,13 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
         >
           {protectLiveStart(activeWorkout) === 'keep'
             ? t('resumeWorkout', { defaultValue: 'Resume workout' })
-            : t('coachNextDayStart', {
-                name:
-                  honored?.source === 'saved' ? honored.routine.name : cite.name,
-                defaultValue: 'Start {{name}}',
-              })}
+            : cta.note
+              ? t(cta.labelKey, { defaultValue: cta.defaultLabel })
+              : t('coachNextDayStart', {
+                  name:
+                    honored?.source === 'saved' ? honored.routine.name : cite.name,
+                  defaultValue: 'Start {{name}}',
+                })}
         </button>
       ) : null}
     </div>

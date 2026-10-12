@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 import type { CoachPlan } from '@/lib/coach/types';
 import {
   hasCoachAdaptationSignal,
@@ -79,7 +81,13 @@ export function CoachAdaptBanner({
   // the re-entry block renders, and a hook after a conditional return is a
   // Rules-of-Hooks violation that only shows up once the bail path is taken.
   const startCoachSession = useStartCoachSession();
+  const router = useRouter();
   const units = useUnits();
+  const reentryPeek = coachAdaptReentrySession(plan, todayOffset);
+  const { decision, cta } = useTrainCta(
+    { labelKey: 'coachStartSession', defaultLabel: 'Start this session' },
+    reentryPeek?.name ?? null
+  );
   const [citation, setCitation] = useState<CoachLogCitation | null>(null);
   useEffect(() => {
     setCitation(coachLogCitationFromStorage());
@@ -263,9 +271,11 @@ export function CoachAdaptBanner({
       {showReentry && (
         <div className="pt-1 space-y-2">
           <p className="text-xs text-foreground">
-            {t('coachAdaptReentryLead', {
-              defaultValue: 'Ready to train again?',
-            })}
+            {decision.mode === 'clear'
+              ? t('coachAdaptReentryLead', {
+                  defaultValue: 'Ready to train again?',
+                })
+              : decision.copy}
           </p>
           <div className="flex flex-wrap gap-2">
             {/*
@@ -283,18 +293,28 @@ export function CoachAdaptBanner({
               */
               <button
                 type="button"
-                onClick={() => startCoachSession(reentrySession, { from: 'reentry' })}
+                onClick={() => {
+                  if (!cta.startsWorkout) {
+                    router.push(cta.href ?? '/move');
+                    return;
+                  }
+                  startCoachSession(reentrySession, { from: 'reentry' });
+                }}
                 className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
               >
-                {t('coachStartSession', { defaultValue: 'Start this session' })}
+                {decision.mode === 'clear'
+                  ? t('coachStartSession', { defaultValue: 'Start this session' })
+                  : t(cta.labelKey, { defaultValue: cta.defaultLabel })}
               </button>
             ) : (
               /* Freestyle: `/active` is the destination, and picking exercises there is the point. */
               <Link
-                href="/active"
+                href={cta.startsWorkout ? '/active' : (cta.href ?? '/move')}
                 className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
               >
-                {t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
+                {decision.mode === 'clear'
+                  ? t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })
+                  : t(cta.labelKey, { defaultValue: cta.defaultLabel })}
               </Link>
             )}
             <Link

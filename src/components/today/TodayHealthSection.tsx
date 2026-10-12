@@ -10,6 +10,7 @@ import { CoachInsightCard } from '@/components/metrics/CoachInsightCard';
 import { PillarScoreBreakdown } from '@/components/metrics/PillarScoreBreakdown';
 import { CrossPillarCoachChips } from '@/components/today/CrossPillarCoachChips';
 import { useDailyCoachInsight } from '@/hooks/useDailyCoachInsight';
+import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
 import { listCrossPillarCoachSuggestions } from '@/lib/crossPillarCoach';
 import type { CoachInsight, WinScoreBreakdown } from '@/lib/score';
 
@@ -40,6 +41,7 @@ interface Props {
 export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {
   const { t } = useTranslation();
   const coach = useDailyCoachInsight(coachContext, insight);
+  const safety = useSafetyTrainDecision();
   const crossPillarChips = listCrossPillarCoachSuggestions(
     {
       readiness: coachContext.readiness,
@@ -49,7 +51,8 @@ export function TodayHealthSection({ insight, breakdown, coachContext }: Props) 
       strainLabelKey: 'todayBodyModerateLoad',
       recoveryLabelKey: 'todayBodyRebuilding',
     },
-    coachContext.pillars
+    coachContext.pillars,
+    { withholdTrain: safety.mode === 'withhold' }
   );
 
   return (

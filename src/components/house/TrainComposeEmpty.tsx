@@ -6,6 +6,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { ResumeLastChip } from '@/components/workout/ResumeLastChip';
 import type { ResumeLastOffer } from '@/lib/workout/resumeLastOffer';
@@ -52,7 +53,13 @@ export function TrainComposeEmpty({
   onResumeLast,
 }: Props) {
   const { t } = useTranslation();
+  const { decision, cta } = useTrainCta(
+    { labelKey: 'todayStartCta', defaultLabel: 'Start' },
+    previewName ?? savedRoutineName ?? null,
+    { logger: true }
+  );
   const start = !savedRoutineName && !hasLastSession && onPreviewStart ? onPreviewStart : onStart;
+  const safetyNote = decision.mode !== 'clear' ? decision.copy : null;
   const title = savedRoutineName
     ? savedRoutineName
     : hasLastSession
@@ -69,7 +76,9 @@ export function TrainComposeEmpty({
       ? t('activeRepeatLastSessionDesc', {
           defaultValue: 'Same exercises and last loads. Log when ready.',
         })
-      : t('activeEmptyExercises', { defaultValue: 'Add an exercise to begin logging sets.' });
+      : safetyNote
+        ? safetyNote
+        : t('activeEmptyExercises', { defaultValue: 'Add an exercise to begin logging sets.' });
 
   return (
     <div className="house-compose-empty" aria-busy={hydrated ? undefined : true}>
@@ -88,7 +97,9 @@ export function TrainComposeEmpty({
             !savedRoutineName && !hasLastSession && previewName ? 'active-start-preview' : undefined
           }
         >
-          {t('todayStartCta', { defaultValue: 'Start' })}
+          {decision.mode === 'clear'
+            ? t('todayStartCta', { defaultValue: 'Start' })
+            : t(cta.labelKey, { defaultValue: cta.defaultLabel })}
           {previewName && previewExerciseCount
             ? ` · ${previewExerciseCount}`
             : ''}

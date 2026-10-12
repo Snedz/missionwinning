@@ -18,6 +18,20 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-12 — Safety flags withhold train-now guidance (`.1127`)
+
+Pregnancy, a high assessment, and a pain or injury flag used to change almost nothing an athlete could see. The pregnancy flag swapped one sentence on the hard-session sheet. `getCoachInsight` said “you’re primed to train” and pointed at `/active`. Today’s Just Go hero, Coach “Start this session”, the adapt banner’s “Just Go — log one set”, assessment “tap to start”, and a comeback nudge’s “Start now” never read the flag. A pain-history yes was not even in the PAR-Q count, so it stayed low risk and still offered a starter.
+
+`safetyTrainGuidance` is the one decision. Pregnancy, assessment high, and pain withhold the recommendation and reuse the existing stop line or the high-risk sentence, with the action on Move. A moderate screen or a hard-session name softens: the path stays, the label is no longer “Start” / “Just Go”, and the note is the existing caveat. Log set still starts. The week planner still does not read the pregnancy flag. Nudges withhold only when the caller already has the flag — it is not synced.
+
+**Mutants killed:** primed insight under `pregnancyFlag: 'pregnant'`; moderate risk still `coachActionStartWorkout`; pain still `/active`; hard session still “Start workout”; Just Go hero still “Ready to train”; “Just go train” kept on a knee-pain reply; comeback body still “Start now”; withhold CTA `startsWorkout: true` on a recommendation; logger CTA `startsWorkout: false`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1127`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1108-for-1127.md](docs/archive/log/LOG-rotate-1108-for-1127.md) (`.1108`).
+
 ## 2026-10-12 — Next 16.4 initial JS under the bundle caps (`.1126`)
 
 Next 16.4.0's webpack client runtime is about 2.0 KB gzip larger than 16.3.4 on every wedge route. The growth sits in the shared Next runtime chunk and the React framework chunk, both in `rootMainFiles`, so `/`, `/log`, and `/active` all move together. Measured on the same gzip level the budget script uses (zlib level 9, which matches the GitHub Actions runner): `/` 348.7 → 350.7 (cap 351), `/log` 419.9 → 422.0 (cap 420), `/active` 515.6 → 517.6 (cap 516). `npm run verify` does not run `scripts/bundle-budget.mjs`. CI does, after the production build. That is why verify was green and `build-and-test` was not.
@@ -538,52 +552,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1109`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1094-for-1109.md](docs/archive/log/LOG-rotate-1094-for-1109.md) (`.1094`).
-
-## 2026-09-16 — Storage remount leftover old-fake writes (`.1108`)
-
-`storage.set` / `remove` on a
-live fake is per-instance.
-Unmount + remount binds a new
-store. Leftover writes on the
-old fake die — remounted `get`
-is miss, not the leftover set.
-Set or remove on the old fake
-after remount does not write
-remounted occupancy. Sibling
-storage stays. After
-`storage_cap` + remount,
-old-fake set does not re-cap
-remounted. ClearShot remount:
-old-fake set does not occupy
-remounted (`get` stays
-`scope_denied`). `test.nostorage`
-/ `test.billing` remount stay
-`scope_denied`. `.1092` closed
-live dual-mount isolation.
-`.1099` closed remount-after-cap
-emptiness. `.1102` / `.1103` /
-`.1107` closed snapshot remount.
-Isolation: coach / store /
-HomePage / ActiveWorkout stay
-blind.
-
-**Mutants killed:** remount
-returning leftover set or
-throwing; old-fake set after
-remount writing remounted;
-old-fake remove deleting
-remounted keys; remount
-rewriting sibling storage;
-cap leftover occupying
-remounted; ClearShot leftover
-set filling remounted;
-unscoped remount gaining write;
-HOP.md carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1108`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1093-for-1108.md](docs/archive/log/LOG-rotate-1093-for-1108.md) (`.1093`).

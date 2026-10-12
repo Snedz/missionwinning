@@ -9,7 +9,8 @@
 | `useCoachPlan.ts` | `CoachPage`, coach cards | `src/lib/coach/*`, localStorage |
 | `usePlannedMissOffer.ts` | Today shells → `JourneyHero` | `plannedMiss.ts` + `loadPlan` only — never `useCoachPlan` (that auto-generates) |
 | `useFuelPlan.ts` | `FuelMealPlanCard`, Nutrition | `src/lib/fuelCoach/*`, `/api/premium/recipes` |
-| `useDailyCoachInsight.ts` | `CoachInsightCard`, Today | `/api/coach/daily-insight`, `score.ts` |
+| `useDailyCoachInsight.ts` | `CoachInsightCard`, Today | `/api/coach/daily-insight`, `score.ts`. Display is passed through `guardCoachReply` |
+| `useSafetyTrainDecision.ts` | Today desk, Train empty, Coach start, Journey hero, daily insight | `safetyTrainGuidance.ts` — layout read, SSR stays clear |
 | `useMissionJourney.ts` | Journey components, guards | `missionJourney.ts` |
 | `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase. `SIGNED_OUT` wipes only after `markExplicitSignOut` (`.941`). `SIGNED_IN` adopts guest history and calls `syncCurrentHistoryToCloud` — no Force Sync tap (`.949`). Also `reconcileOpenSession` on sign-in / visible (`.958`) |
 | `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible; registers `week.logged` |

@@ -14,6 +14,8 @@ import {
   resolveJustGoHeroCopy,
   type JustGoHeroMeta,
 } from '@/lib/justGoHeroMeta';
+import { guardHeroCopy, presentTrainCta } from '@/lib/safetyTrainGuidance';
+import { useSafePrimaryClick } from '@/hooks/useSafetyTrainDecision';
 import { TodayReentryCard } from '@/components/today/TodayReentryCard';
 import { TodayPlannedMissPrompt } from '@/components/today/TodayPlannedMissPrompt';
 import type { PlannedMissOffer } from '@/lib/coach/plannedMiss';
@@ -183,10 +185,12 @@ function JourneyDockHero({
 }: Omit<JourneyHeroProps, 'dock'>) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
+  const { decision, onClick } = useSafePrimaryClick(onPrimaryClick, !!activeWorkout);
   const useTrainCta = !activeWorkout && !!justGoMeta;
-  const heroCopy = justGoMeta
+  const rawCopy = justGoMeta
     ? resolveJustGoHeroCopy(justGoMeta, { completedSessions })
     : null;
+  const heroCopy = rawCopy && !activeWorkout ? guardHeroCopy(rawCopy, decision) : rawCopy;
 
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })
@@ -248,7 +252,7 @@ function JourneyDockHero({
         {/* `w-auto` beats `.primary-action`'s `w-full` — utilities layer after
             components. The handoff's `.btn` is `inline-flex`, i.e. sized to its
             own label; a button stretched across 832px reads as a banner. */}
-        <button type="button" onClick={onPrimaryClick} className="primary-action w-auto">
+        <button type="button" onClick={onClick} className="primary-action w-auto">
           {label}
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -297,7 +301,7 @@ function JourneyDockHero({
       />
       <button
         type="button"
-        onClick={onPrimaryClick}
+        onClick={onClick}
         className="primary-action min-h-[52px] w-full text-[19px]"
       >
         <span className="flex-1 text-start">{title}</span>
@@ -353,6 +357,11 @@ function StartDockHero({
 }) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
+  const { decision, onClick } = useSafePrimaryClick(onPrimaryClick, !!activeWorkout);
+  const cta = presentTrainCta(
+    activeWorkout ? { mode: 'clear', kind: 'clear', copyKey: null, copy: null } : decision,
+    { labelKey: 'todayStartCta', defaultLabel: 'Start' }
+  );
 
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })
@@ -366,6 +375,10 @@ function StartDockHero({
       : justGoMeta?.source === 'coach'
         ? t('coachStartSession', { defaultValue: 'Start this session' })
         : t('todayStartCta', { defaultValue: 'Start' });
+  const shownLabel =
+    !activeWorkout && decision.mode !== 'clear'
+      ? t(cta.labelKey, { defaultValue: cta.defaultLabel })
+      : label;
 
   const quietLine = reentry?.show && !activeWorkout ? reentry : null;
 
@@ -380,8 +393,11 @@ function StartDockHero({
           onSkip={onPlannedMissSkip}
           onSlide={onPlannedMissSlide}
         />
-        <button type="button" onClick={onPrimaryClick} className="primary-action w-auto">
-          {label}
+        {!activeWorkout && decision.copy ? (
+          <p className="poster-sub text-sm leading-relaxed">{decision.copy}</p>
+        ) : null}
+        <button type="button" onClick={onClick} className="primary-action w-auto">
+          {shownLabel}
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
@@ -400,10 +416,10 @@ function StartDockHero({
       />
       <button
         type="button"
-        onClick={onPrimaryClick}
+        onClick={onClick}
         className="primary-action min-h-[52px] w-full text-[19px]"
       >
-        <span className="flex-1 text-start">{label}</span>
+        <span className="flex-1 text-start">{shownLabel}</span>
         <ChevronRight className="ms-auto h-5 w-5 shrink-0" />
       </button>
     </div>

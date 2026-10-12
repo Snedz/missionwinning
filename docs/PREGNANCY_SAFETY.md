@@ -4,7 +4,7 @@
 
 **Do not promote this surface until counsel signs the copy.** Draft PRs may land on `master` only after that review — agents do not merge. Existing Preview is **not** a review or E-Day surface.
 
-**v1 (decision 011):** the optional flag changes **exactly one** product behavior — which stop-symptoms line appears on the hard-session warning sheet. Coach prescriptions and start CTAs are unchanged.
+**v1 (decision 011), updated:** the optional flag still changes the hard-session stop line. It also withholds “go train” recommendations (Today, Coach, Just Go, assessment starters, and nudges when the caller already has the flag). It does not change Mission Coach prescriptions. It does not block Log set.
 
 ---
 
@@ -38,7 +38,7 @@ On the existing hard-session warning sheet only:
 - **Flag on:** Stop if you have bleeding, cramping, chest pain, feel faint or dizzy, have severe shortness of breath, or cannot talk.
 - **Flag off:** Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.
 
-The flag does not change Coach prescriptions. It does not hide max-effort, field-test, or PFT start CTAs. It does not substitute exercises or cap intensity.
+The flag does not change Coach prescriptions (`nextTargets` / progression stay blind to it). It does not hide the hard-session sheet, the field test, or the PFT. It does not substitute exercises or cap intensity. It does not block Log set. Screens that recommend starting a session use the stop line instead of “go train” while a hold flag is on.
 
 If asked whether training caused a loss: do not answer; that is a clinician’s question. (Draft refusal copy only in v1 — not wired into Coach.)
 

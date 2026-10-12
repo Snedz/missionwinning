@@ -11,6 +11,7 @@ import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { Debrief } from '@/lib/coach/debrief';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 
 type Props = {
   onStart: () => void;
@@ -58,6 +59,12 @@ export function ActiveEmptyState({
   onViewHistory,
 }: Props) {
   const { t } = useTranslation();
+  const { decision, cta } = useTrainCta(
+    { labelKey: 'activeStartWorkout', defaultLabel: 'Start Workout' },
+    savedRoutineName ?? previewName ?? null,
+    { logger: true }
+  );
+  const safetyNote = decision.mode !== 'clear' ? decision.copy : null;
 
   return (
     /*
@@ -167,6 +174,8 @@ export function ActiveEmptyState({
               ? t('activeLoadingSessionDesc', {
                   defaultValue: 'Reading the last workout saved on this device.',
                 })
+              : safetyNote
+                ? safetyNote
               : savedRoutineName
                 ? t('activeSavedRoutineDesc', {
                     name: savedRoutineName,
@@ -197,6 +206,8 @@ export function ActiveEmptyState({
             <span className="flex-1 text-start">
               {!hydrated
                 ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
+                : safetyNote
+                  ? t(cta.labelKey, { defaultValue: cta.defaultLabel })
                 : savedRoutineName
                   ? t('activeSavedRoutineStart', {
                       name: savedRoutineName,
