@@ -1,6 +1,8 @@
 /**
  * Compact hero Start navigates from first paint.
- * href="/active" must survive without JS. Write compose on click.
+ * Clear state is a real Link to /active that writes the session.
+ * A safety withhold is the same Link to /move and does not compose.
+ * It is not a JS-only button, and it does not preventDefault.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,10 +27,11 @@ function heroStartSlice(src: string): string {
   return src.slice(startAt, roomsAt);
 }
 
-test('compact hero Start is href=/active — click is not a JS-only button', () => {
+test('compact hero Start is a Link — clear goes to /active, a safety withhold goes to /move', () => {
   const hero = heroStartSlice(read('src/page-components/TodayDesk.tsx'));
   assert.match(hero, /data-testid="today-start-cta"/);
-  assert.match(hero, /href=["']\/active["']/);
+  assert.match(hero, /href=\{withholdHero \? '\/move' : '\/active'\}/);
+  assert.match(hero, /if \(withholdHero\) return/);
   assert.match(hero, /writeTodayComposeSession\(\)/);
   assert.doesNotMatch(hero, /preventDefault/);
   assert.doesNotMatch(
