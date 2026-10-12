@@ -180,6 +180,21 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           )}
         </div>
 
+        {onApplyTarget && (
+          <button
+            type="button"
+            className="primary-action min-h-[52px] tap-target w-full"
+            data-testid="plate-apply"
+            onClick={() => onApplyTarget(result.achievedWeight)}
+          >
+            {t('calcPlateApply', {
+              weight: result.achievedWeight,
+              unit,
+              defaultValue: `Use ${result.achievedWeight} ${unit}`,
+            })}
+          </button>
+        )}
+
         <div>
           <p className="house-kicker">
             {t('calcPlateInventory', { defaultValue: 'Plates you have' })}
@@ -236,20 +251,6 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             {t('calcPlateReset', { defaultValue: 'Reset plates' })}
           </button>
         </div>
-
-        {onApplyTarget && (
-          <button
-            type="button"
-            className="primary-action min-h-[52px] tap-target w-full"
-            onClick={() => onApplyTarget(result.achievedWeight)}
-          >
-            {t('calcPlateApply', {
-              weight: result.achievedWeight,
-              unit,
-              defaultValue: `Use ${result.achievedWeight} ${unit}`,
-            })}
-          </button>
-        )}
       </div>
     </div>
   );
