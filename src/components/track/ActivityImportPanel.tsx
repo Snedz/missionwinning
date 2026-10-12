@@ -27,7 +27,7 @@ export function ActivityImportPanel({ onImported }: Props) {
   const [status, setStatus] = useState('');
   const totalsRef = useRef({ imported: 0, filesOk: 0 });
 
-  const process = useCallback(
+  const processFile = useCallback(
     async (
       file: File,
       helpers: {
@@ -77,7 +77,7 @@ export function ActivityImportPanel({ onImported }: Props) {
   );
 
   const { items, addFiles, retry, remove } = useFileUploadQueue({
-    process,
+    processFile,
     previewImages: false,
   });
 

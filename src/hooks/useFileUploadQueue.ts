@@ -24,7 +24,12 @@ export type FileProcessHelpers = {
 type ProcessFn = (file: File, helpers: FileProcessHelpers) => Promise<void>;
 
 type Options = {
-  process: ProcessFn;
+  /**
+   * Per-file worker. Not named `process`: Next's server build wraps
+   * `useEffect` in `process.env.__NEXT_PRIVATE_MINIMIZE_MACRO_FALSE`, and a
+   * local binding of that name makes prerender throw (Next 16.4).
+   */
+  processFile: ProcessFn;
   /** Create object URL for image previews */
   previewImages?: boolean;
   autoStart?: boolean;
@@ -33,10 +38,10 @@ type Options = {
 /**
  * Per-file upload queue — isolated progress/retry; one failure never blocks siblings.
  */
-export function useFileUploadQueue({ process, previewImages = true, autoStart = true }: Options) {
+export function useFileUploadQueue({ processFile, previewImages = true, autoStart = true }: Options) {
   const [items, setItems] = useState<FileUploadQueueItem[]>([]);
-  const processRef = useRef(process);
-  processRef.current = process;
+  const processRef = useRef(processFile);
+  processRef.current = processFile;
   const controllers = useRef(new Map<string, AbortController>());
   const startedAt = useRef(new Map<string, number>());
 

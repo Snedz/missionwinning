@@ -5,7 +5,7 @@
  */
 
 import { EXERCISES } from '@/data/exercises';
-import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
+import { STARTER_FOCUS_FALLBACK } from '@/data/starterFocusFallback';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { ReadinessInfo, RecommendedFocus } from '@/lib/score';
@@ -110,10 +110,10 @@ function pickExercisesForFocus(
 function starterForFocus(focus: MuscleGroup): WorkoutExerciseTemplate[] | null {
   const hints = FOCUS_STARTER_HINTS[focus] ?? ['full body'];
   for (const hint of hints) {
-    const hit = FREE_STARTER_PROGRAMS.find((p) => p.name.toLowerCase().includes(hint));
+    const hit = STARTER_FOCUS_FALLBACK.find((p) => p.name.toLowerCase().includes(hint));
     if (hit) return hit.exercises.map((e) => ({ ...e, sets: e.sets.map((s) => ({ ...s })) }));
   }
-  return FREE_STARTER_PROGRAMS[0]?.exercises ?? null;
+  return STARTER_FOCUS_FALLBACK[0]?.exercises ?? null;
 }
 
 /**

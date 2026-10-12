@@ -16,7 +16,8 @@
 | `freeExerciseDb.ts`, `freeExerciseDb.curated.json`, `exercisesFreeDb.ts` | Curated Unlicense subset (`fedb-` ids). Attribution: `free-exercise-db/NOTICE.md` |
 | `exerciseEnrichment.ts` | Tags, levels, alternatives |
 | `programTemplates.ts` | Builder program templates (lazy-loaded on `/builder`) |
-| `starterPrograms.ts` | Free starter programs |
+| `starterFocusFallback.ts` | The six free programs Just Go's focus fallback can select. Spread back into `starterPrograms.ts` — not a second catalog |
+| `starterPrograms.ts` | Free starter programs (Today quick options). Just Go must not import this file |
 | `premiumProgramTemplates.ts` | Premium programs (server-gated) |
 | `mobilityFlows.ts` | Free mobility flows (UI runner — not loggable sets) |
 | `premiumMobilityFlows.ts` | Premium mobility |

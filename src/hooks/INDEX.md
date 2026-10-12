@@ -20,7 +20,7 @@
 | `useTodayLayout.ts` | Today sections | `missionJourney.ts` phase flags |
 | `use-toast.ts` | shadcn toast primitive | UI only |
 | `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
-| `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
+| `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue. Option is `processFile` — a binding named `process` breaks Next 16.4 prerender |
 | `useIsCompact.ts` | `ScreenDock`, `JourneyHero` | `matchMedia('(max-width: 767px)')` — **the line between the two designs**, see below |
 | `useVisualViewportKeyboardOverlap.ts` | `AppLayout` | `visualViewport` overlap — lifts the logger dock above the keys |
 | `useHonorSavedRoutine.ts` | Victory / Builder / History save door | `honorSavedRoutine.ts` + store — confirm before write (`.960`) |

@@ -18,7 +18,7 @@ export function ProfileBackupCard() {
   const { toast } = useToast();
   const [showDrop, setShowDrop] = useState(false);
 
-  const process = useCallback(
+  const processFile = useCallback(
     async (
       file: File,
       helpers: {
@@ -60,7 +60,7 @@ export function ProfileBackupCard() {
   );
 
   const { items, addFiles, retry, remove, clear } = useFileUploadQueue({
-    process,
+    processFile,
     previewImages: false,
   });
 
