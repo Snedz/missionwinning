@@ -41,6 +41,19 @@ test('compact hero Start is a Link — clear goes to /active, a safety withhold 
   );
 });
 
+test('safety hero prints the stop line once', () => {
+  const src = read('src/page-components/TodayDesk.tsx');
+  const titleAt = src.indexOf('const sessionTitle');
+  const ledeAt = src.indexOf('const sessionLede');
+  const kickerAt = src.indexOf('const sessionKicker');
+  assert.ok(titleAt >= 0 && ledeAt > titleAt && kickerAt > ledeAt);
+  const kicker = src.slice(kickerAt, src.indexOf('const startLabel'));
+  assert.match(kicker, /safetyLine\s*\?\s*null/);
+  assert.doesNotMatch(kicker, /safety\.copy/);
+  const lede = src.slice(ledeAt, kickerAt);
+  assert.match(lede, /sessionTitle === safetyLine/);
+});
+
 test('DESIGN names Compact hero Start navigates from first paint', () => {
   const spec = read('src/components/house/DESIGN.md');
   assert.match(spec, /Compact hero Start navigates from first paint/);

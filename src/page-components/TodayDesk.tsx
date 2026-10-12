@@ -43,6 +43,7 @@ import { buildJustGoHeroMeta, resolveJustGoHeroCopy, type JustGoHeroCopy } from 
 import {
   CLEAR_SAFETY_TRAIN,
   guardHeroCopy,
+  isTrainNowCopy,
   loadSafetyTrainDecision,
   presentTrainCta,
   type SafetyTrainDecision,
@@ -167,28 +168,37 @@ export function TodayDesk() {
     router.push('/active');
   };
 
+  const safetyLine =
+    !hasActiveWorkout && safety.mode !== 'clear' && safety.copy ? safety.copy : null;
+  const clearTitle = copy
+    ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
+    : t('justGoTitle', { defaultValue: 'Training — Just Go', focus: 'Training' });
   const sessionTitle = hasActiveWorkout
     ? liveName || t('navTrain', { defaultValue: 'Train' })
-    : safety.mode === 'withhold' && safety.copy
-      ? safety.copy
-      : copy
-        ? t(copy.titleKey, { defaultValue: copy.defaultTitle, ...(copy.titleParams ?? {}) })
-        : t('justGoTitle', { defaultValue: 'Training — Just Go', focus: 'Training' });
+    : safety.mode === 'withhold' && safetyLine
+      ? safetyLine
+      : safety.mode === 'soften' && safetyLine && isTrainNowCopy(clearTitle)
+        ? safetyLine
+        : clearTitle;
+  // One safety sentence. Withhold uses it as the title. Soften keeps a real
+  // session name as the title and puts the sentence in the lede.
   const sessionLede = hasActiveWorkout
     ? t('todayStartCta', { defaultValue: 'Start' })
-    : safety.mode !== 'clear' && safety.copy
-      ? safety.copy
-      : copy
-        ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
-        : t('justGoDesc', {
-            defaultValue:
-              "One tap builds today's training session from how fresh you are and what you lifted last time.",
-            focus: 'Training',
-          });
+    : safetyLine && sessionTitle === safetyLine
+      ? null
+      : safetyLine
+        ? safetyLine
+        : copy
+          ? t(copy.descKey, { defaultValue: copy.defaultDesc, ...(copy.descParams ?? {}) })
+          : t('justGoDesc', {
+              defaultValue:
+                "One tap builds today's training session from how fresh you are and what you lifted last time.",
+              focus: 'Training',
+            });
   const sessionKicker = hasActiveWorkout
     ? t('navTrain', { defaultValue: 'Train' })
-    : safety.mode !== 'clear' && safety.copy
-      ? safety.copy
+    : safetyLine
+      ? null
       : copy
         ? t(copy.kickerKey, { defaultValue: copy.defaultKicker })
         : t('justGoEyebrow', { defaultValue: 'Ready to train' });
@@ -253,11 +263,11 @@ export function TodayDesk() {
         aria-busy={snap ? undefined : true}
         data-testid={snap ? 'today-start-ready' : 'today-start-pending'}
       >
-        <p className="house-kicker">{sessionKicker}</p>
+        {sessionKicker ? <p className="house-kicker">{sessionKicker}</p> : null}
         <h2 className="house-title" style={{ fontSize: 26 }}>
           {sessionTitle}
         </h2>
-        <p className="house-lede">{sessionLede}</p>
+        {sessionLede ? <p className="house-lede">{sessionLede}</p> : null}
         {conceptChip ? (
           <p className="house-row" style={{ marginTop: 12 }}>
             <span
