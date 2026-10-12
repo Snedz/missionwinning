@@ -22,7 +22,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 The plate loader was already on Train, buried in the session menu, and it only ever loaded downward with an unlimited rack. A target the plates cannot make now shows the nearest loadable weight. `nearestBarLoad` takes the target, the bar, and pairs per side. Ten cases cover an exact 100 kg and 225 lb, a 101 kg miss, a load that is closer over the target, a target under the bar, an empty rack, a 35 lb bar, a one-pair ceiling, and an equal-distance tie that stays lighter.
 
-The bar stays the saved 20 kg / 45 lb preference. The rack starts as a normal set (several large plates, one pair of each change plate) and can be edited on this device (`mw_plate_inventory`). **Plates** sits next to the live set weight and opens the same loader. The sheet loads when it opens so the rack editor is not on Train’s first paint. Log set is not gated. No account.
+The bar stays the saved 20 kg / 45 lb preference. The rack starts as a normal set (several large plates, one pair of each change plate) and can be edited on this device (`mw_plate_inventory`). **Plates** sits next to the live set weight and opens the same loader. **Use** sits with the load, above the rack editor, and writes that weight onto the set. The sheet loads when it opens so the rack editor is not on Train’s first paint. Log set is not gated. No account.
 
 Label `2026.07-unified.1127`.
 
