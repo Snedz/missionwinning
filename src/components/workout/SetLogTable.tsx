@@ -134,6 +134,7 @@ export function SetLogTable({
   onToggleWarmup,
   onSetKind,
   onRemovePlannedSet,
+  onOpenPlates,
   input,
   onInputChange,
   knownMax = null,
@@ -304,6 +305,16 @@ export function SetLogTable({
                             }
                             onChange={(next) => onInputChange('weight', next)}
                           />
+                          {onOpenPlates ? (
+                            <button
+                              type="button"
+                              onClick={onOpenPlates}
+                              data-testid="set-table-open-plates"
+                              className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target px-2"
+                            >
+                              {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
+                            </button>
+                          ) : null}
                         </div>
                         {rowType === 'weight' && onSetLoadPct ? (
                           <SetRowPercentField

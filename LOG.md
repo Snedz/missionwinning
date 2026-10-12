@@ -18,7 +18,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
-## 2026-10-12 — Safety flags withhold train-now guidance (`.1127`)
+## 2026-10-12 — Safety flags withhold train-now guidance (`.1128`)
 
 Pregnancy, a high assessment, and a pain or injury flag used to change almost nothing an athlete could see. The pregnancy flag swapped one sentence on the hard-session sheet. `getCoachInsight` said “you’re primed to train” and pointed at `/active`. Today’s Just Go hero, Coach “Start this session”, the adapt banner’s “Just Go — log one set”, assessment “tap to start”, and a comeback nudge’s “Start now” never read the flag. A pain-history yes was not even in the PAR-Q count, so it stayed low risk and still offered a starter.
 
@@ -28,7 +28,19 @@ Pregnancy, a high assessment, and a pain or injury flag used to change almost no
 
 `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
 
+Label `2026.07-unified.1128`. Master already shipped `.1127` for the plate loader, so this ship is `.1128`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1109-for-1128.md](docs/archive/log/LOG-rotate-1109-for-1128.md) (`.1109`).
+
+## 2026-10-12 — Plate loader nearest weight (`.1127`)
+
+The plate loader was already on Train, buried in the session menu, and it only ever loaded downward with an unlimited rack. A target the plates cannot make now shows the nearest loadable weight. `nearestBarLoad` takes the target, the bar, and pairs per side. Ten cases cover an exact 100 kg and 225 lb, a 101 kg miss, a load that is closer over the target, a target under the bar, an empty rack, a 35 lb bar, a one-pair ceiling, and an equal-distance tie that stays lighter.
+
+The bar stays the saved 20 kg / 45 lb preference. The rack starts as a normal set (several large plates, one pair of each change plate) and can be edited on this device (`mw_plate_inventory`). **Plates** sits next to the live set weight and opens the same loader. The sheet loads when it opens so the rack editor is not on Train’s first paint. Log set is not gated. No account.
+
 Label `2026.07-unified.1127`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1108-for-1127.md](docs/archive/log/LOG-rotate-1108-for-1127.md) (`.1108`).
 
@@ -501,54 +513,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1110`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1095-for-1110.md](docs/archive/log/LOG-rotate-1095-for-1110.md) (`.1095`).
-
-## 2026-09-16 — Leftover Health extras cannot grant billing (`.1109`)
-
-Bind copies + freezes declared
-scopes. Reserved Health scopes
-are pinned at bind. Leftover
-extras on a Health-shaped
-document cannot grant
-`billing.read` / checkout /
-portal — first-mount extras,
-live push on the passed
-document, leftover push on
-the bound manifest, and
-remount of the mutated
-object all stay
-`scope_denied`. Granted
-sibling stays. After
-`storage_cap` + extras +
-remount, billing is still
-denied. `listMounted` peek of
-billing stays `scope_denied`.
-`.1094` closed live billing
-isolation. `.1103` closed
-billing remount leftover
-inject. `.1108` closed leftover
-storage writes. Isolation:
-coach / store / HomePage /
-ActiveWorkout stay blind.
-
-**Mutants killed:** first-mount
-extras granting billing or
-throwing; leftover push on
-the passed document granting
-live billing; leftover push
-on the bound manifest
-granting; remount of the
-mutated extras document
-granting; remount rewriting
-Granted.read; cap leftover
-granting remounted billing;
-listMounted peek listing
-leftover extras; HOP.md
-carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1109`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1094-for-1109.md](docs/archive/log/LOG-rotate-1094-for-1109.md) (`.1094`).
