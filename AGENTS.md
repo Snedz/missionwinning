@@ -71,11 +71,22 @@ npm run typecheck    # tsc --noEmit (tests + app)
 npm test             # unit tests (src/lib/**/*.test.ts)
 npm run build        # production build
 npm run lint         # eslint
+npm run verify       # MERGE GATE: typecheck + lint + test + build + /api/health smoke → PASS/FAIL
+npm run verify:fast  # same minus build/health (inner loop only)
 npm run gate         # FULL local gate: lint + typecheck + tests + i18n + display-type + token-sync + build + hero e2e
 npm run e2e          # Playwright smoke (needs SMOKE_BASE_URL)
 npm run gate-smoke   # curl deploy checks (needs SMOKE_BASE_URL)
 npm run check-env    # verify .env.local
 ```
+
+---
+
+## Verify before "done"
+
+Every agent change must end with `npm run verify` exiting 0, and the PR body must paste the `verify summary` block.
+- What "done" means: [docs/agents/DONE_CONTRACT.md](docs/agents/DONE_CONTRACT.md)
+- Adding or pruning tests: [docs/agents/TEST_AUDIT.md](docs/agents/TEST_AUDIT.md)
+- A red step is a stop, not a retry loop: after 3 failed attempts, stop and name the blocker.
 
 ---
 
