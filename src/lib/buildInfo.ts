@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1128` safety flags withhold train-now guidance (re-minted past plate loader `.1127`); Log set stays open. */
-export const APP_BUILD_LABEL = "2026.07-unified.1128";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1129` plate Use sits with the load (past safety flags `.1128`); Log set stays open. */
+export const APP_BUILD_LABEL = "2026.07-unified.1129";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

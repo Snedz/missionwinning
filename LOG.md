@@ -18,6 +18,16 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-12 — Plate Use sits with the load (`.1129`)
+
+`.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
+
+Label `2026.07-unified.1129`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1110-for-1129.md](docs/archive/log/LOG-rotate-1110-for-1129.md) (`.1110`).
+
 ## 2026-10-12 — Safety flags withhold train-now guidance (`.1128`)
 
 Pregnancy, a high assessment, and a pain or injury flag used to change almost nothing an athlete could see. The pregnancy flag swapped one sentence on the hard-session sheet. `getCoachInsight` said “you’re primed to train” and pointed at `/active`. Today’s Just Go hero, Coach “Start this session”, the adapt banner’s “Just Go — log one set”, assessment “tap to start”, and a comeback nudge’s “Start now” never read the flag. A pain-history yes was not even in the PAR-Q count, so it stayed low risk and still offered a starter.
@@ -472,44 +482,3 @@ ignored.
 Label `2026.07-unified.1111`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1096-for-1111.md](docs/archive/log/LOG-rotate-1096-for-1111.md) (`.1096`).
-
-## 2026-09-17 — Honest manifest description under PRIVATE_MODE (`.1110`)
-
-Web-manifest `description`
-claimed "works offline
-anywhere" as a hard-coded
-string. `PRIVATE_MODE` still
-disables Serwist, so the
-installable manifest advertised
-a capability this build does
-not ship. `manifestDescription()`
-now keys on
-`isOfflineInstallable()` — the
-same flag as Serwist /
-`NEXT_PUBLIC_PWA_ENABLED`.
-Gated: "Free workout logger +
-adaptive Mission Coach from
-your logs — free core forever."
-Installable: the offline
-anywhere claim returns.
-`start_url` / `id` untouched.
-Companion lock:
-`manifestOfflineHonesty.test.ts`.
-Does not flip
-`PRIVATE_MODE`. Does not
-tip-promote.
-
-**Mutants killed:** hard-coded
-`description: '…works offline
-anywhere…'`; dropping
-`isOfflineInstallable()`;
-dropping the named
-`manifestDescription` helper.
-
-`[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1110`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1095-for-1110.md](docs/archive/log/LOG-rotate-1095-for-1110.md) (`.1095`).
