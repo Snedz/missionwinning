@@ -47,6 +47,8 @@
     "e2e:gate": "playwright test --config=playwright.config.ts --grep @gate",
     "bundle-budget": "node scripts/bundle-budget.mjs",
     "gate": "node scripts/gate.mjs",
+    "verify": "node scripts/verify.mjs",
+    "verify:fast": "node scripts/verify.mjs --no-build",
     "a11y": "playwright test --config=playwright.config.ts --grep @a11y",
     "e2e:visual": "playwright test --config=playwright.config.ts --grep @visual",
     "lighthouse-budget": "node scripts/lighthouse-budget.mjs",
