@@ -17,6 +17,22 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-12 — Next 16.4 prerender on Track (`.1125`)
+
+Dependabot #1014 bumps `next` from 16.3.4 to 16.4.0. `build-and-test` dies in the production build while prerendering `/track`:
+
+`TypeError: Cannot read properties of undefined (reading '__NEXT_PRIVATE_MINIMIZE_MACRO_FALSE')`
+
+Next's server compiler wraps `useEffect` as `process.env.__NEXT_PRIVATE_MINIMIZE_MACRO_FALSE && useEffect(...)`, then the minifier replaces that member expression with `false` and drops the effect. `useFileUploadQueue` destructured its file worker as `process`. In 16.4 the minifier leaves a shadowed binding alone, so the check reads the worker function's `.env` (undefined) and throws. Track's activity import and Profile backup both call that hook during prerender.
+
+The option is now `processFile`. Call sites in `ActivityImportPanel` and `ProfileBackupCard` use the same name. No other client function both binds `process` and calls `useEffect` or `useLayoutEffect`.
+
+Label `2026.07-unified.1125`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1106-for-1125.md](docs/archive/log/LOG-rotate-1106-for-1125.md) (`.1106`).
+
 ## 2026-10-12 — `npm run verify` merge gate (`.1124`)
 
 One command an agent must pass before calling work done: `npm run verify` runs check-build-label → typecheck → lint → test → build, then boots `next start` and asserts `GET /api/health` returns `ok: true`. It prints a PASS/FAIL summary and exits non-zero on any failure (`verify:fast` skips build + health).
@@ -599,35 +615,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1107`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1092-for-1107.md](docs/archive/log/LOG-rotate-1092-for-1107.md) (`.1092`).
-
-## 2026-09-16 — Split activeWorkoutHelpers behind a barrel (`.1106`)
-
-The 900-line Train helper bag
-mixed session view, dial, console,
-and menu gates in one file. Night
-cleanup splits it behind a barrel
-so import paths do not churn.
-
-Bodies: `activeSessionView.ts`
-(next-set, open-idx, progress,
-post-session path), `activeDial.ts`
-(last-session / prev / dial /
-next-target / logged-line),
-`activeConsole.ts` (`buildConsoleSet`
-/ dock / form-guide / swap rank),
-`activeMenuGates.ts` (`shouldShow*`
-/ skip / volume-trim). Tests stay
-on the barrel; body-slicing `read()`
-tests follow the owning file.
-
-Did not split Train/Today UI,
-`HistoryPage`, `SetLogTable`, or
-`workoutStore`. No product behavior
-change.
-
-`[skip vercel]`. No tip-promote. Live
-www stays `.697`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1106`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1091-for-1106.md](docs/archive/log/LOG-rotate-1091-for-1106.md) (`.1091`).
