@@ -2,7 +2,7 @@
 /**
  * `npm run verify` — the single merge gate for agents and humans.
  *
- * Chains the repo's existing checks in order, then builds, boots the production
+ * Chains the repo's existing checks in order (check-build-label, typecheck, lint, test), then builds, boots the production
  * server on a free port and smoke-checks GET /api/health (shallow, no secrets).
  * Prints a PASS/FAIL summary and exits non-zero if any step fails.
  *
@@ -61,6 +61,7 @@ async function healthSmoke() {
 }
 
 const steps = [
+  ['build-label', () => run('build-label', npm, ['run', 'check-build-label'])],
   ['typecheck', () => run('typecheck', npm, ['run', 'typecheck'])],
   ['lint', () => run('lint', npm, ['run', 'lint'])],
   ['test', () => run('test', npm, ['test'])],
