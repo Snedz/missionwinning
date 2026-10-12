@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1108-for-1127.md`](docs/archive/log/LOG-rotate-1108-for-1127.md) — rotated by `.1127`, to keep the <=15 entry budget.
+- [`CONTEXT-now-1105.md`](docs/archive/CONTEXT-now-1105.md) — `.1127` rotated the `.1105` Now bullet (Unlocked comment deslop).
 - [`LOG-rotate-1107-for-1126.md`](docs/archive/log/LOG-rotate-1107-for-1126.md) — rotated by `.1126`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1103.md`](docs/archive/CONTEXT-now-1103.md) — `.1126` rotated the `.1103` Now bullet (Billing remount after inject).
 - [`LOG-rotate-1106-for-1125.md`](docs/archive/log/LOG-rotate-1106-for-1125.md) — rotated by `.1125`, to keep the <=15 entry budget.

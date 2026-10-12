@@ -18,6 +18,18 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-12 — Plate loader nearest weight (`.1127`)
+
+The plate loader was already on Train, buried in the session menu, and it only ever loaded downward with an unlimited rack. A target the plates cannot make now shows the nearest loadable weight. `nearestBarLoad` takes the target, the bar, and pairs per side. Ten cases cover an exact 100 kg and 225 lb, a 101 kg miss, a load that is closer over the target, a target under the bar, an empty rack, a 35 lb bar, a one-pair ceiling, and an equal-distance tie that stays lighter.
+
+The bar stays the saved 20 kg / 45 lb preference. The rack starts as a normal set (several large plates, one pair of each change plate) and can be edited on this device (`mw_plate_inventory`). **Plates** sits next to the live set weight and opens the same loader. The sheet loads when it opens so the rack editor is not on Train’s first paint. Log set is not gated. No account.
+
+Label `2026.07-unified.1127`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1108-for-1127.md](docs/archive/log/LOG-rotate-1108-for-1127.md) (`.1108`).
+
 ## 2026-10-12 — Next 16.4 initial JS under the bundle caps (`.1126`)
 
 Next 16.4.0's webpack client runtime is about 2.0 KB gzip larger than 16.3.4 on every wedge route. The growth sits in the shared Next runtime chunk and the React framework chunk, both in `rootMainFiles`, so `/`, `/log`, and `/active` all move together. Measured on the same gzip level the budget script uses (zlib level 9, which matches the GitHub Actions runner): `/` 348.7 → 350.7 (cap 351), `/log` 419.9 → 422.0 (cap 420), `/active` 515.6 → 517.6 (cap 516). `npm run verify` does not run `scripts/bundle-budget.mjs`. CI does, after the production build. That is why verify was green and `build-and-test` was not.
@@ -538,52 +550,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1109`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1094-for-1109.md](docs/archive/log/LOG-rotate-1094-for-1109.md) (`.1094`).
-
-## 2026-09-16 — Storage remount leftover old-fake writes (`.1108`)
-
-`storage.set` / `remove` on a
-live fake is per-instance.
-Unmount + remount binds a new
-store. Leftover writes on the
-old fake die — remounted `get`
-is miss, not the leftover set.
-Set or remove on the old fake
-after remount does not write
-remounted occupancy. Sibling
-storage stays. After
-`storage_cap` + remount,
-old-fake set does not re-cap
-remounted. ClearShot remount:
-old-fake set does not occupy
-remounted (`get` stays
-`scope_denied`). `test.nostorage`
-/ `test.billing` remount stay
-`scope_denied`. `.1092` closed
-live dual-mount isolation.
-`.1099` closed remount-after-cap
-emptiness. `.1102` / `.1103` /
-`.1107` closed snapshot remount.
-Isolation: coach / store /
-HomePage / ActiveWorkout stay
-blind.
-
-**Mutants killed:** remount
-returning leftover set or
-throwing; old-fake set after
-remount writing remounted;
-old-fake remove deleting
-remounted keys; remount
-rewriting sibling storage;
-cap leftover occupying
-remounted; ClearShot leftover
-set filling remounted;
-unscoped remount gaining write;
-HOP.md carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1108`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1093-for-1108.md](docs/archive/log/LOG-rotate-1093-for-1108.md) (`.1093`).

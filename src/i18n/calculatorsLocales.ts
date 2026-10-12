@@ -59,6 +59,14 @@ type CalculatorsStrings = {
   calcUnitsFoot: string;
   calcSignInFoot: string;
   calcPlateExact: string;
+  calcPlateBarOnly: string;
+  calcPlateNearestOver: string;
+  calcPlateNearestUnder: string;
+  calcPlateInventory: string;
+  calcPlateInventoryHint: string;
+  calcPlateFewer: string;
+  calcPlateMore: string;
+  calcPlateReset: string;
 };
 
 const en: CalculatorsStrings = {
@@ -108,7 +116,8 @@ const en: CalculatorsStrings = {
   calcBuildSession: 'Build Session Targeting e1RM ~{{e1rm}}',
   calcAssessment: 'Run Readiness Assessment First',
   calcPlateTitle: 'Plate loader',
-  calcPlateDesc: 'Greedy load from largest plates. Shows per-side stack and achieved weight.',
+  calcPlateDesc:
+    'Plates for each side of the bar. A target the rack cannot make shows the nearest loadable weight.',
   calcPlateTarget: 'Target weight ({{unit}})',
   calcPlateBar: 'Bar weight ({{unit}})',
   calcPlatePerSide: 'Per side',
@@ -123,6 +132,16 @@ const en: CalculatorsStrings = {
   calcUnitsFoot: 'Toggle kg/lbs and cm/in in Profile. Global default is metric.',
   calcSignInFoot: 'Sign in to sync calculator logs and nutrition targets across devices.',
   calcPlateExact: 'Achieved · exact',
+  calcPlateBarOnly: 'Bar only',
+  calcPlateNearestOver:
+    'Nearest loadable: {{weight}} {{unit}} ({{gap}} {{unit}} over {{target}} {{unit}})',
+  calcPlateNearestUnder:
+    'Nearest loadable: {{weight}} {{unit}} ({{gap}} {{unit}} under {{target}} {{unit}})',
+  calcPlateInventory: 'Plates you have',
+  calcPlateInventoryHint: 'Count is per side. The other side matches.',
+  calcPlateFewer: 'Fewer {{weight}}{{unit}} plates',
+  calcPlateMore: 'More {{weight}}{{unit}} plates',
+  calcPlateReset: 'Reset plates',
 };
 
 const es: CalculatorsStrings = {

@@ -3,12 +3,16 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Label } from '@/components/ui/label';
+import { useBarWeight } from '@/hooks/useBarWeight';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import {
   availablePlates,
-  calculatePlatesPerSide,
-  defaultBarWeight,
+  defaultPlateInventory,
   formatPlateList,
+  nearestBarLoad,
+  readStoredPlateInventory,
+  writeStoredPlateInventory,
+  type PlateStock,
 } from '@/lib/plateCalculator';
 import { cn } from '@/lib/utils';
 
@@ -23,23 +27,32 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
   const uid = useId();
   const units = useUnits();
   const unit = weightUnitLabel(units);
-  const [target, setTarget] = useState(initialTarget ?? defaultBarWeight(units) + 60);
-  const [bar, setBar] = useState(defaultBarWeight(units));
+  const [target, setTarget] = useState(
+    () => (initialTarget != null ? initialTarget : units === 'imperial' ? 135 : 100)
+  );
+  const [bar, setBar] = useBarWeight(units);
+  const [stock, setStock] = useState<PlateStock[]>(() => readStoredPlateInventory(units));
 
   useEffect(() => {
     if (initialTarget != null) setTarget(initialTarget);
-    setBar(defaultBarWeight(units));
-  }, [initialTarget, units]);
+  }, [initialTarget]);
+
+  useEffect(() => {
+    setStock(readStoredPlateInventory(units));
+  }, [units]);
 
   const result = useMemo(
-    () => calculatePlatesPerSide(target, bar, availablePlates(units)),
-    [target, bar, units]
+    () => nearestBarLoad(target, bar, stock),
+    [target, bar, stock]
   );
 
-  // Quick targets, per the handoff. Not arbitrary round numbers: these are the
-  // loads that come out even on a standard bar — 135/185/225 imperial is one,
-  // two and three 45s a side, and the metric set is whole 20s and 10s.
   const quickTargets = units === 'imperial' ? [135, 185, 225, 275, 315] : [60, 80, 100, 120, 140];
+  const gap = Math.abs(result.delta);
+
+  const setPairs = (weight: number, pairs: number) => {
+    const next = stock.map((row) => (row.weight === weight ? { ...row, pairs } : row));
+    setStock(writeStoredPlateInventory(units, next));
+  };
 
   return (
     <div className="house-plates">
@@ -50,15 +63,14 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           </p>
           <p className="house-lede" style={{ marginTop: 0 }}>
             {t('calcPlateDesc', {
-              defaultValue: 'Greedy load from largest plates. Shows per-side stack and achieved weight.',
+              defaultValue:
+                'Plates for each side of the bar. A target the rack cannot make shows the nearest loadable weight.',
             })}
           </p>
         </>
       )}
       <div className={cn('space-y-4', !compact && 'mt-3')}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* useId, not literals: this panel also renders inside PlateCalculatorSheet,
-              so a page can hold two instances and static ids would collide. */}
           <div>
             <Label htmlFor={`${uid}-target`}>
               {t('calcPlateTarget', { unit, defaultValue: `Target weight (${unit})` })}
@@ -66,10 +78,12 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             <input
               id={`${uid}-target`}
               type="number"
+              inputMode="decimal"
               step={units === 'imperial' ? 2.5 : 1.25}
               value={target}
               onChange={(e) => setTarget(parseFloat(e.target.value) || 0)}
               className="house-num mt-1 tabular-nums"
+              data-testid="plate-target"
             />
           </div>
           <div>
@@ -79,9 +93,14 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             <input
               id={`${uid}-bar`}
               type="number"
+              inputMode="decimal"
               value={bar}
-              onChange={(e) => setBar(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+                const next = parseFloat(e.target.value);
+                if (Number.isFinite(next) && next > 0) setBar(next);
+              }}
               className="house-num mt-1 tabular-nums"
+              data-testid="plate-bar"
             />
           </div>
         </div>
@@ -105,12 +124,6 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           <p className="house-kicker">
             {t('calcPlatePerSide', { defaultValue: 'Per side' })}
           </p>
-          {/*
-            52px squares rather than text pills, ink-filled for the heaviest
-            plate size and hairline for everything lighter — so the stack
-            reads as a *shape* you can check against the bar at a glance,
-            instead of a sentence you have to parse mid-lift.
-          */}
           {result.perSide.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {result.perSide.map((plate, i) => {
@@ -128,11 +141,13 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               })}
             </div>
           ) : (
-            <div className="text-muted-foreground text-sm">—</div>
+            <div className="house-lede">
+              {t('calcPlateBarOnly', { defaultValue: 'Bar only' })}
+            </div>
           )}
-          <div className="text-sm tabular-nums text-muted-foreground">
-            {formatPlateList(result.perSide, unit)}
-          </div>
+          {result.perSide.length > 0 ? (
+            <div className="house-lede tabular-nums">{formatPlateList(result.perSide, unit)}</div>
+          ) : null}
           <div className="text-[22px] font-extrabold leading-none tabular-nums">
             {t('calcPlateTotal', {
               weight: result.achievedWeight,
@@ -140,22 +155,86 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               defaultValue: `Total on bar: ${result.achievedWeight} ${unit}`,
             })}
           </div>
-          {/* `calculatePlatesPerSide` is greedy, so it can land short. Say which
-              happened either way — silence after an exact hit reads the same as
-              silence after a miss. */}
-          {result.remainder === 0 ? (
-            <p className="house-kicker">
+          {result.exact ? (
+            <p className="house-kicker" data-testid="plate-exact">
               {t('calcPlateExact', { defaultValue: 'Achieved · exact' })}
             </p>
           ) : (
-            <p className="house-kicker house-plates-short">
-              {t('calcPlateRemainder', {
-                remainder: result.remainder,
-                unit,
-                defaultValue: `Cannot load exactly — ${result.remainder}${unit} short of target ${result.targetWeight}${unit}`,
-              })}
+            <p className="house-kicker house-plates-short" data-testid="plate-nearest">
+              {result.delta > 0
+                ? t('calcPlateNearestOver', {
+                    weight: result.achievedWeight,
+                    gap,
+                    target: result.targetWeight,
+                    unit,
+                    defaultValue: `Nearest loadable: ${result.achievedWeight} ${unit} (${gap} ${unit} over ${result.targetWeight} ${unit})`,
+                  })
+                : t('calcPlateNearestUnder', {
+                    weight: result.achievedWeight,
+                    gap,
+                    target: result.targetWeight,
+                    unit,
+                    defaultValue: `Nearest loadable: ${result.achievedWeight} ${unit} (${gap} ${unit} under ${result.targetWeight} ${unit})`,
+                  })}
             </p>
           )}
+        </div>
+
+        <div>
+          <p className="house-kicker">
+            {t('calcPlateInventory', { defaultValue: 'Plates you have' })}
+          </p>
+          <p className="house-lede">
+            {t('calcPlateInventoryHint', {
+              defaultValue: 'Count is per side. The other side matches.',
+            })}
+          </p>
+          <ul className="mt-2 space-y-1">
+            {stock.map((row) => (
+              <li key={row.weight} className="flex items-center justify-between gap-2">
+                <span className="tabular-nums">
+                  {row.weight}
+                  {unit}
+                </span>
+                <span className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    className="house-state min-h-[44px] min-w-[44px] tap-target"
+                    aria-label={t('calcPlateFewer', {
+                      weight: row.weight,
+                      unit,
+                      defaultValue: `Fewer ${row.weight}${unit} plates`,
+                    })}
+                    onClick={() => setPairs(row.weight, Math.max(0, row.pairs - 1))}
+                  >
+                    −
+                  </button>
+                  <span className="w-6 text-center tabular-nums" data-testid={`plate-pairs-${row.weight}`}>
+                    {row.pairs}
+                  </span>
+                  <button
+                    type="button"
+                    className="house-state min-h-[44px] min-w-[44px] tap-target"
+                    aria-label={t('calcPlateMore', {
+                      weight: row.weight,
+                      unit,
+                      defaultValue: `More ${row.weight}${unit} plates`,
+                    })}
+                    onClick={() => setPairs(row.weight, row.pairs + 1)}
+                  >
+                    +
+                  </button>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="house-btn mt-2 min-h-[44px] tap-target"
+            onClick={() => setStock(writeStoredPlateInventory(units, defaultPlateInventory(units)))}
+          >
+            {t('calcPlateReset', { defaultValue: 'Reset plates' })}
+          </button>
         </div>
 
         {onApplyTarget && (

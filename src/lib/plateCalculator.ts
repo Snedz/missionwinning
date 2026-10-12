@@ -28,6 +28,56 @@ export const IMPERIAL_BAR_LBS = 45;
 export const METRIC_PLATES_KG = [25, 20, 15, 10, 5, 2.5, 1.25] as const;
 export const IMPERIAL_PLATES_LBS = [45, 35, 25, 10, 5, 2.5] as const;
 
+/** One plate on each side counts as one pair. */
+export type PlateStock = {
+  weight: number;
+  pairs: number;
+};
+
+/** A lifter can edit the rack. Twelve pairs of one size is the ceiling. */
+export const MAX_PLATE_PAIRS = 12;
+
+/**
+ * Pairs per side for a normal rack.
+ * Metric: several 25s and one pair of each change plate.
+ * Imperial: several 45s, one pair of 35s and 25s, and change plates.
+ */
+const DEFAULT_METRIC_STOCK: readonly PlateStock[] = [
+  { weight: 25, pairs: 4 },
+  { weight: 20, pairs: 1 },
+  { weight: 15, pairs: 1 },
+  { weight: 10, pairs: 1 },
+  { weight: 5, pairs: 1 },
+  { weight: 2.5, pairs: 1 },
+  { weight: 1.25, pairs: 1 },
+];
+
+const DEFAULT_IMPERIAL_STOCK: readonly PlateStock[] = [
+  { weight: 45, pairs: 6 },
+  { weight: 35, pairs: 1 },
+  { weight: 25, pairs: 1 },
+  { weight: 10, pairs: 2 },
+  { weight: 5, pairs: 2 },
+  { weight: 2.5, pairs: 1 },
+];
+
+export type NearestBarLoad = {
+  /** Plates on one side, heaviest first. */
+  perSide: number[];
+  barWeight: number;
+  targetWeight: number;
+  /** Closest total the bar and the inventory can make. */
+  achievedWeight: number;
+  /** achieved − target. Negative means under the target. */
+  delta: number;
+  exact: boolean;
+};
+
+export function defaultPlateInventory(units: UnitsPref): PlateStock[] {
+  const source = units === 'imperial' ? DEFAULT_IMPERIAL_STOCK : DEFAULT_METRIC_STOCK;
+  return source.map((row) => ({ weight: row.weight, pairs: row.pairs }));
+}
+
 export function defaultBarWeight(units: UnitsPref): number {
   return units === 'imperial' ? IMPERIAL_BAR_LBS : METRIC_BAR_KG;
 }
@@ -75,6 +125,76 @@ export function availablePlates(units: UnitsPref): readonly number[] {
   return units === 'imperial' ? IMPERIAL_PLATES_LBS : METRIC_PLATES_KG;
 }
 
+function clampPairs(value: unknown): number | null {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return null;
+  return Math.min(MAX_PLATE_PAIRS, Math.max(0, Math.floor(value)));
+}
+
+/** Overlay saved pair counts onto the default denominations. Unknown sizes are dropped. */
+function mergeStock(defaults: readonly PlateStock[], raw: unknown): PlateStock[] {
+  if (!Array.isArray(raw)) return defaults.map((row) => ({ ...row }));
+  const byWeight = new Map<number, number>();
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue;
+    const weight = (item as PlateStock).weight;
+    const pairs = clampPairs((item as PlateStock).pairs);
+    if (typeof weight !== 'number' || !Number.isFinite(weight) || weight <= 0) continue;
+    if (pairs == null) continue;
+    byWeight.set(weight, pairs);
+  }
+  return defaults.map((row) => ({
+    weight: row.weight,
+    pairs: byWeight.has(row.weight) ? (byWeight.get(row.weight) as number) : row.pairs,
+  }));
+}
+
+export function parsePlateInventory(raw: unknown): { metric: PlateStock[]; imperial: PlateStock[] } {
+  const metric = defaultPlateInventory('metric');
+  const imperial = defaultPlateInventory('imperial');
+  if (!raw || typeof raw !== 'object') return { metric, imperial };
+  const row = raw as { metric?: unknown; imperial?: unknown };
+  return {
+    metric: mergeStock(metric, row.metric),
+    imperial: mergeStock(imperial, row.imperial),
+  };
+}
+
+export function readStoredPlateInventory(units: UnitsPref): PlateStock[] {
+  const pref = parsePlateInventory(readJson<unknown>(STORAGE_KEYS.plateInventory, null));
+  return units === 'imperial' ? pref.imperial : pref.metric;
+}
+
+export function writeStoredPlateInventory(
+  units: UnitsPref,
+  stock: readonly PlateStock[]
+): PlateStock[] {
+  const pref = parsePlateInventory(readJson<unknown>(STORAGE_KEYS.plateInventory, null));
+  const next = mergeStock(defaultPlateInventory(units), stock);
+  if (units === 'imperial') pref.imperial = next;
+  else pref.metric = next;
+  writeJson(STORAGE_KEYS.plateInventory, pref);
+  return next;
+}
+
+function toCents(value: number): number {
+  return Math.round(value * 100);
+}
+
+function normalizeInventory(inventory: readonly PlateStock[]): PlateStock[] {
+  const byWeight = new Map<number, number>();
+  for (const row of inventory) {
+    if (!row || typeof row.weight !== 'number' || typeof row.pairs !== 'number') continue;
+    if (!Number.isFinite(row.weight) || row.weight <= 0) continue;
+    const pairs = clampPairs(row.pairs);
+    if (pairs == null || pairs <= 0) continue;
+    const prev = byWeight.get(row.weight) ?? 0;
+    byWeight.set(row.weight, Math.min(MAX_PLATE_PAIRS, prev + pairs));
+  }
+  return [...byWeight.entries()]
+    .map(([weight, pairs]) => ({ weight, pairs }))
+    .sort((a, b) => b.weight - a.weight);
+}
+
 /** Greedy plate loading — returns plates per side (largest first). */
 export function calculatePlatesPerSide(
   targetWeight: number,
@@ -111,6 +231,67 @@ export function calculatePlatesPerSide(
     targetWeight,
     achievedWeight,
     remainder,
+  };
+}
+
+/**
+ * Closest total a bar and a finite rack can make.
+ * `pairs` is how many of that plate go on each side.
+ * When two totals are the same distance from the target, the lighter one wins.
+ * A target under the bar, or past the plates on hand, is not exact — the
+ * nearest loadable total is the empty bar or the fullest rack.
+ */
+export function nearestBarLoad(
+  targetWeight: number,
+  barWeight: number,
+  inventory: readonly PlateStock[]
+): NearestBarLoad {
+  const bar = Number.isFinite(barWeight) && barWeight > 0 ? barWeight : 0;
+  const target = Number.isFinite(targetWeight) ? targetWeight : bar;
+  const barCents = toCents(bar);
+  const targetCents = toCents(target);
+
+  let reachable = new Map<number, number[]>([[0, []]]);
+  for (const stock of normalizeInventory(inventory)) {
+    const plateCents = toCents(stock.weight);
+    if (plateCents <= 0) continue;
+    const next = new Map(reachable);
+    for (const [cents, plates] of reachable) {
+      for (let n = 1; n <= stock.pairs; n++) {
+        const sideCents = cents + plateCents * n;
+        const list = plates.concat(Array.from({ length: n }, () => stock.weight));
+        const prev = next.get(sideCents);
+        if (!prev || list.length < prev.length) next.set(sideCents, list);
+      }
+    }
+    reachable = next;
+  }
+
+  let bestSide = 0;
+  let bestPlates: number[] = [];
+  let bestRank = Number.POSITIVE_INFINITY;
+  for (const [sideCents, plates] of reachable) {
+    const totalCents = barCents + sideCents * 2;
+    const deltaCents = totalCents - targetCents;
+    const abs = Math.abs(deltaCents);
+    const heavier = deltaCents > 0 ? 1 : 0;
+    const rank = abs * 1000 + heavier * 100 + plates.length;
+    if (rank < bestRank) {
+      bestRank = rank;
+      bestSide = sideCents;
+      bestPlates = plates;
+    }
+  }
+
+  const achievedCents = barCents + bestSide * 2;
+  const deltaCents = achievedCents - targetCents;
+  return {
+    perSide: bestPlates,
+    barWeight: bar,
+    targetWeight: target,
+    achievedWeight: achievedCents / 100,
+    delta: deltaCents / 100,
+    exact: deltaCents === 0,
   };
 }
 
