@@ -22,6 +22,7 @@ import {
 } from './houseNav';
 import { useHousePane } from './HousePane';
 import { writeTodayComposeSession } from '@/lib/workout/writeTodayComposeSession';
+import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
 
 const TODAY_ICONS = {
   start: Play,
@@ -45,6 +46,7 @@ export function HouseSecondRail({ dock }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useTranslation();
+  const decision = useSafetyTrainDecision();
   const { pane, openPane, closePane } = useHousePane();
   const [hash, setHash] = useState('');
   const catalog = dock === 'library';
@@ -74,7 +76,15 @@ export function HouseSecondRail({ dock }: Props) {
     >
       <div className="house-second-body" key={weekPane ? 'week' : catalog ? 'library' : 'today'}>
         {weekPane ? (
-          <HouseWeekPane title={title} onBack={closePane} />
+          <HouseWeekPane
+            title={title}
+            onBack={closePane}
+            todayLabel={
+              decision.mode === 'withhold'
+                ? t('coachActionRecoveryFlow', { defaultValue: 'Try recovery flow' })
+                : undefined
+            }
+          />
         ) : (
           <>
             <p className="house-second-kicker">{title}</p>
@@ -97,6 +107,10 @@ export function HouseSecondRail({ dock }: Props) {
                     onClick={(e) => {
                       if (row.id === 'start') {
                         e.preventDefault();
+                        if (decision.mode === 'withhold') {
+                          router.push('/move');
+                          return;
+                        }
                         writeTodayComposeSession();
                         router.push('/active');
                         return;
@@ -105,7 +119,9 @@ export function HouseSecondRail({ dock }: Props) {
                     }}
                   >
                     <Icon className="h-4 w-4" aria-hidden />
-                    {t(row.labelKey, { defaultValue: row.label })}
+                    {row.id === 'start' && decision.mode === 'withhold'
+                      ? t('coachActionRecoveryFlow', { defaultValue: 'Try recovery flow' })
+                      : t(row.labelKey, { defaultValue: row.label })}
                   </Link>
                 );
               })}
@@ -117,7 +133,15 @@ export function HouseSecondRail({ dock }: Props) {
   );
 }
 
-function HouseWeekPane({ title, onBack }: { title: string; onBack: () => void }) {
+function HouseWeekPane({
+  title,
+  onBack,
+  todayLabel,
+}: {
+  title: string;
+  onBack: () => void;
+  todayLabel?: string;
+}) {
   const { t } = useTranslation();
   const plan = loadPlan();
   const weekStart = currentWeekStart();
@@ -153,7 +177,7 @@ function HouseWeekPane({ title, onBack }: { title: string; onBack: () => void })
             className={`house-second-week-day${day.offset === todayOff ? ' is-today' : ''}${day.session ? ' is-set' : ''}`}
           >
             <span>{day.name}</span>
-            <span>{day.session?.name ?? (day.offset === todayOff ? t('todayStartCta', { defaultValue: 'Start' }) : 'Rest')}</span>
+            <span>{day.session?.name ?? (day.offset === todayOff ? (todayLabel ?? t('todayStartCta', { defaultValue: 'Start' })) : 'Rest')}</span>
           </div>
         ))}
       </div>

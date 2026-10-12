@@ -10,6 +10,7 @@ import {
 } from "@/lib/readinessIndex";
 import type { MindCheckIn } from "@/lib/mindCheckIns";
 import { checkInReadinessDelta } from "@/lib/mindCheckIns";
+import { applySafetyToInsight, resolveSafetyTrainGuidance } from "@/lib/safetyTrainGuidance";
 
 export type { MuscleGroup, ReadinessStatusKey, ReadinessInfo };
 
@@ -272,9 +273,31 @@ export interface CoachInsight {
 export function getCoachInsight(
   scores: BodyScores,
   focus: RecommendedFocus,
-  opts?: { assessmentRisk?: string }
+  opts?: {
+    assessmentRisk?: string;
+    pregnancyFlag?: string | null;
+    painOrInjury?: boolean;
+    hardSession?: boolean;
+    reportText?: string | null;
+  }
 ): CoachInsight {
-  if (opts?.assessmentRisk === 'high') {
+  const safety = resolveSafetyTrainGuidance({
+    pregnancyFlag: opts?.pregnancyFlag,
+    assessmentRisk: opts?.assessmentRisk,
+    painOrInjury: opts?.painOrInjury,
+    hardSession: opts?.hardSession,
+    reportText: opts?.reportText,
+  });
+  const base = coachInsightFromScores(scores, focus, opts?.assessmentRisk);
+  return applySafetyToInsight(base, safety);
+}
+
+function coachInsightFromScores(
+  scores: BodyScores,
+  focus: RecommendedFocus,
+  assessmentRisk?: string
+): CoachInsight {
+  if (assessmentRisk === 'high') {
     return {
       messageKey: 'coachInsightHighRisk',
       actionLabelKey: 'coachActionRecoveryFlow',

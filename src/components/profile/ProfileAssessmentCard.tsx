@@ -9,6 +9,7 @@ import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
 import { bumpTrainingStreak } from '@/lib/streaks';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
 
 type LastAssessment = {
   risk: string;
@@ -24,10 +25,18 @@ export function ProfileAssessmentCard() {
   const { t } = useTranslation();
   const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const { cta } = useTrainCta(
+    { labelKey: 'profileStartStarter', defaultLabel: 'Start starter' },
+    null
+  );
   const lastAssessment = getLastAssessment();
   const freeBeta = isFreeBeta();
 
   const launchFromAssessment = (risk: string) => {
+    if (!cta.startsWorkout) {
+      router.push(cta.href ?? '/move');
+      return;
+    }
     let name = 'Daily Mobility + Mind Habit';
     let exs = [
       { exerciseId: 'cat-camel', sets: [{ reps: 8, weight: 0 }] },
@@ -84,8 +93,12 @@ export function ProfileAssessmentCard() {
                 className="min-h-[44px] tap-target"
                 onClick={() => launchFromAssessment(lastAssessment.risk)}
               >
-                {t('profileStartStarter', {
-                  risk: lastAssessment.risk, defaultValue: `Start starter (${lastAssessment.risk} risk)` })}
+                {cta.note
+                  ? t(cta.labelKey, { defaultValue: cta.defaultLabel })
+                  : t('profileStartStarter', {
+                      risk: lastAssessment.risk,
+                      defaultValue: `Start starter (${lastAssessment.risk} risk)`,
+                    })}
               </Button>
               <Button
                 size="sm"

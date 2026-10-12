@@ -18,6 +18,7 @@ import type {
   CoachLogFact,
   CoachWeekSessionFact,
 } from '@/lib/coach/agent/types';
+import { guardCoachReply, guardTrainNowText, safetyFromChat } from '@/lib/safetyTrainGuidance';
 
 export type CoachChatTurn = { role: 'user' | 'coach'; content: string };
 
@@ -227,11 +228,19 @@ export async function fetchCoachChat(
   const parsed = parseCoachChatJson(agent.message);
   const messageText = (parsed?.message ?? agent.message).trim().slice(0, MAX_MESSAGE);
   if (!messageText) return { ok: false, reason: 'parse' };
+  const prior = turns
+    .filter((turn) => turn.role === 'user')
+    .map((turn) => turn.content)
+    .join('\n');
+  const guarded = guardCoachReply(
+    { message: messageText, actionLabel: parsed?.actionLabel, actionPath: parsed?.actionPath },
+    safetyFromChat(message, prior)
+  );
   return {
     ok: true,
-    message: messageText,
-    actionLabel: parsed?.actionLabel,
-    actionPath: parsed?.actionPath,
+    message: guarded.message,
+    actionLabel: guarded.actionLabel,
+    actionPath: guarded.actionPath,
     source: 'llm',
     grounded: Boolean(groundedId) || agent.usedTools || Boolean(ctx.logFacts?.length),
     usage: agent.usage,
@@ -258,7 +267,11 @@ export async function* streamCoachChat(
     if (agent.reason === 'unconfigured') return { ok: false, reason: 'unconfigured' };
     return { ok: false, reason: 'unavailable' };
   }
-  yield agent.message;
+  const prior = turns
+    .filter((turn) => turn.role === 'user')
+    .map((turn) => turn.content)
+    .join('\n');
+  yield guardTrainNowText(agent.message, safetyFromChat(message, prior));
   return {
     ok: true,
     grounded: Boolean(groundedId) || agent.usedTools || Boolean(ctx.logFacts?.length),

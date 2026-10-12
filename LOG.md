@@ -18,6 +18,20 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-12 — Safety flags withhold train-now guidance (`.1128`)
+
+Pregnancy, a high assessment, and a pain or injury flag used to change almost nothing an athlete could see. The pregnancy flag swapped one sentence on the hard-session sheet. `getCoachInsight` said “you’re primed to train” and pointed at `/active`. Today’s Just Go hero, Coach “Start this session”, the adapt banner’s “Just Go — log one set”, assessment “tap to start”, and a comeback nudge’s “Start now” never read the flag. A pain-history yes was not even in the PAR-Q count, so it stayed low risk and still offered a starter.
+
+`safetyTrainGuidance` is the one decision. Pregnancy, assessment high, and pain withhold the recommendation and reuse the existing stop line or the high-risk sentence, with the action on Move. Today shows that sentence once, then Try recovery flow. The client hook has a render test so the coverage file count stays on the floor. A moderate screen or a hard-session name softens: the path stays, the label is no longer “Start” / “Just Go”, and the note is the existing caveat. Log set still starts. The week planner still does not read the pregnancy flag. Nudges withhold only when the caller already has the flag — it is not synced.
+
+**Mutants killed:** primed insight under `pregnancyFlag: 'pregnant'`; moderate risk still `coachActionStartWorkout`; pain still `/active`; hard session still “Start workout”; Just Go hero still “Ready to train”; “Just go train” kept on a knee-pain reply; comeback body still “Start now”; withhold CTA `startsWorkout: true` on a recommendation; logger CTA `startsWorkout: false`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1128`. Master already shipped `.1127` for the plate loader, so this ship is `.1128`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1109-for-1128.md](docs/archive/log/LOG-rotate-1109-for-1128.md) (`.1109`).
+
 ## 2026-10-12 — Plate loader nearest weight (`.1127`)
 
 The plate loader was already on Train, buried in the session menu, and it only ever loaded downward with an unlimited rack. A target the plates cannot make now shows the nearest loadable weight. `nearestBarLoad` takes the target, the bar, and pairs per side. Ten cases cover an exact 100 kg and 225 lb, a 101 kg miss, a load that is closer over the target, a target under the bar, an empty rack, a 35 lb bar, a one-pair ceiling, and an equal-distance tie that stays lighter.
@@ -499,54 +513,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1110`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1095-for-1110.md](docs/archive/log/LOG-rotate-1095-for-1110.md) (`.1095`).
-
-## 2026-09-16 — Leftover Health extras cannot grant billing (`.1109`)
-
-Bind copies + freezes declared
-scopes. Reserved Health scopes
-are pinned at bind. Leftover
-extras on a Health-shaped
-document cannot grant
-`billing.read` / checkout /
-portal — first-mount extras,
-live push on the passed
-document, leftover push on
-the bound manifest, and
-remount of the mutated
-object all stay
-`scope_denied`. Granted
-sibling stays. After
-`storage_cap` + extras +
-remount, billing is still
-denied. `listMounted` peek of
-billing stays `scope_denied`.
-`.1094` closed live billing
-isolation. `.1103` closed
-billing remount leftover
-inject. `.1108` closed leftover
-storage writes. Isolation:
-coach / store / HomePage /
-ActiveWorkout stay blind.
-
-**Mutants killed:** first-mount
-extras granting billing or
-throwing; leftover push on
-the passed document granting
-live billing; leftover push
-on the bound manifest
-granting; remount of the
-mutated extras document
-granting; remount rewriting
-Granted.read; cap leftover
-granting remounted billing;
-listMounted peek listing
-leftover extras; HOP.md
-carrying the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1109`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1094-for-1109.md](docs/archive/log/LOG-rotate-1094-for-1109.md) (`.1094`).

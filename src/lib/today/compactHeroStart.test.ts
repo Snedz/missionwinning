@@ -1,6 +1,8 @@
 /**
  * Compact hero Start navigates from first paint.
- * href="/active" must survive without JS. Write compose on click.
+ * Clear state is a real Link to /active that writes the session.
+ * A safety withhold is the same Link to /move and does not compose.
+ * It is not a JS-only button, and it does not preventDefault.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,10 +27,11 @@ function heroStartSlice(src: string): string {
   return src.slice(startAt, roomsAt);
 }
 
-test('compact hero Start is href=/active — click is not a JS-only button', () => {
+test('compact hero Start is a Link — clear goes to /active, a safety withhold goes to /move', () => {
   const hero = heroStartSlice(read('src/page-components/TodayDesk.tsx'));
   assert.match(hero, /data-testid="today-start-cta"/);
-  assert.match(hero, /href=["']\/active["']/);
+  assert.match(hero, /href=\{withholdHero \? '\/move' : '\/active'\}/);
+  assert.match(hero, /if \(withholdHero\) return/);
   assert.match(hero, /writeTodayComposeSession\(\)/);
   assert.doesNotMatch(hero, /preventDefault/);
   assert.doesNotMatch(
@@ -36,6 +39,19 @@ test('compact hero Start is href=/active — click is not a JS-only button', () 
     /<button[\s\S]*house-btn-primary/,
     'hero Start must be a Link so compact survives without hydrate'
   );
+});
+
+test('safety hero prints the stop line once', () => {
+  const src = read('src/page-components/TodayDesk.tsx');
+  const titleAt = src.indexOf('const sessionTitle');
+  const ledeAt = src.indexOf('const sessionLede');
+  const kickerAt = src.indexOf('const sessionKicker');
+  assert.ok(titleAt >= 0 && ledeAt > titleAt && kickerAt > ledeAt);
+  const kicker = src.slice(kickerAt, src.indexOf('const startLabel'));
+  assert.match(kicker, /safetyLine\s*\?\s*null/);
+  assert.doesNotMatch(kicker, /safety\.copy/);
+  const lede = src.slice(ledeAt, kickerAt);
+  assert.match(lede, /sessionTitle === safetyLine/);
 });
 
 test('DESIGN names Compact hero Start navigates from first paint', () => {

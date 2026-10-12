@@ -14,6 +14,8 @@ import {
   translateCoachActionLabel,
   translateCoachInsightLine,
 } from '@/lib/readinessDisplay';
+import { guardCoachReply } from '@/lib/safetyTrainGuidance';
+import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
 
 type CoachDisplay = {
   message: string;
@@ -40,6 +42,7 @@ export function useDailyCoachInsight(
   fallback: CoachInsight
 ): CoachDisplay {
   const { t } = useTranslation();
+  const decision = useSafetyTrainDecision();
   const [state, setState] = useState<CoachDisplay>(() => {
     const local = localInsightCopy(fallback, t);
     return {
@@ -140,5 +143,14 @@ export function useDailyCoachInsight(
     };
   }, [context, fallback, t]);
 
-  return state;
+  const guarded = guardCoachReply(
+    { message: state.message, actionLabel: state.actionLabel, actionPath: state.actionPath },
+    decision
+  );
+  return {
+    ...state,
+    message: guarded.message,
+    actionLabel: guarded.actionLabel ?? state.actionLabel,
+    actionPath: guarded.actionPath ?? state.actionPath,
+  };
 }

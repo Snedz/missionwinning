@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1109-for-1128.md`](docs/archive/log/LOG-rotate-1109-for-1128.md) — rotated by `.1128`, to keep the <=15 entry budget.
+- [`CONTEXT-now-1106.md`](docs/archive/CONTEXT-now-1106.md) — `.1128` rotated the `.1106` Now bullet (Split activeWorkoutHelpers).
 - [`LOG-rotate-1108-for-1127.md`](docs/archive/log/LOG-rotate-1108-for-1127.md) — rotated by `.1127`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1105.md`](docs/archive/CONTEXT-now-1105.md) — `.1127` rotated the `.1105` Now bullet (Unlocked comment deslop).
 - [`LOG-rotate-1107-for-1126.md`](docs/archive/log/LOG-rotate-1107-for-1126.md) — rotated by `.1126`, to keep the <=15 entry budget.

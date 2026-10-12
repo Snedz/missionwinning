@@ -6,12 +6,12 @@
 
 | File | Purpose |
 |------|---------|
-| `CoachAdaptBanner.tsx` | Adapt banner is house leftover. Compact first paint; reentry Start stays extra. Log-cited why-this-week. |
+| `CoachAdaptBanner.tsx` | Adapt banner is house leftover. Compact first paint; reentry Start stays extra. Log-cited why-this-week. Re-entry copy follows the safety decision. |
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
 | `WeekStrip.tsx` | Week strip is house leftover on `/coach` (`house`). Landing demo keeps the field-manual tail. |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today — dose + compact adapt (G6). No second red. |
-| `PlanSessionCard.tsx` | Session card is house leftover. Boss Start is the one filled action; other days stay ghost. Why-this-session cite or honest empty. |
+| `PlanSessionCard.tsx` | Session card is house leftover. Boss Start is the one filled action; other days stay ghost. Why-this-session cite or honest empty. A safety withhold sends the button to Move. |
 | `PlanExerciseLine.tsx` | Session lift is house leftover. Swap stays ghost. Overlay internals stay. |
 | `CoachNextDayCite.tsx` | Quiet next-day cite is house leftover. Ghost Start — never a second filled action. Honest empty when the diary is thin. |
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`); passes session rationale hints and garage `onSwapExercise` |
@@ -25,7 +25,7 @@
 | `CoachLiveVoice.tsx` | Live voice is house leftover. Talk is house-btn, not a second filled action. After this week’s session — not above the strip. The free AI personal trainer ask sits on this surface (`.1115`) |
 | `CoachTrainerDoor.tsx` | Same free ask as Train, plus a Train link. No checkout |
 | `CoachFreeFormAskPanel.tsx` | Form cues for `/coach?ask=` plus the same free ask. No bundle link |
-| `SessionTrainerCard.tsx` | Next set, library form cue, and plan on Today / Train / Coach. Ghost Library link. No second filled action (`.1114`) |
+| `SessionTrainerCard.tsx` | Next set, library form cue, and plan on Today / Train / Coach. Ghost Library link. No second filled action (`.1114`). A withhold replaces the next-set command with the safety line. |
 
 ## Related
 

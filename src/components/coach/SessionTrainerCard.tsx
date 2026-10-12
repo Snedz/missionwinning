@@ -18,6 +18,8 @@ import {
   libraryHrefForExercise,
   type SessionTrainerSeed,
 } from '@/lib/coach/sessionTrainer';
+import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
+import { guardTrainNowText } from '@/lib/safetyTrainGuidance';
 
 type Props = {
   seed: SessionTrainerSeed | null;
@@ -26,6 +28,7 @@ type Props = {
 
 export function SessionTrainerCard({ seed, surface }: Props) {
   const { t } = useTranslation();
+  const decision = useSafetyTrainDecision(seed?.exerciseName);
   const [cue, setCue] = useState<string | null>(null);
   const [resolvedName, setResolvedName] = useState<string | null>(null);
   const [cueReady, setCueReady] = useState(false);
@@ -80,7 +83,7 @@ export function SessionTrainerCard({ seed, surface }: Props) {
   }, [exerciseId, weight, reps]);
 
   useEffect(() => {
-    if (!voiceKey) return;
+    if (!voiceKey || decision.mode !== 'clear') return;
     const snap = { weight, reps };
     const ac = new AbortController();
     void (async () => {
@@ -115,7 +118,7 @@ export function SessionTrainerCard({ seed, surface }: Props) {
     return () => ac.abort();
     // Weight and reps stay on the local line. One model call per lift, not per set.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [voiceKey, exerciseId, name, unit, setsLeft, cue, planLabel]);
+  }, [voiceKey, exerciseId, name, unit, setsLeft, cue, planLabel, decision.mode]);
 
   if (!seed) {
     return (
@@ -147,7 +150,10 @@ export function SessionTrainerCard({ seed, surface }: Props) {
             defaultValue: 'Next: {{name}}. Log it when the rep is yours.',
           });
 
-  const shown = llmLine ?? localLine;
+  const shown =
+    decision.mode === 'clear'
+      ? (llmLine ?? localLine)
+      : guardTrainNowText(decision.copy ?? localLine, decision);
   const href = libraryHrefForExercise(exerciseId);
   const nextDetail = name && load ? `${name} — ${load}` : name ?? t('sessionTrainerNoSet', { defaultValue: 'No set in front of you yet.' });
 
@@ -167,10 +173,12 @@ export function SessionTrainerCard({ seed, surface }: Props) {
       <p className="house-lede" data-testid="session-trainer-line">
         {shown}
       </p>
+      {decision.mode === 'withhold' ? null : (
       <p className="house-row" data-testid="session-trainer-next">
         <span className="house-kicker">{t('sessionTrainerNext', { defaultValue: 'Next set' })}</span>
         <span>{nextDetail}</span>
       </p>
+      )}
       <p className="house-row" data-testid="session-trainer-form">
         <span className="house-kicker">{t('sessionTrainerForm', { defaultValue: 'Form' })}</span>
         <span>{cue ?? t('sessionTrainerNoCue', { defaultValue: 'No library cue for this lift.' })}</span>

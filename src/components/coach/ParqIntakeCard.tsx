@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
+  painOrInjuryFromAnswers,
   PARQ_INTAKE_KEYS,
   persistParqScreen,
   scoreParqAnswers,
@@ -38,7 +39,11 @@ export function ParqIntakeCard({ onDone }: Props) {
           : t('firstStepParqNotesLow', {
               defaultValue: 'Educational screen only — not medical advice.',
             });
-    persistParqScreen({ risk, notes });
+    persistParqScreen({
+      risk,
+      notes,
+      painOrInjury: painOrInjuryFromAnswers(answers),
+    });
     onDone();
   };
 

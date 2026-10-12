@@ -25,6 +25,11 @@
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
 import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
+import {
+  guardNudgeCandidate,
+  resolveSafetyTrainGuidance,
+  type SafetyTrainInput,
+} from '@/lib/safetyTrainGuidance';
 
 export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down' | 'day-review';
 
@@ -82,6 +87,11 @@ export interface NudgeInput {
   appUrl: string;
   /** Built by the caller — keeps this module free of the HMAC secret. */
   unsubscribeUrl: string;
+  /**
+   * Device-only safety. The server push path has no flag and must not gain one.
+   * Callers that already have it pass it here so the copy can withhold.
+   */
+  safety?: SafetyTrainInput;
 }
 
 /** `1 session` / `4 sessions` — spelled once, used by the subject and the push. */
@@ -106,6 +116,12 @@ export function daysLeftInWeek(now: Date): number {
 }
 
 export function decideNudge(input: NudgeInput): NudgeCandidate | null {
+  const candidate = composeNudge(input);
+  if (!candidate || !input.safety) return candidate;
+  return guardNudgeCandidate(candidate, resolveSafetyTrainGuidance(input.safety));
+}
+
+function composeNudge(input: NudgeInput): NudgeCandidate | null {
   const now = input.now ?? new Date();
   const days = new Set(input.workoutDays);
   const cadence = input.daysPerWeek ?? 3;

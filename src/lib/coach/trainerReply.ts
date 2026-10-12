@@ -13,6 +13,7 @@ import {
   type CoachLlmEnv,
 } from '@/lib/coachLlmClient';
 import { sessionCoachLine, type SessionCoachLineInput } from '@/lib/workout/sessionCoachLine';
+import { resolveSafetyTrainGuidance } from '@/lib/safetyTrainGuidance';
 
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 
@@ -133,6 +134,10 @@ export async function replyTrainer(
     fetchImpl?: FetchLike;
   }
 ): Promise<TrainerReply> {
+  const reported = resolveSafetyTrainGuidance({ reportText: input.question });
+  if (reported.mode !== 'clear' && reported.copy) {
+    return { text: reported.copy, source: 'rules' };
+  }
   const rules = rulesText(input);
   const seat = resolveTrainerSeat(options?.env ?? process.env);
   if (seat.source === 'rules' || !rules) {

@@ -6,6 +6,8 @@
 
 import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
+import { useTrainCta } from '@/hooks/useSafetyTrainDecision';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import type { PlanSession } from '@/lib/coach/types';
 import {
@@ -47,7 +49,12 @@ export function PlanSessionCard({
   rationaleHints,
 }: Props) {
   const { t } = useTranslation();
+  const router = useRouter();
   const startCoachSession = useStartCoachSession();
+  const { cta } = useTrainCta(
+    { labelKey: 'coachStartSession', defaultLabel: 'Start this session' },
+    session.name
+  );
   const units = useUnits();
   const unit = weightUnitLabel(units);
   const primary = isPrimaryStart ?? isToday;
@@ -58,6 +65,10 @@ export function PlanSessionCard({
       : null;
 
   const start = () => {
+    if (!cta.startsWorkout) {
+      router.push(cta.href ?? '/move');
+      return;
+    }
     startCoachSession(session, { from: 'coach' });
   };
 
@@ -214,8 +225,9 @@ export function PlanSessionCard({
             }
             onClick={start}
           >
-            {t('coachStartSession', { defaultValue: 'Start this session' })}
+            {t(cta.labelKey, { defaultValue: cta.defaultLabel })}
           </button>
+          {cta.note ? <p className="house-lede">{cta.note}</p> : null}
           {onAdjust ? (
             <button
               type="button"

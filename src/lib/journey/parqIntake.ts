@@ -28,6 +28,8 @@ export type ParqSnapshot = {
   risk: ParqRisk;
   notes: string;
   date: string;
+  /** Pain history, a joint flag, or an ortho yes. Does not change the risk count. */
+  painOrInjury?: boolean;
 };
 
 export function hasParqScreen(): boolean {
@@ -45,15 +47,24 @@ export function scoreParqAnswers(answers: Record<string, string>): {
   return { risk, yesCount };
 }
 
+/** Yes on pain history, a joint flag, or ortho. Not part of the 1-yes / 3-yes risk count. */
+export function painOrInjuryFromAnswers(answers: Record<string, string>): boolean {
+  return (['pain_history', 'bone_joint', 'ortho'] as const).some((key) =>
+    (answers[key] ?? '').toLowerCase().includes('yes')
+  );
+}
+
 export function persistParqScreen(input: {
   risk: ParqRisk;
   notes: string;
   date?: string;
+  painOrInjury?: boolean;
 }): ParqSnapshot {
   const snap: ParqSnapshot = {
     risk: input.risk,
     notes: input.notes,
     date: input.date ?? localDateKey(),
+    ...(input.painOrInjury ? { painOrInjury: true } : {}),
   };
   writeJson(STORAGE_KEYS.lastAssessment, snap);
   return snap;

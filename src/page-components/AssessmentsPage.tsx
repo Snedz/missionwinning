@@ -14,7 +14,9 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import type { WorkoutExerciseTemplate } from '@/types';
-import { persistParqScreen, scoreParqAnswers } from '@/lib/journey/parqIntake';
+import { painOrInjuryFromAnswers, persistParqScreen, scoreParqAnswers } from '@/lib/journey/parqIntake';
+import { presentTrainCta, resolveSafetyTrainGuidance } from '@/lib/safetyTrainGuidance';
+import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
 import { assessmentsEnFloor } from '@/i18n/assessmentsLocales';
 
 interface AssessmentResult {
@@ -26,8 +28,21 @@ interface AssessmentResult {
 export function AssessmentsPage() {
   const { t } = useTranslation();
   const router = useRouter();
+  const storedSafety = useSafetyTrainDecision();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<AssessmentResult | null>(null);
+  const resultSafety = result
+    ? resolveSafetyTrainGuidance({
+        pregnancyFlag: storedSafety.kind === 'pregnancy' ? 'pregnant' : 'none',
+        assessmentRisk: result.riskLevel,
+        painOrInjury: painOrInjuryFromAnswers(answers) || storedSafety.kind === 'pain',
+        hardSession: storedSafety.kind === 'hard-session',
+      })
+    : storedSafety;
+  const resultCta = presentTrainCta(resultSafety, {
+    labelKey: 'assessStartPrefix',
+    defaultLabel: 'Start',
+  });
 
   const questions = [
     { key: 'chest_pain' },
@@ -156,7 +171,11 @@ export function AssessmentsPage() {
     }
 
     setResult({ riskLevel: risk, notes, recommendations: recs });
-    persistParqScreen({ risk, notes });
+    persistParqScreen({
+      risk,
+      notes,
+      painOrInjury: painOrInjuryFromAnswers(answers),
+    });
   };
 
   /*
@@ -357,9 +376,11 @@ export function AssessmentsPage() {
           <p>{result.notes}</p>
           <div>
             <div className="font-semibold mb-2">
-              {t('assessRecommendations', {
-                defaultValue: 'Recommendations — tap to start a free starter:',
-              })}
+              {resultSafety.mode === 'clear'
+                ? t('assessRecommendations', {
+                    defaultValue: 'Recommendations — tap to start a free starter:',
+                  })
+                : resultSafety.copy}
             </div>
             <div className="flex flex-wrap gap-2">
               {result.recommendations.map((r, i) => (
@@ -367,10 +388,19 @@ export function AssessmentsPage() {
                   key={i}
                   type="button"
                   className="house-btn"
-                  onClick={() => startRecommended(r)}
+                  onClick={() => {
+                    if (!resultCta.startsWorkout) {
+                      router.push(resultCta.href ?? '/move');
+                      return;
+                    }
+                    startRecommended(r);
+                  }}
                 >
-                  {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
-                  {r.length > 45 ? `${r.slice(0, 42)}...` : r}
+                  {resultSafety.mode === 'clear'
+                    ? `${t('assessStartPrefix', { defaultValue: 'Start' })}: ${
+                        r.length > 45 ? `${r.slice(0, 42)}...` : r
+                      }`
+                    : t(resultCta.labelKey, { defaultValue: resultCta.defaultLabel })}
                 </button>
               ))}
             </div>
