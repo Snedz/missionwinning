@@ -1,10 +1,14 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   buildJustGoSession,
   muscleFreshnessRows,
   previewJustGoForEquipment,
 } from '@/lib/justGoSession';
+import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
+import { STARTER_FOCUS_FALLBACK } from '@/data/starterFocusFallback';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { ReadinessInfo } from '@/lib/score';
@@ -187,5 +191,19 @@ describe('justGoSession', () => {
       session.exercises.every((ex) => ex.exerciseId !== 'leg-press'),
       session.exercises.map((e) => e.exerciseId).join(','),
     );
+  });
+
+  it('focus fallback hits the same programs as the full free wall, without importing it', () => {
+    const src = readFileSync(path.join(import.meta.dirname, 'justGoSession.ts'), 'utf8');
+    assert.doesNotMatch(src, /starterPrograms/);
+    assert.match(src, /starterFocusFallback/);
+    const hints = ['upper', 'push', 'full body', 'pull', 'lower', '5x5', 'mobility', 'bodyweight'];
+    for (const hint of hints) {
+      const full = FREE_STARTER_PROGRAMS.find((p) => p.name.toLowerCase().includes(hint));
+      const slim = STARTER_FOCUS_FALLBACK.find((p) => p.name.toLowerCase().includes(hint));
+      assert.equal(slim?.name, full?.name, hint);
+      assert.equal(slim, full, `${hint} must be the same object, not a copy`);
+    }
+    assert.equal(STARTER_FOCUS_FALLBACK[0], FREE_STARTER_PROGRAMS[0]);
   });
 });

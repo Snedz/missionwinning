@@ -20,6 +20,8 @@
 
 import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { writeJson, __resetForTests } from '@/lib/storage/safeStorage';
@@ -144,6 +146,13 @@ describe('loadGuidebookProgress', () => {
 
   it('starts empty when nothing is stored', () => {
     assert.equal(loadGuidebookProgress().size, 0);
+  });
+
+  it('challenges count stored ids without pulling chapter bodies', () => {
+    const src = readFileSync(path.join(import.meta.dirname, 'challenges.ts'), 'utf8');
+    assert.match(src, /from '@\/lib\/guidebookProgressStore'/);
+    assert.doesNotMatch(src, /from '@\/lib\/guidebookProgress'/);
+    assert.doesNotMatch(src, /guidebook\/chapters/);
   });
 
   it('is a no-op save without a document — the guard the SSR path relies on', () => {

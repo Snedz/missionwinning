@@ -17,6 +17,25 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+
+## 2026-10-12 — Next 16.4 initial JS under the bundle caps (`.1126`)
+
+Next 16.4.0's webpack client runtime is about 2.0 KB gzip larger than 16.3.4 on every wedge route. The growth sits in the shared Next runtime chunk and the React framework chunk, both in `rootMainFiles`, so `/`, `/log`, and `/active` all move together. Measured on the same gzip level the budget script uses (zlib level 9, which matches the GitHub Actions runner): `/` 348.7 → 350.7 (cap 351), `/log` 419.9 → 422.0 (cap 420), `/active` 515.6 → 517.6 (cap 516). `npm run verify` does not run `scripts/bundle-budget.mjs`. CI does, after the production build. That is why verify was green and `build-and-test` was not.
+
+Caps stay 351 / 420 / 516. Two static imports were shipping data the first paint does not need.
+
+Just Go's focus fallback scans program names and always hits one of six free programs. It imported `FREE_STARTER_PROGRAMS`, the whole Today quick-options wall. Those six programs now live in `starterFocusFallback.ts` and are spread back into the wall, so the objects are the same. The rest of the wall stays on Today, which already loads quick options off the prerender script list.
+
+Challenges count guidebook progress with `loadGuidebookProgress().size`. That function lived next to the chapter catalog, so the workout store pulled the book onto `/log` and `/active`. The id set is now `guidebookProgressStore.ts`. Stats and continue-reading still import the chapters.
+
+After both cuts, the same CI-env webpack build measures `/` 350.7, `/log` 411.5, `/active` 507.1. Caps unchanged.
+
+Label `2026.07-unified.1126`.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1107-for-1126.md](docs/archive/log/LOG-rotate-1107-for-1126.md) (`.1107`).
+
 ## 2026-10-12 — Next 16.4 prerender on Track (`.1125`)
 
 Dependabot #1014 bumps `next` from 16.3.4 to 16.4.0. `build-and-test` dies in the production build while prerendering `/track`:
@@ -568,50 +587,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1108`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1093-for-1108.md](docs/archive/log/LOG-rotate-1093-for-1108.md) (`.1093`).
-
-## 2026-09-16 — Photos remount after inject (`.1107`)
-
-`injectPhotosSnapshot` on a
-live photos-scoped fake is
-per-instance. Unmount + remount
-binds the host stub snapshot
-again. Leftover inject dies —
-remounted `photos.read` is the
-host-bound envelope, not the
-override. Inject on the old
-fake after remount does not
-change remounted.read. Sibling
-read stays. After `storage_cap`
-+ inject + remount, photos is
-still host-bound. ClearShot
-remount after inject rebinds
-its host photos snapshot
-(leftover inject dies; no host
-row stays `photos_stub`). Health
-/ `test.billing` remount stay
-`scope_denied`. `.1095` closed
-live dual-mount isolation.
-`.1103` closed billing remount.
-Isolation: coach / store /
-HomePage / ActiveWorkout stay
-blind.
-
-**Mutants killed:** remount
-returning leftover inject or
-throwing; remount rewriting
-sibling.read; old-fake inject
-after remount leaking; cap+inject
-leftover surviving remount;
-ClearShot leftover inject
-granting photos with no host
-row; Health remount gaining a
-photos snapshot; HOP.md carrying
-the claim.
-
-Paper only. `[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1107`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1092-for-1107.md](docs/archive/log/LOG-rotate-1092-for-1107.md) (`.1092`).

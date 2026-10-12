@@ -1,6 +1,6 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
-import { loadGuidebookProgress } from '@/lib/guidebookProgress';
+import { loadGuidebookProgress } from '@/lib/guidebookProgressStore';
 import { STREAK_KEY, getTrainingStreak } from '@/lib/streaks';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';

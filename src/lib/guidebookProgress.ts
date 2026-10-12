@@ -1,22 +1,10 @@
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
-export function loadGuidebookProgress(): Set<string> {
-  return new Set(readJson<string[]>(STORAGE_KEYS.guidebookProgress, []));
-}
-
-export function saveGuidebookProgress(completed: Set<string>): void {
-  if (typeof window === 'undefined') return;
-  writeJson(STORAGE_KEYS.guidebookProgress, [...completed]);
-  window.dispatchEvent(new CustomEvent('mw-guidebook-progress'));
-}
-
-export function markSectionComplete(sectionId: string): void {
-  const next = loadGuidebookProgress();
-  next.add(sectionId);
-  saveGuidebookProgress(next);
-}
+export {
+  loadGuidebookProgress,
+  markSectionComplete,
+  saveGuidebookProgress,
+} from '@/lib/guidebookProgressStore';
 
 export function getGuidebookStats(completed: Set<string>) {
   const totalSections = BEYOND_THE_BASICS_CHAPTERS.reduce((n, ch) => n + ch.sections.length, 0);
