@@ -200,6 +200,9 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/session': 'surface',
   'src/components/social': 'surface',
   'src/components/speech': 'surface',
+  // Wedge: this one renders on Train. It is the only place an athlete is told the
+  // device is not saving, and "Log a set. Offline." is a claim about this device.
+  'src/components/storage': 'wedge',
   'src/components/today': 'wedge',
   'src/components/track': 'surface',
   'src/components/transparency': 'surface',
