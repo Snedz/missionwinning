@@ -29,6 +29,7 @@ import { Plus } from 'lucide-react';
 import { TrainComposeEmpty } from '@/components/house/TrainComposeEmpty';
 import { ResumeLastChip } from '@/components/workout/ResumeLastChip';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
+import { StorageFailureNotice, useStorageFailure } from '@/components/storage/StorageFailureNotice';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
 import { ActiveExerciseList } from '@/components/workout/ActiveExerciseList';
@@ -249,6 +250,10 @@ export function ActiveWorkoutPage() {
     addExerciseToActive,
     router,
   ]);
+
+  // Owns the subscription rather than letting the notice do it: this page has to
+  // decide whether to render a container at all.
+  const storageFailure = useStorageFailure();
 
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<
@@ -835,6 +840,13 @@ export function ActiveWorkoutPage() {
         }
         onLogPastSession={() => router.push('/history?backfill=1')}
       />
+
+      {/* The warning belongs here, not only on /account: this is where an athlete
+          trusts the device to remember the session. Quiet unless storage is
+          actually refusing. */}
+      {storageFailure ? (
+        <StorageFailureNotice failure={storageFailure} className="house-card p-4" />
+      ) : null}
 
       {resumeOffer.show ? (
         <ResumeLastChip offer={resumeOffer} onResume={handleResumeLast} />
