@@ -69,6 +69,43 @@ export function useStorageFailure(): StorageFailure | null {
   return failure;
 }
 
+/**
+ * Which message this failure gets.
+ *
+ * Extracted so it can be tested without a renderer, and because it is the part with
+ * a contract: the two messages must not be interchangeable, and neither may promise
+ * a persistence the memory fallback cannot deliver.
+ */
+export function storageFailureCopy(reason: StorageFailure['reason']): {
+  key: string;
+  fallback: string;
+} {
+  if (reason === 'quota') {
+    return {
+      key: 'syncStorageFull',
+      fallback:
+        'This device is out of storage space. Export a backup, then clear some space so new sessions save.',
+    };
+  }
+  if (reason === 'denied') {
+    return {
+      key: 'syncStorageDenied',
+      fallback:
+        "This browser won't let us save to the device — private browsing does this. Your session works, but it won't be here next time.",
+    };
+  }
+  /*
+   * Its own line rather than falling through to `denied`. An unclassified failure is
+   * not evidence of private browsing, and telling the user to go change that
+   * setting sends them off to fix the wrong thing while the session stays at risk.
+   */
+  return {
+    key: 'syncStorageUnknown',
+    fallback:
+      "This device isn't saving right now, so this session may not be here next time. Export a backup before you close the app.",
+  };
+}
+
 export function StorageFailureNotice({
   failure,
   className = '',
@@ -78,21 +115,16 @@ export function StorageFailureNotice({
   className?: string;
 }) {
   const { t } = useTranslation();
+  const copy = storageFailureCopy(failure.reason);
 
   return (
     <div className={className} data-testid="storage-failure-notice" role="status">
       <p className="flex items-start gap-2 text-sm text-muted-foreground">
         <CloudOff className="mt-0.5 h-4 w-4 shrink-0" />
         <span>
-          {failure.reason === 'quota'
-            ? t('syncStorageFull', {
-                defaultValue:
-                  'This device is out of storage space. Export a backup, then clear some space so new sessions save.',
-              })
-            : t('syncStorageDenied', {
-                defaultValue:
-                  "This browser won't let us save to the device — private browsing does this. Your session works, but it won't be here next time.",
-              })}
+          {t(copy.key, {
+            defaultValue: copy.fallback,
+          })}
         </span>
       </p>
     </div>
