@@ -104,8 +104,22 @@ export function loadJourneyState(): JourneyState {
   return { ...DEFAULT_STATE };
 }
 
-export function saveJourneyState(state: JourneyState): void {
-  if (typeof window === 'undefined') return;
+/**
+ * Persist journey state. Returns whether it actually landed.
+ *
+ * **Why the boolean exists.** This used to discard `writeRaw`'s result and then
+ * fire `i_day_complete` on the strength of it. On a device that will not persist —
+ * private browsing, a full disk — the write fails, the athlete is told their
+ * onboarding is done, the funnel event records a completion, and on their next
+ * visit the journey is exactly as it was. That is a conversion number reporting a
+ * conversion that did not happen, which is worse than no number: it is the one
+ * number the project is trying to learn from.
+ *
+ * So everything below the write is gated on the write. A phase that did not
+ * persist is not a phase that happened.
+ */
+export function saveJourneyState(state: JourneyState): boolean {
+  if (typeof window === 'undefined') return false;
 
   let prev: JourneyState = { ...DEFAULT_STATE };
   try {
@@ -115,7 +129,8 @@ export function saveJourneyState(state: JourneyState): void {
     // use default prev
   }
 
-  writeRaw(STORAGE_KEY, JSON.stringify(state));
+  const persisted = writeRaw(STORAGE_KEY, JSON.stringify(state));
+  if (!persisted) return false;
   window.dispatchEvent(new CustomEvent('mw-journey-local-change'));
   void import('@/lib/journeySync').then((m) => m.scheduleJourneyPush());
 
@@ -133,6 +148,8 @@ export function saveJourneyState(state: JourneyState): void {
     a.trackBasicMilestoneChanges(prev.basic, state.basic);
     a.trackReadinessMilestoneChanges(prev.readiness, state.readiness);
   });
+
+  return true;
 }
 
 export function isIDayComplete(state?: JourneyState): boolean {
@@ -155,21 +172,33 @@ export function markMissionAccepted(): void {
   saveJourneyState(s);
 }
 
+/**
+ * Mark I-Day done. Returns whether the profile actually landed on the device.
+ *
+ * Same reason as `saveJourneyState`: a completed onboarding whose answers were
+ * never written is not a completion, and the caller fires the funnel event.
+ */
 export function completeIDay(profile: {
   experience: string;
   equipment: string;
   primaryGoal: string;
-}): void {
-  writeRaw(STORAGE_KEYS.experience, profile.experience);
-  writeRaw(STORAGE_KEYS.equipment, profile.equipment);
-  writeRaw(STORAGE_KEYS.primaryGoal, profile.primaryGoal);
-  writeRaw(STORAGE_KEYS.goals, profile.primaryGoal);
+}): boolean {
+  const writes = [
+    writeRaw(STORAGE_KEYS.experience, profile.experience),
+    writeRaw(STORAGE_KEYS.equipment, profile.equipment),
+    writeRaw(STORAGE_KEYS.primaryGoal, profile.primaryGoal),
+    writeRaw(STORAGE_KEYS.goals, profile.primaryGoal),
+  ];
   seedHomeGymKitIfUnset(profile.equipment);
 
   const s = loadJourneyState();
   s.iDay.completedAt = new Date().toISOString();
   s.phase = 'basic';
-  saveJourneyState(s);
+  const journeyPersisted = saveJourneyState(s);
+
+  // Partial persistence is still persistence — the profile is what onboarding is.
+  // The journey flag is the part the funnel event claims, so it gates the event.
+  return writes.every(Boolean) && journeyPersisted;
 }
 
 function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): JourneyBasicMilestones {

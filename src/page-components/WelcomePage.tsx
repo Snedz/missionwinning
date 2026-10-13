@@ -114,8 +114,11 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
       return;
     }
     saveProfileFields();
-    completeIDay({ experience, equipment, primaryGoal });
-    track('iday_completed', { experience, equipment });
+    const persisted = completeIDay({ experience, equipment, primaryGoal });
+    // Only a completion that reached the device counts as one. This is the
+    // activation funnel's top event; firing it on a device that refused the write
+    // is how a funnel number stops meaning anything.
+    if (persisted) track('iday_completed', { experience, equipment });
     /*
      * `.204` — never let onboarding take a session away.
      * `.839` — cold Continue lands Today (`/log`), gate on or off.
