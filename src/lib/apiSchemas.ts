@@ -441,6 +441,12 @@ export const pushUnsubscribeBodySchema = z.object({
 /** Signed-in ISO-week logger rollup — no PII. Guests never POST this. */
 export const weekLoggedBodySchema = z.object({
   isoWeek: z.string().regex(/^\d{4}-W\d{2}$/).max(12),
+  /**
+   * Required only when there is no session — the accountless path. Carries the same
+   * client-generated UUID sent to /api/push/subscribe. The server re-checks push
+   * consent against `push_subscriptions`; this field is an address, not permission.
+   */
+  deviceId: z.string().min(1).max(64).optional(),
 });
 
 /**

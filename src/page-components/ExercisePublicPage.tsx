@@ -315,6 +315,30 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
             ← Back to exercise library
           </Link>
         </div>
+
+        {/*
+          The `/welcome` CTA the spoke brief mandates (BRIEF-exercises-bodyweight-beginners
+          §74, checklist §119) and which was missing from all 353 spokes. Copy is the
+          brief's approved tone, used verbatim so no new claim is being invented here:
+          offline, no account, free — and Coach as the later step, not the pitch.
+          Landed from /welcome the athlete is already known; landing from a search result
+          they are not, which is why the path /welcome → /log matters.
+        */}
+        <div className="space-y-3 border-2 border-primary bg-tint p-5">
+          <p className="font-display text-lg font-semibold text-foreground">
+            Track this exercise free
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Offline workout logger, no account. When you want a plan from your logs, Mission
+            Coach (no wearable).
+          </p>
+          <Link
+            href="/welcome"
+            className="inline-block px-4 py-2 border-2 border-primary bg-primary text-sm font-semibold text-primary-foreground hover:bg-tint hover:text-primary"
+          >
+            Start logging — it&apos;s free
+          </Link>
+        </div>
       </PublicPageShell>
     </>
   );

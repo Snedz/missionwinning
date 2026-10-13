@@ -112,7 +112,7 @@ describe('recordWorkingSetLogged', () => {
     assert.deepEqual(enqueued, []);
   });
 
-  it('guest has no server write', () => {
+  it('guest enqueues week_logged too — the wedge user must reach the metric', () => {
     const enqueued: string[] = [];
     const events: Array<{ event: string; props?: Record<string, string | number | boolean> }> =
       [];
@@ -122,6 +122,7 @@ describe('recordWorkingSetLogged', () => {
       {
         source: 'guest',
         now: new Date(2026, 7, 13, 12),
+        deviceId: 'dev-guest-1',
         track: (event, props) => {
           events.push({ event, props });
         },
@@ -132,14 +133,35 @@ describe('recordWorkingSetLogged', () => {
     );
     assert.equal(result.firedSetLogged, true);
     assert.equal(result.firedWeekLogged, true);
-    assert.equal(result.enqueuedWeek, false);
+    // Was `false` until this metric was re-specified: the north star could only ever
+    // describe people who made an account, and the product is for people who did not.
+    assert.equal(result.enqueuedWeek, true);
     assert.equal(result.source, 'guest');
-    assert.deepEqual(enqueued, []);
+    assert.deepEqual(enqueued, ['2026-W33']);
     assert.equal(events[0]?.event, 'set_logged');
     assert.equal(events[0]?.props?.source, 'guest');
     assert.equal(events[0]?.props?.exercise_id, 'bench');
     assert.equal(events[0]?.props?.has_load, true);
     assert.equal(events[1]?.event, 'week_logged');
+  });
+
+  it('SSR sentinel device id does not enqueue — the server is not a device', () => {
+    const enqueued: string[] = [];
+    const result = recordWorkingSetLogged(
+      { kind: 'normal', exerciseId: 'bench', weight: 80 },
+      {
+        source: 'guest',
+        now: new Date(2026, 7, 20, 12),
+        deviceId: 'server',
+        track: () => undefined,
+        enqueueWeekLogged: (week) => {
+          enqueued.push(week);
+        },
+      }
+    );
+    assert.equal(result.firedWeekLogged, true);
+    assert.equal(result.enqueuedWeek, false);
+    assert.deepEqual(enqueued, []);
   });
 
   it('account enqueues week_logged once per ISO week', () => {
@@ -148,6 +170,7 @@ describe('recordWorkingSetLogged', () => {
     const hooks = {
       source: 'account' as const,
       now,
+      deviceId: 'dev-account-1',
       track: () => undefined,
       enqueueWeekLogged: (week: string) => {
         enqueued.push(week);
@@ -180,11 +203,22 @@ describe('week4Logger wiring', () => {
     assert.doesNotMatch(logSet![0], /\benqueueWeekLogged\b/);
   });
 
-  it('warmup early-return is the only skip in the recorder', () => {
-    const src = read('src/lib/week4Logger.ts');
-    assert.match(src, /kind !== 'warmup'/);
-    assert.match(src, /source === 'account'/);
-    assert.match(src, /enqueueWeekLogged/);
+  // Was a source-text regex asserting `source === 'account'` — a test that would have
+  // failed the moment the north star was re-specified for accountless athletes, and
+  // would have failed it *by construction*. Replaced with behavior, not reworded.
+  it('the recorder has no source-based skip: source does not gate the enqueue', () => {
+    const guest = recordWorkingSetLogged(
+      { kind: 'normal', exerciseId: 'pullup', weight: 0 },
+      {
+        source: 'guest',
+        now: new Date(2026, 8, 10, 12),
+        deviceId: 'dev-x',
+        track: () => undefined,
+        enqueueWeekLogged: () => undefined,
+      }
+    );
+    assert.equal(guest.enqueuedWeek, true);
+    assert.equal(guest.firedWeekLogged, true);
   });
 
   it('METRICS.md defines the metric and forbids invented traction', () => {
@@ -192,7 +226,11 @@ describe('week4Logger wiring', () => {
     assert.match(doc, /We do not invent traction/);
     assert.match(doc, /kind === 'warmup'/);
     assert.match(doc, /Empty sessions/);
-    assert.match(doc, /Guests stay on-device|Guest[\s\S]*Never/);
+    // Was `Guest[\s\S]*Never` — asserting guests never write a server row. That was the
+    // rule that made the metric blind to the product's actual user, so the assertion is
+    // inverted deliberately rather than deleted.
+    assert.match(doc, /Guest[\s\S]*opt(ed)? into the return channel/);
+    assert.match(doc, /week_logged/);
     assert.doesNotMatch(doc, /\b\d{2,}\s+users retained\b/i);
   });
 });
@@ -212,6 +250,7 @@ describe('H-01 end-to-end working-set chain', () => {
       {
         source: 'account',
         now: firstNow,
+        deviceId: 'dev-h01',
         track: () => undefined,
         enqueueWeekLogged: (week) => {
           enqueued.push(week);
@@ -234,6 +273,7 @@ describe('H-01 end-to-end working-set chain', () => {
       {
         source: 'account',
         now: laterNow,
+        deviceId: 'dev-h01',
         track: () => undefined,
         enqueueWeekLogged: (week) => {
           enqueued.push(week);

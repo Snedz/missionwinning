@@ -102,6 +102,20 @@ LEGAL_SAFETY §2 is the store-label seed. Classes below are **sensitivity**, not
 
 **Internal** — `llm_usage` token counts, `week_logged`, `android_telemetry_heartbeats` (opaque `install_id`), anonymized `beta_invites`.
 
+### `week_logged` device-keyed rows (decided 2026-10-09)
+
+`week_logged` now accepts a **device-keyed** row for athletes with no account, alongside the existing `user_id` row. The change is deliberate and the boundary it crosses is named here so a later agent widens it knowingly rather than by omission.
+
+**What leaves the device:** one ISO week key per week. **What does not:** exercise, set, weight, rep, timestamp, email, EIN, IP, user agent. The same week list already exists on-device under `STORAGE_KEYS.week4Retention` before transmission, so this makes an existing fact aggregatable rather than collecting a new one.
+
+**Precondition (enforced server-side, not client-asserted):** an accountless write must carry a `deviceId` that already has a row in `push_subscriptions`. Verified in `app/api/metrics/week-logged/route.ts` and pinned by `weekLoggedRow.test.ts`. A signed-in athlete needs no such consent — the account is the identity.
+
+**Why:** `week_logged.user_id` was `not null` and the route 401'd every guest, so the boss metric could only ever describe people who created an account. The product's promise is "no account required", so the instrument was blind to the product's actual user.
+
+**RLS posture unchanged:** service-role write only, revoked from `anon` and `authenticated`. **Do not add a public RLS policy on `week_logged`** — an endpoint anyone can call to enumerate device rows is a strictly worse trade than one server route. See the header of `supabase/migrations/20261009_week_logged_device_owners.sql`.
+
+**Classified:** `Internal`. Disclosed to users in `docs/help/privacy-and-data.md` ("Training-week rollup"). If this classification ever changes, `privacyInstill.test.ts` fails first.
+
 **Public** — marketing, guidebook, exercise catalog, gated premium *catalog* (not user data), Open Food Facts proxy results.
 
 ---

@@ -10,6 +10,21 @@ export default defineConfig({
   workers: 1,
   reporter: process.env.CI ? 'github' : 'list',
   timeout: 60_000,
+  /*
+   * Output hygiene — the gap that let 33 dead failures sit in `test-results/` and read
+   * as live red.
+   *
+   * `.last-run.json` was dated 2026-09-26 while source was 2026-09-27, and all 33
+   * failures traced to one stale premise: the suite asserts a paywall the product left.
+   * A `test-results/` directory full of red is indistinguishable from a genuine
+   * regression unless you check its date, and nobody checks a date. Clearing the
+   * directory on each run means the only red present is red produced by this run.
+   *
+   * Safe because Playwright treats these as derived artifacts, not inputs — and it is
+   * paired with `preserveOutput` below so a CI failure is still archived.
+   */
+  preserveOutput: 'failures-only',
+  outputDir: 'test-results',
   expect: {
     // Platform-specific baselines — generate on Linux CI, not macOS-local
     toHaveScreenshot: {

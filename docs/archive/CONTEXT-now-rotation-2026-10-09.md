@@ -1,0 +1,16 @@
+# CONTEXT `## Now` — rotation 2026-10-09
+
+Rotated out when the 2026-10-09 wave added the north-star, test-truth and queue-ratchet
+entries. The block had reached 29 bullets against a budget of 25 — the test said so before
+anyone did. These are the five oldest shipped entries; the full record is LOG.md.
+
+> **Written 2026-10-09, when that wave carried the label `.1124`.** It never merged, and
+> `master` later spent `.1124` on `npm run verify` — so this wave landed on 2026-10-13 with
+> its label re-minted to `.1130`. The entries below are unchanged; only the label they were
+> rotated for moved.
+
+- **`.1107`:** (`2026.07-unified.1107`) **Photos remount after inject** — `injectPhotosSnapshot` on a live photos-scoped fake is per-instance. Unmount+remount binds the host stub snapshot again. Leftover inject dies. Sibling.read stays. After `storage_cap` + inject + remount, photos is still host-bound. ClearShot remount after inject rebinds its host snapshot (or stays `photos_stub` with no host row). Health / `test.billing` remount stay `scope_denied`. Distinct from live isolation (`.1095`) and billing remount (`.1103`). No ninth deny code. No UI / Stripe / camera. Paper only. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1106`:** (`2026.07-unified.1106`) **Split `activeWorkoutHelpers` behind a barrel** — 900-line dial/console/menu/session bag is now `activeSessionView` / `activeDial` / `activeConsole` / `activeMenuGates`. Barrel re-exports so import paths do not churn. Tests stay on the barrel; body-slicing reads follow the owning file. No Train UI / store split. No behavior change. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1105`:** (`2026.07-unified.1105`) **Unlocked comment deslop** — condense narration tests do not `read()`. Week recap / History edit changelog / calendar ship-append / identity `/leaderboard` archaeology / public chrome essays / payments banner. Keep firstSetUngated ledger, mission-os paper, ink/rule/outline, call-sign writer, Server Component chrome, `process.env.X` NOTE. No behavior change. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1103`:** (`2026.07-unified.1103`) **Billing remount after inject** — `injectBillingSnapshot` on a live `test.billing` fake is per-instance. Unmount+remount binds the host muted snapshot again. Leftover inject dies. B.read stays. After `storage_cap` + inject + remount, billing is still host-bound. ClearShot remount after inject rebinds its host billing snapshot. Health remount stays `scope_denied`. Distinct from live isolation (`.1094`) and identity remount (`.1102`). No ninth deny code. No UI / Stripe / camera. Paper only. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1102`:** (`2026.07-unified.1102`) **Identity remount after inject** — `injectIdentitySnapshot` on a live Health fake is per-instance. Unmount+remount binds the host snapshot again. Leftover inject dies. B.read stays. After `storage_cap` + inject + remount, identity is still host-bound. Distinct from live isolation (`.1093`) and storage remount-after-cap (`.1099`). No ninth deny code. No UI / Stripe / camera. Paper only. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.

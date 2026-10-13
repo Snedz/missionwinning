@@ -138,10 +138,25 @@ const CASES: Record<string, Case> = {
   },
 
   weekLoggedBodySchema: {
-    valid: [{ isoWeek: '2026-W33' }],
+    // `valid[0]` is the parity fixture and must supply every declared key — the guard
+    // below fails in both directions. It carries a deviceId, which is what an
+    // accountless athlete's install sends.
+    valid: [
+      { isoWeek: '2026-W33', deviceId: '3f2b1c9e-4a5d-4e6f-8a9b-0c1d2e3f4a5b' },
+      // Signed-in install: deviceId is optional, and the server ignores it for ownership.
+      { isoWeek: '2026-W33' },
+    ],
     invalid: [
       { input: { isoWeek: '2026-08-13' }, because: 'ISO week is YYYY-Www, not a calendar date' },
       { input: {}, because: 'isoWeek is required' },
+      {
+        input: { isoWeek: '2026-W33', deviceId: '' },
+        because: 'an empty deviceId is not an owner — the route would refuse it anyway',
+      },
+      {
+        input: { isoWeek: '2026-W33', deviceId: 'a'.repeat(65) },
+        because: 'deviceId is bounded so an address cannot become an arbitrary blob',
+      },
     ],
   },
 
