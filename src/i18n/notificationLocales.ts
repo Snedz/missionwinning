@@ -70,6 +70,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   importDoneDesc: '{{workouts}} workouts merged, {{keys}} settings restored. Reloading…',
   dataBackup: 'Back up your data',
   exportData: 'Download backup (JSON)',
+  exportFailed: 'Backup failed',
   importData: 'Restore from backup',
   backupDropIdle: 'Drop backup JSON or click to browse',
   backupDropActive: 'Drop to restore',
