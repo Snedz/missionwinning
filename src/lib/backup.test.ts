@@ -1,6 +1,12 @@
-import { describe, it } from 'node:test';
+import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { isMwBackup, mergeBackup, type MwBackup } from '@/lib/backup';
+import {
+  isMwBackup,
+  mergeBackup,
+  buildBackup,
+  restoreBackupFromJson,
+  type MwBackup,
+} from '@/lib/backup';
 import type { CompletedWorkoutLog } from '@/types';
 
 function log(id: string, name: string, completedAt: string, volume: number): CompletedWorkoutLog {
@@ -67,5 +73,106 @@ describe('backup', () => {
     const b = backupWith([], { 'supabase.auth.token': 'evil', mw_units: 'kg' });
     const result = mergeBackup(b, null, {});
     assert.deepEqual(Object.keys(result.keysToSet), ['mw_units']);
+  });
+});
+
+/*
+ * The recovery path has to work when the thing it recovers from is broken.
+ *
+ * This card is the safety net for an athlete with no account, and the warning it
+ * sits next to says so: *"This device is out of storage space. Export a backup,
+ * then clear some space so new sessions save."* That advice points straight at
+ * these functions.
+ *
+ * They were not guarded. `buildBackup()` iterated `localStorage` from a click
+ * handler with nothing catching, so on a browser that refuses storage the user got
+ * no file, no message — and `track('backup_exported')` fired anyway. A recorded
+ * export that never happened is worse than a missing one: it is the number that
+ * makes a broken feature look like a working one.
+ */
+
+let originalLocalStorage: Storage | undefined;
+
+function stubStorage(value: unknown): void {
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    writable: true,
+    value,
+  });
+}
+
+function memStorage(overrides: Partial<Storage> = {}): Storage {
+  const map = new Map<string, string>();
+  return {
+    get length() {
+      return map.size;
+    },
+    key: (i: number) => [...map.keys()][i] ?? null,
+    getItem: (k: string) => map.get(k) ?? null,
+    setItem: (k: string, v: string) => void map.set(k, v),
+    removeItem: (k: string) => void map.delete(k),
+    clear: () => map.clear(),
+    ...overrides,
+  } as Storage;
+}
+
+afterEach(() => {
+  if (originalLocalStorage !== undefined) stubStorage(originalLocalStorage);
+});
+
+describe('backup survives a device that will not cooperate', () => {
+  it('a readable device still exports normally', () => {
+    const store = memStorage();
+    store.setItem('mw_journey', '{"a":1}');
+    stubStorage(store);
+    originalLocalStorage = store;
+
+    const result = buildBackup();
+    assert.equal(result.ok, true);
+    assert.ok(result.ok && result.value.localKeys['mw_journey'] === '{"a":1}');
+  });
+
+  it('a device that refuses to be read does NOT produce an empty backup', () => {
+    /*
+     * The dangerous failure mode is the subtle one: an empty `localKeys` map is a
+     * *valid* backup shape. It downloads, it restores, and it wipes everything the
+     * athlete had. So this asserts the refusal, not just the absence of a throw.
+     */
+    stubStorage(
+      new Proxy(
+        {},
+        {
+          get() {
+            throw new DOMException('denied', 'SecurityError');
+          },
+        }
+      )
+    );
+    originalLocalStorage = undefined;
+
+    const result = buildBackup();
+    assert.equal(result.ok, false);
+    assert.ok(!result.ok && /private browsing/.test(result.error));
+  });
+
+  it('a denied write during restore reports failure instead of half-restoring', () => {
+    let written = 0;
+    stubStorage(
+      memStorage({
+        setItem: () => {
+          // Refuse partway through, the way a full disk does.
+          if (written++ > 0) throw new DOMException('quota', 'QuotaExceededError');
+        },
+      })
+    );
+    originalLocalStorage = undefined;
+
+    const payload = backupWith([log('r-1', 'Legs', '2026-10-01T10:00:00Z', 3000)], {
+      mw_prefs: '{"units":"kg"}',
+    });
+    const result = restoreBackupFromJson(JSON.stringify(payload));
+
+    assert.equal(result.ok, false);
+    assert.match(result.error ?? '', /clear some storage space/i);
   });
 });
