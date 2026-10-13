@@ -18,6 +18,71 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-13 — The backup button stops reporting exports it never made (`.1132`)
+
+Found by following `.1131`'s own advice. When this device stops saving, the
+warning it shows says: "Export a backup, then clear
+some space so new sessions save."
+
+That export path was not guarded.
+`ProfileBackupCard` ran it from a click
+handler with nothing catching:
+
+```
+downloadBackup();
+track('backup_exported');
+```
+
+`buildBackup()` iterates raw
+`localStorage` — `.length`, `.key()`,
+`.getItem()`. On a browser that refuses
+storage the handler throws, so no file
+downloads, nothing reaches the user, and
+`backup_exported` fires anyway. Analytics
+recording an export that never happened is
+worse than a missing one: it is the number
+that makes a broken feature look like a
+working one — the same shape as the metrics
+work in `.1130`.
+
+Restore was worse. It wrote the store key,
+then looped the remaining keys unguarded,
+and returned `{ ok: true }` regardless. A
+device refusing part-way left a half-
+restored store reported as a clean success.
+
+Now `buildBackup` / `downloadBackup`
+return a result instead of throwing, and
+`readLocalKeys` never returns an empty map
+on failure — an empty map is a *valid*
+backup shape, so it downloads, restores,
+and wipes the athlete's data. The restore
+write loop is guarded and reports the
+failure. `track('backup_exported')` fires
+only on a real file.
+
+Both mutants killed: removing the read
+guard and removing the restore guard each
+turn a test red.
+
+**Not fixed, and it is the bigger one.**
+`src/store/persistDedupe.ts` returns raw
+`window.localStorage` — the workout store's
+own persistence adapter — while
+`safeStorage` documents itself as "the only
+place the app is allowed to touch
+localStorage". Swapping a core store adapter
+unattended is the change this repo's own
+history warns against, so it is left for a
+human. Consequence: a failed *session* write
+does not fire the `.1131` notice on its own.
+
+Label `2026.07-unified.1132`. Minted past
+`.1130` and `.1131`, which two open PRs
+already claim.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1111-for-1132.md](docs/archive/log/LOG-rotate-1111-for-1132.md) (`.1111`), for the ≤15 entry budget.
+
 ## 2026-10-12 — Plate Use sits with the load (`.1129`)
 
 `.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
@@ -433,52 +498,3 @@ tip-promote. Live www stays
 Label `2026.07-unified.1112`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1097-for-1112.md](docs/archive/log/LOG-rotate-1097-for-1112.md) (`.1097`). `.1096` was already rotated by `.1111`.
-
-## 2026-09-24 — Library absorbs a free-exercise-db subset (`.1111`)
-
-Train and Library search were
-limited to the house catalog
-(228 unique after dedupe).
-`ensureFullExerciseCatalog()`
-now also splices 120 strength
-movements from
-yuhonas/free-exercise-db
-(Unlicense, commit
-`a859101d633a01c4a1a920d6a8ce41dabba0705f`).
-Rows map into the existing
-`Exercise` type. Ids are
-`fedb-`. House names win.
-Equipment is round-robin
-across the Library chips so
-one bucket cannot fill the
-cap. Upstream file is 876
-rows; this ship keeps a
-curated subset.
-
-No image bytes and no image
-URLs. The upstream LICENSE is
-Unlicense and the README
-calls the JPG tree public
-domain, but those files came
-from the exercises.json pack
-and `Exercise` has no image
-field. Attribution:
-`src/data/free-exercise-db/NOTICE.md`.
-
-No AGPL paste. No Train
-rewrite. Public exercise-page
-floor stays 228
-(under-promise). `[skip vercel]`.
-No tip-promote. Live www stays
-`.697`. PRIVATE_MODE stays.
-
-**Mutants killed:** stretching
-and unmapped equipment
-accepted as catalog rows;
-house name `Push-ups`
-replaced; round-robin cap
-ignored.
-
-Label `2026.07-unified.1111`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1096-for-1111.md](docs/archive/log/LOG-rotate-1096-for-1111.md) (`.1096`).
