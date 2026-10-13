@@ -20,7 +20,19 @@ export type WeekLoggedPayload = {
 
 const ISO_WEEK_RE = /^\d{4}-W\d{2}$/;
 
-/** Matches the server's `isPlausibleDeviceId`: client-generated UUIDs, bounded length. */
+/**
+ * Stricter than the server on purpose, and not in a way that should be "fixed".
+ *
+ * The server's `isPlausibleDeviceId` accepts any non-empty string up to 64 chars,
+ * because it must also accept this client's `dev-<ts>-<rand>` fallback for browsers
+ * without `crypto.randomUUID`. Pinning a UUID there would reject a real device.
+ * This pattern accepts both shapes the client can actually produce and nothing
+ * else, so a corrupted stored id is dropped here rather than sent.
+ *
+ * Neither side treats this as a permission. It is a shape check; whether an
+ * accountless write is *allowed* is decided server-side by the push-consent
+ * lookup, which a probe cannot fake.
+ */
 const DEVICE_ID_RE = /^[\w-]{1,64}$/;
 
 export function isWeekLoggedPayload(p: unknown): p is WeekLoggedPayload {

@@ -45,7 +45,21 @@ export type WeekLoggedRow = {
   iso_week: string;
 };
 
-/** Device ids are client-generated UUIDs; anything wildly off-shape is a probe. */
+/**
+ * Is this shaped like a device id the client could actually have minted?
+ *
+ * **Length only, deliberately — and this is not the security control.** The client
+ * has two shapes: `crypto.randomUUID()` and a `dev-<ts>-<rand>` fallback for the
+ * browsers without it. A server-side UUID check would reject the fallback, so
+ * pinning one shape here would trade a real path for a tidier-looking rule.
+ *
+ * The wording this replaced said "anything wildly off-shape is a probe", which
+ * invited the reading that this bounds who may write a row. It does not. A probe
+ * with a perfectly well-formed fake device id sails through here and is refused
+ * one step later, by `hasPushConsent` — the push-subscription lookup is what
+ * decides whether an accountless write is allowed, and it is server-side. This
+ * function only stops an unbounded string reaching storage.
+ */
 export function isPlausibleDeviceId(value: unknown): value is string {
   return typeof value === 'string' && value.length > 0 && value.length <= 64;
 }
