@@ -18,6 +18,68 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-13 — The activation funnel stops reporting conversions that never saved (`.1133`)
+
+Found by generalising the backup-export defect rather
+than looking for it: an operation that can fail
+quietly, followed by a success signal fired
+anyway.
+
+`saveJourneyState` discarded `writeRaw`'s result
+and then ran its analytics block on the strength
+of it:
+
+```
+writeRaw(STORAGE_KEY, JSON.stringify(state));
+...
+a.trackJourneyEvent('i_day_complete', { ... });
+```
+
+`completeIDay` and `WelcomePage.saveProfileFields`
+wrote the same four profile keys — both discarding
+their returns — and `finish()` then fired
+`iday_completed` regardless.
+
+On a device that will not persist — private
+browsing, a full disk — nothing was written, the
+athlete was told onboarding was done, both funnel
+events recorded a completion, and on their next
+visit the journey was exactly as it was.
+
+This is the worst of the three because `iday_
+completed` is the top of the activation funnel,
+and the standing instruction in `ORCHESTRATION.md`
+is that measuring that funnel is the thing this
+project still cannot do. An event that fires on a
+refused write makes the number move for people
+who did not convert — which is how a funnel metric
+stops being evidence.
+
+Both functions now return whether the write
+landed, and everything downstream is gated on it:
+the sync push, the rewards application, and both
+analytics events. A phase that did not persist is
+not a phase that happened.
+
+**Note on the first version of the test.** It
+passed for the wrong reason. `saveJourneyState`
+early-returns `false` when `window` is undefined
+and node:test has no `window`, so both the happy
+path and the refusal path read `false` and the
+suite was green while asserting nothing. The other
+storage tests in this repo already stub `window`
+for exactly this; I had not followed their fixture.
+With the stub the tests discriminate, and the
+mutant dies.
+
+`npm run verify` 6/6 PASS. CI gate sequence 14/15
+(security-audit fails identically on origin/master).
+
+Label `2026.07-unified.1133`. Minted past `.1130`,
+`.1131` and `.1132`, which three open PRs claim.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1111-for-1133.md](docs/archive/log/LOG-rotate-1111-for-1133.md) (`.1111`), for the ≤15 entry budget.
+
 ## 2026-10-12 — Plate Use sits with the load (`.1129`)
 
 `.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
@@ -433,52 +495,3 @@ tip-promote. Live www stays
 Label `2026.07-unified.1112`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1097-for-1112.md](docs/archive/log/LOG-rotate-1097-for-1112.md) (`.1097`). `.1096` was already rotated by `.1111`.
-
-## 2026-09-24 — Library absorbs a free-exercise-db subset (`.1111`)
-
-Train and Library search were
-limited to the house catalog
-(228 unique after dedupe).
-`ensureFullExerciseCatalog()`
-now also splices 120 strength
-movements from
-yuhonas/free-exercise-db
-(Unlicense, commit
-`a859101d633a01c4a1a920d6a8ce41dabba0705f`).
-Rows map into the existing
-`Exercise` type. Ids are
-`fedb-`. House names win.
-Equipment is round-robin
-across the Library chips so
-one bucket cannot fill the
-cap. Upstream file is 876
-rows; this ship keeps a
-curated subset.
-
-No image bytes and no image
-URLs. The upstream LICENSE is
-Unlicense and the README
-calls the JPG tree public
-domain, but those files came
-from the exercises.json pack
-and `Exercise` has no image
-field. Attribution:
-`src/data/free-exercise-db/NOTICE.md`.
-
-No AGPL paste. No Train
-rewrite. Public exercise-page
-floor stays 228
-(under-promise). `[skip vercel]`.
-No tip-promote. Live www stays
-`.697`. PRIVATE_MODE stays.
-
-**Mutants killed:** stretching
-and unmapped equipment
-accepted as catalog rows;
-house name `Push-ups`
-replaced; round-robin cap
-ignored.
-
-Label `2026.07-unified.1111`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1096-for-1111.md](docs/archive/log/LOG-rotate-1096-for-1111.md) (`.1096`).
