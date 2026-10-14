@@ -1,8 +1,9 @@
 /**
  * Personal trainer line for the set in front of the athlete.
- * The free logger does not need a gate cookie. When a Gemini key (or
- * COACH_LLM) is set and the caller is entitled — free beta counts —
- * the line is gemini-2.5-flash. Otherwise the library answer.
+ * The free logger does not need a gate cookie. When Groq, COACH_LLM_*,
+ * or OpenRouter `:free` is set and the caller is entitled — free beta
+ * counts — the line comes from that OpenAI-compatible seat. Gemini
+ * free-tier keys are ignored. Otherwise the library answer.
  * Quota shares daily_insight so the ledger feature list stays closed.
  * Rate: 12/min/IP + daily quota on the LLM branch.
  * See: app/api/INDEX.md, src/lib/coach/sessionTrainerServer.ts
@@ -13,8 +14,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { parseJsonBody, sessionTrainerSchema } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { readCoachLlmEnv } from '@/lib/coachLlmClient';
-import { readGeminiApiKey, voiceSessionTrainer } from '@/lib/coach/sessionTrainerServer';
+import { coachProviderConfigured, voiceSessionTrainer } from '@/lib/coach/sessionTrainerServer';
 import type { SessionTrainerFacts } from '@/lib/coach/sessionTrainer';
 import { resolveLlmCaller } from '@/lib/llm/identity';
 import { allowLlmInference } from '@/lib/llm/quota';
@@ -70,9 +70,7 @@ export const POST = withApiLogging('coach/session-trainer', async (request: Next
    * The cap is `daily_insight` — one short coach line, same ledger
    * feature — so this route does not add a migration.
    */
-  const geminiKey = Boolean(readGeminiApiKey());
-  const coachEnv = readCoachLlmEnv();
-  const llmConfigured = geminiKey || Boolean(coachEnv.apiUrl && coachEnv.apiKey);
+  const llmConfigured = coachProviderConfigured();
   let quotaExceeded = false;
   let useLlm = false;
   let caller: Awaited<ReturnType<typeof resolveLlmCaller>> | null = null;

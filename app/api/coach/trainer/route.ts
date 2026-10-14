@@ -1,5 +1,6 @@
 /**
- * Free AI personal trainer — Gemini Flash, else COACH_LLM, else the set line.
+ * Free AI personal trainer — Groq, else COACH_LLM_*, else OpenRouter :free, else the set line.
+ * Gemini free-tier keys are not a seat. Health data stays off that tier.
  * No premium check. No checkout URL. Rate: 12/min/IP. Body: 8KB.
  */
 import { NextRequest, NextResponse } from 'next/server';

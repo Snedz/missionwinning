@@ -10,12 +10,8 @@ import {
   TRAINER_SYSTEM_PROMPT,
   type SessionTrainerFacts,
 } from './sessionTrainer';
-import {
-  FREE_SESSION_TRAINER_MODEL,
-  geminiGenerateUrl,
-  readGeminiModel,
-  voiceSessionTrainer,
-} from './sessionTrainerServer';
+import { DEFAULT_GROQ_MODEL, GROQ_CHAT_COMPLETIONS_URL } from './providerClient';
+import { voiceSessionTrainer } from './sessionTrainerServer';
 
 const facts: SessionTrainerFacts = {
   exerciseId: 'squats',
@@ -170,53 +166,64 @@ describe('session trainer voice', () => {
     assert.equal(voice.line, null);
   });
 
-  it('calls gemini-2.5-flash and keeps the line', async () => {
+  it('calls Groq and keeps the line', async () => {
     const urls: string[] = [];
     const voice = await voiceSessionTrainer(facts, {
       useLlm: true,
-      env: { GEMINI_API_KEY: 'test-gemini-key' },
+      env: { GROQ_API_KEY: 'gsk_test', GEMINI_API_KEY: 'test-gemini-key' },
       fetchImpl: async (input, init) => {
         urls.push(String(input));
         const headers = new Headers(init?.headers);
-        assert.equal(headers.get('x-goog-api-key'), 'test-gemini-key');
-        assert.equal(String(init?.body).includes('test-gemini-key'), false);
+        assert.equal(headers.get('Authorization'), 'Bearer gsk_test');
+        assert.equal(String(init?.body).includes('gsk_test'), false);
+        assert.equal(String(input).includes('generativelanguage'), false);
         return new Response(
           JSON.stringify({
-            candidates: [
+            choices: [
               {
-                content: {
-                  parts: [
-                    {
-                      text: '{"line":"Back Squat, 60 kg for 8. Brace, then drive the floor away."}',
-                    },
-                  ],
+                message: {
+                  content: '{"line":"Back Squat, 60 kg for 8. Brace, then drive the floor away."}',
                 },
               },
             ],
-            usageMetadata: { promptTokenCount: 20, candidatesTokenCount: 16, totalTokenCount: 36 },
+            usage: { prompt_tokens: 20, completion_tokens: 16, total_tokens: 36 },
           }),
           { status: 200 }
         );
       },
     });
     assert.equal(voice.source, 'llm');
-    assert.equal(voice.model, FREE_SESSION_TRAINER_MODEL);
+    assert.equal(voice.model, DEFAULT_GROQ_MODEL);
     assert.match(voice.line ?? '', /Back Squat/);
     assert.equal(urls.length, 1);
-    assert.equal(urls[0], geminiGenerateUrl(FREE_SESSION_TRAINER_MODEL));
-    assert.match(urls[0], /generativelanguage\.googleapis\.com/);
+    assert.equal(urls[0], GROQ_CHAT_COMPLETIONS_URL);
     assert.equal(voice.usage?.estimated, false);
     assert.equal(voice.usage?.totalTokens, 36);
+  });
+
+  it('a Gemini key alone does not call a model', async () => {
+    let called = 0;
+    const voice = await voiceSessionTrainer(facts, {
+      useLlm: true,
+      env: { GEMINI_API_KEY: 'test-gemini-key' },
+      fetchImpl: async () => {
+        called += 1;
+        throw new Error('gemini free tier');
+      },
+    });
+    assert.equal(called, 0);
+    assert.equal(voice.source, 'library');
+    assert.equal(voice.line, null);
   });
 
   it('a rejected model line does not become the coach', async () => {
     const voice = await voiceSessionTrainer(facts, {
       useLlm: true,
-      env: { GEMINI_API_KEY: 'test-gemini-key' },
+      env: { GROQ_API_KEY: 'gsk_test' },
       fetchImpl: async () =>
         new Response(
           JSON.stringify({
-            candidates: [{ content: { parts: [{ text: '{"line":"Back Squat at 200 kg now."}' }] } }],
+            choices: [{ message: { content: '{"line":"Back Squat at 200 kg now."}' } }],
           }),
           { status: 200 }
         ),
@@ -225,7 +232,7 @@ describe('session trainer voice', () => {
     assert.equal(voice.line, null);
   });
 
-  it('without a Gemini key, the configured coach model is the fallback', async () => {
+  it('without Groq, the configured coach model is the seat', async () => {
     const voice = await voiceSessionTrainer(facts, {
       useLlm: true,
       env: {
@@ -252,10 +259,4 @@ describe('session trainer voice', () => {
     assert.equal(voice.model, 'grok-4.6');
   });
 
-  it('pins the free model slug', () => {
-    assert.equal(FREE_SESSION_TRAINER_MODEL, 'gemini-2.5-flash');
-    assert.equal(readGeminiModel({}), 'gemini-2.5-flash');
-    assert.equal(readGeminiModel({ GEMINI_MODEL: 'gemini-2.0-flash' }), 'gemini-2.0-flash');
-    assert.equal(readGeminiModel({ GEMINI_MODEL: 'https://evil.example' }), 'gemini-2.5-flash');
-  });
 });

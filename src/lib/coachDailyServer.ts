@@ -87,8 +87,8 @@ export function coachFromFallback(ctx: DailyCoachContext): DailyCoachResponse {
 }
 
 export async function fetchDailyCoachInsight(ctx: DailyCoachContext): Promise<DailyCoachResponse> {
-  const { fetchCoachLlmCompletion } = await import('@/lib/coachLlmClient');
-  const result = await fetchCoachLlmCompletion({
+  const { fetchCoachProviderCompletion } = await import('@/lib/coach/providerClient');
+  const result = await fetchCoachProviderCompletion({
     system: 'Reply with valid JSON only.',
     user: buildCoachPrompt(ctx),
     maxTokens: 180,

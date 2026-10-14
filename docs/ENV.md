@@ -42,16 +42,19 @@ Add these for **Production** and **Preview**:
 | `UPSTASH_REDIS_REST_URL` | **Required before public** | Rate limits (L9) **and** premium enrollment memo (L10 — [docs/CACHE_LADDER.md](CACHE_LADDER.md)). Optional in local/dev — without it, every premium check hits Postgres. |
 | `UPSTASH_REDIS_REST_TOKEN` | **Required before public** | Pair with Upstash URL above |
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `?access=` bypass in production (deprecated; prefer `/private` form + share code out-of-band) |
-| `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
-| `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
-| `GEMINI_API_KEY` | Optional | Free-pool key for the Train AI personal trainer (`POST /api/coach/trainer`). When set, this seat wins over `COACH_LLM_*`. **Never** `NEXT_PUBLIC_` |
-| `GEMINI_MODEL` | Optional | Default `gemini-2.5-flash`. Override if the free Flash alias moves |
+| `GROQ_API_KEY` | Optional | Default coach seat. Groq OpenAI-compatible chat completions. **Never** `NEXT_PUBLIC_` |
+| `GROQ_MODEL` | Optional | Default `openai/gpt-oss-20b`. A `gemini` id is ignored |
+| `GROQ_API_URL` | Optional | Default `https://api.groq.com/openai/v1/chat/completions`. A Gemini host is ignored |
+| `OPENROUTER_API_KEY` | Optional | Fallback seat after Groq and `COACH_LLM_*`. **Never** `NEXT_PUBLIC_` |
+| `OPENROUTER_MODEL` | Optional | Forced onto a `:free` id. A `gemini` id is replaced with the default free model |
+| `COACH_LLM_API_URL` | Optional | Any OpenAI-compatible chat completions URL except the Gemini free tier. Omit for rules-only coach when Groq and OpenRouter are also unset |
+| `COACH_LLM_API_KEY` | Optional | Key for `COACH_LLM_API_URL`. **Never** `NEXT_PUBLIC_` |
+| `GEMINI_API_KEY` | Optional | Not used for coach health prompts. The Gemini free tier is not a seat |
 | `COACH_LLM_MODEL` | Optional | Model slug. Default in code is `grok-4.6`. Confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models) |
 | `COACH_LLM_REASONING_EFFORT` | Optional | `low` (default) or `medium`. `high` / `xhigh` are ignored unless `COACH_LLM_ALLOW_HIGH_REASONING=true` — 4.6 defaults high and reasoning tokens are not capped by `max_tokens` |
 | `COACH_LLM_ALLOW_HIGH_REASONING` | Optional | Founder override. Leave unset. High reasoning is the silent bill on 4.6 |
 | `COACH_LLM_REQUIRE_ZDR` | Optional | `true` recommended in production when using xAI: fail closed unless response header `x-zero-data-retention: true` |
-| `GEMINI_API_KEY` | Optional | Google AI Studio key for the session trainer. Free-tier model in code is `gemini-2.5-flash`. Never `NEXT_PUBLIC_`. `GOOGLE_GENERATIVE_AI_API_KEY` is the same key under the other common name |
-| `GEMINI_MODEL` | Optional | `gemini-*` slug only. Unset stays `gemini-2.5-flash`. A non-gemini value is ignored |
+| `GEMINI_API_KEY` | Ignored for coach | Workout and readiness text is not sent to the Gemini free tier. `GOOGLE_GENERATIVE_AI_API_KEY` is the same unused key |
 | `LLM_DAILY_CAP_COACH_CHAT` | Optional | Per-identity daily LLM request cap (default 60). `0` disables the feature's LLM branch. Same family: `LLM_DAILY_CAP_DAILY_INSIGHT` (30) · `LLM_DAILY_CAP_PLAN_VOICE` (20) · `LLM_DAILY_CAP_DEBRIEF_VOICE` (10) · `LLM_DAILY_CAP_MEAL_VISION` (20). See `src/lib/llm/quota.ts`; spend rows land in `llm_usage` (migration `20260731`). **Daily windows need Upstash env to be real across serverless instances** — without `UPSTASH_REDIS_REST_URL`/`_TOKEN` the counter is per-instance memory (soft) |
 | `LLM_DAILY_USD_CENTS` | Optional | Per-identity daily Grok **dollar** cap in whole cents (default **15** = $0.15/day). `0` kills all LLM spend. Fail-closed if the store throws. Lifetime uses this same cap — not unlimited 4.6 |
 | `LLM_ORG_DAILY_USD_CENTS` | Optional | Org-wide daily breaker in cents (default **2500** = $25). `0` kills all LLM spend |

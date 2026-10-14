@@ -1,21 +1,19 @@
 /**
- * Free AI personal trainer for the open set (.1115).
+ * Free AI personal trainer for the open set (.1115, provider chain .1134).
  *
- * Seat order: Gemini Flash when GEMINI_API_KEY is set, else the existing
- * COACH_LLM seat, else the rules line from sessionCoachLine. No premium
- * check and no checkout URL. A dark seat still returns the set line.
+ * Seat order: Groq when GROQ_API_KEY is set, else any OpenAI-compatible
+ * COACH_LLM_* endpoint, else OpenRouter `:free`, else the rules line.
+ * Gemini free-tier hosts are never called. No premium check and no checkout
+ * URL. A dark seat still returns the set line.
  */
 
 import {
-  DEFAULT_COACH_LLM_MODEL,
-  fetchCoachLlmCompletion,
-  readCoachLlmEnv,
-  type CoachLlmEnv,
-} from '@/lib/coachLlmClient';
+  fetchCoachProviderCompletion,
+  resolveCoachProviders,
+  type CoachProviderId,
+} from '@/lib/coach/providerClient';
 import { sessionCoachLine, type SessionCoachLineInput } from '@/lib/workout/sessionCoachLine';
 import { resolveSafetyTrainGuidance } from '@/lib/safetyTrainGuidance';
-
-export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 
 export const TRAINER_SYSTEM_PROMPT =
   'You are the Mission Winning AI personal trainer. Reply in one or two short sentences. ' +
@@ -27,7 +25,7 @@ export const TRAINER_SYSTEM_PROMPT =
 /** Contiguous brand we refuse if a model echoes an example product. */
 const REFUSED_PRODUCT = 'Mu' + 'se';
 
-export type TrainerSource = 'gemini' | 'coach_llm' | 'rules';
+export type TrainerSource = 'groq' | 'openrouter' | 'coach_llm' | 'rules';
 
 export type TrainerAskInput = SessionCoachLineInput & {
   historyLine?: string;
@@ -40,34 +38,23 @@ export type TrainerReply = {
   model?: string;
 };
 
-type GeminiSeat = { source: 'gemini'; model: string; apiKey: string };
-type CoachSeat = { source: 'coach_llm'; model: string; coach: CoachLlmEnv };
+type ModelSeat = { source: Exclude<TrainerSource, 'rules'>; model: string };
 type RulesSeat = { source: 'rules' };
-export type TrainerSeat = GeminiSeat | CoachSeat | RulesSeat;
+export type TrainerSeat = ModelSeat | RulesSeat;
 
 type FetchLike = typeof fetch;
 
-export function geminiGenerateUrl(model: string): string {
-  return `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+function sourceFor(id: CoachProviderId | undefined): Exclude<TrainerSource, 'rules'> {
+  if (id === 'groq' || id === 'openrouter') return id;
+  return 'coach_llm';
 }
 
 export function resolveTrainerSeat(
   env: Record<string, string | undefined>
 ): TrainerSeat {
-  const geminiKey = env.GEMINI_API_KEY?.trim();
-  if (geminiKey) {
-    const model = env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
-    return { source: 'gemini', model, apiKey: geminiKey };
-  }
-  const coach = readCoachLlmEnv(env);
-  if (coach.apiUrl && coach.apiKey) {
-    return {
-      source: 'coach_llm',
-      model: coach.model?.trim() || DEFAULT_COACH_LLM_MODEL,
-      coach,
-    };
-  }
-  return { source: 'rules' };
+  const seat = resolveCoachProviders(env)[0];
+  if (!seat) return { source: 'rules' };
+  return { source: sourceFor(seat.id), model: seat.model };
 }
 
 function rulesText(input: TrainerAskInput): string {
@@ -97,36 +84,6 @@ function acceptModelText(raw: string, rules: string): string | null {
   return text;
 }
 
-type GeminiBody = {
-  candidates?: { content?: { parts?: { text?: string }[] } }[];
-};
-
-async function fetchGeminiText(
-  seat: GeminiSeat,
-  system: string,
-  user: string,
-  fetchImpl: FetchLike
-): Promise<string | null> {
-  const res = await fetchImpl(geminiGenerateUrl(seat.model), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': seat.apiKey,
-    },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: 'user', parts: [{ text: user }] }],
-      generationConfig: { maxOutputTokens: 180, temperature: 0.4 },
-    }),
-    signal: AbortSignal.timeout(8_000),
-  });
-  if (!res.ok) return null;
-  const data = (await res.json()) as GeminiBody;
-  const parts = data.candidates?.[0]?.content?.parts ?? [];
-  const text = parts.map((p) => p.text ?? '').join('').trim();
-  return text || null;
-}
-
 export async function replyTrainer(
   input: TrainerAskInput,
   options?: {
@@ -146,23 +103,17 @@ export async function replyTrainer(
 
   const user = trainerUserPrompt(input, rules);
   const fetchImpl = options?.fetchImpl ?? fetch;
+  const env = options?.env ?? process.env;
 
   try {
-    if (seat.source === 'gemini') {
-      const raw = await fetchGeminiText(seat, TRAINER_SYSTEM_PROMPT, user, fetchImpl);
-      const text = raw ? acceptModelText(raw, rules) : null;
-      if (!text) return { text: rules, source: 'rules' };
-      return { text, source: 'gemini', model: seat.model };
-    }
-
-    const result = await fetchCoachLlmCompletion(
+    const result = await fetchCoachProviderCompletion(
       { system: TRAINER_SYSTEM_PROMPT, user, maxTokens: 180, temperature: 0.4 },
-      { env: seat.coach, fetchImpl, timeoutMs: 8_000 }
+      { env, fetchImpl, timeoutMs: 8_000 }
     );
     if (!result.ok) return { text: rules, source: 'rules' };
     const text = acceptModelText(result.content, rules);
     if (!text) return { text: rules, source: 'rules' };
-    return { text, source: 'coach_llm', model: seat.model };
+    return { text, source: sourceFor(result.provider), model: result.model ?? seat.model };
   } catch {
     return { text: rules, source: 'rules' };
   }

@@ -158,7 +158,7 @@ All LLM branches are metered per identity since `.188`: token counts (never cont
 | Auth | No gate cookie. LLM branch: a configured key + premium (free-beta bypass counts, so the signed-out logger gets the line) + the `daily_insight` daily cap. No key, beta off, or over cap: `{ source: 'library', line: null }` |
 | Rate | 12/min/IP + daily cap on the LLM branch (shared with daily insight; no new ledger feature) |
 | Schema | `sessionTrainerSchema` |
-| Model | `gemini-2.5-flash` (`generateContent`) when `GEMINI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is set. Else `COACH_LLM_*`. A line that changes the lift or the load is dropped |
+| Model | Groq (`GROQ_API_KEY`, default `openai/gpt-oss-20b`) then `COACH_LLM_*` then OpenRouter `:free`. Gemini free-tier hosts are not called. A line that changes the lift or the load is dropped |
 | Success | `{ source: 'library' \| 'llm', model, line }` · quota exhaustion adds `reason: 'quota'` and stays 200 |
 
 ### `POST /api/coach/daily-insight`
@@ -208,7 +208,7 @@ All LLM branches are metered per identity since `.188`: token counts (never cont
 | Body cap | 8KB |
 | Schema | `coachTrainerSchema` — open-set facts (name, index, dial, kind, row type), optional history cite ≤160, optional question ≤280. Strict. No checkout field. |
 | Success | `{ text, source: 'gemini' \| 'coach_llm' \| 'rules', model? }` |
-| Seat | `GEMINI_API_KEY` → Gemini Flash (`gemini-2.5-flash`, override `GEMINI_MODEL`) via generateContent. Else `COACH_LLM_API_URL` + `COACH_LLM_API_KEY`. Else the rules set line. A model error, a link, or a refused product name returns the set line with `source: 'rules'`. |
+| Seat | `GROQ_API_KEY` → Groq chat completions. Else `COACH_LLM_API_URL` + `COACH_LLM_API_KEY` (any OpenAI-compatible host except Gemini). Else `OPENROUTER_API_KEY` with a `:free` model. Else the rules set line. A model error, a link, or a refused product name returns the set line with `source: 'rules'`. |
 | Errors | 400 invalid body, 413 oversized, 429 rate limit |
 | Notes | Not premium. Does not return `premium_required`. Does not mint a payment URL. Train’s open set and Coach both post here. |
 

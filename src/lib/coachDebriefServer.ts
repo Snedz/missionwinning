@@ -52,8 +52,8 @@ export async function fetchDebriefVoice(
   useLlm: boolean
 ): Promise<DebriefVoiceResponse> {
   if (!useLlm) return debriefVoiceFromRules(ctx);
-  const { fetchCoachLlmCompletion } = await import('@/lib/coachLlmClient');
-  const result = await fetchCoachLlmCompletion({
+  const { fetchCoachProviderCompletion } = await import('@/lib/coach/providerClient');
+  const result = await fetchCoachProviderCompletion({
     system: 'Reply with valid JSON only.',
     user: buildDebriefVoicePrompt(ctx),
     maxTokens: 180,

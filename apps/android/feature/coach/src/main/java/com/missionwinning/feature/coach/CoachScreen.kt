@@ -309,6 +309,20 @@ fun CoachScreen(
                 }
 
                 if (todaySession != null) {
+                    state.trainerLine?.let { line ->
+                        Text(
+                            line,
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                    }
+                    if (todaySession.exercises.isNotEmpty()) {
+                        MwGhostButton(
+                            text = "Ask trainer",
+                            contentDescription = "Ask the trainer about this session",
+                            onClick = { viewModel.askTrainer(todaySession) },
+                        )
+                    }
                     MwPrimaryButton(
                         text = "Start ${todaySession.name}",
                         contentDescription = "Start today's session ${todaySession.name}",
