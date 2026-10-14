@@ -468,7 +468,7 @@ const en: InfoStrings = {
   infoAboutDisclaimerMedical:
     'Always consult qualified medical professionals before starting new training or nutrition protocols. Results vary. This is not medical, legal, or licensing advice.',
   infoAboutNationalLink: 'National fitness',
-  infoAboutContactBody: 'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
+  infoAboutContactBody: 'contact@missionwinning.com · support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
   infoAboutCopyright:
     '© Mission Winning LLC. Hosted service: Supported Regions only (Europe, Canada, Ukraine, and OIC member states not supported). Free logger is local-first on your device.',
   infoVisionLead: 'Train anywhere. Coach from what you actually logged.',

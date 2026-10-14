@@ -166,7 +166,7 @@ export function AboutPage() {
         <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoAboutContactBody', {
             defaultValue:
-              'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
+              'contact@missionwinning.com · support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
           })}
         </p>
         <p className="text-xs text-muted-foreground">
