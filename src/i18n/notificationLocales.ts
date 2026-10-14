@@ -155,6 +155,14 @@ const NOTIFICATION_EN: Record<string, string> = {
     'This device is out of storage space. Export a backup, then clear some space so new sessions save.',
   syncStorageDenied:
     "This browser won't let us save to the device — private browsing does this. Your session works, but it won't be here next time.",
+  /*
+   * `safeStorage` classifies anything that is not a quota or a SecurityError as
+   * `unknown`. Rendering that with the private-browsing copy tells the user to go
+   * and change a setting that may not be the cause, so it gets its own line that
+   * names the risk without inventing a reason.
+   */
+  syncStorageUnknown:
+    "This device isn't saving right now, so this session may not be here next time. Export a backup before you close the app.",
   syncQueuedCount: '{{count}} sessions saved here, waiting to reach your account.',
   syncRetryNow: 'Retry',
   billingPortalError: 'Billing portal',

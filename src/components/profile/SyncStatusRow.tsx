@@ -2,40 +2,37 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CloudOff, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { flush, retryStuck, subscribe, type OutboxState } from '@/lib/sync/outbox';
-import { isPersistent, onStorageFailure, type StorageFailure } from '@/lib/storage/safeStorage';
+import { StorageFailureNotice, useStorageFailure } from '@/components/storage/StorageFailureNotice';
 
 /**
  * Tells the truth about unsynced work instead of pretending everything landed.
  *
  * The logger never blocks on the cloud, which used to mean a failed write was
  * completely invisible. If something is queued, the user should be able to see it
- * and poke it — and if the browser is refusing to persist at all (private mode,
- * full disk), that is worth saying out loud before they lose a session.
+ * and poke it.
+ *
+ * The "this device isn't saving" half of that used to live here as its own
+ * paragraph, which meant the only surface carrying it was `/account` — a page an
+ * athlete mid-session never visits. It is now [`StorageFailureNotice`], mounted
+ * on Train as well, so the warning arrives where the trust is being placed.
  */
 export function SyncStatusRow() {
   const { t } = useTranslation();
   const [state, setState] = useState<OutboxState | null>(null);
-  const [failure, setFailure] = useState<StorageFailure | null>(null);
   const [busy, setBusy] = useState(false);
+  const storageFailure = useStorageFailure();
 
   useEffect(() => {
     const unsubOutbox = subscribe(setState);
-    const unsubStorage = onStorageFailure(setFailure);
-    if (!isPersistent()) {
-      setFailure({ reason: 'denied', key: '', usingMemoryFallback: true });
-    }
-    return () => {
-      unsubOutbox();
-      unsubStorage();
-    };
+    return unsubOutbox;
   }, []);
 
   const queued = (state?.pending ?? 0) + (state?.stuck ?? 0);
 
-  if (!failure && queued === 0) return null;
+  if (!storageFailure && queued === 0) return null;
 
   const onRetry = async () => {
     setBusy(true);
@@ -46,21 +43,8 @@ export function SyncStatusRow() {
 
   return (
     <div className="house-card space-y-3 text-sm" data-testid="account-sync-status-row">
-      {failure ? (
-        <p className="flex items-start gap-2 text-muted-foreground">
-          <CloudOff className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            {failure.reason === 'quota'
-              ? t('syncStorageFull', {
-                  defaultValue:
-                    'This device is out of storage space. Export a backup, then clear some space so new sessions save.',
-                })
-              : t('syncStorageDenied', {
-                  defaultValue:
-                    "This browser won't let us save to the device — private browsing does this. Your session works, but it won't be here next time.",
-                })}
-          </span>
-        </p>
+      {storageFailure ? (
+        <StorageFailureNotice failure={storageFailure} className="border-0 p-0" />
       ) : null}
 
       {queued > 0 ? (
