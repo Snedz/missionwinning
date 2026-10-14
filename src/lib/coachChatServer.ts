@@ -7,7 +7,7 @@ import { EXERCISES } from '@/data/exercises';
 import { EXERCISE_PUBLIC_ENRICHMENT } from '@/data/exercisePublicEnrichment';
 import { withPublicDepth } from '@/lib/exerciseDepthDefaults';
 import { VALID_PATHS } from '@/lib/coachDailyServer';
-import { fetchCoachLlmCompletion } from '@/lib/coachLlmClient';
+import { fetchCoachProviderCompletion } from '@/lib/coach/providerClient';
 import { buildCoachKnowledgeCorpus } from '@/lib/coach/agent/corpus';
 import { retrieveCoachKnowledge } from '@/lib/coach/agent/retrieve';
 import { runCoachReactLoop, type CoachReactMode } from '@/lib/coach/agent/react';
@@ -153,7 +153,7 @@ export function buildCoachAgentWorld(ctx: CoachChatContext): CoachAgentWorld {
 
 function llmComplete(): CoachCompleteFn {
   return async (req) => {
-    const result = await fetchCoachLlmCompletion({
+    const result = await fetchCoachProviderCompletion({
       system: req.system,
       user: req.user,
       maxTokens: req.maxTokens,

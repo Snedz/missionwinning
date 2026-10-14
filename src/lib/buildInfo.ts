@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1130` north star can see the accountless athlete (past plate Use `.1129`); the free logger stays open and unaccounted. */
-export const APP_BUILD_LABEL = "2026.07-unified.1130";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1134` coach seats are Groq, then any OpenAI-compatible host, then OpenRouter :free. Gemini free tier is not a seat. */
+export const APP_BUILD_LABEL = "2026.07-unified.1134";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

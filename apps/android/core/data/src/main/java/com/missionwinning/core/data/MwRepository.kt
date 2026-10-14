@@ -2,6 +2,8 @@ package com.missionwinning.core.data
 
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.MobileApiClient
+import com.missionwinning.core.network.TrainerAskRequestDto
+import com.missionwinning.core.network.TrainerAskResponseDto
 
 /**
  * Product-facing data façade.
@@ -63,6 +65,8 @@ class MwRepository(
     suspend fun markSessionDone(sessionId: String): CoachPlanResponseDto =
         coach.markSessionDone(sessionId)
     suspend fun forceReseedPlan(): CoachPlanResponseDto = coach.forceReseedPlan()
+    suspend fun askTrainer(body: TrainerAskRequestDto): Result<TrainerAskResponseDto> =
+        coach.askTrainer(body)
 
     // —— Workouts ——
     suspend fun previousSet(exerciseId: String, setIndex: Int): SetLogEntity? =

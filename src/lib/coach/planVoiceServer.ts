@@ -63,8 +63,8 @@ export async function fetchPlanVoice(
 ): Promise<PlanVoiceResponse> {
   if (!useLlm) return planVoiceFromRules(ctx);
 
-  const { fetchCoachLlmCompletion } = await import('@/lib/coachLlmClient');
-  const result = await fetchCoachLlmCompletion({
+  const { fetchCoachProviderCompletion } = await import('@/lib/coach/providerClient');
+  const result = await fetchCoachProviderCompletion({
     system: 'Reply with valid JSON only.',
     user: buildPlanVoicePrompt(ctx),
     maxTokens: 200,

@@ -1,27 +1,18 @@
 /**
  * Optional live line for the session trainer.
- * Free model: Gemini Flash (`gemini-2.5-flash`) when GEMINI_API_KEY
- * or GOOGLE_GENERATIVE_AI_API_KEY is set. Else the configured COACH_LLM.
+ * Groq when GROQ_API_KEY is set, else COACH_LLM_*, else OpenRouter `:free`.
+ * Gemini free-tier hosts are never called — the prompt is health data.
  * Else the caller keeps the library line. The key never leaves the server.
  */
 
-import {
-  DEFAULT_COACH_LLM_MODEL,
-  fetchCoachLlmCompletion,
-  readCoachLlmEnv,
-} from '@/lib/coachLlmClient';
-import { estimateLlmUsage, type LlmUsage } from '@/lib/llm/usage';
+import { fetchCoachProviderCompletion, resolveCoachProviders } from '@/lib/coach/providerClient';
+import type { LlmUsage } from '@/lib/llm/usage';
 import {
   TRAINER_SYSTEM_PROMPT,
   readTrainerLine,
   trainerUserPrompt,
   type SessionTrainerFacts,
 } from '@/lib/coach/sessionTrainer';
-
-/** Google AI Studio free-tier Flash. Override with GEMINI_MODEL (gemini-* only). */
-export const FREE_SESSION_TRAINER_MODEL = 'gemini-2.5-flash';
-
-const GEMINI_HOST = 'https://generativelanguage.googleapis.com';
 
 export type TrainerVoice = {
   source: 'library' | 'llm';
@@ -30,105 +21,13 @@ export type TrainerVoice = {
   usage?: LlmUsage;
 };
 
-export function readGeminiApiKey(
-  env: Record<string, string | undefined> = process.env
-): string | undefined {
-  const key = env.GEMINI_API_KEY?.trim() || env.GOOGLE_GENERATIVE_AI_API_KEY?.trim();
-  return key || undefined;
-}
-
-export function readGeminiModel(
-  env: Record<string, string | undefined> = process.env
-): string {
-  const raw = env.GEMINI_MODEL?.trim() ?? '';
-  if (/^gemini-[\w.-]+$/.test(raw)) return raw;
-  return FREE_SESSION_TRAINER_MODEL;
-}
-
-export function geminiGenerateUrl(model: string): string {
-  return `${GEMINI_HOST}/v1beta/models/${encodeURIComponent(model)}:generateContent`;
-}
-
 type FetchLike = typeof fetch;
 
-/**
- * The subset of Gemini's `generateContent` response metadata this server meters.
- *
- * Declared as a named type rather than inlined at the cast, on purpose.
- * `launchTruth.test.ts` fails a build on an inline cast that *invents* a property
- * on a value -- that shape is how `weeklyDebrief.personalRecords` hid a field no
- * code in this repo ever writes, which left a PR line and a Today row permanently
- * unreachable. A cast to a named type is ordinary and passes, and it is also just
- * better here: the three fields below are the entire metering contract, so naming
- * them puts the boundary in one place instead of restating it at each read.
- *
- * Every field is `unknown` because the value crosses the network unvalidated; the
- * `typeof === 'number'` guards at each read are what make it safe to meter.
- */
-type GeminiUsageMetadata = {
-  promptTokenCount?: unknown;
-  candidatesTokenCount?: unknown;
-  totalTokenCount?: unknown;
-};
-
-function geminiUsage(meta: unknown, prompt: string, completion: string): LlmUsage {
-  const m = meta as GeminiUsageMetadata | null;
-  const promptTokens = typeof m?.promptTokenCount === 'number' ? m.promptTokenCount : null;
-  const completionTokens = typeof m?.candidatesTokenCount === 'number' ? m.candidatesTokenCount : null;
-  const totalTokens = typeof m?.totalTokenCount === 'number' ? m.totalTokenCount : null;
-  if (promptTokens == null || completionTokens == null || totalTokens == null) {
-    return estimateLlmUsage(prompt.length, completion.length);
-  }
-  return {
-    promptTokens,
-    completionTokens,
-    totalTokens,
-    estimated: false,
-  };
-}
-
-async function fetchGeminiTrainerLine(
-  facts: SessionTrainerFacts,
-  env: Record<string, string | undefined>,
-  fetchImpl: FetchLike
-): Promise<TrainerVoice | null> {
-  const apiKey = readGeminiApiKey(env);
-  if (!apiKey) return null;
-  const model = readGeminiModel(env);
-  const user = trainerUserPrompt(facts);
-  let res: Response;
-  try {
-    res = await fetchImpl(geminiGenerateUrl(model), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey,
-      },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: TRAINER_SYSTEM_PROMPT }] },
-        contents: [{ role: 'user', parts: [{ text: user }] }],
-        generationConfig: { maxOutputTokens: 120, temperature: 0.4 },
-      }),
-      signal: AbortSignal.timeout(8_000),
-    });
-  } catch {
-    return null;
-  }
-  if (!res.ok) return null;
-  const data = (await res.json().catch(() => null)) as {
-    candidates?: { content?: { parts?: { text?: string }[] } }[];
-    usageMetadata?: unknown;
-  } | null;
-  const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim();
-  if (!text) return null;
-  const line = readTrainerLine(text, facts);
-  if (!line) return null;
-  return {
-    source: 'llm',
-    model,
-    line,
-    usage: geminiUsage(data?.usageMetadata, `${TRAINER_SYSTEM_PROMPT}\n${user}`, line),
-  };
+/** True when a non-Gemini coach seat is configured. Gemini keys do not count. */
+export function coachProviderConfigured(
+  env: Record<string, string | undefined> = process.env
+): boolean {
+  return resolveCoachProviders(env).length > 0;
 }
 
 export async function voiceSessionTrainer(
@@ -143,27 +42,23 @@ export async function voiceSessionTrainer(
   if (!options?.useLlm) return library;
   const env = options.env ?? process.env;
   const fetchImpl = options.fetchImpl ?? fetch;
+  if (!coachProviderConfigured(env)) return library;
 
-  const gemini = await fetchGeminiTrainerLine(facts, env, fetchImpl);
-  if (gemini) return gemini;
-
-  const coach = readCoachLlmEnv(env);
-  if (!coach.apiUrl || !coach.apiKey) return library;
-  const result = await fetchCoachLlmCompletion(
+  const result = await fetchCoachProviderCompletion(
     {
       system: TRAINER_SYSTEM_PROMPT,
       user: trainerUserPrompt(facts),
       maxTokens: 120,
       temperature: 0.4,
     },
-    { env: coach, fetchImpl, timeoutMs: 8_000 }
+    { env, fetchImpl, timeoutMs: 8_000 }
   );
   if (!result.ok) return library;
   const line = readTrainerLine(result.content, facts);
   if (!line) return library;
   return {
     source: 'llm',
-    model: coach.model?.trim() || DEFAULT_COACH_LLM_MODEL,
+    model: result.model ?? null,
     line,
     usage: result.usage,
   };

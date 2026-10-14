@@ -238,6 +238,23 @@ class MobileApiClient(
         }
     }
 
+    /**
+     * Open-set ask. The device does not hold a model key and does not call
+     * Groq or Gemini. The server provider client does, from env only.
+     */
+    suspend fun postTrainerAsk(body: TrainerAskRequestDto): Result<TrainerAskResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val req = requestBuilder("/api/coach/trainer")
+                    .post(json.encodeToString(body).toRequestBody(media))
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("coach/trainer ${resp.code}")
+                    json.decodeFromString<TrainerAskResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
     suspend fun adaptPlan(plan: CoachPlanDto, sessionId: String): Result<CoachPlanResponseDto> =
         withContext(Dispatchers.IO) {
             runCatching {
