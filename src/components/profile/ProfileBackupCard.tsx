@@ -74,8 +74,17 @@ export function ProfileBackupCard() {
             variant="outline"
             className="min-h-[44px] tap-target"
             onClick={() => {
-              downloadBackup();
-              track('backup_exported');
+              const result = downloadBackup();
+              // Only a real file earns the event. This used to fire unconditionally
+              // after an unguarded call, so a denied read produced no download and
+              // still recorded a successful export — the kind of number that makes
+              // a broken feature look like a working one.
+              if (result.ok) track('backup_exported');
+              else
+                toast({
+                  title: t('exportFailed', { defaultValue: 'Backup failed' }),
+                  description: result.error,
+                });
             }}
           >
             {t('exportData', { defaultValue: 'Download backup (JSON)' })}

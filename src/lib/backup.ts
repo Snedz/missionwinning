@@ -107,33 +107,85 @@ function safeParse(json: string): PersistedWorkoutState | null {
 
 // ── Browser wrappers ────────────────────────────────────────────────
 
-export function buildBackup(): MwBackup {
+export type BackupResult<T = undefined> =
+  | ({ ok: true } & (T extends undefined ? object : { value: T }))
+  | { ok: false; error: string };
+
+const STORAGE_UNREADABLE =
+  "This browser won't let the app read its storage — private browsing does this. A backup can't be built until it can.";
+
+/**
+ * Every `mw_` key currently on the device, read defensively.
+ *
+ * This module talks to `localStorage` directly rather than through `safeStorage`,
+ * which is its own problem — noted on `buildBackup` — but the reason it can be
+ * fixed later rather than today is this function: a read that throws is reported,
+ * not propagated.
+ *
+ * It must never return an empty map on failure. A backup that silently contains
+ * none of the athlete's data is the worst possible output here: it looks like a
+ * successful export, it downloads, and it restores to an empty app.
+ */
+function readLocalKeys(): BackupResult<Record<string, string>> {
   const localKeys: Record<string, string> = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key && key.startsWith('mw_')) {
-      const val = localStorage.getItem(key);
-      if (val !== null) localKeys[key] = val;
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('mw_')) {
+        const val = localStorage.getItem(key);
+        if (val !== null) localKeys[key] = val;
+      }
     }
+  } catch {
+    return { ok: false, error: STORAGE_UNREADABLE };
   }
+  return { ok: true, value: localKeys };
+}
+
+/**
+ * Assemble the backup payload.
+ *
+ * Returns a result rather than a payload because this is the user's only safety
+ * net for a device that refuses to persist: `ProfileBackupCard` used to call this
+ * from a click handler with nothing catching, so a throwing read meant no file,
+ * no message, and `track('backup_exported')` firing anyway — analytics recording a
+ * successful export that never happened.
+ */
+export function buildBackup(): BackupResult<MwBackup> {
+  const keys = readLocalKeys();
+  if (!keys.ok) return keys;
+
+  let storeRaw: string | null = null;
+  try {
+    storeRaw = localStorage.getItem(WORKOUT_STORE_KEY);
+  } catch {
+    return { ok: false, error: STORAGE_UNREADABLE };
+  }
+
   return {
-    app: 'mission-winning',
-    version: BACKUP_VERSION,
-    exportedAt: new Date().toISOString(),
-    workoutStore: safeParse(localStorage.getItem(WORKOUT_STORE_KEY) ?? '') ?? {},
-    localKeys,
+    ok: true,
+    value: {
+      app: 'mission-winning',
+      version: BACKUP_VERSION,
+      exportedAt: new Date().toISOString(),
+      workoutStore: safeParse(storeRaw ?? '') ?? {},
+      localKeys: keys.value,
+    },
   };
 }
 
-export function downloadBackup(): void {
-  const backup = buildBackup();
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+export function downloadBackup(): BackupResult {
+  const built = buildBackup();
+  if (!built.ok) return built;
+
+  const blob = new Blob([JSON.stringify(built.value, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `mission-winning-backup-${localDateKeyFromIso(backup.exportedAt)}.json`;
+  a.download = `mission-winning-backup-${localDateKeyFromIso(built.value.exportedAt)}.json`;
   a.click();
   URL.revokeObjectURL(url);
+  return { ok: true };
 }
 
 export function restoreBackupFromJson(json: string): {
@@ -163,9 +215,26 @@ export function restoreBackupFromJson(json: string): {
   }
 
   const result = mergeBackup(parsed, localStorage.getItem(WORKOUT_STORE_KEY), currentKeys);
-  localStorage.setItem(WORKOUT_STORE_KEY, result.nextStoreJson);
-  for (const [k, v] of Object.entries(result.keysToSet)) {
-    localStorage.setItem(k, v);
+  /*
+   * Guarded, and it reports failure rather than propagating.
+   *
+   * The previous version threw straight out of the click handler on a denied
+   * write, so the user saw nothing at all about the restore that did not happen.
+   * Worse, it could throw *part way* through the loop below — store written,
+   * keys half-written — which is the one state a restore must never report as a
+   * clean success.
+   */
+  try {
+    localStorage.setItem(WORKOUT_STORE_KEY, result.nextStoreJson);
+    for (const [k, v] of Object.entries(result.keysToSet)) {
+      localStorage.setItem(k, v);
+    }
+  } catch {
+    return {
+      ok: false,
+      error:
+        'This device refused part of the restore. Clear some storage space, then import the backup again.',
+    };
   }
   return {
     ok: true,
