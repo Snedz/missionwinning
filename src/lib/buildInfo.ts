@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1129` plate Use sits with the load (past safety flags `.1128`); Log set stays open. */
-export const APP_BUILD_LABEL = "2026.07-unified.1129";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1130` north star can see the accountless athlete (past plate Use `.1129`); the free logger stays open and unaccounted. */
+export const APP_BUILD_LABEL = "2026.07-unified.1130";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

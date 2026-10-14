@@ -66,7 +66,20 @@ That is in direct tension with the headline promise, and the tension is unresolv
 
 **Week-4 retained weekly loggers.** Users, sessions, languages and pillars are vanity until it holds. Definition and target: [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) and [ORCHESTRATION.md](../ORCHESTRATION.md).
 
-It is currently **uncomputable** — the `mw_week4_retention()` migration is unapplied, so ten users would still produce no readable number. Fixing that outranks anything on this page.
+It is currently **uncomputable for the athlete this product is for** — and the reason was
+never the migration.
+
+`mw_week4_retention()` **is applied in production** (`LAUNCH_RUNBOOK.md` §2 records
+`mw_week4_retention exists` on 2026-08-17; `THESIS.md` previously said otherwise and was
+wrong). The real problem is one layer up: it reads `workout_logs.user_id`, whose every
+write path is session-gated, and the companion table `week_logged` had `user_id not null`
+with a `401` route. So both instruments could only ever describe **people who created an
+account** — the minority, in a product whose promise is that you never have to.
+
+Fixed 2026-10-09 by `supabase/migrations/20261009_week_logged_device_owners.sql`:
+device-keyed `week_logged` plus `mw_week4_retention_weekly()`. **Founder must apply it**
+— see [FOUNDER_UNBLOCK_20261009.md](FOUNDER_UNBLOCK_20261009.md) §8. Until it is applied
+the metric is still uncomputable, but for a different and now-named reason.
 
 ## 7. Open questions this file will not decide
 

@@ -16,6 +16,23 @@ Mission Winning stores most workout and preference data **on your device** first
 | School class metadata | Partial | Yes (teacher-created classes) |
 | PFT scores (class) | — | Yes when synced |
 | Wearable sync (optional) | — | Only if you connect a provider (tokens + samples) |
+| Which weeks you trained | Yes | One row per week, **only if you turned on reminders** |
+
+## Training-week rollup (no account needed)
+
+Mission Winning measures one thing: whether you are still logging sets in week 4. To do that without ever asking you for an account, the server keeps **which calendar weeks you trained** — a week key like `2026-W33`, one row per week.
+
+What this is **not**: your exercises, sets, weights, timestamps, email, or anything else from your sessions. Those stay on your device.
+
+When it applies:
+
+- **With reminders on.** If you turned on push reminders, we record the week so we can tell whether you are still training in week 4. This is the same permission that lets us send you a nudge.
+- **Without reminders.** Nothing is sent. If you never opt into reminders, there is no server row and you are not counted in anything. Your week history still shows in the app, on your device.
+- **Signing in later is fine.** If you start with no account and sign in later, your earlier weeks stay attached to you rather than being counted twice.
+
+To turn it off, turn off reminders. To see what we hold, or to have it deleted, use the usual account export and delete controls.
+
+Why this is different from the general analytics choice: analytics here are opt-in *and* respect Do Not Track. This rollup does not run unless you ask for reminders, and it never carries behavioural data about *what* you trained.
 
 ## Wearables (optional)
 

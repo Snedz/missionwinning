@@ -18,6 +18,88 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-13 — North star can see the athlete (`.1130`)
+
+The 2026-10-09 wave, landed
+late. It sat on a detached
+HEAD for four days while
+`CONTEXT.md` already claimed
+`.1124` shipped and no
+`LOG.md` entry existed at
+all. `master` had moved five
+waves past its base without
+it; local `master` separately
+sat 55 commits behind
+`origin/master`. Both
+reconciled here.
+
+Label collision: master had
+already spent `.1124` on
+`npm run verify`, so this
+re-mints to `.1130` per the
+house rule.
+
+`week_logged.user_id` was
+`not null references
+auth.users` and the route
+answered 401 to guests, so
+the north star could only
+describe people who made an
+account. The product's
+promise is no account, so
+every value the metric had
+produced came from the
+minority the product is not
+for. A flattering number is
+worse than an absent one.
+
+`20261009_week_logged_device_
+owners.sql` makes `user_id`
+nullable behind a generated
+`owner_key` PK, and adds
+`mw_week4_retention_weekly()`.
+`week_logged` was write-only:
+the instrument was built and
+could not be read.
+
+An accountless write needs a
+`deviceId` that already holds a
+`push_subscriptions` row,
+checked server-side. Never
+asserted by the caller.
+Signed-in needs no consent —
+the account is the identity.
+Both refusals are 403, not
+401: the modal athlete is not
+"unauthenticated", and a 401
+invites a client to read a
+settled refusal as a retryable
+auth problem.
+
+Also: `/welcome` CTA on all
+353 exercise spokes (the
+conversion path the spoke
+brief mandated and never
+shipped); `npm test` narrowed
+to the 603 files that import
+product code with the other
+410 moved to `npm run
+test:meta` (still required by
+CI — honesty guards renamed,
+not deleted); `packages/mw-core`
+inside `npm run typecheck`,
+where it had a real
+pre-existing type error.
+
+Founder must apply the
+migration — FOUNDER_UNBLOCK
+§8. No migration applied by an
+agent.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1111-for-1130.md](docs/archive/log/LOG-rotate-1111-for-1130.md) (`.1111`), for the ≤15 entry budget.
+
+Rotated CONTEXT `.1107`·`.1109`·`.1110`·`.1111` → [CONTEXT-now-rotation-2026-10-13.md](docs/archive/CONTEXT-now-rotation-2026-10-13.md).
+
 ## 2026-10-12 — Plate Use sits with the load (`.1129`)
 
 `.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
@@ -433,52 +515,3 @@ tip-promote. Live www stays
 Label `2026.07-unified.1112`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1097-for-1112.md](docs/archive/log/LOG-rotate-1097-for-1112.md) (`.1097`). `.1096` was already rotated by `.1111`.
-
-## 2026-09-24 — Library absorbs a free-exercise-db subset (`.1111`)
-
-Train and Library search were
-limited to the house catalog
-(228 unique after dedupe).
-`ensureFullExerciseCatalog()`
-now also splices 120 strength
-movements from
-yuhonas/free-exercise-db
-(Unlicense, commit
-`a859101d633a01c4a1a920d6a8ce41dabba0705f`).
-Rows map into the existing
-`Exercise` type. Ids are
-`fedb-`. House names win.
-Equipment is round-robin
-across the Library chips so
-one bucket cannot fill the
-cap. Upstream file is 876
-rows; this ship keeps a
-curated subset.
-
-No image bytes and no image
-URLs. The upstream LICENSE is
-Unlicense and the README
-calls the JPG tree public
-domain, but those files came
-from the exercises.json pack
-and `Exercise` has no image
-field. Attribution:
-`src/data/free-exercise-db/NOTICE.md`.
-
-No AGPL paste. No Train
-rewrite. Public exercise-page
-floor stays 228
-(under-promise). `[skip vercel]`.
-No tip-promote. Live www stays
-`.697`. PRIVATE_MODE stays.
-
-**Mutants killed:** stretching
-and unmapped equipment
-accepted as catalog rows;
-house name `Push-ups`
-replaced; round-robin cap
-ignored.
-
-Label `2026.07-unified.1111`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1096-for-1111.md](docs/archive/log/LOG-rotate-1096-for-1111.md) (`.1096`).

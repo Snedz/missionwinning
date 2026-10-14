@@ -5,6 +5,7 @@ import {
   UTILITY_CLEARSHOT_MANIFEST,
   assertModuleManifest,
 } from './types';
+import type { ModuleManifest } from './types';
 import {
   MUTED_BILLING,
   STORAGE_MAX_KEYS,
@@ -96,7 +97,13 @@ test('identity stub: guest snapshot is null / null; write is denied', () => {
 });
 
 test('identity: unscoped is the same scope_denied as billing / photos', () => {
-  const noIdentity = {
+  // Annotated `ModuleManifest` because the inferred spread narrows `scopes` to
+  // `Exclude<ModuleScope, 'identity.read'>`, which makes the very assertion below
+  // untypeable — `includes('identity.read')` has nothing left to match. The test has
+  // always run green; it was only ever unchecked at the type level, because the root
+  // `npm run typecheck` excludes `packages/`. It is now checked, so the narrowing had
+  // to be made explicit rather than left to inference.
+  const noIdentity: ModuleManifest = {
     ...UTILITY_CLEARSHOT_MANIFEST,
     scopes: UTILITY_CLEARSHOT_MANIFEST.scopes.filter((s) => s !== 'identity.read'),
   };

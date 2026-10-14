@@ -40,6 +40,46 @@ Rewards domain: `src/lib/rewards/`. Session plans (`.hermes`, `~/.grok/sessions`
 
 Scope note: this override is **narrow by design**. Everything else on the Horizon W forbidden list below stays forbidden.
 
+### Founder override — queue ratchet (2026-10-09)
+
+**The pre-EIN craft window (2026-08-03) is closed.** That window assumed the EIN would
+arrive soon and told agents to use the time to keep building. It did not arrive soon: the
+window ran from 2026-08-03 and is being closed on 2026-10-09 with **zero users**, no beta,
+no flip, and a north-star metric that could not be computed for the accountless athlete
+the product is built for.
+
+The project's own red-team reached the same conclusion on 2026-08-08
+(`strategy/REDTEAM.md` §1 A5): *"the constraint is founder behaviour, not the
+product"*, with the prescription **"no new features until N users"**. That prescription
+was not adopted. Roughly 500 more ships landed, 46% of the last 78 were edge-case
+hardening, and growth / monetization / legal work was **0 of 78**.
+
+**Rule: no new agent workstreams until the first real cohort exists.** Not a slowdown — a
+stop on *starting new workstreams*, which is what a queue full of well-made things that
+cannot change a decision actually looks like.
+
+| Still required | Still forbidden |
+|----------------|-----------------|
+| Mission Coach, the free logger, measurement, distribution | New pillars and new surface area |
+| The `/welcome` funnel and public-surface conversion fixes | Edge-case hardening with no user-facing defect |
+| Founder-owned unblock work — `docs/FOUNDER_UNBLOCK_20261009.md` | Meta-tests that assert source text rather than behaviour |
+| Bug fixes in anything a real athlete touches | Adding to the extension-semantics cluster (`.1076`–`.1103`, closed) |
+| Tests that fail when product behaviour changes | Agents inventing traction or flipping `PRIVATE_MODE` |
+
+**Retired.** The browser-extension storage-injection / remount semantics cluster
+(`.1076`–`.1103`, 31 consecutive ships) is closed. It was defensible work; it is done.
+Do not reopen it absent a real user-facing defect.
+
+**Meta-test lane split (2026-10-09).** `npm test` now runs only tests that import product
+code — **603 of 1,013 files**. The other **410 (40.5%)** assert on source and doc text and
+run under `npm run test:meta`, which **CI still requires** (`ci.yml`, `ratchets.yml`).
+Honesty guards were not deleted; they were named accurately. `npm run test:list` prints
+the classification. An honesty guard going red must still fail CI.
+
+**Docs cap.** Documentation describing decisions is valuable. Documentation restating the
+code is a substitute for shipping. The doc-to-code ratio has moved 0.45:1 → 0.86:1 →
+**1.04:1**; do not let it climb further. Prefer editing an existing doc over adding one.
+
 ### Founder override — pre-EIN craft window (2026-08-03)
 
 **The 10-invite beta program is retired.** Current release is **Alpha 0.1.0** — free tracker or Super Bundle (checkout muted until EIN). Beta is a later stage after public + week-4, not a harness ticket. EIN/payments may take weeks — use the window to keep building the wedge, www, and flip-prep.

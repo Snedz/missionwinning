@@ -13,6 +13,7 @@
  * the build does not need real secrets. It never reads or writes .env files.
  */
 import { spawn, spawnSync } from 'node:child_process';
+import { createServer } from 'node:net';
 import process from 'node:process';
 
 const args = new Set(process.argv.slice(2));
@@ -38,9 +39,44 @@ function run(name, cmd, cmdArgs, env = process.env) {
   return ok;
 }
 
+/**
+ * Is something already holding this port? Answered before the server is spawned.
+ *
+ * `.1130` — this gate reported `health FAIL ... no response` after burning its full
+ * 60s budget, with the server's own stdout discarded (`stdio: 'ignore'`), so the
+ * only visible symptom was a timeout on a step that had in fact booted fine. The
+ * cause was another app on the machine already listening on 3917 **over IPv4**,
+ * while `next start` bound **IPv6**. The probe fetched `127.0.0.1`, so it was
+ * talking to the squatter the whole time — which accepted the connection and closed
+ * it, producing curl's "Empty reply from server" and HTTP 000 on *every* route,
+ * not just health.
+ *
+ * A port check has to be a real bind, not `lsof`: the two listeners coexisted
+ * happily because they were on different address families, which is exactly the
+ * case a name lookup would have reported as free.
+ *
+ * Failing here says *why* in one line and costs a second, instead of leaving a
+ * later step to report a timeout that looks like a product defect.
+ */
+function portInUse(port) {
+  return new Promise((resolve) => {
+    const probe = createServer();
+    probe.once('error', () => resolve(true));
+    probe.once('listening', () => probe.close(() => resolve(false)));
+    probe.listen(port, '0.0.0.0');
+  });
+}
+
 async function healthSmoke() {
   const t0 = Date.now();
   console.log(`\n▶ health: next start -p ${PORT} → GET /api/health`);
+  if (await portInUse(PORT)) {
+    const detail = `port ${PORT} is already in use by another process — not a build failure`;
+    console.log(`  ${detail}`);
+    console.log('  Re-run with a free port:  VERIFY_PORT=4477 npm run verify');
+    results.push({ name: 'health', ok: false, ms: Date.now() - t0 });
+    return false;
+  }
   const srv = spawn(npm, ['run', 'start', '--', '-p', String(PORT)], { env: BUILD_ENV, stdio: 'ignore', detached: true });
   let ok = false;
   let detail = 'no response';

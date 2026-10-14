@@ -56,33 +56,47 @@ describe('weekLoggedDeliveryDone', () => {
 });
 
 describe('isWeekLoggedPayload', () => {
-  it('accepts YYYY-Www only', () => {
-    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-W33' }), true);
-    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-08-13' }), false);
+  it('accepts YYYY-Www with a device id only', () => {
+    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-W33', deviceId: 'dev-1' }), true);
+    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-08-13', deviceId: 'dev-1' }), false);
     assert.equal(isWeekLoggedPayload({}), false);
+    // A payload with no owner is not a payload: the route would refuse it anyway, and
+    // the outbox should not carry a request whose only possible answer is a 4xx.
+    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-W33' }), false);
+    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-W33', deviceId: '' }), false);
+    assert.equal(isWeekLoggedPayload({ isoWeek: '2026-W33', deviceId: 'a'.repeat(65) }), false);
   });
 });
 
-describe('guest has no server write', () => {
-  it('recordWorkingSetLogged as guest does not enqueue week.logged', () => {
+describe('guest and account share one writer', () => {
+  it('a guest with a real device id does queue week.logged', () => {
     registerHandler('week.logged', async () => true);
     recordWorkingSetLogged(
       { kind: 'normal', exerciseId: 'squat', weight: 100 },
       {
         source: 'guest',
         now: new Date(2026, 7, 13, 12),
+        deviceId: 'dev-guest-sync',
         track: () => undefined,
-        // Real enqueue — the guest branch must not call it.
         enqueueWeekLogged,
       }
     );
-    assert.equal(getState().pending, 0, 'guest must not queue a cloud write');
+    // Was asserted at 0. The accountless athlete is the product's core user; refusing to
+    // queue here is what kept them invisible to the north star.
+    assert.equal(getState().pending, 1, 'guest must queue a cloud write when it has a device');
   });
 
-  it('account enqueue is the only writer', () => {
+  it('enqueue requires both a valid week and a device id', () => {
     registerHandler('week.logged', async () => true);
-    enqueueWeekLogged('2026-W33');
+    enqueueWeekLogged('2026-W33', 'dev-1');
     assert.equal(getState().pending, 1);
+  });
+
+  it('rejects an empty or oversized device id rather than queueing it', () => {
+    registerHandler('week.logged', async () => true);
+    enqueueWeekLogged('2026-W34', '');
+    enqueueWeekLogged('2026-W35', 'a'.repeat(65));
+    assert.equal(getState().pending, 0);
   });
 });
 

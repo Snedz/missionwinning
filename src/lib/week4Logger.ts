@@ -5,12 +5,19 @@
  * in a local ISO week emits `week_logged`. `retained_week_4` is derived for
  * **this install only** (first logged week vs this week ≥ 4 and a log this week).
  *
- * Guests stay local + PostHog. Signed-in `week_logged` may ride the outbox.
+ * Guests and accounts both ride the outbox now, keyed by device id. That used to be
+ * `if (source === 'account')` — one line, and the reason the north-star metric could
+ * only ever describe people who made an account. The product's promise is no account,
+ * so the population the metric was measuring was the population the product is not for.
+ * The server decides who may actually store a row (see app/api/metrics/week-logged):
+ * consent is checked there, not here, so a client cannot claim its own permission.
+ *
  * No PII, no emails, no EIN, no public user count.
  */
 
 import { track } from '@/lib/analytics';
 import { loggerEventSource } from '@/lib/authPresence';
+import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { isoWeekOffset, localIsoWeekKey } from '@/lib/time/localDate';
@@ -38,9 +45,10 @@ export type Week4LoggerResult = {
 
 export type Week4LoggerHooks = {
   track: typeof track;
-  enqueueWeekLogged: (isoWeek: string) => void;
+  enqueueWeekLogged: (isoWeek: string, deviceId: string) => void;
   source: LoggerSource;
   now: Date;
+  deviceId: string;
 };
 
 export function isWorkingSetKind(kind?: string): boolean {
@@ -101,12 +109,17 @@ function defaultHooks(): Week4LoggerHooks {
     enqueueWeekLogged,
     source: loggerEventSource(),
     now: new Date(),
+    deviceId: getOrCreateDeviceId(),
   };
 }
 
 /**
  * Record a saved set. Warmups are ignored. Never awaits — safe on `logSet`.
- * Guest never enqueues a server write.
+ *
+ * The week is enqueued for guests and accounts alike. A guest without a return-channel
+ * subscription is refused by the server with a 4xx, which the outbox treats as done —
+ * so an athlete who declined reminders still records their week locally and simply
+ * never contributes a server row. That is the privacy decision working, not a failure.
  */
 export function recordWorkingSetLogged(
   input: WorkingSetLogInput,
@@ -137,8 +150,9 @@ export function recordWorkingSetLogged(
   let enqueuedWeek = false;
   if (isNewWeek) {
     h.track('week_logged', { source, iso_week: isoWeek });
-    if (source === 'account') {
-      h.enqueueWeekLogged(isoWeek);
+    // 'server' is the SSR sentinel from getOrCreateDeviceId — never a real device.
+    if (h.deviceId && h.deviceId !== 'server') {
+      h.enqueueWeekLogged(isoWeek, h.deviceId);
       enqueuedWeek = true;
     }
   }

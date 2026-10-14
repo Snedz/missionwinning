@@ -120,6 +120,14 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Meta tests (repo-text assertions)
+        # Split out of `npm test` on purpose: these assert on source and doc text, not
+        # on product behaviour. They are real guards — privacyInstill, honesty, cite
+        # rules — but they are not what a green unit lane means, and 40% of the suite
+        # sitting in it made the queue look verified while nothing could measure
+        # retention. Still required: an honesty guard going red must still fail CI.
+        run: npm run test:meta
+
       - name: Route contract tests
         run: npm run test:routes
 

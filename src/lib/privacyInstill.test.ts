@@ -103,3 +103,39 @@ test('assessment health-bucket suite is still the discover guard', () => {
   assert.match(src, /AssessmentsPage/);
   assert.match(src, /persistParqScreen/);
 });
+
+test('week_logged device rows stay inside the line they were drawn on', () => {
+  // The accountless week-rollup (2026-10-09) let a guest write one ISO week key so the
+  // north-star metric could finally see the product's actual user. Three properties have
+  // to hold together or the change stops being the narrow thing it claimed to be:
+  //
+  //   1. consent is a SERVER-side fact, never something the caller asserts;
+  //   2. no public RLS policy appears, because that would be a free enumeration API;
+  //   3. the user-facing page says so in words a person would understand.
+  //
+  // Any one of these can be satisfied by accident. That is why they are pinned together.
+
+  const route = read('app/api/metrics/week-logged/route.ts');
+  assert.match(route, /push_subscriptions/);
+  assert.match(route, /resolveWeekLoggedOwner/);
+  // The consent lookup must fail closed: an unreachable admin client is "no consent".
+  assert.match(route, /if \(!admin\) return false/);
+  assert.match(route, /getUserFromRequest/);
+
+  const migration = read('supabase/migrations/20261009_week_logged_device_owners.sql');
+  assert.doesNotMatch(migration, /create\s+policy/i);
+  assert.match(migration, /revoke all on function public\.mw_week4_retention_weekly/);
+  // RLS is enabled once, when the table is created. The device-keyed migration must not
+  // weaken it, so the invariant is split across the two files rather than asserted twice.
+  assert.doesNotMatch(migration, /disable\s+row\s+level\s+security/i);
+  assert.match(read('supabase/migrations/20260813_week_logged.sql'), /enable row level security/i);
+
+  const help = read('docs/help/privacy-and-data.md');
+  assert.match(help, /Training-week rollup/);
+  assert.match(help, /turn(ed)? on reminders|turn on reminders/i);
+  // The promise this migration rests on: no workout detail leaves the device.
+  assert.match(help, /exercises, sets, weights|exercise, set, weight/i);
+
+  const status = read('docs/security/PROGRAM_STATUS.md');
+  assert.match(status, /week_logged` device-keyed rows/);
+});

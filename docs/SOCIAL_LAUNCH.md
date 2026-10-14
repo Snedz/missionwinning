@@ -1,5 +1,37 @@
 # Social & launch media kit
 
+**Status 2026-10-09 — read this first.** This kit is written, complete, and unused. It was
+built for an E-Day target of **2026-08-13**; that date passed seven weeks ago with the
+gate still up and zero posts shipped. Nothing below has rotted — the shot list, the
+caption sets and the Reddit rules are all still accurate — but the *trigger* is wrong.
+
+**What changed:** the plan of record is no longer "keep building until the flip". The
+queue ratchet in [ORCHESTRATION.md](../ORCHESTRATION.md) closes the pre-EIN craft window,
+and distribution is now the work. Phase A below (warm DMs, ≤1 public post/week while
+gated) is no longer the ceiling — it was a holding pattern for a window that has closed.
+
+**Three things gate every item below**, and none is an agent task:
+1. The founder unblock list — [FOUNDER_UNBLOCK_20261009.md](FOUNDER_UNBLOCK_20261009.md)
+2. `npm run week4-smoke` green against production, including the new
+   `mw_week4_retention_weekly()`
+3. The measure nobody has taken: **the size of the warm list.** It is the top-ranked
+   channel in [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) and its size is the
+   largest unmeasured quantity in the project. Query `leads` before planning around it.
+
+**Where the copy actually lives now.** `seo/launch/PHASE_B_DRAFT_KIT.md` and several
+`seo/content/BRIEF-*` files are 5-line `RELOCATED_TO_MISSION_OPS` stubs — the named copy
+moved to `mission-ops` (`intel/seo/`), and the product tree is meant to stay nameless.
+Do not treat a stub as missing work: check `mission-ops/intel/seo/` before rewriting.
+`seo/launch/SOCIAL_DRAFTS.md` (134 lines) is still in-tree and current.
+
+**Assets:** 5 files in `public/social/` (`coach-story`, `invite-square`; PNG + WebP).
+Video is 0%. That gap is the only real production cost left, and it is not a large one.
+
+**Competitive note (2026-10-09).** "Free forever" is no longer a wedge — Strong.app's
+homepage says *"Strong Accounts are Free Forever"* and My Workout Plan ships free, no
+account, no paywalls with 5M+ downloads. Use the free line as the **door**, not the hook.
+The hook is the load reading. See [PUBLIC_SURFACE_PREPARED_20261009.md](PUBLIC_SURFACE_PREPARED_20261009.md) §5.
+
 **Purpose:** Copy-paste posts, filming shot list, and channel rules for **Alpha 0.1.0** (gated until you flip `PRIVATE_MODE`) → public.  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Mascot:** Kalligator — [MASCOT.md](MASCOT.md) · `/brand/mascot/`  

@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 /**
- * Week-4 measurement smoke — digest dryRun + optional Supabase RPC probe.
+ * Week-4 measurement smoke — digest dryRun + Supabase retention probes.
  *
  * Usage:
  *   SMOKE_BASE_URL=https://www.missionwinning.com CRON_SECRET=… npm run week4-smoke
  *
  * Optional:
- *   SUPABASE_SERVICE_ROLE_KEY + NEXT_PUBLIC_SUPABASE_URL — probe mw_week4_retention()
+ *   SUPABASE_SERVICE_ROLE_KEY + NEXT_PUBLIC_SUPABASE_URL — probe both retention RPCs
  *
  * Exit 0 on success; 1 on hard fail; 2 if CRON_SECRET / base missing (skip).
+ *
+ * This script also settles a contradiction that had been sitting in the repo unresolved:
+ * docs/THESIS.md said `mw_week4_retention()` was unapplied while
+ * docs/LAUNCH_RUNBOOK.md said it existed in prod. Whichever is true, it is one run away
+ * — so the RPC is called, and a 404 is reported as "function missing" rather than being
+ * folded into a generic failure where nobody can tell it apart from a bad key.
  */
 const base = (process.env.SMOKE_BASE_URL || '').replace(/\/$/, '');
 const cronSecret = process.env.CRON_SECRET?.trim();
@@ -60,32 +66,77 @@ console.log(`  retention payload: ${hasRetention ? 'present in compose' : 'check
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+
+/** Call one RPC. Returns { ok, rows } or { ok:false, status, detail }. */
+async function probeRpc(name) {
+  const rpc = await fetch(`${url}/rest/v1/rpc/${name}`, {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: '{}',
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!rpc.ok) {
+    return { ok: false, status: rpc.status, detail: (await rpc.text()).slice(0, 200) };
+  }
+  return { ok: true, rows: await rpc.json() };
+}
+
 if (url && key) {
-  try {
-    const rpc = await fetch(`${url}/rest/v1/rpc/mw_week4_retention`, {
-      method: 'POST',
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        'Content-Type': 'application/json',
-      },
-      body: '{}',
-      signal: AbortSignal.timeout(15_000),
-    });
-    if (rpc.ok) {
-      const rows = await rpc.json();
-      console.log(`✓ mw_week4_retention() OK (${Array.isArray(rows) ? rows.length : 1} row(s))`);
+  // The boss instrument. A missing function here is the single most important thing this
+  // script can report: it means the north star is not merely empty, it is uncomputable.
+  const weekly = await probeRpc('mw_week4_retention_weekly');
+  if (!weekly.ok) {
+    if (weekly.status === 404) {
+      console.error(
+        'FAIL — mw_week4_retention_weekly() does not exist (404).\n' +
+          '      Apply supabase/migrations/20261009_week_logged_device_owners.sql first.\n' +
+          '      Until it exists, week_logged is write-only and the north star cannot be\n' +
+          '      computed at all — not even for signed-in athletes.',
+      );
     } else {
-      const errText = await rpc.text();
-      console.error(`FAIL — mw_week4_retention HTTP ${rpc.status}: ${errText.slice(0, 200)}`);
-      process.exit(1);
+      console.error(`FAIL — mw_week4_retention_weekly HTTP ${weekly.status}: ${weekly.detail}`);
     }
-  } catch (e) {
-    console.error('FAIL — Supabase RPC probe:', e instanceof Error ? e.message : e);
     process.exit(1);
   }
+  const weeklyRows = Array.isArray(weekly.rows) ? weekly.rows : [];
+  console.log(`✓ mw_week4_retention_weekly() OK — ${weeklyRows.length} cohort row(s)`);
+  if (weeklyRows.length === 0) {
+    console.log('  (no cohorts yet — expected until athletes log across an ISO week boundary)');
+  } else {
+    for (const row of weeklyRows.slice(-5)) {
+      const retained = Number(row.week4_retained ?? 0);
+      const eligible = Number(row.cohort_eligible ?? 0);
+      const pct = eligible > 0 ? ((retained / eligible) * 100).toFixed(1) : '—';
+      console.log(`  ${row.cohort_iso_week}: ${retained}/${eligible} (${pct}%)`);
+    }
+  }
+
+  // Continuity only. Signed-in athletes exclusively — it reads workout_logs.user_id, so
+  // it excludes every guest. Quoting it as the north star would be measuring the
+  // minority that created an account, which is the bug the weekly RPC exists to fix.
+  const signedIn = await probeRpc('mw_week4_retention');
+  if (signedIn.ok) {
+    const rows = Array.isArray(signedIn.rows) ? signedIn.rows : [];
+    console.log(
+      `· mw_week4_retention() OK — ${rows[0]?.cohort_eligible ?? 0} eligible / ` +
+        `${rows[0]?.week4_retained ?? 0} retained (SIGNED-IN ONLY, not the north star)`,
+    );
+  } else if (signedIn.status === 404) {
+    console.log(
+      '· mw_week4_retention() missing (404) — docs/THESIS.md was right, docs/LAUNCH_RUNBOOK.md was not.\n' +
+        '  Apply it if you want the signed-in continuity number; the weekly RPC does not depend on it.',
+    );
+  } else {
+    console.log(`· mw_week4_retention() HTTP ${signedIn.status}: ${signedIn.detail}`);
+  }
 } else {
-  console.log('· mw_week4_retention RPC skipped (set SUPABASE_SERVICE_ROLE_KEY + NEXT_PUBLIC_SUPABASE_URL)');
+  console.log(
+    '· retention RPCs skipped (set SUPABASE_SERVICE_ROLE_KEY + NEXT_PUBLIC_SUPABASE_URL)',
+  );
 }
 
 console.log('\nFounder (not agent): confirm PostHog Insight for iday_* → first_workout_completed → workout_completed');
