@@ -358,7 +358,7 @@ const en: InfoStrings = {
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
   infoTermsEligibility: 'Eligibility & Supported Regions',
   infoTermsEligibilityBody:
-    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility.',
+    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted use is described on /regions and remains your responsibility.',
   infoTermsSanctions: 'Sanctions, export controls & prohibited persons',
   infoTermsSanctionsBody:
     'You represent that you are not a person or entity designated on any applicable restricted-party, sanctions, or denied-persons list maintained by authorities in jurisdictions where we or our payment, cloud, or distribution partners operate, and that you will not use the Service in any way that would cause Mission Winning LLC or those partners to violate applicable sanctions, export-control, or trade-control laws. We may refuse, suspend, or terminate access where we reasonably believe applicable law forbids providing the Service — including comprehensively restricted jurisdictions and other persons or destinations restricted under applicable sanctions or trade-control programs — even when automated country detection is imperfect. Our commercial Supported Regions exclusions (including Ukraine as a whole) are product-availability rules and are not a claim about any single country’s embargo list. You remain responsible for complying with laws that apply to you.',
@@ -397,7 +397,7 @@ const en: InfoStrings = {
     'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
   infoPrivacyLocalFirst: 'Local-first by design',
   infoPrivacyLocalFirstBody:
-    'Training logs, nutrition, and journey progress are stored on your device first. Cloud sync is optional and requires sign-in. We do not sell personal health data. The app harness is open source so you can inspect how privacy works.',
+    'Training logs, nutrition, and journey progress are stored on your device first. Cloud sync is optional and requires sign-in. We do not sell personal health data.',
   infoPrivacyAiCoach: 'AI features (disclosure)',
   infoPrivacyAiCoachBody:
     'Mission Winning discloses that some features may use artificial intelligence. The free core coach (rules-based weekly plan and offline adjustments) does not require an AI API key and does not send your data to a model. When operators enable optional AI features — such as LLM coach chat/voice, daily insight, or photo meal macro estimates — we process limited inputs with a configured provider (recommended: SpaceXAI/xAI). We do not sell that content or use it for ads. When the provider is xAI with team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ). Cloud sync, payments, email, and product analytics remain separate third parties — ZDR does not replace those policies.',
@@ -520,13 +520,13 @@ const en: InfoStrings = {
 
   infoPrivacyRegions: 'Supported Regions & territorial scope',
   infoPrivacyRegionsBody:
-    'The hosted Mission Winning consumer service is directed to users in Supported Regions. We do not offer the hosted service to residents of Europe (EEA, United Kingdom, Switzerland, France, and associated territories), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. If you are in an unsupported region, do not create an account or send us personal data expecting a supported customer relationship. Open-source self-hosting is separate and is your responsibility. We may process limited technical data (such as IP-derived country signals) to enforce regional availability, fraud prevention, and legal compliance. California residents see CCPA rights below. We do not sell personal information for cross-context behavioral advertising.',
+    'The hosted Mission Winning consumer service is directed to users in Supported Regions. We do not offer the hosted service to residents of Europe (EEA, United Kingdom, Switzerland, France, and associated territories), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. If you are in an unsupported region, do not create an account or send us personal data expecting a supported customer relationship. Self-hosting is separate and is your responsibility. We may process limited technical data (such as IP-derived country signals) to enforce regional availability, fraud prevention, and legal compliance. California residents see CCPA rights below. We do not sell personal information for cross-context behavioral advertising.',
   infoUsageTitle: 'Usage Policy',
   infoUsageLead:
     'This Usage Policy (Acceptable Use) applies with the Terms of Service. Hosted service availability is limited by Supported Regions.',
   infoUsagePurpose: 'Purpose',
   infoUsagePurposeBody:
-    'Keep the free training mission safe. Open source builds trust; it does not license abuse of people, systems, or the law. This policy applies to the Mission Winning application, APIs, hosted services, and use of the open-source codebase in connection with our marks or hosted interconnect.',
+    'Keep the free training mission safe. This policy applies to the Mission Winning application, APIs, hosted services, and self-hosted deployments in connection with our marks or hosted interconnect.',
   infoUsagePermitted: 'Permitted use',
   infoUsagePermittedBody:
     'You may use Mission Winning to track workouts, nutrition, mobility, mind, and learning for yourself or people you coach with their consent; run a self-hosted or modified copy under the project license; and contribute improvements that respect privacy, safety, and the free-core mission — subject to Supported Regions for the hosted service.',
@@ -571,9 +571,9 @@ const en: InfoStrings = {
   infoRegionsWhatCounts: 'What “hosted service” means',
   infoRegionsWhatCountsBody:
     'Hosted service includes: missionwinning.com and related domains we operate; cloud accounts and sync; paid Super Bundle and billing; official Android builds we distribute; email support as a customer. Device-local free logging without an account is software that may run on a phone anywhere, but it is not a supported hosted customer relationship in excluded regions, and cloud features remain unsupported there.',
-  infoRegionsOss: 'Open source',
+  infoRegionsOss: 'Self-hosting',
   infoRegionsOssBody:
-    'The project license (see repository LICENSE) may allow you to run modified software yourself. Self-hosting is your infrastructure and your compliance burden. It does not entitle you to Mission Winning LLC accounts, payments, trademarks, or support in unsupported regions.',
+    'The software licence may allow you to run modified versions yourself. Self-hosting is your infrastructure and your compliance burden. It does not entitle you to Mission Winning LLC accounts, payments, trademarks, or support in unsupported regions.',
   infoRegionsEnforcement: 'How we may enforce',
   infoRegionsEnforcementBody:
     'Enforcement layers: Cloudflare geo rules; CDN country on /api/geo; hard 403 on /api/checkout and crypto checkout; SignInPanel and UnlockButton refuse hosted signup/pay when blocked. We may also use billing country, payment method, account profile, and self-declared residence. Circumventing regional limits (false address, VPN abuse for payments, etc.) is a Terms and Usage Policy violation.',

@@ -87,17 +87,6 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         <Link href="/changelog" className="hover:text-primary transition-colors">
           Changelog
         </Link>
-        <span aria-hidden className="text-border">
-          ·
-        </span>
-        <a
-          href="https://github.com/Snedz/missionwinning"
-          className="hover:text-primary transition-colors"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t('sourceCode', { defaultValue: 'Source' })}
-        </a>
       </nav>
       {showBuild && (
         <>
