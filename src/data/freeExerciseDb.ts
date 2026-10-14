@@ -1,4 +1,4 @@
-import type { Exercise, ExerciseLevel, MuscleGroup } from "@/types";
+import type { Exercise, ExerciseLevel, MuscleGroup, ProgramTag } from "@/types";
 
 /**
  * Curated absorb of yuhonas/free-exercise-db (Unlicense).
@@ -10,11 +10,14 @@ export const FREE_EXERCISE_DB_SOURCE = "yuhonas/free-exercise-db";
 export const FREE_EXERCISE_DB_LICENSE = "Unlicense";
 export const FREE_EXERCISE_DB_COMMIT = "a859101d633a01c4a1a920d6a8ce41dabba0705f";
 export const FREE_EXERCISE_DB_ID_PREFIX = "fedb-";
-/** Round-robin cap. The upstream file is larger; this is the curated subset. */
-export const FREE_EXERCISE_DB_CAP = 120;
+/**
+ * Above the upstream row count (876) so round-robin emits every mapped row.
+ * House-name collisions are the only rows that stay out.
+ */
+export const FREE_EXERCISE_DB_CAP = 2000;
 
 export const FREE_EXERCISE_DB_ATTRIBUTION =
-  "Curated subset of yuhonas/free-exercise-db (Unlicense, public domain). Names, muscles, equipment, and one cue. Images not included.";
+  "Mapped absorb of yuhonas/free-exercise-db (Unlicense, public domain). Names, muscles, equipment, and one cue. Images not included.";
 
 /** Equipment strings the Library chips already match via substring. */
 export const FREE_EXERCISE_DB_EQUIPMENT_ORDER = [
@@ -25,6 +28,9 @@ export const FREE_EXERCISE_DB_EQUIPMENT_ORDER = [
   "Band",
   "Kettlebell",
   "Machine",
+  "Medicine Ball",
+  "Exercise Ball",
+  "Other",
 ] as const;
 
 const EQUIPMENT: Record<string, string> = {
@@ -35,6 +41,22 @@ const EQUIPMENT: Record<string, string> = {
   bands: "Band",
   kettlebells: "Kettlebell",
   machine: "Machine",
+  "e-z curl bar": "Barbell",
+  "medicine ball": "Medicine Ball",
+  "exercise ball": "Exercise Ball",
+  "foam roll": "Other",
+  other: "Other",
+  "": "Other",
+};
+
+const CATEGORY_TAG: Record<string, ProgramTag> = {
+  strength: "strength",
+  powerlifting: "strength",
+  "olympic weightlifting": "strength",
+  strongman: "strength",
+  cardio: "conditioning",
+  plyometrics: "conditioning",
+  stretching: "corrective",
 };
 
 const MUSCLE: Record<string, MuscleGroup> = {
@@ -111,7 +133,8 @@ function cueFromInstructions(instructions: string[] | null | undefined): string 
 /** One source row → an Exercise, or null when it is outside the curated rules. */
 export function mapFreeExerciseDbRow(row: FreeExerciseDbRow): Exercise | null {
   if (!row || typeof row.id !== "string" || typeof row.name !== "string") return null;
-  if ((row.category ?? "").trim().toLowerCase() !== "strength") return null;
+  const tag = CATEGORY_TAG[(row.category ?? "").trim().toLowerCase()];
+  if (!tag) return null;
   const equipment = EQUIPMENT[(row.equipment ?? "").trim().toLowerCase()];
   if (!equipment) return null;
   const primary = mapMuscles(row.primaryMuscles);
@@ -129,7 +152,7 @@ export function mapFreeExerciseDbRow(row: FreeExerciseDbRow): Exercise | null {
     name,
     muscleGroups,
     equipment,
-    tags: ["strength"],
+    tags: [tag],
     ...(level ? { level } : {}),
     ...(cues ? { cues } : {}),
   };

@@ -13,7 +13,7 @@
 |---------|---------|
 | `exercises.ts` | Base catalog; extended/volume-2/free-exercise-db via `ensureFullExerciseCatalog()` |
 | `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional house exercises (dynamic import from `exercises.ts`) |
-| `freeExerciseDb.ts`, `freeExerciseDb.curated.json`, `exercisesFreeDb.ts` | Curated Unlicense subset (`fedb-` ids). Attribution: `free-exercise-db/NOTICE.md` |
+| `freeExerciseDb.ts`, `freeExerciseDb.curated.json`, `exercisesFreeDb.ts` | Unlicense absorb (`fedb-` ids), deduped against house names. Attribution: `free-exercise-db/NOTICE.md` |
 | `exerciseEnrichment.ts` | Tags, levels, alternatives |
 | `programTemplates.ts` | Builder program templates (lazy-loaded on `/builder`) |
 | `starterFocusFallback.ts` | The six free programs Just Go's focus fallback can select. Spread back into `starterPrograms.ts` — not a second catalog |

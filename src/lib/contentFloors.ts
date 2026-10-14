@@ -47,7 +47,7 @@ export const CONTENT_FLOORS = {
    * Public `/exercises/<id>` pages — the deduped house catalog after
    * `ensureFullExerciseCatalog()` (126 base + 99 extended + 30 volume 2 = 254 raw,
    * 26 ids shared, 228 unique). `app/sitemap.ts` awaits the splice before
-   * mapping. The free-exercise-db subset (`fedb-` ids) is spliced in the same
+   * mapping. The free-exercise-db absorb (`fedb-` ids) is spliced in the same
    * call and sits above this floor. The floor stays 228 so landing copy
    * under-promises; raising it is a separate marketing edit.
    *

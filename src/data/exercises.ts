@@ -159,7 +159,7 @@ export const EXERCISES: Exercise[] = enrichExercises(dedupeExercises(EXERCISE_EN
 let extendedCatalogLoaded = false;
 let extendedCatalogPromise: Promise<void> | null = null;
 
-/** Lazy-load extended, volume-2, and the free-exercise-db subset. Safe to call repeatedly. */
+/** Lazy-load extended, volume-2, and the free-exercise-db absorb. Safe to call repeatedly. */
 export function ensureFullExerciseCatalog(): Promise<void> {
   if (extendedCatalogLoaded) return Promise.resolve();
   if (!extendedCatalogPromise) {
