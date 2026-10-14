@@ -2,7 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import type { MuscleGroup } from "@/types";
+import type { MuscleGroup, ProgramTag } from "@/types";
 import {
   FREE_EXERCISE_DB_ATTRIBUTION,
   FREE_EXERCISE_DB_CAP,
@@ -80,12 +80,36 @@ describe("freeExerciseDb", () => {
     assert.deepEqual(mapped.muscleGroups, ["Chest", "Arms", "Shoulders"]);
   });
 
-  it("refuses stretching, unmapped equipment, null equipment, and empty primaries", () => {
-    assert.equal(mapFreeExerciseDbRow(row({ category: "stretching" })), null);
-    assert.equal(mapFreeExerciseDbRow(row({ category: "plyometrics" })), null);
-    assert.equal(mapFreeExerciseDbRow(row({ equipment: "foam roll" })), null);
-    assert.equal(mapFreeExerciseDbRow(row({ equipment: "e-z curl bar" })), null);
-    assert.equal(mapFreeExerciseDbRow(row({ equipment: null })), null);
+  it("maps the rest of the upstream categories and equipment", () => {
+    const stretch = mapFreeExerciseDbRow(row({ category: "stretching", equipment: "foam roll" }));
+    assert.ok(stretch);
+    assert.deepEqual(stretch.tags, ["corrective"]);
+    assert.equal(stretch.equipment, "Other");
+    const plyo = mapFreeExerciseDbRow(row({ category: "plyometrics", equipment: "medicine ball" }));
+    assert.ok(plyo);
+    assert.deepEqual(plyo.tags, ["conditioning"]);
+    assert.equal(plyo.equipment, "Medicine Ball");
+    const ez = mapFreeExerciseDbRow(row({ category: "powerlifting", equipment: "e-z curl bar" }));
+    assert.ok(ez);
+    assert.deepEqual(ez.tags, ["strength"]);
+    assert.equal(ez.equipment, "Barbell");
+    const bare = mapFreeExerciseDbRow(
+      row({ category: "olympic weightlifting", equipment: null }),
+    );
+    assert.ok(bare);
+    assert.equal(bare.equipment, "Other");
+    const ball = mapFreeExerciseDbRow(row({ category: "strongman", equipment: "exercise ball" }));
+    assert.ok(ball);
+    assert.equal(ball.equipment, "Exercise Ball");
+    const cardio = mapFreeExerciseDbRow(row({ category: "cardio", equipment: "other" }));
+    assert.ok(cardio);
+    assert.deepEqual(cardio.tags, ["conditioning"]);
+    assert.equal(cardio.equipment, "Other");
+  });
+
+  it("refuses an unknown category, unknown equipment, and empty primaries", () => {
+    assert.equal(mapFreeExerciseDbRow(row({ category: "pilates" })), null);
+    assert.equal(mapFreeExerciseDbRow(row({ equipment: "trx" })), null);
     assert.equal(mapFreeExerciseDbRow(row({ primaryMuscles: [] })), null);
     assert.equal(mapFreeExerciseDbRow(row({ primaryMuscles: ["not-a-muscle"] })), null);
   });
@@ -149,7 +173,7 @@ describe("freeExerciseDb curated file", () => {
   const jsonPath = path.join(root, "src/data/freeExerciseDb.curated.json");
   const noticePath = path.join(root, "src/data/free-exercise-db/NOTICE.md");
 
-  it("ships a capped subset with no image payload", () => {
+  it("ships the mapped absorb with no image payload", () => {
     const text = readFileSync(jsonPath, "utf8");
     assert.equal(text.includes("images"), false);
     assert.equal(text.includes(".jpg"), false);
@@ -160,8 +184,9 @@ describe("freeExerciseDb curated file", () => {
       muscleGroups: string[];
       equipment: string;
     }[];
-    assert.ok(parsed.length > 0);
+    assert.ok(parsed.length > 120, `absorb shrank to the old 120-row subset (${parsed.length})`);
     assert.ok(parsed.length <= FREE_EXERCISE_DB_CAP);
+    const tags = new Set<ProgramTag>(["strength", "hypertrophy", "conditioning", "corrective"]);
     const ids = new Set<string>();
     const names = new Set<string>();
     for (const ex of parsed) {
@@ -174,6 +199,9 @@ describe("freeExerciseDb curated file", () => {
       assert.ok(FREE_EXERCISE_DB_EQUIPMENT_ORDER.includes(ex.equipment as (typeof FREE_EXERCISE_DB_EQUIPMENT_ORDER)[number]));
       assert.ok(ex.muscleGroups.length > 0);
       assert.ok(ex.muscleGroups.every((group) => MUSCLES.has(group as MuscleGroup)));
+      const rowTags = (ex as { tags?: string[] }).tags ?? [];
+      assert.ok(rowTags.length > 0);
+      assert.ok(rowTags.every((tag) => tags.has(tag as ProgramTag)));
     }
   });
 

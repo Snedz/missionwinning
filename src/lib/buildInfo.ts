@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1129` plate Use sits with the load (past safety flags `.1128`); Log set stays open. */
-export const APP_BUILD_LABEL = "2026.07-unified.1129";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.1135` Library absorbs the free-exercise-db (past plate Use `.1129`). */
+export const APP_BUILD_LABEL = "2026.07-unified.1135";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

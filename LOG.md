@@ -18,6 +18,18 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-14 — Library absorbs the free-exercise-db (`.1135`)
+
+The Library splice kept 120 strength rows from yuhonas/free-exercise-db and dropped the other 756. The upstream file is Unlicense, commit `a859101d633a01c4a1a920d6a8ce41dabba0705f`, 876 rows.
+
+`mapFreeExerciseDbRow` now takes every upstream category and equipment string. Strength, powerlifting, olympic weightlifting, and strongman stay `strength`. Cardio and plyometrics are `conditioning`. Stretching is `corrective`. An e-z curl bar is a barbell. Medicine ball and exercise ball keep their own equipment. Blank, other, and foam roll are `Other`. A name the house catalog already owns is still dropped. Images stay out. The public exercise-page floor stays 228.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays. paymentUrl stays ''.
+
+Label `2026.07-unified.1135`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1111-for-1135.md](docs/archive/log/LOG-rotate-1111-for-1135.md) (`.1111`).
+
 ## 2026-10-12 — Plate Use sits with the load (`.1129`)
 
 `.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
@@ -433,52 +445,3 @@ tip-promote. Live www stays
 Label `2026.07-unified.1112`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1097-for-1112.md](docs/archive/log/LOG-rotate-1097-for-1112.md) (`.1097`). `.1096` was already rotated by `.1111`.
-
-## 2026-09-24 — Library absorbs a free-exercise-db subset (`.1111`)
-
-Train and Library search were
-limited to the house catalog
-(228 unique after dedupe).
-`ensureFullExerciseCatalog()`
-now also splices 120 strength
-movements from
-yuhonas/free-exercise-db
-(Unlicense, commit
-`a859101d633a01c4a1a920d6a8ce41dabba0705f`).
-Rows map into the existing
-`Exercise` type. Ids are
-`fedb-`. House names win.
-Equipment is round-robin
-across the Library chips so
-one bucket cannot fill the
-cap. Upstream file is 876
-rows; this ship keeps a
-curated subset.
-
-No image bytes and no image
-URLs. The upstream LICENSE is
-Unlicense and the README
-calls the JPG tree public
-domain, but those files came
-from the exercises.json pack
-and `Exercise` has no image
-field. Attribution:
-`src/data/free-exercise-db/NOTICE.md`.
-
-No AGPL paste. No Train
-rewrite. Public exercise-page
-floor stays 228
-(under-promise). `[skip vercel]`.
-No tip-promote. Live www stays
-`.697`. PRIVATE_MODE stays.
-
-**Mutants killed:** stretching
-and unmapped equipment
-accepted as catalog rows;
-house name `Push-ups`
-replaced; round-robin cap
-ignored.
-
-Label `2026.07-unified.1111`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1096-for-1111.md](docs/archive/log/LOG-rotate-1096-for-1111.md) (`.1096`).
