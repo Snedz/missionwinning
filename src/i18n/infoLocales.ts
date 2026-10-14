@@ -738,6 +738,57 @@ const en: InfoStrings = {
     'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
 
   infoPrivacyRegionsLink: 'Where we offer the service',
+
+  /* /contact — company contact. */
+  infoCompanyEyebrow: 'Company',
+  infoContactTitle: 'Contact',
+  infoContactSubtitle:
+    'Mission Winning LLC builds Mission Winning — an AI strength coach and training app for train-anywhere athletes.',
+  infoContactCompanyTitle: 'The company',
+  infoContactCompanyBody:
+    'Mission Winning is operated by Mission Winning LLC, a Texas limited liability company. The product is a free offline workout logger plus Mission Coach weekly plans built from the sets you actually logged — no wearable required. Educational fitness tools only, not medical care.',
+  infoContactEmailTitle: 'Email',
+  infoContactEmailBody:
+    'contact@missionwinning.com — company, business and press enquiries. support@missionwinning.com — product help, account and data requests.',
+  infoContactResponseTitle: 'What to expect',
+  infoContactResponseBody:
+    'Email is read by the person who builds the product. For anything about your data or account, write from the address on your account so the request can be matched to it.',
+  infoContactNoFormsTitle: 'No forms',
+  infoContactNoFormsBody:
+    'This page collects nothing: no contact form, no submission pipeline and no advertising or tracking cookies. Email is the only channel.',
+  infoContactFoot: 'Mission Winning LLC · Texas · contact@missionwinning.com',
+
+  /* /data-safety — Google Play data-safety summary. */
+  infoDataSafetyTitle: 'App data safety',
+  infoDataSafetySubtitle:
+    'What the Mission Winning app does with your data, in plain language. The Privacy Policy is the binding document; this page summarizes it for the store listing.',
+  infoDataSafetyLocalTitle: 'Local-first by default',
+  infoDataSafetyLocalBody:
+    'You can train with no account. Your workouts, routines and settings are stored on your own device, and if you never turn on a feature that uses our servers, none of it leaves the device.',
+  infoDataSafetyCoachTitle: 'The coach, when you ask it',
+  infoDataSafetyCoachBody:
+    'Asking the in-app coach a question sends a short summary of your recent finished sessions — movements, weights, reps and dates — together with the question you typed to our configured US-based AI service, which returns the answer. It is used to answer you; nothing is sent when you do not ask.',
+  infoDataSafetySyncTitle: 'Sign-in and sync, if you choose',
+  infoDataSafetySyncBody:
+    'Signing in is optional. If you do, the same training data syncs to our servers so a lost device or a new phone does not lose your history. You can ask for deletion at any time — the Privacy Policy describes the request and the thirty-day window.',
+  infoDataSafetyHealthTitle: 'Health integration, if you enable it',
+  infoDataSafetyHealthBody:
+    'Where your device offers a health store, you can let the app save a finished session and an estimated calorie figure to it, or read steps for Today. That data stays in the health store on your device; the app does not send your health records to us.',
+  infoDataSafetyNotTitle: 'What the app does not do',
+  infoDataSafetyNotLi1: 'No advertising identifier, and no ad or third-party product-analytics SDK.',
+  infoDataSafetyNotLi2: 'No location, contacts, camera or microphone access.',
+  infoDataSafetyNotLi3: 'No selling or sharing of personal data for advertising.',
+  infoDataSafetyNotLi4: 'No account required — the free logger is never paywalled.',
+  infoDataSafetyPurchasesTitle: 'Purchases',
+  infoDataSafetyPurchasesBody:
+    'If you buy anything, the purchase runs through Google Play Billing. The app holds only the purchase token needed to verify and deliver what you bought; your card details never reach the app.',
+  infoDataSafetySecurityTitle: 'Security',
+  infoDataSafetySecurityBody:
+    'Traffic to our servers is HTTPS only, and cleartext traffic is disabled in the app.',
+  infoDataSafetyContactTitle: 'Deletion and privacy requests',
+  infoDataSafetyContactBody:
+    'Write to support@missionwinning.com from the address on your account with the subject "Data deletion". The Privacy Policy lists every data category, processor and right in full.',
+  infoDataSafetyFoot: 'This page summarizes; the Privacy Policy governs.',
 };
 
 const es: InfoStrings = {

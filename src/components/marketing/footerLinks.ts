@@ -44,6 +44,7 @@ const LEARN: FooterLink[] = [
 
 const COMPANY: FooterLink[] = [
   { href: '/about', labelKey: 'footerCompanyAbout', defaultValue: 'About' },
+  { href: '/contact', labelKey: 'footerCompanyContact', defaultValue: 'Contact' },
   { href: '/changelog', labelKey: 'footerCompanyChangelog', defaultValue: 'Changelog' },
   { href: '/press', labelKey: 'footerCompanyPress', defaultValue: 'Press / Brand' },
   { href: '/vision', labelKey: 'footerCompanyVision', defaultValue: 'Vision' },
@@ -52,6 +53,7 @@ const COMPANY: FooterLink[] = [
 
 const LEGAL: FooterLink[] = [
   { href: '/privacy', labelKey: 'footerLegalPrivacy', defaultValue: 'Privacy' },
+  { href: '/data-safety', labelKey: 'footerLegalDataSafety', defaultValue: 'Data safety' },
   { href: '/terms', labelKey: 'footerLegalTerms', defaultValue: 'Terms' },
   { href: '/cookies', labelKey: 'footerLegalCookies', defaultValue: 'Cookies' },
   { href: '/accessibility', labelKey: 'footerLegalA11y', defaultValue: 'Accessibility' },
