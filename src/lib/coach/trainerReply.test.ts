@@ -1,14 +1,14 @@
 /**
- * Free trainer seat (.1115). Gemini when a key is set, else COACH_LLM, else the set line.
+ * Free trainer seat (.1115 / .1134). Groq, else COACH_LLM, else OpenRouter :free.
+ * Gemini free-tier keys are not a seat.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { DEFAULT_GROQ_MODEL, GROQ_CHAT_COMPLETIONS_URL } from '@/lib/coach/providerClient';
 import {
-  DEFAULT_GEMINI_MODEL,
   TRAINER_SYSTEM_PROMPT,
-  geminiGenerateUrl,
   replyTrainer,
   resolveTrainerSeat,
   trainerUserPrompt,
@@ -57,51 +57,54 @@ test('no key stays on the set line and does not call the network', async () => {
   assert.equal(reply.model, undefined);
 });
 
-test('GEMINI_API_KEY calls Flash generateContent and returns that text', async () => {
+test('GROQ_API_KEY calls Groq chat completions and does not send the key in the URL', async () => {
   const urls: string[] = [];
   const headers: Headers[] = [];
   const reply = await replyTrainer(ask, {
-    env: { GEMINI_API_KEY: 'test-gemini-key', COACH_LLM_API_URL: 'https://api.invalid/v1', COACH_LLM_API_KEY: 'xai' },
+    env: { GROQ_API_KEY: 'gsk_test', GEMINI_API_KEY: 'test-gemini-key' },
     fetchImpl: async (url, init) => {
       urls.push(String(url));
       headers.push(new Headers(init?.headers));
       return jsonResponse({
-        candidates: [{ content: { parts: [{ text: 'Brace, then press the 60 kg you dialed.' }] } }],
+        choices: [{ message: { content: 'Brace, then press the 60 kg you dialed.' } }],
       });
     },
   });
-  assert.equal(reply.source, 'gemini');
-  assert.equal(reply.model, DEFAULT_GEMINI_MODEL);
+  assert.equal(reply.source, 'groq');
+  assert.equal(reply.model, DEFAULT_GROQ_MODEL);
   assert.equal(reply.text, 'Brace, then press the 60 kg you dialed.');
   assert.equal(urls.length, 1);
-  assert.equal(urls[0], geminiGenerateUrl(DEFAULT_GEMINI_MODEL));
-  assert.equal(headers[0]?.get('x-goog-api-key'), 'test-gemini-key');
-  assert.equal(urls[0]?.includes('test-gemini-key'), false);
+  assert.equal(urls[0], GROQ_CHAT_COMPLETIONS_URL);
+  assert.equal(headers[0]?.get('Authorization'), 'Bearer gsk_test');
+  assert.equal(urls[0]?.includes('gsk_test'), false);
+  assert.equal(urls[0]?.includes('generativelanguage'), false);
   const seat = resolveTrainerSeat({
+    GROQ_API_KEY: 'gsk_test',
     GEMINI_API_KEY: 'k',
-    COACH_LLM_API_KEY: 'xai',
-    COACH_LLM_API_URL: 'https://api.invalid/v1',
   });
-  assert.equal(seat.source, 'gemini');
+  assert.equal(seat.source, 'groq');
 });
 
-test('GEMINI_MODEL overrides the Flash slug', async () => {
-  let seen = '';
-  await replyTrainer(ask, {
-    env: { GEMINI_API_KEY: 'k', GEMINI_MODEL: 'gemini-flash-latest' },
-    fetchImpl: async (url) => {
-      seen = String(url);
+test('a Gemini key alone stays on the set line and never calls Google', async () => {
+  let calls = 0;
+  const reply = await replyTrainer(ask, {
+    env: { GEMINI_API_KEY: 'k', GOOGLE_GENERATIVE_AI_API_KEY: 'k2' },
+    fetchImpl: async () => {
+      calls += 1;
       return jsonResponse({
         candidates: [{ content: { parts: [{ text: 'Press.' }] } }],
       });
     },
   });
-  assert.equal(seen, geminiGenerateUrl('gemini-flash-latest'));
+  assert.equal(calls, 0);
+  assert.equal(reply.source, 'rules');
+  assert.equal(reply.text, RULES);
+  assert.equal(resolveTrainerSeat({ GEMINI_API_KEY: 'k' }).source, 'rules');
 });
 
-test('a Gemini error falls back to the set line', async () => {
+test('a model error falls back to the set line', async () => {
   const reply = await replyTrainer(ask, {
-    env: { GEMINI_API_KEY: 'k' },
+    env: { GROQ_API_KEY: 'gsk_test' },
     fetchImpl: async () => jsonResponse({ error: 'nope' }, 500),
   });
   assert.equal(reply.source, 'rules');
@@ -110,20 +113,20 @@ test('a Gemini error falls back to the set line', async () => {
 
 test('a model link or a refused product name falls back to the set line', async () => {
   const linked = await replyTrainer(ask, {
-    env: { GEMINI_API_KEY: 'k' },
+    env: { GROQ_API_KEY: 'gsk_test' },
     fetchImpl: async () =>
       jsonResponse({
-        candidates: [{ content: { parts: [{ text: 'Pay at https://example.com/checkout' }] } }],
+        choices: [{ message: { content: 'Pay at https://example.com/checkout' } }],
       }),
   });
   assert.equal(linked.source, 'rules');
   assert.equal(linked.text, RULES);
 
   const named = await replyTrainer(ask, {
-    env: { GEMINI_API_KEY: 'k' },
+    env: { GROQ_API_KEY: 'gsk_test' },
     fetchImpl: async () =>
       jsonResponse({
-        candidates: [{ content: { parts: [{ text: `Train like ${refused}.` }] } }],
+        choices: [{ message: { content: `Train like ${refused}.` } }],
       }),
   });
   assert.equal(named.source, 'rules');

@@ -242,6 +242,7 @@ describe('LLM route spend gates (.188 wiring)', () => {
   });
 
   it('session-trainer: free beta off, signed-out, does not spend', async () => {
+    setTestEnv('GROQ_API_KEY', 'gsk_test');
     setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
     setTestEnv('NEXT_PUBLIC_FREE_BETA', 'false');
     let calls = 0;
@@ -267,6 +268,7 @@ describe('LLM route spend gates (.188 wiring)', () => {
   });
 
   it('session-trainer: an exhausted daily cap degrades to library, never 429', async () => {
+    setTestEnv('GROQ_API_KEY', 'gsk_test');
     setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
     setTestEnv('LLM_DAILY_CAP_DAILY_INSIGHT', '0');
       const res = await post(
@@ -282,29 +284,28 @@ describe('LLM route spend gates (.188 wiring)', () => {
     assert.equal(data.model, null);
   });
 
-  it('session-trainer: Gemini Flash is the free model that gets called', async () => {
+  it('session-trainer: Groq is the free model that gets called, not Gemini', async () => {
+    setTestEnv('GROQ_API_KEY', 'gsk_test');
     setTestEnv('GEMINI_API_KEY', 'test-gemini-key');
     const urls: string[] = [];
     const original = globalThis.fetch;
     globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
       urls.push(String(input));
       const headers = new Headers(init?.headers);
-      assert.equal(headers.get('x-goog-api-key'), 'test-gemini-key');
-      assert.equal(String(init?.body ?? '').includes('test-gemini-key'), false);
+      assert.equal(headers.get('Authorization'), 'Bearer gsk_test');
+      assert.equal(headers.get('x-goog-api-key'), null);
+      assert.equal(String(init?.body ?? '').includes('gsk_test'), false);
+      assert.equal(String(input).includes('generativelanguage'), false);
       return new Response(
         JSON.stringify({
-          candidates: [
+          choices: [
             {
-              content: {
-                parts: [
-                  {
-                    text: '{"line":"Back Squat, 60 kg for 8. Brace, then drive the floor away."}',
-                  },
-                ],
+              message: {
+                content: '{"line":"Back Squat, 60 kg for 8. Brace, then drive the floor away."}',
               },
             },
           ],
-          usageMetadata: { promptTokenCount: 11, candidatesTokenCount: 14, totalTokenCount: 25 },
+          usage: { prompt_tokens: 11, completion_tokens: 14, total_tokens: 25 },
         }),
         { status: 200, headers: { 'content-type': 'application/json' } }
       );
@@ -319,10 +320,10 @@ describe('LLM route spend gates (.188 wiring)', () => {
       assert.equal(res.status, 200);
       const data = (await res.json()) as { source: string; model: string; line: string };
       assert.equal(data.source, 'llm');
-      assert.equal(data.model, 'gemini-2.5-flash');
+      assert.equal(data.model, 'openai/gpt-oss-20b');
       assert.match(data.line, /Back Squat/);
       assert.equal(urls.length, 1);
-      assert.match(urls[0], /\/models\/gemini-2\.5-flash:generateContent$/);
+      assert.match(urls[0], /api\.groq\.com\/openai\/v1\/chat\/completions$/);
     } finally {
       globalThis.fetch = original;
     }

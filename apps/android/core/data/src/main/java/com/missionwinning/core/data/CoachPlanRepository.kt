@@ -2,6 +2,8 @@ package com.missionwinning.core.data
 
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.MobileApiClient
+import com.missionwinning.core.network.TrainerAskRequestDto
+import com.missionwinning.core.network.TrainerAskResponseDto
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -86,6 +88,11 @@ class CoachPlanRepository(
         }
         savePlanResponse(plan)
         return plan
+    }
+
+    suspend fun askTrainer(body: TrainerAskRequestDto): Result<TrainerAskResponseDto> {
+        val client = api ?: return Result.failure(IllegalStateException("coach offline"))
+        return client.postTrainerAsk(body)
     }
 
     private suspend fun savePlanResponse(resp: CoachPlanResponseDto) {

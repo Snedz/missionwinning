@@ -11,6 +11,7 @@ When adding a doc:
 ## Archived (Wave 9)
 
 - [`CONTEXT-now-rotation-2026-10-13.md`](docs/archive/CONTEXT-now-rotation-2026-10-13.md) — `.1130` rotated four Now bullets (`.1107` Photos remount, `.1109` Leftover Health extras, `.1110` Honest manifest, `.1111` free-exercise-db subset) so the orphaned 2026-10-09 wave could land against the 25-bullet cap.
+- [`LOG-rotate-1112-for-1134.md`](docs/archive/log/LOG-rotate-1112-for-1134.md) — rotated by `.1134`, to keep the <=15 entry budget.
 - [`LOG-rotate-1111-for-1130.md`](docs/archive/log/LOG-rotate-1111-for-1130.md) — rotated by `.1130`, to keep the <=15 entry budget.
 - [`LOG-rotate-1110-for-1129.md`](docs/archive/log/LOG-rotate-1110-for-1129.md) — rotated by `.1129`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1108.md`](docs/archive/CONTEXT-now-1108.md) — `.1129` rotated the `.1108` Now bullet (Storage remount leftover old-fake writes).

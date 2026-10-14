@@ -9,8 +9,11 @@ import com.missionwinning.core.data.BillingUiSnapshot
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.PremiumPurchaseGateway
 import com.missionwinning.core.model.CoachDepth
+import com.missionwinning.core.model.CoachProvider
 import com.missionwinning.core.network.CoachPlanResponseDto
+import com.missionwinning.core.network.PlanExerciseDto
 import com.missionwinning.core.network.PlanSessionDto
+import com.missionwinning.core.network.TrainerAskRequestDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.missionwinning.core.designsystem.MwFreeBeta
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +51,7 @@ data class CoachUiState(
     val sessionWhys: Map<String, SessionWhyUi> = emptyMap(),
     val expandedSessionId: String? = null,
     val billing: BillingUiSnapshot = BillingUiSnapshot(),
+    val trainerLine: String? = null,
 )
 
 @HiltViewModel
@@ -140,6 +144,29 @@ class CoachViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Ask the server trainer about the open exercise. The device sends the
+     * set to our API. Groq / OpenRouter keys stay in server env. A Gemini
+     * free-tier base URL is refused before the call.
+     */
+    fun askTrainer(session: PlanSessionDto) {
+        val direct = CoachProvider.resolve(CoachProvider.Env())
+        if (direct.any { CoachProvider.isGeminiFreeTier(it.url) || CoachProvider.isGeminiModel(it.model) }) {
+            _local.update { it.copy(trainerLine = null) }
+            return
+        }
+        val exercise = session.exercises.firstOrNull() ?: return
+        viewModelScope.launch {
+            val reply = repository.askTrainer(trainerBody(exercise))
+            _local.update {
+                it.copy(
+                    trainerLine = reply.getOrNull()?.text,
+                    message = if (reply.isFailure) "Trainer is offline." else it.message,
+                )
+            }
+        }
+    }
+
     /** Play Billing — Super Bundle only. Logger stays free. */
     fun subscribe(activity: Activity) {
         billing.launchSubscribe(activity)
@@ -151,6 +178,21 @@ class CoachViewModel @Inject constructor(
     }
 
     companion object {
+        fun trainerBody(exercise: PlanExerciseDto): TrainerAskRequestDto {
+            val reps = exercise.reps.coerceIn(0, 200)
+            val sets = exercise.sets.coerceIn(1, 40)
+            return TrainerAskRequestDto(
+                exerciseName = exercise.exerciseId.replace('-', ' ').trim().ifEmpty { "Set" },
+                setNumber = 1,
+                setCount = sets,
+                reps = reps,
+                weight = exercise.weight.coerceIn(0.0, 2000.0),
+                unitLabel = "kg",
+                rowType = if (exercise.weight <= 0.0) "bodyweight" else "weight",
+                hardCount = 0,
+            )
+        }
+
         fun enrich(
             plan: CoachPlanResponseDto?,
             premium: Boolean,

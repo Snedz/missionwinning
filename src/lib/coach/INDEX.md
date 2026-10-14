@@ -27,9 +27,9 @@
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next); `coachSheetSessions` is that one session for first paint
 8e2. `nextDayFromLogs.ts` — stable next day (Wednesday) from the live diary, or the live plan when it owns the next calendar day (`.955`). Warmup-only sessions are not a day; mixed templates drop W (`.966`). Thin diary (1–2 live sessions) invents nothing (`.971`). Does not call `generateWeek`
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` + `postCoachChatMessage` (.445/.453/.909)
-8f2. `sessionTrainer.ts` — next set + library cue + plan facts for the personal trainer card (`.1114`). `sessionTrainerServer.ts` speaks a line via `gemini-2.5-flash` when a Gemini key is set
+8f2. `sessionTrainer.ts` — next set + library cue + plan facts for the personal trainer card (`.1114`). `sessionTrainerServer.ts` speaks a line via `providerClient.ts` (Groq, then `COACH_LLM_*`, then OpenRouter `:free`). Gemini free tier is not a seat
 8g. `agent/` — local RAG + MCP-shaped tools + ReAct loop for premium chat (ZDR one-shot only) — [agent/INDEX.md](agent/INDEX.md)
-8h. `trainerReply.ts` — free AI personal trainer for the open set and Coach (`.1115`). Gemini Flash when `GEMINI_API_KEY` is set, else `COACH_LLM_*`, else `sessionCoachLine`. No premium check. No checkout URL. Route: `POST /api/coach/trainer`. UI: `SessionTrainerAsk` on Train; `CoachTrainerDoor` on Coach.
+8h. `trainerReply.ts` — free AI personal trainer for the open set and Coach (`.1115`, provider `.1134`). Groq when `GROQ_API_KEY` is set, else `COACH_LLM_*`, else OpenRouter `:free`, else `sessionCoachLine`. Gemini hosts are refused. No premium check. No checkout URL. Route: `POST /api/coach/trainer`. UI: `SessionTrainerAsk` on Train; `CoachTrainerDoor` on Coach. Android asks the same route from Coach.
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
@@ -40,7 +40,7 @@
 
 ## Optional LLM + ZDR
 
-Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` + chat).
+Shared client: `src/lib/coach/providerClient.ts` (Groq default, OpenRouter `:free` fallback, any OpenAI-compatible `COACH_LLM_*`). `src/lib/coachLlmClient.ts` remains the single-endpoint caller, including xAI ZDR. Gemini free tier is not called.
 
 - Prefer SpaceXAI/xAI + Console **Zero Data Retention** (team-wide). Header check: `x-zero-data-retention`.
 - Default model `grok-4.6` with `reasoning_effort=low` and live search off. High reasoning is a founder override.

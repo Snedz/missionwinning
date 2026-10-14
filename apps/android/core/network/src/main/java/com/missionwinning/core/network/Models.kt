@@ -42,6 +42,25 @@ data class AdaptBeatDto(
 )
 
 @Serializable
+data class TrainerAskRequestDto(
+    val exerciseName: String,
+    val setNumber: Int,
+    val setCount: Int,
+    val reps: Int,
+    val weight: Double,
+    val unitLabel: String,
+    val rowType: String,
+    val hardCount: Int = 0,
+)
+
+@Serializable
+data class TrainerAskResponseDto(
+    val text: String,
+    val source: String,
+    val model: String? = null,
+)
+
+@Serializable
 data class CoachPlanResponseDto(
     val plan: CoachPlanDto,
     val adaptBeats: List<AdaptBeatDto> = emptyList(),
