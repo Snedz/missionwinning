@@ -89,6 +89,8 @@
 | `TransparencyPage.tsx` | `/account/transparency` — Visibility first paint is house leftover (static page, not RouteLoading). Visibility first-paint report row is house leftover. Report / downloads stay. |
 | `ExplorePlacesPage.tsx` | `/explore` — places leftover; board + pin list first; Add a place is house-card. Quiet Account door. Not a shop. |
 | `PrivacyPage.tsx` | `/privacy` — leftover policy; jump chips + house-card sections. Never a rail. |
+| `ContactPage.tsx` | `/contact` — company contact; jump chips + house-card sections. Email only; no form, no tracker. Never a rail. |
+| `DataSafetyPage.tsx` | `/data-safety` — store-listing data-safety summary; jump chips + house-card sections; links the policy. Never a rail. |
 | `CookiesPage.tsx` | `/cookies` — leftover inventory; overview + table first. Never a rail. |
 | `AccessibilityPage.tsx` | `/accessibility` — leftover accessibility; jump chips + house-card sections. Never a rail. |
 | `TermsPage.tsx` | `/terms` — leftover terms; jump chips + house-card sections. Never a rail. |

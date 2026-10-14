@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     '',
     '/about',
+    '/contact',
     '/changelog',
     '/vision',
     // `/bundle` is the Super Bundle shop (merchandising). Checkout stays muted
@@ -33,6 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/press',
     '/terms',
     '/privacy',
+    '/data-safety',
     '/cookies',
     '/accessibility',
     '/dmca',

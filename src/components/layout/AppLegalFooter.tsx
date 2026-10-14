@@ -30,6 +30,12 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         <span aria-hidden className="text-border">
           ·
         </span>
+        <Link href="/data-safety" className="hover:text-primary transition-colors">
+          {t('dataSafety', { defaultValue: 'Data safety' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
         <Link href="/usage" className="hover:text-primary transition-colors">
           {t('infoUsageTitle', { defaultValue: 'Usage' })}
         </Link>
@@ -68,6 +74,12 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         </span>
         <Link href="/about" className="hover:text-primary transition-colors">
           {t('about', { defaultValue: 'About' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
+        <Link href="/contact" className="hover:text-primary transition-colors">
+          {t('contact', { defaultValue: 'Contact' })}
         </Link>
         <span aria-hidden className="text-border">
           ·

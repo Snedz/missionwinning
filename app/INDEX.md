@@ -46,6 +46,8 @@
 | `/learn/course` | `LearnCoursePage.tsx` — Course first paint is house leftover (static page; `?chapter=` server-resolved; not RouteLoading). |
 | `/coaching` | `CoachingPage.tsx` | Human 1:1 leftover form — not Mission Coach. Never a rail. |
 | `/privacy` | `PrivacyPage.tsx` | Leftover policy. Jump chips + house-card sections. Never a rail. |
+| `/contact` | `ContactPage.tsx` | Company contact. Jump chips + house-card sections. Email only; no form, no tracker. Never a rail. |
+| `/data-safety` | `DataSafetyPage.tsx` | Store-listing data-safety summary. Jump chips + house-card sections; links the Privacy Policy. Never a rail. |
 | `/cookies` | `CookiesPage.tsx` | Leftover inventory. Overview + table first. Never a rail. |
 | `/accessibility` | `AccessibilityPage.tsx` | Leftover accessibility — jump chips + house-card sections. Never a rail. |
 | `/terms` | `TermsPage.tsx` | Leftover terms. Jump chips + house-card sections. Never a rail. |
