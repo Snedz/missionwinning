@@ -140,7 +140,6 @@ dependencies {
     implementation(libs.androidx.health.connect)
     implementation(libs.play.services.wearable)
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.billing.client)
     implementation(libs.androidx.profileinstaller)
     "baselineProfile"(project(":benchmark"))
     debugImplementation(libs.androidx.compose.ui.tooling)

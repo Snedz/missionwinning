@@ -1,5 +1,5 @@
 /**
- * Create a Stripe Checkout Session for Super Bundle.
+ * Checkout is off. Authenticated callers get 503. No Stripe client.
  * Auth: session (signed-in) | Rate: 10/min | Territory hard block (Europe/OIC/CA)
  * See: docs/STRIPE_PREMIUM_SETUP.md
  */

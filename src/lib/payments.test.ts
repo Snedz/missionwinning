@@ -140,10 +140,10 @@ test('the billing portal reports 401 as auth_required', async () => {
   assert.equal(!r.ok && r.code, 'auth_required');
 });
 
-test('isCheckoutSessionsEnabled is true only for the exact string', () => {
-  for (const [value, want] of [['true', true], ['false', false], ['TRUE', false], ['1', false], [undefined, false]] as const) {
+test('isCheckoutSessionsEnabled stays off', () => {
+  for (const value of ['true', 'false', 'TRUE', '1', undefined] as const) {
     setTestEnv('NEXT_PUBLIC_STRIPE_CHECKOUT', value);
-    assert.equal(isCheckoutSessionsEnabled(), want, `NEXT_PUBLIC_STRIPE_CHECKOUT=${String(value)}`);
+    assert.equal(isCheckoutSessionsEnabled(), false, `NEXT_PUBLIC_STRIPE_CHECKOUT=${String(value)}`);
   }
 });
 
@@ -157,7 +157,7 @@ test('isPaidCheckoutAllowed is false while free-beta is on, even if Stripe check
     setTestEnv('NEXT_PUBLIC_FREE_BETA', 'true');
     assert.equal(isPaidCheckoutAllowed(), false);
     setTestEnv('NEXT_PUBLIC_FREE_BETA', 'false');
-    assert.equal(isPaidCheckoutAllowed(), true);
+    assert.equal(isPaidCheckoutAllowed(), false, 'payments stay off when free-beta is switched off');
   } finally {
     setTestEnv('NEXT_PUBLIC_FREE_BETA', prevBeta);
     setTestEnv('NEXT_PUBLIC_STRIPE_CHECKOUT', prevCheckout);

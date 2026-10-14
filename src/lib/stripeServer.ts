@@ -1,25 +1,12 @@
 /**
- * Server-only Stripe client for Checkout Sessions + Customer Portal.
+ * Stripe Checkout is off. This module does not construct a Stripe client.
  * Webhook signature verify stays in stripeWebhook.ts (HMAC, no SDK required).
  */
 import 'server-only';
-import Stripe from 'stripe';
 
-let stripeSingleton: Stripe | null | undefined;
-
-/** Lazy Stripe SDK — null when STRIPE_SECRET_KEY is unset. */
-export function getStripe(): Stripe | null {
-  if (stripeSingleton !== undefined) return stripeSingleton;
-  const key = process.env.STRIPE_SECRET_KEY?.trim();
-  if (!key) {
-    stripeSingleton = null;
-    return null;
-  }
-  stripeSingleton = new Stripe(key, {
-    apiVersion: '2026-07-29.dahlia',
-    typescript: true,
-  });
-  return stripeSingleton;
+/** Payments are off. A secret key in the environment does not build a client. */
+export function getStripe(): null {
+  return null;
 }
 
 export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
@@ -36,14 +23,9 @@ export function getStripePriceId(planId: CheckoutPlanId): string | null {
   return id || null;
 }
 
-/** True when secret key + all three Super Bundle price IDs are set. */
+/** Payments are off. Price ids in the environment do not turn checkout on. */
 export function isStripeCheckoutConfigured(): boolean {
-  if (!process.env.STRIPE_SECRET_KEY?.trim()) return false;
-  return (
-    Boolean(getStripePriceId('monthly')) &&
-    Boolean(getStripePriceId('12mo')) &&
-    Boolean(getStripePriceId('lifetime'))
-  );
+  return false;
 }
 
 export function appOrigin(): string {

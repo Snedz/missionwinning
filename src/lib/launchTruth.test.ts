@@ -326,10 +326,6 @@ test('nothing reads a field through a cast that the type does not declare', () =
       why: 'the payer block of a PayPal event body, same vendor shape one layer up',
       fixWhen: 'never — vendor-owned shape',
     },
-    'src/lib/playBilling.ts': {
-      why: 'Google service-account credential JSON',
-      fixWhen: 'never — vendor-owned shape',
-    },
     'src/lib/healthImport.ts': {
       why: 'Apple Health / Google Fit export payloads, both third-party',
       fixWhen: 'never — vendor-owned shape',
