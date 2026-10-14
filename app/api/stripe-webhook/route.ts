@@ -4,10 +4,8 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
-import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
 import {
   emailFromCheckoutSession,
-  userIdFromCheckoutSession,
   type StripeCheckoutSession,
 } from '@/lib/stripeWebhook';
 import { validateStripeWebhookRequest } from '@/lib/api/stripeWebhookAuth';
@@ -40,26 +38,7 @@ export const POST = withApiLogging('stripe-webhook', async (req: NextRequest) =>
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = (event.data?.object ?? {}) as StripeCheckoutSession;
-    const email = emailFromCheckoutSession(session);
-    const userId = userIdFromCheckoutSession(session);
-    const sessionId = String(session.id ?? '');
-
-    if (email && sessionId) {
-      const productId = session.metadata?.product_id?.trim() || 'super-bundle';
-      try {
-        await grantEnrollmentFromWebhook({
-          user_email: email,
-          user_id: userId,
-          product_id: productId,
-          provider: 'stripe',
-          external_id: sessionId,
-        });
-      } catch (e) {
-        console.error('Stripe webhook enrollment error:', e);
-        return NextResponse.json({ error: 'Enrollment failed' }, { status: 500 });
-      }
-    }
+    return NextResponse.json({ received: true, granted: false });
   }
 
   // Abandoned checkout — record only; email sent by nudges cron (keep webhook fast).

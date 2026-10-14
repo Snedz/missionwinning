@@ -6,7 +6,6 @@ import { writeRaw } from '@/lib/storage/safeStorage';
 // Literal-only module by design — importing `contentInventory` here would drag the
 // whole catalog graph onto every route that prices anything. See contentFloors.ts.
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
-import { isFreeBeta } from '@/lib/freeBeta';
 
 /** Super Bundle plan IDs — keep in sync with BUNDLE_PLANS in bundleConfig.ts. */
 export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
@@ -89,53 +88,22 @@ export const BUNDLE_PILLARS = [
   },
 ] as const
 
-/**
- * Stripe Payment Links (legacy / fallback — see docs/LAUNCH_RUNBOOK.md).
- * Prefer Checkout Sessions via POST /api/checkout when STRIPE_SECRET_KEY + price IDs are set.
- *
- * NOTE: NEXT_PUBLIC_* vars are inlined at build time ONLY for static
- * `process.env.X` property access — a dynamic `process.env[key]` lookup is
- * always undefined in the browser, so every link must be listed here.
- */
-const STRIPE_LINKS: Record<string, string | undefined> = {
-  'super-bundle': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
-  bundle: process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
-  /** Monthly plan (preferred). Falls back to legacy 3-month link env if still set. */
-  'bundle-monthly':
-    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
-  'bundle-3mo':
-    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
-  'bundle-12mo': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_12MO,
-  'bundle-lifetime': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME,
-  'pt-nutrition': process.env.NEXT_PUBLIC_STRIPE_LINK_PT,
-  bodybuilding: process.env.NEXT_PUBLIC_STRIPE_LINK_BB,
-  corrective: process.env.NEXT_PUBLIC_STRIPE_LINK_CORR,
-  'strength-business': process.env.NEXT_PUBLIC_STRIPE_LINK_BUS,
-  'online-coaching': process.env.NEXT_PUBLIC_STRIPE_LINK_COACH,
-  conditioning: process.env.NEXT_PUBLIC_STRIPE_LINK_COND,
+/** Payments are off. Env payment links are not read. */
+export function getStripeCheckoutUrl(_productId?: string): string | null {
+  return null
 }
 
-export function getStripeCheckoutUrl(productId?: string): string | null {
-  if (!productId) {
-    return STRIPE_LINKS['bundle'] || null
-  }
-  return STRIPE_LINKS[productId] || null
-}
-
-/**
- * Client flag: Checkout Sessions API is live (set with STRIPE_SECRET_KEY + price IDs on server).
- * When true, UnlockButton prefers POST /api/checkout over Payment Links.
- */
+/** Payments are off. The checkout-sessions flag does not turn a charge on. */
 export function isCheckoutSessionsEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true'
+  return false
 }
 
 /**
- * Live card checkout is allowed only when free-beta is off.
- * Stripe env may already be set — FREE_BETA still mutes charges (no fake Subscribe).
+ * Payments are off, including when free-beta is switched off.
+ * `isFreeBeta()` is not the door anymore — a charge stays refused.
  */
 export function isPaidCheckoutAllowed(): boolean {
-  return !isFreeBeta()
+  return false
 }
 
 export type CreateCheckoutForPlanResult =

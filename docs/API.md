@@ -293,8 +293,8 @@ curl -sI "$BASE/api/premium/recipes"
 | Auth | `session` (signed-in email required) |
 | Rate | 10/min/IP |
 | Schema | `checkoutBodySchema` — `{ planId: "monthly" \| "12mo" \| "lifetime" }` |
-| Response | `{ url, sessionId }` — redirect browser to `url` |
-| Notes | Requires `STRIPE_SECRET_KEY` + `STRIPE_PRICE_BUNDLE_*`. Metadata includes `user_id`. |
+| Response | 503 `{ error: "Payments are off" }` after auth. No Stripe session |
+| Notes | Payments off. A Stripe secret and price ids do not open Checkout. |
 
 ```bash
 curl -X POST "$BASE/api/checkout" \
@@ -531,7 +531,7 @@ curl -sI "$BASE/api/school/class/MWTEST/leaderboard"
 | | |
 |--|--|
 | Auth | `webhook` — Stripe-Signature |
-| Notes | `checkout.session.completed` → enroll via `premiumServer.grantEnrollmentFromWebhook` (email + optional `user_id`). `checkout.session.expired` → `checkout_recovery` upsert. `charge.dispute.created\|updated\|closed` → founder email via `FOUNDER_DIGEST_EMAIL` (no auto-fight). See [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md). |
+| Notes | Payments off. A signed `checkout.session.completed` returns `{ received: true, granted: false }` and does not call `grantEnrollmentFromWebhook`. `checkout.session.expired` → `checkout_recovery` upsert. `charge.dispute.created\|updated\|closed` → founder email via `FOUNDER_DIGEST_EMAIL` (no auto-fight). See [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md). |
 
 ```bash
 curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '{}'
@@ -584,7 +584,7 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 | Auth | Bearer |
 | Rate | 20/min/IP |
 | Body | `{ productId, purchaseToken, packageName?, orderId? }` |
-| Notes | Google Play Super Bundle → enrollment. Logger never depends on this. |
+| Notes | Payments off. Returns 410 and does not call Google Play or grant enrollment. Logger never depends on this. |
 
 ### `POST /api/beta/feedback`
 

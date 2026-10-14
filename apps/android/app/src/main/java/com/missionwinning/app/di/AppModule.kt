@@ -2,13 +2,13 @@ package com.missionwinning.app.di
 
 import android.content.Context
 import com.missionwinning.app.BuildConfig
-import com.missionwinning.app.billing.PlayBillingGateway
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.CoachPlanRepository
 import com.missionwinning.core.data.CustomExerciseRepository
 import com.missionwinning.core.data.MwDatabase
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.PrefsRepository
+import com.missionwinning.core.data.NoOpPremiumPurchaseGateway
 import com.missionwinning.core.data.PremiumPurchaseGateway
 import com.missionwinning.core.data.RoutineRepository
 import com.missionwinning.core.data.SessionDraftRepository
@@ -20,7 +20,6 @@ import com.missionwinning.core.data.WorkoutImportRepository
 import com.missionwinning.core.data.WorkoutRepository
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.SupabaseAuthClient
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -171,8 +170,8 @@ private class AuthAndApiHolder {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class BillingBindModule {
-    @Binds
+object BillingBindModule {
+    @Provides
     @Singleton
-    abstract fun bindPremiumPurchaseGateway(impl: PlayBillingGateway): PremiumPurchaseGateway
+    fun premiumPurchaseGateway(): PremiumPurchaseGateway = NoOpPremiumPurchaseGateway()
 }

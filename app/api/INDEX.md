@@ -36,7 +36,7 @@ Legend:
 | `mobile/sync/customs` | POST, GET | Bearer | 30–60/min | Custom exercises sync |
 | `mobile/sync/prefs` | POST, GET | Bearer | 30–60/min | Units/rest/equipment/bar prefs |
 | `mobile/premium/status` | GET | Bearer (or cookie fallback) | 60/min | Super Bundle flag for native Account |
-| `mobile/premium/play-purchase` | POST | Bearer | 20/min/IP | Zod Play token → enrollment. Logger never depends on this |
+| `mobile/premium/play-purchase` | POST | Bearer | 20/min/IP | Zod Play token. Payments off: 410, no Google verify, no enrollment. Logger never depends on this |
 | `mobile/telemetry` | POST | public (opaque install id only) | 20/min | Privacy-first weekly Android heartbeat |
 
 ### Gate & leads
@@ -149,11 +149,11 @@ Legend:
 
 | Route | Methods | Auth | Rate | Notes |
 |-------|---------|------|------|-------|
-| `checkout` | POST | session | 10/min | Stripe Checkout session |
+| `checkout` | POST | session | 10/min | Payments off. No Stripe client. 503 |
 | `billing-portal` | POST | session | 10/min | |
 | `crypto-checkout/intent` | POST | session | 8/min | Phantom USDC lifetime; amount server-fixed |
 | `crypto-checkout/confirm` | POST | session | 10/min | Zod; intent ownership enforced; on-chain verify |
-| `stripe-webhook` | POST | Stripe HMAC sig | — | enroll + checkout recovery + dispute founder notify |
+| `stripe-webhook` | POST | Stripe HMAC sig | — | signed `checkout.session.completed` does not enroll (`granted: false`). Recovery + dispute notify stay |
 | `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
 | `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
 | `beta/feedback` | GET, POST | beta admin email **or** `x-beta-admin-secret` | POST 30/min/IP + 8 KiB | GET inbox + optional review join. POST Zod `feedbackReviewBodySchema` — founder dest. Missing table 503 `reviews_unavailable`. Never returns a Postgres `error.message` |
