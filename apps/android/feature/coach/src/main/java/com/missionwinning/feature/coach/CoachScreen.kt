@@ -19,10 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import android.app.Activity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,8 +29,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.missionwinning.core.data.BillingConnectionState
-import com.missionwinning.core.data.BillingOffer
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
@@ -62,8 +58,6 @@ fun CoachScreen(
     viewModel: CoachViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-    val activity = context as? Activity
     val planResp = state.plan
     val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
     val weekStart = planResp?.plan?.weekStart
@@ -107,17 +101,8 @@ fun CoachScreen(
                             signedIn = state.signedIn,
                             premium = state.premium,
                             premiumSource = state.premiumSource,
-                            billingOffers = state.billing.offers,
-                            billingReady = state.billing.connection is BillingConnectionState.Ready,
-                            billingPurchasing = state.billing.purchasing,
-                            billingError = state.billing.lastError,
                             onSeedAdapt = if (state.premium) {
                                 { viewModel.seedAdaptDemo() }
-                            } else {
-                                null
-                            },
-                            onSubscribe = if (!state.premium && state.signedIn && activity != null) {
-                                { viewModel.subscribe(activity) }
                             } else {
                                 null
                             },
@@ -332,12 +317,7 @@ private fun EntitlementBanner(
     signedIn: Boolean,
     premium: Boolean,
     premiumSource: String,
-    billingOffers: List<BillingOffer>,
-    billingReady: Boolean,
-    billingPurchasing: Boolean,
-    billingError: String?,
     onSeedAdapt: (() -> Unit)?,
-    onSubscribe: (() -> Unit)?,
 ) {
     MwCard(elevated = true) {
         MwSectionLabel("Access")
@@ -367,45 +347,11 @@ private fun EntitlementBanner(
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
-                if (billingOffers.isNotEmpty()) {
-                    Spacer(Modifier.height(6.dp))
-                    billingOffers.take(2).forEach { offer ->
-                        Text(
-                            "${offer.title} · ${offer.priceLabel}",
-                            style = MwTypography.labelMedium,
-                            color = MwColors.Brass,
-                        )
-                    }
-                }
-                if (onSubscribe != null && billingReady) {
-                    Spacer(Modifier.height(8.dp))
-                    MwPrimaryButton(
-                        text = if (billingPurchasing) {
-                            "Processing…"
-                        } else {
-                            stringResource(DsR.string.mw_subscribe_super_bundle)
-                        },
-                        contentDescription = stringResource(DsR.string.mw_subscribe_super_bundle),
-                        onClick = onSubscribe,
-                    )
-                    Text(
-                        "Billed by Google Play. Cancel anytime in Play subscriptions. Refunds: missionwinning.com/refunds",
-                        style = MwTypography.labelMedium,
-                        color = MwColors.TextMuted,
-                    )
-                } else if (onSubscribe != null && !billingReady) {
-                    Text(
-                        billingError
-                            ?: "Play Billing connecting… Configure products in Play Console if empty.",
-                        style = MwTypography.labelMedium,
-                        color = MwColors.TextMuted,
-                    )
-                }
             }
             else -> {
                 MwChip("Offline free", tone = MwChipTone.Brass)
                 Text(
-                    "Full week plan + logger work offline. Sign in on Account to subscribe or restore Super Bundle.",
+                    "Full week plan + logger work offline.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )

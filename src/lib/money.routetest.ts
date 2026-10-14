@@ -25,6 +25,7 @@ import { POST as stripeWebhookPost } from '../../app/api/stripe-webhook/route.ts
 import { makeNextRequest } from '@/lib/api/testRequest';
 import { restoreEnv, setTestEnv, snapshotEnv } from '@/lib/testEnv.ts';
 import { getStripePriceId, isStripeCheckoutConfigured, appOrigin } from '@/lib/stripeServer';
+import { isPlayBillingConfigured, processPlayPurchase } from '@/lib/playBilling';
 import { createCheckoutSession } from '@/lib/checkoutServer';
 import { isDemoPremiumEnabled } from '@/lib/premiumServer';
 import { notifyFounderOfStripeDispute } from '@/lib/stripeDisputeNotify';
@@ -87,7 +88,7 @@ describe('Stripe configuration gates', () => {
     setTestEnv('STRIPE_PRICE_BUNDLE_MONTHLY', 'price_m');
     setTestEnv('STRIPE_PRICE_BUNDLE_12MO', 'price_12');
     setTestEnv('STRIPE_PRICE_BUNDLE_LIFETIME', 'price_life');
-    assert.equal(isStripeCheckoutConfigured(), true);
+    assert.equal(isStripeCheckoutConfigured(), false, 'payments are off even when every Stripe env var is set');
 
     for (const missing of [
       'STRIPE_PRICE_BUNDLE_MONTHLY',
@@ -115,10 +116,28 @@ describe('Stripe configuration gates', () => {
   });
 
   it('refuses to create a session when Stripe is not configured, without calling Stripe', async () => {
-    setTestEnv('STRIPE_SECRET_KEY', undefined);
+    setTestEnv('STRIPE_SECRET_KEY', 'sk_test_1');
+    setTestEnv('STRIPE_PRICE_BUNDLE_LIFETIME', 'price_life');
     const r = await createCheckoutSession({ planId: 'lifetime', userId: UUID, email: 'buyer@example.com' });
     assert.equal(r.ok, false);
-    assert.equal(!r.ok && r.status, 503, 'an unconfigured Stripe is unavailable, not a 500');
+    assert.equal(!r.ok && r.status, 503, 'payments off is unavailable, not a 500');
+    assert.equal(!r.ok && r.error, 'Payments are off');
+  });
+});
+
+describe('Play Billing', () => {
+  it('does not verify a purchase or grant enrollment', async () => {
+    assert.equal(isPlayBillingConfigured(), false);
+    const r = await processPlayPurchase({
+      userId: UUID,
+      email: 'buyer@example.com',
+      packageName: 'com.missionwinning.app',
+      productId: 'super_bundle_monthly',
+      purchaseToken: 'token-token-token',
+    });
+    assert.equal(r.ok, false);
+    assert.equal(!r.ok && r.code, 410);
+    assert.equal(!r.ok && r.error, 'Payments are off');
   });
 });
 
@@ -233,13 +252,15 @@ describe('Stripe webhook — signature is the only thing standing between a POST
    * on non-2xx, and that retry is the only thing that eventually gives the buyer
    * what they paid for. Answering 200 here would drop the enrollment forever.
    */
-  it('500s when a verified purchase cannot be enrolled', async () => {
+  it('does not enroll a verified checkout session', async () => {
     setTestEnv('STRIPE_WEBHOOK_SECRET', SECRET);
     setTestEnv('SUPABASE_SERVICE_ROLE_KEY', undefined);
     setTestEnv('NEXT_PUBLIC_SUPABASE_URL', undefined);
     const body = completed();
     const r = await post(body, sign(body));
-    assert.equal(r.status, 500, 'a 200 here tells Stripe never to retry a purchase that was never granted');
+    assert.equal(r.status, 200);
+    assert.equal(r.json.granted, false);
+    assert.equal(r.json.received, true);
   });
 
   it('accepts a completed session with no email without attempting a grant', async () => {
