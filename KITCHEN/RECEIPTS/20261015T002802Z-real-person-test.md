@@ -59,13 +59,41 @@ Q: How many rest days do I need?        -> source: coach_llm | len: 404
 ```
 Both returned `source: "rules"` before.
 
-### 3. Debug builds point at production (documented, NOT changed)
-`apps/android/app/build.gradle.kts` defaults `mw.apiBaseUrl` to
-`https://www.missionwinning.com`. A debug build therefore calls production with no auth
-and the coach can never be exercised locally without setting `mw.apiBaseUrl` in the
-gitignored `local.properties`. **Left alone deliberately** — pointing debug at something
-else by default would surprise anyone who runs `adb install` and expects a real backend.
-Worth a docs line, not a default change.
+### 3. A debug build could not reach a local server at all (fixed, [#1051])
+Not merely undocumented. `main/AndroidManifest.xml` sets
+`android:usesCleartextTraffic="false"`, enforced on **every** build, so a debug build
+pointed at `http://10.0.2.2:3000` had every request silently dropped. The give-away was
+that the device request never appeared in the server access log at all. Fixed with a
+`src/debug/`-only network security config plus one debug log line naming the effective
+`API_BASE_URL`. Release unchanged.
+
+**The coach now answers on the installed app**, not just to curl:
+
+```
+I MissionWinning: API_BASE_URL=http://10.0.2.2:3000 (override in ...)
+
+(server access log)  POST /api/coach/trainer 200 in 5.2s
+(server access log)  POST /api/coach/trainer 200 in 3.2s
+(server access log)  POST /api/coach/trainer 200 in 9.8s
+
+device screen:  "Trainer is offline."  ->  "Set 1 of 3. pushup. 10 x BW."
+```
+
+That last reply is the plan's set line rather than generated prose, because the LLM leg
+has an 8 s budget and the local lane took 9.8 s on that call — the request succeeded and
+the app is genuinely offline-proof now, but a slow local model will still fall back to
+the set line. Worth a card.
+
+## "Set a goal" — what Android actually offers
+
+Checked twice, because the brief asked for it:
+- **Source:** `grep -rli 'goal' apps/android --include='*.kt'` → **no matches**. The
+  closest is `targetReps`, populated *from the plan*, not set by the user.
+- **On device:** Account has Weight unit (KG/LB), Equipment, Cloud Sync, Sign in — no goal.
+
+The user-facing goal concept lives in the **web** app (`FuelGoalWizard.tsx`). On Android
+the only settable target is the per-set Reps / KG stepper, which was exercised (12 → 15).
+A goal screen on Android would be a new feature, which this pass was told not to add.
 
 ## Setup traps that cost real time (kept in the receipt)
 
@@ -88,6 +116,13 @@ Worth a docs line, not a default change.
    A one-line docs fix would save the next person an hour.
 4. **Sync is unproven.** The app says "ON DEVICE · SYNC LATER" and that is exactly as far
    as I verified — no authenticated account, so nothing was synced anywhere.
+
+## Evidence on disk
+
+| Artifact | What it is |
+|---|---|
+| `KITCHEN/RECEIPTS/artifacts/logcat-device-smoke.log` | 1,563-line logcat from the device session. 0 `FATAL EXCEPTION`, 0 ANR, 0 forced finishes. |
+| `KITCHEN/RECEIPTS/artifacts/verify-final.log` | full `npm run verify` (build + health included) on merged main |
 
 ## Rails
 
