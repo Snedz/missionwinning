@@ -18,6 +18,16 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — Log a set. Offline. (`.1137`)
+
+The public door was a marketing stack: a red Get notified, a legal link farm, and — once the gate cookie was set — a stat row, a demo hero, and an FAQ. The logger was the thing the page was about, and it was not on the page.
+
+The gated door and the cookie homepage now share one composition. The headline is Log a set. Offline. The yellow control is Log a set, and it opens `/welcome` (the logger stays public). Under it is a real shot of Train. Notify me stays on the door as a ghost button, because the waitlist still has to be captured while the gate is up. Terms and Privacy stay as a 12px line. The cookie homepage has none of that — headline, one button, the shot.
+
+The house skin is the one the founder approved: ground `#0a0c0f`, signal `#ffb000`, Geist and Geist Mono self-hosted (OFL, `src/fonts`). Muted moved from `#5f6b75` (3.59:1, fails AA) to `#7d8a95`. Radius on the house is 4px. Weights on the house are 400 and 600. `faqPageJsonLd()` is no longer emitted from `/`, because the page no longer has an FAQ. The function and its free-beta filter stay.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
 ## 2026-10-15 — Weekly plan uses the desktop width (`.1136`)
 
 `/coach` on a desktop was a narrow card beside a second room list. The icon rail is already the sidebar, so the second list repeated Start, This week, History, and Weekly plan, and the transferred canvas hid the page title. The plan column was `max-w-2xl`, and the one sheet card sat in a two-column grid, so the session filled about a third of the window.
@@ -384,45 +394,4 @@ prevent.
 Label `2026.07-unified.1116`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1100-for-1116.md](docs/archive/log/LOG-rotate-1100-for-1116.md) (`.1100`).
-
-## 2026-09-24 — History year of logged days (`.1113`)
-
-`/history` paints a Monday-first
-year above the session list
-and above that day's rows.
-Cells are live sessions from
-`workoutHistory`
-(`workout-tracker-storage`),
-bucketed by `trainedDayKeys`
-and `localDateKeyFromIso`.
-Tombs and junk timestamps
-stay out. A day outside the
-53-week window is not a cell.
-A blank day is not missed.
-Fill height is the count
-(1 / 2 / 3 / 4+). The strip
-opens on the current week.
-Import stays the confirm
-dialog. MW-owned History
-grid. No vendored chart
-source. `yearHeatmapSurface.test.ts`
-renders the grid, so the
-component is in the unit lane.
-Untested-file floor stays 494.
-
-**Mutants killed:** two same-day
-sessions counted as one; a
-tomb still painted; an ISO date
-slice moving a Kiritimati
-morning onto the previous day;
-a session outside the window
-added to the totals.
-
-`[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1113`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1098-for-1113.md](docs/archive/log/LOG-rotate-1098-for-1113.md) (`.1098`). `.1097` was already rotated by `.1112`.
 

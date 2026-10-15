@@ -8,7 +8,6 @@ import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import {
   asJsonLdGraph,
-  faqPageJsonLd,
   organizationJsonLd,
   softwareApplicationJsonLd,
   webSiteJsonLd,
@@ -25,8 +24,8 @@ export const metadata: Metadata = publicPageMetadata({
  * Door vs homepage.
  *
  * Gate on + no cookie → `/private` (production www).
- * Cookie → LandingPage — the .696 marketing homepage (Log a set /
- * Your week rewrites itself). Not cinematic www.
+ * Cookie → LandingPage — headline, one action, one logger shot.
+ * Not cinematic www. FAQ JSON-LD stays off this page; the page has no FAQ.
  * Preview / local, no cookie → teaser. Done mints the cookie.
  * Production public flip (gate off) → homepage with no door.
  */
@@ -41,7 +40,6 @@ function Homepage() {
               organizationJsonLd(),
               webSiteJsonLd(),
               softwareApplicationJsonLd(),
-              faqPageJsonLd(),
             ]),
           ),
         }}

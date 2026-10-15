@@ -2,9 +2,9 @@
 
 Signed-in product chrome. Runtime: [`house.css`](house.css), scoped to `.mw-house`.
 
-The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIGN_SYSTEM.md)) stays on `/private`, landing, and www. Do not copy house tokens there. Do not load a second typeface in `app/layout.tsx`.
+The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIGN_SYSTEM.md)) stays on public www. Founder override (`.1137`): the gated door and the cookie homepage import this skin. Geist and Geist Mono are self-hosted for `.mw-house`; Archivo stays the paper face.
 
-4th skin (`.1059`): C2 Instrument — ground `#0a0c0f` + signal `#ffb000`. One yellow field per screen. Field-manual stays on `/private` / landing / www. Selected leftover copy still says `#eee` (the role); the token is `--house-selected`.
+4th skin (`.1059`, tightened `.1137`): C2 Instrument — ground `#0a0c0f` + signal `#ffb000`. One yellow thing per screen. Selected leftover copy still says `#eee` (the role); the token is `--house-selected`.
 
 ## Tokens
 
@@ -15,23 +15,23 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-stage` | `#0a0c0f` | Area behind the canvas |
 | `--house-ink` | `#e6ebef` | Text |
 | `--house-muted` | `#7d8a95` | Secondary |
-| `--house-faint` | `#5f6b75` | Disabled |
+| `--house-faint` | `#7d8a95` | Disabled (same as muted — nothing dimmer carries text) |
 | `--house-line` | `#1e252c` | 1px hairline |
 | `--house-soft` | `#0f1319` | Card / soft fill |
 | `--house-chip` | `#12161b` | Field / hover fill |
-| `--house-selected` | `#1a2028` | Selected row / rail mark |
+| `--house-selected` | `#1a1607` | Selected row / rail mark |
 | `--house-press` | `#ffb000` | Primary / Log set / Generate / Start |
 | `--house-press-deep` | `#c98a00` | Press hover |
 | `--house-press-tint` | `#1a1607` | Signal tint |
 | `--house-press-ink` | `#0a0c0f` | Text on press |
 | `--house-amber` | `#ffb000` | Metric accent (≥19px) |
 | `--house-live` | `#ae1800` | Train pulse only |
-| `--house-radius` | `8px` | Cards |
+| `--house-radius` | `4px` | Cards |
 | `--house-radius-sm` | `4px` | Inputs / small |
-| `--house-radius-row` | `8px` | Second-bar rows |
-| `--house-radius-rail` | `8px` | Rail marks, filters, empty CTA |
-| `--house-radius-sheet` | `8px` | Dark paper panel wrapping second + canvas |
-| `--house-pill` | `8px` | Primary buttons, plus |
+| `--house-radius-row` | `4px` | Second-bar rows |
+| `--house-radius-rail` | `4px` | Rail marks, filters, empty CTA |
+| `--house-radius-sheet` | `4px` | Dark paper panel wrapping second + canvas |
+| `--house-pill` | `4px` | Primary buttons, plus |
 | `--house-rail` | `72px` | Icon column |
 | `--house-second` | `264px` | Adjacent bar |
 | `--house-side` | `300px` | Sidecar |
@@ -39,11 +39,11 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-dur` | `180ms` | Chips, hover |
 | `--house-dur-slow` | `260ms` | Column, pane, canvas |
 
-Inherited shadcn tokens inside `.mw-house` remap to the same C2 ground + `#ffb000` / 0.5rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
+Inherited shadcn tokens inside `.mw-house` remap to the same C2 ground + `#ffb000` / 0.25rem radius so History, Library, Coach, and the set table pick this up without a second copy of each page.
 
 ## Type
 
-Archivo 400/600/800, with `ui-sans-serif, system-ui` as fallback. Features `ss01` + `cv11`. Tracking `-0.011em` body, `-0.03em` display. Weights 400–800. Sizes: 13 chip / 14 second-bar / 15 body / 22 pane title / 28–32 canvas title. System mono for set-table / Victory telemetry only. No caps kickers. No second face in `app/layout.tsx`.
+Geist 400/600, with `ui-sans-serif, system-ui` as fallback. Geist Mono for numbers. Features `ss01` + `cv11`. Tracking `-0.011em` body. Weights 400 and 600. Canvas title 28. Labels are 12px muted caps at `0.04em`. Archivo stays on paper pages.
 
 ## Layout
 

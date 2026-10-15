@@ -20,7 +20,7 @@ test('house tokens are C2 ground + signal yellow', () => {
   assert.match(css, /--house-press-tint:\s*#1a1607/);
   assert.match(css, /--house-press-ink:\s*#0a0c0f/);
   assert.match(css, /--house-amber:\s*#ffb000/);
-  assert.match(css, /--house-pill:\s*8px/);
+  assert.match(css, /--house-pill:\s*4px/);
   assert.doesNotMatch(css, /--house-paper:\s*#ffffff/);
   assert.doesNotMatch(css, /--house-paper:\s*#111111/);
   assert.doesNotMatch(css, /--house-press:\s*#f5c518/);
@@ -74,12 +74,16 @@ test('Today Start + Train Log set + Coach Generate + Victory Next use press', ()
 test('PLAN scope is .mw-house only — lineage review', () => {
   const plan = read('PLAN.md');
   assert.match(plan, /this craft = `\.mw-house` only/);
-  assert.match(plan, /Do not restyle `\/private` or public www/);
+  assert.match(plan, /gated door/);
+  assert.match(plan, /Do not restyle public www/);
 });
 
-test('public gate stays field-manual — no house yellow costume', () => {
+test('door and cookie homepage ride the house skin; paper stays on www', () => {
   const landing = read('src/page-components/LandingPage.tsx');
-  assert.doesNotMatch(landing, /--house-press|#ffb000|#f5c518|mw-house/);
+  assert.match(landing, /mw-house polish-door/);
+  assert.match(landing, /href=["']\/welcome["']/);
+  assert.match(landing, /\/brand\/log-a-set\.webp/);
+  assert.doesNotMatch(landing, /LogToPlanHero|MarketingNav|CinematicWww|#ffb000|#f5c518/);
   const indexCss = read('src/index.css');
   assert.doesNotMatch(indexCss, /--house-press:\s*#ffb000/);
   assert.doesNotMatch(indexCss, /--house-paper:\s*#0a0c0f/);

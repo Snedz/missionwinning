@@ -265,11 +265,11 @@ test('checklist never owns Start, and house copy is not a pasted brand', () => {
 
 test('house.css actually draws a product site, not radius-0 paper rules', () => {
   const css = read('src/components/house/house.css');
-  assert.match(css, /--house-radius:\s*8px/);
+  assert.match(css, /--house-radius:\s*4px/);
   assert.match(css, /border-radius:\s*var\(--house-radius\)/);
   assert.match(css, /ui-sans-serif/);
   assert.match(css, /--house-paper:\s*#0a0c0f/);
-  assert.match(css, /--radius:\s*0\.5rem/);
+  assert.match(css, /--radius:\s*0\.25rem/);
   assert.match(css, /--background:\s*216 20% 5%/);
   assert.match(css, /\.house-btn[\s\S]*flex-shrink:\s*0/);
   assert.match(css, /\.house-btn[\s\S]*white-space:\s*nowrap/);
@@ -380,11 +380,11 @@ test('house design system is the signed-in token table', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-rail:\s*72px/);
   assert.match(css, /--house-second:\s*264px/);
-  assert.match(css, /--house-radius:\s*8px/);
-  assert.match(css, /--house-radius-row:\s*8px/);
-  assert.match(css, /--house-radius-rail:\s*8px/);
-  assert.match(css, /--house-radius-sheet:\s*8px/);
-  assert.match(css, /--house-selected:\s*#1a2028/);
+  assert.match(css, /--house-radius:\s*4px/);
+  assert.match(css, /--house-radius-row:\s*4px/);
+  assert.match(css, /--house-radius-rail:\s*4px/);
+  assert.match(css, /--house-radius-sheet:\s*4px/);
+  assert.match(css, /--house-selected:\s*#1a1607/);
   assert.match(css, /--house-live:\s*#ae1800/);
   assert.match(css, /\.house-rail \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-empty/);

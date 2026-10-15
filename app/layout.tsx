@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo } from 'next/font/google';
+import localFont from 'next/font/local';
 import '../src/index.css';
 import { DeferredToaster } from '@/components/layout/DeferredToaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
@@ -12,6 +13,25 @@ const archivo = Archivo({
   subsets: ['latin'],
   weight: ['400', '600', '800'],
   variable: '--font-archivo',
+  display: 'swap',
+});
+
+/** House skin. Self-hosted OFL files in src/fonts. Paper pages keep Archivo. */
+const geist = localFont({
+  src: [
+    { path: '../src/fonts/Geist-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../src/fonts/Geist-SemiBold.woff2', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-geist',
+  display: 'swap',
+});
+
+const geistMono = localFont({
+  src: [
+    { path: '../src/fonts/GeistMono-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../src/fonts/GeistMono-SemiBold.woff2', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
@@ -64,7 +84,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={archivo.variable}>
+    <html lang="en" className={`${archivo.variable} ${geist.variable} ${geistMono.variable}`}>
       <body className="bg-background text-foreground font-sans">
         {/* Cloudflare Email Obfuscation rewrites a plain address into an
             anchor. React then hydrates text against that element (#418). */}
