@@ -12,8 +12,8 @@ const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 describe('session trainer surfaces', () => {
-  it('Today, Train, and Coach mount the same card', () => {
-    assert.match(read('src/page-components/TodayDesk.tsx'), /<SessionTrainerCard/);
+  it('Train and Coach mount the card; Today is the next workout', () => {
+    assert.doesNotMatch(read('src/page-components/TodayDesk.tsx'), /<SessionTrainerCard/);
     assert.match(read('src/page-components/ActiveWorkoutPage.tsx'), /surface="train"/);
     assert.match(read('src/page-components/CoachPage.tsx'), /surface="coach"/);
   });

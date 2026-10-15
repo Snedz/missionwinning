@@ -127,14 +127,10 @@ describe('the hero gate keys off the house desk after a finish', () => {
     );
     assert.match(
       spec,
-      /today-first-steps/,
-      'a finish must tick first rooms on the desk'
+      /today-week-count/,
+      'a finish must move the one week count on the desk'
     );
-    assert.match(
-      spec,
-      /a\[href="\/history"\]/,
-      'a finish must write History on the desk'
-    );
+    assert.doesNotMatch(spec, /today-first-steps/);
   });
 
   it('the leftover band hook still exists on the unused dashboard shell', () => {

@@ -22,9 +22,9 @@ function sliceFromTestId(src: string, testId: string, chars = 360): string {
 function heroStartSlice(src: string): string {
   const startAt = src.indexOf('id="today-start"');
   assert.ok(startAt >= 0, 'missing #today-start');
-  const roomsAt = src.indexOf('<HouseFirstRoomsCard', startAt);
-  assert.ok(roomsAt > startAt, 'hero must sit before first rooms');
-  return src.slice(startAt, roomsAt);
+  const endAt = src.indexOf('</section>', startAt);
+  assert.ok(endAt > startAt, 'the session section closes');
+  return src.slice(startAt, endAt);
 }
 
 test('compact hero Start is a Link — clear goes to /active, a safety withhold goes to /move', () => {

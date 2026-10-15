@@ -112,6 +112,9 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
     await page.getByRole('button', { name: /add selected exercise/i }).click();
 
+    const reps = page.getByRole('textbox', { name: /^reps$/i }).first();
+    await expect(reps).toBeVisible({ timeout: 15_000 });
+    await reps.fill('8');
     const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 15_000 });
     await logBtn.click();
@@ -125,12 +128,8 @@ test.describe('Phase H hero flows @gate', () => {
 
     /*
      * `/log` is TodayDesk for every journey phase (`todayIsSummary.test.ts`).
-     * `HomeTodayDashboard` — and `today-score-band` — is a leftover shell on
-     * disk, not this route. Waiting for the band is the stale tour.
-     *
-     * What a finish actually writes on the desk: History appears, first rooms
-     * tick Log a set (1 of 3), Start stays one. Pin the hour so evening
-     * re-entry cannot crowd the object.
+     * A finished set with reps moves the diary count from 0 to 1. Start stays
+     * one. Pin the hour so evening re-entry cannot crowd the object.
      */
     await page.clock.setFixedTime(fixedTimeAt(UNCONTENDED_HOUR));
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
@@ -139,12 +138,9 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(desk).toBeVisible({ timeout: 15_000 });
     await expect(todayStart(page)).toHaveCount(1);
 
-    const rooms = page.getByTestId('today-first-steps');
-    await expect(rooms).toBeVisible();
-    await expect(rooms.getByText(/1\s+of\s+3/i).first()).toBeVisible();
-
-    await expect(desk.getByRole('heading', { name: /^history$/i })).toBeVisible();
-    await expect(desk.locator('a[href="/history"]').first()).toBeVisible();
+    const count = page.getByTestId('today-week-count');
+    await expect(count).toBeVisible();
+    await expect(count).toHaveText('1');
   });
 
   test('sign-in sync prompt visible on Fuel', async ({ page }) => {

@@ -1,0 +1,3 @@
+# CONTEXT `## Now` — `.1120` resume chip, rotated by `.1140`
+
+- **`.1120`:** (`2026.07-unified.1120`) **Resume last chip and Victory vs-last** — Train shows Resume last when History has a finished session and today has no logged sets. The chip copies that finished log through the history template. Weights stay editable. Copy: Session 2 — lock the habit. No streak shame. After save, Victory lists top lifts against the previous session of the same name: up is green, even or down is amber, a first time is not red. Optional one-line local note never blocks save. Distinct from the shape receipt. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.

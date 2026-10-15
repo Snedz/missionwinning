@@ -213,6 +213,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'section.',
   },
   {
+    from: 1121,
+    to: 1121,
+    why:
+      'No LOG heading on master ever ended in `.1121`. Open set is `.1122` and ' +
+      'resume-last is `.1120`, so rotating `.1120` leaves `.1122` as the live floor ' +
+      'without a missing section.',
+  },
+  {
     from: 1118,
     to: 1119,
     why:
