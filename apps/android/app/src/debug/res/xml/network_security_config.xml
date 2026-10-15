@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug-only. Lets a debug build talk to a local server over plain HTTP.
+
+  main/AndroidManifest.xml sets android:usesCleartextTraffic="false", which
+  Android enforces for every build. That is right for release and fatal for
+  local work: with mw.apiBaseUrl pointing at http://10.0.2.2:3000 the app
+  silently drops every request, the coach reports "Trainer is offline", and
+  nothing on screen says why. 10.0.2.2 is the emulator's route to the host
+  loopback; localhost covers a device using adb reverse.
+
+  This file lives in src/debug/, so it is merged into debug builds ONLY.
+  Release keeps cleartext off and nothing here can weaken it.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

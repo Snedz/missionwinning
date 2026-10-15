@@ -2,6 +2,7 @@ package com.missionwinning.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,6 +27,16 @@ class MainActivity : ComponentActivity() {
         setTheme(R.style.Theme_MissionWinning)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Which API this build talks to is invisible in BuildConfig by design
+        // (the URL is not a secret, but a debug build silently pointing at
+        // production is a real trap: the coach reports "offline" for want of a
+        // local server and there is nothing on screen to explain why). One log
+        // line, debug only, naming the override that changes it.
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "API_BASE_URL=${BuildConfig.API_BASE_URL} " +
+                "(override in apps/android/local.properties: mw.apiBaseUrl; " +
+                "emulator host = http://10.0.2.2:<port>)")
+        }
         deepLink = parseDeepLink(intent)
         setContent {
             MissionWinningTheme {
@@ -82,5 +93,6 @@ class MainActivity : ComponentActivity() {
         const val EXTRA_SESSION_ID = "mw_session_id"
         const val EXTRA_WORKOUT_NAME = "mw_workout_name"
         const val EXTRA_QUICK_LOG = "mw_quick_log"
+        private const val TAG = "MissionWinning"
     }
 }
