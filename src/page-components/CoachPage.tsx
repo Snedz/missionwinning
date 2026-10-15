@@ -111,7 +111,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
   return (
     <PillarPageShell
-      className="house-plan max-w-2xl pb-24"
+      className="house-plan pb-24"
       icon={Sparkles}
       eyebrow={weekEyebrow}
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}

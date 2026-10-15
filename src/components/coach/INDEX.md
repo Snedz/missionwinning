@@ -9,7 +9,7 @@
 | `CoachAdaptBanner.tsx` | Adapt banner is house leftover. Compact first paint; reentry Start stays extra. Log-cited why-this-week. Re-entry copy follows the safety decision. |
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
-| `WeekStrip.tsx` | Week strip is house leftover on `/coach` (`house`). Landing demo keeps the field-manual tail. |
+| `WeekStrip.tsx` | House week names the day (Rest, Lift, Condition, Mobility, Done, Missed). Landing demo keeps the field-manual glyphs. |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today — dose + compact adapt (G6). No second red. |
 | `PlanSessionCard.tsx` | Session card is house leftover. Boss Start is the one filled action; other days stay ghost. Why-this-session cite or honest empty. A safety withhold sends the button to Move. |
 | `PlanExerciseLine.tsx` | Session lift is house leftover. Swap stays ghost. Overlay internals stay. |

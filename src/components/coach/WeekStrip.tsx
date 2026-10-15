@@ -28,19 +28,17 @@ function SessionGlyph({
   done,
   kind,
   missed,
-  house,
 }: {
   done: boolean;
   kind: PlanSession['kind'] | undefined;
   /** A missed day is behind you — it must not compete with live days for the eye. */
   missed?: boolean;
-  house?: boolean;
 }) {
-  // A done cell is an ink fill, so its check has to be light or it disappears.
+  // Landing / parked strips only. The house week names the day in words.
   if (done) {
     return (
       <Check
-        className={house ? 'house-week-check' : 'mt-1 h-3.5 w-3.5 text-neutral-100'}
+        className="mt-1 h-3.5 w-3.5 text-neutral-100"
         aria-hidden
         strokeWidth={2.5}
       />
@@ -57,27 +55,12 @@ function SessionGlyph({
    */
   const tone = missed ? 'text-muted-foreground' : 'text-primary';
   if (kind === 'conditioning') {
-    return (
-      <Zap
-        className={house ? `house-week-glyph${missed ? ' is-missed' : ''}` : cn('mt-1 h-3.5 w-3.5', tone)}
-        aria-hidden
-      />
-    );
+    return <Zap className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
   }
   if (kind === 'recovery') {
-    return (
-      <Wind
-        className={house ? 'house-week-glyph is-missed' : 'mt-1 h-3.5 w-3.5 text-muted-foreground'}
-        aria-hidden
-      />
-    );
+    return <Wind className="mt-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden />;
   }
-  return (
-    <Dumbbell
-      className={house ? `house-week-glyph${missed ? ' is-missed' : ''}` : cn('mt-1 h-3.5 w-3.5', tone)}
-      aria-hidden
-    />
-  );
+  return <Dumbbell className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
 }
 
 export function WeekStrip({ sessions, todayOffset, house }: Props) {
@@ -115,34 +98,24 @@ export function WeekStrip({ sessions, todayOffset, house }: Props) {
         const recovery = session?.kind === 'recovery';
 
         if (house) {
+          const mark = !session
+            ? t('coachWeekRest', { defaultValue: 'Rest' })
+            : done
+              ? t('coachSessionDone', { defaultValue: 'Done' })
+              : missed
+                ? t('coachSessionMissed', { defaultValue: 'Missed' })
+                : recovery
+                  ? t('coachSessionMobility', { defaultValue: 'Mobility' })
+                  : session.kind === 'conditioning'
+                    ? t('coachWeekCondition', { defaultValue: 'Condition' })
+                    : t('coachWeekLift', { defaultValue: 'Lift' });
           return (
             <div
               key={label}
-              className={`house-week-cell${done ? ' is-done' : ''}${isToday ? ' is-today' : ''}${missed ? ' is-missed' : ''}${!session ? ' is-rest' : ''}${pulseOffsets.has(i) ? ' week-strip-pulse' : ''}`}
+              className={`house-week-cell${done ? ' is-done' : ''}${isToday ? ' is-today' : ''}${missed ? ' is-missed' : ''}${!session ? ' is-rest' : ''}${i < todayOffset && !isToday ? ' is-past' : ''}${pulseOffsets.has(i) ? ' week-strip-pulse' : ''}`}
             >
               <span className="house-week-cell-name">{label}</span>
-              {session ? (
-                <>
-                  <SessionGlyph house done={done} kind={session.kind} missed={missed} />
-                  {done && (
-                    <span className="house-week-cell-mark">
-                      {t('coachSessionDone', { defaultValue: 'Done' })}
-                    </span>
-                  )}
-                  {missed && (
-                    <span className="house-week-cell-mark is-missed">
-                      {t('coachSessionMissed', { defaultValue: 'Missed' })}
-                    </span>
-                  )}
-                  {recovery && session.kind === 'recovery' && !done && (
-                    <span className="house-week-cell-mark">
-                      {t('coachSessionMobility', { defaultValue: 'Mobility' })}
-                    </span>
-                  )}
-                </>
-              ) : (
-                <span className="house-week-cell-mark">—</span>
-              )}
+              <span className={`house-week-cell-mark${missed ? ' is-missed' : ''}`}>{mark}</span>
             </div>
           );
         }

@@ -23,7 +23,7 @@ test('Fuel route is a static page, not a RouteLoading skeleton', () => {
 test('NutritionPage first paint is house leftover; search / recipes stay parked', () => {
   const page = stripComments(read('src/page-components/NutritionPage.tsx'));
   assert.doesNotMatch(page, /useSearchParams/);
-  assert.match(page, /className="house-fuel max-w-3xl pb-8"/);
+  assert.match(page, /className="house-fuel pb-8"/);
   assert.match(page, /defaultValue: 'Nutrition'/);
   assert.match(page, /id="fuel-log"/);
 });

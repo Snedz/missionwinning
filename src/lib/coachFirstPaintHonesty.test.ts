@@ -25,7 +25,7 @@ test('Coach route is a static page, not a RouteLoading skeleton', () => {
 test('CoachPage first paint is house leftover; voice stays parked', () => {
   const page = stripComments(read('src/page-components/CoachPage.tsx'));
   assert.doesNotMatch(page, /useSearchParams/);
-  assert.match(page, /className="house-plan max-w-2xl pb-24"/);
+  assert.match(page, /className="house-plan pb-24"/);
   assert.match(page, /defaultValue: 'Mission Coach'/);
   assert.match(page, /house-empty|house-generate-dock/);
   assert.match(page, /ssr: false/);

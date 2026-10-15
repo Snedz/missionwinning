@@ -18,6 +18,16 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — Weekly plan uses the desktop width (`.1136`)
+
+`/coach` on a desktop was a narrow card beside a second room list. The icon rail is already the sidebar, so the second list repeated Start, This week, History, and Weekly plan, and the transferred canvas hid the page title. The plan column was `max-w-2xl`, and the one sheet card sat in a two-column grid, so the session filled about a third of the window.
+
+Weekly plan no longer mounts that second bar. The canvas title is Mission Coach. Content sits in the centered pad, `min(1120px, 100% - 48px)`, which is the same cap the other desktop rooms use. The boss session is one column and fills that pad. Show all is two columns from 900px. The house week strip names each day — Rest, Lift, Condition, Mobility, Done, Missed — instead of a glyph or a bare dash. Swap is centered on its row. Fuel drops the extra `max-w-3xl` so it fills the same pad.
+
+**Measured:** at 1280 the coach card is 1120px, the same width as the pad, with no second rail. The first lift name and the Swap button share a vertical center. Past empty days read Rest. Mobile 390 keeps the pad at the content width with no horizontal overflow on Today, Train, Coach, Library, or Fuel.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
 ## 2026-10-15 — Review fixes on the gated site (`.1135`)
 
 Today's empty week cell opens the free logger on `/active`. `/coach` stays gated, so Just Go no longer lands on `/private`. Generate this week still links `/coach`.
@@ -374,17 +384,6 @@ prevent.
 Label `2026.07-unified.1116`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1100-for-1116.md](docs/archive/log/LOG-rotate-1100-for-1116.md) (`.1100`).
-
-## Coach muscle balance map (`.1115`)
-
-Rebased onto master after a 2-day stall. The only failing gate was this repo's own
-coverage ratchet and hard rule 5, both of which the PR had satisfied before the
-rebase and neither of which the rebase had broken in the product.
-
-The conflict here was a label race, not a code conflict: every open PR wanted a build
-label master had already passed. This takes the next free one so two branches cannot
-announce the same number — the exact failure `check-build-label.mjs` was written to
-prevent.
 
 ## 2026-09-24 — History year of logged days (`.1113`)
 
