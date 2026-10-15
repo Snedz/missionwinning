@@ -81,22 +81,21 @@ test.describe('First 90 seconds @gate', () => {
     );
   });
 
-  test('the homepage uses the brand display face and one emerald action', async ({ page }) => {
+  test('the homepage is one headline, one action, and the logger shot', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // Regression: the hero H1 rendered in Inter for months because LandingPage set
-    // ad-hoc type instead of `.display-hero`, while every other marketing page used
-    // the display system. brand-guidelines.md assigns hero titles to Archivo
-    // (Modernist rebrand — was Barlow Condensed).
-    const font = await page
-      .locator('h1')
-      .first()
-      .evaluate((el) => getComputedStyle(el).fontFamily);
-    expect(font, `hero H1 font-family was ${font}`).toContain('Archivo');
+    // `.1137` — the cookie homepage is the house door, not the paper hero.
+    // Geist is the house face. SEO templates below stay on Archivo.
+    const h1 = page.locator('h1').first();
+    await expect(h1).toHaveText(/Log a set\. Offline\./);
+    const font = await h1.evaluate((el) => getComputedStyle(el).fontFamily);
+    expect(font.toLowerCase(), `hero H1 font-family was ${font}`).toContain('geist');
 
-    // Red marks the one action. Hero + closing band is the ceiling; a third
-    // competing CTA is the "which button do I press" failure.
-    await expect(page.locator('.primary-action')).toHaveCount(2);
+    const action = page.locator('a.house-btn-primary');
+    await expect(action).toHaveCount(1);
+    await expect(action).toHaveAttribute('href', '/welcome');
+    await expect(page.locator('img.polish-shot')).toHaveCount(1);
+    await expect(page.locator('.primary-action')).toHaveCount(0);
   });
 
   /**
@@ -204,16 +203,15 @@ test.describe('First 90 seconds @gate', () => {
     );
   });
 
-  test('the hero demo lets a visitor perform the product claim', async ({ page }) => {
+  test('the homepage action opens the first-run path', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // The claim is "your week rewrites itself". If logging a set does not change what
-    // the page says next, the homepage is asserting something it never shows.
-    const logSet = page.getByRole('button', { name: /log set/i });
-    await expect(logSet).toBeVisible({ timeout: 15_000 });
-    for (let i = 0; i < 3; i++) await logSet.click();
-
-    await expect(page.getByText(/next session/i).first()).toBeVisible({ timeout: 10_000 });
+    // The claim is "Log a set. Offline." The one control has to open /welcome,
+    // where Begin is the next tap. An in-page demo that never logged a set
+    // was the old homepage asserting a week it did not show.
+    await page.getByRole('link', { name: /^log a set\.?$/i }).click();
+    await expect(page).toHaveURL(/\/welcome/, { timeout: 15_000 });
+    await expect(page.getByRole('button', { name: /^begin$/i })).toBeVisible();
   });
 
   test('Today offers exactly one primary action', async ({ page }) => {
