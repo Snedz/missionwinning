@@ -1,5 +1,5 @@
 /**
- * Session clock size is house leftover — 11px from house.css, not text-[11px].
+ * Session clock size is house leftover — 12px from house.css, not text-[11px].
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -27,11 +27,11 @@ test('session clock size is house leftover, not text-[11px]', () => {
   assert.doesNotMatch(cell, /house-btn-primary/);
 });
 
-test('house leftover rule paints session clock size at 11px', () => {
+test('house leftover rule paints session clock size at 12px', () => {
   const css = read('src/components/house/house.css');
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-session-clock \{[^}]*font-size:\s*11px/
+    /\.mw-house \.house-compose-live \.house-session-clock \{[^}]*font-size:\s*12px/
   );
 });
 

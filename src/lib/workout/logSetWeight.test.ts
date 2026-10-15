@@ -1,5 +1,5 @@
 /**
- * Log set weight is house leftover — 700 from house.css, not font-extrabold.
+ * Log set weight is house leftover — 600 from house.css, not font-extrabold.
  * Scoped to the set table. LogConsole stays extrabold.
  */
 import { test } from 'node:test';
@@ -25,11 +25,11 @@ test('set-table Log set weight is house leftover, not font-extrabold', () => {
   assert.match(row, /house-btn-primary/);
 });
 
-test('house leftover rule paints set-table Log set weight at 700', () => {
+test('house leftover rule paints set-table Log set weight at 600', () => {
   const css = read('src/components/house/house.css');
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-weight:\s*700/
+    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-weight:\s*600/
   );
   assert.doesNotMatch(
     css,
