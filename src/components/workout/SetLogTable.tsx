@@ -3,8 +3,8 @@
 /**
  * The logger's set list — the Train atom on every surface.
  *
- * Set · Prev · weight · Reps · Log. Tabular nums. One inline Log set
- * (sole red primary). No second dock console under the rows.
+ * Live row is a set-row: target above previous, then the dial, then one
+ * full-width Log set. Waiting rows stay Set · Prev · load · Reps.
  *
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
@@ -41,9 +41,13 @@ import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 import { SetLogNextCite } from '@/components/workout/SetLogNextCite';
 import { SetLogPlateLine } from '@/components/workout/SetLogPlateLine';
 import {
+  formatAdjacencyCiteLine,
   formatAfterCompleteParts,
   type AfterCompleteCite,
+  type SetRowAdjacency,
 } from '@/lib/workout/setRowAdjacency';
+import { ACTIVE_TARGET_EMPTY_LINE } from '@/lib/workout/thinHistory';
+import { SetLogAdjacencyStack } from '@/components/workout/SetLogAdjacencyStack';
 import { formatRestClock } from '@/lib/workout/restTimer';
 import {
   AMRAP_PRESETS,
@@ -63,6 +67,8 @@ type Props = {
   weightLabel: string;
   /** "8 × 60" for each set index, when a previous performance exists. */
   prevLabels: (string | null)[];
+  /** Live row only — target above that previous. Null slots stay quiet. */
+  adjacencies?: (SetRowAdjacency | null)[];
   /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
   pairMark?: string | null;
   /** After-save vs-last tokens; null slots stay unpainted. */
@@ -124,6 +130,7 @@ export function SetLogTable({
   activeSetIdx,
   weightLabel,
   prevLabels,
+  adjacencies = [],
   pairMark = null,
   vsLastLabels = [],
   inSetPrLabels = [],
@@ -263,23 +270,37 @@ export function SetLogTable({
                 ) : null}
               </th>
 
-              <td
-                className={cn(
-                  cell,
-                  prevLabels[setIdx]
-                    ? 'font-semibold text-foreground'
-                    : 'house-set-prev'
-                )}
-                data-testid="set-table-prev"
-                data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
-              >
-                {prevLabels[setIdx] ?? '—'}
-              </td>
+              {isActive ? (
+                <td className={cn(cell, 'house-set-stack')}>
+                  <SetLogAdjacencyStack
+                    targetWord={t('activeColTarget', { defaultValue: 'Target' })}
+                    targetLabel={adjacencies[setIdx]?.targetLabel ?? null}
+                    citeLine={formatAdjacencyCiteLine(adjacencies[setIdx]?.cite ?? null, t)}
+                    emptyLine={adjacencies[setIdx]?.empty ? ACTIVE_TARGET_EMPTY_LINE : null}
+                    prevWord={t('activeColPrev', { defaultValue: 'Prev' })}
+                    prevLabel={prevLabels[setIdx] ?? null}
+                    showTarget
+                    testIdPrefix="set-table"
+                  />
+                </td>
+              ) : (
+                <td
+                  className={cn(
+                    cell,
+                    'house-set-stack',
+                    prevLabels[setIdx] ? 'font-semibold text-foreground' : 'house-set-prev'
+                  )}
+                  data-testid="set-table-prev"
+                  data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
+                >
+                  {prevLabels[setIdx] ?? '—'}
+                </td>
+              )}
 
               {isActive ? (
                 <>
                   {rowType === 'duration' ? (
-                    <td className={cell} colSpan={2}>
+                    <td className={cn(cell, 'house-set-entry')} colSpan={2}>
                       <SetRowDurationField
                         seconds={input.durationSeconds ?? 0}
                         onChange={(seconds) => onInputChange('duration', seconds)}
@@ -287,7 +308,7 @@ export function SetLogTable({
                     </td>
                   ) : (
                     <>
-                      <td className={cell}>
+                      <td className={cn(cell, 'house-set-entry')}>
                         <div className="flex min-w-0 items-center gap-1">
                           {plusLoad ? (
                             <span className="house-set-kicker shrink-0">
@@ -340,7 +361,7 @@ export function SetLogTable({
                           />
                         ) : null}
                       </td>
-                      <td className={cell}>
+                      <td className={cn(cell, 'house-set-entry')}>
                         <input
                           type="text"
                           inputMode="numeric"
@@ -359,8 +380,8 @@ export function SetLogTable({
                       </td>
                     </>
                   )}
-                  <td className={cn(cell, 'text-end')}>
-                    {/* House leftover press — ink, not poster red. */}
+                  <td className={cn(cell, 'house-set-action text-end')}>
+                    {/* House leftover press — the one yellow on Train. */}
                     <button
                       type="button"
                       onClick={onLog}

@@ -32,7 +32,7 @@ import { SessionTrainerAsk } from '@/components/workout/SessionTrainerAsk';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
 import { formatInSetPrLabels } from '@/lib/workout/inSetPr';
-import { resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
+import { formatSetRowAdjacency, resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
 import { setRowPlateBreakdown } from '@/lib/plateCalculator';
 import { useBarWeight } from '@/hooks/useBarWeight';
 import {
@@ -257,6 +257,14 @@ export function ActiveExerciseCard({
   /** PREVIOUS column / row anchor — same labels for compact rows and desktop table. */
   const rowType = resolveSetRowType(exercise);
   const plusLoad = rowType === 'bodyweight';
+  const adjacencies = formatSetRowAdjacency({
+    workoutHistory,
+    exerciseId: exLog.exerciseId,
+    sets: exLog.sets,
+    prescribed: exLog.prescribed,
+    units,
+    goalRange,
+  });
   const prevLabels = formatPrevSetLabels(
     workoutHistory,
     exLog.exerciseId,
@@ -427,6 +435,7 @@ export function ActiveExerciseCard({
             activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
             weightLabel={unitLabel}
             prevLabels={prevLabels}
+            adjacencies={adjacencies}
             pairMark={ssLabel}
             vsLastLabels={vsLastLabels}
             inSetPrLabels={inSetPrLabels}

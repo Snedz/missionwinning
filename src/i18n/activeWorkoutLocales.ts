@@ -280,6 +280,7 @@ type ActiveWorkoutStrings = {
   activeAddExerciseEyebrow: string;
   activeColSet: string;
   activeColPrev: string;
+  activeColTarget: string;
   activeColReps: string;
   activeColTime: string;
   activeColAssist: string;
@@ -634,6 +635,7 @@ const en: ActiveWorkoutStrings = {
   activeAddExerciseEyebrow: 'This session',
   activeColSet: 'Set',
   activeColPrev: 'Prev',
+  activeColTarget: 'Target',
   activeColReps: 'Reps',
   activeColTime: 'Time',
   activeColAssist: 'Assist',
