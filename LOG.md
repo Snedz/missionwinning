@@ -18,6 +18,20 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — Meta tests match the Groq seat (`.1138`)
+
+`build-and-test` was red on four meta checks that master already carried. The trainer surface test still required `gemini-2.5-flash` inside `sessionTrainerServer.ts`. That file calls `resolveCoachProviders`: Groq when `GROQ_API_KEY` is set, else `COACH_LLM_*`, else OpenRouter `:free`. Gemini free-tier hosts are never called. The test now locks that seat and still refuses a checkout, a bundle, and Muse. The card assertions are unchanged.
+
+`LOG-rotate-1111-for-1131.md` through `1136` were the same bytes as `LOG-rotate-1111-for-1130.md`, so `.1111` had seven `##` headings and the index named only the 1130 file. The copies now point at that file. The heading stays once. The filenames stay in the index.
+
+Meta tests were the first red step, so `i18n:coverage` and the hero e2e never ran. Once they passed, `dataSafety` and `contact` in `AppLegalFooter` had no English pack entry. Those two strings now sit next to About in the bootstrap pack. The cap stays 0. The homepage e2e still asked for Archivo and an in-page Log set demo. The cookie homepage is Geist, one link to `/welcome`, and the logger shot. SEO templates stay on Archivo.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1138`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1116-for-1138.md](docs/archive/log/LOG-rotate-1116-for-1138.md) (`.1116`). Live floor is `.1117`.
+
 ## 2026-10-15 — Log a set. Offline. (`.1137`)
 
 The public door was a marketing stack: a red Get notified, a legal link farm, and — once the gate cookie was set — a stat row, a demo hero, and an FAQ. The logger was the thing the page was about, and it was not on the page.
@@ -230,54 +244,6 @@ Label `2026.07-unified.1124`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1105-for-1124.md](docs/archive/log/LOG-rotate-1105-for-1124.md) (`.1105`), for the ≤15 entry budget.
 
-## 2026-09-24 — AI personal trainer on the open set (`.1117`)
-
-On Train the open lift
-still states this set. Ask
-under that line is the AI
-personal trainer. The post
-is `POST /api/coach/trainer`.
-Seat order: Gemini Flash
-when `GEMINI_API_KEY` is set
-(`gemini-2.5-flash`, override
-`GEMINI_MODEL`) via
-generateContent; else the
-existing `COACH_LLM_*` seat;
-else the same set line
-(`source: rules`). A model
-error, a link in the reply,
-or a refused product name
-returns the set line. History
-cite from the previous column
-rides the prompt when one
-exists. No session. No premium
-402. No checkout URL. The
-filled action stays Log set.
-Free. Offline rules still
-paint before the ask returns.
-Coach uses the same ask.
-It sits on the live voice
-surface, and on form cues
-for `/coach?ask=`. Train
-on that door opens `/active`.
-Talk still uses the premium
-chat seat. No bundle link
-on the free ask.
-
-**Mutants killed:** Gemini
-HTTP error dropping the set
-line; a model link kept as
-the reply; Gemini skipped
-when both keys are set.
-
-`[skip vercel]`. No tip-promote.
-Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1117`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.
-
 ## 2026-09-24 — Open set states what to do (`.1122`)
 
 On Train, the open lift
@@ -380,18 +346,50 @@ Label `2026.07-unified.1120`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1101-for-1120.md](docs/archive/log/LOG-rotate-1101-for-1120.md) (`.1101`), for the ≤15 entry budget. Refiled `.1099` → [docs/archive/log/LOG-rotate-1099-for-1114.md](docs/archive/log/LOG-rotate-1099-for-1114.md); `.1098` was already rotated by `.1113`.
 
-## Offline program shell (`.1116`)
+## 2026-09-24 — AI personal trainer on the open set (`.1117`)
 
-Rebased onto master after a 2-day stall. The only failing gate was this repo's own
-coverage ratchet and hard rule 5, both of which the PR had satisfied before the
-rebase and neither of which the rebase had broken in the product.
+On Train the open lift
+still states this set. Ask
+under that line is the AI
+personal trainer. The post
+is `POST /api/coach/trainer`.
+Seat order: Gemini Flash
+when `GEMINI_API_KEY` is set
+(`gemini-2.5-flash`, override
+`GEMINI_MODEL`) via
+generateContent; else the
+existing `COACH_LLM_*` seat;
+else the same set line
+(`source: rules`). A model
+error, a link in the reply,
+or a refused product name
+returns the set line. History
+cite from the previous column
+rides the prompt when one
+exists. No session. No premium
+402. No checkout URL. The
+filled action stays Log set.
+Free. Offline rules still
+paint before the ask returns.
+Coach uses the same ask.
+It sits on the live voice
+surface, and on form cues
+for `/coach?ask=`. Train
+on that door opens `/active`.
+Talk still uses the premium
+chat seat. No bundle link
+on the free ask.
 
-The conflict here was a label race, not a code conflict: every open PR wanted a build
-label master had already passed. This takes the next free one so two branches cannot
-announce the same number — the exact failure `check-build-label.mjs` was written to
-prevent.
+**Mutants killed:** Gemini
+HTTP error dropping the set
+line; a model link kept as
+the reply; Gemini skipped
+when both keys are set.
 
-Label `2026.07-unified.1116`.
+`[skip vercel]`. No tip-promote.
+Live www stays `.697`.
+PRIVATE_MODE stays.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1100-for-1116.md](docs/archive/log/LOG-rotate-1100-for-1116.md) (`.1100`).
+Label `2026.07-unified.1117`.
 
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.

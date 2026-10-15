@@ -29,6 +29,8 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navLearn: 'Learn',
   navBundle: 'Super Bundle',
   about: 'About',
+  dataSafety: 'Data safety',
+  contact: 'Contact',
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   navOurMission: 'Our mission',
