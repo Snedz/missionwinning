@@ -124,15 +124,15 @@ test('Today Start is not the SSR dummy and lands on compose', () => {
   assert.doesNotMatch(src, /SSR_ACTION/);
   assert.doesNotMatch(src, /startWorkoutFromStore/);
   assert.doesNotMatch(src, /copy:\s*prev\.copy/);
-  assert.match(src, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
+  assert.match(src, /writeTodayComposeSession\(\)/);
   assert.doesNotMatch(src, /disabled=\{!snap\}/);
   assert.doesNotMatch(src, /startEmptyWorkout|startEmpty\(/);
-  assert.match(src, /writeTodayComposeSession\(\)/);
   assert.match(src, /today-start-pending/);
   assert.match(src, /justGoTitle/);
-  assert.match(src, /<HouseFirstRoomsCard/);
-  assert.match(src, /id="today-week"/);
-  assert.match(src, /router\.push\('\/active'\)/);
+  assert.match(src, /data-testid="today-week-count"/);
+  assert.match(src, /href=\{withholdHero \? '\/move' : '\/active'\}/);
+  assert.doesNotMatch(src, /<HouseFirstRoomsCard/);
+  assert.doesNotMatch(src, /<SessionTrainerCard/);
   const peek = read('src/lib/coach/peekCoachToday.ts');
   assert.match(peek, /typeof window === 'undefined'/);
 });
@@ -177,9 +177,10 @@ test('Today desk keeps Start order engines', () => {
   assert.match(src, /peekCoachToday/);
   assert.match(src, /shouldRepeatLastOnToday/);
   assert.match(src, /writeTodayComposeSession/);
-  const handle = src.slice(src.indexOf('const handleStart'), src.indexOf('const sessionTitle'));
-  assert.match(handle, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
-  assert.doesNotMatch(handle, /runTodayPrimaryAction/);
+  const click = src.slice(src.indexOf('data-testid="today-start-cta"'), src.indexOf('{startLabel}'));
+  assert.match(click, /writeTodayComposeSession\(\)/);
+  assert.match(src, /href=\{withholdHero \? '\/move' : '\/active'\}/);
+  assert.doesNotMatch(click, /runTodayPrimaryAction/);
   const writer = read('src/lib/workout/writeTodayComposeSession.ts');
   assert.match(writer, /pickHonoredStart/);
   assert.match(writer, /peekCoachToday/);
@@ -187,17 +188,16 @@ test('Today desk keeps Start order engines', () => {
   assert.match(writer, /buildJustGoSession/);
 });
 
-test('Today desk has one filled action — week generate is a door to /coach', () => {
+test('Today desk has one filled action — week generate stays on the second rail', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const primaries = [...src.matchAll(/house-btn-primary/g)];
   assert.equal(primaries.length, 1, 'Start is the only filled action on Today');
-  assert.match(src, /href="\/coach"/);
-  assert.match(src, /data-house-week-writer="generateWeek"/);
+  assert.doesNotMatch(src, /href="\/coach"/);
+  assert.doesNotMatch(src, /data-house-week-writer="generateWeek"/);
   assert.doesNotMatch(src, /generateWeek\(/);
-  const openAt = src.indexOf('const openDay');
-  const openDay = src.slice(openAt, src.indexOf('return (', openAt));
-  assert.match(openDay, /offset === todayOff/);
-  assert.match(openDay, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
+  const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
+  assert.match(second, /href="\/coach"/);
+  assert.match(second, /data-house-week-writer="generateWeek"/);
 });
 
 test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
@@ -222,10 +222,9 @@ test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {
 test('checklist never owns Start, and house copy is not a pasted brand', () => {
   const src = stripComments(read('src/page-components/TodayDesk.tsx'));
   const startAt = src.indexOf('id="today-start"');
-  const weekAt = src.indexOf('id="today-week"');
-  const stepsAt = src.indexOf('<HouseFirstRoomsCard');
-  assert.ok(startAt > 0 && weekAt > startAt, 'Start is first; week follows');
-  assert.ok(stepsAt > startAt && stepsAt < weekAt, 'checklist sits under Start, before week');
+  const countAt = src.indexOf('data-testid="today-week-count"');
+  assert.ok(startAt > 0 && countAt > startAt, 'the week count sits in the session');
+  assert.doesNotMatch(src, /<HouseFirstRoomsCard/);
   assert.match(src, /snap \?/);
   assert.doesNotMatch(src, /getFirstSteps|summarizeFirstSteps/);
   const guide = stripComments(read('src/components/house/HouseGuide.tsx'));
@@ -2001,7 +2000,7 @@ test('on the sheet, Today starts with the session — one Start, no nested hero 
   assert.match(desk, /<h1 className="house-title">/);
   const primaries = [...desk.matchAll(/house-btn-primary/g)];
   assert.equal(primaries.length, 1, 'Start stays the only filled action');
-  assert.match(desk, /router\.push\('\/active'\)/);
+  assert.match(desk, /href=\{withholdHero \? '\/move' : '\/active'\}/);
   const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
   assert.match(second, /row\.id === 'start'\) return false/);
 });

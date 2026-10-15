@@ -179,20 +179,18 @@ describe('todayConceptChip', () => {
   });
 });
 
-test('TodayDesk paints one house-state chip from the helper before Start', () => {
+test('TodayDesk paints one week count, not a concept chip', () => {
   const desk = read('src/page-components/TodayDesk.tsx');
-  assert.match(desk, /todayConceptChip/);
-  assert.match(desk, /data-testid="today-concept-chip"/);
-  assert.match(desk, /house-state/);
-  assert.match(desk, /todayConceptChip/);
-  const chip = desk.indexOf('data-testid="today-concept-chip"');
+  assert.match(desk, /quietWeekGlance/);
+  assert.match(desk, /data-testid="today-week-count"/);
+  assert.doesNotMatch(desk, /todayConceptChip/);
+  assert.doesNotMatch(desk, /data-testid="today-concept-chip"/);
+  const count = desk.indexOf('data-testid="today-week-count"');
   const start = desk.indexOf('data-testid="today-start-cta"');
-  assert.ok(chip >= 0 && start > chip, 'chip glances before Start');
-  // Still the house desk — one Start, no remake.
+  assert.ok(count >= 0 && start > count, 'the number sits above Start');
   assert.match(desk, /data-house-desk="today"/);
   assert.match(desk, /id="today-start"/);
-  assert.match(desk, /HouseFirstRoomsCard/);
-  assert.match(desk, /id="today-week"/);
+  assert.doesNotMatch(desk, /HouseFirstRoomsCard/);
   assert.doesNotMatch(desk, /ChatWindow|victory-feed|VictoryFeed|Discord/i);
 });
 

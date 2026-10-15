@@ -96,13 +96,10 @@ describe('resolveTodayComposeTemplate', () => {
 describe('writeTodayComposeSession wiring', () => {
   it('Start writes the session before opening Train', () => {
     const desk = read('src/page-components/TodayDesk.tsx');
-    const handle = desk.slice(desk.indexOf('const handleStart'), desk.indexOf('const sessionTitle'));
-    assert.match(handle, /writeTodayComposeSession\(\)/);
-    assert.ok(
-      handle.indexOf('writeTodayComposeSession') < handle.indexOf("router.push('/active')"),
-      'write must happen before navigate'
-    );
-    assert.doesNotMatch(handle, /runTodayPrimaryAction/);
+    const click = desk.slice(desk.indexOf('data-testid="today-start-cta"'), desk.indexOf('{startLabel}'));
+    assert.match(click, /writeTodayComposeSession\(\)/);
+    assert.match(desk, /href=\{withholdHero \? '\/move' : '\/active'\}/);
+    assert.doesNotMatch(click, /runTodayPrimaryAction/);
   });
 
   it('second-bar Start writes before /active', () => {
