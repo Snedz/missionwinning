@@ -13,7 +13,7 @@
  * the build does not need real secrets. It never reads or writes .env files.
  */
 import { spawn, spawnSync } from 'node:child_process';
-import { createServer } from 'node:net';
+import { connect, createServer } from 'node:net';
 import process from 'node:process';
 
 const args = new Set(process.argv.slice(2));
@@ -57,14 +57,32 @@ function run(name, cmd, cmdArgs, env = process.env) {
  *
  * Failing here says *why* in one line and costs a second, instead of leaving a
  * later step to report a timeout that looks like a product defect.
+ *
+ * The probe CONNECTS rather than binds. Binding 0.0.0.0 is not a valid
+ * "is it taken" test on macOS: with a listener on 127.0.0.1:P, binding
+ * 0.0.0.0:P still succeeds, so this guard reported "free" against a live
+ * squatter, next start then failed to get the port, and the health fetch
+ * spent its full 60s before printing a bare "no response". Both loopback
+ * families are checked because the two can disagree about the same port.
  */
 function portInUse(port) {
-  return new Promise((resolve) => {
-    const probe = createServer();
-    probe.once('error', () => resolve(true));
-    probe.once('listening', () => probe.close(() => resolve(false)));
-    probe.listen(port, '0.0.0.0');
-  });
+  const families = ['127.0.0.1', '::1'];
+  return Promise.all(
+    families.map(
+      (host) =>
+        new Promise((resolve) => {
+          const sock = connect({ host, port });
+          const done = (inUse) => {
+            sock.destroy();
+            resolve(inUse);
+          };
+          sock.setTimeout(1500);
+          sock.once('connect', () => done(true));
+          sock.once('timeout', () => done(false));
+          sock.once('error', () => done(false));
+        }),
+    ),
+  ).then((hits) => hits.some(Boolean));
 }
 
 async function healthSmoke() {
