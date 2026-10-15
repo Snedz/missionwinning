@@ -66,10 +66,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={archivo.variable}>
       <body className="bg-background text-foreground font-sans">
+        {/* Cloudflare Email Obfuscation rewrites a plain address into an
+            anchor. React then hydrates text against that element (#418). */}
+        <span hidden dangerouslySetInnerHTML={{ __html: '<!--email_off-->' }} />
         <I18nPwaProvider>
           {children}
           <DeferredToaster />
         </I18nPwaProvider>
+        <span hidden dangerouslySetInnerHTML={{ __html: '<!--/email_off-->' }} />
       </body>
     </html>
   );

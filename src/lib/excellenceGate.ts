@@ -81,6 +81,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'app/(app)/coaching': 'surface',
   'app/(app)/contact': 'surface',
   'app/(app)/cookies': 'surface',
+  'app/(app)/credits': 'surface',
   'app/(app)/data-safety': 'surface',
   'app/(app)/dmca': 'surface',
   'app/(app)/explore': 'surface',

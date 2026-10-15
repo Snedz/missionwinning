@@ -84,6 +84,7 @@ const nextConfig = {
       { source: '/app', destination: '/log', permanent: true },
       { source: '/login', destination: '/welcome', permanent: true },
       { source: '/pricing', destination: '/welcome', permanent: true },
+      { source: '/settings', destination: '/account', permanent: true },
     ];
   },
   async headers() {

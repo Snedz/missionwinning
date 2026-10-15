@@ -63,10 +63,14 @@ export function isFirstSetLocaleChooserPath(pathname: string): boolean {
   return FIRST_SET_LOCALE_PATHS.some((p) => path === p || (p !== '/' && path.startsWith(`${p}/`)));
 }
 
-/** Auto-open the first-visit chooser only off the first-set path, and only once. */
+/**
+ * Language and country are confirmed on the onboarding profile step.
+ * The sheet must not auto-open over the week after Just Go.
+ */
 export function shouldAutoOpenLocaleChooser(pathname: string): boolean {
   if (hasConfirmedLocaleChoice()) return false;
-  return !isFirstSetLocaleChooserPath(pathname);
+  if (isFirstSetLocaleChooserPath(pathname)) return false;
+  return false;
 }
 
 export function loadLocaleCountryPref(): LocaleCountryPref | null {

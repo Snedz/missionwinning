@@ -18,6 +18,22 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — Review fixes on the gated site (`.1135`)
+
+Today's empty week cell opens the free logger on `/active`. `/coach` stays gated, so Just Go no longer lands on `/private`. Generate this week still links `/coach`.
+
+Refunds states that payments are not live. The planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Account has no billing screen while payments are off. The page does not name Stripe, Phantom, USDC, or Super Bundle.
+
+A signed-out `week.logged` post is skipped when this device has no push subscription. The server still returns 403 `consent_required` if a post arrives. Language and country are fields on the onboarding profile step; the sheet does not auto-open. Train gives the weight field a wider column, puts Plates on their own line, shows the percent box only when a percent or a known max exists, and lets the session title wrap. Units stay on the Settings default (metric) until the athlete changes them. `/credits` lists the AGPL-3 program, the Unlicense exercise snapshot, and the MIT body-diagram package, linked from About and the footer. `/settings` redirects to `/account`. About cites the 2024 BMJ review for the exercise-and-mood sentence.
+
+**Mutants killed:** an unlogged Just Go session kept over a different Coach card; a logged set replaced; a guest without push still posted; geo units written on boot; the locale sheet auto-opening off the first-set path.
+
+`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1135`.
+
+Rotated LOG → [docs/archive/log/LOG-rotate-1123-for-1135.md](docs/archive/log/LOG-rotate-1123-for-1135.md) (`.1123`). `.1113` stays the live floor.
+
 ## 2026-10-14 — Coach speaks through Groq, then any compatible host, then OpenRouter free (`.1134`)
 
 The trainer, the session line, daily insight, chat, debrief, and plan voice called Gemini Flash whenever `GEMINI_API_KEY` was set. That free tier trains on prompts. Those prompts are workout and readiness text.
@@ -369,65 +385,6 @@ The conflict here was a label race, not a code conflict: every open PR wanted a 
 label master had already passed. This takes the next free one so two branches cannot
 announce the same number — the exact failure `check-build-label.mjs` was written to
 prevent.
-
-## 2026-09-24 — Personal trainer on the set in front of you (`.1123`)
-
-Today, Train, and Coach show one
-card: the next set, a Library
-form cue, and the plan name.
-The sentence is composed on
-the device from those facts.
-A live line is optional.
-
-Free model: `gemini-2.5-flash`
-via Google `generateContent`
-when `GEMINI_API_KEY` or
-`GOOGLE_GENERATIVE_AI_API_KEY`
-is set. Else `COACH_LLM_*`
-if that is configured. Else
-the library line. A model
-line that changes the lift
-or the load is dropped.
-The free logger does not
-need a gate cookie. Free
-beta entitles the signed-out
-caller, so the same Flash
-line is the one they hear.
-Beta off and signed-out
-stays on the library line.
-An exhausted daily cap stays
-on the library answer (200,
-not 401 or 429). The cap is
-the existing daily-insight
-window so the ledger feature
-list stays closed. The card
-sends `deviceId` for that
-meter only.
-
-The card does not add a
-filled action. Library is a
-ghost link to `/exercises/[id]`.
-No checkout URL.
-
-**Mutants killed:** a missing
-plan inventing a lift; zero
-weight printed as 0 kg; a
-model line with a different
-load kept; another product
-name kept; a signed-out
-caller hitting the model
-with free beta off; a call
-with no key; quota exhaustion
-returning 429; `GEMINI_MODEL`
-pointing off the Gemini host.
-
-`[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1123`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1104-for-1123.md](docs/archive/log/LOG-rotate-1104-for-1123.md) (`.1104`), for the ≤15 entry budget.
 
 ## 2026-09-24 — History year of logged days (`.1113`)
 

@@ -4,13 +4,16 @@
  * The payload carries a device id on every write. When a session cookie resolves the
  * server ignores it for ownership and keys the row to the account; when none resolves it
  * is the only owner, and the server then requires that the device already holds a push
- * subscription. Sending it unconditionally means the client never has to know — or be
- * able to assert — whether consent exists.
+ * subscription. A guest with no local subscription does not send the request.
+ * The server still decides consent; the client does not send a flag that grants it.
  *
  * The handler is a no-op on a missing device rather than a retry loop, and a 4xx is
  * terminal: a guest without consent is a settled answer, not a transient failure.
+ * A guest with no local push subscription does not POST — that call is the 403.
  */
 
+import { loggerEventSource } from '@/lib/authPresence';
+import { hasLocalPushSubscription } from '@/lib/pushClient';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
 export type WeekLoggedPayload = {
@@ -57,7 +60,21 @@ export function weekLoggedDeliveryDone(status: number): boolean {
   return false;
 }
 
+/**
+ * A signed-out device with no local push subscription is the 403 the server
+ * already returns (`consent_required`). Skip the request so History does not
+ * show it. The server still refuses a post that arrives without consent.
+ */
+export function shouldPostWeekLogged(source: 'guest' | 'account', hasPush: boolean): boolean {
+  if (source === 'account') return true;
+  return hasPush;
+}
+
 async function postWeekLogged(isoWeek: string, deviceId: string): Promise<boolean> {
+  if (loggerEventSource() === 'guest') {
+    const hasPush = await hasLocalPushSubscription();
+    if (!shouldPostWeekLogged('guest', hasPush)) return true;
+  }
   let res: Response;
   try {
     res = await fetch('/api/metrics/week-logged', {

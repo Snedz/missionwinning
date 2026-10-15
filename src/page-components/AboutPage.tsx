@@ -55,6 +55,10 @@ export function AboutPage() {
           <Link href="/changelog" className="text-sm text-muted-foreground hover:underline">
             Changelog
           </Link>
+          {' · '}
+          <Link href="/credits" className="text-sm text-muted-foreground hover:underline">
+            {t('infoCreditsTitle', { defaultValue: 'Credits' })}
+          </Link>
         </p>
       </div>
       <EditorialSection index="01" title={t('infoAboutMission', { defaultValue: 'Our mission' })}>

@@ -66,7 +66,10 @@ export function ActiveSessionChrome({
             session. Log set is the one filled action; Finish is house-btn. */}
         <div className="flex min-w-0 flex-nowrap items-center gap-2">
           <div className="min-w-0 flex-1">
-            <h1 data-testid="session-title" className="house-title truncate">
+            <h1
+              data-testid="session-title"
+              className="house-title min-w-0 whitespace-normal break-words"
+            >
               {workoutName}
             </h1>
             <p className="house-session-clock mt-0.5 flex min-w-0 items-center gap-1 truncate tabular-nums">
@@ -88,6 +91,7 @@ export function ActiveSessionChrome({
               >
                 <span
                   role="timer"
+                  suppressHydrationWarning
                   aria-live="polite"
                   aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
                 >

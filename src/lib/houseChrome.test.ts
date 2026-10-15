@@ -194,6 +194,10 @@ test('Today desk has one filled action — week generate is a door to /coach', (
   assert.match(src, /href="\/coach"/);
   assert.match(src, /data-house-week-writer="generateWeek"/);
   assert.doesNotMatch(src, /generateWeek\(/);
+  const openAt = src.indexOf('const openDay');
+  const openDay = src.slice(openAt, src.indexOf('return (', openAt));
+  assert.match(openDay, /offset === todayOff/);
+  assert.match(openDay, /writeTodayComposeSession\(\);\s*router\.push\('\/active'\)/);
 });
 
 test('HouseShell uses HouseMore, not the old WEDGE MoreSheet', () => {

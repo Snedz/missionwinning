@@ -18,7 +18,10 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { resolveCoachSessionStart } from '@/lib/coach/coachSessionStart';
+import {
+  resolveCoachSessionStart,
+  shouldKeepLiveOverPlan,
+} from '@/lib/coach/coachSessionStart';
 import { protectLiveStart } from '@/lib/workout/sessionResume';
 import { loadPlan } from '@/lib/coach/storage';
 import { track } from '@/lib/analytics';
@@ -40,9 +43,13 @@ export function useStartCoachSession() {
       // lives in `resolveCoachSessionStart`, which is pure and unit-tested. This
       // hook is wiring only, so there is no branch here to get wrong and nothing
       // untested hiding behind the React boundary.
-      if (protectLiveStart(useWorkoutStore.getState().activeWorkout) === 'keep') {
+      const live = useWorkoutStore.getState().activeWorkout;
+      if (protectLiveStart(live) === 'keep' && shouldKeepLiveOverPlan(live, session)) {
         router.push('/active');
         return;
+      }
+      if (protectLiveStart(useWorkoutStore.getState().activeWorkout) === 'keep') {
+        useWorkoutStore.setState({ activeWorkout: null });
       }
       const start = resolveCoachSessionStart(session, workoutHistory, Date.now(), loadPlan());
       if (!start) return;

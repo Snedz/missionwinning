@@ -1,5 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   languageForCountry,
   normalizeCountryCode,
@@ -47,5 +49,13 @@ describe('regionDefaults', () => {
     });
     assert.equal(d.language, 'es');
     assert.equal(d.units, 'metric');
+  });
+
+  it('does not write geo units onto the device', () => {
+    const boot = readFileSync(
+      path.join(import.meta.dirname, '..', 'components', 'i18n', 'RegionDefaultsBoot.tsx'),
+      'utf8'
+    ).replace(/\/\*[\s\S]*?\*\//g, '');
+    assert.doesNotMatch(boot, /writeRaw|STORAGE_KEYS\.units|fetch\(/);
   });
 });

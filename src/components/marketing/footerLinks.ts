@@ -59,6 +59,7 @@ const LEGAL: FooterLink[] = [
   { href: '/accessibility', labelKey: 'footerLegalA11y', defaultValue: 'Accessibility' },
   { href: '/dmca', labelKey: 'footerLegalDmca', defaultValue: 'DMCA' },
   { href: '/refunds', labelKey: 'footerLegalRefunds', defaultValue: 'Refunds' },
+  { href: '/credits', labelKey: 'infoCreditsTitle', defaultValue: 'Credits' },
 ];
 
 /**

@@ -38,10 +38,12 @@ export function TransparencyPage() {
   const summary =
     report.limitsApply === 0
       ? t('transparencyNoLimits', { defaultValue: 'No limits apply' })
-      : t('transparencyLimitsApply', {
-          count: report.limitsApply,
-          defaultValue: '{{count}} limits apply',
-        });
+      : report.limitsApply === 1
+        ? t('transparencyLimitApplies', { defaultValue: '1 limit applies' })
+        : t('transparencyLimitsApply', {
+            count: report.limitsApply,
+            defaultValue: '{{count}} limits apply',
+          });
 
   return (
     <PillarPageShell

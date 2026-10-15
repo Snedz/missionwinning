@@ -24,9 +24,12 @@ function readUnitsPref(): UnitsPref {
 }
 
 export function useUnits(): UnitsPref {
-  const [units, setUnits] = useState<UnitsPref>(readUnitsPref);
+  // First paint matches the server. Reading storage here disagrees with
+  // SSR whenever a device already stored imperial, which is hydration #418.
+  const [units, setUnits] = useState<UnitsPref>('metric');
 
   useEffect(() => {
+    setUnits(readUnitsPref());
     const onStorage = (e: StorageEvent) => {
       if (e.key === 'mw_units' && (e.newValue === 'metric' || e.newValue === 'imperial')) {
         setUnits(e.newValue);
