@@ -167,6 +167,7 @@ const ATHLETE_EN: Record<string, string> = {
   transparencyStatusInfo: 'Explained',
   transparencyBackAccount: 'Back to Account',
   transparencyNoLimits: 'No limits apply',
+  transparencyLimitApplies: '1 limit applies',
   transparencyLimitsApply: '{{count}} limits apply',
   hoodEyebrow: 'Account',
   hoodPageTitle: 'Under the Hood',

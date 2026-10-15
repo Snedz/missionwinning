@@ -122,6 +122,14 @@ type InfoStrings = {
   infoRefundsAbuse: string;
   infoRefundsAbuseBody: string;
   infoRefundsFoot: string;
+  infoCreditsTitle: string;
+  infoCreditsIntro: string;
+  infoCreditsAppTitle: string;
+  infoCreditsAppBody: string;
+  infoCreditsExercisesTitle: string;
+  infoCreditsExercisesBody: string;
+  infoCreditsBodyTitle: string;
+  infoCreditsBodyBody: string;
   infoTermsAcceptableUse: string;
   infoTermsAcceptableUseBody: string;
   infoPrivacySubprocessors: string;
@@ -341,7 +349,7 @@ const en: InfoStrings = {
   infoTermsAccountsLi2: 'Do not abuse the service, attempt unauthorized access, or scrape premium content.',
   infoTermsAccountsLi3: 'Do not use the app for unlawful purposes.',
   infoTermsPremiumBody:
-    'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
+    'Premium purchases are subject to checkout terms and the Refunds & cancellation policy. Payments are not live yet. When paid checkout is live, the planned web checkout is PayPal. To stop future charges, email support@missionwinning.com. Account has no billing screen while payments are off.',
   infoTermsAcceptableUse: 'Acceptable use',
   infoTermsAcceptableUseBody:
     'You must follow the Usage Policy (Acceptable Use) at /usage. In short: no unlawful use; no unauthorized access; no scraping or redistributing premium content; no CSAM, illegal deepfakes, fraud, harassment, or infrastructure abuse; no presenting Mission Winning as medical diagnosis or emergency care; no abuse of youth/school features. We may suspend or terminate accounts that violate these rules. Report abuse to support@missionwinning.com (subject: AUP abuse).',
@@ -428,22 +436,34 @@ const en: InfoStrings = {
     'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
   infoRefundsTitle: 'Refunds & cancellation',
   infoRefundsIntro:
-    'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
+    'The free logger never needs a refund. Paid checkout is not live. When paid checkout is live, the planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Educational fitness software only — not a medical device.',
   infoRefundsIntroOpenBeta:
-    'The free logger never needs a refund. Paid Super Bundle checkout is not live during this Alpha, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
-  infoRefundsSubs: 'Subscriptions',
+    'The free logger never needs a refund. Paid checkout is not live, so there is no charge to reverse. When paid checkout is live, the planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Educational fitness software only — not a medical device.',
+  infoRefundsSubs: 'Pro',
   infoRefundsSubsBody:
-    'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing to stop future charges; access continues through the paid period already billed.',
-  infoRefundsLifetime: 'Lifetime / USDC',
+    'Pro is planned at $19.99 per month or $119.99 per year, paid through PayPal when paid checkout is live. There is no charge to reverse while payments are off. When a subscription exists, email support@missionwinning.com within 14 days of the first paid charge to request a full refund. After that window, mid-cycle prorated refunds are not offered. To stop future charges, email the same address. Access continues through the period already paid. Account has no billing screen while payments are off.',
+  infoRefundsLifetime: 'Founder Lifetime',
   infoRefundsLifetimeBody:
-    'Lifetime (card or Phantom USDC): request a refund within 14 days of purchase if you have not meaningfully used premium features, by emailing support@missionwinning.com. After 14 days, lifetime purchases are non-refundable. Phantom/USDC refunds are processed manually by support — there is no automated on-chain reverse transfer yet.',
+    'Founder Lifetime is planned at $299, paid through PayPal when checkout is live. There is no charge to reverse while payments are off. When a purchase exists, email support@missionwinning.com within 14 days if premium features have not been meaningfully used. After 14 days, Founder Lifetime purchases are non-refundable.',
   infoRefundsHow: 'How to request',
   infoRefundsHowBody:
-    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method (Stripe or Phantom). We aim to respond within a few business days.',
+    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, the plan (Pro monthly, Pro yearly, or Founder Lifetime), and the approximate purchase date. Payments are not live yet, so a request before a PayPal charge has nothing to reverse. We aim to respond within a few business days.',
   infoRefundsAbuse: 'Abuse & chargebacks',
   infoRefundsAbuseBody:
     'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.',
   infoRefundsFoot: 'See also',
+  infoCreditsTitle: 'Credits',
+  infoCreditsIntro:
+    'Licence credits for Mission Winning and for work this product includes.',
+  infoCreditsAppTitle: 'Mission Winning',
+  infoCreditsAppBody:
+    'The program is published under the GNU Affero General Public License, version 3. The license text is the LICENSE file that ships with the source.',
+  infoCreditsExercisesTitle: 'Exercise catalog',
+  infoCreditsExercisesBody:
+    'Curated exercise names, muscle groups, equipment, level, and one form cue come from yuhonas/free-exercise-db (https://github.com/yuhonas/free-exercise-db). License: Unlicense. Snapshot commit a859101d633a01c4a1a920d6a8ce41dabba0705f.',
+  infoCreditsBodyTitle: 'Body diagram',
+  infoCreditsBodyBody:
+    'Body diagram polygons come from the MIT package react-body-highlighter (copyright 2020 GV79). This product does not copy those polygons out of the package.',
   infoAboutMissionNorthStar:
     'The mission is advancement of civilization and propagation of consciousness to the stars.',
   infoAboutMissionNested:
@@ -455,7 +475,7 @@ const en: InfoStrings = {
   infoAboutMissionP2:
     'Train anywhere with bodyweight or minimal gear first. Mission Coach builds the week from what you actually logged — not from a wearable. Educational tools only, not medical care.',
   infoAboutEvidenceBody:
-    'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
+    'A 2024 BMJ review of trials found that structured exercise can reduce depressive symptoms in research settings (https://www.bmj.com/content/384/bmj-2023-075847). Most advice still stops at “just go work out.” The weekly plan is the part you can follow on a phone. Mission Winning does not diagnose or treat depression. This is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
     'Operated by Mission Winning LLC, a Texas limited liability company, for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',

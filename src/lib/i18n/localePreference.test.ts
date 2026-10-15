@@ -44,10 +44,10 @@ describe('first-set locale chooser (F-017)', () => {
     }
   });
 
-  it('may auto-open off the first-set path when the athlete has not confirmed', () => {
+  it('stays closed off the first-set path — language is confirmed in onboarding', () => {
     for (const path of ['/profile', '/account', '/coach', '/bundle', '/regions']) {
       assert.equal(isFirstSetLocaleChooserPath(path), false, path);
-      assert.equal(shouldAutoOpenLocaleChooser(path), true, path);
+      assert.equal(shouldAutoOpenLocaleChooser(path), false, path);
     }
   });
 

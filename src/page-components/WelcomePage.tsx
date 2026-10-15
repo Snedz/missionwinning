@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
@@ -43,6 +43,7 @@ import {
 import { idayFinishPath } from '@/lib/idayFinishPath';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
+import { OnboardingLocaleFields } from '@/components/i18n/OnboardingLocaleFields';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -70,6 +71,10 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
+  const commitLocale = useRef<() => void>(() => {});
+  const registerLocaleCommit = useCallback((commit: () => void) => {
+    commitLocale.current = commit;
+  }, []);
 
   const experienceLabel = (value: string) => {
     if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
@@ -102,6 +107,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
     writeRaw(STORAGE_KEYS.goals, primaryGoal);
     seedHomeGymKitIfUnset(equipment);
     saveDaysPerWeek(defaultDaysPerWeek(experience));
+    commitLocale.current();
     scheduleJourneyPush();
   };
 
@@ -271,7 +277,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                   <h2 className="display-section max-w-[18ch] text-balance text-foreground">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-                      : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
+                      : t('welcomeProfileTitle', { defaultValue: 'A few quick questions' })}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {isEdit
@@ -343,6 +349,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                     })}
                   />
                 </label>
+                <OnboardingLocaleFields onCommit={registerLocaleCommit} />
                 <button
                   type="button"
                   className="primary-action min-h-[52px] w-full tap-target"

@@ -33,7 +33,7 @@ export function RefundsPage() {
       variant="sections"
       showLegalFooter
     >
-      {/* Quiet leftover: intro + jump chips + sections. Legal copy unchanged. */}
+      {/* Quiet leftover: intro + jump chips + sections. */}
       <section className="house-card space-y-3">
         <p className="text-sm text-muted-foreground">
           {freeBeta
@@ -68,14 +68,6 @@ export function RefundsPage() {
         <Link href="/privacy" className="underline underline-offset-2">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
-        {!freeBeta && (
-          <>
-            {' · '}
-            <Link href="/bundle" className="underline underline-offset-2">
-              {t('footerProductBundle', { defaultValue: 'Super Bundle' })}
-            </Link>
-          </>
-        )}
       </p>
     </InfoPageShell>
   );

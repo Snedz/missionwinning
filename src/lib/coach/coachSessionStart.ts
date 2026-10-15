@@ -43,6 +43,26 @@ export function coachSessionTemplates(
  * wrong. The `done` guard in particular used to exist in only one of the three
  * components that started sessions.
  */
+/**
+ * Keep a live session when it already is this plan, or when a set is logged.
+ * An unlogged session with a different first lift is not this card — Start
+ * replaces it so the opened session matches the Coach list.
+ */
+export function shouldKeepLiveOverPlan(
+  live: {
+    workoutName?: string;
+    exercises?: { exerciseId?: string; sets?: { completed?: boolean }[] }[];
+  } | null | undefined,
+  plan: { name: string; exercises: { exerciseId: string }[] }
+): boolean {
+  const exercises = live?.exercises;
+  if (!exercises?.length || plan.exercises.length === 0) return false;
+  if (exercises.some((ex) => ex.sets?.some((set) => set.completed))) return true;
+  if (live?.workoutName !== plan.name) return false;
+  if (exercises.length !== plan.exercises.length) return false;
+  return exercises.every((ex, i) => ex.exerciseId === plan.exercises[i]?.exerciseId);
+}
+
 export function resolveCoachSessionStart(
   session: PlanSession | null | undefined,
   history: CompletedWorkoutLog[],

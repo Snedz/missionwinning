@@ -5,6 +5,7 @@ import path from 'node:path';
 import {
   enqueueWeekLogged,
   isWeekLoggedPayload,
+  shouldPostWeekLogged,
   weekLoggedDeliveryDone,
 } from '@/lib/week4LoggerSync';
 import { __resetForTests as resetOutbox, getState, registerHandler } from '@/lib/sync/outbox';
@@ -44,6 +45,18 @@ beforeEach(() => {
 
 afterEach(() => {
   uninstall();
+});
+
+describe('shouldPostWeekLogged', () => {
+  it('posts for an account and for a guest who already has push', () => {
+    assert.equal(shouldPostWeekLogged('account', false), true);
+    assert.equal(shouldPostWeekLogged('account', true), true);
+    assert.equal(shouldPostWeekLogged('guest', true), true);
+  });
+
+  it('skips a signed-out device with no local push subscription', () => {
+    assert.equal(shouldPostWeekLogged('guest', false), false);
+  });
 });
 
 describe('weekLoggedDeliveryDone', () => {
@@ -109,5 +122,6 @@ describe('week4LoggerSync wiring', () => {
     const sync = read('src/lib/week4LoggerSync.ts');
     assert.match(sync, /registerHandler\('week\.logged'/);
     assert.match(sync, /enqueue\('week\.logged'/);
+    assert.match(sync, /shouldPostWeekLogged\('guest'/);
   });
 });

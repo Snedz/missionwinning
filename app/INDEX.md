@@ -53,6 +53,7 @@
 | `/terms` | `TermsPage.tsx` | Leftover terms. Jump chips + house-card sections. Never a rail. |
 | `/dmca` | `DmcaPage.tsx` | Leftover DMCA — jump chips + house-card sections. Never a rail. |
 | `/refunds` | `RefundsPage.tsx` | Leftover refunds — jump chips + house-card sections. Never a rail. |
+| `/credits` | `CreditsPage.tsx` | Licence credits. Linked from About and the footer. Never a rail. |
 | `/usage` | `UsagePolicyPage.tsx` | Leftover usage — jump chips + house-card sections. Never a rail. |
 | `/regions` | `SupportedRegionsPage.tsx` | Leftover regions — jump chips + house-card sections. Never a rail. |
 | `/service-terms` | `ServiceTermsPage.tsx` | Leftover service terms — jump chips + house-card sections. Never a rail. |

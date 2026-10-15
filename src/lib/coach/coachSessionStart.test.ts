@@ -2,7 +2,11 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { coachSessionTemplates, resolveCoachSessionStart } from '@/lib/coach/coachSessionStart';
+import {
+  coachSessionTemplates,
+  resolveCoachSessionStart,
+  shouldKeepLiveOverPlan,
+} from '@/lib/coach/coachSessionStart';
 import { coachAdaptReentryIsPrescribed, coachAdaptReentrySession } from '@/lib/coach/coachAdaptReentry';
 import type { PlanSession } from '@/lib/coach/types';
 
@@ -194,6 +198,55 @@ describe('every coach start goes through the one path', () => {
  * are covered for every caller at once rather than per component — which is how
  * three components came to have three different ideas of what starting means.
  */
+describe('shouldKeepLiveOverPlan', () => {
+  const plan = {
+    name: 'Upper Body',
+    exercises: [{ exerciseId: 'push-ups' }, { exerciseId: 'overhead-press' }],
+  };
+
+  it('replaces an unlogged session whose first lift is not the card', () => {
+    assert.equal(
+      shouldKeepLiveOverPlan(
+        {
+          workoutName: 'Just Go',
+          exercises: [{ exerciseId: 'bench-press', sets: [{ completed: false }] }],
+        },
+        plan
+      ),
+      false
+    );
+  });
+
+  it('keeps a session that already logged a set', () => {
+    assert.equal(
+      shouldKeepLiveOverPlan(
+        {
+          workoutName: 'Just Go',
+          exercises: [{ exerciseId: 'bench-press', sets: [{ completed: true }] }],
+        },
+        plan
+      ),
+      true
+    );
+  });
+
+  it('keeps the same plan in the same order', () => {
+    assert.equal(
+      shouldKeepLiveOverPlan(
+        {
+          workoutName: 'Upper Body',
+          exercises: [
+            { exerciseId: 'push-ups', sets: [{ completed: false }] },
+            { exerciseId: 'overhead-press', sets: [{ completed: false }] },
+          ],
+        },
+        plan
+      ),
+      true
+    );
+  });
+});
+
 describe('resolveCoachSessionStart', () => {
   const noHistory: never[] = [];
   // Relative to now, never a literal — a fixture with a date in it has an expiry date.

@@ -77,7 +77,7 @@ const en: WelcomeStrings = {
     'Your job today: complete one step at a time. Today always shows your next single action.',
   welcomeProfileEyebrow: 'About you',
   welcomeSignInEyebrow: 'Optional',
-  welcomeProfileTitle: 'Three quick questions',
+  welcomeProfileTitle: 'A few quick questions',
   welcomeProfileEditHint: 'Update experience, equipment, and goal. Changes sync when signed in.',
   welcomeProfileHint: 'So we can suggest a session that matches your gear.',
   welcomeExperience: 'Experience',

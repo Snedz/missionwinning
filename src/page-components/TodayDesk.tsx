@@ -249,6 +249,13 @@ export function TodayDesk() {
       startCoach(session, { from: 'home' });
       return;
     }
+    // Today with no plan is the free logger. /coach stays gated, so sending
+    // Just Go there dead-ends a new visitor on /private.
+    if (offset === todayOff) {
+      writeTodayComposeSession();
+      router.push('/active');
+      return;
+    }
     router.push('/coach');
   };
 

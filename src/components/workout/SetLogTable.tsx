@@ -169,10 +169,10 @@ export function SetLogTable({
       data-pair-mark={pairMark ?? undefined}
     >
       <colgroup>
-        <col className={pairMark ? 'w-[14%]' : 'w-[12%]'} />
-        <col className="w-[20%]" />
-        <col className="w-[24%]" />
-        <col className="w-[18%]" />
+        <col className={pairMark ? 'w-[12%]' : 'w-[10%]'} />
+        <col className="w-[14%]" />
+        <col className="w-[34%]" />
+        <col className="w-[16%]" />
         <col className="w-[26%]" />
       </colgroup>
       <thead>
@@ -288,7 +288,7 @@ export function SetLogTable({
                   ) : (
                     <>
                       <td className={cell}>
-                        <div className="flex items-center gap-1">
+                        <div className="flex min-w-0 items-center gap-1">
                           {plusLoad ? (
                             <span className="house-set-kicker shrink-0">
                               {t('activeSetBodyweight', { defaultValue: 'BW' })}+
@@ -305,18 +305,20 @@ export function SetLogTable({
                             }
                             onChange={(next) => onInputChange('weight', next)}
                           />
-                          {onOpenPlates ? (
-                            <button
-                              type="button"
-                              onClick={onOpenPlates}
-                              data-testid="set-table-open-plates"
-                              className="house-btn house-btn-ghost min-h-[44px] shrink-0 tap-target px-2"
-                            >
-                              {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-                            </button>
-                          ) : null}
                         </div>
-                        {rowType === 'weight' && onSetLoadPct ? (
+                        {onOpenPlates ? (
+                          <button
+                            type="button"
+                            onClick={onOpenPlates}
+                            data-testid="set-table-open-plates"
+                            className="house-btn house-btn-ghost mt-1 min-h-[44px] tap-target px-2"
+                          >
+                            {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
+                          </button>
+                        ) : null}
+                        {rowType === 'weight' &&
+                        onSetLoadPct &&
+                        (set.loadPct != null || knownMax != null) ? (
                           <SetRowPercentField
                             authored={set.loadPct}
                             weight={input.weight}

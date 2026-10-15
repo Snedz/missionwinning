@@ -8,10 +8,12 @@ export const DEAD_ALIAS_PATHS: Readonly<Record<string, string>> = {
   '/app': '/log',
   '/login': '/welcome',
   '/pricing': '/welcome',
+  '/settings': '/account',
 };
 
 const ALLOWED_NEXT_PATHS = new Set([
   '/log',
+  '/account',
   '/profile',
   '/welcome',
   '/coach',
