@@ -1,10 +1,7 @@
 /**
- * G1 — after Done, `/` is the `.696` landing. Reveal must not leave blank
- * paper between "At a glance" and FAQ. Full-page capture and crawlers never
- * fire IntersectionObserver, so `.reveal { opacity: 0 }` is a blank band.
- *
- * Photo slots are real stills in `public/photo/`, wired through `base`.
- * A caption-only GrayscalePhoto is the empty-slot mutant.
+ * `.reveal` must paint without waiting for IntersectionObserver. The cookie
+ * homepage no longer uses Reveal or the marketing stills; it shows one real
+ * shot of the logger.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,8 +10,6 @@ import path from 'node:path';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
-
-const LANDING_SHOTS = ['phone-bench', 'home-rack', 'bare-wrist'] as const;
 
 test('.reveal paints without waiting for IntersectionObserver', () => {
   const css = read('src/index.css');
@@ -30,31 +25,9 @@ test('.reveal paints without waiting for IntersectionObserver', () => {
   assert.match(firstReveal[0], /opacity:\s*1/, 'default .reveal paints');
 });
 
-test('landing below-fold bands stay in the source and Reveal does not hide them', () => {
+test('cookie homepage is one logger shot, not a reveal stack', () => {
   const landing = read('src/page-components/LandingPage.tsx');
-  assert.match(landing, /When you miss/);
-  assert.match(landing, /Where you train/);
-  assert.match(landing, /The free core/);
-  assert.match(landing, /<Reveal>/);
-  assert.match(landing, /from '@\/components\/marketing\/Reveal'/);
-});
-
-test('landing photo slots are real files wired through GrayscalePhoto base', () => {
-  const landing = read('src/page-components/LandingPage.tsx');
-  assert.match(
-    landing,
-    /<GrayscalePhoto[\s\S]{0,240}base=\{col\.photo\}/,
-    'GrayscalePhoto must receive base — caption-only is the empty-slot mutant'
-  );
-  for (const name of LANDING_SHOTS) {
-    assert.match(landing, new RegExp(`photo:\\s*'/photo/${name}'`));
-    assert.ok(
-      existsSync(path.join(root, `public/photo/${name}.avif`)),
-      `public/photo/${name}.avif missing`
-    );
-    assert.ok(
-      existsSync(path.join(root, `public/photo/${name}.webp`)),
-      `public/photo/${name}.webp missing`
-    );
-  }
+  assert.match(landing, /\/brand\/log-a-set\.webp/);
+  assert.ok(existsSync(path.join(root, 'public/brand/log-a-set.webp')));
+  assert.doesNotMatch(landing, /<Reveal>|GrayscalePhoto|When you miss|Where you train|The free core/);
 });

@@ -112,7 +112,7 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
             <button
               type="submit"
               disabled={busy || !email}
-              className="gate-btn gate-btn-primary"
+              className="gate-btn gate-btn-secondary"
             >
               {busy
                 ? t('gateWaitlistSubmitting', { defaultValue: gateEnFloor('gateWaitlistSubmitting') })

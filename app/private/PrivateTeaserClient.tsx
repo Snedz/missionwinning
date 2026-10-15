@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
 import { confirmPrivateGateCookie } from '@/lib/confirmPrivateGateCookie';
@@ -226,6 +225,19 @@ export function PrivateTeaserClient({
             {g('gateLocalFirst')}
           </p>
 
+          {isInvitee ? null : (
+            <Link href="/welcome" className="gate-btn gate-btn-primary gate-log">
+              {g('gateLogASet')}
+            </Link>
+          )}
+          <img
+            className="gate-shot"
+            src="/brand/log-a-set.webp"
+            alt="The logger. The open set, and Log set."
+            width={390}
+            height={640}
+          />
+
           {isInvitee ? (
             <section className="gate-section">
               <p className="gate-kicker">
@@ -319,10 +331,8 @@ export function PrivateTeaserClient({
 
       <div className="gate-footer">
         <div className="gate-footer-inner">
-          <span>
-            {g('gateFooterTagline')}
-          </span>
-          <AppLegalFooter className="gate-footer-links" />
+          <Link href="/terms">{t('termsOfService', { defaultValue: 'Terms of Service' })}</Link>
+          <Link href="/privacy">{t('privacyPolicy', { defaultValue: 'Privacy Policy' })}</Link>
         </div>
       </div>
     </div>

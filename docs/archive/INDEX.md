@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`CONTEXT-now-1113-history.md`](docs/archive/CONTEXT-now-1113-history.md) — `.1137` rotated the `.1113` History year Now bullet.
+- [`LOG-rotate-1113-for-1137.md`](docs/archive/log/LOG-rotate-1113-for-1137.md) — rotated by `.1137`, to keep the <=15 entry budget. `.1116` is the live floor.
 - [`CONTEXT-now-1112-csv.md`](docs/archive/CONTEXT-now-1112-csv.md) — `.1136` rotated the `.1112` CSV Now bullet.
 - [`LOG-rotate-1115-for-1136.md`](docs/archive/log/LOG-rotate-1115-for-1136.md) — rotated by `.1136`, to keep the <=15 entry budget. `.1113` stays the live floor.
 - [`CONTEXT-now-1130-north-star.md`](docs/archive/CONTEXT-now-1130-north-star.md) — `.1135` rotated the `.1130` north-star Now bullet.

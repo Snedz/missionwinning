@@ -49,21 +49,28 @@ test('tight lock is hero + notify + enter-with-code', () => {
   assert.doesNotMatch(src, /TARGET · Squat|Miss\.|Travel\.|Band\./);
 });
 
-test('door forms stay on the teaser; Notify me is the one red', () => {
+test('door forms stay on the teaser; Log a set is the one yellow', () => {
   const teaser = read('app/private/PrivateTeaserClient.tsx');
   const notify = read('src/components/public/LaunchNotifyForm.tsx');
   assert.match(teaser, /LaunchNotifyForm/);
   assert.match(teaser, /launch-waitlist/);
   assert.match(teaser, /variant="gate"/);
-  assert.doesNotMatch(teaser, /href=["']\/welcome["']/);
+  assert.match(teaser, /href=["']\/welcome["']/);
   assert.match(teaser, /gate-btn-primary/);
   assert.match(notify, /variant === 'gate'/);
   assert.match(
     notify,
-    /className="gate-btn gate-btn-primary"/,
-    'Notify me is the one poster-red control'
+    /className="gate-btn gate-btn-secondary"/,
+    'Notify me is a ghost; Log a set is the yellow control'
   );
   assert.doesNotMatch(teaser, /www-cine-ghost/);
+  const css = read('app/private/gate.css');
+  assert.match(css, /\.mw-house\.mw-gate[\s\S]*--g-accent:\s*var\(--house-press\)/);
+  assert.match(
+    css,
+    /\.mw-gate a\.gate-btn-primary[\s\S]{0,120}color:\s*var\(--g-bg\)/,
+    'the yellow link must paint near-black, not the inherited ink'
+  );
 });
 
 test('door keys do not stamp Alpha; pack stays locked', () => {

@@ -1,7 +1,8 @@
 /**
  * Signed-in product house — a new website chrome.
- * Scoped to `.mw-house` so /private, landing, and www stay untouched.
- * Founder override: this is not the paper/ink field-manual.
+ * Scoped to `.mw-house`. Founder override (`.1137`): the gated door and the
+ * cookie homepage import this file. Public www (`sites/www`) and `src/index.css`
+ * stay paper. This is not the paper/ink field-manual.
  */
 
 .mw-house {
@@ -11,7 +12,7 @@
   --house-stage: #0a0c0f;
   --house-ink: #e6ebef;
   --house-muted: #7d8a95;
-  --house-faint: #5f6b75;
+  --house-faint: #7d8a95;
   --house-line: #1e252c;
   --house-soft: #0f1319;
   --house-press: #ffb000;
@@ -20,14 +21,14 @@
   --house-press-ink: #0a0c0f;
   --house-amber: #ffb000;
   --house-chip: #12161b;
-  --house-selected: #1a2028;
+  --house-selected: #1a1607;
   --house-live: #ae1800;
-  --house-radius: 8px;
+  --house-radius: 4px;
   --house-radius-sm: 4px;
-  --house-radius-row: 8px;
-  --house-radius-rail: 8px;
-  --house-radius-sheet: 8px;
-  --house-pill: 8px;
+  --house-radius-row: 4px;
+  --house-radius-rail: 4px;
+  --house-radius-sheet: 4px;
+  --house-pill: 4px;
   --house-rail: 72px;
   --house-second: 264px;
   --house-side: 300px;
@@ -47,7 +48,7 @@
   --secondary-foreground: 207 22% 92%;
   --border: 210 19% 15%;
   --input: 210 19% 15%;
-  --radius: 0.5rem;
+  --radius: 0.25rem;
   --primary: 41 100% 50%; /* #ffb000 */
   --primary-fill: 41 100% 50%; /* #ffb000 */
   --primary-fill-hover: 41 100% 39%;
@@ -65,7 +66,7 @@
   color: var(--house-ink);
   background: var(--house-paper);
   color-scheme: dark;
-  font-family: Archivo, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: var(--font-geist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-feature-settings: 'ss01' on, 'cv11' on;
   letter-spacing: -0.011em;
 }
@@ -226,13 +227,13 @@
   background: var(--house-chip);
   border: 1px solid var(--house-line);
   color: var(--house-ink);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  border-radius: 8px;
+  border-radius: var(--house-radius);
   transition:
     opacity 140ms var(--house-ease),
     transform 220ms var(--house-ease);
@@ -505,7 +506,7 @@
 
 .mw-house .house-rest-clock {
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 30px;
   line-height: 1;
 }
@@ -687,7 +688,7 @@
   padding: 0 12px;
   color: var(--house-muted);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   border-radius: var(--house-radius-rail);
   transition:
@@ -747,7 +748,7 @@
 
 .mw-house .house-compose-live .house-session-clock {
   color: var(--house-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .mw-house .house-compose-live .house-cue-line {
@@ -812,7 +813,7 @@
 }
 
 .mw-house .house-compose-live .house-set-kicker {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.011em;
   text-transform: none;
@@ -832,7 +833,7 @@
 
 .mw-house .house-set-rate .house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
@@ -870,7 +871,7 @@
 
 .mw-house .house-compose-live .house-set-table .house-set-log {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -895,7 +896,7 @@
   white-space: nowrap;
   font: inherit;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.15;
 }
@@ -1080,28 +1081,28 @@
 
 .mw-house .house-compose-live .house-next-target.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
 
 .mw-house .house-compose-live .house-session-e1rm.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
 
 .mw-house .house-compose-live .house-next-cite.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
 
 .mw-house .house-compose-live .house-load-pct.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
@@ -1188,13 +1189,13 @@
 .mw-house.house-victory > div > p.text-xl {
   color: var(--house-press);
   letter-spacing: -0.03em;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-variant-numeric: tabular-nums;
 }
 
 .mw-house.house-victory .house-victory-vs-last.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
@@ -1222,7 +1223,7 @@
 
 .mw-house.house-victory-receipt .house-victory-receipt-head.house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   font-weight: 600;
   text-transform: none;
@@ -1262,11 +1263,11 @@
   margin: 0;
   font: inherit;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .mw-house .house-compose-live .house-exercise-mark {
-  font-size: 10px;
+  font-size: 12px;
   min-height: 0;
   padding: 2px 8px;
 }
@@ -1304,7 +1305,7 @@
 }
 
 .mw-house .house-movement-row .house-set-kicker {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.011em;
   text-transform: none;
@@ -1328,7 +1329,7 @@
   border-radius: var(--house-radius-sm);
   text-align: center;
   font: inherit;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-variant-numeric: tabular-nums;
   font-size: 14px;
   font-weight: 600;
@@ -1403,7 +1404,7 @@
 
 .mw-house [role="option"] .house-lede {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: inherit;
   color: var(--house-muted);
 }
@@ -1513,7 +1514,7 @@
 }
 
 .mw-house.house-library-detail .house-set-kicker {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.011em;
   text-transform: none;
@@ -1598,7 +1599,7 @@
 
 .mw-house .house-empty h3 {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 
@@ -1752,7 +1753,7 @@
   text-transform: none;
   letter-spacing: -0.011em;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--house-muted);
 }
 
@@ -1897,7 +1898,7 @@
 }
 
 .mw-house .house-session-lift.is-compact .house-session-lift-name {
-  font-weight: 500;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2038,7 +2039,7 @@
 }
 
 .mw-house .house-week-cell-name {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--house-muted);
 }
@@ -2908,7 +2909,7 @@
 .mw-house .house-fuel .house-fuel-macro-num {
   margin: 0;
   font-size: 56px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 0.95;
   font-variant-numeric: tabular-nums;
   color: var(--house-ink);
@@ -3352,7 +3353,7 @@
 .mw-house .house-mind .house-breathe-count {
   margin: 0;
   font-size: 40px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   color: var(--house-paper);
 }
@@ -3413,18 +3414,20 @@
 }
 
 .mw-house .house-kicker {
-  margin: 0 0 6px;
-  font-size: 13px;
-  font-weight: 500;
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--house-muted);
 }
 
 .mw-house .house-title {
   margin: 0;
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .mw-house .house-lede {
@@ -3467,7 +3470,7 @@
 }
 
 .mw-house .house-day-name {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--house-muted);
 }
@@ -3583,7 +3586,7 @@
 .mw-house .house-side-title {
   margin: 0 0 16px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .mw-house .house-check {
@@ -3723,7 +3726,7 @@
   border: 1px solid var(--house-line);
   color: var(--house-ink);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.35;
   white-space: nowrap;
   pointer-events: none;
@@ -3772,7 +3775,7 @@
 .mw-house .house-second-pane-title {
   margin: 0;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
 }
 
@@ -3963,6 +3966,48 @@
   }
 }
 
+/* Cookie homepage and any other door that uses the same composition. */
+.mw-house.polish-door {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding: 24px 16px 40px;
+}
+
+@media (min-width: 900px) {
+  .mw-house.polish-door {
+    padding: 40px 24px;
+  }
+}
+
+.mw-house .polish-col {
+  max-width: 560px;
+}
+
+.mw-house .polish-title {
+  margin: 0;
+  max-width: 12ch;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.mw-house .polish-cta {
+  margin-top: 24px;
+  font-size: 16px;
+  border-radius: 0;
+}
+
+.mw-house .polish-shot {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin-top: 24px;
+  border: 1px solid var(--house-line);
+  border-radius: 0;
+}
+
 @keyframes house-scrim-in {
   from {
     opacity: 0;
@@ -4036,7 +4081,7 @@
 .mw-house .display-section,
 .mw-house .display-mega {
   font-family: inherit;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 
@@ -4046,7 +4091,7 @@
 .mw-house .section-index {
   text-transform: none;
   letter-spacing: -0.011em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .mw-house [data-brand-monogram] {
@@ -4062,7 +4107,7 @@
   background: var(--house-ink);
   color: var(--house-paper);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: var(--house-pill);
 }
 

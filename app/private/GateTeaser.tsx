@@ -1,4 +1,5 @@
 import { PrivateTeaserClient } from './PrivateTeaserClient';
+import '@/components/house/house.css';
 import './gate.css';
 
 /** Shared door: gated www and ungated Preview/local `/`. Tight lock. */
@@ -9,7 +10,7 @@ export function GateTeaser(props: {
   walkOpen?: boolean;
 }) {
   return (
-    <div className="mw-gate">
+    <div className="mw-house mw-gate">
       <PrivateTeaserClient
         initialInvite={props.initialInvite}
         initialNext={props.initialNext}

@@ -111,7 +111,7 @@ export const ALLOWLIST = [
   {
     file: 'src/components/house/house.css',
     rules: ['off-palette-colour', 'raw-border-radius', 'second-typeface'],
-    why: 'Founder override: signed-in product house is a new website, not the paper/ink field-manual. Tokens stay scoped to `.mw-house` so /private, landing, and www are untouched.',
+    why: 'Founder override: the house skin is the dark/yellow website. Tokens stay scoped to `.mw-house`. The gated door and cookie homepage import this file. Public www and src/index.css stay paper.',
     fixWhen: 'If the house is rejected or folded back into the field-manual tokens, delete this file and the exemption with it.',
   },
   {
