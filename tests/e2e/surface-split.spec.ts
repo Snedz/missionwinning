@@ -95,7 +95,9 @@ test.describe('Desktop surface @gate', () => {
       'data-prev-anchor',
       'empty'
     );
+    await expect(page.getByTestId('set-table-adjacency').first()).toBeVisible();
     await expect(page.getByTestId('set-table-target')).toHaveCount(0);
+    await expect(page.getByTestId('set-table-target-empty').first()).toBeVisible();
 
     // And the dock is empty: a docked console here would be a second place to
     // type the same number.

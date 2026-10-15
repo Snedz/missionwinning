@@ -800,7 +800,30 @@
 }
 
 .mw-house .house-compose-live .house-set-table {
+  display: block;
+  width: 100%;
   font-size: 14px;
+}
+
+.mw-house .house-compose-live .house-set-table colgroup {
+  display: none;
+}
+
+.mw-house .house-compose-live .house-set-table thead,
+.mw-house .house-compose-live .house-set-table tbody {
+  display: block;
+  width: 100%;
+}
+
+.mw-house .house-compose-live .house-set-table tr {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.7fr) minmax(72px, 0.9fr);
+  align-items: center;
+}
+
+.mw-house .house-compose-live .house-set-table tr > td[colspan],
+.mw-house .house-compose-live .house-set-table tr > th[colspan] {
+  grid-column: 1 / -1;
 }
 
 .mw-house .house-compose-live .house-set-head {
@@ -870,9 +893,79 @@
 }
 
 .mw-house .house-compose-live .house-set-table .house-set-log {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.25;
+  min-height: 52px;
+  width: 100%;
+}
+
+.mw-house .house-compose-live .house-set-stack-in {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mw-house .house-compose-live .house-set-stack-in .house-lede,
+.mw-house .house-compose-live .house-set-target,
+.mw-house .house-compose-live .house-set-prev-value {
+  display: block;
+}
+
+.mw-house .house-compose-live .house-set-target {
+  display: block;
+  margin-top: 2px;
+  color: var(--house-ink);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.mw-house .house-compose-live .house-set-prev-value {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mw-house .house-compose-live tr.is-active-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: center;
+}
+
+.mw-house .house-compose-live tr.is-active-row > th {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+}
+
+.mw-house .house-compose-live tr.is-active-row > td.house-set-stack {
+  grid-column: 2 / -1;
+  grid-row: 1;
+}
+
+.mw-house .house-compose-live tr.is-active-row > td.house-set-entry:nth-of-type(2) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.mw-house .house-compose-live tr.is-active-row > td.house-set-entry:nth-of-type(3) {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.mw-house .house-compose-live tr.is-active-row > td.house-set-entry[colspan='2'] {
+  grid-column: 2 / -1;
+  grid-row: 2;
+}
+
+.mw-house .house-compose-live tr.is-active-row > td.house-set-action {
+  grid-column: 1 / -1;
+  grid-row: 3;
 }
 
 .mw-house .house-overlay-head {

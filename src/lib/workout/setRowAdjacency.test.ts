@@ -386,7 +386,7 @@ describe('setRowAdjacency honesty', () => {
     assert.doesNotMatch(gate, /E-Adjacency/);
   });
 
-  it('supersedes #487 surface — Train does not remount TARGET-above-PREVIOUS', () => {
+  it('live row mounts TARGET above PREVIOUS', () => {
     const table = readFileSync(
       path.join(root, 'src/components/workout/SetLogTable.tsx'),
       'utf8'
@@ -395,8 +395,9 @@ describe('setRowAdjacency honesty', () => {
       path.join(root, 'src/components/workout/ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.doesNotMatch(table, /SetLogAdjacencyStack/);
-    assert.doesNotMatch(card, /formatSetRowAdjacency/);
+    assert.match(table, /SetLogAdjacencyStack/);
+    assert.match(table, /showTarget/);
+    assert.match(card, /formatSetRowAdjacency/);
     assert.match(card, /resolveAfterCompleteCite/);
   });
 });

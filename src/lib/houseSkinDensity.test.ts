@@ -162,7 +162,7 @@ test('one yellow field — selected chips, not press fills — HOLD', () => {
   );
   assert.match(
     css,
-    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-size:\s*15px/,
+    /\.mw-house \.house-compose-live \.house-set-table \.house-set-log \{[^}]*font-size:\s*16px/,
   );
   assert.doesNotMatch(css, /^\.victory-lock \{/m);
   const next = read('src/components/workout/VictoryNextActionStrip.tsx');

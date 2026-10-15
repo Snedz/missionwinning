@@ -220,11 +220,11 @@ test('LogConsole: one house leftover Log set ≥44px; reps/weight expose prefill
   assert.doesNotMatch(logSet, /accent-poster/);
 });
 
-test('cite / ghost / Prev are not remounted as a second Prev', () => {
+test('live Prev is the adjacency stack; ghost stays a separate lane', () => {
   const table = read('src/components/workout/SetLogTable.tsx');
   const helpers = read('src/lib/workout/activeWorkoutHelpers.ts');
   const page = read('src/page-components/ActiveWorkoutPage.tsx');
-  assert.doesNotMatch(table, /SetLogAdjacencyStack/);
+  assert.match(table, /SetLogAdjacencyStack/);
   assert.match(table, /LastSetGhostButton/);
   assert.match(helpers, /formatPrevSetLabels/);
   assert.match(helpers, /lastWorkingForDial/);

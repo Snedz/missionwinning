@@ -17,6 +17,17 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+
+## 2026-10-15 — Train set row, big Log set (`.1141`)
+
+The open set was five columns. The live row now stacks the target above the previous result, then the dial, then one full-width Log set. A cold lift says there is no prior set. It does not invent a number. Waiting rows keep Prev. The landing shot is this Train.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1141`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1122-for-1141.md](docs/archive/log/LOG-rotate-1122-for-1141.md) (`.1122`), for the ≤15 entry budget. Live floor is `.1124`.
+
 ## 2026-10-15 — Today is the next workout and one number (`.1140`)
 
 Today stacked a trainer card, a first-rooms checklist, and a seven-day grid under the session. The desk now names the next workout, shows one diary count (logged days this week), and keeps one yellow Start. The count comes from `quietWeekGlance`. A cold week is 0. A finished set moves it. Generate-week stays on the second rail.
@@ -265,55 +276,3 @@ Label `2026.07-unified.1124`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1105-for-1124.md](docs/archive/log/LOG-rotate-1105-for-1124.md) (`.1105`), for the ≤15 entry budget.
 
-## 2026-09-24 — Open set states what to do (`.1122`)
-
-On Train, the open lift
-states this set in one line:
-the number, the movement,
-and the load on the dial.
-A blank name is silence.
-An empty barbell is not
-bodyweight and not `0 kg`.
-Warm-up, drop, and a last
-clean rep say so. After
-several hard sets a work
-set says to leave a little
-if the bar slows. Warm-up,
-drop, and last-clean-rep
-do not add that tail.
-The sentence is
-`sessionCoachLine`. The
-card does not keep a second
-copy. Log set stays the
-filled action. Free. Offline.
-No account. No model.
-
-The shape follows two
-license-fit peers and copies
-neither: free-exercise-db
-(Unlicense) keeps one short
-sentence or nothing;
-sets-n-reps (MIT) treats a
-set as the weight and reps
-already on the row, and a
-null weight stays unset.
-
-**Mutants killed:** blank
-name still speaks; set 0 or
-past the end still speaks;
-barbell weight 0 says BW or
-`0 kg`; warmup with hard
-sets still adds the tank
-line; a failure set says
-"failure"; hard-count 3 on
-a work set drops the tank
-line; a line breaks the
-return-tone contract.
-
-`[skip vercel]`. No
-tip-promote. Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1122`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1102-for-1122.md](docs/archive/log/LOG-rotate-1102-for-1122.md) (`.1102`), for the ≤15 entry budget.
