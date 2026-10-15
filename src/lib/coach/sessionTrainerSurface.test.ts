@@ -24,7 +24,11 @@ describe('session trainer surfaces', () => {
     assert.doesNotMatch(card, /house-btn-primary/);
     assert.doesNotMatch(card, /paymentUrl|\/bundle|Super Bundle|Muse/i);
     const server = read('src/lib/coach/sessionTrainerServer.ts');
-    assert.match(server, /gemini-2\.5-flash/);
+    assert.match(server, /GROQ_API_KEY/);
+    assert.match(server, /resolveCoachProviders/);
+    assert.match(server, /fetchCoachProviderCompletion/);
+    assert.match(server, /Gemini free-tier hosts are never called/);
+    assert.doesNotMatch(server, /gemini-2\.5-flash/);
     assert.doesNotMatch(server, /\bMuse\b/);
   });
 });
