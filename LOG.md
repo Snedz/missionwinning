@@ -24,6 +24,8 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 `LOG-rotate-1111-for-1131.md` through `1136` were the same bytes as `LOG-rotate-1111-for-1130.md`, so `.1111` had seven `##` headings and the index named only the 1130 file. The copies now point at that file. The heading stays once. The filenames stay in the index.
 
+Meta tests were the first red step, so `i18n:coverage` never ran. Once they passed, `dataSafety` and `contact` in `AppLegalFooter` had no English pack entry. Those two strings now sit next to About in the bootstrap pack. The cap stays 0.
+
 `[skip vercel]`. PRIVATE_MODE stays.
 
 Label `2026.07-unified.1138`.
