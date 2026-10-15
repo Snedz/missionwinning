@@ -46,9 +46,9 @@ export const COMPOSITION_PASS_ANCHOR = '- **status:** pass';
 export const PATH_STEPS: readonly PathStep[] = [
   {
     id: 'W1',
-    claim: 'I-Day lands on Today (`/log`), not an Active dump',
+    claim: 'I-Day opens the set (`/active`), with no profile wall',
     instrument: 'src/lib/orchestrationW1Landing.test.ts',
-    anchor: 'W1 Activation lands I-Day on Today',
+    anchor: 'W1 Activation opens the set from I-Day, with no profile wall',
     orchAnchor: 'W1 Activation',
     owner: 'agent',
     accept: 'npx tsx --test src/lib/orchestrationW1Landing.test.ts',

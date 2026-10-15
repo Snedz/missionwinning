@@ -75,15 +75,20 @@ describe('firstSetUngated wiring', () => {
   it('I-Day Continue finishes — no sign-in step', () => {
     const src = read('src/page-components/WelcomePage.tsx');
     assert.match(src, /type Step = 'welcome' \| 'profile'/);
-    assert.match(src, /const STEP_ORDER: Step\[\] = \['welcome', 'profile'\]/);
     assert.doesNotMatch(src, /'signin'/);
     assert.doesNotMatch(src, /setStep\('signin'\)/);
     assert.doesNotMatch(src, /<SignInPanel/);
     assert.doesNotMatch(src, /welcomeSkipSignIn|welcomeSignInTitle/);
-    const next = src.slice(src.indexOf('const handleProfileNext'), src.indexOf('const stepIndex'));
+    const begin = src.slice(src.indexOf('const handleBegin'), src.indexOf('const handleProfileNext'));
+    assert.match(begin, /finish\(\)/);
+    assert.doesNotMatch(begin, /setStep\('profile'\)/);
+    const next = src.slice(
+      src.indexOf('const handleProfileNext'),
+      src.indexOf('if (!isEdit) {\n    return')
+    );
     assert.match(next, /finish\(\)/);
     assert.doesNotMatch(next, /setStep/);
-    assert.match(src, /welcomeBegin.*defaultValue: 'Begin'/);
+    assert.match(src, /landingHeroLine1.*defaultValue: 'Log a set\.'/);
     const welcomeRoute = read('app/welcome/page.tsx');
     assert.doesNotMatch(welcomeRoute, /AppHeader|HeaderAuthChip/);
   });
@@ -176,10 +181,11 @@ describe('firstSetUngated wiring', () => {
     assert.doesNotMatch(spec, /Skip — start training|Skip-sign-in|skipSignIn/i);
     const cold = spec.slice(
       spec.indexOf('a cold visitor logs a set'),
-      spec.indexOf('the homepage uses the brand')
+      spec.indexOf('the homepage is one headline')
     );
-    assert.match(cold, /\/\^begin\$\/i/);
-    assert.match(cold, /continue\|continuar/i);
+    assert.match(cold, /log a set/i);
+    assert.match(cold, /\/active/);
+    assert.doesNotMatch(cold, /continue\|continuar/i);
     assert.doesNotMatch(cold, /skip/i);
   });
 

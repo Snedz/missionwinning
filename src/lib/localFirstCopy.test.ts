@@ -75,21 +75,26 @@ describe('localFirstCopy', () => {
     }
   });
 
-  it('wires both public entries to the constants', () => {
+  it('wires the gate to the mechanism sentence; the cold door is not that surface', () => {
     // The gate floors every string from GATE_EN, so the constant lands there.
     const gate = read('src/i18n/gateEn.ts');
     assert.match(gate, /gateLocalFirst: LOCAL_FIRST_COPY\.gateLocalFirst/);
     const teaser = read('app/private/PrivateTeaserClient.tsx');
     assert.match(teaser, /g\('gateLocalFirst'\)/, 'the gate poster must render it');
 
-    const welcome = read('src/page-components/WelcomePage.tsx');
-    assert.match(welcome, /LOCAL_FIRST_COPY\.welcomeLocalFirst/);
     const welcomePack = read('src/i18n/welcomeLocales.ts');
     assert.match(
       welcomePack,
       quoteAssign('welcomeSubtitleBrief', LOCAL_FIRST_COPY.welcomeLocalFirst),
-      'I-Day step one paints the pack value — it must be the same sentence'
+      'the pack still holds the mechanism sentence'
     );
+    const welcome = read('src/page-components/WelcomePage.tsx');
+    assert.doesNotMatch(
+      welcome,
+      /LOCAL_FIRST_COPY\.welcomeLocalFirst/,
+      'the cold door is one headline and one button'
+    );
+    assert.doesNotMatch(welcome, /welcomeSubtitleBrief/);
   });
 
   it('keeps EN packs aligned with LOCAL_FIRST_COPY for hydrated keys', () => {

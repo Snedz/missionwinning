@@ -144,12 +144,17 @@ test('MarketingNav gated CTA is Enter with code → /private', () => {
   assert.match(src, /ctaHref = gateOn \? '\/private'/);
 });
 
-test('Welcome gated framing uses honesty constants', () => {
+test('Welcome cold door is one action; the gated question wall stays in the pack', () => {
   const src = read('src/page-components/WelcomePage.tsx');
-  assert.match(src, /isClientPrivateGateEnabled/);
-  assert.match(src, /GATED_WWW_HONESTY/);
-  assert.match(src, /welcomeGateKicker/);
-  assert.match(src, /welcomeGateSubtitleBrief/);
+  assert.match(src, /footerTagline/);
+  assert.match(src, /landingHeroLine1/);
+  assert.match(src, /idayFinishPath\(/);
+  assert.doesNotMatch(src, /GATED_WWW_HONESTY/);
+  assert.doesNotMatch(src, /welcomeGateKicker/);
+  assert.doesNotMatch(src, /welcomeGateSubtitleBrief/);
+  const boot = read('src/i18n/bootstrapResources.ts');
+  assert.match(boot, /welcomeGateKicker: GATED_WWW_HONESTY\.welcomeKicker/);
+  assert.match(boot, /welcomeGateSubtitleBrief: GATED_WWW_HONESTY\.welcomeSubtitleBrief/);
 });
 
 test('/private document title stays Log a set. Offline., not Free beta', () => {

@@ -14,8 +14,10 @@ test('first-90 TAP_BUDGET is 4 and must not be raised', () => {
   assert.match(src, /const TAP_BUDGET = 4/);
   assert.match(src, /never raise this/);
   assert.match(src, /goto\('\/welcome'/);
-  assert.match(src, /toHaveURL\(\/\\\/log\//);
+  // Cold Begin opens Train. Today is still walked after the first set.
   assert.match(src, /toHaveURL\(\/\\\/active\//);
+  assert.match(src, /goto\('\/log'/);
+  assert.doesNotMatch(src, /name: \/\^begin\$\/i/);
   assert.match(src, /\/\^log\( set\)\?\$\/i/);
   assert.match(src, /data-exercise-id/);
   assert.match(src, /toHaveCount\(1\)/);

@@ -18,6 +18,18 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — First set is one tap (`.1139`)
+
+`/welcome` was a two-step briefing: a progress bar, a session preview, and profile questions before Today. A cold visitor had to tap Begin, Continue, then Start.
+
+The cold screen is now the headline and one yellow Log a set. That tap opens Train. `/active` writes today's compose session before paint, so the set is on screen. Finish does not call `startWorkout`. `?edit=1` still keeps the profile questions. No account.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1139`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1117-for-1139.md](docs/archive/log/LOG-rotate-1117-for-1139.md) (`.1117`). Live floor is `.1120`. `.1118` and `.1119` never had a LOG heading.
+
 ## 2026-10-15 — Meta tests match the Groq seat (`.1138`)
 
 `build-and-test` was red on four meta checks that master already carried. The trainer surface test still required `gemini-2.5-flash` inside `sessionTrainerServer.ts`. That file calls `resolveCoachProviders`: Groq when `GROQ_API_KEY` is set, else `COACH_LLM_*`, else OpenRouter `:free`. Gemini free-tier hosts are never called. The test now locks that seat and still refuses a checkout, a bundle, and Muse. The card assertions are unchanged.
@@ -345,51 +357,3 @@ PRIVATE_MODE stays.
 Label `2026.07-unified.1120`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1101-for-1120.md](docs/archive/log/LOG-rotate-1101-for-1120.md) (`.1101`), for the ≤15 entry budget. Refiled `.1099` → [docs/archive/log/LOG-rotate-1099-for-1114.md](docs/archive/log/LOG-rotate-1099-for-1114.md); `.1098` was already rotated by `.1113`.
-
-## 2026-09-24 — AI personal trainer on the open set (`.1117`)
-
-On Train the open lift
-still states this set. Ask
-under that line is the AI
-personal trainer. The post
-is `POST /api/coach/trainer`.
-Seat order: Gemini Flash
-when `GEMINI_API_KEY` is set
-(`gemini-2.5-flash`, override
-`GEMINI_MODEL`) via
-generateContent; else the
-existing `COACH_LLM_*` seat;
-else the same set line
-(`source: rules`). A model
-error, a link in the reply,
-or a refused product name
-returns the set line. History
-cite from the previous column
-rides the prompt when one
-exists. No session. No premium
-402. No checkout URL. The
-filled action stays Log set.
-Free. Offline rules still
-paint before the ask returns.
-Coach uses the same ask.
-It sits on the live voice
-surface, and on form cues
-for `/coach?ask=`. Train
-on that door opens `/active`.
-Talk still uses the premium
-chat seat. No bundle link
-on the free ask.
-
-**Mutants killed:** Gemini
-HTTP error dropping the set
-line; a model link kept as
-the reply; Gemini skipped
-when both keys are set.
-
-`[skip vercel]`. No tip-promote.
-Live www stays `.697`.
-PRIVATE_MODE stays.
-
-Label `2026.07-unified.1117`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1103-for-1122.md](docs/archive/log/LOG-rotate-1103-for-1122.md) (`.1103`), for the ≤15 entry budget.

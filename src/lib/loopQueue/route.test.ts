@@ -248,7 +248,7 @@ test('mined harvest + RESULT pass routes to H01, not a letter and not a craft wa
   // H01 stays open: the composition script is present, the stamp is not.
   writeFileSync(
     path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
-    'W1 Activation lands I-Day on Today'
+    'W1 Activation opens the set from I-Day, with no profile wall'
   );
   writeFileSync(path.join(tmp, 'src/lib/todayPrimaryAction.test.ts'), 'isTodayTrainReady');
   writeFileSync(path.join(tmp, 'src/lib/gnt1First90.test.ts'), 'TAP_BUDGET is 4');
@@ -289,7 +289,7 @@ test('mined harvest + RESULT pass + H01 stamp stalls — founder flip work, not 
   );
   writeFileSync(
     path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
-    'W1 Activation lands I-Day on Today'
+    'W1 Activation opens the set from I-Day, with no profile wall'
   );
   writeFileSync(path.join(tmp, 'src/lib/todayPrimaryAction.test.ts'), 'isTodayTrainReady');
   writeFileSync(path.join(tmp, 'src/lib/gnt1First90.test.ts'), 'TAP_BUDGET is 4');
@@ -334,7 +334,7 @@ test('mined harvest + path proven + VISION.md routes to the vision gauntlet', ()
   );
   writeFileSync(
     path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
-    'W1 Activation lands I-Day on Today'
+    'W1 Activation opens the set from I-Day, with no profile wall'
   );
   writeFileSync(path.join(tmp, 'src/lib/todayPrimaryAction.test.ts'), 'isTodayTrainReady');
   writeFileSync(path.join(tmp, 'src/lib/gnt1First90.test.ts'), 'TAP_BUDGET is 4');
