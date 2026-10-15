@@ -12,7 +12,7 @@
 | `HouseFirstRoomsCard.tsx` | Persistent collapsible N-of-N under Start. Three MW rows. First-rooms Log a set is `href="/active"`. First-rooms Week is `href="/log#today-week"`. First-rooms History is `href="/history"`. |
 | `houseFirstRooms.ts` | Inferred ticks + lock for the three first rooms. |
 | `HouseMore.tsx` | Leftover rooms only (Fuel / You / Account + quiet pillars + Garage). Not the Home second bar. |
-| `houseNav.ts` | Rail hrefs + Today/Library rooms + More leftovers. `/server` is quiet More only. |
+| `houseNav.ts` | Rail hrefs + Today/Library rooms + More leftovers. `/coach` has no second bar. `/server` is quiet More only. |
 | `DESIGN.md` | House design system — tokens, type, layout, motion, rooms. Field-manual stays on `/private` / www. |
 | `house.css` | Runtime for that system, scoped to `.mw-house`. 4th skin is C2 instrument (`#0a0c0f` + `#ffb000`). Transferred rooms hide the old pillar header. |
 | `TodayDesk` | Lives in `src/page-components/TodayDesk.tsx` — one Start, week as work. |

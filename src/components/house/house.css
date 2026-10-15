@@ -436,7 +436,7 @@
 }
 
 .mw-house .house-canvas-pad {
-  width: min(880px, calc(100% - 48px));
+  width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
   padding: 36px 0 80px;
 }
@@ -1882,15 +1882,17 @@
 
 .mw-house .house-session-lift-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 12px;
 }
 
 .mw-house .house-session-lift-name {
+  flex: 1;
   min-width: 0;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.35;
   color: var(--house-ink);
 }
 
@@ -1906,6 +1908,24 @@
 
 .mw-house .house-session-lift-swap {
   flex-shrink: 0;
+  align-self: center;
+  margin: 0;
+}
+
+.mw-house .house-session-grid {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.mw-house .house-session-grid.is-sheet {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .mw-house .house-session-grid.is-week {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .mw-house .house-live-voice .house-lede {
@@ -2046,8 +2066,14 @@
 }
 
 .mw-house .house-week-cell-mark {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
+  line-height: 1.2;
+  color: var(--house-ink);
+}
+
+.mw-house .house-week-cell.is-rest .house-week-cell-mark,
+.mw-house .house-week-cell.is-past .house-week-cell-mark {
   color: var(--house-muted);
 }
 

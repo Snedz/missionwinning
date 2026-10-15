@@ -74,13 +74,16 @@ export function isHouseTodayPath(pathname: string): boolean {
   return pathname === '/log' || pathname === '/';
 }
 
+export function isHouseCoachPath(pathname: string): boolean {
+  return pathname === '/coach' || pathname.startsWith('/coach/');
+}
+
 export function isHouseTodayFamilyPath(pathname: string): boolean {
   return (
     isHouseTodayPath(pathname) ||
     pathname === '/history' ||
     pathname.startsWith('/history/') ||
-    pathname === '/coach' ||
-    pathname.startsWith('/coach/')
+    isHouseCoachPath(pathname)
   );
 }
 
@@ -90,6 +93,9 @@ export function isHouseSecondRailPath(pathname: string): boolean {
 
 export function houseSecondDockForPath(pathname: string): HouseSecondDock | null {
   if (isHouseTrainPath(pathname)) return null;
+  // Weekly plan is the page. The icon rail is the sidebar; a second room
+  // list beside it repeats Today / History / Weekly plan.
+  if (isHouseCoachPath(pathname)) return null;
   if (isHouseCatalogPath(pathname)) return 'library';
   if (isHouseTodayFamilyPath(pathname)) return 'home';
   return null;
@@ -102,8 +108,9 @@ export function houseRoomHref(href: string, hash?: string): string {
 /** Visible room name for the second bar; canvas keeps a screen-reader title. */
 export function houseCanvasTitle(pathname: string): string | null {
   if (isHouseTrainPath(pathname)) return null;
+  // Coach paints its own page title. A second sr-only h1 would duplicate it.
+  if (isHouseCoachPath(pathname)) return null;
   if (pathname === '/history' || pathname.startsWith('/history/')) return 'History';
-  if (pathname === '/coach' || pathname.startsWith('/coach/')) return 'Weekly plan';
   if (pathname === '/library') return 'Library';
   if (pathname.startsWith('/builder')) return 'Builder';
   if (isHouseTodayPath(pathname)) return 'Today';

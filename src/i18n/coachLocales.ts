@@ -279,6 +279,10 @@ type CoachStrings = {
   coachTodayBandSteady: string;
   coachTodayMoreExercises: string;
   coachSessionMobility: string;
+  /** House week strip — a word per day, not a glyph or a dash. */
+  coachWeekRest: string;
+  coachWeekLift: string;
+  coachWeekCondition: string;
   coachAiBadge: string;
   coachLoading: string;
   coachWeekDiffHeadlineOne: string;
@@ -639,6 +643,9 @@ const en: CoachStrings = {
   coachTodayBandSteady: 'Your week is tracking with your month.',
   coachTodayMoreExercises: '+{{count}} more',
   coachSessionMobility: 'Mobility',
+  coachWeekRest: 'Rest',
+  coachWeekLift: 'Lift',
+  coachWeekCondition: 'Condition',
   coachAiBadge: 'Live',
   coachLoading: 'Looking at your week…',
   coachWeekDiffHeadlineOne: '1 session → {{after}}',

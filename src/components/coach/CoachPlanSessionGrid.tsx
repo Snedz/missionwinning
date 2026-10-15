@@ -41,7 +41,7 @@ export function CoachPlanSessionGrid({
       : sessions.slice().sort((a, b) => a.dayOffset - b.dayOffset);
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className={mode === 'sheet' ? 'house-session-grid is-sheet' : 'house-session-grid is-week'}>
       {rows.map((session) => {
         const isToday = session.dayOffset === todayOffset;
         return (

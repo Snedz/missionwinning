@@ -460,7 +460,7 @@ export function NutritionPage() {
 
   return (
     <PillarPageShell
-      className="house-fuel max-w-3xl pb-8"
+      className="house-fuel pb-8"
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'Nutrition' })}
