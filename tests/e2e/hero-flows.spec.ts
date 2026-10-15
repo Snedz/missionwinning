@@ -18,37 +18,21 @@ test.describe('Phase H hero flows @gate', () => {
   test('welcome I-Day loads and advances', async ({ page }) => {
     const res = await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     expect(res?.status()).toBe(200);
-    await expect(page.locator('body')).toContainText(/day|welcome|misión|bienvenido/i);
+    await expect(page.locator('body')).toContainText(/log a set\. offline\./i);
 
-    const begin = page.getByRole('button', { name: /begin|comenzar|start|acepto/i }).first();
-    if (await begin.isVisible()) {
-      await begin.click();
-      await page.waitForTimeout(300);
-    }
+    const go = page.getByRole('button', { name: /^log a set\.?$/i }).first();
+    await expect(go).toBeVisible();
+    await go.click();
+    await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
   });
 
-  test('I-Day finish lands on Today with one Start (F-004 / the set-table logger)', async ({ page }) => {
+  test('I-Day opens the set with one Log set (F-004 / the set-table logger)', async ({ page }) => {
     await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
-    const begin = page.getByRole('button', { name: /^begin$/i }).first();
-    await expect(begin).toBeVisible({ timeout: 10_000 });
-    await begin.click();
-    /*
-     * Profile → Continue **is** the end of I-Day now. The sign-in step this case
-     * used to walk through was removed when I-Day went to two steps, and the
-     * spec kept clicking for a "Skip" that no longer exists — red on master
-     * every run. Renamed with the flow rather than patched around it: what the
-     * case is actually for is the landing (`/log`, one primary action, then
-     * `/active` with a Log button), and all of that still holds.
-     */
-    const cont = page.getByRole('button', { name: /continue|continuar/i }).first();
-    await expect(cont).toBeVisible({ timeout: 10_000 });
-    await cont.click();
-    await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
-    // House leftover Start is `today-start-cta`, not `.primary-action`.
-    await expect(todayStart(page)).toHaveCount(1);
-    await todayStart(page).click();
+    const go = page.getByRole('button', { name: /^log a set\.?$/i }).first();
+    await expect(go).toBeVisible({ timeout: 10_000 });
+    await go.click();
+    // Cold Begin opens Train. The compose session is already the open set.
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
-    // Widened with the console recut in `.153` — see the note in first-90.
     await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
       timeout: 15_000,
     });
