@@ -131,7 +131,7 @@ describe('the onboarding call site', () => {
     );
     assert.ok(
       finish.includes('idayFinishPath'),
-      'default I-Day finish delegates to idayFinishPath — Today after flip, Train while gated'
+      'default I-Day finish delegates to idayFinishPath — cold Begin opens Train'
     );
     assert.ok(
       !finish.includes('startWorkout('),

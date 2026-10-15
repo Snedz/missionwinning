@@ -1,0 +1,3 @@
+# CONTEXT `## Now` — `.1116` program shell, rotated by `.1139`
+
+- **`.1116`:** (`2026.07-unified.1116`) **Offline program shell** — `src/lib/programShell`: Program → Week → Session → exercise → suggested set. One full-body seed, browsable in Builder Show all; a program can be saved on this device (`mw_program_shell`); Start opens Train with those suggested sets and does not replace an open session. `parseProgram` refuses billing keys. Flat Builder cycles in `src/data/programTemplates.ts` stay. Rebased past `.1115` with the label re-minted so two branches cannot announce the same number. `src/lib/programShell` joins `KNOWN_TOP_LEVELS`. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.

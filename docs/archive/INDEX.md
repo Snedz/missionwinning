@@ -27,6 +27,8 @@ When adding a doc:
 - [`LOG-rotate-1111-for-1136.md`](docs/archive/log/LOG-rotate-1111-for-1136.md) — byte-identical rebase copy of the `.1111` entry; the heading lives in `LOG-rotate-1111-for-1130.md`.
 - [`LOG-rotate-1116-for-1138.md`](docs/archive/log/LOG-rotate-1116-for-1138.md) — rotated by `.1138`, to keep the <=15 entry budget. `.1117` is the live floor.
 - [`CONTEXT-now-1115-muscle.md`](docs/archive/CONTEXT-now-1115-muscle.md) — `.1138` rotated the `.1115` muscle-map Now bullet.
+- [`CONTEXT-now-1116-shell.md`](docs/archive/CONTEXT-now-1116-shell.md) — `.1139` rotated the `.1116` program-shell Now bullet.
+- [`LOG-rotate-1117-for-1139.md`](docs/archive/log/LOG-rotate-1117-for-1139.md) — rotated by `.1139`, to keep the <=15 entry budget. `.1120` is the live floor.
 - [`LOG-rotate-1110-for-1129.md`](docs/archive/log/LOG-rotate-1110-for-1129.md) — rotated by `.1129`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1108.md`](docs/archive/CONTEXT-now-1108.md) — `.1129` rotated the `.1108` Now bullet (Storage remount leftover old-fake writes).
 - [`LOG-rotate-1109-for-1128.md`](docs/archive/log/LOG-rotate-1109-for-1128.md) — rotated by `.1128`, to keep the <=15 entry budget.

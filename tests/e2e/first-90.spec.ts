@@ -43,17 +43,11 @@ test.describe('First 90 seconds @gate', () => {
     // Genuinely cold: no seeded onboarding, no history.
     await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
 
-    await tap(page.getByRole('button', { name: /^begin$/i }).first(), 'Begin');
-    await tap(page.getByRole('button', { name: /continue|continuar/i }).first(), 'Continue');
+    await tap(page.getByRole('button', { name: /^log a set\.?$/i }).first(), 'Log a set');
 
-    // F-004 / the set-table logger: I-Day lands on Today with one Start — not empty feed, not Active dump.
-    await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
-    // Leftover Got it is not a first-set tap (budget stays 4).
-    await dismissHouseOverlays(page);
-    await expect(todayStart(page)).toHaveCount(1);
-    await tap(todayStart(page), 'Start first workout');
-
+    // Cold Begin opens Train. The compose session is already the open set.
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
+    await dismissHouseOverlays(page);
 
     // Nothing may stand between Start and logging. A check-in sheet here would be
     // an interstitial on the very first session (W1) — assert it is absent rather
@@ -211,7 +205,7 @@ test.describe('First 90 seconds @gate', () => {
     // was the old homepage asserting a week it did not show.
     await page.getByRole('link', { name: /^log a set\.?$/i }).click();
     await expect(page).toHaveURL(/\/welcome/, { timeout: 15_000 });
-    await expect(page.getByRole('button', { name: /^begin$/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /^log a set\.?$/i })).toBeVisible();
   });
 
   test('Today offers exactly one primary action', async ({ page }) => {

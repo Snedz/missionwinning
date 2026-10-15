@@ -4,7 +4,7 @@ import { publicPageMetadata } from '@/lib/seoMetadata';
 
 export const metadata: Metadata = publicPageMetadata({
   title: 'Welcome — I-Day',
-  description: 'Start your Mission Winning path in under three minutes. No account required.',
+  description: 'Log a set. No account.',
   path: '/welcome',
 });
 

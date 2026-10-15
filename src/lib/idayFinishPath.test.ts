@@ -30,14 +30,14 @@ describe('idayFinishPath', () => {
     );
   });
 
-  it('cold I-Day always lands Today, gate on or off', () => {
+  it('cold I-Day opens Train, gate on or off', () => {
     assert.equal(
       idayFinishPath({ isEdit: false, hasLoggedWork: false, gateOn: true }),
-      '/log'
+      '/active'
     );
     assert.equal(
       idayFinishPath({ isEdit: false, hasLoggedWork: false, gateOn: false }),
-      '/log'
+      '/active'
     );
   });
 });

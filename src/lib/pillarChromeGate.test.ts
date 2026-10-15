@@ -52,7 +52,7 @@ test('I-Day finish uses idayFinishPath and never auto-starts a session', () => {
   assert.match(
     finish,
     /idayFinishPath\(/,
-    'the set-table logger / F-004: destination is one function — Today after flip, Train while gated'
+    'cold Begin opens Train through idayFinishPath; finish does not start the session'
   );
   assert.doesNotMatch(
     finish,

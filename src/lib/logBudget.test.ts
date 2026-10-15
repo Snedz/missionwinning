@@ -213,6 +213,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'section.',
   },
   {
+    from: 1118,
+    to: 1119,
+    why:
+      'Personal trainer shipped as LOG heading `.1117` while the build stamp on that wave ' +
+      'was `.1118`. `.1119` was never minted. No LOG heading on master ever ended in those ' +
+      'labels, so rotating `.1117` leaves `.1120` as the live floor without a missing section.',
+  },
+  {
     from: 990,
     to: 990,
     why:
