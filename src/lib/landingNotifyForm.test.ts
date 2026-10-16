@@ -13,15 +13,18 @@ import path from 'node:path';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('gate teaser owns LaunchNotifyForm; homepage is one Log a set', () => {
+test('gate teaser owns LaunchNotifyForm; landing is Start free only', () => {
   const landing = read('src/page-components/LandingPage.tsx');
   const gate = read('app/private/PrivateTeaserClient.tsx');
   assert.match(gate, /LaunchNotifyForm/, 'waitlist stays on the door');
-  assert.doesNotMatch(landing, /LaunchNotifyForm/, 'homepage has no notify band');
-  assert.doesNotMatch(landing, /\/bundle|createCheckout|stripe\.com/);
-  assert.match(landing, /href=["']\/welcome["']/);
-  const primaries = landing.match(/house-btn-primary/g) || [];
-  assert.equal(primaries.length, 1, 'homepage keeps one yellow action');
+  assert.doesNotMatch(landing, /LaunchNotifyForm/, '.696 homepage has no notify band');
+  assert.match(
+    landing,
+    /isFreeBeta\(\)\s*\?\s*['"]\/notify['"]/,
+    'free-beta Super Bundle merch points at /notify, not a dead /bundle shop'
+  );
+  const primaries = landing.match(/primary-action/g) || [];
+  assert.ok(primaries.length <= 2, 'landing keeps at most two red Start free actions');
 });
 
 test('/notify mounts the Super Bundle notify form (F-047)', () => {

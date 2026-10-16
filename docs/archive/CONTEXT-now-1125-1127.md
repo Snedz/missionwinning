@@ -1,0 +1,7 @@
+# CONTEXT.md `## Now` — rotated by `.1150`
+
+These three shipped bullets left the live Now block so it stayed inside the 25-bullet budget. The full record is LOG.md.
+
+- **`.1127`:** (`2026.07-unified.1127`) **Plate loader nearest weight** — On Train, **Plates** sits next to the live set weight. The loader uses the saved bar (20 kg / 45 lb) and the plates on this device (pairs per side, a normal rack until they change it). A target the rack cannot make shows the nearest loadable weight. Free. Offline. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1126`:** (`2026.07-unified.1126`) **Next 16.4 initial JS** — the 16.4 client runtime is ~2.0 KB gzip over 16.3.4, so `/log` measured 422.0 (cap 420) and `/active` 517.6 (cap 516). Caps stay. Just Go keeps the six starter programs its focus scan hits (`starterFocusFallback.ts`); the rest of the free wall stays on Today. Challenges count guidebook section ids from `guidebookProgressStore.ts` and no longer pull chapter bodies onto Today or Train. After the cuts: `/` 350.7, `/log` 411.5, `/active` 507.1. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
+- **`.1125`:** (`2026.07-unified.1125`) **Next 16.4 prerender** — `useFileUploadQueue` named its file worker `process`. Next 16.4 wraps `useEffect` in `process.env.__NEXT_PRIVATE_MINIMIZE_MACRO_FALSE` and no longer rewrites a shadowed binding, so `/track` prerender threw. The option is `processFile`. Supersedes Dependabot #1014. `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.

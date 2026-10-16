@@ -78,12 +78,13 @@ test('PLAN scope is .mw-house only — lineage review', () => {
   assert.match(plan, /Do not restyle public www/);
 });
 
-test('door and cookie homepage ride the house skin; paper stays on www', () => {
+test('cookie homepage is the forge landing; the door and www stay on their own skins', () => {
   const landing = read('src/page-components/LandingPage.tsx');
-  assert.match(landing, /mw-house polish-door/);
-  assert.match(landing, /href=["']\/welcome["']/);
+  assert.match(landing, /MarketingNav/);
+  assert.match(landing, /LogToPlanHero/);
+  assert.match(landing, /landingForge\.module\.css/);
   assert.match(landing, /\/brand\/log-a-set\.webp/);
-  assert.doesNotMatch(landing, /LogToPlanHero|MarketingNav|CinematicWww|#ffb000|#f5c518/);
+  assert.doesNotMatch(landing, /CinematicWww|mw-house|#ffb000|#f5c518/);
   const indexCss = read('src/index.css');
   assert.doesNotMatch(indexCss, /--house-press:\s*#ffb000/);
   assert.doesNotMatch(indexCss, /--house-paper:\s*#0a0c0f/);

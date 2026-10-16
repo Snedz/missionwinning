@@ -24,8 +24,8 @@ export const metadata: Metadata = publicPageMetadata({
  * Door vs homepage.
  *
  * Gate on + no cookie → `/private` (production www).
- * Cookie → LandingPage — headline, one action, one logger shot.
- * Not cinematic www. FAQ JSON-LD stays off this page; the page has no FAQ.
+ * Cookie → LandingPage — the forge restyle of the old marketing homepage.
+ * Not cinematic www. Gate ifs below are unchanged.
  * Preview / local, no cookie → teaser. Done mints the cookie.
  * Production public flip (gate off) → homepage with no door.
  */

@@ -122,6 +122,7 @@ type InfoStrings = {
   infoRefundsAbuse: string;
   infoRefundsAbuseBody: string;
   infoRefundsFoot: string;
+  refundsLastUpdated: string;
   infoCreditsTitle: string;
   infoCreditsIntro: string;
   infoCreditsAppTitle: string;
@@ -452,6 +453,7 @@ const en: InfoStrings = {
   infoRefundsAbuseBody:
     "Shared accounts, duplicate accounts, or made-up workout logs void the earn-back. A chargeback on the purchase ends earn-back eligibility. We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.",
   infoRefundsFoot: 'See also',
+  refundsLastUpdated: 'Last updated: 15 October 2026',
   infoCreditsTitle: 'Credits',
   infoCreditsIntro:
     'Licence credits for Mission Winning and for work this product includes.',

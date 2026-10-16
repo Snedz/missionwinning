@@ -115,6 +115,12 @@ export const ALLOWLIST = [
     fixWhen: 'If the house is rejected or folded back into the field-manual tokens, delete this file and the exemption with it.',
   },
   {
+    file: 'src/page-components/landingForge.module.css',
+    rules: ['off-palette-colour'],
+    why: 'Founder override: the cookie landing is the Z.ai forge skin — near-black, neon orange #FF5400, metallic silver. Those literals stay in this one module, scoped on .root, so house.css and the paper tokens are not repainted.',
+    fixWhen: 'If the forge landing is rejected or folded back into the paper tokens, delete this file and the exemption with it.',
+  },
+  {
     file: 'src/page-components/PressPage.tsx',
     rules: ['off-palette-colour'],
     why: 'The press kit’s `COLORS` table. The literals *are* the content — a press page that showed its swatches via var() would document nothing.',

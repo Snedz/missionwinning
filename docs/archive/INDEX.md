@@ -10,8 +10,11 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
-- [`CONTEXT-now-1114-trainer.md`](docs/archive/CONTEXT-now-1114-trainer.md) — `.1142` rotated the `.1114` trainer Now bullet.
+- [`LOG-rotate-1144-for-1159.md`](docs/archive/log/LOG-rotate-1144-for-1159.md) — rotated by `.1159`, to keep the <=15 entry budget. `.1145` is the live floor.
 - [`LOG-rotate-1143-for-1158.md`](docs/archive/log/LOG-rotate-1143-for-1158.md) — rotated by `.1158`, to keep the <=15 entry budget. `.1144` is the live floor.
+- [`CONTEXT-now-1125-1127.md`](docs/archive/CONTEXT-now-1125-1127.md) — `.1150` rotated the `.1125`–`.1127` Now bullets.
+- [`LOG-rotate-1135-for-1150.md`](docs/archive/log/LOG-rotate-1135-for-1150.md) — rotated by `.1150`, to keep the <=15 entry budget. `.1136` is the live floor.
+- [`CONTEXT-now-1114-trainer.md`](docs/archive/CONTEXT-now-1114-trainer.md) — `.1142` rotated the `.1114` trainer Now bullet.
 - [`LOG-rotate-1142-for-1157.md`](docs/archive/log/LOG-rotate-1142-for-1157.md) — rotated by `.1157`, to keep the <=15 entry budget. `.1143` is the live floor.
 - [`LOG-rotate-1141-for-1156.md`](docs/archive/log/LOG-rotate-1141-for-1156.md) — rotated by `.1156`, to keep the <=15 entry budget. `.1142` is the live floor.
 - [`LOG-rotate-1140-for-1155.md`](docs/archive/log/LOG-rotate-1140-for-1155.md) — rotated by `.1155`, to keep the <=15 entry budget. `.1141` is the live floor.
