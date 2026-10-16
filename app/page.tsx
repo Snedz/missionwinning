@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { LandingPage } from '@/page-components/LandingPage';
+import { MissionLanding } from '@/page-components/MissionLanding';
 import { GateTeaser } from './private/GateTeaser';
 import { homeSurfaceAfterGate, isUngatedDoor } from '@/lib/homeSurface';
 import { hasPrivateAccessCookieOnServer } from '@/lib/privateGateServer';
@@ -24,7 +24,7 @@ export const metadata: Metadata = publicPageMetadata({
  * Door vs homepage.
  *
  * Gate on + no cookie → `/private` (production www).
- * Cookie → LandingPage — headline, one action, one logger shot.
+ * Cookie → MissionLanding — the Z.ai Ironhouse port, rebranded (was LandingPage).
  * Not cinematic www. FAQ JSON-LD stays off this page; the page has no FAQ.
  * Preview / local, no cookie → teaser. Done mints the cookie.
  * Production public flip (gate off) → homepage with no door.
@@ -44,7 +44,7 @@ function Homepage() {
           ),
         }}
       />
-      <LandingPage />
+      <MissionLanding />
     </>
   );
 }

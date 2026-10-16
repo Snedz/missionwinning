@@ -25,7 +25,7 @@ test('GateTeaser mounts the tight lock; LandingPage does not', () => {
   const landing = read('src/page-components/LandingPage.tsx');
   assert.doesNotMatch(landing, /CinematicWww|www-cine/);
   const home = read('app/page.tsx');
-  assert.match(home, /LandingPage/);
+  assert.match(home, /MissionLanding/);
   assert.doesNotMatch(
     home,
     /<CinematicWww/,
