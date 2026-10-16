@@ -1,11 +1,11 @@
 import { describe, it } from 'node:test';
-import assert from 'node:assert';
+import assert from 'node:assert/strict';
 import {
   LAMPS,
   allowedStates,
   nextState,
   stripToken,
-} from './honestyLampState';
+} from './honestyLampState.ts';
 
 describe('honestyLampState', () => {
   it('LAMPS length 7 and order WARMUP…FUEL', () => {

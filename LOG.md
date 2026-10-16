@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — honesty lamp test file style (node:assert/strict, .ts import) (`.1172`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1172`.
+
 ## 2026-10-16 — honesty lamp state fixups (WIN → UNKNOWN, illegal `from`, .ts import) (`.1171`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1171`.
@@ -78,8 +82,3 @@ Rotated LOG → [docs/archive/log/LOG-rotate-1144-for-1159.md](docs/archive/log/
 ## 2026-10-16 — session proof state machine Open→Claimed→Done/Refused (+ its test) (`.1158`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1158`.
-
-
-## 2026-10-16 — paper-vs-live row label fail-closed (+ its test) (`.1157`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1157`.
