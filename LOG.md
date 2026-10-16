@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — earn-back ledger progress apply (+ its test) (`.1154`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1154`.
+
 ## 2026-10-16 — per-session load jump cap (+ its test) (`.1153`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1153`.
@@ -92,15 +96,3 @@ Today stacked a trainer card, a first-rooms checklist, and a seven-day grid unde
 Label `2026.07-unified.1140`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1120-for-1140.md](docs/archive/log/LOG-rotate-1120-for-1140.md) (`.1120`), for the ≤15 entry budget.
-
-## 2026-10-15 — First set is one tap (`.1139`)
-
-`/welcome` was a two-step briefing: a progress bar, a session preview, and profile questions before Today. A cold visitor had to tap Begin, Continue, then Start.
-
-The cold screen is now the headline and one yellow Log a set. That tap opens Train. `/active` writes today's compose session before paint, so the set is on screen. Finish does not call `startWorkout`. `?edit=1` still keeps the profile questions. No account.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1139`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1117-for-1139.md](docs/archive/log/LOG-rotate-1117-for-1139.md) (`.1117`). Live floor is `.1120`. `.1118` and `.1119` never had a LOG heading.
