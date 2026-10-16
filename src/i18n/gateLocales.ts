@@ -9,6 +9,11 @@ import { GATE_EN } from '@/i18n/gateEn';
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/año",
+  gateOfferBody: "Completa los entrenamientos del programa y te reembolsamos $99.",
+  gateOfferCta: "Iniciar anual — $99",
+  gateOfferFoot: "Pago seguro con Stripe.",
+  gateOfferRefunds: "Términos de reembolso",
   gateEyebrow: 'Gratis',
   gateLogASet: 'Registrar una serie',
   gateWaitlistTitle: 'Avísame',
@@ -35,6 +40,11 @@ const GATE_ES: Record<string, string> = {
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/ano",
+  gateOfferBody: "Complete os treinos do programa e devolvemos o seu $99.",
+  gateOfferCta: "Iniciar anual — $99",
+  gateOfferFoot: "Pagamento seguro via Stripe.",
+  gateOfferRefunds: "Termos de reembolso",
   gateEyebrow: 'Grátis',
   gateLogASet: 'Registrar uma série',
   gateWaitlistTitle: 'Avise-me',
@@ -54,6 +64,11 @@ const GATE_PT: Record<string, string> = {
 
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/Jahr",
+  gateOfferBody: "Schließe die Trainings des Programms ab und wir erstatten dir $99.",
+  gateOfferCta: "Jährlich starten — $99",
+  gateOfferFoot: "Sichere Zahlung über Stripe.",
+  gateOfferRefunds: "Rückgabebedingungen",
   gateEyebrow: 'Kostenlos',
   gateWaitlistTitle: 'Benachrichtigen',
   gateWaitlistSubmit: 'Benachrichtigen',
@@ -72,6 +87,11 @@ const GATE_DE: Record<string, string> = {
 
 const GATE_IT: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/anno",
+  gateOfferBody: "Completa gli allenamenti del programma e ti rimborsiamo $99.",
+  gateOfferCta: "Inizia annuale — $99",
+  gateOfferFoot: "Pagamento sicuro con Stripe.",
+  gateOfferRefunds: "Termini di rimborso",
   gateEyebrow: 'Gratis',
   gateWaitlistTitle: 'Avvisami al lancio',
   gateWaitlistSubmit: 'Avvisami',
@@ -85,6 +105,11 @@ const GATE_IT: Record<string, string> = {
 
 const GATE_RU: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/год",
+  gateOfferBody: "Заверши тренировки программы, и мы вернём тебе $99.",
+  gateOfferCta: "Начать годовой — $99",
+  gateOfferFoot: "Безопасная оплата через Stripe.",
+  gateOfferRefunds: "Условия возврата",
   gateEyebrow: 'Бесплатно',
   gateWaitlistTitle: 'Уведомить о запуске',
   gateWaitlistSubmit: 'Подписаться',
@@ -98,6 +123,11 @@ const GATE_RU: Record<string, string> = {
 
 const GATE_JA: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/年",
+  gateOfferBody: "プログラムのワークアウトを完了すると、$99を返金いたします。",
+  gateOfferCta: "年間を開始 — $99",
+  gateOfferFoot: "Stripeによる安全な決済。",
+  gateOfferRefunds: "返金条件",
   gateEyebrow: '無料',
   gateWaitlistTitle: 'ローンチ時に通知',
   gateWaitlistSubmit: '通知を受け取る',
@@ -111,6 +141,11 @@ const GATE_JA: Record<string, string> = {
 
 const GATE_KO: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/년",
+  gateOfferBody: "프로그램의 워크아웃을 완료하면 $99를 환불해 드립니다.",
+  gateOfferCta: "연간 시작 — $99",
+  gateOfferFoot: "Stripe를 통한 안전한 결제.",
+  gateOfferRefunds: "환불 약관",
   gateEyebrow: '무료',
   gateWaitlistTitle: '출시 알림 받기',
   gateWaitlistSubmit: '알림 받기',
@@ -124,6 +159,11 @@ const GATE_KO: Record<string, string> = {
 
 const GATE_ZH: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/年",
+  gateOfferBody: "完成计划的训练，我们将退还您的$99。",
+  gateOfferCta: "开始年度 — $99",
+  gateOfferFoot: "通过Stripe安全结账。",
+  gateOfferRefunds: "退款条款",
   gateEyebrow: '免费',
   gateWaitlistTitle: '上线时通知我',
   gateWaitlistSubmit: '通知我',
@@ -137,6 +177,11 @@ const GATE_ZH: Record<string, string> = {
 
 const GATE_TH: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/ปี",
+  gateOfferBody: "ทำโปรแกรมออกกำลังกายให้เสร็จสิ้น และเราจะคืนเงิน $99 ให้คุณ.",
+  gateOfferCta: "เริ่มต้นรายปี — $99",
+  gateOfferFoot: "ชำระเงินอย่างปลอดภัยผ่าน Stripe.",
+  gateOfferRefunds: "เงื่อนไขการคืนเงิน",
   gateEyebrow: 'ฟรี',
   gateWaitlistTitle: 'แจ้งเมื่อเปิดตัว',
   gateWaitlistSubmit: 'แจ้งฉัน',
@@ -150,6 +195,11 @@ const GATE_TH: Record<string, string> = {
 
 const GATE_VI: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/năm",
+  gateOfferBody: "Hoàn thành các bài tập của chương trình và chúng tôi sẽ hoàn lại $99 cho bạn.",
+  gateOfferCta: "Bắt đầu hàng năm — $99",
+  gateOfferFoot: "Thanh toán an toàn qua Stripe.",
+  gateOfferRefunds: "Điều khoản hoàn tiền",
   gateEyebrow: 'Miễn phí',
   gateWaitlistTitle: 'Báo khi ra mắt',
   gateWaitlistSubmit: 'Báo cho tôi',
@@ -163,6 +213,11 @@ const GATE_VI: Record<string, string> = {
 
 const GATE_HI: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/वर्ष",
+  gateOfferBody: "कार्यक्रम के वर्कआउट पूरे करें और हम आपको $99 वापस कर देंगे।",
+  gateOfferCta: "वार्षिक शुरू करें — $99",
+  gateOfferFoot: "Stripe द्वारा सुरक्षित भुगतान।",
+  gateOfferRefunds: "रिफंड की शर्तें",
   gateEyebrow: 'मुफ़्त',
   gateWaitlistTitle: 'लॉन्च पर सूचित करें',
   gateWaitlistSubmit: 'मुझे बताएं',
@@ -176,6 +231,11 @@ const GATE_HI: Record<string, string> = {
 
 const GATE_ID: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/tahun",
+  gateOfferBody: "Selesaikan latihan program dan kami akan mengembalikan $99 Anda.",
+  gateOfferCta: "Mulai tahunan — $99",
+  gateOfferFoot: "Pembayaran aman melalui Stripe.",
+  gateOfferRefunds: "Ketentuan pengembalian",
   gateEyebrow: 'Gratis',
   gateWaitlistTitle: 'Beritahu saat peluncuran',
   gateWaitlistSubmit: 'Beritahu saya',
@@ -189,6 +249,11 @@ const GATE_ID: Record<string, string> = {
 
 const GATE_AR: Record<string, string> = {
   ...GATE_EN,
+  gateOfferTitle: "Mission Winning Yearly · $99/سنة",
+  gateOfferBody: "أكمل تمارين البرنامج وسنقوم باسترداد $99 لك.",
+  gateOfferCta: "ابدأ سنويًا — $99",
+  gateOfferFoot: "الدفع الآمن عبر Stripe.",
+  gateOfferRefunds: "شروط الاسترداد",
   gateEyebrow: 'مجاني',
   gateWaitlistTitle: 'أبلغني عند الإطلاق',
   gateWaitlistSubmit: 'أبلغني',

@@ -813,6 +813,15 @@ const en: InfoStrings = {
 
 const es: InfoStrings = {
   ...en,
+  infoRefundsTitle: "Reembolsos y cancelación",
+  infoRefundsIntro: "El registrador gratuito nunca necesita un reembolso. Mission Winning Yearly es $99 al año, pagado con tarjeta a través de Stripe. Completa los entrenamientos del programa y te reembolsamos $99. Software de fitness educativo únicamente — no es un dispositivo médico.",
+  infoRefundsSubs: "Mission Winning Yearly",
+  infoRefundsSubsBody: "Mission Winning Yearly es $99 al año a través de Stripe. Si completas los entrenamientos del programa, envía un correo a support@missionwinning.com y te reembolsamos los $99. Por separado, puedes solicitar un reembolso completo dentro de los 14 días posteriores al primer cargo. Para detener futuras renovaciones, envía un correo a la misma dirección; el acceso continúa durante el año ya pagado.",
+  infoRefundsLifetime: "Founder Lifetime",
+  infoRefundsLifetimeBody: "Founder Lifetime no está a la venta. No hay cargo de por vida que revertir.",
+  infoRefundsHow: "Cómo solicitar",
+  infoRefundsHowBody: "Envía un correo a support@missionwinning.com con el asunto «Solicitud de reembolso», el correo electrónico utilizado en la compra y la fecha aproximada de compra. Para el reembolso de los entrenamientos, indica que completaste los entrenamientos del programa. Nuestro objetivo es responder en pocos días hábiles.",
+  infoRefundsIntroOpenBeta: "El registrador gratuito nunca necesita un reembolso. Mission Winning Yearly es $99 al año, pagado con tarjeta a través de Stripe. Completa los entrenamientos del programa y te reembolsamos $99. Software de fitness educativo únicamente — no es un dispositivo médico.",
   infoAboutTitle: 'Acerca de Mission Winning',
   infoTermsTitle: 'Términos de uso',
   infoPrivacyTitle: 'Política de privacidad',
@@ -844,6 +853,15 @@ const es: InfoStrings = {
 
 const zh: InfoStrings = {
   ...en,
+  infoRefundsTitle: "退款和取消",
+  infoRefundsIntro: "免费记录器永远不需要退款。Mission Winning Yearly每年$99，通过Stripe用卡支付。完成该计划的训练，我们将退还您的$99。健身教育软件——不是医疗器械。",
+  infoRefundsSubs: "Mission Winning Yearly",
+  infoRefundsSubsBody: "Mission Winning Yearly每年$99，通过Stripe支付。如果您完成该计划的训练，请发送邮件至support@missionwinning.com，我们会退还$99。另外，您可以在首次扣款后的14天内申请全额退款。要停止未来的续订，请发送邮件至同一地址；访问权限将在已支付的年份内继续有效。",
+  infoRefundsLifetime: "Founder Lifetime",
+  infoRefundsLifetimeBody: "Founder Lifetime不出售。没有可取消的终身费用。",
+  infoRefundsHow: "如何请求",
+  infoRefundsHowBody: "请发送邮件至support@missionwinning.com，主题为“Refund request”，提供结账时使用的电子邮箱以及大致购买日期。对于训练退款，请说明您已完成该计划的训练。我们将在几个工作日内回复。",
+  infoRefundsIntroOpenBeta: "免费记录器永远不需要退款。Mission Winning Yearly每年$99，通过Stripe用卡支付。完成该计划的训练，我们将退还您的$99。健身教育软件——不是医疗器械。",
   infoAboutTitle: '关于 Mission Winning',
   infoTermsTitle: '使用条款',
   infoPrivacyTitle: '隐私政策',
@@ -852,9 +870,9 @@ const zh: InfoStrings = {
   infoProfileHelpTitle: '帮助与法律',
 };
 
-const id: InfoStrings = { ...en, infoAboutTitle: 'Tentang Mission Winning' };
-const th: InfoStrings = { ...en, infoAboutTitle: 'เกี่ยวกับ Mission Winning' };
-const ar: InfoStrings = { ...en, infoAboutTitle: 'حول Mission Winning' };
+const id: InfoStrings = { ...en, infoRefundsTitle: "Pengembalian & pembatalan", infoRefundsIntro: "Perekam gratis tidak pernah membutuhkan pengembalian. Mission Winning Yearly adalah $99 per tahun, dibayar dengan kartu melalui Stripe. Selesaikan latihan program dan kami mengembalikan $99 Anda. Perangkat lunak kebugaran pendidikan saja — bukan perangkat medis.", infoRefundsSubs: "Mission Winning Yearly", infoRefundsSubsBody: "Mission Winning Yearly adalah $99 per tahun melalui Stripe. Jika Anda menyelesaikan latihan program, hubungi support@missionwinning.com dan kami mengembalikan $99. Secara terpisah, Anda dapat meminta pengembalian penuh dalam 14 hari setelah biaya pertama. Untuk menghentikan renewal di masa depan, hubungi alamat yang sama; akses berlanjut sepanjang tahun yang sudah dibayar.", infoRefundsLifetime: "Founder Lifetime", infoRefundsLifetimeBody: "Founder Lifetime tidak dijual. Tidak ada biaya seumur hidup yang dapat dibatalkan.", infoRefundsHow: "Cara meminta", infoRefundsHowBody: "Kirim email ke support@missionwinning.com dengan subjek “Refund request”, email yang digunakan saat checkout, dan perkiraan tanggal pembelian. Untuk pengembalian latihan, nyatakan bahwa Anda telah menyelesaikan latihan program. Kami bertujuan untuk merespons dalam beberapa hari kerja.", infoRefundsIntroOpenBeta: "Perekam gratis tidak pernah membutuhkan pengembalian. Mission Winning Yearly adalah $99 per tahun, dibayar dengan kartu melalui Stripe. Selesaikan latihan program dan kami mengembalikan $99 Anda. Perangkat lunak kebugaran pendidikan saja — bukan perangkat medis.", infoAboutTitle: 'Tentang Mission Winning' };
+const th: InfoStrings = { ...en, infoRefundsTitle: "การคืนเงินและการยกเลิก", infoRefundsIntro: "ตัวบันทึกฟรีไม่จำเป็นต้องขอเงินคืน Mission Winning Yearly ราคา $99 ต่อปี จ่ายผ่าน Stripe ทำโปรแกรมออกกำลังกายเสร็จสิ้น เราจะคืนเงิน $99 ให้คุณ ซอฟต์แวร์ฟิตเนสเพื่อการศึกษาเท่านั้น — ไม่ใช่อุปกรณ์ทางการแพทย์.", infoRefundsSubs: "Mission Winning Yearly", infoRefundsSubsBody: "Mission Winning Yearly ราคา $99 ต่อปี ผ่าน Stripe หากคุณทำโปรแกรมออกกำลังกายเสร็จสิ้น ให้ส่งอีเมลไปที่ support@missionwinning.com และเราจะคืนเงิน $99 นอกจากนี้ คุณสามารถขอเงินคืนเต็มจำนวนภายใน 14 วันนับจากครั้งแรกที่ถูกเรียกเก็บ เพื่อหยุดการต่ออายุในอนาคต ให้ส่งอีเมลไปที่อีเมลเดิม การเข้าถึงจะยังคงอยู่ตลอดปีที่ชำระแล้ว.", infoRefundsLifetime: "Founder Lifetime", infoRefundsLifetimeBody: "Founder Lifetime ไม่ได้จำหน่าย ไม่มีค่าใช้จ่ายตลอดชีวิตที่ต้องยกเลิก.", infoRefundsHow: "วิธีการขอคืนเงิน", infoRefundsHowBody: "ส่งอีเมลไปที่ support@missionwinning.com โดยมีหัวข้อ “Refund request” อีเมลที่ใช้ตอนชำระเงิน และวันที่ซื้อโดยประมาณ สำหรับการขอเงินคืนจากการออกกำลังกาย ให้ระบุว่าคุณทำโปรแกรมออกกำลังกายเสร็จสิ้นแล้ว เราตั้งใจจะตอบกลับภายในไม่กี่วันทำการ.", infoRefundsIntroOpenBeta: "ตัวบันทึกฟรีไม่จำเป็นต้องขอเงินคืน Mission Winning Yearly ราคา $99 ต่อปี จ่ายผ่าน Stripe ทำโปรแกรมออกกำลังกายเสร็จสิ้น เราจะคืนเงิน $99 ให้คุณ ซอฟต์แวร์ฟิตเนสเพื่อการศึกษาเท่านั้น — ไม่ใช่อุปกรณ์ทางการแพทย์.", infoAboutTitle: 'เกี่ยวกับ Mission Winning' };
+const ar: InfoStrings = { ...en, infoRefundsTitle: "الاسترداد والإلغاء", infoRefundsIntro: "المسجل المجاني لا يحتاج إلى استرداد. Mission Winning Yearly بسعر $99 سنويًا، يُدفع عبر Stripe. أكمل تمارين البرنامج ونسترد $99. برنامج اللياقة التعليمي فقط — وليس جهازًا طبيًا.", infoRefundsSubs: "Mission Winning Yearly", infoRefundsSubsBody: "Mission Winning Yearly بسعر $99 سنويًا عبر Stripe. إذا أكملت تمارين البرنامج، أرسل بريدًا إلكترونيًا إلى support@missionwinning.com ونسترد $99. بشكل منفصل، يمكنك طلب استرداد كامل خلال 14 يومًا من أول خصم. لإيقاف التجديدات المستقبلية، أرسل بريدًا الإلكتروني إلى نفس العنوان؛ يستمر الوصول طوال العام المدفوع بالفعل.", infoRefundsLifetime: "Founder Lifetime", infoRefundsLifetimeBody: "Founder Lifetime غير معروض للبيع. لا توجد رسوم مدى الحياة لإعادة عكسها.", infoRefundsHow: "كيف تطلب", infoRefundsHowBody: "أرسل بريدًا إلكترونيًا إلى support@missionwinning.com بالموضوع “Refund request”‎، والبريد الإلكتروني المستخدم عند الدفع، وتاريخ الشراء التقريبي. لاسترداد التمارين، ذكر أنك أكملت تمارين البرنامج. نهدف للرد خلال أيام عمل قليلة.", infoRefundsIntroOpenBeta: "المسجل المجاني لا يحتاج إلى استرداد. Mission Winning Yearly بسعر $99 سنويًا، يُدفع عبر Stripe. أكمل تمارين البرنامج ونسترد $99. برنامج اللياقة التعليمي فقط — وليس جهازًا طبيًا.", infoAboutTitle: 'حول Mission Winning' };
 
 const LOCALES: Partial<Record<string, InfoStrings>> = { en, es, zh, id, th, ar };
 

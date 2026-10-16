@@ -302,9 +302,9 @@ export function PrivateTeaserClient({
                   {territoryNote}
                   {/* Live Stripe Payment Link — Mission Winning Yearly. */}
                   <div className="gate-offer" data-mw-offer="yearly">
-                    <p className="gate-kicker">Mission Winning Yearly · $99/year</p>
+                    <p className="gate-kicker">{g('gateOfferTitle')}</p>
                     <p className="gate-invite-copy">
-                      Complete the program&apos;s workouts and we refund your $99.
+                      {g('gateOfferBody')}
                     </p>
                     <div className="gate-actions">
                       <a
@@ -312,11 +312,11 @@ export function PrivateTeaserClient({
                         className="gate-btn gate-btn-secondary"
                         rel="noopener"
                       >
-                        Start yearly — $99
+                        {g('gateOfferCta')}
                       </a>
                     </div>
                     <p className="gate-foot">
-                      Secure checkout by Stripe. <Link href="/refunds">Refund terms</Link>
+                      {g('gateOfferFoot')}{' '}<Link href="/refunds">{g('gateOfferRefunds')}</Link>
                     </p>
                   </div>
                 </>
