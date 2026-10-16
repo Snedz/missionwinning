@@ -55,7 +55,7 @@ Scoped to `.mw-house` only. Field-manual `src/index.css` / `/private` / landing 
 | `--house-press-tint` | `#1a1607` | Signal tint |
 | `--house-press-ink` | `#0a0c0f` | On-signal |
 | `--house-amber` | `#ffb000` | Alias of press (metrics ≥19px only) |
-| `--house-live` | `#ae1800` | Train pulse **only** (unchanged) |
+| `--house-live` | `#ae1800` | Declared. The rail mark is ink |
 
 Radii max **8px** on cards. Kill `999px` pills on primary — `--house-pill: 8px`. Rail widths 72 / 264 / 300 and motion stay.
 

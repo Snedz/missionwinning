@@ -372,7 +372,7 @@ test('house design system is the signed-in token table', () => {
   assert.match(spec, /72px/);
   assert.match(spec, /264px/);
   assert.match(spec, /--house-press/);
-  assert.match(spec, /Train pulse only/);
+  assert.match(spec, /The rail mark is ink/);
   assert.doesNotMatch(spec, /Welcome to Patreon|Oracle|Ways to earn|Audience|Publish page/i);
   const index = read('src/components/house/INDEX.md');
   assert.match(index, /DESIGN\.md/);
@@ -385,6 +385,9 @@ test('house design system is the signed-in token table', () => {
   assert.match(css, /--house-radius-sheet:\s*4px/);
   assert.match(css, /--house-selected:\s*#1a1607/);
   assert.match(css, /--house-live:\s*#ae1800/);
+  assert.match(css, /\.house-rail-dot \{[^}]*background:\s*var\(--house-ink\)/);
+  assert.doesNotMatch(css, /\.house-rail-dot \{[^}]*var\(--house-live\)/);
+  assert.doesNotMatch(css, /\.house-rail-dot \{[^}]*animate-pulse/);
   assert.match(css, /\.house-rail \.house-rail-plus \{[\s\S]*width:\s*40px/);
   assert.match(css, /\.house-empty/);
   assert.match(css, /\.house-filter-bar/);
