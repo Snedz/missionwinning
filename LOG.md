@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — earn-back offer copy guard (+ its test) (`.1151`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1151`.
+
 ## 2026-10-16 — earn-back verified session rule + 72h dispute window (+ its test) (`.1150`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1150`.
@@ -114,15 +118,5 @@ The public door was a marketing stack: a red Get notified, a legal link farm, an
 The gated door and the cookie homepage now share one composition. The headline is Log a set. Offline. The yellow control is Log a set, and it opens `/welcome` (the logger stays public). Under it is a real shot of Train. Notify me stays on the door as a ghost button, because the waitlist still has to be captured while the gate is up. Terms and Privacy stay as a 12px line. The cookie homepage has none of that — headline, one button, the shot.
 
 The house skin is the one the founder approved: ground `#0a0c0f`, signal `#ffb000`, Geist and Geist Mono self-hosted (OFL, `src/fonts`). Muted moved from `#5f6b75` (3.59:1, fails AA) to `#7d8a95`. Radius on the house is 4px. Weights on the house are 400 and 600. `faqPageJsonLd()` is no longer emitted from `/`, because the page no longer has an FAQ. The function and its free-beta filter stay.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-## 2026-10-15 — Weekly plan uses the desktop width (`.1136`)
-
-`/coach` on a desktop was a narrow card beside a second room list. The icon rail is already the sidebar, so the second list repeated Start, This week, History, and Weekly plan, and the transferred canvas hid the page title. The plan column was `max-w-2xl`, and the one sheet card sat in a two-column grid, so the session filled about a third of the window.
-
-Weekly plan no longer mounts that second bar. The canvas title is Mission Coach. Content sits in the centered pad, `min(1120px, 100% - 48px)`, which is the same cap the other desktop rooms use. The boss session is one column and fills that pad. Show all is two columns from 900px. The house week strip names each day — Rest, Lift, Condition, Mobility, Done, Missed — instead of a glyph or a bare dash. Swap is centered on its row. Fuel drops the extra `max-w-3xl` so it fills the same pad.
-
-**Measured:** at 1280 the coach card is 1120px, the same width as the pad, with no second rail. The first lift name and the Swap button share a vertical center. Past empty days read Rest. Mobile 390 keeps the pad at the content width with no horizontal overflow on Today, Train, Coach, Library, or Fuel.
 
 `[skip vercel]`. PRIVATE_MODE stays.
