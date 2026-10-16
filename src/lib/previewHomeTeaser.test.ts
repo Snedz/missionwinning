@@ -19,7 +19,7 @@ test('ungated `/` is the teaser until the cookie, then the homepage', () => {
   assert.match(page, /hasPrivateAccessCookieOnServer/);
   assert.match(page, /homeSurfaceAfterGate/);
   assert.match(page, /GateTeaser/);
-  assert.match(page, /MissionLanding/);
+  assert.match(page, /LandingPage/);
   assert.doesNotMatch(
     page,
     /hasServerPrivateAccess/,
