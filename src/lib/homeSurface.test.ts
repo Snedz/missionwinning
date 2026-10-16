@@ -17,7 +17,7 @@ test('Preview / local keep the door; production public flip does not', () => {
 test('home surface: gated lock, cookie homepage, Preview teaser, public flip', () => {
   assert.equal(
     homeSurfaceAfterGate({ privateMode: true, cookie: false, ungatedDoor: false }),
-    'private'
+    'homepage'
   );
   assert.equal(
     homeSurfaceAfterGate({ privateMode: true, cookie: true, ungatedDoor: false }),

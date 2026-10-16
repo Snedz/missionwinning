@@ -83,6 +83,11 @@ const nextConfig = {
       { source: '/dashboard', destination: '/log', permanent: true },
       { source: '/app', destination: '/log', permanent: true },
       { source: '/login', destination: '/welcome', permanent: true },
+      { source: '/signup', destination: '/welcome', permanent: true },
+      { source: '/sign-up', destination: '/welcome', permanent: true },
+      { source: '/register', destination: '/welcome', permanent: true },
+      { source: '/manifest.json', destination: '/manifest.webmanifest', permanent: true },
+      { source: '/site.webmanifest', destination: '/manifest.webmanifest', permanent: true },
       { source: '/pricing', destination: '/welcome', permanent: true },
       { source: '/settings', destination: '/account', permanent: true },
     ];

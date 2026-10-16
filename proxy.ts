@@ -11,13 +11,21 @@ import {
 import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { DEAD_ALIAS_PATHS } from '@/lib/safeRedirect';
 import { isPathEnabled } from '@/lib/surface';
+import { isKnownPath } from '@/lib/knownRoutes';
 
 function aliasCanonical(pathname: string): string | undefined {
   const path = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
   return DEAD_ALIAS_PATHS[path];
 }
 
+/** Common manifest spellings → the real manifest, before the gate. */
+const MANIFEST_ALIASES = new Set(['/manifest.json', '/site.webmanifest']);
+
 export function proxy(request: NextRequest) {
+  if (MANIFEST_ALIASES.has(request.nextUrl.pathname)) {
+    return NextResponse.redirect(new URL('/manifest.webmanifest', request.nextUrl.origin), 308);
+  }
+
   // F-039 — retired spellings 308 before parking and the gate. `next.config.js`
   // already lists the same map, but middleware runs first: without this hop a
   // gated `/today` or `/train` 307s to `/private` (or 404s on a build that
@@ -46,12 +54,22 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL('/_not-found', request.url));
   }
 
+  // Unknown paths get the real 404 page, never the private door.
+  if (!isKnownPath(request.nextUrl.pathname)) {
+    return NextResponse.rewrite(new URL('/_not-found', request.url), { status: 404 });
+  }
+
   if (!isPrivateModeEnabled()) {
     return NextResponse.next();
   }
 
   const { pathname, searchParams } = request.nextUrl;
   const secret = process.env.PRIVATE_ACCESS_SECRET;
+
+  // Landing restore: `/` is the public homepage; the CTA links to `/private`.
+  if (pathname === '/' && !searchParams.has('invite') && !queryGrantsAccess(searchParams, secret)) {
+    return applyPrivateGateHeaders(NextResponse.next());
+  }
 
   if (isPublicPathWhileGated(pathname)) {
     return applyPrivateGateHeaders(NextResponse.next());

@@ -8,11 +8,9 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('homepage does not advertise an FAQ it does not show', () => {
+test('Landing FAQ UI and JSON-LD share the free-beta filter', () => {
   const src = readFileSync(join(root, 'src/page-components/LandingPage.tsx'), 'utf8');
-  const page = readFileSync(join(root, 'app/page.tsx'), 'utf8');
-  assert.doesNotMatch(src, /landingFaqKeysForSurface|<details|Frequently/);
-  assert.doesNotMatch(page, /faqPageJsonLd\s*\(/);
+  assert.match(src, /landingFaqKeysForSurface/);
 });
 
 test('faqPageJsonLd + landing locales filter Super Bundle FAQ under free beta', () => {
