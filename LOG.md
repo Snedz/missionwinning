@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — Android Play permission audit, part B: run audit on the real MW AndroidManifest (`.1176`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1176`.
+
 ## 2026-10-16 — Android Play permission audit, part A: pure module + inline-fixture test (`.1175`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1175`.
@@ -74,7 +78,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — no-fake-progress phrase classifier (+ its test) (`.1162`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1162`.
-
-## 2026-10-16 — on-device coach fallback route (+ its test) (`.1161`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1161`.
