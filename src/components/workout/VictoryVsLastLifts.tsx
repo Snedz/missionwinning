@@ -3,12 +3,15 @@
 /**
  * Top lifts vs the previous session of the same name (`.1114`).
  * Up is green. Even or down is amber. First time has no status color.
+ * Session headline (`.1145`): "N of M up vs last time", or an honest first-time
+ * line. The win stays on the session — no feed, no likes, no paywalled chart.
  */
 
 import { useTranslation } from 'react-i18next';
 import {
   formatLiftDelta,
   liftDeltaClass,
+  vsLastHeadline,
   type TopLiftDelta,
 } from '@/lib/workout/victoryVsLastLifts';
 
@@ -19,6 +22,7 @@ type Props = {
 export function VictoryVsLastLifts({ lifts }: Props) {
   const { t } = useTranslation();
   if (lifts.length === 0) return null;
+  const headline = vsLastHeadline(lifts);
 
   return (
     <section
@@ -29,6 +33,19 @@ export function VictoryVsLastLifts({ lifts }: Props) {
       <p className="house-lede font-semibold">
         {t('victoryVsLastLiftsLabel', { defaultValue: 'Vs last' })}
       </p>
+      {headline ? (
+        <p className="text-sm text-foreground" data-testid="victory-vs-last-headline">
+          {headline.kind === 'first'
+            ? t('victoryVsLastHeadlineFirst', {
+                defaultValue: 'First time on this session. Next time compares here.',
+              })
+            : t('victoryVsLastHeadline', {
+                up: headline.up,
+                compared: headline.compared,
+                defaultValue: '{{up}} of {{compared}} up vs last time',
+              })}
+        </p>
+      ) : null}
       <ul className="space-y-1">
         {lifts.map((lift) => (
           <li key={lift.exerciseId} className="flex items-baseline justify-between gap-3 text-sm">

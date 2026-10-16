@@ -371,6 +371,9 @@ type ActiveWorkoutStrings = {
   /** Top lifts vs the previous same-name session (`.1114`). */
   victoryVsLastLiftsLabel: string;
   victoryVsLastFirst: string;
+  /** Session-level vs-last headline (`.1145`). Win sits on the session; no feed. */
+  victoryVsLastHeadline: string;
+  victoryVsLastHeadlineFirst: string;
   /** Optional one-line receipt note. Never required. */
   victoryDiaryLabel: string;
   victoryDiaryPlaceholder: string;
@@ -713,6 +716,8 @@ const en: ActiveWorkoutStrings = {
   victoryReceiptLabel: 'This session',
   victoryVsLastLiftsLabel: 'Vs last',
   victoryVsLastFirst: 'First time',
+  victoryVsLastHeadline: '{{up}} of {{compared}} up vs last time',
+  victoryVsLastHeadlineFirst: 'First time on this session. Next time compares here.',
   victoryDiaryLabel: 'Note',
   victoryDiaryPlaceholder: 'One line. Optional.',
   victoryPrsOne: '1 PR',
@@ -732,6 +737,8 @@ const es: ActiveWorkoutStrings = {
   resumeLastTone: 'Sesión 2 — fija el hábito',
   victoryVsLastLiftsLabel: 'Vs la última',
   victoryVsLastFirst: 'Primera vez',
+  victoryVsLastHeadline: '{{up}} de {{compared}} mejor que la última vez',
+  victoryVsLastHeadlineFirst: 'Primera vez en esta sesión. La próxima se compara aquí.',
   victoryDiaryLabel: 'Nota',
   victoryDiaryPlaceholder: 'Una línea. Opcional.',
   trainerAskLabel: 'Entrenador personal con IA',
@@ -977,6 +984,8 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     resumeLastTone: 'Sessão 2 — fixa o hábito',
     victoryVsLastLiftsLabel: 'Vs a última',
     victoryVsLastFirst: 'Primeira vez',
+    victoryVsLastHeadline: '{{up}} de {{compared}} acima da última vez',
+    victoryVsLastHeadlineFirst: 'Primeira vez nesta sessão. A próxima compara aqui.',
     victoryDiaryLabel: 'Nota',
     victoryDiaryPlaceholder: 'Uma linha. Opcional.',
     trainerAskLabel: 'Treinador pessoal com IA',

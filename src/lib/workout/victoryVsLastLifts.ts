@@ -145,3 +145,25 @@ export function topLiftDeltas(
     };
   });
 }
+
+export type VsLastHeadline =
+  | { kind: 'first' }
+  | { kind: 'compared'; up: number; compared: number };
+
+/**
+ * One session-level line for the Victory vs-last strip (`.1145`).
+ * Counts only lifts that had a prior on the same session name. When none do,
+ * it is an honest first time, never a fake win. Null when there are no lifts.
+ */
+export function vsLastHeadline(lifts: readonly TopLiftDelta[] | null | undefined): VsLastHeadline | null {
+  if (!lifts || lifts.length === 0) return null;
+  let compared = 0;
+  let up = 0;
+  for (const lift of lifts) {
+    if (lift.tone === 'first' || lift.delta == null) continue;
+    compared += 1;
+    if (lift.tone === 'up') up += 1;
+  }
+  if (compared === 0) return { kind: 'first' };
+  return { kind: 'compared', up, compared };
+}

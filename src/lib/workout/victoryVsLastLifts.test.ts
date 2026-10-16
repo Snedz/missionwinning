@@ -153,3 +153,30 @@ test('one-line diary never blocks save', () => {
   assert.equal(victoryDiaryBlocksSave(long), false);
   assert.equal(victoryDiaryBlocksSave(undefined), false);
 });
+
+test('vs-last headline counts only compared lifts; all-new is an honest first time (.1145)', async () => {
+  const { vsLastHeadline } = await import('./victoryVsLastLifts.ts');
+  assert.equal(vsLastHeadline([]), null);
+  assert.equal(vsLastHeadline(null), null);
+  const first = { exerciseId: 'a', name: 'A', volume: 100, priorVolume: null, delta: null, tone: 'first' as const };
+  const up = { exerciseId: 'b', name: 'B', volume: 120, priorVolume: 100, delta: 20, tone: 'up' as const };
+  const flat = { exerciseId: 'c', name: 'C', volume: 90, priorVolume: 100, delta: -10, tone: 'flat' as const };
+  assert.deepEqual(vsLastHeadline([first]), { kind: 'first' });
+  assert.deepEqual(vsLastHeadline([up, flat, first]), { kind: 'compared', up: 1, compared: 2 });
+  assert.deepEqual(vsLastHeadline([flat]), { kind: 'compared', up: 0, compared: 1 });
+});
+
+test('vs-last strip has no feed, social or paywalled-chart copy (.1145)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { activeWorkoutStringsFor } = await import('../../i18n/activeWorkoutLocales.ts');
+  const strip = readFileSync('src/components/workout/VictoryVsLastLifts.tsx', 'utf8');
+  assert.match(strip, /victory-vs-last-headline/);
+  const banned = /\b(feed|followers?|likes?|leaderboard|upgrade|premium|unlock)\b/i;
+  for (const lang of ['en', 'es', 'pt']) {
+    const s = activeWorkoutStringsFor(lang);
+    for (const key of ['victoryVsLastHeadline', 'victoryVsLastHeadlineFirst'] as const) {
+      assert.ok(s[key] && s[key].length > 0, `${lang}.${key}`);
+      assert.doesNotMatch(s[key], banned, `${lang}.${key}`);
+    }
+  }
+});
