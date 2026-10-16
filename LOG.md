@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — session proof state machine Open→Claimed→Done/Refused (+ its test) (`.1158`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1158`.
+
 ## 2026-10-16 — paper-vs-live row label fail-closed (+ its test) (`.1157`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1157`.
@@ -74,7 +78,3 @@ Hand-built on the free lane (no CloudAgent) for card `20261015-p1-code-mw-vs-las
 ## 2026-10-15 — Large history first-paint budget (2k sessions / 40k sets) (`.1144`)
 
 Hand-built on the free lane (no CloudAgent): `src/lib/history/largeHistoryBudget.ts` seeds 2,000 sessions × 20 sets, measures Today/History first-paint scans, and memoises personal bests to match `getBestPriorSet`. Locking tests. Label `2026.07-unified.1144`. `[skip vercel]`.
-
-## 2026-10-15 — plate calculator only builds loads from owned plates (`.1143`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1143`.
