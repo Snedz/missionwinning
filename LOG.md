@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — honesty lamp state machine (+ its test) (`.1170`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1170`.
+
 ## 2026-10-16 — form-cue contradiction detector (+ its test) (`.1169`)
 
 Same-lift form cues that share a tag and make opposite claims flag the lower-confidence cue. Both cues negating is not a contradiction. Label `2026.07-unified.1169`. `[skip vercel]`.
@@ -79,7 +83,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — propose next-session targets from last logged sets (+ its test) (`.1156`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1156`.
-
-## 2026-10-16 — next-session target accept apply (+ its test) (`.1155`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1155`.
