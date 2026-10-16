@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — earn-back refund rule engine (+ its test) (`.1152`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1152`.
+
 ## 2026-10-16 — earn-back offer copy guard (+ its test) (`.1151`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1151`.
@@ -110,13 +114,3 @@ Meta tests were the first red step, so `i18n:coverage` and the hero e2e never ra
 Label `2026.07-unified.1138`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1116-for-1138.md](docs/archive/log/LOG-rotate-1116-for-1138.md) (`.1116`). Live floor is `.1117`.
-
-## 2026-10-15 — Log a set. Offline. (`.1137`)
-
-The public door was a marketing stack: a red Get notified, a legal link farm, and — once the gate cookie was set — a stat row, a demo hero, and an FAQ. The logger was the thing the page was about, and it was not on the page.
-
-The gated door and the cookie homepage now share one composition. The headline is Log a set. Offline. The yellow control is Log a set, and it opens `/welcome` (the logger stays public). Under it is a real shot of Train. Notify me stays on the door as a ghost button, because the waitlist still has to be captured while the gate is up. Terms and Privacy stay as a 12px line. The cookie homepage has none of that — headline, one button, the shot.
-
-The house skin is the one the founder approved: ground `#0a0c0f`, signal `#ffb000`, Geist and Geist Mono self-hosted (OFL, `src/fonts`). Muted moved from `#5f6b75` (3.59:1, fails AA) to `#7d8a95`. Radius on the house is 4px. Weights on the house are 400 and 600. `faqPageJsonLd()` is no longer emitted from `/`, because the page no longer has an FAQ. The function and its free-beta filter stay.
-
-`[skip vercel]`. PRIVATE_MODE stays.
