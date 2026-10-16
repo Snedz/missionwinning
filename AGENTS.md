@@ -1,5 +1,8 @@
 # AGENTS.md — Mission Winning
 
+## UI freeze (2026-10-15)
+No autopilot/agent changes to `app/**/*.tsx`, `src/components/**`, `src/page-components/**` or `*.css` until a named design owner signs off on before/after screenshots at 1440, 1024 and 390 px. Logic, data, test and doc work continues.
+
 **Read [CONTEXT.md](CONTEXT.md) first** (one-screen status + hard rules), then this file, then [INDEX.md](INDEX.md) before exploring or grepping the repo.
 
 Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-agnostic conventions. `CLAUDE.md` / `GEMINI.md` are thin pointers into this same spine.
@@ -172,7 +175,7 @@ Durable, non-obvious notes for agents on a VM where the update script (`npm inst
 - **Hello-world flow:** `/active` is the free Train logger. From a fresh state I-Day is Begin → Continue (lands `/log`); Today Start opens Train. Log a set by entering weight/reps and clicking **Log set**. No account. No Skip-sign-in step.
 - **`npm install` prints a harmless `EBADENGINE` warning** for `lighthouse` (wants Node ≥22.19; only used by the optional `npm run lighthouse-budget`). It does not affect install, dev, test, or build.
 - **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
-- **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). `[skip vercel]` on every commit unless the founder asked for a Preview. Do not treat `build-and-test` red as a product fail.
+- **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Do **not** add `[skip vercel]` (2026-10-15): what merges to master must be what is live. Do not treat `build-and-test` red as a product fail.
 
 
 <!-- BEGIN:nextjs-agent-rules -->

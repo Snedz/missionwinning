@@ -81,8 +81,8 @@ test('HouseShell opens a left second bar, not More as the Home pattern', () => {
   const css = read('src/components/house/house.css');
   assert.match(css, /--house-rail:\s*72px/);
   assert.match(css, /--house-second:\s*264px/);
-  assert.match(css, /min-width:\s*723px/);
-  assert.match(css, /max-width:\s*722px/);
+  assert.match(css, /min-width:\s*768px/);
+  assert.match(css, /max-width:\s*767px/);
   assert.match(css, /\.house-second/);
   assert.match(css, /\.house-sheet/);
   assert.match(css, /\.house-rail-tip/);

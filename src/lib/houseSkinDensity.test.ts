@@ -116,7 +116,7 @@ test('rail + sheet use void / card / raised field — leftover 4', () => {
   assert.match(css, /--house-line:\s*#1e252c/);
   assert.match(
     css,
-    /@media \(min-width: 723px\)[\s\S]*?\.mw-house \.house-sheet \{[\s\S]*?background:\s*var\(--house-soft\)[\s\S]*?1px solid var\(--house-line\)/,
+    /@media \(min-width: 768px\)[\s\S]*?\.mw-house \.house-sheet \{[\s\S]*?background:\s*var\(--house-soft\)[\s\S]*?1px solid var\(--house-line\)/,
   );
   assert.doesNotMatch(css, /rgb\(7 7 7/);
   assert.doesNotMatch(css, /border-radius:\s*12px/);

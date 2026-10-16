@@ -453,6 +453,32 @@
   padding: 0 0 96px;
 }
 
+/* Desktop pass (2026-10-15): train/compose stop stretching across the screen. */
+@media (min-width: 768px) {
+  .mw-house .house-canvas-pad.is-flush {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+}
+
+/* Today is one card: keep it a readable column instead of a 1120px slab. */
+@media (min-width: 768px) {
+  .mw-house [data-house-desk='today'] {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+}
+
+/* History + Library: two columns of rows on wide screens. */
+@media (min-width: 1024px) {
+  .mw-house .house-history .house-list,
+  .mw-house .house-catalog .house-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+}
+
 .mw-house .house-canvas-pad.is-transferred .stagger-group > .stagger-enter:first-child:has([data-house-costume='pillar-header']) {
   display: none;
 }
@@ -2016,7 +2042,7 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .mw-house .house-session-grid.is-week {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3915,7 +3941,7 @@
   color: var(--house-ink);
 }
 
-@media (min-width: 723px) {
+@media (min-width: 768px) {
   .mw-house {
     background: var(--house-stage);
   }
@@ -4066,7 +4092,7 @@
   padding: 24px 16px 40px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .mw-house.polish-door {
     padding: 40px 24px;
   }
@@ -4213,7 +4239,7 @@
   box-shadow: none;
 }
 
-@media (max-width: 722px) {
+@media (max-width: 767px) {
   .mw-house .house-guide {
     display: none;
   }
