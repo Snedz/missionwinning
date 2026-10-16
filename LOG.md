@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — next-session target accept apply (+ its test) (`.1155`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1155`.
+
 ## 2026-10-16 — earn-back ledger progress apply (+ its test) (`.1154`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1154`.
@@ -86,13 +90,3 @@ The open set was five columns. The live row now stacks the target above the prev
 Label `2026.07-unified.1141`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1122-for-1141.md](docs/archive/log/LOG-rotate-1122-for-1141.md) (`.1122`), for the ≤15 entry budget. Live floor is `.1124`.
-
-## 2026-10-15 — Today is the next workout and one number (`.1140`)
-
-Today stacked a trainer card, a first-rooms checklist, and a seven-day grid under the session. The desk now names the next workout, shows one diary count (logged days this week), and keeps one yellow Start. The count comes from `quietWeekGlance`. A cold week is 0. A finished set moves it. Generate-week stays on the second rail.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1140`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1120-for-1140.md](docs/archive/log/LOG-rotate-1120-for-1140.md) (`.1120`), for the ≤15 entry budget.
