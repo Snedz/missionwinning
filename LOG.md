@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — paper-vs-live row label fail-closed (+ its test) (`.1157`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1157`.
+
 ## 2026-10-16 — propose next-session targets from last logged sets (+ its test) (`.1156`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1156`.
@@ -74,13 +78,3 @@ Hand-built on the free lane (no CloudAgent): `src/lib/history/largeHistoryBudget
 ## 2026-10-15 — plate calculator only builds loads from owned plates (`.1143`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1143`.
-
-## 2026-10-15 — Icon rail drops the red mark (`.1142`)
-
-The Train icon carried a red dot while a session was open. That mark is ink now. `--house-live` stays declared and is not painted on the rail. Yellow stays the one filled action.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1142`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1124-for-1142.md](docs/archive/log/LOG-rotate-1124-for-1142.md) (`.1124`), for the ≤15 entry budget. Live floor is `.1125`.
