@@ -19,6 +19,14 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — Forge landing (`.1150`)
+
+The cookie homepage is the old marketing page again, restyled to the near-black forge sheet the founder asked for: grain, #FF5400, Bebas Neue headlines, a Ken Burns reel of the real training stills, a marquee, hover flip cards, and a drag carousel. The cards are Mission Coach’s real behaviour and the Earn It Back terms ($99/yr, $50 after 24 counted workouts in 90 days, $40 more after 96 in a year, max $90, 14-day refund, link to `/refunds`). CTAs are Start logging free (`/log`) and Join $99/yr. No invented coaches, certifications, or member counts. Scoped to `landingForge.module.css` so house.css stays the door. `/forge-preview` renders the same page for Preview and local, and 404s in production. The private gate, proxy, and `/` control flow are unchanged. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1150`.
+
+Rotated LOG → [docs/archive/log/LOG-rotate-1135-for-1150.md](docs/archive/log/LOG-rotate-1135-for-1150.md) (`.1135`). `.1136` is the live floor.
+
 ## 2026-10-15 — wearable feed display state (+ its test) (`.1149`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1149`.
@@ -122,19 +130,3 @@ Weekly plan no longer mounts that second bar. The canvas title is Mission Coach.
 **Measured:** at 1280 the coach card is 1120px, the same width as the pad, with no second rail. The first lift name and the Swap button share a vertical center. Past empty days read Rest. Mobile 390 keeps the pad at the content width with no horizontal overflow on Today, Train, Coach, Library, or Fuel.
 
 `[skip vercel]`. PRIVATE_MODE stays.
-
-## 2026-10-15 — Review fixes on the gated site (`.1135`)
-
-Today's empty week cell opens the free logger on `/active`. `/coach` stays gated, so Just Go no longer lands on `/private`. Generate this week still links `/coach`.
-
-Refunds states that payments are not live. The planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Account has no billing screen while payments are off. The page does not name Stripe, Phantom, USDC, or Super Bundle.
-
-A signed-out `week.logged` post is skipped when this device has no push subscription. The server still returns 403 `consent_required` if a post arrives. Language and country are fields on the onboarding profile step; the sheet does not auto-open. Train gives the weight field a wider column, puts Plates on their own line, shows the percent box only when a percent or a known max exists, and lets the session title wrap. Units stay on the Settings default (metric) until the athlete changes them. `/credits` lists the AGPL-3 program, the Unlicense exercise snapshot, and the MIT body-diagram package, linked from About and the footer. `/settings` redirects to `/account`. About cites the 2024 BMJ review for the exercise-and-mood sentence.
-
-**Mutants killed:** an unlogged Just Go session kept over a different Coach card; a logged set replaced; a guest without push still posted; geo units written on boot; the locale sheet auto-opening off the first-set path.
-
-`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1135`.
-
-Rotated LOG → [docs/archive/log/LOG-rotate-1123-for-1135.md](docs/archive/log/LOG-rotate-1123-for-1135.md) (`.1123`). `.1113` stays the live floor.

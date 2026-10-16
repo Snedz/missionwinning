@@ -6,7 +6,7 @@
  */
 export const KNOWN_TOP_SEGMENTS: ReadonlySet<string> = new Set([
   // app/
-  'about', 'api', 'auth', 'bundle', 'calculators', 'changelog', 'exercises',
+  'about', 'api', 'auth', 'bundle', 'calculators', 'changelog', 'exercises', 'forge-preview',
   'guide', 'notify', 'offline', 'paths', 'press', 'private', 'vision',
   'welcome', 'youth',
   // app/(app)/
