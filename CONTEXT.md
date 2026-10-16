@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-10-16 · web `2026.07-unified.1150` · Android `1.24.1`)
+## Now (2026-10-16 · web `2026.07-unified.1154` · Android `1.24.1`)
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
@@ -44,7 +44,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
-- **`.1150`:** (`2026.07-unified.1150`) **Forge landing** — Cookie `/` follows the forge sheet: full-bleed Ken Burns reel, notch cards, flip cards, rubber-band carousel, booking frame, outlined wordmark. Stats are static product facts. CTAs are Start logging free (`/log`) and Join $99/yr. Earn It Back is the published terms. `/forge-preview` is preview-only. The private gate is unchanged. PRIVATE_MODE stays.
+- **`.1154`:** (`2026.07-unified.1154`) **Forge landing** — Cookie `/` follows the forge sheet: full-bleed Ken Burns reel, notch cards, flip cards, rubber-band carousel, booking frame, outlined wordmark. Stats are static product facts. CTAs are Start logging free (`/log`) and Join $99/yr. Earn It Back is the published terms. `/forge-preview` is preview-only. The private gate is unchanged. PRIVATE_MODE stays.
 - **`.1145`:** (`2026.07-unified.1145`) **Vs-last puts the win on the session** — The Victory vs-last strip opens with one line: "N of M up vs last time", counting only lifts that had a prior on the same session name. All-new lifts say first time honestly. No feed, likes, or paywalled chart. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1144`:** (`2026.07-unified.1144`) **Large history stays fast** — Seed 2,000 sessions / 40k sets in tests; History list, career line, volume sum, and memoised personal bests finish inside the first-paint budget and match brute-force bests. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1142`:** (`2026.07-unified.1142`) **Icon rail drops the red mark** — The Train icon’s live dot is ink. `--house-live` stays declared and is not painted on the rail. `[skip vercel]`. PRIVATE_MODE stays.
