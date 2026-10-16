@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — paper→live fail-closed edge reasons (+ its test) (`.1168`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1168`.
+
 ## 2026-10-16 — CSV field-level round-trip equivalence (+ its test) (`.1167`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1167`.
@@ -79,7 +83,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — earn-back ledger progress apply (+ its test) (`.1154`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1154`.
-
-## 2026-10-16 — per-session load jump cap (+ its test) (`.1153`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1153`.
