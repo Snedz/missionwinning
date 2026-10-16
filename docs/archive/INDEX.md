@@ -10,6 +10,7 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1147-for-1162.md`](docs/archive/log/LOG-rotate-1147-for-1162.md) — rotated by `.1162`, to keep the <=15 entry budget. `.1148` is the live floor.
 - [`LOG-rotate-1146-for-1161.md`](docs/archive/log/LOG-rotate-1146-for-1161.md) — rotated by `.1161`, to keep the <=15 entry budget. `.1147` is the live floor.
 - [`LOG-rotate-1145-for-1160.md`](docs/archive/log/LOG-rotate-1145-for-1160.md) — rotated by `.1160`, to keep the <=15 entry budget. `.1146` is the live floor.
 - [`LOG-rotate-1144-for-1159.md`](docs/archive/log/LOG-rotate-1144-for-1159.md) — rotated by `.1159`, to keep the <=15 entry budget. `.1145` is the live floor.
