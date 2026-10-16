@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-15 — strong csv round trip claim honesty scrub sheet (`.1147`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1147`.
+
 ## 2026-10-15 — workout workflow registry module (+ its test) (`.1146`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1146`.
@@ -222,13 +226,3 @@ agent.
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1111-for-1130.md](docs/archive/log/LOG-rotate-1111-for-1130.md) (`.1111`), for the ≤15 entry budget.
 
 Rotated CONTEXT `.1107`·`.1109`·`.1110`·`.1111` → [CONTEXT-now-rotation-2026-10-13.md](docs/archive/CONTEXT-now-rotation-2026-10-13.md).
-
-## 2026-10-12 — Plate Use sits with the load (`.1129`)
-
-`.1127` put **Plates** next to the set weight and computed the nearest loadable bar. **Use** was under the whole rack editor, so a mid-set lifter could read the stack and never see the control that writes the weight onto the set. It now sits with the total, above “Plates you have”, and still closes the sheet when tapped.
-
-Label `2026.07-unified.1129`.
-
-`[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1110-for-1129.md](docs/archive/log/LOG-rotate-1110-for-1129.md) (`.1110`).
