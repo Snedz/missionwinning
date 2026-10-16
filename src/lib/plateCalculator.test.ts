@@ -282,6 +282,95 @@ describe('setRowPlateBreakdown', () => {
       false
     );
   });
+
+  // New tests for the owned plates feature
+  it('shows nearest label when weight cannot be built from owned plates', () => {
+    // User only has 45s, cannot build 135 exactly with a 35lb bar
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 135,
+      units: 'imperial',
+      barWeight: 35,
+      inventory: [{ weight: 45, pairs: 1 }],
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.platesLine, '2×45');
+    assert.equal(offer.exact, false);
+    assert.match(offer.nearestLabel ?? '', /Nearest:.*lb/);
+  });
+
+  it('shows exact without nearest label when weight is achievable', () => {
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 135,
+      units: 'imperial',
+      inventory: defaultPlateInventory('imperial'),
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.platesLine, '2×45');
+    assert.equal(offer.exact, true);
+    assert.equal(offer.nearestLabel, null);
+  });
+
+  it('shows add plates prompt when inventory is empty', () => {
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 135,
+      units: 'imperial',
+      inventory: [],
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.platesLine, null);
+    assert.equal(offer.exact, false);
+    assert.equal(offer.nearestLabel, 'Add plates to calculate');
+  });
+
+  it('shows add plates prompt when inventory has zero pairs', () => {
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 135,
+      units: 'imperial',
+      inventory: [{ weight: 45, pairs: 0 }],
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.platesLine, null);
+    assert.equal(offer.nearestLabel, 'Add plates to calculate');
+  });
+
+  it('respects kg/lb units in nearest label', () => {
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 100,
+      units: 'metric',
+      inventory: [{ weight: 25, pairs: 1 }], // Only 25s, can't make 100 exactly
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.exact, false);
+    assert.match(offer.nearestLabel ?? '', /Nearest:.*kg/);
+  });
+
+  it('uses default inventory when none provided', () => {
+    // Default inventory can make 135 exactly
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 135,
+      units: 'imperial',
+    });
+    assert.equal(offer.exact, true);
+    assert.equal(offer.nearestLabel, null);
+  });
+
+  it('handles target beyond what inventory can build', () => {
+    const offer = setRowPlateBreakdown({
+      equipment: 'Barbell',
+      weight: 500,
+      units: 'imperial',
+      inventory: [{ weight: 45, pairs: 2 }],
+    });
+    assert.equal(offer.show, true);
+    assert.equal(offer.exact, false);
+    assert.ok(offer.nearestLabel?.includes('Nearest:'));
+  });
 });
 
 describe('set-row plate chrome', () => {

@@ -15,6 +15,10 @@ export type SetRowPlateOffer = {
   show: boolean;
   barWeight: number;
   platesLine: string | null;
+  /** True when the achieved weight exactly matches the target. */
+  exact: boolean;
+  /** Label to show when exact !== achieved. */
+  nearestLabel?: string | null;
 };
 
 export type StoredBarWeight = {
@@ -323,11 +327,29 @@ export function isBarLoadedEquipment(equipment?: string): boolean {
   return BAR_LOADED_EQUIPMENT.has(equipment.trim().toLowerCase());
 }
 
-const HIDDEN: Omit<SetRowPlateOffer, 'barWeight'> = { show: false, platesLine: null };
+const HIDDEN: Omit<SetRowPlateOffer, 'barWeight'> = {
+  show: false,
+  platesLine: null,
+  exact: false,
+  nearestLabel: null,
+};
+
+/**
+ * Check if the inventory is effectively empty (no usable plates).
+ */
+function isInventoryEmpty(inventory: readonly PlateStock[]): boolean {
+  for (const stock of inventory) {
+    if (stock.pairs > 0 && stock.weight > 0) return false;
+  }
+  return true;
+}
 
 /**
  * Live set-row plate offer. Empty / 0 / skipped / not bar-loaded invent
  * no plates. Both-sides counts (`2×45`), not a per-side list.
+ * 
+ * Uses nearestBarLoad when inventory is provided to respect owned plates.
+ * Shows "nearest" label when the exact weight cannot be built.
  */
 export function setRowPlateBreakdown(params: {
   equipment?: string;
@@ -335,18 +357,63 @@ export function setRowPlateBreakdown(params: {
   units: UnitsPref;
   barWeight?: number;
   skipped?: boolean;
+  /** User's plate inventory. Uses default inventory if not provided. */
+  inventory?: readonly PlateStock[];
 }): SetRowPlateOffer {
   const bar = resolveBarWeight(params.units, params.barWeight);
   if (params.skipped) return { ...HIDDEN, barWeight: bar };
   if (!isBarLoadedEquipment(params.equipment)) return { ...HIDDEN, barWeight: bar };
   if (!Number.isFinite(params.weight) || params.weight <= 0) return { ...HIDDEN, barWeight: bar };
   if (params.weight <= bar) return { ...HIDDEN, barWeight: bar };
-  const result = calculatePlatesPerSide(params.weight, bar, availablePlates(params.units));
-  if (result.perSide.length === 0) return { ...HIDDEN, barWeight: bar };
+
+  const inventory = params.inventory ?? defaultPlateInventory(params.units);
+
+  // Handle empty inventory case - show prompt, not a number
+  if (isInventoryEmpty(inventory)) {
+    return {
+      show: true,
+      barWeight: bar,
+      platesLine: null,
+      exact: false,
+      nearestLabel: 'Add plates to calculate',
+    };
+  }
+
+  // Use nearestBarLoad to respect inventory limits
+  const result = nearestBarLoad(params.weight, bar, inventory);
+
+  if (result.perSide.length === 0) {
+    // Cannot build anything beyond the bar
+    return {
+      show: true,
+      barWeight: bar,
+      platesLine: null,
+      exact: result.exact,
+      nearestLabel: result.exact ? null : 'Add plates to calculate',
+    };
+  }
+
+  const platesLine = formatBothSidesPlateCounts(result.perSide);
+
+  // If not exact, add a nearest label
+  if (!result.exact) {
+    const unit = params.units === 'imperial' ? 'lb' : 'kg';
+    const label = `Nearest: ${result.achievedWeight}${unit}`;
+    return {
+      show: true,
+      barWeight: bar,
+      platesLine,
+      exact: false,
+      nearestLabel: label,
+    };
+  }
+
   return {
     show: true,
     barWeight: bar,
-    platesLine: formatBothSidesPlateCounts(result.perSide),
+    platesLine,
+    exact: true,
+    nearestLabel: null,
   };
 }
 
@@ -360,6 +427,7 @@ export function setRowPlateLine(params: {
   units: UnitsPref;
   barWeight?: number;
   skipped?: boolean;
+  inventory?: readonly PlateStock[];
 }): string | null {
   const offer = setRowPlateBreakdown(params);
   return offer.show ? offer.platesLine : null;
