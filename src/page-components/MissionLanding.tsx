@@ -10,31 +10,11 @@
  * i18n: every string goes through t() with an English defaultValue, so all 14 locales render
  * (falling back to English until translated).
  */
-import { useEffect, useId, useState } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
-import { LogToPlanHeroFallback } from '@/components/landing/LogToPlanHero';
-import { SkeletonBlock } from '@/components/ui/Skeleton';
-import { MarketingNav } from '@/components/marketing/MarketingNav';
-import { MarketingFooter } from '@/components/marketing/MarketingFooter';
-import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
-import { CONTENT_FLOORS } from '@/lib/contentFloors';
-import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
 import s from './MissionLanding.module.css';
 
 export const YEARLY_CHECKOUT_URL = 'https://buy.stripe.com/aFabJ00AC0Rj6fh2eW9k400';
-
-const LogToPlanHero = dynamic(
-  () => import('@/components/landing/LogToPlanHero').then((m) => m.LogToPlanHero),
-  { ssr: false, loading: () => <LogToPlanHeroFallback /> }
-);
-const CoachAdaptDemo = dynamic(
-  () => import('@/components/landing/CoachAdaptDemo').then((m) => m.CoachAdaptDemo),
-  { ssr: false, loading: () => <SkeletonBlock className="min-h-[8rem]" label="Loading coach demo" /> }
-);
-/** Same free-beta filter as FAQ JSON-LD (from the old LandingPage). */
-const FAQ = landingFaqKeysForSurface();
 
 const c = (names: string) =>
   names
@@ -88,18 +68,6 @@ function Sprite() {
 export function MissionLanding() {
   const { t } = useTranslation();
   const tx = (k: string, d: string) => t(k, { defaultValue: d });
-  const [belowFoldReady, setBelowFoldReady] = useState(false);
-  const [openFaq, setOpenFaq] = useState<string | null>(null);
-  const faqId = useId();
-  useEffect(() => {
-    const ready = () => setBelowFoldReady(true);
-    if (typeof requestIdleCallback !== 'undefined') {
-      const id = requestIdleCallback(ready, { timeout: 1800 });
-      return () => cancelIdleCallback(id);
-    }
-    const timer = setTimeout(ready, 200);
-    return () => clearTimeout(timer);
-  }, []);
 
   const ticker = [
     tx('mwlTick1', 'Log it live'),
@@ -120,56 +88,85 @@ export function MissionLanding() {
   return (
     <div className={c('root')}>
       <Sprite />
-      <MarketingNav variant="full" />
+      <header className={c('topnav')}>
+        <div className={c('container topnav-inner')}>
+          <a className={c('logo')} href="#top">
+            Mission Winning<small>{tx('mwlLogoSub', 'Workout logger')}</small>
+          </a>
+          <nav aria-label={tx('mwlNavLabel', 'Sections')}>
+            <a href="#how">{tx('mwlNavHow', 'How it works')}</a>
+            <a href="#coach">{tx('mwlNavCoach', 'Mission Coach')}</a>
+            <a href="#earn">{tx('mwlNavEarn', 'Earn It Back')}</a>
+            <a href="#product">{tx('mwlNavProduct', 'The product')}</a>
+            <a href="#join">{tx('mwlNavJoin', 'Yearly')}</a>
+          </nav>
+          <span className={c('nav-tel')}>
+            <Link href="/private">{tx('mwlNavCode', 'Have a code? Enter')}</Link>
+          </span>
+          <Link className={c('btn btn-primary')} href="/log">
+            {tx('mwlNavStart', 'Start free')}
+          </Link>
+        </div>
+      </header>
 
       <main id="content">
         <section className={c('hero')} id="top">
           <div className={c('container hero-split')}>
             <div>
               <p className={c('eyebrow')}>
-                {tx('landingHeroEyebrowLoop', 'Free · offline · no account')}
+                {tx('mwlHeroEyebrow', 'Free workout logger · AI coach · works offline')}
               </p>
               <h1>
-                {tx('landingHeroLine1', 'Log a set.')}
+                {tx('mwlHeroH1a', 'Earned under load.')}
                 <br />
-                <span className={c('hl')}>{tx('landingHeroLine2', 'Your week rewrites itself.')}</span>
+                <span className={c('hl')}>{tx('mwlHeroH1b', 'Written in your log.')}</span>
               </h1>
               <p className={c('lead')} style={{ marginTop: 'var(--g-md)' }}>
                 {tx(
-                  'landingHeroSubtitleLoop',
-                  'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no account — and the logger is free forever. Works offline, anywhere you train.'
+                  'mwlHeroLead',
+                  'Log every set as you train. Mission Coach turns what you actually did into next week’s plan. No wearable, no gym required, and the logger is free.'
                 )}
               </p>
               <div className={c('hero-cta')}>
-                <Link className={c('btn btn-primary')} href="/welcome">
-                  {tx('landingNavStart', 'Start free')}
+                <Link className={c('btn btn-primary')} href="/log">
+                  {tx('mwlHeroCta', 'Start logging free')}
                 </Link>
-                <Link className={c('btn btn-secondary btn-arrow')} href="/log">
-                  {tx('mwlHeroCtaLog', 'Open the logger')}
-                </Link>
+                <a className={c('btn btn-secondary btn-arrow')} href="#how">
+                  {tx('mwlHeroCta2', 'See how it works')}
+                </a>
               </div>
               <p className={c('hero-note')}>
-                {tx('landingHeroProofLoop', 'Under three minutes to your first logged set.')}{' '}
-                <a href="#join" style={{ borderBottom: '1px solid var(--border-2)' }}>{tx('landingYearlyLink', 'Mission Winning Yearly — $99/year, earn back up to $90')}</a>
+                {tx(
+                  'mwlHeroNote',
+                  'Free to start, no card. Yearly is $99 and pays you back up to $90 for showing up.'
+                )}
               </p>
               <div className={c('standards')}>
-                {[
-                  ['landingStatExercisesV', String(CONTENT_FLOORS.exercisePages), 'landingStatExercisesL', 'Exercises, bodyweight and minimal gear first'],
-                  ['landingStatMinutesV', '3min', 'landingStatMinutesL', 'From landing to your first logged set'],
-                  ['landingStatZeroV', '0', 'landingStatZeroL', 'Wearables, accounts, or app stores required'],
-                  ['landingStatFreeV', '$0', 'landingStatFreeL', 'The logger, forever — not a trial'],
-                ].map(([k, v, lk, l]) => (
-                  <div key={k}>
-                    <b className={c('num')}>{tx(k, v)}</b>
-                    <span>{tx(lk, l)}</span>
-                  </div>
-                ))}
+                <div>
+                  <b className={c('num')}>$0</b>
+                  <span>{tx('mwlStd1', 'The workout logger, free')}</span>
+                </div>
+                <div>
+                  <b className={c('num')}>$99</b>
+                  <span>{tx('mwlStd2', 'Mission Winning Yearly, per year')}</span>
+                </div>
+                <div>
+                  <b className={c('num')}>$90</b>
+                  <span>{tx('mwlStd3', 'Most you can earn back by training')}</span>
+                </div>
+                <div>
+                  <b className={c('num')}>14</b>
+                  <span>{tx('mwlStd4', 'Days for a full refund, no questions')}</span>
+                </div>
               </div>
             </div>
             <div>
-              <div className={c('demo')}>
-                <LogToPlanHero staticFallback={<LogToPlanHeroFallback />} />
-              </div>
+              <figure className={c('plate plate--tall')} style={{ margin: 0 }}>
+                <svg className={c('fig')} viewBox="0 0 320 500" width="200" aria-hidden="true">
+                  <use href="#mw-fig-dead" />
+                </svg>
+                <figcaption>{tx('mwlPlate1', 'Set 3 of 3 · logged live · counts toward Earn It Back')}</figcaption>
+              </figure>
               <div className={c('rail')} aria-label={tx('mwlRailLabel', 'What is inside')}>
                 <a href="#how"><span className={c('rname')}>{tx('mwlRail1', 'Logger')}</span><span className={c('rrole')}>{tx('mwlRail1b', 'Sets, reps, rest')}</span></a>
                 <a href="#coach"><span className={c('rname')}>{tx('mwlRail2', 'Coach')}</span><span className={c('rrole')}>{tx('mwlRail2b', 'Plan from logs')}</span></a>
@@ -246,7 +243,7 @@ export function MissionLanding() {
                   <Link className={c('btn btn-ghost btn-arrow')} href="/log">{tx('mwlT1cta', 'Open the logger')}</Link>
                 </div>
               </article>
-              <article className={c('track')}>
+              <article className={c('track')} id="coach">
                 <div className={c('track-head')}>
                   <p className={c('meta-xs')}>02</p>
                   <p className={c('tgoal')}>{tx('mwlT2', 'Adapt')}</p>
@@ -294,52 +291,11 @@ export function MissionLanding() {
           </div>
         </section>
 
-
-        <section className={c('section')} id="coach">
-          <div className={c('container hero-split')}>
-            <div>
-              <p className={c('idx')}>{tx('mwlAdaptIdx', '04 / Mission Coach')}</p>
-              <p className={c('eyebrow')} style={{ marginTop: 'var(--g-sm)' }}>{tx('landingAdaptEyebrow', 'When you miss')}</p>
-              <h2>{tx('landingAdaptTitle', 'A missed day is not a failed plan')}</h2>
-              <p className={c('lead')} style={{ marginTop: 'var(--g-md)' }}>
-                {tx('landingAdaptBody', 'Sleep badly, travel, lose a week — Mission Coach reshapes what is left instead of leaving you behind a schedule you already broke.')}
-              </p>
-            </div>
-            <div className={c('demo')}>
-              {belowFoldReady ? <CoachAdaptDemo /> : <SkeletonBlock className="min-h-[16rem]" label="Loading coach demo" />}
-            </div>
-          </div>
-        </section>
-
-        <section className={c('section')} id="anywhere">
-          <div className={c('container')}>
-            <div className={c('row-between')} style={{ marginBottom: 'var(--g-lg)', alignItems: 'flex-end' }}>
-              <div>
-                <p className={c('idx')}>{tx('mwlAnyIdx', '05 / Where you train')}</p>
-                <h2 style={{ marginTop: 'var(--g-xs)' }}>{tx('landingAnywhereTitle', 'Built for one bar of signal and no rack')}</h2>
-              </div>
-            </div>
-            <div className={c('grid-3')}>
-              {[
-                ['landingAnywhereOffline', tx('landingAnywhereOfflineH', 'Offline first'), tx('landingAnywhereOfflineB', 'Sets save on the device the moment you log them. Signal is optional; the log is not.'), 'Phone on a bench, mid-set', '/photo/phone-bench'],
-                ['landingAnywhereGear', tx('landingAnywhereGearH', 'Your gear, not a gym'), tx('landingAnywhereGearB', 'Tell it what you have — a bar, two bands, nothing — and the week is built from that.'), 'Home rack, bar loaded', '/photo/home-rack'],
-                ['landingAnywhereNoSensor', tx('landingAnywhereNoSensorH', 'No wearable'), tx('landingAnywhereNoSensorB', 'The plan comes from logged sets, so nothing needs charging for it to work.'), 'Bare wrist on a barbell', '/photo/bare-wrist'],
-              ].map(([k, h, b, shot, photo]) => (
-                <article key={k} className={c('story')}>
-                  <GrayscalePhoto base={photo} alt={shot} caption={shot} />
-                  <h3>{h}</h3>
-                  <p className={c('meta')}>{b}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className={c('section')} id="earn">
           <div className={c('container')}>
             <div className={c('row-between')} style={{ alignItems: 'flex-end' }}>
               <div>
-                <p className={c('idx')}>{tx('mwlEarnIdx', '06 / Earn It Back')}</p>
+                <p className={c('idx')}>{tx('mwlEarnIdx', '04 / Earn It Back')}</p>
                 <h2 style={{ marginTop: 'var(--g-xs)' }}>{tx('mwlEarnH2', 'Show up. Get paid back.')}</h2>
               </div>
               <p className={c('meta')} style={{ maxWidth: '40ch' }}>
@@ -405,7 +361,7 @@ export function MissionLanding() {
           <div className={c('container')}>
             <div className={c('row-between')} style={{ marginBottom: 'var(--g-lg)', alignItems: 'flex-end' }}>
               <div>
-                <p className={c('idx')}>{tx('mwlSpecIdx', '07 / The product')}</p>
+                <p className={c('idx')}>{tx('mwlSpecIdx', '05 / The product')}</p>
                 <h2 style={{ marginTop: 'var(--g-xs)' }}>{tx('mwlSpecH2', 'Your gear. Your schedule. No wearable.')}</h2>
               </div>
               <p className={c('meta')} style={{ maxWidth: '40ch' }}>
@@ -426,52 +382,11 @@ export function MissionLanding() {
           </div>
         </section>
 
-
-        <section className={c('section')} id="free">
-          <div className={c('container hero-split')} style={{ alignItems: 'start' }}>
-            <div>
-              <p className={c('idx')}>{tx('mwlFreeIdx', '08 / The free core')}</p>
-              <h2 style={{ marginTop: 'var(--g-xs)' }}>{tx('landingFreeTitleLoop', 'Free is the mission, not the trial')}</h2>
-              <p className={c('lead')} style={{ marginTop: 'var(--g-md)' }}>
-                {tx('landingFreeBody', 'The fundamentals that make people healthier should have no price of admission — anywhere in the world. That is the founding promise, written into our vision, and it does not expire.')}
-              </p>
-              <dl className={c('bars')} style={{ marginTop: 'var(--g-md)' }}>
-                <div><dt>{tx('landingFreeTermLogger', 'The logger')}</dt><dd>{tx('landingFreeLogger', 'Sets, reps, RPE, rest timers, supersets, PRs.')}</dd></div>
-                <div><dt>{tx('landingFreeTermCoach', 'Mission Coach')}</dt><dd>{tx('landingFreeCoachLine', 'A week built from your logs, regenerated every week.')}</dd></div>
-                <div><dt>{tx('landingFreeTermLibrary', `${CONTENT_FLOORS.exercisePages} exercises`)}</dt><dd>{tx('landingFreeLibrary', 'Bodyweight and minimal gear first, with form cues.')}</dd></div>
-                <div><dt>{tx('landingFreeTermAccount', 'No account')}</dt><dd>{tx('landingFreeOffline', 'Works offline. Nothing to install, nothing to sign up for.')}</dd></div>
-              </dl>
-              <p className={c('meta')} style={{ marginTop: 'var(--g-sm)' }}>
-                <Link href="/about" style={{ borderBottom: '1px solid var(--border-2)' }}>{tx('landingAboutLink', 'About Mission Winning')}</Link>
-              </p>
-            </div>
-            <div aria-labelledby={faqId}>
-              <p id={faqId} className={c('eyebrow')}>{tx('landingFaqEyebrow', 'Straight answers')}</p>
-              <div className={c('faq')}>
-                {FAQ.map((f) => (
-                  <details key={f.qKey} open={openFaq === f.qKey}>
-                    <summary
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setOpenFaq((prev) => (prev === f.qKey ? null : f.qKey));
-                      }}
-                    >
-                      <span>{t(f.qKey, { defaultValue: f.qDefault })}</span>
-                      <span aria-hidden>+</span>
-                    </summary>
-                    <p>{t(f.aKey, { defaultValue: f.aDefault })}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className={c('section')} id="join">
           <div className={c('container')}>
             <div className={c('hero-split')} style={{ alignItems: 'start' }}>
               <div>
-                <p className={c('idx')}>{tx('mwlJoinIdx', '09 / Mission Winning Yearly')}</p>
+                <p className={c('idx')}>{tx('mwlJoinIdx', '06 / Mission Winning Yearly')}</p>
                 <h2 style={{ marginTop: 'var(--g-xs)' }}>{tx('mwlJoinH2', '$99 a year. Earn back up to $90.')}</h2>
                 <p className={c('lead')} style={{ marginTop: 'var(--g-md)' }}>
                   {tx('mwlJoinLead', 'Start with the free logger. When you are ready to commit, go Yearly and let your training pay part of it back.')}
@@ -511,17 +426,55 @@ export function MissionLanding() {
         </section>
       </main>
 
-      <section className={c('poster')}>
+      <footer className={c('pagefoot')}>
         <div className={c('container')}>
-          <h2>{tx('landingFinalCtaTitleLoop', 'One set is the whole beginning')}</h2>
-          <div className={c('hero-cta')}>
-            <Link className={c('btn btn-ink')} href="/welcome">{tx('landingFinalCtaButton', 'Start free — no account')}</Link>
-            <Link className={c('btn btn-secondary')} href="/private">{tx('mwlCodeLink', 'Enter an access code')}</Link>
+          <div className={c('foot-grid')}>
+            <div>
+              <p className={c('logo')} style={{ fontSize: 22 }}>Mission Winning</p>
+              <p style={{ marginTop: 'var(--g-sm)', maxWidth: '30ch' }}>
+                {tx('mwlFootAbout', 'A free workout logger with an AI coach, and a Yearly plan that pays you back for training.')}
+              </p>
+            </div>
+            <div>
+              <h4>{tx('mwlF1', 'Train')}</h4>
+              <ul>
+                <li><Link href="/log">{tx('mwlF1a', 'Log a workout')}</Link></li>
+                <li><Link href="/history">{tx('mwlF1b', 'History')}</Link></li>
+                <li><Link href="/exercises">{tx('mwlF1c', 'Exercises')}</Link></li>
+                <li><Link href="/guide">{tx('mwlF1d', 'Guide')}</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4>{tx('mwlF2', 'Yearly')}</h4>
+              <ul>
+                <li><a href={YEARLY_CHECKOUT_URL} rel="noopener">{tx('mwlF2a', 'Get Yearly')}</a></li>
+                <li><a href="#earn">{tx('mwlF2b', 'Earn It Back')}</a></li>
+                <li><Link href="/refunds">{tx('mwlF2c', 'Refunds')}</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4>{tx('mwlF3', 'Account')}</h4>
+              <ul>
+                <li><Link href="/private">{tx('mwlF3a', 'Enter an access code')}</Link></li>
+                <li><Link href="/account">{tx('mwlF3b', 'Account')}</Link></li>
+                <li><Link href="/help">{tx('mwlF3c', 'Help')}</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4>{tx('mwlF4', 'Company')}</h4>
+              <ul>
+                <li><Link href="/about">{tx('mwlF4a', 'About')}</Link></li>
+                <li><Link href="/privacy">{tx('mwlF4b', 'Privacy')}</Link></li>
+                <li><Link href="/terms">{tx('mwlF4c', 'Terms')}</Link></li>
+              </ul>
+            </div>
           </div>
-          <p className={c('hero-note')}>{tx('landingFinalCtaFoot', 'Under three minutes to your first session. Nothing to install, nothing to pay.')}</p>
+          <div className={c('foot-legal')}>
+            <span>© 2026 Mission Winning</span>
+            <span>{tx('mwlFootLegal', 'Free logger · Yearly $99 · earn back up to $90')}</span>
+          </div>
         </div>
-      </section>
-      <MarketingFooter />
+      </footer>
     </div>
   );
 }
