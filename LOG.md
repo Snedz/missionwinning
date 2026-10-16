@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — Diary dialect on importSessionCsv (module + test) (`.1177`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1177`.
+
 ## 2026-10-16 — Android Play permission audit, part B: run audit on the real MW AndroidManifest (`.1176`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1176`.
@@ -74,7 +78,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — honest set-row formatter (+ its test) (`.1163`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1163`.
-
-## 2026-10-16 — no-fake-progress phrase classifier (+ its test) (`.1162`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1162`.

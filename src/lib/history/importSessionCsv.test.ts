@@ -1,6 +1,7 @@
 /**
  * Workout CSV into local History. Empty invents nothing.
  * Session export is the dialect. Set-table export rides the same parser.
+ * Diary export also re-imports via this module.
  * Confirm merges. A second drop of the same file adds nothing.
  */
 import { describe, it } from 'node:test';
@@ -41,7 +42,7 @@ describe('exerciseIdForName loose library match', () => {
 });
 
 describe('decideImportSessionCsv', () => {
-  it('blank, diary, native, and program-log invent nothing', () => {
+  it('blank, header-only diary, native, and program-log invent nothing', () => {
     assert.deepEqual(decideImportSessionCsv(null, 'metric'), {
       kind: 'empty',
       reason: 'blank',
@@ -50,12 +51,13 @@ describe('decideImportSessionCsv', () => {
       kind: 'empty',
       reason: 'blank',
     });
-    assert.equal(
+    // Header-only diary (no rows) should be no_rows
+    assert.deepEqual(
       decideImportSessionCsv(
         'date,sessionTitle,workoutName,lift,setType,kg,reps,rpe,tags,notes,duration\n',
         'metric'
-      ).kind,
-      'empty'
+      ),
+      { kind: 'empty', reason: 'no_rows' }
     );
     const nativeDump = decideImportSessionCsv(
       'workout_id,workout_name,completed_at,exercise_name,reps,weight\n',
@@ -69,6 +71,38 @@ describe('decideImportSessionCsv', () => {
     );
     assert.equal(programLog.kind, 'empty');
     if (programLog.kind === 'empty') assert.equal(programLog.reason, 'other_dialect');
+  });
+
+  it('diary export with real rows returns ready with mapped fields', () => {
+    // Single set row from diary export
+    const diaryCsv = `date,sessionTitle,workoutName,lift,setType,kg,reps,rpe,tags,notes,duration
+2026-07-14,Push Day,Push Day,Bench Press,normal,100,5,med,,pause,`;
+    const parsed = decideImportSessionCsv(diaryCsv, 'metric');
+    assert.equal(parsed.kind, 'ready');
+    if (parsed.kind !== 'ready') return;
+    assert.equal(parsed.format, 'diary');
+    assert.equal(parsed.workouts.length, 1);
+    const push = parsed.workouts[0];
+    assert.equal(push.workoutName, 'Push Day');
+    assert.equal(push.sessionTitle, 'Push Day');
+    assert.equal(localDateKeyFromIso(push.completedAt), '2026-07-14');
+    const bench = push.exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench, 'should find bench-press exercise');
+    assert.equal(bench.sets.length, 1);
+    assert.equal(bench.sets[0]?.weight, 100);
+    assert.equal(bench.sets[0]?.reps, 5);
+    assert.equal(bench.sets[0]?.rpe, 'med');
+    assert.equal(bench.note, 'pause');
+  });
+
+  it('diary export with kg in imperial units respects row weight', () => {
+    const diaryCsv = `date,sessionTitle,workoutName,lift,setType,kg,reps,rpe,tags,notes,duration
+2026-07-14,Push Day,Push Day,Bench Press,normal,220.5,5,med,,pause,`;
+    const parsed = decideImportSessionCsv(diaryCsv, 'imperial');
+    assert.equal(parsed.kind, 'ready');
+    if (parsed.kind !== 'ready') return;
+    const bench = parsed.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.equal(bench?.sets[0]?.weight, 220.5);
   });
 
   it('header-only session export invents nothing', () => {
