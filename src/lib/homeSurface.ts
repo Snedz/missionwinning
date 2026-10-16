@@ -23,9 +23,7 @@ export function homeSurfaceAfterGate(opts: {
   cookie: boolean;
   ungatedDoor: boolean;
 }): HomeSurface {
-  // Landing restore: `/` is the public homepage for everyone; `/private` is
-  // the $99 offer + code entry, linked from the landing CTA.
-  void opts.privateMode;
+  if (opts.privateMode && !opts.cookie) return 'private';
   if (opts.cookie) return 'homepage';
   if (opts.ungatedDoor) return 'teaser';
   return 'homepage';

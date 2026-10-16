@@ -7,9 +7,6 @@ export const DEAD_ALIAS_PATHS: Readonly<Record<string, string>> = {
   '/dashboard': '/log',
   '/app': '/log',
   '/login': '/welcome',
-  '/signup': '/welcome',
-  '/sign-up': '/welcome',
-  '/register': '/welcome',
   '/pricing': '/welcome',
   '/settings': '/account',
 };
