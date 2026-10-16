@@ -1,22 +1,22 @@
 .root{
   
-  color-scheme:dark;
+  color-scheme:light;
 
   --ts: 1;   
   --dn: 1;      
   --mo: 1;       
 
   
-  --bg:#000000;
-  --surface:#0d0d0f;
-  --surface-2:#16171a;
-  --fg:#f4f4f5;
-  --muted:#8a8a92;
-  --muted-2:#b8bcc2;
-  --border:rgba(255,255,255,.10);
-  --border-2:rgba(255,255,255,.20);
-  --accent: #ff5a00;   
-  --accent-ink:#000000;                             
+  --bg:#f6f5f2;
+  --surface:#ffffff;
+  --surface-2:#eceae5;
+  --fg:#151515;
+  --muted:#62615d;
+  --muted-2:#3d3c39;
+  --border:rgba(0,0,0,.10);
+  --border-2:rgba(0,0,0,.22);
+  --accent:#c2410c;   
+  --accent-ink:#ffffff;                             
 
   
   --silver:linear-gradient(96deg,#6e737b 0%,#d6d9dd 18%,#8b9098 38%,#f2f3f5 52%,#878c94 68%,#c9ccd1 86%,#6a6f77 100%);
@@ -44,7 +44,7 @@
   --radius:2px;          
   --radius-lg:3px;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --studs:radial-gradient(circle at 2px 2px, rgba(255,255,255,.055) 1px, transparent 1.5px);
+  --studs:radial-gradient(circle at 2px 2px, rgba(0,0,0,.07) 1px, transparent 1.5px);
 }
 
 
@@ -62,7 +62,7 @@
 .root::after{
   content:"";position:fixed;inset:0;z-index:60;pointer-events:none;
   background-image:var(--grain);background-size:180px 180px;
-  opacity:.05;
+  opacity:.03;
 }
 .root img,.root svg{display:block;max-width:100%}
 .root a{color:inherit;text-decoration:none}
@@ -70,7 +70,7 @@
 .root p{margin:0;text-wrap:pretty}
 .root h1,.root h2,.root h3,.root h4{margin:0;text-wrap:balance}
 .root :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.root ::selection{background:var(--accent);color:#000}
+.root ::selection{background:var(--accent);color:#fff}
 
 
 .container{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
@@ -114,7 +114,7 @@
 
 
 .topnav{
-  position:sticky;top:0;z-index:40;background:rgba(0,0,0,.86);
+  position:sticky;top:0;z-index:40;background:rgba(246,245,242,.88);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--border);
 }
 .topnav-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--g-md);padding-block:11px}
@@ -226,7 +226,7 @@
 }
 .hero::before{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(88% 62% at 78% 4%,rgba(255,255,255,.075),transparent 62%);
+  background:radial-gradient(88% 62% at 78% 4%,rgba(194,65,12,.06),transparent 62%);
 }
 .hero > *{position:relative;z-index:1}
 .hero-cta{display:flex;flex-wrap:wrap;gap:var(--g-sm);margin-top:var(--g-md)}
@@ -297,7 +297,7 @@
   font-family:var(--font-mono);font-size:var(--fs-xs);letter-spacing:.11em;text-transform:uppercase;
   color:var(--muted);font-weight:400;background:var(--surface-2);
 }
-.ds-table tbody tr:hover{background:rgba(255,255,255,.03)}
+.ds-table tbody tr:hover{background:rgba(0,0,0,.03)}
 .ds-table .num-col{font-family:var(--font-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 .ds-table .pcell{font-weight:700;color:var(--fg)}
 .ds-table tbody tr:last-child td{border-bottom:0}
@@ -365,3 +365,17 @@
   .btn{padding-inline:14px;letter-spacing:.08em}
   .topnav-inner{padding-block:9px}
 }
+
+.demo{background:var(--surface);border:1px solid var(--border-2);padding:var(--g-sm);margin:0}
+.faq{border-top:1px solid var(--border-2)}
+.faq details{border-bottom:1px solid var(--border)}
+.faq summary{display:flex;justify-content:space-between;gap:var(--g-md);min-height:48px;align-items:center;cursor:pointer;list-style:none;font-weight:700;font-size:var(--fs-sm)}
+.faq summary::-webkit-details-marker{display:none}
+.faq details[open] summary span:last-child{transform:rotate(45deg)}
+.faq details p{padding-bottom:var(--g-sm);font-size:var(--fs-sm);color:var(--muted)}
+.poster{background:var(--accent);color:#fff;padding-block:calc(var(--sec-pad) * 1.3)}
+.poster h2{font-size:var(--fs-mega);max-width:16ch}
+.poster .hero-note{color:rgba(255,255,255,.85)}
+.poster .btn-secondary{color:#fff;border-color:rgba(255,255,255,.6)}
+.btn-ink{background:#151515;color:#fff;border-color:#151515}
+.btn-ink:hover{background:#000}
