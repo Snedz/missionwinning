@@ -436,18 +436,18 @@ const en: InfoStrings = {
     'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
   infoRefundsTitle: 'Refunds & cancellation',
   infoRefundsIntro:
-    'The free logger never needs a refund. Paid checkout is not live. When paid checkout is live, the planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Educational fitness software only — not a medical device.',
+    'The free logger never needs a refund. Mission Winning Yearly is $99 per year, paid by card through Stripe. Complete the program\u2019s workouts and we refund your $99. Educational fitness software only — not a medical device.',
   infoRefundsIntroOpenBeta:
-    'The free logger never needs a refund. Paid checkout is not live, so there is no charge to reverse. When paid checkout is live, the planned web checkout is PayPal: Pro at $19.99 per month or $119.99 per year, and Founder Lifetime at $299. Educational fitness software only — not a medical device.',
-  infoRefundsSubs: 'Pro',
+    'The free logger never needs a refund. Mission Winning Yearly is $99 per year, paid by card through Stripe. Complete the program\u2019s workouts and we refund your $99. Educational fitness software only — not a medical device.',
+  infoRefundsSubs: 'Mission Winning Yearly',
   infoRefundsSubsBody:
-    'Pro is planned at $19.99 per month or $119.99 per year, paid through PayPal when paid checkout is live. There is no charge to reverse while payments are off. When a subscription exists, email support@missionwinning.com within 14 days of the first paid charge to request a full refund. After that window, mid-cycle prorated refunds are not offered. To stop future charges, email the same address. Access continues through the period already paid. Account has no billing screen while payments are off.',
+    'Mission Winning Yearly is $99 per year through Stripe. If you complete the program\u2019s workouts, email support@missionwinning.com and we refund the $99. Separately, you can request a full refund within 14 days of the first charge. To stop future renewals, email the same address; access continues through the year already paid.',
   infoRefundsLifetime: 'Founder Lifetime',
   infoRefundsLifetimeBody:
-    'Founder Lifetime is planned at $299, paid through PayPal when checkout is live. There is no charge to reverse while payments are off. When a purchase exists, email support@missionwinning.com within 14 days if premium features have not been meaningfully used. After 14 days, Founder Lifetime purchases are non-refundable.',
+    'Founder Lifetime is not on sale. There is no lifetime charge to reverse.',
   infoRefundsHow: 'How to request',
   infoRefundsHowBody:
-    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, the plan (Pro monthly, Pro yearly, or Founder Lifetime), and the approximate purchase date. Payments are not live yet, so a request before a PayPal charge has nothing to reverse. We aim to respond within a few business days.',
+    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, and the approximate purchase date. For the workout refund, say that you completed the program\u2019s workouts. We aim to respond within a few business days.',
   infoRefundsAbuse: 'Abuse & chargebacks',
   infoRefundsAbuseBody:
     'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.',

@@ -300,6 +300,25 @@ export function PrivateTeaserClient({
                   />
                   <p className="gate-foot">{g('gateWaitlistFoot')}</p>
                   {territoryNote}
+                  {/* Live Stripe Payment Link — Mission Winning Yearly. */}
+                  <div className="gate-offer" data-mw-offer="yearly">
+                    <p className="gate-kicker">Mission Winning Yearly · $99/year</p>
+                    <p className="gate-invite-copy">
+                      Complete the program&apos;s workouts and we refund your $99.
+                    </p>
+                    <div className="gate-actions">
+                      <a
+                        href="https://buy.stripe.com/aFabJ00AC0Rj6fh2eW9k400"
+                        className="gate-btn gate-btn-secondary"
+                        rel="noopener"
+                      >
+                        Start yearly — $99
+                      </a>
+                    </div>
+                    <p className="gate-foot">
+                      Secure checkout by Stripe. <Link href="/refunds">Refund terms</Link>
+                    </p>
+                  </div>
                 </>
               )}
 

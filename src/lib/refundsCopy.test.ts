@@ -12,18 +12,16 @@ describe('refunds copy', () => {
     en.infoRefundsHowBody,
   ].join('\n');
 
-  it('states payments are not live and names the planned PayPal prices', () => {
-    assert.match(copy, /PayPal/);
-    assert.match(copy, /\$19\.99/);
-    assert.match(copy, /\$119\.99/);
-    assert.match(copy, /\$299/);
-    assert.match(copy, /not live/);
+  it('names the live $99 yearly plan and the workout refund', () => {
+    assert.match(copy, /Mission Winning Yearly is \$99 per year/);
+    assert.match(copy, /Stripe/);
+    assert.match(copy, /Complete the program\u2019s workouts and we refund your \$99/);
     assert.match(copy, /The free logger never needs a refund/);
-    assert.match(copy, /when paid checkout is live/);
   });
 
-  it('does not name Stripe, Phantom, USDC, or Super Bundle', () => {
-    assert.doesNotMatch(copy, /Stripe|Phantom|USDC|Super Bundle/i);
+  it('does not name Phantom, USDC, or Super Bundle', () => {
+    assert.doesNotMatch(copy, /Phantom|USDC|Super Bundle/i);
     assert.doesNotMatch(copy, /Manage billing/);
+    assert.doesNotMatch(copy, /\$19\.99|\$119\.99/);
   });
 });
