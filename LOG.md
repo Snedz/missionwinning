@@ -1,6 +1,10 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-16 — earn-back dispute request record (+ its test) (`.1181`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1181`.
+
 ## 2026-10-16 — earn-back in-memory ledger store (+ its test) (`.1180`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1180`.
@@ -79,7 +83,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — honest set-row test (missing from 4c963d0) (`.1166`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1166`.
-
-## 2026-10-16 — blocked-action honesty copy (+ its test) (`.1165`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1165`.
