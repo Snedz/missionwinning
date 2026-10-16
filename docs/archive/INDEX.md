@@ -11,6 +11,7 @@ When adding a doc:
 ## Archived (Wave 9)
 
 - [`CONTEXT-now-1114-trainer.md`](docs/archive/CONTEXT-now-1114-trainer.md) — `.1142` rotated the `.1114` trainer Now bullet.
+- [`LOG-rotate-1134-for-1149.md`](docs/archive/log/LOG-rotate-1134-for-1149.md) — rotated by `.1149`, to keep the <=15 entry budget. `.1135` is the live floor.
 - [`LOG-rotate-1130-for-1148.md`](docs/archive/log/LOG-rotate-1130-for-1148.md) — rotated by `.1148`, to keep the <=15 entry budget. `.1134` is the live floor.
 - [`LOG-rotate-1129-for-1147.md`](docs/archive/log/LOG-rotate-1129-for-1147.md) — rotated by `.1147`, to keep the <=15 entry budget. `.1130` is the live floor.
 - [`LOG-rotate-1128-for-1146.md`](docs/archive/log/LOG-rotate-1128-for-1146.md) — rotated by `.1146`, to keep the <=15 entry budget. `.1129` is the live floor.
