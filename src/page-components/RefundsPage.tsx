@@ -29,7 +29,7 @@ export function RefundsPage() {
       icon={Receipt}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoRefundsTitle', { defaultValue: infoEnFloor('infoRefundsTitle') })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
+      lastUpdated={t('refundsLastUpdated', { defaultValue: 'Last updated: 15 October 2026' })}
       variant="sections"
       showLegalFooter
     >
