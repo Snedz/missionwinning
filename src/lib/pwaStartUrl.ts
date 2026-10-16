@@ -19,7 +19,5 @@ export const PWA_START_PUBLIC = '/log' as const;
 export type PwaStartUrl = typeof PWA_START_GATED | typeof PWA_START_PUBLIC;
 
 export function pwaStartUrl(env: PrivateModeEnv = process.env): PwaStartUrl {
-  // Installed app opens on Today; the gate still redirects un-cookied users.
-  void isPrivateModeEnabledFromEnv(env);
-  return PWA_START_PUBLIC;
+  return isPrivateModeEnabledFromEnv(env) ? PWA_START_GATED : PWA_START_PUBLIC;
 }

@@ -19,13 +19,45 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
-## 2026-10-16 — Forge landing (`.1154`)
+## 2026-10-16 — Forge landing (`.1158`)
 
 The cookie homepage is the old marketing page again, laid out to the forge sheet: the sheet’s palette and type scale, grain and scan lines, a full-bleed Ken Burns reel with a progress bar, a marquee on the hero, notch program cards, 580px flip cards, a drag carousel with rubber-band easing, a 60px booking frame around the logger, a sticky bar, and an outlined WINNING wordmark. The stat band is static product facts (exercise floor, 3 minutes, zero wearables, $0), not a counting animation. The cards are Mission Coach’s real behaviour and the Earn It Back terms ($99/yr, $50 after 24 counted workouts in 90 days, $40 more after 96 in a year, max $90, 14-day refund, link to `/refunds`). CTAs are Start logging free (`/log`) and Join $99/yr. No invented coaches, certifications, member stories, addresses, or phone numbers. Scoped to `landingForge.module.css` so house.css stays the door. `/forge-preview` renders the same page for Preview and local, and 404s in production. The private gate, proxy, and `/` control flow are unchanged. PRIVATE_MODE stays.
 
-Label `2026.07-unified.1154`.
+Label `2026.07-unified.1158`.
 
-Rotated LOG → [docs/archive/log/LOG-rotate-1135-for-1150.md](docs/archive/log/LOG-rotate-1135-for-1150.md) (`.1135`). `.1136` is the live floor.
+Rotated LOG → [docs/archive/log/LOG-rotate-1143-for-1158.md](docs/archive/log/LOG-rotate-1143-for-1158.md) (`.1143`). `.1144` is the live floor.
+
+## 2026-10-16 — paper-vs-live row label fail-closed (+ its test) (`.1157`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1157`.
+
+## 2026-10-16 — propose next-session targets from last logged sets (+ its test) (`.1156`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1156`.
+
+## 2026-10-16 — next-session target accept apply (+ its test) (`.1155`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1155`.
+
+## 2026-10-16 — earn-back ledger progress apply (+ its test) (`.1154`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1154`.
+
+## 2026-10-16 — per-session load jump cap (+ its test) (`.1153`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1153`.
+
+## 2026-10-16 — earn-back refund rule engine (+ its test) (`.1152`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1152`.
+
+## 2026-10-16 — earn-back offer copy guard (+ its test) (`.1151`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1151`.
+
+## 2026-10-16 — earn-back verified session rule + 72h dispute window (+ its test) (`.1150`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1150`.
 
 ## 2026-10-15 — wearable feed display state (+ its test) (`.1149`)
 
@@ -50,83 +82,3 @@ Hand-built on the free lane (no CloudAgent) for card `20261015-p1-code-mw-vs-las
 ## 2026-10-15 — Large history first-paint budget (2k sessions / 40k sets) (`.1144`)
 
 Hand-built on the free lane (no CloudAgent): `src/lib/history/largeHistoryBudget.ts` seeds 2,000 sessions × 20 sets, measures Today/History first-paint scans, and memoises personal bests to match `getBestPriorSet`. Locking tests. Label `2026.07-unified.1144`. `[skip vercel]`.
-
-## 2026-10-15 — plate calculator only builds loads from owned plates (`.1143`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1143`.
-
-## 2026-10-15 — Icon rail drops the red mark (`.1142`)
-
-The Train icon carried a red dot while a session was open. That mark is ink now. `--house-live` stays declared and is not painted on the rail. Yellow stays the one filled action.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1142`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1124-for-1142.md](docs/archive/log/LOG-rotate-1124-for-1142.md) (`.1124`), for the ≤15 entry budget. Live floor is `.1125`.
-
-## 2026-10-15 — Train set row, big Log set (`.1141`)
-
-The open set was five columns. The live row now stacks the target above the previous result, then the dial, then one full-width Log set. A cold lift says there is no prior set. It does not invent a number. Waiting rows keep Prev. The landing shot is this Train.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1141`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1122-for-1141.md](docs/archive/log/LOG-rotate-1122-for-1141.md) (`.1122`), for the ≤15 entry budget. Live floor is `.1124`.
-
-## 2026-10-15 — Today is the next workout and one number (`.1140`)
-
-Today stacked a trainer card, a first-rooms checklist, and a seven-day grid under the session. The desk now names the next workout, shows one diary count (logged days this week), and keeps one yellow Start. The count comes from `quietWeekGlance`. A cold week is 0. A finished set moves it. Generate-week stays on the second rail.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1140`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1120-for-1140.md](docs/archive/log/LOG-rotate-1120-for-1140.md) (`.1120`), for the ≤15 entry budget.
-
-## 2026-10-15 — First set is one tap (`.1139`)
-
-`/welcome` was a two-step briefing: a progress bar, a session preview, and profile questions before Today. A cold visitor had to tap Begin, Continue, then Start.
-
-The cold screen is now the headline and one yellow Log a set. That tap opens Train. `/active` writes today's compose session before paint, so the set is on screen. Finish does not call `startWorkout`. `?edit=1` still keeps the profile questions. No account.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1139`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1117-for-1139.md](docs/archive/log/LOG-rotate-1117-for-1139.md) (`.1117`). Live floor is `.1120`. `.1118` and `.1119` never had a LOG heading.
-
-## 2026-10-15 — Meta tests match the Groq seat (`.1138`)
-
-`build-and-test` was red on four meta checks that master already carried. The trainer surface test still required `gemini-2.5-flash` inside `sessionTrainerServer.ts`. That file calls `resolveCoachProviders`: Groq when `GROQ_API_KEY` is set, else `COACH_LLM_*`, else OpenRouter `:free`. Gemini free-tier hosts are never called. The test now locks that seat and still refuses a checkout, a bundle, and Muse. The card assertions are unchanged.
-
-`LOG-rotate-1111-for-1131.md` through `1136` were the same bytes as `LOG-rotate-1111-for-1130.md`, so `.1111` had seven `##` headings and the index named only the 1130 file. The copies now point at that file. The heading stays once. The filenames stay in the index.
-
-Meta tests were the first red step, so `i18n:coverage` and the hero e2e never ran. Once they passed, `dataSafety` and `contact` in `AppLegalFooter` had no English pack entry. Those two strings now sit next to About in the bootstrap pack. The cap stays 0. The homepage e2e still asked for Archivo and an in-page Log set demo. The cookie homepage is Geist, one link to `/welcome`, and the logger shot. SEO templates stay on Archivo.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1138`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1116-for-1138.md](docs/archive/log/LOG-rotate-1116-for-1138.md) (`.1116`). Live floor is `.1117`.
-
-## 2026-10-15 — Log a set. Offline. (`.1137`)
-
-The public door was a marketing stack: a red Get notified, a legal link farm, and — once the gate cookie was set — a stat row, a demo hero, and an FAQ. The logger was the thing the page was about, and it was not on the page.
-
-The gated door and the cookie homepage now share one composition. The headline is Log a set. Offline. The yellow control is Log a set, and it opens `/welcome` (the logger stays public). Under it is a real shot of Train. Notify me stays on the door as a ghost button, because the waitlist still has to be captured while the gate is up. Terms and Privacy stay as a 12px line. The cookie homepage has none of that — headline, one button, the shot.
-
-The house skin is the one the founder approved: ground `#0a0c0f`, signal `#ffb000`, Geist and Geist Mono self-hosted (OFL, `src/fonts`). Muted moved from `#5f6b75` (3.59:1, fails AA) to `#7d8a95`. Radius on the house is 4px. Weights on the house are 400 and 600. `faqPageJsonLd()` is no longer emitted from `/`, because the page no longer has an FAQ. The function and its free-beta filter stay.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-## 2026-10-15 — Weekly plan uses the desktop width (`.1136`)
-
-`/coach` on a desktop was a narrow card beside a second room list. The icon rail is already the sidebar, so the second list repeated Start, This week, History, and Weekly plan, and the transferred canvas hid the page title. The plan column was `max-w-2xl`, and the one sheet card sat in a two-column grid, so the session filled about a third of the window.
-
-Weekly plan no longer mounts that second bar. The canvas title is Mission Coach. Content sits in the centered pad, `min(1120px, 100% - 48px)`, which is the same cap the other desktop rooms use. The boss session is one column and fills that pad. Show all is two columns from 900px. The house week strip names each day — Rest, Lift, Condition, Mobility, Done, Missed — instead of a glyph or a bare dash. Swap is centered on its row. Fuel drops the extra `max-w-3xl` so it fills the same pad.
-
-**Measured:** at 1280 the coach card is 1120px, the same width as the pad, with no second rail. The first lift name and the Swap button share a vertical center. Past empty days read Rest. Mobile 390 keeps the pad at the content width with no horizontal overflow on Today, Train, Coach, Library, or Fuel.
-
-`[skip vercel]`. PRIVATE_MODE stays.

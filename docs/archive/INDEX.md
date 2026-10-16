@@ -10,9 +10,18 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1143-for-1158.md`](docs/archive/log/LOG-rotate-1143-for-1158.md) — rotated by `.1158`, to keep the <=15 entry budget. `.1144` is the live floor.
 - [`CONTEXT-now-1125-1127.md`](docs/archive/CONTEXT-now-1125-1127.md) — `.1150` rotated the `.1125`–`.1127` Now bullets.
 - [`LOG-rotate-1135-for-1150.md`](docs/archive/log/LOG-rotate-1135-for-1150.md) — rotated by `.1150`, to keep the <=15 entry budget. `.1136` is the live floor.
 - [`CONTEXT-now-1114-trainer.md`](docs/archive/CONTEXT-now-1114-trainer.md) — `.1142` rotated the `.1114` trainer Now bullet.
+- [`LOG-rotate-1142-for-1157.md`](docs/archive/log/LOG-rotate-1142-for-1157.md) — rotated by `.1157`, to keep the <=15 entry budget. `.1143` is the live floor.
+- [`LOG-rotate-1141-for-1156.md`](docs/archive/log/LOG-rotate-1141-for-1156.md) — rotated by `.1156`, to keep the <=15 entry budget. `.1142` is the live floor.
+- [`LOG-rotate-1140-for-1155.md`](docs/archive/log/LOG-rotate-1140-for-1155.md) — rotated by `.1155`, to keep the <=15 entry budget. `.1141` is the live floor.
+- [`LOG-rotate-1139-for-1154.md`](docs/archive/log/LOG-rotate-1139-for-1154.md) — rotated by `.1154`, to keep the <=15 entry budget. `.1140` is the live floor.
+- [`LOG-rotate-1138-for-1153.md`](docs/archive/log/LOG-rotate-1138-for-1153.md) — rotated by `.1153`, to keep the <=15 entry budget. `.1139` is the live floor.
+- [`LOG-rotate-1137-for-1152.md`](docs/archive/log/LOG-rotate-1137-for-1152.md) — rotated by `.1152`, to keep the <=15 entry budget. `.1138` is the live floor.
+- [`LOG-rotate-1136-for-1151.md`](docs/archive/log/LOG-rotate-1136-for-1151.md) — rotated by `.1151`, to keep the <=15 entry budget. `.1137` is the live floor.
+- [`LOG-rotate-1135-for-1150.md`](docs/archive/log/LOG-rotate-1135-for-1150.md) — rotated by `.1150`, to keep the <=15 entry budget. `.1136` is the live floor.
 - [`LOG-rotate-1134-for-1149.md`](docs/archive/log/LOG-rotate-1134-for-1149.md) — rotated by `.1149`, to keep the <=15 entry budget. `.1135` is the live floor.
 - [`LOG-rotate-1130-for-1148.md`](docs/archive/log/LOG-rotate-1130-for-1148.md) — rotated by `.1148`, to keep the <=15 entry budget. `.1134` is the live floor.
 - [`LOG-rotate-1129-for-1147.md`](docs/archive/log/LOG-rotate-1129-for-1147.md) — rotated by `.1147`, to keep the <=15 entry budget. `.1130` is the live floor.
