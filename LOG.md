@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — propose next-session targets from last logged sets (+ its test) (`.1156`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1156`.
+
 ## 2026-10-16 — next-session target accept apply (+ its test) (`.1155`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1155`.
@@ -80,13 +84,3 @@ The Train icon carried a red dot while a session was open. That mark is ink now.
 Label `2026.07-unified.1142`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1124-for-1142.md](docs/archive/log/LOG-rotate-1124-for-1142.md) (`.1124`), for the ≤15 entry budget. Live floor is `.1125`.
-
-## 2026-10-15 — Train set row, big Log set (`.1141`)
-
-The open set was five columns. The live row now stacks the target above the previous result, then the dial, then one full-width Log set. A cold lift says there is no prior set. It does not invent a number. Waiting rows keep Prev. The landing shot is this Train.
-
-`[skip vercel]`. PRIVATE_MODE stays.
-
-Label `2026.07-unified.1141`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1122-for-1141.md](docs/archive/log/LOG-rotate-1122-for-1141.md) (`.1122`), for the ≤15 entry budget. Live floor is `.1124`.
