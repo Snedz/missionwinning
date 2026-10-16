@@ -25,7 +25,7 @@ function canTransitionFrom(event: TransitionEvent, from: LampState): boolean {
     return true;
   }
   if (event === 'unreachable_source') {
-    return from === 'PASS' || from === 'HOLD' || from === 'IN';
+    return from === 'PASS' || from === 'HOLD' || from === 'IN' || from === 'WIN';
   }
   if (event === 'fresh_evidence') {
     return from === 'UNREAD' || from === 'UNKNOWN' || from === 'HOLD' || from === 'IN';
@@ -35,6 +35,11 @@ function canTransitionFrom(event: TransitionEvent, from: LampState): boolean {
 }
 
 export function nextState(lamp: HonestyLamp, from: LampState, event: TransitionEvent): LampState | null {
+  // Rule: from must be in allowedStates(lamp)
+  if (!allowedStates(lamp).includes(from)) {
+    return null;
+  }
+
   // Rule 4: side_check_ok never changes state
   if (event === 'side_check_ok') {
     return null;
@@ -52,7 +57,7 @@ export function nextState(lamp: HonestyLamp, from: LampState, event: TransitionE
     return null;
   }
 
-  // Rule 2: unreachable_source -> UNKNOWN (from PASS/HOLD/IN only)
+  // Rule 2: unreachable_source -> UNKNOWN (from PASS/HOLD/IN/WIN only)
   if (event === 'unreachable_source') {
     if (from === 'UNKNOWN' || from === 'UNREAD') {
       // From UNKNOWN/UNREAD stays that state

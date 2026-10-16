@@ -28,6 +28,16 @@ describe('honestyLampState', () => {
     assert.strictEqual(result, 'UNKNOWN');
   });
 
+  it('unreachable_source from WIN → UNKNOWN', () => {
+    const result = nextState('WARMUP', 'WIN', 'unreachable_source');
+    assert.strictEqual(result, 'UNKNOWN');
+  });
+
+  it('fresh_evidence on WARMUP from UNREAD → null', () => {
+    const result = nextState('WARMUP', 'UNREAD', 'fresh_evidence');
+    assert.strictEqual(result, null);
+  });
+
   it('side_check_ok from HOLD → null (forbidden)', () => {
     const result = nextState('WARMUP', 'HOLD', 'side_check_ok');
     assert.strictEqual(result, null);
