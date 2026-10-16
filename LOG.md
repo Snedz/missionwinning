@@ -1,6 +1,10 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-16 — earn-back dispute status transition (+ its test) (`.1182`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1182`.
+
 ## 2026-10-16 — earn-back dispute request record (+ its test) (`.1181`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1181`.
@@ -75,7 +79,3 @@ Same-lift form cues that share a tag and make opposite claims flag the lower-con
 ## 2026-10-16 — paper→live fail-closed edge reasons (+ its test) (`.1168`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1168`.
-
-## 2026-10-16 — CSV field-level round-trip equivalence (+ its test) (`.1167`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1167`.
