@@ -1,5 +1,5 @@
 /**
- * `/` after Done is the house door: one headline, one action, one logger shot.
+ * `/` after Done is the .696 marketing homepage (stat row + LogToPlanHero).
  * Cinematic www stays a separate component, not this page.
  */
 
@@ -14,12 +14,11 @@ const cine = readFileSync(path.join(root, 'src/components/landing/CinematicWww.t
 const css = readFileSync(path.join(root, 'src/components/landing/cinematic.css'), 'utf8');
 const gateEn = readFileSync(path.join(root, 'src/i18n/gateEn.ts'), 'utf8');
 
-test('LandingPage is the house door, not cinematic www', () => {
-  assert.match(landing, /Log a set\. Offline\./);
-  assert.match(landing, /href=["']\/welcome["']/);
-  assert.match(landing, /house-btn house-btn-primary/);
-  assert.match(landing, /\/brand\/log-a-set\.webp/);
-  assert.doesNotMatch(landing, /LogToPlanHero|MarketingNav|At a glance|CinematicWww/);
+test('LandingPage is the .696 marketing homepage, not cinematic www', () => {
+  assert.match(landing, /LogToPlanHero/);
+  assert.match(landing, /MarketingNav/);
+  assert.match(landing, /At a glance/);
+  assert.doesNotMatch(landing, /CinematicWww/);
 });
 
 test('cinematic www is four scenes, ghost CTA, real mark', () => {
