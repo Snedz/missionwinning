@@ -3,11 +3,6 @@
  *
  * Verifies that diary export and session CSV import preserve core fields.
  * Uses csvFieldEquivalence for field-level comparison.
- *
- * NOTE: This test is currently SKIPPED because exportDiary and importSessionCsv
- * use incompatible CSV dialects. The export produces a "diary" format while
- * import expects "set-table-b" or "set-table-a" format. A follow-up card is
- * needed to either create a compatible import path or align the export format.
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
@@ -19,6 +14,9 @@ import { localDateKeyFromIso } from '@/lib/time/localDate.ts';
 
 /**
  * Convert an exported diary row to a normalized row for comparison.
+ * Note: Export uses human-readable names (e.g., "bench press") while
+ * import returns exercise IDs (e.g., "bench-press"). We normalize
+ * the export name to ID format for comparison.
  */
 function normalizeExportRow(row: {
   date: string;
@@ -27,8 +25,10 @@ function normalizeExportRow(row: {
   reps: string;
 }): NormRow {
   const weight = parseFloat(row.kg) || 0;
+  // Convert human-readable name to ID format for comparison with import
+  const exerciseId = row.lift.toLowerCase().replace(/\s+/g, '-');
   return {
-    exercise: row.lift,
+    exercise: exerciseId,
     sets: 1, // Each export row represents one set
     reps: parseInt(row.reps, 10) || 0,
     weight_value: weight,
@@ -102,12 +102,6 @@ function runRoundTrip(
     ? { kind: importDecision.kind }
     : { kind: importDecision.kind, reason: importDecision.reason };
 
-  // Debug: log the CSV and import result
-  console.log('=== EXPORTED CSV ===');
-  console.log(exportDecision.csv);
-  console.log('=== IMPORT RESULT ===');
-  console.log(JSON.stringify(importResult, null, 2));
-
   assert.equal(importDecision.kind, 'ready', `Import should produce rows, got: ${importDecision.kind} (${(importDecision as { reason?: string }).reason || 'N/A'})`);
   if (importDecision.kind !== 'ready') {
     throw new Error('Import failed');
@@ -151,12 +145,7 @@ function runRoundTrip(
 }
 
 describe('CSV export → import round-trip', () => {
-  // SKIPPED: exportDiary uses a different CSV dialect than importSessionCsv expects
-  // exportDiary produces: date,sessionTitle,workoutName,lift,setType,kg,reps,rpe,tags,notes,duration
-  // importSessionCsv expects: set-table-b or set-table-a format (needs workout_id, completed_at, etc.)
-  // Card 20261016-p2-code-mw-csv-roundtrip-field-equivalence-test: mismatch logged, follow-up needed
-  
-  it.skip('basic round-trip preserves exercise, reps, weight, and date', () => {
+  it('basic round-trip preserves exercise, reps, weight, and date', () => {
     const fixtures: (Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id'>)[] = [
       {
         id: 'log-1',
@@ -177,7 +166,7 @@ describe('CSV export → import round-trip', () => {
     assert.equal(result.equal, true, `Expected equal, got mismatches: ${JSON.stringify(result.mismatches)}`);
   });
 
-  it.skip('round-trip with blank weight (bodyweight) preserves zeros', () => {
+  it('round-trip with blank weight (bodyweight) preserves zeros', () => {
     const fixtures: (Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id'>)[] = [
       {
         id: 'log-bw',
@@ -201,7 +190,7 @@ describe('CSV export → import round-trip', () => {
     assert.equal(result.equal, true, `Expected equal, mismatches: ${JSON.stringify(result.mismatches)}`);
   });
 
-  it.skip('round-trip with multiple sets and multiple exercises', () => {
+  it('round-trip with multiple sets and multiple exercises', () => {
     const fixtures: (Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id'>)[] = [
       {
         id: 'log-multi',
@@ -237,7 +226,7 @@ describe('CSV export → import round-trip', () => {
     }
   });
 
-  it.skip('round-trip with different dates preserves timestamps', () => {
+  it('round-trip with different dates preserves timestamps', () => {
     const fixtures: (Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id'>)[] = [
       {
         id: 'log-mon',
@@ -278,46 +267,5 @@ describe('CSV export → import round-trip', () => {
 
     const importDecision = decideImportSessionCsv('', 'metric');
     assert.equal(importDecision.kind, 'empty');
-  });
-
-  // Debug test: shows the actual CSV format produced by exportDiary
-  it('debug: shows exportDiary CSV format vs importSessionCsv expectations', () => {
-    const fixtures: (Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id'>)[] = [
-      {
-        id: 'log-debug',
-        sessionTitle: 'Debug Day',
-        exercises: [
-          {
-            exerciseId: 'bench-press',
-            sets: [{ reps: 5, weight: 100 }],
-          },
-        ],
-      },
-    ];
-
-    const logs: CompletedWorkoutLog[] = fixtures.map((f) => ({
-      clientId: `cid-${f.id}`,
-      revision: 1,
-      workoutName: f.workoutName ?? 'Test Workout',
-      startedAt: f.startedAt ?? '2026-08-17T10:00:00.000Z',
-      completedAt: f.completedAt ?? '2026-08-17T11:00:00.000Z',
-      durationSeconds: 3600,
-      totalVolume: 0,
-      exercises: f.exercises ?? [],
-      ...f,
-    }));
-
-    const exportDecision = decideExportDiary(logs);
-    assert.equal(exportDecision.kind, 'ready');
-    
-    console.log('=== DEBUG: exportDiary CSV ===');
-    console.log(exportDecision.csv);
-    
-    const importDecision = decideImportSessionCsv(exportDecision.csv, 'metric');
-    console.log('=== DEBUG: importSessionCsv result ===');
-    console.log(JSON.stringify(importDecision, null, 2));
-    
-    // This test always passes - it's just for debugging
-    assert.ok(true, 'Debug output complete');
   });
 });
