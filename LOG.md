@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — failed set-save miss-flash pulse (+ its test) (`.1160`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1160`.
+
 ## 2026-10-16 — Forge landing (`.1159`)
 
 The cookie homepage is the old marketing page again, laid out to the forge sheet: the sheet’s palette and type scale, grain and scan lines, a full-bleed Ken Burns reel with a progress bar, a marquee on the hero, notch program cards, 580px flip cards, a drag carousel with rubber-band easing, a 60px booking frame around the logger, a sticky bar, and an outlined WINNING wordmark. The stat band is static product facts (exercise floor, 3 minutes, zero wearables, $0), not a counting animation. The cards are Mission Coach’s real behaviour and the Earn It Back terms ($99/yr, $50 after 24 counted workouts in 90 days, $40 more after 96 in a year, max $90, 14-day refund, link to `/refunds`). CTAs are Start logging free (`/log`) and Join $99/yr. No invented coaches, certifications, member stories, addresses, or phone numbers. Scoped to `landingForge.module.css` so house.css stays the door. `/forge-preview` renders the same page for Preview and local, and 404s in production. The private gate, proxy, and `/` control flow are unchanged. PRIVATE_MODE stays.
@@ -79,7 +83,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-15 — workout workflow registry module (+ its test) (`.1146`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1146`.
-
-## 2026-10-15 — Vs-last session headline, no feed (`.1145`)
-
-Hand-built on the free lane (no CloudAgent) for card `20261015-p1-code-mw-vs-last-win-card-no-feed-copy-spec`. `vsLastHeadline()` in `src/lib/workout/victoryVsLastLifts.ts` turns the top-lift deltas into one session line: compared lifts only, honest first-time when none had a prior. `VictoryVsLastLifts` shows it under the label. en/es/pt copy; a guard test keeps feed, likes, leaderboard and upgrade copy out. Label `2026.07-unified.1145`. `[skip vercel]`.
