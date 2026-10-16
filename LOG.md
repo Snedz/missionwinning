@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — Coach daily-insight: drop LLM lines that claim fake progress (wire noFakeProgres (`.1173`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1173`.
+
 ## 2026-10-16 — honesty lamp test file style (node:assert/strict, .ts import) (`.1172`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1172`.
@@ -78,7 +82,3 @@ The cookie homepage is the old marketing page again, laid out to the forge sheet
 Label `2026.07-unified.1159`.
 
 Rotated LOG → [docs/archive/log/LOG-rotate-1144-for-1159.md](docs/archive/log/LOG-rotate-1144-for-1159.md) (`.1144`). `.1145` is the live floor.
-
-## 2026-10-16 — session proof state machine Open→Claimed→Done/Refused (+ its test) (`.1158`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1158`.

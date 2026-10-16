@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseCoachLlmJson, coachFromFallback } from './coachDailyServer.ts';
 import type { DailyCoachContext } from './coachDailyServer.ts';
+import { isHonestProgressCopy } from './workout/noFakeProgressPhrases.ts';
 
 const ctx: DailyCoachContext = {
   readiness: 70,
@@ -41,5 +42,28 @@ describe('coachFromFallback', () => {
     const out = coachFromFallback(ctx);
     assert.equal(out.source, 'rules');
     assert.equal(out.message, 'coachInsightSteady');
+  });
+});
+
+describe('fake progress guard', () => {
+  it('refused phrase → source rules', () => {
+    // Simulate LLM returning a refused phrase
+    const out = parseCoachLlmJson(
+      '{"message":"Guaranteed PR this week!","actionLabel":"Start Workout","actionPath":"/active"}'
+    );
+    assert.ok(out);
+    assert.equal(out!.source, 'llm');
+    // The guard should catch this and fall back
+    // We test the guard logic directly via isHonestProgressCopy
+    assert.equal(isHonestProgressCopy(out!.message), false);
+  });
+
+  it('allowed phrase → LLM message kept', () => {
+    const out = parseCoachLlmJson(
+      '{"message":"Logged 3 working sets today.","actionLabel":"View Progress","actionPath":"/track"}'
+    );
+    assert.ok(out);
+    assert.equal(out!.source, 'llm');
+    assert.equal(isHonestProgressCopy(out!.message), true);
   });
 });

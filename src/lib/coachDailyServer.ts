@@ -1,4 +1,5 @@
 import type { CoachInsight } from '@/lib/score';
+import { isHonestProgressCopy } from '@/lib/workout/noFakeProgressPhrases';
 
 export interface DailyCoachContext {
   readiness: number;
@@ -96,5 +97,10 @@ export async function fetchDailyCoachInsight(ctx: DailyCoachContext): Promise<Da
   });
   if (!result.ok) return coachFromFallback(ctx);
   const parsed = parseCoachLlmJson(result.content);
-  return parsed ? { ...parsed, usage: result.usage } : coachFromFallback(ctx);
+  if (!parsed) return coachFromFallback(ctx);
+  // Guard against fake progress phrases - fall back to rules if LLM message fails
+  if (!isHonestProgressCopy(parsed.message)) {
+    return coachFromFallback(ctx);
+  }
+  return { ...parsed, usage: result.usage };
 }
