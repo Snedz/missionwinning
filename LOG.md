@@ -19,6 +19,10 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-10-16 — Android Play permission audit, part A: pure module + inline-fixture test (`.1175`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1175`.
+
 ## 2026-10-16 — Test: diary CSV export → import round-trip is field-equivalent (use csvFieldEqui (`.1174`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1174`.
@@ -74,7 +78,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — on-device coach fallback route (+ its test) (`.1161`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1161`.
-
-## 2026-10-16 — failed set-save miss-flash pulse (+ its test) (`.1160`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1160`.
