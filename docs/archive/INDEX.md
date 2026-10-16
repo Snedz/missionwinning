@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`CONTEXT-now-1114-trainer.md`](docs/archive/CONTEXT-now-1114-trainer.md) — `.1142` rotated the `.1114` trainer Now bullet.
+- [`LOG-rotate-1124-for-1142.md`](docs/archive/log/LOG-rotate-1124-for-1142.md) — rotated by `.1142`, to keep the <=15 entry budget. `.1125` is the live floor.
 - [`CONTEXT-now-1114-open-set.md`](docs/archive/CONTEXT-now-1114-open-set.md) — `.1141` rotated the `.1114` open-set Now bullet.
 - [`LOG-rotate-1122-for-1141.md`](docs/archive/log/LOG-rotate-1122-for-1141.md) — rotated by `.1141`, to keep the <=15 entry budget. `.1124` is the live floor.
 - [`CONTEXT-now-1120-resume.md`](docs/archive/CONTEXT-now-1120-resume.md) — `.1140` rotated the `.1120` resume-chip Now bullet.

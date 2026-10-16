@@ -213,7 +213,7 @@
   right: 8px;
   width: 7px;
   height: 7px;
-  background: var(--house-live);
+  background: var(--house-ink);
   border-radius: var(--house-pill);
 }
 

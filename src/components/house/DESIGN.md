@@ -25,7 +25,7 @@ The field-manual (`src/index.css`, [`docs/DESIGN_SYSTEM.md`](../../../docs/DESIG
 | `--house-press-tint` | `#1a1607` | Signal tint |
 | `--house-press-ink` | `#0a0c0f` | Text on press |
 | `--house-amber` | `#ffb000` | Metric accent (≥19px) |
-| `--house-live` | `#ae1800` | Train pulse only |
+| `--house-live` | `#ae1800` | Declared. The rail mark is ink |
 | `--house-radius` | `4px` | Cards |
 | `--house-radius-sm` | `4px` | Inputs / small |
 | `--house-radius-row` | `4px` | Second-bar rows |
@@ -106,4 +106,4 @@ On the desktop sheet, Today does not repeat a “Today” H1. The date kicker st
 
 ## Do not
 
-Mint Studio. Put chat or a bell on Today. Make Today a feed. Gate `logSet`. Restyle `/private`, landing, or www. Ship a licensed display face. Use poster red except the Train pulse.
+Mint Studio. Put chat or a bell on Today. Make Today a feed. Gate `logSet`. Restyle `/private`, landing, or www. Ship a licensed display face. Use poster red. The rail mark is ink.

@@ -18,6 +18,17 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+
+## 2026-10-15 — Icon rail drops the red mark (`.1142`)
+
+The Train icon carried a red dot while a session was open. That mark is ink now. `--house-live` stays declared and is not painted on the rail. Yellow stays the one filled action.
+
+`[skip vercel]`. PRIVATE_MODE stays.
+
+Label `2026.07-unified.1142`.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-1124-for-1142.md](docs/archive/log/LOG-rotate-1124-for-1142.md) (`.1124`), for the ≤15 entry budget. Live floor is `.1125`.
+
 ## 2026-10-15 — Train set row, big Log set (`.1141`)
 
 The open set was five columns. The live row now stacks the target above the previous result, then the dial, then one full-width Log set. A cold lift says there is no prior set. It does not invent a number. Waiting rows keep Prev. The landing shot is this Train.
@@ -265,14 +276,3 @@ Label `2026.07-unified.1125`.
 `[skip vercel]`. No tip-promote. Live www stays `.697`. PRIVATE_MODE stays.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-1106-for-1125.md](docs/archive/log/LOG-rotate-1106-for-1125.md) (`.1106`).
-
-## 2026-10-12 — `npm run verify` merge gate (`.1124`)
-
-One command an agent must pass before calling work done: `npm run verify` runs check-build-label → typecheck → lint → test → build, then boots `next start` and asserts `GET /api/health` returns `ok: true`. It prints a PASS/FAIL summary and exits non-zero on any failure (`verify:fast` skips build + health).
-
-Added `docs/agents/DONE_CONTRACT.md` (what done means: verify PASS pasted in the PR, green CI, one PR per card, proof, rails, 3-strike stop) and `docs/agents/TEST_AUDIT.md` (authoring gate + junk patterns, adapted from openclaw/openclaw `test-audit`, MIT). AGENTS.md links both.
-
-Label `2026.07-unified.1124`.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-1105-for-1124.md](docs/archive/log/LOG-rotate-1105-for-1124.md) (`.1105`), for the ≤15 entry budget.
-
