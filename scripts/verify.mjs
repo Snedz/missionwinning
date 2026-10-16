@@ -116,6 +116,7 @@ async function healthSmoke() {
 
 const steps = [
   ['build-label', () => run('build-label', npm, ['run', 'check-build-label'])],
+  ['earnback-copy', () => run('earnback-copy', npm, ['run', 'earnback-copy:check'])],
   ['typecheck', () => run('typecheck', npm, ['run', 'typecheck'])],
   ['lint', () => run('lint', npm, ['run', 'lint'])],
   ['test', () => run('test', npm, ['test'])],

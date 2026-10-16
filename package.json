@@ -26,6 +26,7 @@
     "check-build-label": "node scripts/check-build-label.mjs",
     "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
     "names:check": "node scripts/check-competitor-names.mjs",
+    "earnback-copy:check": "tsx scripts/check-earnback-offer-copy.ts",
     "harness": "tsx scripts/queue-next.ts",
     "harness:done": "tsx scripts/graph-hop-done.ts",
     "graph": "tsx scripts/queue-next.ts",

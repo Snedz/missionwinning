@@ -1,5 +1,10 @@
 # Mission Winning — Development Log
 
+
+## 2026-10-16 — Wire earnbackOfferCopyGuard into verify CI (`.1179`)
+
+Built on the free-model lane (autopilot hand-ship after 2 free-build failures mangling package.json). Label `2026.07-unified.1179`.
+
 Chronological record of shipped work. Newest first.
 
 **Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.242` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
