@@ -80,7 +80,7 @@ export const GATE_EN: Record<string, string> = {
     "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
   offlineCta: 'Open Today',
   gateOfferTitle: "Mission Winning Yearly · $99/year",
-  gateOfferBody: "Complete the program's workouts and we refund your $99.",
+  gateOfferBody: "Train and earn back up to $90: $50 after 24 workouts in 90 days, $40 more after 96 in your year.",
   gateOfferCta: "Start yearly — $99",
   gateOfferFoot: "Secure checkout by Stripe.",
   gateOfferRefunds: "Refund terms",

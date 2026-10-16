@@ -10,7 +10,7 @@ import { GATE_EN } from '@/i18n/gateEn';
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/año",
-  gateOfferBody: "Completa los entrenamientos del programa y te reembolsamos $99.",
+  gateOfferBody: "Entrena y recupera hasta $90: $50 después de 24 entrenamientos en 90 días, $40 más después de 96 en tu año.",
   gateOfferCta: "Iniciar anual — $99",
   gateOfferFoot: "Pago seguro con Stripe.",
   gateOfferRefunds: "Términos de reembolso",
@@ -41,7 +41,7 @@ const GATE_ES: Record<string, string> = {
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/ano",
-  gateOfferBody: "Complete os treinos do programa e devolvemos o seu $99.",
+  gateOfferBody: "Treine e ganhe de volta até $90: $50 após 24 treinos em 90 dias, $40 a mais após 96 no seu ano.",
   gateOfferCta: "Iniciar anual — $99",
   gateOfferFoot: "Pagamento seguro via Stripe.",
   gateOfferRefunds: "Termos de reembolso",
@@ -65,7 +65,7 @@ const GATE_PT: Record<string, string> = {
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/Jahr",
-  gateOfferBody: "Schließe die Trainings des Programms ab und wir erstatten dir $99.",
+  gateOfferBody: "Trainiere und erhalte bis zu $90 zurück: $50 nach 24 Trainingseinheiten in 90 Tagen, $40 mehr nach 96 im Jahr.",
   gateOfferCta: "Jährlich starten — $99",
   gateOfferFoot: "Sichere Zahlung über Stripe.",
   gateOfferRefunds: "Rückgabebedingungen",
@@ -88,7 +88,7 @@ const GATE_DE: Record<string, string> = {
 const GATE_IT: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/anno",
-  gateOfferBody: "Completa gli allenamenti del programma e ti rimborsiamo $99.",
+  gateOfferBody: "Allenati e recupera fino a $90: $50 dopo 24 allenamenti in 90 giorni, $40 in più dopo 96 nel tuo anno.",
   gateOfferCta: "Inizia annuale — $99",
   gateOfferFoot: "Pagamento sicuro con Stripe.",
   gateOfferRefunds: "Termini di rimborso",
@@ -106,7 +106,7 @@ const GATE_IT: Record<string, string> = {
 const GATE_RU: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/год",
-  gateOfferBody: "Заверши тренировки программы, и мы вернём тебе $99.",
+  gateOfferBody: "Тренируйтесь и получите обратно до $90: $50 после 24 тренировок за 90 дней, ещё $40 после 96 тренировок в течение года.",
   gateOfferCta: "Начать годовой — $99",
   gateOfferFoot: "Безопасная оплата через Stripe.",
   gateOfferRefunds: "Условия возврата",
@@ -124,7 +124,7 @@ const GATE_RU: Record<string, string> = {
 const GATE_JA: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/年",
-  gateOfferBody: "プログラムのワークアウトを完了すると、$99を返金いたします。",
+  gateOfferBody: "トレーニングで$90までの回収が可能：90日以内に24回のワークアウトで$50、1年以内に96回のワークアウトで$40を追加。",
   gateOfferCta: "年間を開始 — $99",
   gateOfferFoot: "Stripeによる安全な決済。",
   gateOfferRefunds: "返金条件",
@@ -142,7 +142,7 @@ const GATE_JA: Record<string, string> = {
 const GATE_KO: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/년",
-  gateOfferBody: "프로그램의 워크아웃을 완료하면 $99를 환불해 드립니다.",
+  gateOfferBody: "훈련을 통해 최대 $90까지 되찾을 수 있습니다: 90일 이내 24회 운동 시 $50, 1년 이내 96회 추가 시 $40.",
   gateOfferCta: "연간 시작 — $99",
   gateOfferFoot: "Stripe를 통한 안전한 결제.",
   gateOfferRefunds: "환불 약관",
@@ -160,7 +160,7 @@ const GATE_KO: Record<string, string> = {
 const GATE_ZH: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/年",
-  gateOfferBody: "完成计划的训练，我们将退还您的$99。",
+  gateOfferBody: "训练并可最高返还 $90：前 90 天完成 24 次锻炼后返还 $50，随后在年度内完成 96 次后再返还 $40。",
   gateOfferCta: "开始年度 — $99",
   gateOfferFoot: "通过Stripe安全结账。",
   gateOfferRefunds: "退款条款",
@@ -178,7 +178,7 @@ const GATE_ZH: Record<string, string> = {
 const GATE_TH: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/ปี",
-  gateOfferBody: "ทำโปรแกรมออกกำลังกายให้เสร็จสิ้น และเราจะคืนเงิน $99 ให้คุณ.",
+  gateOfferBody: "ฝึกซ้อมและได้เงินคืนสูงสุด $90: $50 หลังจากออกกำลังกาย 24 ครั้งใน 90 วัน อีก $40 หลังจากออกกำลังกาย 96 ครั้งในปีของคุณ",
   gateOfferCta: "เริ่มต้นรายปี — $99",
   gateOfferFoot: "ชำระเงินอย่างปลอดภัยผ่าน Stripe.",
   gateOfferRefunds: "เงื่อนไขการคืนเงิน",
@@ -196,7 +196,7 @@ const GATE_TH: Record<string, string> = {
 const GATE_VI: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/năm",
-  gateOfferBody: "Hoàn thành các bài tập của chương trình và chúng tôi sẽ hoàn lại $99 cho bạn.",
+  gateOfferBody: "Tập luyện và hoàn lại tối đa $90: $50 sau 24 buổi tập trong 90 ngày, thêm $40 sau 96 buổi tập trong năm của bạn.",
   gateOfferCta: "Bắt đầu hàng năm — $99",
   gateOfferFoot: "Thanh toán an toàn qua Stripe.",
   gateOfferRefunds: "Điều khoản hoàn tiền",
@@ -214,7 +214,7 @@ const GATE_VI: Record<string, string> = {
 const GATE_HI: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/वर्ष",
-  gateOfferBody: "कार्यक्रम के वर्कआउट पूरे करें और हम आपको $99 वापस कर देंगे।",
+  gateOfferBody: "ट्रेन करें और $90 तक वापस कमाएं: 90 दिनों में 24 वर्कआउट के बाद $50, साल में 96 के बाद $40 अधिक।",
   gateOfferCta: "वार्षिक शुरू करें — $99",
   gateOfferFoot: "Stripe द्वारा सुरक्षित भुगतान।",
   gateOfferRefunds: "रिफंड की शर्तें",
@@ -232,7 +232,7 @@ const GATE_HI: Record<string, string> = {
 const GATE_ID: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/tahun",
-  gateOfferBody: "Selesaikan latihan program dan kami akan mengembalikan $99 Anda.",
+  gateOfferBody: "Latih dan hasilkan kembali hingga $90: $50 setelah 24 latihan dalam 90 hari, $40 lagi setelah 96 dalam tahun Anda.",
   gateOfferCta: "Mulai tahunan — $99",
   gateOfferFoot: "Pembayaran aman melalui Stripe.",
   gateOfferRefunds: "Ketentuan pengembalian",
@@ -250,7 +250,7 @@ const GATE_ID: Record<string, string> = {
 const GATE_AR: Record<string, string> = {
   ...GATE_EN,
   gateOfferTitle: "Mission Winning Yearly · $99/سنة",
-  gateOfferBody: "أكمل تمارين البرنامج وسنقوم باسترداد $99 لك.",
+  gateOfferBody: "تدرب واسترد حتى 90 دولارًا: 50 دولارًا بعد 24 تمرينًا في 90 يومًا، 40 دولارًا إضافية بعد 96 في سنتك.",
   gateOfferCta: "ابدأ سنويًا — $99",
   gateOfferFoot: "الدفع الآمن عبر Stripe.",
   gateOfferRefunds: "شروط الاسترداد",

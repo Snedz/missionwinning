@@ -15,8 +15,11 @@ describe('refunds copy', () => {
   it('names the live $99 yearly plan and the workout refund', () => {
     assert.match(copy, /Mission Winning Yearly is \$99 per year/);
     assert.match(copy, /Stripe/);
-    assert.match(copy, /Complete the program\u2019s workouts and we refund your \$99/);
-    assert.match(copy, /The free logger never needs a refund/);
+    assert.match(copy, /[Ee]arn back up to \$90/);
+    assert.match(copy, /\$50 after 24 workouts/);
+    assert.match(copy, /One earn-back per person per paid year/);
+    assert.match(copy, /within 14 days of the first charge/);
+    assert.match(copy, /The free logger is free forever/);
   });
 
   it('does not name Phantom, USDC, or Super Bundle', () => {
