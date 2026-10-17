@@ -231,7 +231,9 @@ test('BEFORE INSERT stamps call_sign, Mission NN, and full_name only when opted 
   assert.match(sql, /function public\.garage_display_name\(raw text\)/);
   assert.match(sql, /function public\.garage_real_name_reserved\(raw text\)/);
   assert.match(sql, /security definer/);
-  assert.match(sql, /starts_with\(public\.garage_compare_key\(raw\), 'mission'\)/);
+  assert.match(sql, /starts_with\(key, 'mission'\)/);
+  assert.match(sql, /lower\(h\.call_sign\) = key/);
+  assert.doesNotMatch(sql, /garage_compare_key\(h\.call_sign\)/);
   assert.match(sql, /chr\(160\)/);
   assert.match(sql, /chr\(12288\)/);
   assert.match(sql, /when p\.garage_name_mode = 'real_name' then p\.full_name/);
@@ -255,4 +257,108 @@ test('BEFORE INSERT stamps call_sign, Mission NN, and full_name only when opted 
   assert.match(sql, /auth\.uid\(\) is distinct from NEW\.id/);
   assert.match(sql, /before insert or update on public\.profiles/i);
   assert.doesNotMatch(sql, /label := 'Athlete'/);
+});
+
+/**
+ * The owner trigger's raise, evaluated from the SQL text.
+ * INSERT never reads OLD (CASE). An unrelated column change does not raise.
+ */
+function reservedRaiseOnProfileWrite(
+  ownerSql: string,
+  write: {
+    op: 'INSERT' | 'UPDATE';
+    oldFullName: string | null;
+    newFullName: string | null;
+    oldMode: 'call_sign' | 'real_name';
+    newMode: 'call_sign' | 'real_name';
+    reserved: boolean;
+  }
+): boolean {
+  const raiseAt = ownerSql.indexOf("raise exception 'garage_real_name_reserved'");
+  assert.ok(raiseAt !== -1);
+  const caseAt = ownerSql.lastIndexOf('if case', raiseAt);
+  assert.ok(caseAt !== -1, 'the reserved-name raise must sit inside the name/mode CASE');
+  const gate = ownerSql.slice(caseAt, raiseAt);
+  assert.match(gate, /when tg_op = 'INSERT' then true/);
+  assert.match(gate, /NEW\.full_name is distinct from OLD\.full_name/);
+  assert.match(gate, /NEW\.garage_name_mode is distinct from OLD\.garage_name_mode/);
+  assert.match(gate, /else NEW\.full_name is distinct from OLD\.full_name/);
+  assert.match(gate, /and NEW\.garage_name_mode = 'real_name'/);
+  assert.match(gate, /garage_real_name_reserved\(NEW\.full_name\)/);
+  const distinct = (left: string | null, right: string | null) => left !== right;
+  const publishingWrite =
+    write.op === 'INSERT' ||
+    distinct(write.oldFullName, write.newFullName) ||
+    distinct(write.oldMode, write.newMode);
+  return publishingWrite && write.newMode === 'real_name' && write.reserved;
+}
+
+test('a later colliding call sign does not block an unrelated profile update', () => {
+  const sql = read('supabase/migrations/20261017_social_messages_stamp_author.sql');
+  const owner = sql.slice(
+    sql.indexOf('function public.profiles_owner_garage_identity()'),
+    sql.indexOf('function public.social_messages_stamp_author()')
+  );
+  assert.equal((owner.match(/raise exception 'garage_real_name_reserved'/g) ?? []).length, 1);
+  assert.doesNotMatch(
+    owner,
+    /if NEW\.garage_name_mode = 'real_name'\s+and public\.garage_real_name_reserved/
+  );
+
+  // A is already in real_name. B then claims call sign "jane". A's reminders
+  // toggle writes reminders_opt_in only (AccountPage). That update succeeds.
+  const reminders = reservedRaiseOnProfileWrite(owner, {
+    op: 'UPDATE',
+    oldFullName: 'Jane',
+    newFullName: 'Jane',
+    oldMode: 'real_name',
+    newMode: 'real_name',
+    reserved: true,
+  });
+  assert.equal(reminders, false);
+
+  assert.equal(
+    reservedRaiseOnProfileWrite(owner, {
+      op: 'UPDATE',
+      oldFullName: 'Safe Name',
+      newFullName: 'Jane',
+      oldMode: 'real_name',
+      newMode: 'real_name',
+      reserved: true,
+    }),
+    true
+  );
+  assert.equal(
+    reservedRaiseOnProfileWrite(owner, {
+      op: 'UPDATE',
+      oldFullName: 'Jane',
+      newFullName: 'Jane',
+      oldMode: 'call_sign',
+      newMode: 'real_name',
+      reserved: true,
+    }),
+    true
+  );
+  assert.equal(
+    reservedRaiseOnProfileWrite(owner, {
+      op: 'INSERT',
+      oldFullName: null,
+      newFullName: 'Jane',
+      oldMode: 'call_sign',
+      newMode: 'real_name',
+      reserved: true,
+    }),
+    true
+  );
+  assert.equal(
+    reservedRaiseOnProfileWrite(owner, {
+      op: 'UPDATE',
+      oldFullName: 'Jane',
+      newFullName: 'Jane',
+      oldMode: 'real_name',
+      newMode: 'real_name',
+      reserved: false,
+    }),
+    false
+  );
 });

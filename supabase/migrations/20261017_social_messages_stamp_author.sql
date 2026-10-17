@@ -114,7 +114,8 @@ grant execute on function public.garage_compare_key(text) to authenticated, serv
 
 -- True when a real name would read as a call sign or as a Mission fallback.
 -- security definer: the inserting user cannot select other profiles, and this
--- returns only a boolean.
+-- returns only a boolean. The handle compare is lower(call_sign) so the
+-- unique index is usable; call signs are stored already normalized.
 create or replace function public.garage_real_name_reserved(raw text)
 returns boolean
 language sql
@@ -122,16 +123,16 @@ stable
 security definer
 set search_path = public
 as $$
-  select public.garage_compare_key(raw) <> ''
+  select key <> ''
     and (
-      starts_with(public.garage_compare_key(raw), 'mission')
+      starts_with(key, 'mission')
       or exists (
         select 1
         from public.profiles h
-        where h.call_sign is not null
-          and public.garage_compare_key(h.call_sign) = public.garage_compare_key(raw)
+        where lower(h.call_sign) = key
       )
-    );
+    )
+  from (select public.garage_compare_key(raw) as key) compared;
 $$;
 
 revoke all on function public.garage_real_name_reserved(text) from public, anon;
@@ -181,7 +182,18 @@ begin
     end if;
   end if;
 
-  if NEW.garage_name_mode = 'real_name'
+  -- Only when this write is the one that would publish the name. A later
+  -- call sign that collides with an existing real name must not fail
+  -- reminders, coach, journey, or open-session updates. CASE so INSERT
+  -- never reads OLD. The post stamp re-checks on every insert.
+  -- Gate: tg_op = 'INSERT' or NEW.full_name is distinct from OLD.full_name
+  -- or NEW.garage_name_mode is distinct from OLD.garage_name_mode.
+  if case
+       when tg_op = 'INSERT' then true
+       else NEW.full_name is distinct from OLD.full_name
+         or NEW.garage_name_mode is distinct from OLD.garage_name_mode
+     end
+     and NEW.garage_name_mode = 'real_name'
      and public.garage_real_name_reserved(NEW.full_name) then
     raise exception 'garage_real_name_reserved'
       using errcode = '23514';
@@ -198,7 +210,7 @@ create trigger profiles_owner_garage_identity
   execute function public.profiles_owner_garage_identity();
 
 comment on function public.profiles_owner_garage_identity() is
-  'Normalizes call_sign. Only the owner may set it. service_role may set it to null and may set garage_name_mode back to call_sign. real_name plus a reserved full_name raises garage_real_name_reserved.';
+  'Normalizes call_sign. Only the owner may set it. service_role may set it to null and may set garage_name_mode back to call_sign. real_name plus a reserved full_name raises garage_real_name_reserved only when full_name or garage_name_mode changed.';
 
 create or replace function public.social_messages_stamp_author()
 returns trigger
