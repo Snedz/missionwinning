@@ -89,10 +89,8 @@ export const POST = withApiLogging('wearables/sync', async (req: NextRequest) =>
   try {
     samples = await adapter.syncSince({ accessToken, sinceIso });
   } catch (e) {
-    return NextResponse.json(
-      { error: e instanceof Error ? e.message : 'Sync failed', code: 'sync_failed' },
-      { status: 502 }
-    );
+    console.error('[wearables/sync] %s', e instanceof Error ? e.message : 'sync failed');
+    return NextResponse.json({ error: 'sync_failed', code: 'sync_failed' }, { status: 502 });
   }
 
   const { inserted, error } = await insertSamples(user.id, samples);

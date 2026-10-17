@@ -16,6 +16,7 @@ import {
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { isMissingRelation, rowToGarageMessage } from '@/lib/social/cloud';
+import { garageCallSignFromProfile, garageMissionLabel } from '@/lib/social/authorStamp';
 
 function opaqueDbError(error: { code?: string; message?: string } | null) {
   if (isMissingRelation(error)) {
@@ -98,15 +99,26 @@ export const POST = withApiLogging('social/messages', async (request: NextReques
     return NextResponse.json({ ok: true, stored: false });
   }
 
+  const { data: profile } = await scoped
+    .from('profiles')
+    .select('full_name')
+    .eq('id', user.id)
+    .maybeSingle();
+  const { data: mission } = await scoped
+    .from('mission_ids')
+    .select('mission_id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
   const { error } = await scoped.from('social_messages').insert({
     id: parsed.data.id,
     user_id: user.id,
     channel_slug: parsed.data.channelSlug,
     body: parsed.data.body,
     kind: parsed.data.kind ?? 'text',
-    author_call_sign: parsed.data.authorCallSign,
-    author_mission_id: parsed.data.authorMissionId ?? null,
-    created_at: parsed.data.createdAt,
+    author_call_sign: garageCallSignFromProfile(profile?.full_name),
+    author_mission_id: garageMissionLabel(mission?.mission_id),
+    created_at: new Date().toISOString(),
   });
 
   if (error) {

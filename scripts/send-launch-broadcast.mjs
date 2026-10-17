@@ -172,7 +172,7 @@ for (const c of slice) {
     const { error: stampErr } = await admin
       .from('leads')
       .update({ launch_email_sent_at: new Date().toISOString() })
-      .ilike('email', c.email);
+      .eq('email', String(c.email).trim().toLowerCase());
     if (stampErr) {
       console.warn(`Sent but stamp failed for ${c.email}:`, stampErr.message);
     }

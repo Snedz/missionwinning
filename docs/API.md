@@ -141,9 +141,9 @@ curl -X POST "$BASE/api/private-access/session" \
 |--|--|
 | Auth | `gate` |
 | Rate | 5/min/IP |
-| Schema | `leadsBodySchema` |
+| Schema | `leadsBodySchema`. `source` and `package_interest` are an allowlist (`LEAD_SOURCE_TAGS`). |
 | Territory | Waitlist (non-feedback) uses `hostedServiceAccessFromHeaders` — **403** `territory_blocked` for a blocked ISO. Feedback notes still accept. |
-| Insert | Service role only (anon INSERT revoked) |
+| Insert | Service role only (anon INSERT revoked). Email is trimmed and lowercased, then matched with equality. Confirmation mail does not include `source`. The same address is not mailed again for 7 days after `confirmed_at`. |
 
 ---
 

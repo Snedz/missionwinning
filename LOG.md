@@ -1,6 +1,10 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-17 — Close waitlist wildcard, garage spoof, and sync error leak (`.1183`)
+
+Lead addresses match with equality after `trim().toLowerCase()`, so `_` in the local part is a character. Confirmation mail no longer interpolates `source`, and the tag is an allowlist of the forms that send one. The same address is not mailed again for 7 days. Garage inserts stamp `profiles.full_name` and `mission_ids.mission_id`, and `created_at` is `now()`; `20261017_social_messages_stamp_author.sql` does that in a BEFORE INSERT trigger because PostgREST is a second door. Mobile sync acks return `sync_failed` and the leak regex now sees `throw new Error(error.message)` and `e.message`. `[skip vercel]`. PRIVATE_MODE stays. Founder applies the two new migrations; this commit does not.
+
 ## 2026-10-16 — earn-back dispute status transition (+ its test) (`.1182`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1182`.
@@ -75,7 +79,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — form-cue contradiction detector (+ its test) (`.1169`)
 
 Same-lift form cues that share a tag and make opposite claims flag the lower-confidence cue. Both cues negating is not a contradiction. Label `2026.07-unified.1169`. `[skip vercel]`.
-
-## 2026-10-16 — paper→live fail-closed edge reasons (+ its test) (`.1168`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1168`.

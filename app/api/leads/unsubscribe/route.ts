@@ -9,6 +9,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { verifyLeadUnsubscribeToken } from '@/lib/emailServer';
+import { normalizeLeadEmail } from '@/lib/leadEmail';
 
 export const GET = withApiLogging('leads/unsubscribe', async (req: NextRequest) => {
   const ip = clientIp(req);
@@ -20,7 +21,7 @@ export const GET = withApiLogging('leads/unsubscribe', async (req: NextRequest) 
     });
   }
 
-  const email = (req.nextUrl.searchParams.get('e') || '').trim().toLowerCase();
+  const email = normalizeLeadEmail(req.nextUrl.searchParams.get('e') || '');
   const token = (req.nextUrl.searchParams.get('t') || '').trim();
 
   if (!email || !token || !verifyLeadUnsubscribeToken(email, token)) {
@@ -35,7 +36,7 @@ export const GET = withApiLogging('leads/unsubscribe', async (req: NextRequest) 
     const { error } = await admin
       .from('leads')
       .update({ unsubscribed_at: new Date().toISOString() })
-      .ilike('email', email);
+      .eq('email', email);
     if (error) {
       console.error('leads unsubscribe error:', error);
     }
