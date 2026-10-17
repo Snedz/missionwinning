@@ -101,7 +101,12 @@ export function GarageNameCard({ signedIn }: GarageNameCardProps) {
         ? t('garageNameTaken', { defaultValue: 'That call sign is already taken.' })
         : note === 'failed'
           ? t('garageNameFailed', { defaultValue: 'Could not save the Garage name.' })
-          : null;
+          : note === 'reserved'
+            ? t('garageNameReserved', {
+                defaultValue:
+                  'That name matches a call sign or starts with Mission, so the Garage will not show it as your real name.',
+              })
+            : null;
 
   return (
     <div className="house-card space-y-3" data-testid="account-garage-name-card">

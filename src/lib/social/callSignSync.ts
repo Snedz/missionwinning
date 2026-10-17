@@ -10,7 +10,7 @@ import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { readChatCallSign } from '@/lib/social/callSign';
 import {
   callSignToSync,
-  isGarageCallSign,
+  normalizeCallSign,
   type GarageNameMode,
 } from '@/lib/social/authorStamp';
 
@@ -19,7 +19,11 @@ export type GarageIdentity = {
   mode: GarageNameMode;
 };
 
-export type GarageWriteResult = 'ok' | 'invalid' | 'taken' | 'failed';
+export type GarageWriteResult = 'ok' | 'invalid' | 'taken' | 'reserved' | 'failed';
+
+function isReservedNameError(error: { message?: string } | null): boolean {
+  return (error?.message ?? '').includes('garage_real_name_reserved');
+}
 
 async function ownerId(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
@@ -69,8 +73,8 @@ export async function saveGarageCallSign(raw: string): Promise<GarageWriteResult
   const userId = await ownerId();
   if (!userId) return 'failed';
   const trimmed = raw.trim();
-  const value = trimmed.length === 0 ? null : trimmed;
-  if (value !== null && !isGarageCallSign(value)) return 'invalid';
+  const value = trimmed.length === 0 ? null : normalizeCallSign(trimmed);
+  if (trimmed.length > 0 && value === null) return 'invalid';
   const { data, error } = await supabase
     .from('profiles')
     .update({ call_sign: value })
@@ -82,7 +86,9 @@ export async function saveGarageCallSign(raw: string): Promise<GarageWriteResult
   return 'ok';
 }
 
-export async function saveGarageNameMode(mode: GarageNameMode): Promise<Exclude<GarageWriteResult, 'invalid' | 'taken'>> {
+export async function saveGarageNameMode(
+  mode: GarageNameMode
+): Promise<Exclude<GarageWriteResult, 'invalid' | 'taken'>> {
   const userId = await ownerId();
   if (!userId) return 'failed';
   const { data, error } = await supabase
@@ -91,6 +97,7 @@ export async function saveGarageNameMode(mode: GarageNameMode): Promise<Exclude<
     .eq('id', userId)
     .select('id')
     .maybeSingle();
+  if (isReservedNameError(error)) return 'reserved';
   if (error || !data) return 'failed';
   return 'ok';
 }

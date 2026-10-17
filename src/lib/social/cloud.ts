@@ -84,6 +84,9 @@ export function rowToGarageMessage(
         ? r.authorCallSign
         : '';
   if (!authorCallSign) return null;
+  const nameKindRaw = r.author_name_kind ?? r.authorNameKind;
+  const authorNameKind =
+    nameKindRaw === 'real_name' ? 'real_name' : nameKindRaw === 'call_sign' ? 'call_sign' : undefined;
   const createdAt =
     typeof r.created_at === 'string'
       ? r.created_at
@@ -98,6 +101,7 @@ export function rowToGarageMessage(
     channelId: channelSlug,
     body: r.body,
     authorCallSign,
+    authorNameKind,
     authorMissionId: typeof missionRaw === 'string' ? missionRaw : null,
     createdAt,
     kind: r.kind === 'nudge' ? 'nudge' : 'text',

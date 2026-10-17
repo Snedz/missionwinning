@@ -164,6 +164,63 @@ test('ingestRemoteMessage ignores junk and accepts a valid payload', () => {
   assert.equal(messagesForChannel(ingested!, 'garage')[0].id, 'remote-1');
 });
 
+test('a server copy stamps the name badge onto an optimistic line', () => {
+  const createdAt = new Date(0).toISOString();
+  const local = postLocalMessage('train', 'hello', { id: 'same-1', authorCallSign: 'Founder' });
+  assert.equal(local.ok, true);
+  const pulled = ingestRemoteMessage({
+    id: 'same-1',
+    channelId: 'train',
+    authorCallSign: 'Jane Doe',
+    authorNameKind: 'real_name',
+    authorMissionId: '07',
+    body: 'hello',
+    createdAt,
+    origin: 'remote',
+  });
+  const row = messagesForChannel(pulled!, 'train').find((m) => m.id === 'same-1');
+  assert.equal(row?.authorCallSign, 'Jane Doe');
+  assert.equal(row?.authorNameKind, 'real_name');
+  assert.equal(row?.authorMissionId, '07');
+
+  const ownPull = ingestRemoteMessage({
+    id: 'same-2',
+    channelId: 'train',
+    authorCallSign: 'device',
+    body: 'mine',
+    createdAt,
+    origin: 'local',
+  });
+  assert.equal(
+    messagesForChannel(ownPull!, 'train').find((m) => m.id === 'same-2')?.authorNameKind,
+    undefined
+  );
+  const upgraded = ingestRemoteMessage({
+    id: 'same-2',
+    channelId: 'train',
+    authorCallSign: 'Jane Doe',
+    authorNameKind: 'real_name',
+    body: 'mine',
+    createdAt,
+    origin: 'local',
+  });
+  assert.equal(
+    messagesForChannel(upgraded!, 'train').find((m) => m.id === 'same-2')?.authorNameKind,
+    'real_name'
+  );
+  const replay = ingestRemoteMessage({
+    id: 'same-2',
+    channelId: 'train',
+    authorCallSign: 'Founder',
+    body: 'mine',
+    createdAt,
+    origin: 'local',
+  });
+  const kept = messagesForChannel(replay!, 'train').find((m) => m.id === 'same-2');
+  assert.equal(kept?.authorCallSign, 'Jane Doe');
+  assert.equal(kept?.authorNameKind, 'real_name');
+});
+
 test('presence defaults to available and survives reload', () => {
   const a = loadMissionServer();
   assert.equal(a.presence, 'available');

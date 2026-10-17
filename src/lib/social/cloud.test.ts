@@ -39,6 +39,19 @@ test('rowToGarageMessage maps snake_case and marks origin', () => {
     { mine: true }
   );
   assert.equal(mine?.origin, 'local');
+
+  const named = rowToGarageMessage({
+    id: 'm3',
+    channel_slug: 'train',
+    body: 'hi',
+    author_call_sign: 'Jane Doe',
+    author_name_kind: 'real_name',
+    created_at: '2026-08-14T12:00:00.000Z',
+    full_name: 'secret',
+  });
+  assert.equal(named?.authorNameKind, 'real_name');
+  assert.equal(JSON.stringify(named).includes('secret'), false);
+  assert.equal(JSON.stringify(named).includes('full_name'), false);
 });
 
 test('messageToPayload rejects unknown channels', () => {

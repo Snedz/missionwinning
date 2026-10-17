@@ -54,7 +54,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `social/messages` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialMessageBodySchema` / `socialMessagesQuerySchema`. Shared Garage. Stamps `call_sign` or `Mission NN`; `full_name` only if `garage_name_mode` is `real_name`. Guests 401. Missing table fail-open. |
+| `social/messages` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialMessageBodySchema` / `socialMessagesQuerySchema`. Shared Garage. Stamps `call_sign` or `Mission NN`; `full_name` only if `garage_name_mode` is `real_name` and the name is not reserved. `author_name_kind` marks a real-name stamp. Guests 401. Missing table fail-open. |
 | `social/presence` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialPresenceBodySchema`. Others' real rows only. |
 | `social/reports` | POST | session | 10/min | Zod `socialReportBodySchema`. Cannot report own message. |
 

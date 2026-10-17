@@ -605,7 +605,7 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 |--|--|
 | Auth | `session` |
 | Rate | 60/min/IP |
-| Notes | Shared Garage pull. Guests **401**. Missing table → `{ available: false, messages: [] }`. Returns `author_call_sign`, never `full_name`. A real name is in that field only when the author set `garage_name_mode` to `real_name`. Never returns a Postgres `error.message`. |
+| Notes | Shared Garage pull. Guests **401**. Missing table → `{ available: false, messages: [] }`. Returns `author_call_sign` and `author_name_kind`, never `full_name`. A real name is in `author_call_sign` only when the author set `garage_name_mode` to `real_name` and the name is not reserved; `author_name_kind` is then `real_name` and the Garage shows a name badge. Never returns a Postgres `error.message`. |
 
 ### `POST /api/social/messages`
 
@@ -614,7 +614,7 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 | Auth | `session` |
 | Rate | 20/min/IP |
 | Body | Zod `socialMessageBodySchema` |
-| Notes | Local-first via outbox (`social.message`). Duplicate id is success. `user_id` from the session only. `author_call_sign` is stamped from `profiles.call_sign` (fallback `Mission NN`). `profiles.full_name` is stamped only when `garage_name_mode` is `real_name`. Client author fields are ignored. |
+| Notes | Local-first via outbox (`social.message`). Duplicate id is success. `user_id` from the session only. `author_call_sign` is stamped from `profiles.call_sign` (fallback `Mission NN`). `profiles.full_name` is stamped only when `garage_name_mode` is `real_name` and `garage_real_name_reserved` is false. Client author fields are ignored. |
 
 ### `GET /api/social/presence` · `POST /api/social/presence`
 

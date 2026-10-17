@@ -72,6 +72,7 @@ export function postLocalMessage(
     id?: string;
     kind?: MessageKind;
     origin?: GarageMessage['origin'];
+    authorNameKind?: GarageMessage['authorNameKind'];
   }
 ): PostMessageResult {
   const trimmed = body.trim();
@@ -94,11 +95,34 @@ export function postLocalMessage(
     createdAt: opts?.createdAt ?? new Date().toISOString(),
     kind,
     origin,
+    authorNameKind: opts?.authorNameKind,
   };
 
   const existing = state.server.messages[channelId] ?? [];
-  if (existing.some((m) => m.id === message.id)) {
-    return { ok: true, message, state };
+  const priorIndex = existing.findIndex((m) => m.id === message.id);
+  if (priorIndex !== -1) {
+    const prior = existing[priorIndex];
+    // A server pull of the author's own row is origin local, and it is the
+    // first copy that carries authorNameKind. A local replay with no kind
+    // must not wipe a stamp that already landed.
+    const upgrade = prior.authorNameKind == null && message.authorNameKind != null;
+    if (origin !== 'remote' && !upgrade) return { ok: true, message: prior, state };
+    const nextList = existing.slice();
+    nextList[priorIndex] = {
+      ...prior,
+      authorCallSign: message.authorCallSign,
+      authorMissionId: message.authorMissionId,
+      authorNameKind: message.authorNameKind,
+    };
+    const next: MissionServerState = {
+      ...state,
+      server: {
+        ...state.server,
+        messages: { ...state.server.messages, [channelId]: nextList },
+      },
+    };
+    saveMissionServer(next);
+    return { ok: true, message: nextList[priorIndex], state: next };
   }
 
   const nextList = [...existing, message];
@@ -145,6 +169,7 @@ export function ingestRemoteMessage(raw: unknown): MissionServerState | null {
     createdAt: m.createdAt,
     kind,
     origin,
+    authorNameKind: m.authorNameKind === 'real_name' ? 'real_name' : m.authorNameKind === 'call_sign' ? 'call_sign' : undefined,
   });
   return result.ok ? result.state : null;
 }

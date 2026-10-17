@@ -55,6 +55,8 @@ const ATHLETE_EN: Record<string, string> = {
   garageNameInvalid: 'Use 3-20 letters, numbers, hyphens, or underscores.',
   garageNameTaken: 'That call sign is already taken.',
   garageNameFailed: 'Could not save the Garage name.',
+  garageNameReserved:
+    'That name matches a call sign or starts with Mission, so the Garage will not show it as your real name.',
   garageNameSaved: 'Saved.',
   garageNameHint:
     'The Garage shows this call sign. With none set, a post says Mission and your number. Your real name is shown only after you choose Real name.',

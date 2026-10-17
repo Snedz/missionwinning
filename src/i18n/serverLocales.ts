@@ -17,6 +17,7 @@ const SERVER_EN: Record<string, string> = {
   serverWindowLabel: 'Chat',
   serverLocalNote:
     'Guests: this device only. Signed in: shared Garage rooms. Coach never reads the chat.',
+  serverRealNameBadge: 'name',
   serverReport: 'Report',
   serverReported: 'Reported',
   serverPresenceLabel: 'Presence',
