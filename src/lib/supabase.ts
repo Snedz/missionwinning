@@ -55,6 +55,10 @@ export type Profile = {
   id: string
   email: string
   full_name?: string
+  /** Owner-set Garage handle. Other people see this, not `full_name`, unless opted in. */
+  call_sign?: string | null
+  /** `call_sign` (default) or `real_name`. */
+  garage_name_mode?: 'call_sign' | 'real_name'
   created_at: string
 }
 

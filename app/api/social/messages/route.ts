@@ -16,6 +16,7 @@ import {
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { isMissingRelation, rowToGarageMessage } from '@/lib/social/cloud';
+import { garageAuthorStamp, garageMissionLabel } from '@/lib/social/authorStamp';
 
 function opaqueDbError(error: { code?: string; message?: string } | null) {
   if (isMissingRelation(error)) {
@@ -51,7 +52,7 @@ export const GET = withApiLogging('social/messages', async (request: NextRequest
   const limit = parsed.data.limit ?? 100;
   let query = scoped
     .from('social_messages')
-    .select('id, user_id, channel_slug, body, kind, author_call_sign, author_mission_id, created_at')
+    .select('id, user_id, channel_slug, body, kind, author_call_sign, author_mission_id, author_name_kind, created_at')
     .eq('channel_slug', parsed.data.channel)
     .order('created_at', { ascending: true })
     .limit(limit);
@@ -98,15 +99,51 @@ export const POST = withApiLogging('social/messages', async (request: NextReques
     return NextResponse.json({ ok: true, stored: false });
   }
 
+  const { data: profile } = await scoped
+    .from('profiles')
+    .select('call_sign, garage_name_mode')
+    .eq('id', user.id)
+    .maybeSingle();
+  const { data: mission } = await scoped
+    .from('mission_ids')
+    .select('mission_id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  let optedName: string | null = null;
+  let reserved = false;
+  if (profile?.garage_name_mode === 'real_name') {
+    const { data: opted } = await scoped
+      .from('profiles')
+      .select('full_name')
+      .eq('id', user.id)
+      .maybeSingle();
+    optedName = typeof opted?.full_name === 'string' ? opted.full_name : null;
+    if (optedName) {
+      const { data, error } = await scoped.rpc('garage_real_name_reserved', { raw: optedName });
+      // A missed lookup must not publish the name. The trigger repeats the check.
+      reserved = error != null || data !== false;
+    }
+  }
+
+  const stamped = garageAuthorStamp({
+    callSign: profile?.call_sign,
+    mode: profile?.garage_name_mode,
+    fullName: optedName,
+    missionId: mission?.mission_id,
+    reserved,
+  });
+
   const { error } = await scoped.from('social_messages').insert({
     id: parsed.data.id,
     user_id: user.id,
     channel_slug: parsed.data.channelSlug,
     body: parsed.data.body,
     kind: parsed.data.kind ?? 'text',
-    author_call_sign: parsed.data.authorCallSign,
-    author_mission_id: parsed.data.authorMissionId ?? null,
-    created_at: parsed.data.createdAt,
+    author_call_sign: stamped.label,
+    author_mission_id: garageMissionLabel(mission?.mission_id),
+    author_name_kind: stamped.realName ? 'real_name' : 'call_sign',
+    created_at: new Date().toISOString(),
   });
 
   if (error) {

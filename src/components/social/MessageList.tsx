@@ -31,6 +31,14 @@ export function MessageList({
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-sm font-extrabold">
                 {m.authorCallSign}
+                {m.authorNameKind === 'real_name' ? (
+                  <span
+                    className="ms-2 border-2 border-border px-1 text-xs font-semibold uppercase text-muted-foreground"
+                    data-testid="garage-real-name-badge"
+                  >
+                    {t('serverRealNameBadge', { defaultValue: 'name' })}
+                  </span>
+                ) : null}
                 {mission ? (
                   <span className="ms-2 font-semibold tabular-nums text-muted-foreground">{mission}</span>
                 ) : null}

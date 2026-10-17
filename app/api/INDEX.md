@@ -46,7 +46,7 @@ Legend:
 | `private-access` | POST | public password | 8/min/IP (Upstash) | password |
 | `private-access/session` | POST | Bearer access_token (getUser) + territory | 20/min/IP | mints gate cookie after OAuth; 401 no bearer; 403 blocked ISO |
 | `geo` | GET | public (CDN country headers) | 60/min/IP | first-visit lang/units; `blocked` from `hostedServiceAccessFromHeaders` |
-| `leads` | POST | public (gate path) + territory on waitlist | 5/min/IP | Zod `leadsBodySchema`; waitlist 403 blocked ISO; feedback still open |
+| `leads` | POST | public (gate path) + territory on waitlist | 5/min/IP | Zod `leadsBodySchema` source allowlist; email equality; waitlist 403 blocked ISO; feedback still open |
 | `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
 | `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |
 
@@ -54,7 +54,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `social/messages` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialMessageBodySchema` / `socialMessagesQuerySchema`. Shared Garage. Guests 401. Missing table fail-open. |
+| `social/messages` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialMessageBodySchema` / `socialMessagesQuerySchema`. Shared Garage. Stamps `call_sign` or `Mission NN`; `full_name` only if `garage_name_mode` is `real_name` and the name is not reserved. `author_name_kind` marks a real-name stamp. Guests 401. Missing table fail-open. |
 | `social/presence` | GET, POST | session | 60/min GET · 20/min POST | Zod `socialPresenceBodySchema`. Others' real rows only. |
 | `social/reports` | POST | session | 10/min | Zod `socialReportBodySchema`. Cannot report own message. |
 

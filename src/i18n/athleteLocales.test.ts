@@ -27,6 +27,7 @@ const SOURCES = [
   'src/page-components/ProfilePage.tsx',
   'src/page-components/AccountPage.tsx',
   'src/components/profile/AthleteIdentityCard.tsx',
+  'src/components/profile/GarageNameCard.tsx',
   'src/components/profile/CareerLineCard.tsx',
   'src/components/profile/MissionIdView.tsx',
 ];

@@ -31,24 +31,14 @@ android {
         targetSdk = 36
         versionCode = 55
         versionName = "1.25.0"
-        // Override via apps/android/local.properties (gitignored):
-        //   mw.apiBaseUrl=http://10.0.2.2:3000
-        //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
-        //   mw.sentryDsn=https://…@….ingest.sentry.io/…
-        val localProps = Properties().apply {
-            val f = rootProject.file("local.properties")
-            if (f.exists()) f.inputStream().use { load(it) }
-        }
-        val apiBase = localProps.getProperty("mw.apiBaseUrl") ?: "https://www.missionwinning.com"
-        val privateCookie = localProps.getProperty("mw.privateAccessCookie") ?: ""
-        val supabaseUrl = localProps.getProperty("mw.supabaseUrl") ?: ""
-        val supabaseAnon = localProps.getProperty("mw.supabaseAnonKey") ?: ""
-        val sentryDsn = localProps.getProperty("mw.sentryDsn") ?: ""
-        buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
-        buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"$privateCookie\"")
-        buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
-        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnon\"")
-        buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
+        // Release (and every non-debug type) keeps these literals. local.properties
+        // is applied in the debug build type only — a release APK must not carry a
+        // laptop API host, private-gate cookie, Supabase anon key, or Sentry DSN.
+        buildConfigField("String", "API_BASE_URL", "\"https://www.missionwinning.com\"")
+        buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"\"")
+        buildConfigField("String", "SUPABASE_URL", "\"\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"\"")
+        buildConfigField("String", "SENTRY_DSN", "\"\"")
     }
 
     signingConfigs {
@@ -89,6 +79,24 @@ android {
         }
         debug {
             applicationIdSuffix = ".debug"
+            // apps/android/local.properties (gitignored), debug builds only:
+            //   mw.apiBaseUrl=http://10.0.2.2:3000
+            //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
+            //   mw.sentryDsn=https://…@….ingest.sentry.io/…
+            val localProps = Properties().apply {
+                val f = rootProject.file("local.properties")
+                if (f.exists()) f.inputStream().use { load(it) }
+            }
+            val apiBase = localProps.getProperty("mw.apiBaseUrl") ?: "https://www.missionwinning.com"
+            val privateCookie = localProps.getProperty("mw.privateAccessCookie") ?: ""
+            val supabaseUrl = localProps.getProperty("mw.supabaseUrl") ?: ""
+            val supabaseAnon = localProps.getProperty("mw.supabaseAnonKey") ?: ""
+            val sentryDsn = localProps.getProperty("mw.sentryDsn") ?: ""
+            buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
+            buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"$privateCookie\"")
+            buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
+            buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnon\"")
+            buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
         }
     }
 

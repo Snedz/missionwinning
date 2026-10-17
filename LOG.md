@@ -1,6 +1,10 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-17 — Close waitlist wildcard, garage spoof, and sync error leak (`.1183`)
+
+Lead addresses match with equality after `trim().toLowerCase()`, so `_` in the local part is a character. Confirmation mail no longer interpolates `source`, and the tag is an allowlist of the forms that send one. The same address is not mailed again for 7 days. Garage posts show the owner's `profiles.call_sign` (stored lowercase, unique on `lower(call_sign)`), or `Mission` plus the mission number when that handle is empty. `profiles.full_name` is copied only when that user sets `garage_name_mode` to `real_name` (default `call_sign`) and the name does not match a call sign or start with Mission; those posts set `author_name_kind` so the Garage shows a name badge. A profile write that changes `full_name` or `garage_name_mode` onto a colliding name raises `garage_real_name_reserved`. A later call sign does not fail reminders or other profile updates; each post re-checks. service_role may clear a call sign. The owner sets both columns; the settings toggle is on Account. `20261017_profiles_garage_identity.sql` is the columns, the `lower(call_sign)` unique index, and the reserved-name trigger, and Ops applies it before the merge. `20261017_social_messages_stamp_author.sql` is the BEFORE INSERT stamp, applied after the merge. `created_at` is `now()`. Web Push endpoints are limited to `fcm.googleapis.com`, `updates.push.services.mozilla.com`, `*.notify.windows.com`, and `web.push.apple.com`. Android release `BuildConfig` does not read `local.properties`; only the debug build type does. Mobile sync acks return `sync_failed` and the leak regex now sees `throw new Error(error.message)` and `e.message`. `[skip vercel]`. PRIVATE_MODE stays. Founder applies the migrations; this commit does not. Identity before the merge, the post stamp after.
+
 ## 2026-10-16 — earn-back dispute status transition (+ its test) (`.1182`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1182`.
@@ -75,7 +79,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — form-cue contradiction detector (+ its test) (`.1169`)
 
 Same-lift form cues that share a tag and make opposite claims flag the lower-confidence cue. Both cues negating is not a contradiction. Label `2026.07-unified.1169`. `[skip vercel]`.
-
-## 2026-10-16 — paper→live fail-closed edge reasons (+ its test) (`.1168`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1168`.

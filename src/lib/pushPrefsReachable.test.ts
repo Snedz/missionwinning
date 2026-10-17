@@ -174,7 +174,7 @@ test('the cadence sync carries the evening hour', () => {
 const BASE = {
   userId: null,
   deviceId: 'd1',
-  endpoint: 'https://push.example/e1',
+  endpoint: 'https://fcm.googleapis.com/fcm/send/e1',
   p256dh: 'k',
   auth: 'a',
 };

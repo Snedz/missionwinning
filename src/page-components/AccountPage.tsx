@@ -37,6 +37,7 @@ import { useToast } from '@/hooks/use-toast';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
+import { GarageNameCard } from '@/components/profile/GarageNameCard';
 import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
 import { ProfilePregnancyCard } from '@/components/profile/ProfilePregnancyCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
@@ -376,6 +377,8 @@ export function AccountPage({ initialAuthError }: AccountPageProps = {}) {
         authError={authError}
         missionId={missionId}
       />
+
+      <GarageNameCard signedIn={Boolean(email)} />
 
       <ProfileTransparencyCard />
 

@@ -10,6 +10,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { leadsBodySchema, parseJsonBody } from '@/lib/apiSchemas';
+import { LEAD_CONFIRM_COOLDOWN_MS, normalizeLeadEmail } from '@/lib/leadEmail';
 import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
 import { renderEmail } from '@/emails/renderEmail';
 import {
@@ -18,18 +19,16 @@ import {
   siteUrl,
 } from '@/lib/emailServer';
 
-const CONFIRM_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
-
-async function maybeSendLeadConfirmation(email: string, source: string): Promise<void> {
+async function maybeSendLeadConfirmation(email: string): Promise<void> {
   const admin = getSupabaseAdmin();
   if (!admin) return;
 
   try {
-    const since = new Date(Date.now() - CONFIRM_COOLDOWN_MS).toISOString();
+    const since = new Date(Date.now() - LEAD_CONFIRM_COOLDOWN_MS).toISOString();
     const { data: recent } = await admin
       .from('leads')
       .select('id, confirmed_at, unsubscribed_at')
-      .ilike('email', email)
+      .eq('email', email)
       .not('confirmed_at', 'is', null)
       .gte('confirmed_at', since)
       .limit(1);
@@ -39,7 +38,7 @@ async function maybeSendLeadConfirmation(email: string, source: string): Promise
     const { data: unsub } = await admin
       .from('leads')
       .select('id')
-      .ilike('email', email)
+      .eq('email', email)
       .not('unsubscribed_at', 'is', null)
       .limit(1);
     if (unsub && unsub.length > 0) return;
@@ -64,7 +63,6 @@ async function maybeSendLeadConfirmation(email: string, source: string): Promise
         'You’re in for launch notes and the free offline workout path — free core forever, no account required to log.',
         '',
         `Open the app: ${siteUrl()}/welcome`,
-        `Your interest tag: ${source}`,
         '',
         'We will not spam. One launch note when we go public, then only if you stay opted in.',
         '',
@@ -79,7 +77,7 @@ async function maybeSendLeadConfirmation(email: string, source: string): Promise
       await admin
         .from('leads')
         .update({ confirmed_at: new Date().toISOString() })
-        .ilike('email', email)
+        .eq('email', email)
         .is('confirmed_at', null);
     }
   } catch (err) {
@@ -108,10 +106,8 @@ export const POST = withApiLogging('leads', async (req: NextRequest) => {
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  const source = String(
-    parsed.data.source || parsed.data.package_interest || 'general'
-  ).slice(0, 100);
-  const email = (parsed.data.email ?? '').trim().slice(0, 320);
+  const source = parsed.data.source ?? parsed.data.package_interest ?? 'general';
+  const email = normalizeLeadEmail(parsed.data.email ?? '');
 
   /*
    * `.215` — a waitlist signup with no address is meaningless; a feedback note
@@ -199,7 +195,7 @@ export const POST = withApiLogging('leads', async (req: NextRequest) => {
    */
   if (!isFeedbackSource(source)) {
     // Never block the HTTP response on email.
-    void maybeSendLeadConfirmation(email, source);
+    void maybeSendLeadConfirmation(email);
   }
 
   return NextResponse.json({ ok: true });

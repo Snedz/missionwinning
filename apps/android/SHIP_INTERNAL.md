@@ -57,14 +57,16 @@ Play App Signing: prefer Google-managed; keep upload key offline.
 
 ---
 
-## 3. Secrets / local.properties (release builds)
+## 3. Secrets / local.properties (debug builds only)
+
+Release `BuildConfig` does not read this file. A release APK uses `https://www.missionwinning.com` and empty cookie, Supabase, and Sentry fields. These keys apply to `./gradlew :app:installDebug` only.
 
 | Key | Purpose |
 |-----|---------|
-| `mw.apiBaseUrl` | Default production OK |
-| `mw.supabaseUrl` / `mw.supabaseAnonKey` | OTP auth |
-| `mw.sentryDsn` | Crash-only Sentry |
-| `mw.privateAccessCookie` | Only if PRIVATE_MODE still on |
+| `mw.apiBaseUrl` | Emulator override. Release stays on the production host. |
+| `mw.supabaseUrl` / `mw.supabaseAnonKey` | Debug OTP auth |
+| `mw.sentryDsn` | Debug crash reporting |
+| `mw.privateAccessCookie` | Debug only, and only if PRIVATE_MODE is still on |
 
 Vercel (Play purchase grant):
 
