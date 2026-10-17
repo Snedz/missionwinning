@@ -34,7 +34,7 @@
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | Quiet Track body-metrics card (`.975`); GPS / activity panels in Show more |
-| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New). `HomeGymKitCard` — Account day-one Home gym kit (`.763`). `ProfileImportCard` — workout CSV preview + confirm (`.940`); session CSV download is header-only when empty (`.943`); Hevy measurements on the same door (`.951`) |
+| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New). `GarageNameCard` — Account toggle for call sign vs real name. `HomeGymKitCard` — Account day-one Home gym kit (`.763`). `ProfileImportCard` — workout CSV preview + confirm (`.940`); session CSV download is header-only when empty (`.943`); Hevy measurements on the same door (`.951`) |
 | `public/` | Public SEO chrome + `LaunchNotifyForm` (landing / `/private` email notify — no checkout) |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |

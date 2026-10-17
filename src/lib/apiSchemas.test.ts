@@ -648,10 +648,11 @@ const CASES: Record<string, Case> = {
         lastSessionHigh: true,
       },
       // null is "turn the evening review off" and must reach the column.
-      { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: null },
+      { endpoint: 'https://updates.push.services.mozilla.com/wpush/v2/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: null },
     ],
     invalid: [
-      { input: { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: 23 }, because: 'the evening review window is 18–22 (.194)' },
+      { input: { endpoint: 'https://fcm.googleapis.com/fcm/send/abc', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: 23 }, because: 'the evening review window is 18–22 (.194)' },
+      { input: { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd' }, because: 'the endpoint host is not a known push service' },
       { input: { endpoint: 'not-a-url', p256dh: 'k', auth: 'a', deviceId: 'd' }, because: 'the endpoint is fetched by the server' },
     ],
   },

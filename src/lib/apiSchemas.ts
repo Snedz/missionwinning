@@ -4,6 +4,7 @@
  */
 import { z } from 'zod';
 import { LEAD_SOURCE_TAGS } from '@/lib/leadSource';
+import { isAllowedPushEndpoint } from '@/lib/pushEndpoint';
 
 /** ISO-8601 with an offset. Junk strings never reach a timestamptz cast. */
 const syncTimestamp = z.string().datetime({ offset: true });
@@ -416,8 +417,12 @@ export const mobileSyncPrefsPushBodySchema = z.object({
  * anonymously to the account created later, so the athlete is not asked to opt in
  * a second time.
  */
+const pushEndpoint = z.string().url().max(1000).refine(isAllowedPushEndpoint, {
+  message: 'push endpoint host is not allowed',
+});
+
 export const pushSubscribeBodySchema = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: pushEndpoint,
   p256dh: z.string().min(1).max(500),
   auth: z.string().min(1).max(500),
   deviceId: z.string().min(1).max(64),
@@ -438,7 +443,7 @@ export const pushSubscribeBodySchema = z.object({
 });
 
 export const pushUnsubscribeBodySchema = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: pushEndpoint,
 });
 
 /** Account deletion (GDPR Art. 17) — the literal is the second confirmation. */
@@ -507,7 +512,8 @@ export const socialMessageBodySchema = z.object({
   kind: z.enum(['text', 'nudge']).optional(),
   /**
    * Older clients still send these. The route and the BEFORE INSERT trigger
-   * ignore them and stamp the account's profile, mission id, and now().
+   * ignore them and stamp the account call sign (or Mission NN), and now().
+   * full_name is stamped only when garage_name_mode is real_name.
    */
   authorCallSign: z.string().trim().min(1).max(24),
   authorMissionId: z

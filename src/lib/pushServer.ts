@@ -5,6 +5,7 @@ import {
   isStalePushStatus,
   type PushPayload,
 } from '@/lib/pushPayload';
+import { isAllowedPushEndpoint } from '@/lib/pushEndpoint';
 
 export type { PushPayload };
 export type PushSendResult = 'sent' | 'no_subscription' | 'failed';
@@ -81,6 +82,10 @@ async function deliver(
   let anySent = false;
 
   for (const row of rows) {
+    if (!isAllowedPushEndpoint(row.endpoint)) {
+      console.error('[push] refused endpoint host');
+      continue;
+    }
     try {
       await webpush.sendNotification(
         {

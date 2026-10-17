@@ -46,6 +46,19 @@ const ATHLETE_EN: Record<string, string> = {
   athleteIdentityRejectUnsafe:
     'That contains characters that break a shared list. Try letters and numbers.',
 
+  garageNameTitle: 'Garage name',
+  garageNameSignedOut: 'Sign in to choose the name the Garage shows.',
+  garageNameCallSign: 'Call sign',
+  garageNameRealName: 'Real name',
+  garageNameLabel: 'Call sign',
+  garageNameSave: 'Save',
+  garageNameInvalid: 'Use 3-20 letters, numbers, hyphens, or underscores.',
+  garageNameTaken: 'That call sign is already taken.',
+  garageNameFailed: 'Could not save the Garage name.',
+  garageNameSaved: 'Saved.',
+  garageNameHint:
+    'The Garage shows this call sign. With none set, a post says Mission and your number. Your real name is shown only after you choose Real name.',
+
   // --- Mission ID (signed-in only; not the 00–99 call-sign) ---
   missionIdLabel: 'Mission ID',
 

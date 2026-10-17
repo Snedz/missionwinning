@@ -20,7 +20,7 @@
 2. `garage.ts` — seed one Garage + three rooms + self
 3. `store.ts` — `safeStorage` persist + presence
 4. `callSign.ts` — operator name or `"Athlete"` + optional Mission ID (device only; the server stamps `authorStamp.ts`)
-4b. `authorStamp.ts` — profile `full_name` and `mission_ids` for a signed-in post
+4b. `authorStamp.ts` — `profiles.call_sign`, or `Mission NN`; `full_name` only when `garage_name_mode` is `real_name`. `callSignSync.ts` writes the owner's choice.
 5. `cloud.ts` — row mapping + missing-table detect
 6. `realtime.ts` — shared `mw-garage` broadcast + optional `postgres_changes`; fail open
 7. `../socialSync.ts` — outbox kinds; guests never enqueue
