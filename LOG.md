@@ -1,6 +1,10 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-17 — HTTP route contracts for existing API handlers (`.1183`)
+
+Route-lane tests call the real handlers for the live HTTP API and lock status plus JSON shape: success, bad input, and session or secret refusal where the route requires one. Supabase, food search, and PayPal are answered by a local fetch stand-in. Payments stay off, so those responses carry no payment URL. Label `2026.07-unified.1183`. `[skip vercel]`. PRIVATE_MODE stays.
+
 ## 2026-10-16 — earn-back dispute status transition (+ its test) (`.1182`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1182`.
@@ -75,7 +79,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — form-cue contradiction detector (+ its test) (`.1169`)
 
 Same-lift form cues that share a tag and make opposite claims flag the lower-confidence cue. Both cues negating is not a contradiction. Label `2026.07-unified.1169`. `[skip vercel]`.
-
-## 2026-10-16 — paper→live fail-closed edge reasons (+ its test) (`.1168`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1168`.

@@ -1,0 +1,1336 @@
+{
+  "note": "Local shapes for existing HTTP handlers. Placeholder hosts and tokens only. No payment URL.",
+  "routes": [
+    {
+      "id": "health",
+      "file": "app/api/health/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/health",
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "build": "string",
+            "time": "string"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/health?deep=no",
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "build": "string",
+            "time": "string"
+          },
+          "absent": [
+            "checks"
+          ]
+        },
+        {
+          "kind": "auth",
+          "path": "/api/health?deep=1",
+          "status": 401,
+          "env": {
+            "CRON_SECRET": "test-cron-secret"
+          },
+          "bodyExpect": {
+            "ok": false,
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "geo",
+      "file": "app/api/geo/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/geo",
+          "status": 200,
+          "shape": {
+            "country": "string|null",
+            "language": "string",
+            "units": "string",
+            "source": "string",
+            "blocked": "boolean",
+            "blockReason": "string|null",
+            "blockMessage": "string|null"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/geo",
+          "headers": {
+            "accept-language": "%%%"
+          },
+          "status": 200,
+          "shape": {
+            "language": "string",
+            "units": "string",
+            "blocked": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-status",
+      "file": "app/api/premium/status/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/status",
+          "status": 200,
+          "bodyExpect": {
+            "premium": true,
+            "source": "free_beta"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/status",
+          "status": 200,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "premium": false,
+            "source": "anonymous"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-recipes",
+      "file": "app/api/premium/recipes/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/recipes",
+          "status": 200,
+          "shape": {
+            "recipes": "nonEmptyArray"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/recipes",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Sign in and unlock premium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-programs",
+      "file": "app/api/premium/programs/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/programs",
+          "status": 200,
+          "shape": {
+            "programs": "nonEmptyArray"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/premium/programs?category=starter",
+          "status": 400,
+          "bodyExpect": {
+            "error": "Use client templates for non-pro categories"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/programs",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Premium required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-mobility",
+      "file": "app/api/premium/mobility/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/mobility",
+          "status": 200,
+          "shape": {
+            "flows": "nonEmptyArray"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/mobility",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Sign in and unlock premium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-mind",
+      "file": "app/api/premium/mind/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/mind",
+          "status": 200,
+          "shape": {
+            "sessions": "nonEmptyArray"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/mind",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Sign in and unlock premium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-guidebook",
+      "file": "app/api/premium/guidebook/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/guidebook",
+          "status": 200,
+          "shape": {
+            "chapters": "nonEmptyArray"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/guidebook",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Sign in and unlock premium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "premium-fuel-plan",
+      "file": "app/api/premium/fuel-plan/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/premium/fuel-plan",
+          "status": 200,
+          "shape": {
+            "plan": "object"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/premium/fuel-plan",
+          "status": 403,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "error": "Sign in and unlock premium"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fuel-search",
+      "file": "app/api/fuel/search-food/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/fuel/search-food?q=oats",
+          "status": 200,
+          "shape": {
+            "items": "array"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/fuel/search-food?q=a",
+          "status": 200,
+          "bodyExpect": {
+            "items": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "fuel-barcode",
+      "file": "app/api/fuel/barcode/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/fuel/barcode?code=00000000",
+          "status": 200,
+          "bodyExpect": {
+            "item": null,
+            "error": "not_found"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/fuel/barcode?code=12",
+          "status": 400,
+          "bodyExpect": {
+            "item": null,
+            "error": "invalid_barcode"
+          }
+        }
+      ]
+    },
+    {
+      "id": "leads",
+      "file": "app/api/leads/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/leads",
+          "body": {
+            "source": "feedback-page",
+            "goals": "The log button is clear."
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true
+          },
+          "absent": [
+            "paymentUrl",
+            "url"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/leads",
+          "body": {
+            "source": "launch-waitlist"
+          },
+          "status": 400,
+          "bodyExpect": {
+            "error": "email is required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coach-trainer",
+      "file": "app/api/coach/trainer/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/coach/trainer",
+          "body": {
+            "exerciseName": "Squat",
+            "setNumber": 1,
+            "setCount": 3,
+            "reps": 5,
+            "weight": 60,
+            "unitLabel": "kg",
+            "rowType": "weight"
+          },
+          "status": 200,
+          "shape": {
+            "text": "string",
+            "source": "string"
+          },
+          "absent": [
+            "url",
+            "paymentUrl",
+            "checkoutUrl"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/coach/trainer",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "file": "app/api/checkout/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/checkout",
+          "auth": "session",
+          "body": {
+            "planId": "monthly"
+          },
+          "status": 503,
+          "bodyExpect": {
+            "error": "Payments are off"
+          },
+          "absent": [
+            "url",
+            "paymentUrl",
+            "sessionId"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/checkout",
+          "auth": "session",
+          "body": {
+            "planId": "nope"
+          },
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/checkout",
+          "body": {
+            "planId": "monthly"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Sign in required",
+            "code": "auth_required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "billing-portal",
+      "file": "app/api/billing-portal/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/billing-portal",
+          "auth": "session",
+          "body": {},
+          "status": 503,
+          "bodyExpect": {
+            "error": "Payments are off"
+          },
+          "absent": [
+            "url",
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "auth",
+          "path": "/api/billing-portal",
+          "body": {},
+          "status": 401,
+          "bodyExpect": {
+            "error": "Sign in required",
+            "code": "auth_required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "crypto-intent",
+      "file": "app/api/crypto-checkout/intent/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/crypto-checkout/intent",
+          "auth": "session",
+          "body": {},
+          "status": 503,
+          "bodyExpect": {
+            "error": "Crypto checkout not configured"
+          },
+          "absent": [
+            "url",
+            "paymentUrl",
+            "intentId"
+          ]
+        },
+        {
+          "kind": "auth",
+          "path": "/api/crypto-checkout/intent",
+          "body": {},
+          "status": 401,
+          "bodyExpect": {
+            "error": "Sign in required",
+            "code": "auth_required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "account-export",
+      "file": "app/api/account/export/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/account/export",
+          "auth": "session",
+          "status": 200,
+          "shape": {
+            "app": "mission-winning",
+            "exportedAt": "string",
+            "userId": "string",
+            "email": "string",
+            "tables": "object"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/account/export",
+          "status": 401,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Sign in required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "account-delete",
+      "file": "app/api/account/delete/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "invalid",
+          "path": "/api/account/delete",
+          "auth": "session",
+          "body": {
+            "confirm": "no"
+          },
+          "status": 400,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Invalid payload"
+          }
+        },
+        {
+          "kind": "success",
+          "path": "/api/account/delete",
+          "auth": "session",
+          "body": {
+            "confirm": "DELETE"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true
+          },
+          "absent": [
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "auth",
+          "path": "/api/account/delete",
+          "body": {
+            "confirm": "DELETE"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Sign in required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "account-mission-id",
+      "file": "app/api/account/mission-id/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/account/mission-id",
+          "auth": "session",
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "missionId": "number"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/account/mission-id",
+          "status": 401,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Sign in required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "play-purchase",
+      "file": "app/api/mobile/premium/play-purchase/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/mobile/premium/play-purchase",
+          "auth": "bearer",
+          "body": {
+            "productId": "super",
+            "purchaseToken": "tokentokentoken"
+          },
+          "status": 410,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Payments are off",
+            "premium": false
+          },
+          "absent": [
+            "url",
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/mobile/premium/play-purchase",
+          "auth": "bearer",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "ok": false,
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/mobile/premium/play-purchase",
+          "body": {
+            "productId": "super",
+            "purchaseToken": "tokentokentoken"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "ok": false,
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobile-premium-status",
+      "file": "app/api/mobile/premium/status/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/mobile/premium/status",
+          "status": 200,
+          "bodyExpect": {
+            "premium": true,
+            "source": "free_beta"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/mobile/premium/status",
+          "status": 200,
+          "env": {
+            "NEXT_PUBLIC_FREE_BETA": "false"
+          },
+          "bodyExpect": {
+            "premium": false,
+            "source": "anonymous"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobile-workouts",
+      "file": "app/api/mobile/workouts/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/mobile/workouts",
+          "body": {
+            "workoutName": "Day",
+            "durationSeconds": 600,
+            "setCount": 3,
+            "totalVolume": 100
+          },
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "synced": false,
+            "id": "string",
+            "workoutName": "Day"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/mobile/workouts",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobile-telemetry",
+      "file": "app/api/mobile/telemetry/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/mobile/telemetry",
+          "body": {
+            "installId": "3f9a1c2e-5b7d-4e8f-9a0b-1c2d3e4f5a6b",
+            "weekKey": "2026-W33"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true,
+            "stored": true
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/mobile/telemetry",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "beta-invites-landed",
+      "file": "app/api/beta/invites/landed/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/beta/invites/landed",
+          "body": {
+            "code": "MW-B-23456"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/beta/invites/landed",
+          "body": {
+            "code": "nope"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "beta-metrics",
+      "file": "app/api/beta/metrics/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/beta/metrics",
+          "auth": "admin",
+          "status": 200,
+          "shape": {
+            "totalProfiles": "number",
+            "launchReady": "boolean"
+          },
+          "env": {
+            "BETA_ADMIN_SECRET": "test-admin-secret"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/beta/metrics",
+          "status": 403,
+          "bodyExpect": {
+            "error": "Forbidden"
+          },
+          "env": {
+            "BETA_ADMIN_SECRET": "test-admin-secret"
+          }
+        }
+      ]
+    },
+    {
+      "id": "referral-get",
+      "file": "app/api/referral/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/referral",
+          "auth": "session",
+          "status": 200,
+          "shape": {
+            "code": "string",
+            "recruitCount": "number"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/referral",
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "referral-post",
+      "file": "app/api/referral/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "invalid",
+          "path": "/api/referral",
+          "auth": "session",
+          "body": {
+            "code": "nope"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true,
+            "status": "ignored"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/referral",
+          "body": {
+            "code": "MW-ABCDE"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "social-messages-get",
+      "file": "app/api/social/messages/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/social/messages?channel=train",
+          "auth": "session",
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "available": "boolean",
+            "messages": "array"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/social/messages",
+          "auth": "session",
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/social/messages?channel=train",
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "social-messages-post",
+      "file": "app/api/social/messages/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/social/messages",
+          "auth": "session",
+          "body": {
+            "id": "msg-1",
+            "channelSlug": "train",
+            "body": "Logged the first set.",
+            "authorCallSign": "Athlete",
+            "createdAt": "2026-08-14T12:00:00.000Z"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true,
+            "stored": true
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/social/messages",
+          "auth": "session",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/social/messages",
+          "body": {
+            "id": "msg-1"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "week-logged",
+      "file": "app/api/metrics/week-logged/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/metrics/week-logged",
+          "auth": "session",
+          "body": {
+            "isoWeek": "2026-W33"
+          },
+          "status": 200,
+          "shape": {
+            "ok": true,
+            "stored": true,
+            "owner": "string"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/metrics/week-logged",
+          "body": {
+            "isoWeek": "this-week"
+          },
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/metrics/week-logged",
+          "body": {
+            "isoWeek": "2026-W33"
+          },
+          "status": 403,
+          "shape": {
+            "error": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "push-subscribe",
+      "file": "app/api/push/subscribe/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/push/subscribe",
+          "body": {
+            "endpoint": "https://push.example.test/sub/abc",
+            "p256dh": "key",
+            "auth": "auth",
+            "deviceId": "device-1"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "ok": true,
+            "linked": false
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/push/subscribe",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "ok": false,
+            "error": "string"
+          }
+        }
+      ]
+    },
+    {
+      "id": "youth-consent-status",
+      "file": "app/api/youth/consent-status/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/youth/consent-status",
+          "auth": "session",
+          "status": 404,
+          "bodyExpect": {
+            "error": "Not found"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/youth/consent-status",
+          "status": 404,
+          "bodyExpect": {
+            "error": "Not found"
+          }
+        }
+      ]
+    },
+    {
+      "id": "youth-consent-notify",
+      "file": "app/api/youth/consent-notify/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/youth/consent-notify",
+          "auth": "session",
+          "body": {
+            "parentEmail": "parent@example.com",
+            "childAge": 12
+          },
+          "status": 404,
+          "bodyExpect": {
+            "error": "Not found"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/youth/consent-notify",
+          "body": {},
+          "status": 404,
+          "bodyExpect": {
+            "error": "Not found"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/youth/consent-notify",
+          "body": {
+            "parentEmail": "parent@example.com",
+            "childAge": 12
+          },
+          "status": 404,
+          "bodyExpect": {
+            "error": "Not found"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wearables-status",
+      "file": "app/api/wearables/status/route.ts",
+      "export": "GET",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/wearables/status",
+          "status": 200,
+          "bodyExpect": {
+            "enabled": false,
+            "providers": []
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/wearables/status",
+          "status": 401,
+          "bodyExpect": {
+            "error": "Sign in required",
+            "code": "auth_required"
+          },
+          "env": {
+            "NEXT_PUBLIC_WEARABLES": "true",
+            "NEXT_PUBLIC_SURFACES": "wearables"
+          }
+        }
+      ]
+    },
+    {
+      "id": "paypal-webhook",
+      "file": "app/api/paypal-webhook/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/paypal-webhook",
+          "body": {},
+          "status": 503,
+          "shape": {
+            "error": "string"
+          },
+          "absent": [
+            "url",
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/paypal-webhook",
+          "raw": "not-json",
+          "headers": {
+            "paypal-transmission-id": "t",
+            "paypal-transmission-time": "t",
+            "paypal-transmission-sig": "t",
+            "paypal-cert-url": "https://api.paypal.com/cert",
+            "paypal-auth-algo": "SHA256withRSA"
+          },
+          "status": 400,
+          "bodyExpect": {
+            "error": "Invalid JSON"
+          },
+          "env": {
+            "PAYPAL_WEBHOOK_ID": "test-webhook",
+            "PAYPAL_CLIENT_ID": "test-client",
+            "PAYPAL_CLIENT_SECRET": "test-client-secret"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/paypal-webhook",
+          "body": {
+            "event_type": "PING"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Missing or invalid PayPal transmission headers"
+          },
+          "env": {
+            "PAYPAL_WEBHOOK_ID": "test-webhook",
+            "PAYPAL_CLIENT_ID": "test-client",
+            "PAYPAL_CLIENT_SECRET": "test-client-secret"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stripe-webhook",
+      "file": "app/api/stripe-webhook/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/stripe-webhook",
+          "raw": "{}",
+          "status": 503,
+          "bodyExpect": {
+            "error": "Stripe webhook not configured"
+          },
+          "absent": [
+            "url",
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "auth",
+          "path": "/api/stripe-webhook",
+          "raw": "{}",
+          "status": 401,
+          "bodyExpect": {
+            "error": "Missing stripe-signature header"
+          },
+          "env": {
+            "STRIPE_WEBHOOK_SECRET": "whsec_test_placeholder"
+          }
+        }
+      ]
+    },
+    {
+      "id": "private-access",
+      "file": "app/api/private-access/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/private-access",
+          "body": {
+            "password": "test-gate-secret-32chars-min!!"
+          },
+          "status": 200,
+          "bodyExpect": {
+            "success": true
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/private-access",
+          "body": {},
+          "status": 400,
+          "bodyExpect": {
+            "error": "Invalid request"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/private-access",
+          "body": {
+            "password": "wrong-code"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Incorrect access code"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coach-chat",
+      "file": "app/api/coach/chat/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/coach/chat",
+          "auth": "session",
+          "body": {
+            "message": "What should I train?",
+            "context": {
+              "readiness": 70,
+              "strain": 20,
+              "recovery": 80,
+              "trainDays14": 3
+            }
+          },
+          "status": 503,
+          "bodyExpect": {
+            "error": "coach_offline"
+          },
+          "absent": [
+            "url",
+            "paymentUrl"
+          ]
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/coach/chat",
+          "auth": "session",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/coach/chat",
+          "body": {
+            "message": "hi"
+          },
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coach-daily-insight",
+      "file": "app/api/coach/daily-insight/route.ts",
+      "export": "POST",
+      "checks": [
+        {
+          "kind": "success",
+          "path": "/api/coach/daily-insight",
+          "auth": "session",
+          "body": {
+            "readiness": 70,
+            "strain": 20,
+            "recovery": 80,
+            "fallback": {
+              "messageKey": "coach.ready",
+              "actionLabelKey": "coach.start",
+              "actionPath": "/active"
+            }
+          },
+          "status": 200,
+          "shape": {
+            "messageKey": "string",
+            "actionPath": "string",
+            "source": "rules"
+          }
+        },
+        {
+          "kind": "invalid",
+          "path": "/api/coach/daily-insight",
+          "auth": "session",
+          "body": {},
+          "status": 400,
+          "shape": {
+            "error": "string"
+          }
+        },
+        {
+          "kind": "auth",
+          "path": "/api/coach/daily-insight",
+          "body": {},
+          "status": 401,
+          "bodyExpect": {
+            "error": "Unauthorized"
+          }
+        }
+      ]
+    }
+  ]
+}
