@@ -5,7 +5,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { UNSET_CALL_SIGN } from '@/lib/social/callSign';
 import { rowToGarageMessage } from '@/lib/social/cloud';
@@ -214,49 +214,59 @@ test('the client sync writes call_sign and never selects full_name', () => {
   assert.match(list, /garage-real-name-badge/);
 });
 
-test('BEFORE INSERT stamps call_sign, Mission NN, and full_name only when opted in', () => {
-  const sql = read('supabase/migrations/20261017_social_messages_stamp_author.sql');
-  assert.match(sql, /before insert on public\.social_messages/i);
-  assert.match(sql, /NEW\.created_at\s*:=\s*now\(\)/);
-  assert.match(sql, /from public\.profiles/);
-  assert.match(sql, /from public\.mission_ids/);
-  assert.match(sql, /NEW\.author_call_sign/);
-  assert.match(sql, /NEW\.author_mission_id/);
-  assert.match(sql, /create type public\.garage_name_mode as enum \('call_sign', 'real_name'\)/);
-  assert.match(sql, /call_sign ~ '\^\[A-Za-z0-9_-\]\{3,20\}\$'/);
-  assert.match(sql, /create unique index profiles_call_sign_unique/);
-  assert.match(sql, /on public\.profiles \(lower\(call_sign\)\)/);
-  assert.match(sql, /garage_name_mode public\.garage_name_mode not null default 'call_sign'/);
-  assert.match(sql, /function public\.garage_compare_key\(raw text\)/);
-  assert.match(sql, /function public\.garage_display_name\(raw text\)/);
-  assert.match(sql, /function public\.garage_real_name_reserved\(raw text\)/);
-  assert.match(sql, /security definer/);
-  assert.match(sql, /starts_with\(key, 'mission'\)/);
-  assert.match(sql, /lower\(h\.call_sign\) = key/);
-  assert.doesNotMatch(sql, /garage_compare_key\(h\.call_sign\)/);
-  assert.match(sql, /chr\(160\)/);
-  assert.match(sql, /chr\(12288\)/);
-  assert.match(sql, /when p\.garage_name_mode = 'real_name' then p\.full_name/);
-  assert.doesNotMatch(sql, /left\(btrim\(p\.full_name\), 24\)/);
-  assert.equal((sql.match(/p\.full_name/g) ?? []).length, 1);
-  assert.match(sql, /raise exception 'garage_real_name_reserved'/);
-  assert.match(sql, /errcode = '23514'/);
-  assert.match(sql, /NEW\.author_name_kind := 'real_name'/);
-  assert.match(sql, /author_name_kind in \('call_sign', 'real_name'\)/);
-  assert.match(sql, /coalesce\(auth\.role\(\), ''\) = 'service_role'/);
-  assert.match(sql, /if NEW\.call_sign is not null then/);
-  const owner = sql.slice(
-    sql.indexOf('function public.profiles_owner_garage_identity()'),
-    sql.indexOf('function public.social_messages_stamp_author()')
-  );
+test('garage identity sorts before the post stamp, and each file owns one job', () => {
+  const identityName = '20261017_profiles_garage_identity.sql';
+  const stampName = '20261017_social_messages_stamp_author.sql';
+  const files = readdirSync(path.join(root, 'supabase/migrations'))
+    .filter((name) => name.endsWith('.sql'))
+    .sort();
+  assert.ok(files.indexOf(identityName) !== -1 && files.indexOf(identityName) < files.indexOf(stampName));
+
+  const identity = read(`supabase/migrations/${identityName}`);
+  const stamp = read(`supabase/migrations/${stampName}`);
+  assert.match(identity, /create type public\.garage_name_mode as enum \('call_sign', 'real_name'\)/);
+  assert.match(identity, /call_sign ~ '\^\[A-Za-z0-9_-\]\{3,20\}\$'/);
+  assert.match(identity, /create unique index profiles_call_sign_unique/);
+  assert.match(identity, /on public\.profiles \(lower\(call_sign\)\)/);
+  assert.match(identity, /garage_name_mode public\.garage_name_mode not null default 'call_sign'/);
+  assert.match(identity, /function public\.garage_compare_key\(raw text\)/);
+  assert.match(identity, /function public\.garage_display_name\(raw text\)/);
+  assert.match(identity, /function public\.garage_real_name_reserved\(raw text\)/);
+  assert.match(identity, /security definer/);
+  assert.match(identity, /starts_with\(key, 'mission'\)/);
+  assert.match(identity, /lower\(h\.call_sign\) = key/);
+  assert.doesNotMatch(identity, /garage_compare_key\(h\.call_sign\)/);
+  assert.match(identity, /chr\(160\)/);
+  assert.match(identity, /chr\(12288\)/);
+  assert.match(identity, /raise exception 'garage_real_name_reserved'/);
+  assert.match(identity, /errcode = '23514'/);
+  assert.match(identity, /coalesce\(auth\.role\(\), ''\) = 'service_role'/);
+  assert.match(identity, /if NEW\.call_sign is not null then/);
+  assert.match(identity, /auth\.uid\(\) is distinct from NEW\.id/);
+  assert.match(identity, /before insert or update on public\.profiles/i);
+  assert.doesNotMatch(identity, /function public\.social_messages_stamp_author/);
+  assert.doesNotMatch(identity, /author_name_kind/);
+  const owner = identity.slice(identity.indexOf('function public.profiles_owner_garage_identity()'));
   const resetAt = owner.indexOf("= 'service_role'");
   const resetReturn = owner.indexOf('return NEW;', resetAt);
   const raiseAt = owner.indexOf("raise exception 'garage_real_name_reserved'");
   assert.ok(resetAt !== -1 && resetReturn !== -1 && resetReturn < raiseAt);
-  assert.match(sql, /'Mission ' \|\| lpad\(mid::text, 2, '0'\)/);
-  assert.match(sql, /auth\.uid\(\) is distinct from NEW\.id/);
-  assert.match(sql, /before insert or update on public\.profiles/i);
-  assert.doesNotMatch(sql, /label := 'Athlete'/);
+
+  assert.match(stamp, /before insert on public\.social_messages/i);
+  assert.match(stamp, /NEW\.created_at\s*:=\s*now\(\)/);
+  assert.match(stamp, /from public\.profiles/);
+  assert.match(stamp, /from public\.mission_ids/);
+  assert.match(stamp, /NEW\.author_call_sign/);
+  assert.match(stamp, /NEW\.author_mission_id/);
+  assert.match(stamp, /when p\.garage_name_mode = 'real_name' then p\.full_name/);
+  assert.doesNotMatch(stamp, /left\(btrim\(p\.full_name\), 24\)/);
+  assert.equal((stamp.match(/p\.full_name/g) ?? []).length, 1);
+  assert.match(stamp, /NEW\.author_name_kind := 'real_name'/);
+  assert.match(stamp, /author_name_kind in \('call_sign', 'real_name'\)/);
+  assert.match(stamp, /'Mission ' \|\| lpad\(mid::text, 2, '0'\)/);
+  assert.doesNotMatch(stamp, /label := 'Athlete'/);
+  assert.doesNotMatch(stamp, /profiles_owner_garage_identity/);
+  assert.doesNotMatch(stamp, /create unique index profiles_call_sign_unique/);
 });
 
 /**
@@ -294,11 +304,7 @@ function reservedRaiseOnProfileWrite(
 }
 
 test('a later colliding call sign does not block an unrelated profile update', () => {
-  const sql = read('supabase/migrations/20261017_social_messages_stamp_author.sql');
-  const owner = sql.slice(
-    sql.indexOf('function public.profiles_owner_garage_identity()'),
-    sql.indexOf('function public.social_messages_stamp_author()')
-  );
+  const owner = read('supabase/migrations/20261017_profiles_garage_identity.sql');
   assert.equal((owner.match(/raise exception 'garage_real_name_reserved'/g) ?? []).length, 1);
   assert.doesNotMatch(
     owner,
