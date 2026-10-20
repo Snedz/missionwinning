@@ -76,7 +76,23 @@ export function mergeTodayIntoNutritionLog(
     time: l.time,
     date: today,
   }));
-  return pruneNutritionLogToDays([...older, ...todayRows], days);
+  // The retention window must END ON THE DAY BEING MERGED, not on the wall clock.
+  //
+  // Anchoring it to `new Date()` made this function's `today` argument a lie: the
+  // rows kept were the last 90 days from NOW, not the last 90 days ending on the
+  // day you asked for. Two things followed. A merge for any day other than today
+  // pruned against a different window than the caller expected, and a test written
+  // in July with fixed dates started failing in October, the day "Old" (2026-07-20)
+  // aged past a 90-day window measured from 2026-10-20. The test was a time bomb
+  // and the implementation was the reason it went off; both are fixed here.
+  //
+  // In production `today` IS now, so the user's log is unchanged -- this only
+  // makes the function honest about the day it was handed.
+  return pruneNutritionLogToDays(
+    [...older, ...todayRows],
+    days,
+    new Date(`${today}T12:00:00`),
+  );
 }
 
 export function getFrequentQuickFoods(
