@@ -187,45 +187,47 @@ export function LogToPlanHero({ staticFallback }: Props) {
 /** SSR / no-JS shell. Same geometry so hydration causes no layout shift. */
 export function LogToPlanHeroFallback() {
   return (
-    <div className="border-2 border-border bg-card p-4 sm:p-5" aria-hidden>
-      <div className="mb-4 flex items-baseline justify-between gap-3">
-        <p className="eyebrow">Squat · today</p>
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground">
-          0/3
-        </p>
-      </div>
-      <ul className="space-y-1.5">
-        {[0, 1, 2].map((i) => (
-          <li
-            key={i}
-            className={`flex items-center gap-3 border-2 px-3 py-2.5 ${
-              i === 0 ? 'border-primary bg-tint' : 'border-border bg-card'
-            }`}
-          >
-            <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
-              {i + 1}
-            </span>
-            <span
-              className={`font-mono text-sm tabular-nums ${
-                i === 0 ? 'text-foreground' : 'text-muted-foreground'
+    <div role="status" aria-busy="true" aria-label="Loading demo">
+      <div className="border-2 border-border bg-card p-4 sm:p-5" aria-hidden>
+        <div className="mb-4 flex items-baseline justify-between gap-3">
+          <p className="eyebrow">Squat · today</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground">
+            0/3
+          </p>
+        </div>
+        <ul className="space-y-1.5">
+          {[0, 1, 2].map((i) => (
+            <li
+              key={i}
+              className={`flex items-center gap-3 border-2 px-3 py-2.5 ${
+                i === 0 ? 'border-primary bg-tint' : 'border-border bg-card'
               }`}
             >
-              8 × 82.5 kg
-            </span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-4 min-h-[3.5rem] border-2 border-border bg-background px-3 py-2.5">
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.
+              <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+                {i + 1}
+              </span>
+              <span
+                className={`font-mono text-sm tabular-nums ${
+                  i === 0 ? 'text-foreground' : 'text-muted-foreground'
+                }`}
+              >
+                8 × 82.5 kg
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4 min-h-[3.5rem] border-2 border-border bg-background px-3 py-2.5">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.
+          </p>
+        </div>
+        <div className="tap-target mt-4 flex w-full items-center justify-center gap-2 border-2 border-primary bg-tint py-3 text-sm font-semibold text-foreground">
+          Log set <span className="font-mono tabular-nums text-muted-foreground">8 × 82.5 kg</span>
+        </div>
+        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+          Demo · same engine as the app
         </p>
       </div>
-      <div className="tap-target mt-4 flex w-full items-center justify-center gap-2 border-2 border-primary bg-tint py-3 text-sm font-semibold text-foreground">
-        Log set <span className="font-mono tabular-nums text-muted-foreground">8 × 82.5 kg</span>
-      </div>
-      <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-        Demo · same engine as the app
-      </p>
     </div>
   );
 }
