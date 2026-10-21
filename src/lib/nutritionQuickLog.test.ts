@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getRecentFoods,
@@ -27,6 +27,14 @@ describe('summarizeNutritionDays', () => {
 });
 
 describe('mergeTodayIntoNutritionLog', () => {
+  // Pin the clock: the 90-day prune runs against new Date(), so fixture dates must not age out.
+  beforeEach(() => {
+    mock.timers.enable({ apis: ['Date'], now: new Date('2026-07-24T12:00:00Z') });
+  });
+  afterEach(() => {
+    mock.timers.reset();
+  });
+
   it('replaces today and keeps older days', () => {
     const prev: NutritionLogRow[] = [
       { name: 'Old', protein: 1, cals: 10, date: '2026-07-20' },
@@ -41,6 +49,39 @@ describe('mergeTodayIntoNutritionLog', () => {
     assert.equal(next.find((r) => r.date === '2026-07-24')?.name, 'Eggs');
     assert.ok(next.some((r) => r.name === 'Old'));
     assert.ok(!next.some((r) => r.name === 'Stale today'));
+  });
+
+  it('keeps the days before the day being merged, however long ago that day was', () => {
+    // The retention window follows the day being MERGED, not the wall clock.
+    // This is the property the July fixture above was silently relying on, and
+    // it is why that test went off as a time bomb in October.
+    const prev: NutritionLogRow[] = [
+      { name: 'Older', protein: 1, cals: 10, date: '2020-01-01' },
+      { name: 'Stale today', protein: 2, cals: 20, date: '2020-01-05' },
+    ];
+    const next = mergeTodayIntoNutritionLog(
+      prev,
+      [{ name: 'Eggs', protein: 12, cals: 140, meal: 'breakfast' }],
+      '2020-01-05'
+    );
+    assert.ok(next.some((r) => r.name === 'Older'), 'the days before the merged day are kept');
+    assert.ok(!next.some((r) => r.name === 'Stale today'));
+    assert.ok(next.some((r) => r.name === 'Eggs'));
+  });
+
+  it('still prunes rows older than the retention window before the merged day', () => {
+    // The window still prunes -- it just prunes relative to the merged day.
+    const prev: NutritionLogRow[] = [
+      { name: 'Ancient', protein: 1, cals: 10, date: '2019-01-01' },
+    ];
+    const next = mergeTodayIntoNutritionLog(
+      prev,
+      [{ name: 'Eggs', protein: 12, cals: 140, meal: 'breakfast' }],
+      '2020-01-05'
+    );
+    assert.ok(!next.some((r) => r.name === 'Ancient'),
+      'a row far outside the window is still pruned');
+    assert.ok(next.some((r) => r.name === 'Eggs'));
   });
 });
 

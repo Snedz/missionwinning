@@ -22,6 +22,7 @@
     "export-locales": "tsx scripts/export-locale-json.ts",
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "check-token-sync": "node scripts/check-token-sync.mjs",
+    "contrast:tokens": "tsx scripts/token-contrast.mjs",
     "check-display-type": "node scripts/check-display-type.mjs",
     "check-build-label": "node scripts/check-build-label.mjs",
     "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
