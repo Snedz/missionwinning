@@ -3,6 +3,11 @@
  * Consumers: app/api POST/GET handlers | See: docs/API.md
  */
 import { z } from 'zod';
+import { LEAD_SOURCE_TAGS } from '@/lib/leadSource';
+import { isAllowedPushEndpoint } from '@/lib/pushEndpoint';
+
+/** ISO-8601 with an offset. Junk strings never reach a timestamptz cast. */
+const syncTimestamp = z.string().datetime({ offset: true });
 
 const utmField = z.string().max(200).optional();
 
@@ -19,10 +24,10 @@ export const leadsBodySchema = z.object({
   email: z.string().email().max(320).optional(),
   name: z.string().max(120).optional(),
   goals: z.string().max(2000).optional(),
-  /** Preferred attribution channel (e.g. landing-updates, launch-waitlist). */
-  source: z.string().max(80).optional(),
+  /** Attribution tag the forms actually send. Not free text. */
+  source: z.enum(LEAD_SOURCE_TAGS).optional(),
   /** Legacy client field — API maps into package_interest when source missing. */
-  package_interest: z.string().max(80).optional(),
+  package_interest: z.enum(LEAD_SOURCE_TAGS).optional(),
   referrer: z.string().max(500).optional(),
   utm: z
     .object({
@@ -319,7 +324,7 @@ export const mobileSyncSetSchema = z.object({
   setIndex: z.number().int().min(0).max(48),
   reps: z.number().int().min(0).max(999),
   weight: z.number().min(0).max(1_000_000),
-  completedAt: z.string().max(40),
+  completedAt: syncTimestamp,
   sessionId: z.string().max(120).nullable().optional(),
   weightUnit: z.string().max(8).default('kg'),
   rpe: z.number().int().min(6).max(10).nullable().optional(),
@@ -337,15 +342,15 @@ export const mobileSyncSetSchema = z.object({
 export const mobileSyncWorkoutSchema = z.object({
   clientId: z.string().uuid(),
   workoutName: z.string().min(1).max(120),
-  completedAt: z.string().max(40),
+  completedAt: syncTimestamp,
   durationSeconds: z.number().int().min(1).max(86_400),
   setCount: z.number().int().min(0).max(200),
   totalVolume: z.number().min(0).max(1_000_000),
   sessionId: z.string().max(120).nullable().optional(),
   weightUnit: z.string().max(8).default('kg'),
   revision: z.number().int().min(1).max(1_000_000).default(1),
-  updatedAt: z.string().max(40).optional(),
-  deletedAt: z.string().max(40).nullable().optional(),
+  updatedAt: syncTimestamp.optional(),
+  deletedAt: syncTimestamp.nullable().optional(),
   sets: z.array(mobileSyncSetSchema).max(200).default([]),
 });
 
@@ -364,12 +369,12 @@ export const mobileSyncRoutineExerciseSchema = z.object({
 export const mobileSyncRoutineSchema = z.object({
   clientId: z.string().uuid(),
   name: z.string().min(1).max(120),
-  createdAt: z.string().max(40).optional(),
+  createdAt: syncTimestamp.optional(),
   sourceWorkoutId: z.string().max(80).nullable().optional(),
   exercises: z.array(mobileSyncRoutineExerciseSchema).max(48).default([]),
   revision: z.number().int().min(1).max(1_000_000).default(1),
-  updatedAt: z.string().max(40).optional(),
-  deletedAt: z.string().max(40).nullable().optional(),
+  updatedAt: syncTimestamp.optional(),
+  deletedAt: syncTimestamp.nullable().optional(),
 });
 
 export const mobileSyncRoutinePushBodySchema = z.object({
@@ -379,12 +384,12 @@ export const mobileSyncRoutinePushBodySchema = z.object({
 export const mobileSyncCustomSchema = z.object({
   clientId: z.string().min(1).max(120),
   name: z.string().min(1).max(120),
-  createdAt: z.string().max(40).optional(),
+  createdAt: syncTimestamp.optional(),
   equipment: z.string().max(40).default('any'),
   muscleGroups: z.string().max(200).default(''),
   revision: z.number().int().min(1).max(1_000_000).default(1),
-  updatedAt: z.string().max(40).optional(),
-  deletedAt: z.string().max(40).nullable().optional(),
+  updatedAt: syncTimestamp.optional(),
+  deletedAt: syncTimestamp.nullable().optional(),
 });
 
 export const mobileSyncCustomPushBodySchema = z.object({
@@ -412,8 +417,12 @@ export const mobileSyncPrefsPushBodySchema = z.object({
  * anonymously to the account created later, so the athlete is not asked to opt in
  * a second time.
  */
+const pushEndpoint = z.string().url().max(1000).refine(isAllowedPushEndpoint, {
+  message: 'push endpoint host is not allowed',
+});
+
 export const pushSubscribeBodySchema = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: pushEndpoint,
   p256dh: z.string().min(1).max(500),
   auth: z.string().min(1).max(500),
   deviceId: z.string().min(1).max(64),
@@ -434,7 +443,7 @@ export const pushSubscribeBodySchema = z.object({
 });
 
 export const pushUnsubscribeBodySchema = z.object({
-  endpoint: z.string().url().max(1000),
+  endpoint: pushEndpoint,
 });
 
 /** Account deletion (GDPR Art. 17) — the literal is the second confirmation. */
@@ -501,6 +510,11 @@ export const socialMessageBodySchema = z.object({
   channelSlug: garageChannelSlug,
   body: z.string().trim().min(1).max(2000),
   kind: z.enum(['text', 'nudge']).optional(),
+  /**
+   * Older clients still send these. The route and the BEFORE INSERT trigger
+   * ignore them and stamp the account call sign (or Mission NN), and now().
+   * full_name is stamped only when garage_name_mode is real_name.
+   */
   authorCallSign: z.string().trim().min(1).max(24),
   authorMissionId: z
     .string()

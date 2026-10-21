@@ -32,6 +32,16 @@ function stripComments(src: string): string {
   return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
 }
 
+/**
+ * A Postgres message reaching a client, under any property name.
+ *
+ * The first alternative is a response field. The second is `throw new Error(error.message)`,
+ * which a catch then copies onto an ack. The third is `e.message` in a ternary,
+ * the spelling that catch used. `console.error` lines are skipped by the scans.
+ */
+const POSTGRES_LEAK =
+  /(?:[A-Za-z_$][\w$]*\s*:\s*|\$\{\s*|\.\.\.[^,}]*,\s*)(?:\w*[Ee]rror)\.message\b|new Error\(\s*(?:\w*[Ee]rror)\.message\s*\)|\?\s*e\.message\b/;
+
 const op = (id: string, kind: OutboxOp['kind'], createdAt = 0): OutboxOp =>
   ({
     id,
@@ -227,7 +237,7 @@ describe('server errors', () => {
    * and at any status. Covers `error:`, `syncError:`, shorthand, and template
    * interpolation — the spellings the old single pattern could not see.
    */
-  const LEAK = /(?:[A-Za-z_$][\w$]*\s*:\s*|\$\{\s*|\.\.\.[^,}]*,\s*)(?:\w*[Ee]rror)\.message\b/;
+  const LEAK = POSTGRES_LEAK;
 
   /**
    * Routes allowed to echo a message, each with a written reason. Empty today —
@@ -291,6 +301,8 @@ describe('server errors', () => {
       'return NextResponse.json({ ...localAck, syncError: error.message });',
       'return NextResponse.json({ detail: dbError.message }, { status: 400 });',
       'return NextResponse.json({ msg: `failed: ${error.message}` });',
+      'if (error) throw new Error(error.message);',
+      "error: e instanceof Error ? e.message : 'upsert failed',",
     ]) {
       assert.ok(LEAK.test(shape), `matcher does not catch: ${shape}`);
     }
@@ -326,7 +338,7 @@ describe('admin-helper errors', () => {
   }
 
   /** Same shapes the route scan uses — property name and status do not matter. */
-  const LEAK = /(?:[A-Za-z_$][\w$]*\s*:\s*|\$\{\s*|\.\.\.[^,}]*,\s*)(?:\w*[Ee]rror)\.message\b/;
+  const LEAK = POSTGRES_LEAK;
 
   /**
    * Helpers allowed to echo a message, each with a written reason. Empty

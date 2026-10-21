@@ -120,7 +120,7 @@ Or Android Studio **Screenshot** on the Running Devices toolbar. Need at least: 
 | Source | Behavior |
 |--------|----------|
 | Room `LocalCoachSeed` | Always works offline; primary path until Production serves `/api/mobile/*` |
-| `MobileApiClient` → `BuildConfig.API_BASE_URL` | Default `https://www.missionwinning.com`; override with `mw.apiBaseUrl` in `local.properties` (e.g. `http://10.0.2.2:3000` for emulator → host Next) |
+| `MobileApiClient` → `BuildConfig.API_BASE_URL` | Release is `https://www.missionwinning.com`. Debug may override with `mw.apiBaseUrl` in `local.properties` (e.g. `http://10.0.2.2:3000` for emulator → host Next). |
 | Private beta | www may return 403 (gate) or 404 (routes not deployed yet). Optional `mw.privateAccessCookie` injects `mw_private_access` cookie. Repository falls back to Room on any API failure. |
 
 Verify engine locally: `npm test -- src/lib/mobileCoachApi.test.ts`. Deploy `app/api/mobile/**` before expecting online plan/adapt on Production.

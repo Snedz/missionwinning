@@ -141,9 +141,9 @@ curl -X POST "$BASE/api/private-access/session" \
 |--|--|
 | Auth | `gate` |
 | Rate | 5/min/IP |
-| Schema | `leadsBodySchema` |
+| Schema | `leadsBodySchema`. `source` and `package_interest` are an allowlist (`LEAD_SOURCE_TAGS`). |
 | Territory | Waitlist (non-feedback) uses `hostedServiceAccessFromHeaders` — **403** `territory_blocked` for a blocked ISO. Feedback notes still accept. |
-| Insert | Service role only (anon INSERT revoked) |
+| Insert | Service role only (anon INSERT revoked). Email is trimmed and lowercased, then matched with equality. Confirmation mail does not include `source`. The same address is not mailed again for 7 days after `confirmed_at`. |
 
 ---
 
@@ -605,7 +605,7 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 |--|--|
 | Auth | `session` |
 | Rate | 60/min/IP |
-| Notes | Shared Garage pull. Guests **401**. Missing table → `{ available: false, messages: [] }`. Never returns a Postgres `error.message`. |
+| Notes | Shared Garage pull. Guests **401**. Missing table → `{ available: false, messages: [] }`. Returns `author_call_sign` and `author_name_kind`, never `full_name`. A real name is in `author_call_sign` only when the author set `garage_name_mode` to `real_name` and the name is not reserved; `author_name_kind` is then `real_name` and the Garage shows a name badge. Never returns a Postgres `error.message`. |
 
 ### `POST /api/social/messages`
 
@@ -614,7 +614,7 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 | Auth | `session` |
 | Rate | 20/min/IP |
 | Body | Zod `socialMessageBodySchema` |
-| Notes | Local-first via outbox (`social.message`). Duplicate id is success. `user_id` from the session only. |
+| Notes | Local-first via outbox (`social.message`). Duplicate id is success. `user_id` from the session only. `author_call_sign` is stamped from `profiles.call_sign` (fallback `Mission NN`). `profiles.full_name` is stamped only when `garage_name_mode` is `real_name` and `garage_real_name_reserved` is false. Client author fields are ignored. |
 
 ### `GET /api/social/presence` · `POST /api/social/presence`
 

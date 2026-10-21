@@ -412,7 +412,7 @@ const CASES: Record<string, Case> = {
         name: 'Tester',
         goals: 'Get stronger',
         source: 'feedback-page',
-        package_interest: 'bundle',
+        package_interest: 'feedback-page',
         referrer: 'https://example.com',
         utm: {
           utm_source: 'x',
@@ -428,6 +428,10 @@ const CASES: Record<string, Case> = {
     ],
     invalid: [
       { input: { email: 'not-an-email' }, because: 'the waitlist requires a deliverable address' },
+      {
+        input: { email: 'a@example.com', source: 'Pay at https://evil.example/x now' },
+        because: 'source is an allowlist — free text was landing in the confirmation mail',
+      },
       { input: { goals: 'x'.repeat(2001) }, because: 'the goals column caps at 2000 and the route re-slices silently (.215)' },
     ],
   },
@@ -598,6 +602,10 @@ const CASES: Record<string, Case> = {
     ],
     invalid: [
       { input: { clientId: UUID_2, workoutName: 'Push', completedAt: 'x', durationSeconds: 0, setCount: 1, totalVolume: 1 }, because: 'a zero-second workout is a bug upstream, and it would land in history as real' },
+      {
+        input: { clientId: UUID, workoutName: 'Push', completedAt: 'not-a-timestamp', durationSeconds: 60, setCount: 1, totalVolume: 1 },
+        because: 'a non-timestamp must not reach the timestamptz cast',
+      },
     ],
   },
 
@@ -640,10 +648,11 @@ const CASES: Record<string, Case> = {
         lastSessionHigh: true,
       },
       // null is "turn the evening review off" and must reach the column.
-      { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: null },
+      { endpoint: 'https://updates.push.services.mozilla.com/wpush/v2/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: null },
     ],
     invalid: [
-      { input: { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: 23 }, because: 'the evening review window is 18–22 (.194)' },
+      { input: { endpoint: 'https://fcm.googleapis.com/fcm/send/abc', p256dh: 'k', auth: 'a', deviceId: 'd', dayReviewHour: 23 }, because: 'the evening review window is 18–22 (.194)' },
+      { input: { endpoint: 'https://example.com/p', p256dh: 'k', auth: 'a', deviceId: 'd' }, because: 'the endpoint host is not a known push service' },
       { input: { endpoint: 'not-a-url', p256dh: 'k', auth: 'a', deviceId: 'd' }, because: 'the endpoint is fetched by the server' },
     ],
   },
@@ -813,7 +822,7 @@ const DEFAULTS: { schema: string; input: unknown; expect: Record<string, unknown
   },
   {
     schema: 'mobileSyncSetSchema',
-    input: { id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: '2026-07-27' },
+    input: { id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: '2026-07-27T00:00:00.000Z' },
     expect: { exerciseName: '', weightUnit: 'kg', setKind: 'normal' },
   },
   {
@@ -833,7 +842,7 @@ const DEFAULTS: { schema: string; input: unknown; expect: Record<string, unknown
   },
   {
     schema: 'mobileSyncWorkoutSchema',
-    input: { clientId: UUID, workoutName: 'Push', completedAt: '2026-07-27', durationSeconds: 60, setCount: 1, totalVolume: 1 },
+    input: { clientId: UUID, workoutName: 'Push', completedAt: '2026-07-27T00:00:00.000Z', durationSeconds: 60, setCount: 1, totalVolume: 1 },
     expect: { weightUnit: 'kg', revision: 1, sets: [] },
   },
 ];
@@ -982,7 +991,7 @@ test('a payload supplying every declared key survives the parse intact', () => {
 /** And the stripping itself is deliberate — pinned so it is a decision, not a surprise. */
 test('unknown keys are stripped rather than rejected', () => {
   const r = schemas.mobileSyncSetSchema.safeParse({
-    id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: '2026-07-27',
+    id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: '2026-07-27T00:00:00.000Z',
     fieldTheServerHasNeverHeardOf: 'dropped',
   });
   assert.ok(r.success, 'an unknown key must not fail the request — an older client would stop syncing entirely');

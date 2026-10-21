@@ -154,7 +154,7 @@ python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/*.png (loca
 
 **Emulator tip (8GB Mac):** Prefer a mid-range AVD (e.g. `MW_Phone_API36` / Pixel 6) with ~3GB RAM. `Pixel_10_Pro` suggests 16GB host RAM and may exit under memory pressure.
 
-**Network:** Room is SoT; workout finishes enqueue sync outbox. Optional `local.properties` keys `mw.apiBaseUrl` / `mw.privateAccessCookie`. Production `/api/mobile/*` is live behind the private gate (403 without cookie) — set cookie for network coach; else Room seed. One-pager: [NETWORK_COACH.md](NETWORK_COACH.md).
+**Network:** Room is SoT; workout finishes enqueue sync outbox. Optional debug-only `local.properties` keys `mw.apiBaseUrl` / `mw.privateAccessCookie` (release `BuildConfig` does not read that file). Production `/api/mobile/*` is live behind the private gate (403 without cookie) — set cookie for network coach; else Room seed. One-pager: [NETWORK_COACH.md](NETWORK_COACH.md).
 
 Signing template: [keystore.properties.example](keystore.properties.example) · create keystore: `scripts/create-upload-keystore.sh` · Play copy: [PLAY_LISTING.md](PLAY_LISTING.md) · Billing gate: [PLAY_BILLING.md](PLAY_BILLING.md)
 

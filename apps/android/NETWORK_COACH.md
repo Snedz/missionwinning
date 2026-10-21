@@ -32,7 +32,7 @@ mw.apiBaseUrl=http://10.0.2.2:3000
 mw.privateAccessCookie=<token>
 ```
 
-4. Rebuild/install (BuildConfig embeds the cookie):
+4. Rebuild and install the **debug** build. Only the debug build type reads `local.properties` into `BuildConfig`. A release APK keeps `https://www.missionwinning.com` and an empty cookie:
 
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"

@@ -5,6 +5,7 @@
  * 5xx and 429 retry. No raw fetch from the page.
  */
 
+import { syncDeviceCallSign } from '@/lib/social/callSignSync';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 import {
   isSocialMessagePayload,
@@ -107,6 +108,11 @@ export function enqueueSocialReport(payload: SocialReportPayload): void {
 export function registerSocialSyncHandler(): void {
   registerHandler('social.message', async (payload) => {
     if (!isSocialMessagePayload(payload)) return true;
+    try {
+      await syncDeviceCallSign();
+    } catch {
+      // A missed handle sync still posts. The stamp falls back to Mission NN.
+    }
     return postJson('/api/social/messages', payload);
   });
   registerHandler('social.presence', async (payload) => {

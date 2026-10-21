@@ -38,6 +38,8 @@ export type GarageMessage = {
   id: string;
   channelId: string;
   authorCallSign: string;
+  /** Set when the server published an opted-in real name. Absent on device-only posts. */
+  authorNameKind?: 'call_sign' | 'real_name';
   /** Athlete Card call-sign `00`–`99` when set. Local only. */
   authorMissionId?: string | null;
   body: string;

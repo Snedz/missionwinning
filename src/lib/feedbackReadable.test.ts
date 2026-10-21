@@ -138,7 +138,7 @@ test('the panel reaches the endpoint and renders the text', () => {
  */
 test('a feedback note never triggers the waitlist confirmation', () => {
   const leads = stripComments(read(LEADS));
-  const idx = leads.indexOf('maybeSendLeadConfirmation(email, source)');
+  const idx = leads.indexOf('maybeSendLeadConfirmation(email)');
   assert.ok(idx !== -1, 'the confirmation call moved — re-read this guard');
 
   const before = leads.slice(Math.max(0, idx - 400), idx);

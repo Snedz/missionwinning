@@ -10,6 +10,7 @@ import { bearerAccessToken, hasMobileAppAccess } from '@/lib/mobileAccess';
 import { mobileSyncCustomPushBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import { logSyncFailure, logSyncThrown } from '@/lib/sync/syncFailure';
 
 type Supabase = SupabaseClient;
 
@@ -79,7 +80,7 @@ export const POST = withApiLogging('mobile/sync/customs', async (request: NextRe
         revision: ex.revision,
         updatedAt: ex.updatedAt ?? new Date().toISOString(),
         status: 'error',
-        error: e instanceof Error ? e.message : 'upsert failed',
+        error: logSyncThrown('mobile/sync/customs', e),
       });
     }
   }
@@ -166,7 +167,8 @@ async function upsertCustom(
   serverId: string;
   revision: number;
   updatedAt: string;
-  status: 'ok';
+  status: 'ok' | 'error';
+  error?: string;
 }> {
   const now = new Date().toISOString();
   const updatedAt = ex.updatedAt && ex.updatedAt > now ? ex.updatedAt : now;
@@ -206,7 +208,16 @@ async function upsertCustom(
       .eq('id', existing.id)
       .select('id, revision, updated_at')
       .single();
-    if (error) throw new Error(error.message);
+    if (error) {
+      return {
+        clientId: ex.clientId,
+        serverId: '',
+        revision: ex.revision,
+        updatedAt,
+        status: 'error',
+        error: logSyncFailure('mobile/sync/customs', error.message),
+      };
+    }
     return {
       clientId: ex.clientId,
       serverId: (updated?.id as string) ?? (existing.id as string),
@@ -231,7 +242,16 @@ async function upsertCustom(
     })
     .select('id, revision, updated_at')
     .single();
-  if (error) throw new Error(error.message);
+  if (error) {
+    return {
+      clientId: ex.clientId,
+      serverId: '',
+      revision: ex.revision,
+      updatedAt,
+      status: 'error',
+      error: logSyncFailure('mobile/sync/customs', error.message),
+    };
+  }
   return {
     clientId: ex.clientId,
     serverId: (inserted?.id as string) ?? '',

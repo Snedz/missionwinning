@@ -15,6 +15,7 @@ import {
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import { logSyncFailure, logSyncThrown } from '@/lib/sync/syncFailure';
 
 type Supabase = SupabaseClient;
 
@@ -85,7 +86,7 @@ export const POST = withApiLogging('mobile/sync/workouts', async (request: NextR
         revision: w.revision,
         updatedAt: w.updatedAt ?? new Date().toISOString(),
         status: 'error',
-        error: e instanceof Error ? e.message : 'upsert failed',
+        error: logSyncThrown('mobile/sync/workouts', e),
       });
     }
   }
@@ -166,7 +167,8 @@ async function upsertWorkout(
   serverId: string;
   revision: number;
   updatedAt: string;
-  status: 'ok' | 'claimed';
+  status: 'ok' | 'claimed' | 'error';
+  error?: string;
 }> {
   const now = new Date().toISOString();
   const updatedAt = w.updatedAt && w.updatedAt > now ? w.updatedAt : now;
@@ -227,7 +229,16 @@ async function upsertWorkout(
       .select('id, revision, updated_at')
       .single();
 
-    if (error) throw new Error(error.message);
+    if (error) {
+      return {
+        clientId: w.clientId,
+        serverId: '',
+        revision: w.revision,
+        updatedAt,
+        status: 'error',
+        error: logSyncFailure('mobile/sync/workouts', error.message),
+      };
+    }
     return {
       clientId: w.clientId,
       serverId: (updated?.id as string) ?? (byClient.id as string),
@@ -271,7 +282,16 @@ async function upsertWorkout(
       .select('id, revision, updated_at')
       .single();
 
-    if (error) throw new Error(error.message);
+    if (error) {
+      return {
+        clientId: w.clientId,
+        serverId: '',
+        revision: w.revision,
+        updatedAt,
+        status: 'error',
+        error: logSyncFailure('mobile/sync/workouts', error.message),
+      };
+    }
     return {
       clientId: w.clientId,
       serverId: (claimed?.id as string) ?? (legacy.id as string),
@@ -302,7 +322,16 @@ async function upsertWorkout(
     .select('id, revision, updated_at')
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    return {
+      clientId: w.clientId,
+      serverId: '',
+      revision: w.revision,
+      updatedAt,
+      status: 'error',
+      error: logSyncFailure('mobile/sync/workouts', error.message),
+    };
+  }
   return {
     clientId: w.clientId,
     serverId: (inserted?.id as string) ?? '',

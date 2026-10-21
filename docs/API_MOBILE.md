@@ -23,6 +23,8 @@ Contract: [openapi-mobile.yaml](openapi-mobile.yaml) · Guide: [ANDROID_NATIVE.m
 
 ### Debug `local.properties` (gitignored)
 
+Read by the **debug** build type only. Release `BuildConfig` keeps `https://www.missionwinning.com` and empty cookie, Supabase, and Sentry fields.
+
 ```properties
 mw.apiBaseUrl=https://www.missionwinning.com
 # Cookie value only (after browser POST /api/private-access sets mw_private_access)
