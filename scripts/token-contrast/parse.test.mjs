@@ -92,6 +92,73 @@ test('pairTokens pairs foreground/text names with background names', () => {
   assert.ok(hasPair('--color-accent-fg', '--color-accent-bg'));
 });
 
+const SHADCN_FIXTURE = `
+/* shadcn-style names, HSL triplets, light + dark scopes */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --broken: not-a-color;
+  --broken-foreground: var(--broken);
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+}
+`;
+
+test('parseTokens reads shadcn token names and HSL triplets across scopes', () => {
+  const { light, dark } = parseTokens(SHADCN_FIXTURE);
+
+  assert.equal(light['--background'], '0 0% 100%');
+  assert.equal(light['--foreground'], '222.2 84% 4.9%');
+  assert.equal(dark['--background'], '222.2 84% 4.9%');
+  assert.equal(dark['--foreground'], '210 40% 98%');
+  assert.equal(dark['--card'], '0 0% 100%', 'dark inherits unspecified values');
+});
+
+test('resolveColor converts shadcn HSL triplets to hex', () => {
+  const { light, dark } = parseTokens(SHADCN_FIXTURE);
+
+  assert.equal(resolveColor('--background', light), '#ffffff');
+  assert.equal(resolveColor('--foreground', light), '#020817');
+  assert.equal(resolveColor('--primary', light), '#0f172a');
+  assert.equal(resolveColor('--primary-foreground', light), '#f8fafc');
+  assert.equal(resolveColor('--foreground', dark), '#f8fafc');
+  assert.equal(resolveColor('--background', dark), '#020817');
+});
+
+test('pairTokens pairs shadcn --X-foreground with --X plus foreground/background', () => {
+  const tokens = parseTokens(SHADCN_FIXTURE);
+  const pairs = pairTokens(tokens);
+  const hasPair = (text, bg) =>
+    pairs.some((pair) => pair.text === text && pair.bg === bg);
+
+  assert.ok(hasPair('--foreground', '--background'));
+  assert.ok(hasPair('--card-foreground', '--card'));
+  assert.ok(hasPair('--primary-foreground', '--primary'));
+  assert.ok(hasPair('--muted-foreground', '--muted'));
+});
+
+test('checkContrast counts unparseable shadcn values as unsupported', () => {
+  const results = checkContrast(SHADCN_FIXTURE, { min: 4.5 });
+  const broken = results.find((entry) => entry.text === '--broken-foreground');
+
+  assert.ok(results.length > 0);
+  assert.ok(broken);
+  assert.equal(broken.ratio, null);
+  assert.equal(broken.status, 'unsupported');
+  assert.equal(broken.pass, false);
+});
+
 test('checkContrast reports pass, fail, and unsupported pairs', () => {
   const results = checkContrast(FIXTURE, { min: 4.5 });
   const result = (mode, text) =>

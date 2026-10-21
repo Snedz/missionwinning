@@ -146,7 +146,7 @@ function parseDeclarations(body) {
     const colon = segment.indexOf(':');
     if (colon === -1) return;
     const name = segment.slice(0, colon).trim();
-    if (!name.startsWith('--color-')) return;
+    if (!name.startsWith('--')) return;
     const value = segment
       .slice(colon + 1)
       .trim()
@@ -305,6 +305,19 @@ function parseColorLiteral(value) {
     return `#${digits}`.toLowerCase();
   }
 
+  const triplet = text.match(
+    /^(-?[\d.]+)(?:deg)?(?:\s*,\s*|\s+)([\d.]+)%(?:\s*,\s*|\s+)([\d.]+)%$/i,
+  );
+  if (triplet) {
+    const channels = [
+      Number.parseFloat(triplet[1]),
+      Number.parseFloat(triplet[2]),
+      Number.parseFloat(triplet[3]),
+    ];
+    if (!channels.every(Number.isFinite)) return UNSUPPORTED;
+    return toHex(hslToRgb(...channels));
+  }
+
   const fn = text.match(/^(rgba?|hsla?)\(\s*([\s\S]*?)\s*\)$/i);
   if (!fn) return UNSUPPORTED;
 
@@ -404,8 +417,17 @@ export function pairTokens(tokens) {
   };
 
   for (const key of keys) {
+    if (key === '--foreground') {
+      add(key, '--background');
+      continue;
+    }
     if (key === '--color-foreground') {
       add(key, '--color-background');
+      continue;
+    }
+    if (key.endsWith('-foreground')) {
+      const base = key.slice(0, -'-foreground'.length);
+      if (base !== '--' && has(base)) add(key, base);
       continue;
     }
     const suffix = FG_SUFFIXES.find((candidate) => key.endsWith(candidate));
