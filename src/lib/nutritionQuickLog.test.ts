@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getRecentFoods,
@@ -27,6 +27,14 @@ describe('summarizeNutritionDays', () => {
 });
 
 describe('mergeTodayIntoNutritionLog', () => {
+  // Pin the clock: the 90-day prune runs against new Date(), so fixture dates must not age out.
+  beforeEach(() => {
+    mock.timers.enable({ apis: ['Date'], now: new Date('2026-07-24T12:00:00Z') });
+  });
+  afterEach(() => {
+    mock.timers.reset();
+  });
+
   it('replaces today and keeps older days', () => {
     const prev: NutritionLogRow[] = [
       { name: 'Old', protein: 1, cals: 10, date: '2026-07-20' },

@@ -1,6 +1,14 @@
 # Mission Winning — Development Log
 
 
+## 2026-10-21 — landing hero loading fallback announces itself (`.1185`)
+
+`LogToPlanHeroFallback` is now wrapped in `role="status" aria-busy="true"` (inner shell stays `aria-hidden`), clearing the `loadingStatesAnnounce` meta test. Label `2026.07-unified.1185`. `[skip vercel]`.
+
+## 2026-10-21 — pin clock in nutritionQuickLog merge test (`.1184`)
+
+Test-only: the 90-day prune aged out the 2026-07-20 fixture on Oct 18 and turned Ratchets red; the suite now pins Date to 2026-07-24 via node:test mock.timers. Label `2026.07-unified.1184`.
+
 ## 2026-10-17 — HTTP route contracts for existing API handlers (`.1183`)
 
 Route-lane tests call the real handlers for the live HTTP API and lock status plus JSON shape: success, bad input, and session or secret refusal where the route requires one. Supabase, food search, and PayPal are answered by a local fetch stand-in. Payments stay off, so those responses carry no payment URL. Label `2026.07-unified.1183`. `[skip vercel]`. PRIVATE_MODE stays.
@@ -71,11 +79,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — honesty lamp state fixups (WIN → UNKNOWN, illegal `from`, .ts import) (`.1171`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1171`.
-
-## 2026-10-16 — honesty lamp state machine (+ its test) (`.1170`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1170`.
-
-## 2026-10-16 — form-cue contradiction detector (+ its test) (`.1169`)
-
-Same-lift form cues that share a tag and make opposite claims flag the lower-confidence cue. Both cues negating is not a contradiction. Label `2026.07-unified.1169`. `[skip vercel]`.
