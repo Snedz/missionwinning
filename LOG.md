@@ -1,6 +1,6 @@
 # Mission Winning — Development Log
 
-## 2026-10-21 — nutrition log: the retention window follows the day being merged (`.1186`)
+## 2026-10-21 — nutrition log: the retention window follows the day being merged (`.1187`)
 
 The 90-day prune ran against `new Date()`, so `mergeTodayIntoNutritionLog`'s `today` argument
 was a lie for any merge that was not today: a log merged for a day in the past lost rows
