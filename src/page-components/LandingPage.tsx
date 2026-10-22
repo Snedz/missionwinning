@@ -1,6 +1,6 @@
 'use client';
 /**
- * Page: / — marketing landing, laid out to the forge sheet.
+ * Page: / — the door first, then the forge sheet.
  * See: app/INDEX.md, src/page-components/INDEX.md
  *
  * Content is the product loop: log → where you train → adapt → earn back → free → start.
@@ -32,6 +32,7 @@ import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { landingFaqKeysForSurface } from '@/i18n/landingSurface';
+import { LandingDoor } from '@/page-components/LandingDoor';
 import { forgeFontClass } from '@/page-components/landingForgeFonts';
 import s from './landingForge.module.css';
 
@@ -460,6 +461,8 @@ export function LandingPage() {
   ];
 
   return (
+    <>
+    <LandingDoor />
     <div ref={rootRef} className={`${s.root} ${forgeFontClass}`}>
       <div ref={grainRef} className={s.grain} aria-hidden />
       <MarketingNav variant="full" className={s.nav} />
@@ -495,7 +498,7 @@ export function LandingPage() {
             <p className={s.marker}>
               {t('landingHeroEyebrowLoop', { defaultValue: 'Free · offline · no account' })}
             </p>
-            <h1 className={s.heroTitle}>
+            <h2 className={s.heroTitle}>
               <span className={s.line}>
                 <span className={s.solid}>{line1}</span>
               </span>
@@ -510,7 +513,7 @@ export function LandingPage() {
                   <span className={s.hot}>{parts.hot}</span>
                 </span>
               </span>
-            </h1>
+            </h2>
             <p className={s.lead}>
               {t('landingHeroSubtitleLoop', {
                 defaultValue:
@@ -933,6 +936,7 @@ export function LandingPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
