@@ -991,7 +991,7 @@
           "kind": "success",
           "path": "/api/push/subscribe",
           "body": {
-            "endpoint": "https://push.example.test/sub/abc",
+            "endpoint": "https://fcm.googleapis.com/fcm/send/contract-abc",
             "p256dh": "key",
             "auth": "auth",
             "deviceId": "device-1"
