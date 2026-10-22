@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1177-for-1193.md`](docs/archive/log/LOG-rotate-1177-for-1193.md) — rotated by `.1193`, to keep the <=15 entry budget. `.1178` is the live floor.
+- [`CONTEXT-now-1128.md`](docs/archive/CONTEXT-now-1128.md) — `.1193` rotated the `.1128` safety train-now Now bullet.
 - [`LOG-rotate-1172-for-1188.md`](docs/archive/log/LOG-rotate-1172-for-1188.md) — rotated by `.1188`, to keep the <=15 entry budget. `.1173` is the live floor.
 - [`LOG-rotate-1171-for-1186.md`](docs/archive/log/LOG-rotate-1171-for-1186.md) — rotated by `.1186`, to keep the <=15 entry budget.
 - [`LOG-rotate-1170-for-1185.md`](docs/archive/log/LOG-rotate-1170-for-1185.md) — rotated by `.1185`, to keep the <=15 entry budget. `.1171` is the live floor.
@@ -908,5 +910,6 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-1174-for-1190.md](./log/LOG-rotate-1174-for-1190.md) | rotated 2026-10-22 for `.1190` fitness-test age band value |
 | [log/LOG-rotate-1175-for-1191.md](./log/LOG-rotate-1175-for-1191.md) | rotated 2026-10-22 for `.1191` stale doc links |
 | [log/LOG-rotate-1176-for-1192.md](./log/LOG-rotate-1176-for-1192.md) | rotated 2026-10-22 for `.1192` es/pt landing strings |
+| [log/LOG-rotate-1177-for-1193.md](./log/LOG-rotate-1177-for-1193.md) | rotated 2026-10-22 for `.1193` bundle budget initial JS |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
 | — | `.766` merge-all: overlapping PRs each archived `.669` / `.655` / `.656` / `.630` / `.750`. One `##` heading per label. Survivor for `.669` is [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md). |

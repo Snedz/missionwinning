@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { usePremium } from '@/hooks/usePremium';
-import { supabase } from '@/lib/supabase';
+import { loadSupabase } from '@/lib/supabaseLazy';
 import { track } from '@/lib/analytics';
 import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
 import {
@@ -121,9 +121,15 @@ export function useCoachPlan() {
   }, [ctx, weekStart, premium, tasterUsed, todayOffset]);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUserId(data.user?.id ?? null);
-    });
+    let cancelled = false;
+    void loadSupabase().then(({ supabase }) =>
+      supabase.auth.getUser().then(({ data }) => {
+        if (!cancelled) setUserId(data.user?.id ?? null);
+      })
+    );
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {

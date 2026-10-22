@@ -23,8 +23,9 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { importsOf, resolveSpecifier, stripComments as stripForImports } from './domainBoundary.ts';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
@@ -163,5 +164,69 @@ test('the locale manifest imports nothing', () => {
     [],
     'localeExportManifest.ts exists precisely because it has no imports — one here reopens ' +
       `the path that put 306 KB on every route:\n  ${imports.join('\n  ')}`
+  );
+});
+
+/**
+ * `.1193` — LandingPage imported `landingFaqKeysForSurface` from
+ * `landingLocales.ts`. That module indexes every language through `BY_LANG`,
+ * so the import shipped the whole pack (~19 KB gzip) on `/` even though the
+ * accordion renders English defaults until hydrate. The keys live in
+ * `landingSurface.ts`; the packs stay on the hydrate import.
+ */
+test('the landing page does not value-import the landing locale packs', () => {
+  const src = stripComments(read('src/page-components/LandingPage.tsx'));
+  assert.match(src, /from\s+['"]@\/i18n\/landingSurface['"]/);
+  assert.doesNotMatch(
+    src,
+    /from\s+['"]@\/i18n\/landingLocales['"]/,
+    'LandingPage value-imports landingLocales — that ships every language on /'
+  );
+});
+
+const SUPABASE_CLIENT = new Set(['@/lib/supabase', '@supabase/supabase-js', '@supabase/ssr']);
+
+/**
+ * Static closure only. `loadSupabase()` is a dynamic import and must stay one:
+ * domainBoundary follows dynamic imports for the planner boundary, which is
+ * the wrong question here. This asks which modules the browser evaluates
+ * before first paint.
+ */
+function staticSupabaseHits(start: string): string[] {
+  const seen = new Set<string>();
+  const hits: string[] = [];
+  const queue = [start];
+  const exists = (p: string) => existsSync(path.join(root, p));
+  while (queue.length > 0) {
+    const file = queue.pop();
+    if (!file || seen.has(file)) continue;
+    seen.add(file);
+    let src: string;
+    try {
+      src = stripForImports(read(file));
+    } catch {
+      continue;
+    }
+    for (const edge of importsOf(src, file)) {
+      if (edge.kind !== 'static' || edge.typeOnly) continue;
+      if (SUPABASE_CLIENT.has(edge.spec)) hits.push(`${file} → ${edge.spec}`);
+      const resolved = resolveSpecifier(edge.spec, file, exists);
+      if (resolved && !seen.has(resolved)) queue.push(resolved);
+    }
+  }
+  return hits;
+}
+
+test('Train and the house shell do not statically import the Supabase browser client', () => {
+  const hits = [
+    ...staticSupabaseHits('src/page-components/ActiveWorkoutPage.tsx'),
+    ...staticSupabaseHits('src/components/house/HouseShell.tsx'),
+  ];
+  assert.deepEqual(
+    hits,
+    [],
+    'a static import pulls @supabase/supabase-js onto /active and /log before the first set:\n  ' +
+      hits.join('\n  ') +
+      '\n  Await loadSupabase() inside the cloud call.'
   );
 });

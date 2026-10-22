@@ -25,7 +25,7 @@ import {
   type SetSide,
 } from "@/lib/workout/unilateral";
 import { attachSessionNote } from "@/lib/workout/sessionNote";
-import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
+import { loadSupabase } from "@/lib/supabaseLazy";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { applyWorkoutRewards } from "@/lib/rewards/apply";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
@@ -1277,6 +1277,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       loadFromCloud: async () => {
+        const { getUser, getUserWorkoutHistory, getUserWorkoutsUpdatedSince } = await loadSupabase();
         const user = await getUser();
         if (!user) return;
 
@@ -1358,6 +1359,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       syncCurrentHistoryToCloud: async () => {
+        const { getUser } = await loadSupabase();
         const user = await getUser();
         if (!user) return;
         // Queue every locally-owned log, not "the last 5 that look local" — that

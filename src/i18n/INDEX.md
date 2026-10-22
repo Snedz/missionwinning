@@ -70,7 +70,8 @@ npm run export-locales     # TS + packs → public/locales/
 | `infoEnFloor.ts` | English floor for legal/info keys (Privacy/Terms first paint — `.653`; ratchet `.682`) |
 | `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |
-| `landingLocales.ts` | Marketing landing |
+| `landingLocales.ts` | Marketing landing copy. Client pages must not import this file — `BY_LANG` ships every language. |
+| `landingSurface.ts` | Landing FAQ + journey key lists only. No language tables, so `/` can render the accordion without the packs. |
 | `betaLocales.ts` | Beta gates |
 | `gateLocales.ts` | Private gate (EN lives in `gateEn.ts`) |
 | `gateEn.ts` | English gate copy + `gateEnFloor()` — first paint on `/private` cannot disagree with the pack (`.765`). F-008 floors from `gatedWwwHonesty.ts` (`.931`, founder pack: Free / Log a set. Offline. / No account. No wearable.) |

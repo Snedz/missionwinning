@@ -31,7 +31,7 @@ import { Reveal } from '@/components/marketing/Reveal';
 import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
-import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
+import { landingFaqKeysForSurface } from '@/i18n/landingSurface';
 import { forgeFontClass } from '@/page-components/landingForgeFonts';
 import s from './landingForge.module.css';
 
