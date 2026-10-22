@@ -8,7 +8,7 @@
  * reopen a closed session. Tombstone keeps `clientId`. Signed out /
  * missing column / no cloud is ACK — do not spin backoff. No Force Sync.
  */
-import { supabase, getUser } from '@/lib/supabase';
+import { loadSupabase } from '@/lib/supabaseLazy';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 import {
   parseOpenSession,
@@ -27,6 +27,7 @@ function isMissingOpenSessionColumn(error: { message?: string; code?: string } |
 
 export async function pullOpenSession(): Promise<OpenSessionSnapshot | null> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return null;
+  const { supabase, getUser } = await loadSupabase();
   const user = await getUser();
   if (!user) return null;
 
@@ -46,6 +47,7 @@ export async function pullOpenSession(): Promise<OpenSessionSnapshot | null> {
 
 export async function pushOpenSession(payload: unknown): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
+  const { supabase, getUser } = await loadSupabase();
   const user = await getUser();
   if (!user) return true;
 

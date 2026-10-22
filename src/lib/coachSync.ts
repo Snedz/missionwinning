@@ -1,9 +1,10 @@
-import { supabase, getUser } from '@/lib/supabase';
+import { loadSupabase } from '@/lib/supabaseLazy';
 import { loadPlan, isTasterUsed } from '@/lib/coach/storage';
 import type { CoachPlan } from '@/lib/coach/types';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
 export async function pushCoachToCloud(): Promise<boolean> {
+  const { supabase, getUser } = await loadSupabase();
   const user = await getUser();
   // Signed out or no cloud configured is not a failure — the plan lives locally and
   // is re-queued on sign-in. Returning false here would spin the outbox backoff.

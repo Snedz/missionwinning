@@ -1,4 +1,4 @@
-import { supabase, getUser } from '@/lib/supabase';
+import { loadSupabase } from '@/lib/supabaseLazy';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from '@/lib/leaderboard/types';
 import type { CompletedWorkoutLog } from '@/types';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
@@ -62,6 +62,7 @@ export function leaderboardSnapshotDeliveryDone(status: number): boolean {
 /** Resolves true when the snapshot is stored (or intentionally skipped). */
 export async function pushLeaderboardSnapshot(snap: LeaderboardSnapshot): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
+  const { getUser } = await loadSupabase();
   const user = await getUser();
   if (!user) return true; // signed out — not a failure
 
@@ -93,6 +94,7 @@ export async function fetchCloudLeaderboardSnapshots(
   boardId: LeaderboardBoardId = 'mission-score'
 ): Promise<LeaderboardSnapshot[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+  const { supabase } = await loadSupabase();
 
   const orderColumn =
     boardId === 'presidential-fitness'

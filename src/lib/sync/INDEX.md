@@ -46,6 +46,8 @@ history would bloat storage" — and `scheduleLeaderboardPush` enqueued
 a surface that 404s. A doc that states a guarantee is not a guarantee; the assertions
 now live in `src/lib/surfaceReality.test.ts`.
 
+**The browser client is not a module-scope import.** `workoutSync` and `openSessionSync` call `loadSupabase()` inside the handler. A top-level `import` from `@/lib/supabase` evaluates the client and puts it on Train's first paint.
+
 **Signed out is not a failure.** Handlers return `true` when there is no user or no
 Supabase configured: local storage is the source of truth and the op is re-queued on
 `SIGNED_IN` by `useJourneySync` → `syncCurrentHistoryToCloud` (`.949`). Returning

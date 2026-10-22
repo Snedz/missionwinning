@@ -15,7 +15,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-import { supabase, getUser } from '@/lib/supabase';
+import { loadSupabase } from '@/lib/supabaseLazy';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 import { incomingWorkoutBeats } from '@/lib/workout/workoutMerge';
 
@@ -66,6 +66,7 @@ function isPayload(value: unknown): value is WorkoutSyncPayload {
 export async function pushWorkout(payload: unknown): Promise<boolean> {
   if (!isPayload(payload)) return true; // malformed: dropping beats retrying forever
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true; // no cloud configured
+  const { supabase, getUser } = await loadSupabase();
   const user = await getUser();
   // Signed out is not a failure — local storage is the source of truth. The log
   // is re-queued on SIGNED_IN by `useJourneySync` → `syncCurrentHistoryToCloud`.

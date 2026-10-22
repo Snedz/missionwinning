@@ -24,7 +24,8 @@
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Muscle balance map** | [`bodyHighlighter/`](bodyHighlighter/INDEX.md) | Anterior/posterior frequency from recent logs. Display only — not a planner input. |
 | **Mission Coach (chat)** | `coachChatServer.ts`, `coach/agent/` | Premium chat — local RAG + ReAct; never vendor Collections — [coach/agent/INDEX.md](coach/agent/INDEX.md) |
-| **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
+| **Coach sync** | `coachSync.ts` | Cloud push for coach plan. Loads the browser client through `supabaseLazy.ts` at push time. |
+| **Supabase client boundary** | `supabase.ts`, `supabaseLazy.ts` | `loadSupabase()` keeps `@supabase/supabase-js` off Train and Today first paint. Cloud handlers await it. |
 | **Durable sync** | `sync/outbox.ts` | Queue every cloud write — survives the tab closing |
 | **Device storage** | `storage/safeStorage.ts` | Guarded localStorage — never throws |
 | **Surface parking** | `surface.ts` | Which non-wedge surfaces are reachable (`NEXT_PUBLIC_SURFACES`) |

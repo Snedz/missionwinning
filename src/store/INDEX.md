@@ -67,6 +67,7 @@
 | `HistoryPage` | `workoutHistory`, charts via lib |
 | `HomePage` | Recent history summary |
 | `workoutStore` → `lib/sync/outbox.ts` | Durable cloud write on complete |
+| `workoutStore` → `lib/supabaseLazy.ts` | Cloud history read awaits `loadSupabase()` — the browser client is not on first paint |
 
 ## Persistence version
 
