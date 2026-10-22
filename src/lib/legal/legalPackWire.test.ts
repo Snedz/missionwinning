@@ -93,19 +93,37 @@ test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () =>
   assert.match(locales, /required or permitted by law/);
 });
 
-test('legal + About stamp: public product version, Texas LLC, dated 13 Aug 2026, no live-Stripe claim', () => {
+test('legal + About stamp: public product version, Texas LLC, dated 13 Aug 2026, the live plan named and priced, no Customer-Portal claim', () => {
   const locales = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
   const about = readFileSync(join(root, 'app/about/page.tsx'), 'utf8');
   const refunds = readFileSync(join(root, 'src/page-components/RefundsPage.tsx'), 'utf8');
   const dmca = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
+  // NOTE: `public/locales/**` is the EXPORTED mirror of this file (see
+  // `npm run export-locales`) and the app fetches it with `cache: 'no-cache'` and
+  // OVERWRITES the hydrated strings with it. It is NOT asserted here yet, because
+  // the committed mirror is two months behind this source and regenerating it is its
+  // own change. What it is asserted against, the day it is, is the policy above.
 
   assert.match(about, /APP_PUBLIC_PRODUCT_VERSION/);
   assert.match(about, /open alpha/);
   assert.doesNotMatch(about, /invite-only|Private beta|private beta/i);
   assert.match(locales, /Texas limited liability company/);
   assert.match(locales, /Last updated: 13 August 2026/);
-  assert.match(locales, /The free logger never needs a refund/);
-  assert.match(locales, /when paid checkout is live/);
+  // The free tier's promise, in the copy that is live TODAY. The old assertion was
+  // "The free logger never needs a refund" -- the sentence the 2026-10-15 Earn It
+  // Back rewrite replaced, and the reason this test has been RED on master since:
+  // node:test stops at the first failed assertion, so the SECOND stale assertion
+  // ("when paid checkout is live") never even ran.
+  assert.match(locales, /The free logger is free forever/);
+  // The paid plan is NAMED and PRICED, and its refund terms are stated. A legal page
+  // that does not name the product it sells is a legal page about a product that
+  // does not exist.
+  assert.match(locales, /Mission Winning Yearly is \$99 per year/);
+  assert.match(locales, /Earn It Back/);
+  assert.match(locales, /\$50 back: 24 counted workouts within 90 days/);
+  assert.match(locales, /\$40 more: 96 counted workouts within 365 days/);
+  assert.match(locales, /full refund within 14 days of the first charge/);
+  // Refunds are handled by email, so there is no Customer-Portal claim.
   assert.doesNotMatch(locales, /Stripe Customer Portal/);
   assert.doesNotMatch(refunds, /Stripe Customer Portal/);
   assert.match(dmca, /to be published on this page after the Copyright Office designation is filed/);
