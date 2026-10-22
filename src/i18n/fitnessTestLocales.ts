@@ -312,7 +312,7 @@ const en: FitnessTestStrings = {
   fieldTestReceiptTitle: 'Field test',
   fieldTestScaleLabel: 'Published scale column',
   fieldTestScaleNone: 'Not set — raw only',
-  fieldTestAgeBand: 'Column M',
+  fieldTestAgeBand: '{{band}}',
   fieldTestScaleColumnM: 'Column M',
   fieldTestScaleColumnF: 'Column F',
   fieldTestEventGarage: 'Shuttle + farmer carry',
