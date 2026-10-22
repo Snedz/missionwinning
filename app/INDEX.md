@@ -7,7 +7,7 @@
 1. `app/(app)/layout.tsx` — authenticated app shell (`AppLayout`)
 2. `app/layout.tsx` — root layout, fonts, metadata
 3. `app/page.tsx` — landing (`/`) or private gate redirect
-4. [INDEX.md at repo root](../../INDEX.md) — doc routing
+4. [INDEX.md at repo root](../INDEX.md) — doc routing
 
 ## Route map (live)
 

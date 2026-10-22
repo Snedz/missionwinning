@@ -2,7 +2,7 @@
 
 Living roadmap for the **everything app** (a bodyweight coach app Super Bundle → one PWA). Filter every task through [vision.md](../vision.md).
 
-**Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
+**Vision comparison:** [VISION_STATUS.md](archive/VISION_STATUS-2026-07-23.md) — pillar scorecard, gaps, priorities.
 
 ---
 

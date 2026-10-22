@@ -1,6 +1,6 @@
 # Locale JSON export
 
-English plus pack overlays for all **`APP_LANGS`** (14). Runtime uses inline `src/i18n/*Locales.ts` + [`packs/{lang}.json`](../src/i18n/packs/); client optionally merges `/locales/{lang}/common.json` when `NEXT_PUBLIC_LOCALE_HTTP` is not `false`.
+English plus pack overlays for all **`APP_LANGS`** (14). Runtime uses inline `src/i18n/*Locales.ts` + [`packs/{lang}.json`](../../src/i18n/packs/); client optionally merges `/locales/{lang}/common.json` when `NEXT_PUBLIC_LOCALE_HTTP` is not `false`.
 
 ## Regenerate
 
@@ -22,4 +22,4 @@ Disable: `NEXT_PUBLIC_LOCALE_HTTP=false`
 
 ## Standard
 
-See [`src/i18n/INDEX.md`](../src/i18n/INDEX.md) — every user-visible string for all `APP_LANGS`.
+See [`src/i18n/INDEX.md`](../../src/i18n/INDEX.md) — every user-visible string for all `APP_LANGS`.

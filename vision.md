@@ -167,7 +167,7 @@ This file is the **long-term constitution** (Team Humanity north star, six pilla
 
 Each stage unlocks only when the previous stage's retention/revenue gates hold ([ORCHESTRATION.md](ORCHESTRATION.md) scorecard). The map extends the constitution; it never overrides it.
 
-**Planning:** [docs/PLAN.md](docs/PLAN.md) · **Vision scorecard:** [docs/VISION_STATUS.md](docs/VISION_STATUS.md)
+**Planning:** [docs/PLAN.md](docs/PLAN.md) · **Vision scorecard:** [docs/VISION_STATUS.md](docs/archive/VISION_STATUS-2026-07-23.md)
 
 ---
 Last Updated: July 22, 2026 (Mission & Vision header · Team Humanity pillar map). Living document. Reference in all planning, code, marketing, and decisions.

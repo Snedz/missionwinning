@@ -17,7 +17,7 @@ Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not i
 2. No raw English in JSX except via `t('key', { defaultValue })` where `defaultValue` is EN and matches the `en` pack.
 3. Guidebook long-form uses `guideSection_*` / editorial / `magazine*` keys (built from chapter data in `buildGuidebookLocaleKeys.ts`).
 4. After adding keys: fill packs → `npm run export-locales` → `npm run i18n:parity` must pass.
-5. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
+5. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../../scripts/i18n-allowlist.json).
 6. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
 
 ## Commands

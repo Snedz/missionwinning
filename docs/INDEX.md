@@ -158,7 +158,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
 | [security/INDEX.md](security/INDEX.md) | Dated red-team hunts (findings only, no PoCs) |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
-| [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |
+| [VISION_STATUS.md](archive/VISION_STATUS-2026-07-23.md) | Vision scorecard |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
 | [legal/ACCEPTABLE_USE.md](legal/ACCEPTABLE_USE.md) | Acceptable Use Policy |
 | [archive/SETUP.md](archive/SETUP.md) | Archived one-time setup (stale PayPal-first) |
