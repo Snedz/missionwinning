@@ -1,5 +1,9 @@
 # Mission Winning — Development Log
 
+## 2026-10-21 — www static mirror, part A: build script + link check (split from www-static-mirr (`.1188`)
+
+Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1188`.
+
 ## 2026-10-21 — nutrition log: the retention window follows the day being merged (`.1187`)
 
 The 90-day prune ran against `new Date()`, so `mergeTodayIntoNutritionLog`'s `today` argument
@@ -81,8 +85,3 @@ Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unif
 ## 2026-10-16 — Coach daily-insight: drop LLM lines that claim fake progress (wire noFakeProgres (`.1173`)
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1173`.
-
-## 2026-10-16 — honesty lamp test file style (node:assert/strict, .ts import) (`.1172`)
-
-Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1172`.
-
