@@ -74,4 +74,4 @@ Always add: *Mission Winning is not a medical provider; this is not advice to st
 
 - Positioning: [STRATEGY.md](STRATEGY.md) · [YC_THESIS.md](YC_THESIS.md)
 - Launch copy: [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [BETA_INVITE.md](BETA_INVITE.md)
-- Scorecard: [VISION_STATUS.md](VISION_STATUS.md)
+- Scorecard: [VISION_STATUS.md](archive/VISION_STATUS-2026-07-23.md)

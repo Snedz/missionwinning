@@ -26,4 +26,4 @@ npm run media:optimize-inbox
 ```
 
 Writes WebP to `public/learn/`, `public/social/`, or `public/brand/mascot/` per filename prefix.  
-See [docs/MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md).
+See [docs/MEDIA_SYSTEM.md](../../docs/MEDIA_SYSTEM.md).
