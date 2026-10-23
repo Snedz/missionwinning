@@ -1,9 +1,9 @@
 {
   "trackTitle": "活动追踪",
   "trackSubtitle": "免费手动记录步行、跑步、骑行、徒步。高级版增加 GPS 与进阶统计。",
-  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
-  "trackMoreGpsImport": "GPS, insights & import",
-  "trackMoreBodyWearables": "Body, wearables & trends",
+  "trackSubtitleBrief": "A number you already have. Scale or tape. Never required to train.",
+  "trackMoreGpsImport": "Walks, GPS & import",
+  "trackMoreBodyWearables": "Trends & extras",
   "trackWeekSessions": "本周",
   "trackTotalTime": "总时长",
   "trackDistance": "距离",
@@ -61,8 +61,9 @@
   "trackGpsLockedHint": "免费层保留手动日志记录和 JSON 导入。 高级版可解锁 GPS + 每周配速统计数据。",
   "trackExploreBundle": "查看超级捆绑包",
   "trackWeeklyGpsLocked": "每周 GPS 距离和平均步速 — 超级捆绑包。",
-  "bodyMetricsTitle": "Body metrics",
-  "bodyMetricsLead": "Weight and measures on this device. Included in JSON backup.",
+  "bodyMetricsTitle": "Weight & tape",
+  "bodyMetricsLead": "A number you already have. Scale or tape. Never required to train.",
+  "bodyMetricsEmpty": "No number yet. Log the one on the scale or tape.",
   "bodyMetricsLog": "Log",
   "bodyWeight": "Weight",
   "bodyFat": "Body fat",
@@ -99,5 +100,6 @@
   "trackImportCsvCopied": "Sample CSV copied to clipboard.",
   "trackImportCsvSample": "Copy CSV sample",
   "trackImportHowTo": "Apple: Shortcuts → Find Workouts → Get Details → Save File as JSON with date, type, durationMin. Google: export Fit activities (or Takeout) and convert to the same fields, or use CSV.",
-  "sessions": "sessions"
+  "sessions": "sessions",
+  "trackNoStrapRequired": "No strap required. GPS and a typed walk are optional beside Train."
 }

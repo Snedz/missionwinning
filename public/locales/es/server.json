@@ -21,5 +21,8 @@
   "serverPresenceAway": "Ausente",
   "serverPresenceOffline": "Desconectado",
   "serverNudge": "Nudge",
-  "serverNudgeLine": "Nudge"
+  "serverNudgeLine": "Nudge",
+  "serverChannelsLabel": "Channels",
+  "serverMembersLabel": "Members",
+  "serverMemberCount": "1 member"
 }

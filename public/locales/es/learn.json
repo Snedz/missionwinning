@@ -45,5 +45,10 @@
   "learnCourseEmptyTitle": "No specialist courses yet",
   "learnCourseEmptyBeta": "The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.",
   "learnCourseBrowseFree": "Browse free paths",
-  "learnOpenMagazine": "Revista (web)"
+  "learnOpenMagazine": "Revista (web)",
+  "quietLearnSubtitle": "Registra una serie. Luego Coach a partir de esos logs.",
+  "quietLearnMorePaths": "Other paths, guidebook & more",
+  "quietLearnEyebrow": "First success",
+  "quietLearnEmpty": "No first-success intro yet.",
+  "quietLearnEmptyDesc": "Learn invents nothing when the catalog has no log-then-Coach path."
 }

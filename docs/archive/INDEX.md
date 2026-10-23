@@ -10,6 +10,7 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1105-for-1124.md`](docs/archive/log/LOG-rotate-1105-for-1124.md) — rotated by `.1124`, to keep the <=15 entry budget.
 - [`LOG-rotate-1104-for-1123.md`](docs/archive/log/LOG-rotate-1104-for-1123.md) — rotated by `.1123`, to keep the <=15 entry budget.
 - [`LOG-rotate-1103-for-1122.md`](docs/archive/log/LOG-rotate-1103-for-1122.md) — rotated by `.1122`, to keep the <=15 entry budget.
 - [`LOG-rotate-1102-for-1122.md`](docs/archive/log/LOG-rotate-1102-for-1122.md) — rotated by `.1122`, to keep the <=15 entry budget.

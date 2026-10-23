@@ -31,5 +31,16 @@
   "moveSubtitleDepthBeta": "{{free}} fluxos gratuitos · {{unlocked}} desbloqueados na beta aberta (temporizadores, sobretudo peso corporal).",
   "moveSubtitleDepthPaid": "{{free}} fluxos gratuitos · O Super Bundle acrescenta {{premium}} fluxos de recuperação mais longos.",
   "moveSubtitleBrief": "Pick a free flow. Timers and bodyweight — premium later if you want.",
-  "moveSubtitleBriefOpenBeta": "Pick a free flow. Timers and bodyweight — recovery depth open in open beta."
+  "moveSubtitleBriefOpenBeta": "Pick a free flow. Timers and bodyweight — recovery depth open in Alpha.",
+  "moveQuietTitle": "Easy walk or easy session",
+  "moveQuietHint": "Rest is fine. Optional — minutes or distance if you have them.",
+  "moveQuietKinds": "Easy Move kind",
+  "moveQuietWalk": "Walk",
+  "moveQuietEasy": "Easy session",
+  "moveQuietMinutes": "Minutes (optional)",
+  "moveQuietDistance": "Distance km (optional)",
+  "moveQuietLog": "Log",
+  "moveQuietEmpty": "Nothing logged. Rest is not a fail.",
+  "moveQuietRowMinutes": "{{count}} min",
+  "moveQuietRowDistance": "{{km}} km"
 }

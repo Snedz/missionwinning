@@ -21,5 +21,8 @@
   "serverPresenceAway": "离开",
   "serverPresenceOffline": "离线",
   "serverNudge": "Nudge",
-  "serverNudgeLine": "Nudge"
+  "serverNudgeLine": "Nudge",
+  "serverChannelsLabel": "Channels",
+  "serverMembersLabel": "Members",
+  "serverMemberCount": "1 member"
 }

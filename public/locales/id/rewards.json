@@ -66,5 +66,7 @@
   "rewardBadgeComeback": "Comeback",
   "rewardBadgeComebackDesc": "Trained again after a week or more away.",
   "rewardBadgeCommissioned": "Commissioned",
-  "rewardBadgeCommissionedDesc": "Completed the Mission Journey path."
+  "rewardBadgeCommissionedDesc": "Completed the Mission Journey path.",
+  "rewardRestTodayOn": "Rest today is planned",
+  "rewardRestToday": "Rest today"
 }
