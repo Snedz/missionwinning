@@ -615,6 +615,10 @@ export function ActiveWorkoutPage() {
     });
     if (adapt.wroteNextEnv) {
       assembled.victorySummary.nextEnvFromLog = true;
+      if (adapt.citeText) assembled.victorySummary.nextEnvCite = adapt.citeText;
+      if (adapt.nextConceptId) {
+        assembled.victorySummary.nextConceptId = adapt.nextConceptId;
+      }
     }
     setDebrief(assembled.debrief);
     setEntryFragments(assembled.entry.fragments);

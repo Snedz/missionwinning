@@ -4,6 +4,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import type { LoadZone } from '@/lib/coach/load';
 import type { HomeGymKit } from '@/lib/workout/homeGymKit';
+import type { CoachConceptId } from '@/lib/coach/coachConcept';
 
 export type { Rpe } from '@/types';
 
@@ -32,6 +33,8 @@ export interface PlanSession {
   exercises: PlanExercise[];
   estMinutes: number;
   status: SessionStatus;
+  /** Discrete training intent (.1067). Optional; derived when missing. */
+  conceptId?: CoachConceptId;
 }
 
 export interface CoachPlan {
@@ -42,6 +45,8 @@ export interface CoachPlan {
   generatedAt: string;
   contextHash: string;
   equipmentProfile: EquipmentProfile;
+  /** Next open session concept after adapt (.1067). */
+  nextConceptId?: CoachConceptId;
 }
 
 export interface CoachContext {

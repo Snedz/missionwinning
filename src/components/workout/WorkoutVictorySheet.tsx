@@ -508,10 +508,13 @@ export function WorkoutVictorySheet({
             <p
               className="mb-2 text-center text-xs leading-relaxed text-muted-foreground"
               data-testid="victory-next-env-cite"
+              data-concept-id={summary.nextConceptId || undefined}
             >
-              {t('victoryNextEnvCite', {
-                defaultValue: 'Next session updated from this workout',
-              })}
+              {summary.nextEnvCite
+                ? summary.nextEnvCite
+                : t('victoryNextEnvCite', {
+                    defaultValue: 'Next session updated from this workout',
+                  })}
             </p>
           ) : null}
           {summary.nextAction ? (
