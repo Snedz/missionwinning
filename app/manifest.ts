@@ -19,7 +19,7 @@ function manifestDescription(): string {
 // Theme colors match the --background token in src/index.css.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Mission Winning — Log a set. Offline.',
+    name: 'Mission Winning — Log a set.',
     short_name: 'Mission Winning',
     description: manifestDescription(),
     // id pins install identity — do not change without product sign-off.
