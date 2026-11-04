@@ -8,6 +8,8 @@ import { isOfflineInstallable } from '@/lib/offlineCapability';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Rocket } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { BETA_EN, BETA_STEP_DEFS } from '@/i18n/betaLocales';
@@ -39,6 +41,12 @@ export function BetaStartPage() {
     >
       {/* Field manual: primary path owns the fold; checklist + secondary steps fold. */}
       <div className="space-y-8 page-enter">
+        {/* Same chip + key + flag as the AppHeader tag, so it leaves with it. */}
+        {isFreeBeta() ? (
+          <Badge variant="outline" data-testid="beta-alpha-chip">
+            {t('navOpenBeta', { defaultValue: 'Alpha' })}
+          </Badge>
+        ) : null}
         {primary ? (
           <div className="space-y-3">
             <p className="eyebrow">
