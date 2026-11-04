@@ -4,7 +4,7 @@ import { hasServerPrivateAccess } from '@/lib/privateGateServer';
 import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { privateGateReturnPath } from '@/lib/privateGateReturn';
 
-type SearchParams = Promise<{ invite?: string | string[]; next?: string | string[] }>;
+type SearchParams = Promise<{ invite?: string | string[]; next?: string | string[]; from?: string | string[] }>;
 
 export default async function PrivatePage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
@@ -22,6 +22,10 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
   const initialNext =
     (Array.isArray(rawNextParam) ? rawNextParam[0] : rawNextParam)?.trim() || '';
 
+  // UI state only: /beta links here with ?from=beta so the code field opens.
+  const rawFrom = sp.from;
+  const fromBeta = (Array.isArray(rawFrom) ? rawFrom[0] : rawFrom)?.trim() === 'beta';
+
   /*
    * `.765` — the gate reads its query here, not in the client, so this page has
    * no Suspense boundary and the poster is server-rendered.
@@ -34,6 +38,7 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
     <GateTeaser
       initialInvite={initialInvite}
       initialNext={initialNext}
+      codeOpen={fromBeta}
       walkOpen={!isPrivateModeEnabled()}
     />
   );
