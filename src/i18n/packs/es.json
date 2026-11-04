@@ -164,7 +164,7 @@
   "betaNeedLi1": "Termina el I-Day y al menos un entrenamiento esta semana.",
   "betaNeedLi2": "Pruebe las fases del viaje hoy: el panel se desbloquea a medida que avanza",
   "betaNeedLi3": "Informe cualquier cosa confusa a través de Perfil → comentarios o responda a su correo electrónico de invitación",
-  "betaStep1Body": "Utilice el código de acceso privado de su invitación. Ingréselo en la página de acceso o agregue ?access=YOUR_CODE a cualquier URL una vez.",
+  "betaStep1Body": "Abre /private (o tu enlace de invitación) e introduce el código de acceso de tu correo de invitación.",
   "betaStep1Cta": "Introduce el código de acceso",
   "betaStep2Body": "El flujo de bienvenida establece su objetivo y equipo. Esto se sincroniza con su perfil cuando inicia sesión.",
   "betaStep2Cta": "Iniciar el día I",
