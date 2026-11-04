@@ -912,5 +912,6 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-1176-for-1192.md](./log/LOG-rotate-1176-for-1192.md) | rotated 2026-10-22 for `.1192` es/pt landing strings |
 | [log/LOG-rotate-1177-for-1193.md](./log/LOG-rotate-1177-for-1193.md) | rotated 2026-10-22 for `.1193` bundle budget initial JS |
 | [log/LOG-rotate-1178-for-1194.md](./log/LOG-rotate-1178-for-1194.md) | rotated 2026-11-04 for `.1194` honest /beta copy and manifest name |
+| [log/LOG-rotate-1179-for-1195.md](./log/LOG-rotate-1179-for-1195.md) | rotated 2026-11-04 for `.1195` drop Offline. from the headline |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
 | — | `.766` merge-all: overlapping PRs each archived `.669` / `.655` / `.656` / `.630` / `.750`. One `##` heading per label. Survivor for `.669` is [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md). |
