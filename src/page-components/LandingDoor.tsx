@@ -4,7 +4,7 @@
  * First screen of `/` once the gate is off or the cookie is set.
  *
  * The hero spec measures this composition: one Geist headline
- * ("Log a set. Offline."), one yellow Log a set that opens `/welcome`,
+ * ("Log a set."), one yellow Log a set that opens `/welcome`,
  * and one shot of the logger. The forge sheet follows in the same document.
  */
 
@@ -19,7 +19,7 @@ export function LandingDoor() {
     <div className="mw-house polish-door polish-front">
       <div className="polish-col">
         <h1 className="polish-title">
-          {t('footerTagline', { defaultValue: 'Log a set. Offline.' })}
+          {t('footerTagline', { defaultValue: 'Log a set.' })}
         </h1>
         <Link href="/welcome" className="house-btn house-btn-primary polish-cta">
           {t('landingHeroLine1', { defaultValue: 'Log a set.' })}

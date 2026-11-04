@@ -37,7 +37,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mission Winning — Log a set. Offline.',
+    default: 'Mission Winning — Log a set.',
     template: '%s · Mission Winning',
   },
   description:
@@ -47,21 +47,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Mission Winning',
-    title: 'Mission Winning — Log a set. Offline.',
-    description: 'Log a set. Offline. No account. No wearable.',
+    title: 'Mission Winning — Log a set.',
+    description: 'Log a set. No account. No wearable.',
     images: [
       {
         url: '/brand/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'Mission Winning — Log a set. Offline.',
+        alt: 'Mission Winning — Log a set.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mission Winning — Log a set. Offline.',
-    description: 'Log a set. Offline. No account. No wearable.',
+    title: 'Mission Winning — Log a set.',
+    description: 'Log a set. No account. No wearable.',
     images: ['/brand/og-default.png'],
   },
   icons: {

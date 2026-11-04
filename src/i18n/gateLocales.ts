@@ -3,7 +3,7 @@
 import { GATE_EN } from '@/i18n/gateEn';
 
 /**
- * Overlays inherit EN public line + support (Log a set. Offline. /
+ * Overlays inherit EN public line + support (Log a set. /
  * No account. No wearable.). Eyebrows are Free equivalents — no beta.
  */
 

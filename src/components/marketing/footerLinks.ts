@@ -100,4 +100,4 @@ export const FOOTER_DISCLAIMER_DEFAULT =
   'Educational fitness tools — not medical advice. Consult a physician before starting any training program.';
 
 export const FOOTER_TAGLINE_KEY = 'footerTagline';
-export const FOOTER_TAGLINE_DEFAULT = 'Log a set. Offline.';
+export const FOOTER_TAGLINE_DEFAULT = 'Log a set.';

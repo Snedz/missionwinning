@@ -9,7 +9,7 @@ import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 export const BOOTSTRAP_EN: Record<string, string> = {
   ...BETA_EN,
   appName: 'Mission Winning',
-  tagline: 'Log a set. Offline.',
+  tagline: 'Log a set.',
   infoBetaTitle: 'Start here',
   infoBetaSubtitleBrief: 'I-Day → first workout → Mission Coach. Start with the primary path.',
   infoBetaMoreSteps: 'What we need & more steps',

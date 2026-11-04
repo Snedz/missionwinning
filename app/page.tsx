@@ -14,7 +14,7 @@ import {
 } from '@/lib/publicSeo';
 
 export const metadata: Metadata = publicPageMetadata({
-  title: 'Log a set. Offline.',
+  title: 'Log a set.',
   description:
     'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.',
   path: '/',

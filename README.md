@@ -7,7 +7,7 @@
 
 **Alpha 0.1.0** · Mission Winning Alpha 0.1.0
 
-**Log a set. Offline.** No account. No wearable.
+**Log a set.** No account. No wearable.
 
 Adaptive AI coaching for train-anywhere athletes — free offline workout logging (no account required), and weekly plans that adapt from your logs alone (no wearable required). The free logger is never gated.
 

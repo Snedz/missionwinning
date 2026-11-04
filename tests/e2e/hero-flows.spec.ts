@@ -18,7 +18,9 @@ test.describe('Phase H hero flows @gate', () => {
   test('welcome I-Day loads and advances', async ({ page }) => {
     const res = await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     expect(res?.status()).toBe(200);
-    await expect(page.locator('body')).toContainText(/log a set\. offline\./i);
+    const title = page.locator('h1.polish-title');
+    await expect(title).toHaveText(/^\s*Log a set\.\s*$/);
+    await expect(title).not.toContainText(/offline/i);
 
     const go = page.getByRole('button', { name: /^log a set\.?$/i }).first();
     await expect(go).toBeVisible();

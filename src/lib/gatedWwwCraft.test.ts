@@ -38,7 +38,7 @@ test('tight lock is hero + notify + enter-with-code', () => {
   assert.match(src, /gate-shell/);
   assert.match(src, /gate-h1/);
   assert.match(src, /gateTitle1/);
-  assert.match(src, /gateTitle2/);
+  assert.doesNotMatch(src, /gateTitle2/, 'the hero is one line: Log a set.');
   assert.match(src, /gateSubtitle/);
   assert.match(src, /LaunchNotifyForm/);
   assert.match(src, /variant="gate"/);
@@ -77,7 +77,7 @@ test('door keys do not stamp Alpha; pack stays locked', () => {
   const en = gateStringsFor('en');
   assert.equal(en.gateEyebrow, 'Free');
   assert.equal(en.gateTitle1, 'Log a set.');
-  assert.equal(en.gateTitle2, 'Offline.');
+  assert.equal(en.gateTitle2, undefined);
   assert.equal(en.gateSubtitle, 'No account. No wearable.');
   assert.equal(en.gateWaitlistTitle, 'Get notified');
   assert.equal(en.gateAccessSummary, 'Enter with code');
@@ -90,7 +90,6 @@ test('door keys do not stamp Alpha; pack stays locked', () => {
     'gateInviteHeadline',
     'gateBetaGuide',
     'gateTitle1',
-    'gateTitle2',
     'gateSubtitle',
   ] as const) {
     assert.doesNotMatch(GATE_EN[key], /alpha|free beta|invite-only|win daily/i, key);
@@ -128,7 +127,7 @@ test('exported EN gate JSON does not restore Alpha-on-the-door', () => {
 
 test('root OG description is the Train + Coach wedge, not six pillars', () => {
   const layout = read('app/layout.tsx');
-  assert.match(layout, /Log a set\. Offline\. No account\. No wearable\./);
+  assert.match(layout, /Log a set\. No account\. No wearable\./);
   assert.doesNotMatch(layout, /nutrition|mobility|mind, and learning/i);
 });
 

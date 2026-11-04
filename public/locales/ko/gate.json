@@ -1,7 +1,6 @@
 {
   "gateEyebrow": "Free",
   "gateTitle1": "Log a set.",
-  "gateTitle2": "Offline.",
   "gateSubtitle": "No account. No wearable.",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "핵심 기능은 영원히 무료",
@@ -26,8 +25,8 @@
   "gateInviteSubtitle": "Enter the access code from your email, then complete I-Day and log your first workout.",
   "gateBetaGuide": "베타 시작 가이드",
   "gateBetaGuideFoot": "초대된 테스터: 다음을 참조하세요.",
-  "cinePublicLine": "Log a set. Offline.",
-  "cineHeroHeadline": "Log a set. Offline.",
+  "cinePublicLine": "Log a set.",
+  "cineHeroHeadline": "Log a set.",
   "cineHeroLead": "No account. No wearable.",
   "cineWeekKicker": "Mission Coach",
   "cineWeekTitle": "The week does not fail.",
