@@ -62,8 +62,8 @@ test('EN door pack is Free / Get notified / Enter with code', () => {
 
 test('nested mission: public line + support + Coach beat + quiet later, never a feed', () => {
   const en = gateStringsFor('en');
-  assert.equal(en.cinePublicLine, 'Log a set. Offline.');
-  assert.equal(en.cineHeroHeadline, 'Log a set. Offline.');
+  assert.equal(en.cinePublicLine, 'Log a set.');
+  assert.equal(en.cineHeroHeadline, 'Log a set.');
   assert.equal(en.cineHeroLead, 'No account. No wearable.');
   assert.equal(en.gateSubtitle, 'No account. No wearable.');
   assert.equal(en.cineWeekKicker, 'Mission Coach');
@@ -79,7 +79,7 @@ test('banned regex catches Win Daily-as-tagline and Free beta on the door', () =
   assert.match('Train Anywhere. Win Daily.', BANNED);
   assert.match('Free beta', BANNED);
   assert.match('invite-only', BANNED);
-  assert.doesNotMatch('Log a set. Offline.', BANNED);
+  assert.doesNotMatch('Log a set.', BANNED);
   assert.doesNotMatch('Anywhere', BANNED);
   assert.doesNotMatch('Free', BANNED);
   const mutantLine = gatedWwwHonestyIsHonest({
@@ -157,9 +157,9 @@ test('Welcome cold door is one action; the gated question wall stays in the pack
   assert.match(boot, /welcomeGateSubtitleBrief: GATED_WWW_HONESTY\.welcomeSubtitleBrief/);
 });
 
-test('/private document title stays Log a set. Offline., not Free beta', () => {
+test('/private document title stays Log a set., not Free beta', () => {
   const src = read('src/lib/routeMetadata.ts');
-  assert.match(src, /private:\s*'Log a set\. Offline\.'/);
+  assert.match(src, /private:\s*'Log a set\.'/);
   assert.doesNotMatch(src, /private:\s*'Free beta'/);
   assert.doesNotMatch(src, /private:\s*'Private Beta'/);
 });

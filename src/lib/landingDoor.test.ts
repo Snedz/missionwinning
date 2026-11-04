@@ -22,7 +22,7 @@ test('the landing leads with the door, then the forge sheet', () => {
   assert.ok(doorAt !== -1, 'LandingPage must mount LandingDoor');
   assert.ok(sheetAt !== -1 && doorAt < sheetAt, 'the door is the first screen');
   assert.match(door, /footerTagline/);
-  assert.match(door, /defaultValue: 'Log a set\. Offline\.'/);
+  assert.match(door, /defaultValue: 'Log a set\.'/);
   assert.match(door, /href="\/welcome"/);
   assert.match(door, /house-btn house-btn-primary/);
   assert.match(door, /className="polish-shot"/);

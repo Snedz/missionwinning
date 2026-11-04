@@ -182,7 +182,7 @@ const LANDING_EN: Record<string, string> = {
   landingCapturePrivacy: 'We store your email only for launch updates.',
   landingCaptureInvalid: 'Enter a valid email.',
   landingCaptureError: 'Could not save. Try again.',
-  footerTagline: 'Log a set. Offline.',
+  footerTagline: 'Log a set.',
   footerGroupProduct: 'Product',
   footerGroupLearn: 'Learn',
   footerGroupCompany: 'Company',

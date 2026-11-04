@@ -21,7 +21,6 @@ import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 export const GATE_EN: Record<string, string> = {
   gateEyebrow: 'Free',
   gateTitle1: 'Log a set.',
-  gateTitle2: 'Offline.',
   gateSubtitle: 'No account. No wearable.',
   /**
    * `.766` — the mechanism, not the adjective. CN/HK respondents believed the
@@ -54,8 +53,8 @@ export const GATE_EN: Record<string, string> = {
   gateBetaGuide: 'Start guide',
   gateBetaGuideFoot: 'Have a code? See the',
   cineSetEyebrow: 'Set',
-  cinePublicLine: 'Log a set. Offline.',
-  cineHeroHeadline: 'Log a set. Offline.',
+  cinePublicLine: 'Log a set.',
+  cineHeroHeadline: 'Log a set.',
   cineHeroLead: 'No account. No wearable.',
   cineWeekKicker: 'Mission Coach',
   cineWeekTitle: 'The week does not fail.',

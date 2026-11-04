@@ -1,7 +1,6 @@
 {
   "gateEyebrow": "مجاني",
   "gateTitle1": "Log a set.",
-  "gateTitle2": "Offline.",
   "gateSubtitle": "No account. No wearable.",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "الأساس مجاني للأبد",
@@ -26,8 +25,8 @@
   "gateInviteSubtitle": "Enter the access code from your email, then complete I-Day and log your first workout.",
   "gateBetaGuide": "Alpha start guide",
   "gateBetaGuideFoot": "Have a code? See the",
-  "cinePublicLine": "Log a set. Offline.",
-  "cineHeroHeadline": "Log a set. Offline.",
+  "cinePublicLine": "Log a set.",
+  "cineHeroHeadline": "Log a set.",
   "cineHeroLead": "No account. No wearable.",
   "cineWeekKicker": "Mission Coach",
   "cineWeekTitle": "A logged set is a new plan.",

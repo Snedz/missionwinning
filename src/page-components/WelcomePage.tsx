@@ -158,7 +158,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
       <div className="mw-house polish-door">
         <div className="polish-col">
           <h1 className="polish-title">
-            {t('footerTagline', { defaultValue: 'Log a set. Offline.' })}
+            {t('footerTagline', { defaultValue: 'Log a set.' })}
           </h1>
           <button
             type="button"

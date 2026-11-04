@@ -81,7 +81,7 @@ test.describe('First 90 seconds @gate', () => {
     // `.1137` — the cookie homepage is the house door, not the paper hero.
     // Geist is the house face. SEO templates below stay on Archivo.
     const h1 = page.locator('h1').first();
-    await expect(h1).toHaveText(/Log a set\. Offline\./);
+    await expect(h1).toHaveText(/Log a set\./);
     const font = await h1.evaluate((el) => getComputedStyle(el).fontFamily);
     expect(font.toLowerCase(), `hero H1 font-family was ${font}`).toContain('geist');
 
@@ -200,7 +200,7 @@ test.describe('First 90 seconds @gate', () => {
   test('the homepage action opens the first-run path', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // The claim is "Log a set. Offline." The one control has to open /welcome,
+    // The claim is "Log a set." The one control has to open /welcome,
     // where Begin is the next tap. An in-page demo that never logged a set
     // was the old homepage asserting a week it did not show.
     await page.getByRole('link', { name: /^log a set\.?$/i }).click();

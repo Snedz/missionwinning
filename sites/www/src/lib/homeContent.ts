@@ -23,7 +23,7 @@ import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 const t = landingStringsFor('en');
 
 export const META = {
-  title: 'Log a set. Offline. — Mission Winning',
+  title: 'Mission Winning — Log a set.',
   description:
     "Free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.",
 };
