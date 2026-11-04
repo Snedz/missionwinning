@@ -68,7 +68,6 @@ const LANDING_EN: Record<string, string> = {
   navMenuClose: 'Close menu',
   landingHeroEyebrow: 'Free offline logger · Adaptive AI coach',
   landingHeroTitle1: 'Log a set.',
-  landingHeroTitle2: 'Offline.',
   landingHeroSubtitle:
     'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
   landingHeroLibrary: `Library of ${EP} free exercise pages — form cues, hubs, and a full foundations guide.`,
@@ -292,7 +291,6 @@ const LANDING_ES: Record<string, string> = {
   landingNavHome: 'Inicio',
   landingHeroEyebrow: 'Rastreador gratis · PWA offline',
   landingHeroTitle1: 'Entrena en cualquier lugar.',
-  landingHeroTitle2: 'Gana a diario.',
   landingHeroSubtitle:
     'El rastreador de entrenamientos gratis que funciona offline — sin cuenta, sin tienda, sin muro de pago en lo básico. Nutrición, movilidad, mente y aprendizaje suman al mismo Mission Score.',
   landingHeroLibrary: `Biblioteca de ${EP} ejercicios gratis — cues, hubs y guía completa.`,
@@ -445,7 +443,6 @@ const LANDING_PT: Record<string, string> = {
   landingNavHome: 'Início',
   landingHeroEyebrow: 'Tracker grátis · PWA offline',
   landingHeroTitle1: 'Treine em qualquer lugar.',
-  landingHeroTitle2: 'Vença todo dia.',
   landingHeroSubtitle:
     'O tracker de treinos grátis que funciona offline — sem conta, sem loja, sem paywall no básico. Nutrição, mobilidade, mente e aprendizado somam no mesmo Mission Score.',
   landingSeeHow: 'Como funciona',
@@ -537,7 +534,6 @@ const LANDING_DE: Record<string, string> = {
   landingNavHome: 'Start',
   landingHeroEyebrow: 'Kostenloser Tracker · Offline-PWA',
   landingHeroTitle1: 'Trainiere überall.',
-  landingHeroTitle2: 'Gewinne täglich.',
   landingHeroSubtitle:
     'Der kostenlose Offline-Workout-Tracker — kein Konto, kein App-Store, keine Paywall bei den Basics. Ernährung, Mobility, Mind und Lernen fließen in denselben Mission Score.',
   landingSeeHow: 'So funktioniert’s',
@@ -583,7 +579,6 @@ const LANDING_IT: Record<string, string> = {
   landingNavHome: 'Home',
   landingHeroEyebrow: 'Logger offline gratuito · Coach IA adattivo',
   landingHeroTitle1: 'Allenati ovunque.',
-  landingHeroTitle2: 'Vinci ogni giorno.',
   landingHeroSubtitle:
     'Registro offline gratuito (senza account) e piani settimanali che si adattano solo dai tuoi log — nessun wearable richiesto.',
   landingHeroProof: 'Registra una serie → Coach modella la settimana → Mission Score avanza.',
@@ -680,7 +675,6 @@ const LANDING_RU: Record<string, string> = {
   landingNavHome: 'Главная',
   landingHeroEyebrow: 'Бесплатный офлайн-логгер · Адаптивный AI Coach',
   landingHeroTitle1: 'Тренируйся где угодно.',
-  landingHeroTitle2: 'Побеждай каждый день.',
   landingHeroSubtitle:
     'Бесплатное офлайн-логирование (без аккаунта) и недельные планы, которые адаптируются только из твоих логов — носимый гаджет не нужен.',
   landingHeroProof: 'Запиши подход → Coach формирует неделю → Mission Score растёт.',
@@ -777,7 +771,6 @@ const LANDING_KO: Record<string, string> = {
   landingNavHome: '홈',
   landingHeroEyebrow: '무료 오프라인 로거 · 적응형 AI 코치',
   landingHeroTitle1: '어디서나 훈련하세요.',
-  landingHeroTitle2: '매일 이기세요.',
   landingHeroSubtitle:
     '무료 오프라인 기록(계정 불필요)과 로그만으로 적응하는 주간 플랜 — 웨어러블 필요 없음.',
   landingHeroProof: '세트 기록 → 코치가 주간 조정 → Mission Score 상승.',
@@ -874,7 +867,6 @@ const LANDING_JA: Record<string, string> = {
   landingNavHome: 'ホーム',
   landingHeroEyebrow: '無料オフラインロガー · 適応型AIコーチ',
   landingHeroTitle1: 'どこでもトレーニング。',
-  landingHeroTitle2: '毎日勝つ。',
   landingHeroSubtitle:
     '無料のオフライン記録（アカウント不要）とログだけから適応する週間プラン — ウェアラブル不要。',
   landingHeroProof: 'セットを記録 → コーチが週を調整 → Mission Scoreが動く。',
@@ -970,7 +962,6 @@ const LANDING_HI: Record<string, string> = {
   landingNavStart: 'मुफ़्त शुरू करें',
   landingNavHome: 'होम',
   landingHeroTitle1: 'कहीं भी ट्रेन करें।',
-  landingHeroTitle2: 'हर दिन जीतें।',
   landingHeroSubtitle:
     'मुफ़्त ऑफ़लाइन वर्कआउट ट्रैकर — बिना खाते, बिना स्टोर, कोर पर कोई paywall नहीं। Mission Score पोषण, गतिशीलता, मन और सीख को जोड़ता है।',
   landingCtaStart: 'अपना मार्ग शुरू करें',
@@ -990,7 +981,6 @@ const LANDING_ID: Record<string, string> = {
   landingNavStart: 'Mulai gratis',
   landingNavHome: 'Beranda',
   landingHeroTitle1: 'Latihan di mana saja.',
-  landingHeroTitle2: 'Menang setiap hari.',
   landingHeroSubtitle:
     'Pelacak latihan gratis offline — tanpa akun, tanpa toko, tanpa paywall di inti. Mission Score menyatukan nutrisi, mobilitas, pikiran, dan belajar.',
   landingCtaStart: 'Mulai jalurmu',
@@ -1010,7 +1000,6 @@ const LANDING_TH: Record<string, string> = {
   landingNavStart: 'เริ่มฟรี',
   landingNavHome: 'หน้าแรก',
   landingHeroTitle1: 'ฝึกได้ทุกที่',
-  landingHeroTitle2: 'ชนะทุกวัน',
   landingHeroSubtitle:
     'ตัวติดตามออกกำลังกายฟรีออฟไลน์ — ไม่ต้องมีบัญชี ไม่ต้องร้านค้า ไม่มี paywall ที่คอร์ Mission Score รวมโภชนาการ การเคลื่อนไหว จิตใจ และการเรียนรู้',
   landingCtaStart: 'เริ่มเส้นทางของคุณ',
@@ -1030,7 +1019,6 @@ const LANDING_ZH: Record<string, string> = {
   landingNavStart: '免费开始',
   landingNavHome: '首页',
   landingHeroTitle1: '随处训练。',
-  landingHeroTitle2: '每日获胜。',
   landingHeroSubtitle:
     '免费离线训练记录器——无需账号、无需应用商店、核心功能无付费墙。Mission Score 将营养、活动、心态与学习合而为一。',
   landingCtaStart: '开始你的路径',
@@ -1050,7 +1038,6 @@ const LANDING_VI: Record<string, string> = {
   landingNavStart: 'Bắt đầu miễn phí',
   landingNavHome: 'Trang chủ',
   landingHeroTitle1: 'Tập mọi nơi.',
-  landingHeroTitle2: 'Thắng mỗi ngày.',
   landingHeroSubtitle:
     'Trình theo dõi tập luyện miễn phí offline — không tài khoản, không cửa hàng, không paywall phần lõi. Mission Score gộp dinh dưỡng, vận động, tinh thần và học tập.',
   landingCtaStart: 'Bắt đầu lộ trình',
@@ -1070,7 +1057,6 @@ const LANDING_AR: Record<string, string> = {
   landingNavStart: 'ابدأ مجانًا',
   landingNavHome: 'الرئيسية',
   landingHeroTitle1: 'تدرّب في أي مكان.',
-  landingHeroTitle2: 'انتصِر كل يوم.',
   landingHeroSubtitle:
     'متتبع تمارين مجاني يعمل دون اتصال — بلا حساب، بلا متجر، بلا جدار دفع على النواة. Mission Score يجمع التغذية والحركة والعقل والتعلم.',
   landingCtaStart: 'ابدأ مسارك',
