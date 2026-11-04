@@ -123,7 +123,7 @@
   "betaNeedLi1": "Kết thúc I-Day và ít nhất một buổi tập trong tuần này",
   "betaNeedLi2": "Hãy thử các giai đoạn hành trình vào Hôm nay - bảng điều khiển sẽ mở khóa khi bạn tiến bộ",
   "betaNeedLi3": "Báo cáo bất kỳ điều gì khó hiểu qua Hồ sơ → phản hồi hoặc trả lời email mời của bạn",
-  "betaStep1Body": "Sử dụng mã truy cập riêng tư từ lời mời của bạn. Nhập nó trên trang cổng hoặc thêm ?access=YOUR_CODE vào bất kỳ URL nào một lần.",
+  "betaStep1Body": "Mở /private (hoặc liên kết mời của bạn) và nhập mã truy cập từ email mời.",
   "betaStep1Cta": "Nhập mã truy cập",
   "betaStep1Title": "Mở khóa quyền truy cập",
   "betaStep2Body": "Luồng chào mừng đặt ra mục tiêu và thiết bị của bạn. Điều này đồng bộ hóa với hồ sơ của bạn khi bạn đăng nhập.",
