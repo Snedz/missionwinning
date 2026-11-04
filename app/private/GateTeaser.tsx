@@ -6,6 +6,8 @@ import './gate.css';
 export function GateTeaser(props: {
   initialInvite?: string;
   initialNext?: string;
+  /** UI only: open the access-code details (arrived from /beta). */
+  codeOpen?: boolean;
   /** Preview/local: the door is cosmetic. Do not bounce unlock back to `/`. */
   walkOpen?: boolean;
 }) {
@@ -14,6 +16,7 @@ export function GateTeaser(props: {
       <PrivateTeaserClient
         initialInvite={props.initialInvite}
         initialNext={props.initialNext}
+        codeOpen={props.codeOpen === true}
         walkOpen={props.walkOpen === true}
       />
     </div>

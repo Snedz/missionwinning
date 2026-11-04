@@ -5,7 +5,7 @@ export const BETA_STEP_DEFS = [
     n: 1,
     titleKey: 'betaStep1Title',
     bodyKey: 'betaStep1Body',
-    href: '/private',
+    href: '/private?from=beta',
     ctaKey: 'betaStep1Cta',
   },
   {

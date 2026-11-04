@@ -130,8 +130,9 @@ export function SessionTrainerCard({ seed, surface }: Props) {
     );
   }
 
+  const noSetLine = t('sessionTrainerNoSet', { defaultValue: 'No set in front of you yet.' });
   const localLine = !name
-    ? t('sessionTrainerNoSet', { defaultValue: 'No set in front of you yet.' })
+    ? noSetLine
     : cue && load
       ? t('sessionTrainerLineCue', {
           name,
@@ -155,7 +156,12 @@ export function SessionTrainerCard({ seed, surface }: Props) {
       ? (llmLine ?? localLine)
       : guardTrainNowText(decision.copy ?? localLine, decision);
   const href = libraryHrefForExercise(exerciseId);
-  const nextDetail = name && load ? `${name} — ${load}` : name ?? t('sessionTrainerNoSet', { defaultValue: 'No set in front of you yet.' });
+  // With no set, the lede already says so; the Next set row would repeat it.
+  const nextDetail = name
+    ? (load ? `${name} — ${load}` : name)
+    : shown === noSetLine
+      ? null
+      : noSetLine;
 
   return (
     <section
@@ -173,7 +179,7 @@ export function SessionTrainerCard({ seed, surface }: Props) {
       <p className="house-lede" data-testid="session-trainer-line">
         {shown}
       </p>
-      {decision.mode === 'withhold' ? null : (
+      {decision.mode === 'withhold' || nextDetail === null ? null : (
       <p className="house-row" data-testid="session-trainer-next">
         <span className="house-kicker">{t('sessionTrainerNext', { defaultValue: 'Next set' })}</span>
         <span>{nextDetail}</span>
