@@ -81,7 +81,7 @@ test.describe('First 90 seconds @gate', () => {
     // `.1137` — the cookie homepage is the house door, not the paper hero.
     // Geist is the house face. SEO templates below stay on Archivo.
     const h1 = page.locator('h1').first();
-    await expect(h1).toHaveText(/Log a set\./);
+    await expect(h1).toHaveText(/^\s*Log a set\.\s*$/);
     const font = await h1.evaluate((el) => getComputedStyle(el).fontFamily);
     expect(font.toLowerCase(), `hero H1 font-family was ${font}`).toContain('geist');
 

@@ -13,7 +13,7 @@ const html = readFileSync(path.join(root, 'docs/design/concepts/05-exquisite.htm
 
 test('05-exquisite is a self-contained HTML document', () => {
   assert.match(html, /<!DOCTYPE html>/i);
-  assert.match(html, /<h1[^>]*>Log a set\./);
+  assert.match(html, /<h1[^>]*>Log a set\.<\/h1>/);
   assert.doesNotMatch(html, /href="#"/);
   assert.match(html, /href="\/private"/);
   assert.match(html, /href="\/"/);
@@ -30,8 +30,9 @@ test('05-exquisite carries the gated CTA pack and refuses invite-only', () => {
 });
 
 test('05-exquisite nested mission: public line on fold 1, Coach beat, quiet later', () => {
-  assert.match(html, /<title>Mission Winning — Log a set\./);
-  assert.match(html, /<h1[^>]*>Log a set\./);
+  assert.match(html, /<title>Mission Winning — Log a set\.<\/title>/);
+  assert.doesNotMatch(html, /Log a set\. Offline/);
+  assert.match(html, /<h1[^>]*>Log a set\.<\/h1>/);
   assert.match(html, /<p class="kicker">Anywhere<\/p>/);
   assert.match(html, /Mission Coach/);
   assert.match(html, /class="later">Mission Winning Health\. Later: an athlete page you author\. Not a feed\./);
