@@ -1,5 +1,9 @@
 # Mission Winning — Development Log
 
+## 2026-11-09 — Merge Craft beta leftovers PR #1107 (`.1197`)
+
+Squash-merged `craft/beta-leftovers` (PR #1107): Alpha chip, code field from `/beta`, trainer card dedupe. Bumped `APP_BUILD_LABEL` to `2026.07-unified.1197` to clear the build-label gate. PRIVATE_MODE stays.
+
 ## 2026-11-04 — Remove the unused `landingHeroTitle2` string (`.1196`)
 
 `landingHeroTitle2` (EN "Offline.") had no reader: nothing in `src/`, `app/`, tests, scripts or `sites/` called `t('landingHeroTitle2')`, and no type declared it. It is removed from `landingLocales.ts`, from `firstClassLocales.ts` (both the `FIRST_CLASS_KEYS` list and every value table) and from every `public/locales/*/landing.json`, edited by hand rather than by a full export. The key leaves every locale at once, so parity holds. The LOG "Older entries" line also gets its labels fixed: the `.1195` rotation had replaced the `.1177` link with the `.1179` file but kept the `.1177` label. Each link now carries its own label and the `.1177` link is back.
@@ -15,10 +19,6 @@ Beta Field's browser QA (2026-11-04) found two claims on first-run surfaces. `ap
 ## 2026-10-22 — Initial JS under the bundle budget (`.1193`)
 
 `/` shipped every landing language because `LandingPage` imported `landingFaqKeysForSurface` from `landingLocales.ts`. `BY_LANG` plus the English spreads keep webpack from dropping unused packs, so the FAQ key list alone put the whole module (~19 KB gzip) on the first scripts. The keys now live in `landingSurface.ts`. The packs still load with hydrate, and the accordion still renders its English `defaultValue`s on first paint. Train and the house shell imported `@/lib/supabase` at module scope, which constructs the browser client (~54 KB gzip) before a set is logged. Cloud reads and writes now `await loadSupabase()`. Caps stay 351 / 420 / 516. Gzipped initial JS, CI `build-and-test` on this branch (`PRIVATE_MODE=false`): `/` 360.8 → 342.7 (margin 8.3), `/log` 410.8 → 340.5 (margin 79.5), `/active` 519.8 → 449.4 (margin 66.6). The hero spec still measures the door (Log a set. Offline., one Log a set to `/welcome`, one logger shot). `.1159` had replaced that first screen with the forge sheet, whose h1 read "Log a set. Your week rewrites itself." and whose CTA was "Start logging free" to `/log`, so the spec never matched and the Log a set link never appeared. That screen is `LandingDoor`, painted before the forge sheet; the sheet's headline is an h2. Local remeasure after the door: `/` 342.8 KB gzipped (cap 351). The FAQ split did not change those strings. `[skip vercel]`. PRIVATE_MODE stays.
-
-## 2026-10-22 — es + pt-BR homepage loop and comparison strings translated (`.1192`)
-
-`src/i18n/landingLocales.ts`: the loop homepage (hero, adapt, anywhere, free terms, hero demo) and the comparison block shipped English-only to the es and pt beachheads, putting both at 45% placeholders, over the 40% cap in `scripts/i18n-parity.ts`, which kept Ratchets and every PR's build-and-test red. 41 keys translated per language; parity OK. Copy only, no UI files. Label `2026.07-unified.1192`. PRIVATE_MODE stays.
 
 ## 2026-10-22 — repair the stale links in the public repo's live documents (`.1191`)
 
