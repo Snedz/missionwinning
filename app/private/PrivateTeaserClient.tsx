@@ -26,12 +26,15 @@ type Props = {
    * gate cookie is set, then `/` can paint the homepage (not I-Day).
    */
   walkOpen?: boolean;
+  /** UI only: arrived from /beta, so open the access-code details. Validation is unchanged. */
+  codeOpen?: boolean;
 };
 
 export function PrivateTeaserClient({
   initialInvite = '',
   initialNext = '',
   walkOpen = false,
+  codeOpen = false,
 }: Props) {
   const { t } = useTranslation();
   /**
@@ -163,7 +166,7 @@ export function PrivateTeaserClient({
         autoComplete="off"
         // Invitees land with the access form expanded — focus the code field.
         // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
-        autoFocus={isInvitee}
+        autoFocus={isInvitee || codeOpen}
         className="gate-input"
         disabled={loading}
       />
@@ -322,7 +325,7 @@ export function PrivateTeaserClient({
               )}
 
               {/* Access code secondary — never competes with Notify me red. */}
-              <details className="gate-details" open={false}>
+              <details className="gate-details" open={codeOpen}>
                 <summary className="gate-details-summary">
                   {g('gateAccessSummary')}
                 </summary>
