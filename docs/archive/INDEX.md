@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1181-for-1198.md`](docs/archive/log/LOG-rotate-1181-for-1198.md) — rotated by `.1198`, to keep the <=15 entry budget. `.1182` is the live floor.
+- [`CONTEXT-now-1130-queue-welcome.md`](docs/archive/CONTEXT-now-1130-queue-welcome.md) — `.1198` rotated the `.1130` queue-ratchet and `/welcome` CTA Now bullets.
 - [`LOG-rotate-1177-for-1193.md`](docs/archive/log/LOG-rotate-1177-for-1193.md) — rotated by `.1193`, to keep the <=15 entry budget. `.1178` is the live floor.
 - [`CONTEXT-now-1128.md`](docs/archive/CONTEXT-now-1128.md) — `.1193` rotated the `.1128` safety train-now Now bullet.
 - [`LOG-rotate-1172-for-1188.md`](docs/archive/log/LOG-rotate-1172-for-1188.md) — rotated by `.1188`, to keep the <=15 entry budget. `.1173` is the live floor.
@@ -914,5 +916,7 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-1178-for-1194.md](./log/LOG-rotate-1178-for-1194.md) | rotated 2026-11-04 for `.1194` honest /beta copy and manifest name |
 | [log/LOG-rotate-1179-for-1195.md](./log/LOG-rotate-1179-for-1195.md) | rotated 2026-11-04 for `.1195` drop Offline. from the headline |
 | [log/LOG-rotate-1180-for-1196.md](./log/LOG-rotate-1180-for-1196.md) | rotated 2026-11-04 for `.1196` remove unused landingHeroTitle2 |
+| [log/LOG-rotate-1181-for-1198.md](./log/LOG-rotate-1181-for-1198.md) | rotated 2026-11-09 for `.1198` CONTEXT Now budget |
+| [CONTEXT-now-1130-queue-welcome.md](./CONTEXT-now-1130-queue-welcome.md) | `.1198` rotated the `.1130` queue-ratchet and `/welcome` CTA Now bullets |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
 | — | `.766` merge-all: overlapping PRs each archived `.669` / `.655` / `.656` / `.630` / `.750`. One `##` heading per label. Survivor for `.669` is [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md). |
