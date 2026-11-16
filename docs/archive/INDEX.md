@@ -10,8 +10,10 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`LOG-rotate-1183-for-1200.md`](docs/archive/log/LOG-rotate-1183-for-1200.md) — rotated by `.1200`, to keep the <=15 entry budget. `.1184` is the live floor.
 - [`LOG-rotate-1182-for-1199.md`](docs/archive/log/LOG-rotate-1182-for-1199.md) — rotated by `.1199`, to keep the <=15 entry budget. `.1183` is the live floor.
 - [`LOG-rotate-1181-for-1198.md`](docs/archive/log/LOG-rotate-1181-for-1198.md) — rotated by `.1198`, to keep the <=15 entry budget. `.1182` is the live floor.
+- [`CONTEXT-now-1135-review.md`](docs/archive/CONTEXT-now-1135-review.md) — `.1200` rotated the `.1135` review-fixes Now bullet.
 - [`CONTEXT-now-1130-test-lanes.md`](docs/archive/CONTEXT-now-1130-test-lanes.md) — `.1199` rotated the `.1130` test-lanes Now bullet.
 - [`CONTEXT-now-1130-queue-welcome.md`](docs/archive/CONTEXT-now-1130-queue-welcome.md) — `.1198` rotated the `.1130` queue-ratchet and `/welcome` CTA Now bullets.
 - [`LOG-rotate-1177-for-1193.md`](docs/archive/log/LOG-rotate-1177-for-1193.md) — rotated by `.1193`, to keep the <=15 entry budget. `.1178` is the live floor.
