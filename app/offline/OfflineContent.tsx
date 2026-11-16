@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CloudOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 import { listPending, type OutboxKind, type PendingItem } from '@/lib/sync/outbox';
 
 /**
@@ -41,7 +42,7 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
 function whenLabel(
   createdAt: number,
   now: number,
-  t: (key: string, opts?: Record<string, unknown>) => string
+  t: MwTranslateFn
 ): string {
   const mins = Math.max(0, Math.round((now - createdAt) / 60_000));
   if (mins < 1) return t('offlineWhenJustNow', { defaultValue: 'just now' });

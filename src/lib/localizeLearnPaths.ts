@@ -1,7 +1,9 @@
 import type { LearnPath } from '@/data/learnPaths';
 import { LEARN_LESSON_ENHANCEMENTS } from '@/data/learnLessonEnhancements';
 
-type TranslateFn = (key: string, options?: { defaultValue?: string }) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TranslateFn = MwTranslateFn;
 
 /** Overlay locale keys onto learn path data; English defaults come from learnPaths.ts. */
 export function localizeLearnPaths(paths: LearnPath[], t: TranslateFn): LearnPath[] {

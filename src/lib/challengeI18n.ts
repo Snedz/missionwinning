@@ -22,7 +22,9 @@ const DESC_KEYS: Record<ChallengeId, string> = {
   'track-5': 'challengeTrack5Desc',
 };
 
-type TFn = (key: string, opts?: { defaultValue?: string }) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TFn = MwTranslateFn;
 
 export function localizedChallengeTitle(
   id: ChallengeId,

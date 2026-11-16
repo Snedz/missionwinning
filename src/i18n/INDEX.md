@@ -28,6 +28,10 @@ npm run i18n:parity        # key-set + non-EN placeholder gate (CI)
 npm run export-locales     # TS + packs → public/locales/
 ```
 
+## Helpers
+
+- [`mwTranslateFn.ts`](mwTranslateFn.ts) — `MwTranslateFn` for domain helpers that take react-i18next `t` (i18next 27 `TFunction` overloads).
+
 ## Read order
 
 1. `appLangs.ts` — canonical langs

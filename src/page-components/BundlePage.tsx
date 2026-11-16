@@ -38,11 +38,12 @@ import {
   type BundlePlanId,
 } from "@/lib/bundleConfig";
 import { BUNDLE_PILLAR_I18N } from "@/i18n/bundleLocales";
+import type { MwTranslateFn } from "@/i18n/mwTranslateFn";
 import { cn } from "@/lib/utils";
 
 function planBadgeLabel(
   badge: "popular" | "bestValue" | "limited" | undefined,
-  t: (key: string, opts?: { defaultValue: string }) => string
+  t: MwTranslateFn
 ): string | null {
   if (badge === "popular") return t('bundleBadgePopular', { defaultValue: 'Founders' });
   if (badge === "bestValue") return t('bundleBadgeBestValue', { defaultValue: 'Best value' });

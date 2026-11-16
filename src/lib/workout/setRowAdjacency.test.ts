@@ -109,7 +109,7 @@ describe('resolveSetRowAdjacency', () => {
     assert.ok(out.cite && out.cite.kind === 'logs');
     if (out.cite.kind !== 'logs') return;
     assert.equal(out.cite.intensity, 'RPE 9');
-    const line = formatAdjacencyCiteLine(out.cite, (key, opts) => String(opts?.defaultValue ?? key));
+    const line = formatAdjacencyCiteLine(out.cite, (key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? key));
     assert.match(line ?? '', /RPE 9/);
     assert.match(line ?? '', /set 2/);
   });
@@ -441,8 +441,9 @@ describe('resolveAfterCompleteCite', () => {
     if (out.cite.kind !== 'session') return;
     assert.equal(out.cite.setFrom, 1);
     assert.equal(out.cite.setTo, 1);
-    const parts = formatAfterCompleteParts(out, (key, opts) =>
-      String(opts?.defaultValue ?? key)
+    const parts = formatAfterCompleteParts(
+      out,
+      (key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? key)
     );
     assert.equal(parts.target, '9 × 60');
     assert.match(parts.provenance, /this session/);
@@ -506,7 +507,7 @@ describe('resolveAfterCompleteCite', () => {
     });
     const parts = formatAfterCompleteParts(
       out!,
-      (key, opts) => String(opts?.defaultValue ?? key),
+      (key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? key),
       '2:30'
     );
     assert.equal(parts.target, 'Rest 2:30');
@@ -566,8 +567,9 @@ describe('resolveAfterCompleteCite', () => {
     assert.equal(out?.cite.kind, 'coach');
     if (out?.cite.kind !== 'coach') return;
     assert.equal(out.cite.intensity, 'RPE 9 · RIR 1');
-    const parts = formatAfterCompleteParts(out, (key, opts) =>
-      String(opts?.defaultValue ?? key)
+    const parts = formatAfterCompleteParts(
+      out,
+      (key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? key)
     );
     assert.equal(parts.provenance, 'Coach plan · RPE 9 · RIR 1');
   });
@@ -666,7 +668,9 @@ describe('after-complete cite competitive refuse', () => {
       lastRestSeconds: null,
     });
     assert.ok(session);
-    const sessionParts = formatAfterCompleteParts(session!, (key, opts) =>
+    const sessionParts = formatAfterCompleteParts(
+      session!,
+      (key: string, opts?: Record<string, unknown>) =>
       String(opts?.defaultValue ?? key)
     );
     assert.match(sessionParts.provenance, /this session/);
@@ -681,7 +685,7 @@ describe('after-complete cite competitive refuse', () => {
     });
     const restParts = formatAfterCompleteParts(
       rest!,
-      (key, opts) => String(opts?.defaultValue ?? key),
+      (key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? key),
       '1:30'
     );
     assert.equal(restParts.provenance, 'Last rest');

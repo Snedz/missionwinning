@@ -59,7 +59,9 @@ const DEFAULT_LABELS: Record<string, string> = {
   guidePublicAllChapters: '← All chapters',
 };
 
-type TranslateFn = (key: string, options?: { defaultValue?: string }) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TranslateFn = MwTranslateFn;
 
 /**
  * Returns href + localized label safe for the public magazine reader.

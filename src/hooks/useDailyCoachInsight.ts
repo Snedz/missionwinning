@@ -16,6 +16,7 @@ import {
 } from '@/lib/readinessDisplay';
 import { guardCoachReply } from '@/lib/safetyTrainGuidance';
 import { useSafetyTrainDecision } from '@/hooks/useSafetyTrainDecision';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 
 type CoachDisplay = {
   message: string;
@@ -29,7 +30,7 @@ function cacheKey() {
   return `mw_coach_${localDateKey()}`;
 }
 
-function localInsightCopy(fallback: CoachInsight, t: (k: string, o?: Record<string, unknown>) => string) {
+function localInsightCopy(fallback: CoachInsight, t: MwTranslateFn) {
   const focus = focusFromInsightParams(fallback.messageParams);
   return {
     message: translateCoachInsightLine(fallback, focus, t),

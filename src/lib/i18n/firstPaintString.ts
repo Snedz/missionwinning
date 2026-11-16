@@ -1,4 +1,5 @@
 import i18n from '@/i18n';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 
 /** Replace `{{name}}` placeholders when i18n is not ready yet. */
 export function interpolateTemplate(
@@ -19,7 +20,7 @@ export function interpolateTemplate(
 export function firstPaintString(
   key: string,
   floor: string,
-  t: (k: string, opts?: Record<string, unknown>) => string,
+  t: MwTranslateFn,
   params?: Record<string, unknown>
 ): string {
   const merged = { ...params, defaultValue: floor };

@@ -148,7 +148,7 @@ describe('cite tokens', () => {
         suggestion: { kind: 'load', reps: 5, weight: 80 },
         cite: { kind: 'session', setFrom: 1, setTo: 1 },
       },
-      (_key, opts) => String(opts?.defaultValue ?? _key),
+      (_key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? _key),
       undefined,
       100
     );
@@ -159,7 +159,7 @@ describe('cite tokens', () => {
         suggestion: { kind: 'load', reps: 5, weight: 80 },
         cite: { kind: 'session', setFrom: 1, setTo: 1 },
       },
-      (_key, opts) => String(opts?.defaultValue ?? _key)
+      (_key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? _key)
     );
     assert.equal(noMax.target, '5 × 80');
     assert.doesNotMatch(noMax.target, /%/);
@@ -168,7 +168,7 @@ describe('cite tokens', () => {
         suggestion: { kind: 'rest', seconds: 90 },
         cite: { kind: 'last-rest' },
       },
-      (_key, opts) => String(opts?.defaultValue ?? _key),
+      (_key: string, opts?: Record<string, unknown>) => String(opts?.defaultValue ?? _key),
       '1:30',
       100
     );

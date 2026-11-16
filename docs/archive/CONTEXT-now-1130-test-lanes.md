@@ -1,0 +1,5 @@
+# CONTEXT.md `## Now` — rotated by `.1199`
+
+This shipped bullet left the live Now block so it stayed inside the 25-bullet budget. The full record is LOG.md.
+
+- **`.1130`:** (`2026.07-unified.1130`) **Test lanes tell the truth** — `npm test` now runs only the **603 of 1,013** files that import product code; the **410 (40.5%)** that assert on source and doc text run under `npm run test:meta`, which **CI still requires** (`ci.yml`, `ratchets.yml`). Honesty guards were renamed, not deleted — `privacyInstill` failing must still fail CI. `npm run test:list` prints the split. `packages/mw-core` is now inside `npm run typecheck` and had a real pre-existing type error (runtime green, never typechecked). Playwright clears stale `test-results/` so dead red cannot read as live red. `engines: node >=22` (CI pins 22, local ran 24). Dead links on public page components now fail a test — `/builder` was investigated and deliberately left gated (`firstSetWhileGated` records that placement; while gated every path is `noindex` anyway, and after the flip the link resolves).

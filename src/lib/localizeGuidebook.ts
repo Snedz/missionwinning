@@ -1,7 +1,9 @@
 import type { GuideChapter, GuideSection } from '@/data/guidebook/types';
 import { MAGAZINE_META } from '@/data/guidebook/magazineMeta';
 
-type TranslateFn = (key: string, options?: { defaultValue?: string }) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TranslateFn = MwTranslateFn;
 
 function localizeSection(section: GuideSection, t: TranslateFn): GuideSection {
   const next: GuideSection = {

@@ -17,6 +17,7 @@ import {
   type BundleShopCta,
 } from '@/lib/bundleShop';
 import { getStripeCheckoutUrl } from '@/lib/payments';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 import { cn } from '@/lib/utils';
 
 const PLAN_ORDER: BundlePlanId[] = ['12mo', 'monthly', 'lifetime'];
@@ -27,7 +28,7 @@ function vsStackLine(): string {
 }
 
 function paidLineLabel(
-  t: (key: string, opts?: Record<string, unknown>) => string,
+  t: MwTranslateFn,
   line: (typeof BUNDLE_PAID_INVENTORY)[number]
 ): string {
   if (line.id === 'coach') {

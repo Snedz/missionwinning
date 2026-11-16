@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 import { REENTRY_SHORT_MINUTES, type Reentry } from '@/lib/reentry';
 
 /**
@@ -9,7 +10,7 @@ import { REENTRY_SHORT_MINUTES, type Reentry } from '@/lib/reentry';
  */
 export function reentryQuietLine(
   reentry: Pick<Reentry, 'daysSince' | 'tone' | 'show' | 'witness'>,
-  t: (key: string, opts?: Record<string, unknown>) => string
+  t: MwTranslateFn
 ): string {
   if (!reentry.witness?.exerciseId) {
     return t('todayReentryQuietLineBare', {
