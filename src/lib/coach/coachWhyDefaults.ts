@@ -1,3 +1,5 @@
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
 /**
  * English floors for Coach "why" keys on plan exercises.
  *
@@ -24,7 +26,7 @@ export const COACH_WHY_DEFAULTS: Record<string, string> = {
 /** Resolve athlete-facing why copy — never blank, never a bare key when catalogued. */
 export function coachWhyLine(
   key: string,
-  t: (k: string, opts?: Record<string, unknown>) => string
+  t: MwTranslateFn
 ): string {
   const floor = COACH_WHY_DEFAULTS[key];
   if (floor) {

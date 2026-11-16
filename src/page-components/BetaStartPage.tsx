@@ -14,8 +14,9 @@ import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { BETA_EN, BETA_STEP_DEFS } from '@/i18n/betaLocales';
 import { firstPaintString } from '@/lib/i18n/firstPaintString';
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 
-function betaLine(key: string, t: (k: string, o?: Record<string, unknown>) => string): string {
+function betaLine(key: string, t: MwTranslateFn): string {
   return firstPaintString(key, BETA_EN[key] ?? key, t);
 }
 

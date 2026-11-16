@@ -5,7 +5,9 @@ import {
 } from '@/lib/muscleGroups';
 import type { CoachInsight, RecommendedFocus } from '@/lib/score';
 
-type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TranslateFn = MwTranslateFn;
 
 /**
  * English catalog for readiness status keys.

@@ -9,6 +9,7 @@
  * freshness / Recovery %.
  */
 
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
@@ -143,7 +144,7 @@ function formatTargetLabel(
 }
 
 /** i18n `t` — weekday keys stay literal (coverage forbids computed keys). */
-export type AdjacencyCiteT = (key: string, opts?: Record<string, unknown>) => string;
+export type AdjacencyCiteT = MwTranslateFn;
 
 function formatSetSpan(setFrom: number, setTo: number, t: AdjacencyCiteT): string {
   return setFrom === setTo

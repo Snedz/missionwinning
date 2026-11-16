@@ -70,7 +70,9 @@ const LEGACY_TO_PRESET: Record<string, GoalPresetId> = {
   'Make America Healthy Again — start with me': 'america_health',
 };
 
-type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
+type TranslateFn = MwTranslateFn;
 
 export function parseGoalPresetId(value: string): GoalPresetId | null {
   const trimmed = value.trim();

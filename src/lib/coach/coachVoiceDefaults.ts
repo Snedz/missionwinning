@@ -1,3 +1,5 @@
+import type { MwTranslateFn } from '@/i18n/mwTranslateFn';
+
 /**
  * English floors for rules-based coach plan voice keys.
  *
@@ -20,7 +22,7 @@ export const COACH_VOICE_DEFAULTS: Record<string, string> = {
 /** Resolve rules voice copy — never paint a bare catalogued key. */
 export function coachVoiceLine(
   key: string,
-  t: (k: string, opts?: Record<string, unknown>) => string
+  t: MwTranslateFn
 ): string {
   const floor = COACH_VOICE_DEFAULTS[key];
   if (floor) {
