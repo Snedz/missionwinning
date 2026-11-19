@@ -7,3 +7,4 @@
 | [PROGRAM_STATUS.md](PROGRAM_STATUS.md) | Census + hunt re-verify + DSAR. Not a cert. Recipe: [AGENT_RECIPES.md](../AGENT_RECIPES.md) §10. |
 | [PLAN.md](PLAN.md) | 2026-08-13 hunt areas (no PoCs) |
 | [REDTEAM_2026-08-13.md](REDTEAM_2026-08-13.md) | Findings from that hunt — P0 first, blue-team hints only |
+| [SECURITY_AUDIT.md](../../SECURITY_AUDIT.md) | 2026-10-17 adversarial pass. Confirmed rows only after a local disproof attempt. |
