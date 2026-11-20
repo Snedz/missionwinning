@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-11-16 · web `2026.07-unified.1200` · Android `1.24.1`)
+## Now (2026-11-20 · web `2026.07-unified.1201` · Android `1.24.1`)
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
@@ -44,6 +44,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.1201`:** (`2026.07-unified.1201`) **postcss-selector-parser 6.1.6** — transitive lockfile bump only (`package-lock.json`); security line on 6.x (drops `cssesc`). Supersedes stuck Dependabot #1114. PRIVATE_MODE stays.
 - **`.1200`:** (`2026.07-unified.1200`) **react-i18next 18** — stacked on `.1199`; Dependabot #1102 peer requires i18next ≥27. Two-file bump only. Supersedes #1102 on `cursor/react-i18next-18-d835`. PRIVATE_MODE stays.
 - **`.1199`:** (`2026.07-unified.1199`) **i18next 27 typecheck** — Dependabot #1103 bumps i18next to 27.1.1; `MwTranslateFn` (`src/i18n/mwTranslateFn.ts`) types domain helpers so `TFunction` from react-i18next assigns cleanly. Supersedes open #1103 on a cursor branch. PRIVATE_MODE stays.
 - **`.1198`:** (`2026.07-unified.1198`) **CONTEXT Now budget — clear red Ratchets on master** — `## Now` had 26 bullets after #1107 landed (budget 25), and the squash left unresolved conflict markers in the Rotation history line. This ship resolves the markers (keeps the `.1196`/`.1195`/`.1194` archive links), moves the oldest two `.1130` shipped bullets (queue ratchet + `/welcome` CTA) to `docs/archive/CONTEXT-now-1130-queue-welcome.md`, bumps `APP_BUILD_LABEL` to `.1198`, and rotates LOG `.1181` so the entry budget stays at 15. No app or copy changes. PRIVATE_MODE stays.
