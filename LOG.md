@@ -2,7 +2,7 @@
 
 ## 2026-11-20 — postcss-selector-parser 6.1.6 lockfile (`.1201`)
 
-Dependabot #1114 bumps the transitive `postcss-selector-parser` from 6.1.2 to 6.1.6 (security fixes on the 6.x line; 6.1.6 drops the `cssesc` dependency). Root `package-lock.json` only — no `package.json` change. Supersedes stuck #1114 on `master`. Label `2026.07-unified.1201`. PRIVATE_MODE stays.
+Dependabot #1114 bumps the transitive `postcss-selector-parser` from 6.1.2 to 6.1.6 (security fixes on the 6.x line; 6.1.6 drops the `cssesc` dependency). Root `package-lock.json` only — no `package.json` change. Supersedes stuck #1114 on `master`. Rotates the `.1136` shipped bullet to `docs/archive/CONTEXT-now-1136-coach-width.md` so `## Now` stays at 25 bullets. Label `2026.07-unified.1201`. PRIVATE_MODE stays.
 
 ## 2026-11-16 — react-i18next 18 stacked on i18next 27 (`.1200`)
 

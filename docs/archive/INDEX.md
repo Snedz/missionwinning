@@ -10,6 +10,7 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`CONTEXT-now-1136-coach-width.md`](docs/archive/CONTEXT-now-1136-coach-width.md) — `.1201` rotated the `.1136` coach-width Now bullet.
 - [`LOG-rotate-1184-for-1201.md`](docs/archive/log/LOG-rotate-1184-for-1201.md) — rotated by `.1201`, to keep the <=15 entry budget. `.1185` is the live floor.
 - [`LOG-rotate-1183-for-1200.md`](docs/archive/log/LOG-rotate-1183-for-1200.md) — rotated by `.1200`, to keep the <=15 entry budget. `.1184` is the live floor.
 - [`LOG-rotate-1182-for-1199.md`](docs/archive/log/LOG-rotate-1182-for-1199.md) — rotated by `.1199`, to keep the <=15 entry budget. `.1183` is the live floor.
