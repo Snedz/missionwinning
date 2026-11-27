@@ -17,6 +17,9 @@ class WorkoutRepository(
     suspend fun previousSet(exerciseId: String, setIndex: Int): SetLogEntity? =
         dao.latestSetFor(exerciseId, setIndex)
 
+    suspend fun latestWorkingLoad(exerciseId: String, targetReps: Int): SetLogEntity? =
+        dao.latestWorkingLoad(exerciseId, targetReps)?.takeIf { it.weight.isFinite() }
+
     suspend fun finishWorkout(
         workoutName: String,
         durationSeconds: Int,

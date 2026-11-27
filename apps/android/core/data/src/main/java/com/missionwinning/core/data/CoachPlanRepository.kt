@@ -23,9 +23,9 @@ class CoachPlanRepository(
         prefs.setEquipmentProfile(equip)
         val plan = if (api != null) {
             api.postCoachPlan(equipment = equip, withAdaptDemo = false)
-                .getOrElse { LocalCoachSeed.build(equipment = equip) }
+                .getOrElse { offlineSeed(equip) }
         } else {
-            LocalCoachSeed.build(equipment = equip)
+            offlineSeed(equip)
         }
         savePlanResponse(plan)
         return plan
@@ -45,7 +45,7 @@ class CoachPlanRepository(
         dao.getCoachPlan()?.let {
             return json.decodeFromString(CoachPlanResponseDto.serializer(), it.json)
         }
-        val local = LocalCoachSeed.build(withAdaptDemo = false, equipment = equip)
+        val local = offlineSeed(equip)
         savePlanResponse(local)
         return local
     }
@@ -64,7 +64,7 @@ class CoachPlanRepository(
 
     suspend fun markSessionDone(sessionId: String): CoachPlanResponseDto {
         val current = ensureCoachPlan(preferNetwork = false)
-        val next = if (api != null) {
+        val next = if (api != null && !LocalCoachSeed.isOfflinePlan(current.plan)) {
             api.adaptPlan(current.plan, sessionId).getOrElse {
                 LocalCoachSeed.markDone(current.plan, sessionId)
             }
@@ -76,15 +76,14 @@ class CoachPlanRepository(
     }
 
     suspend fun forceReseedPlan(): CoachPlanResponseDto {
-        dao.clearCoachPlan()
         val equip = prefs.equipmentProfile()
         val plan = if (api != null) {
             api.fetchCoachPlan(equipment = equip).getOrElse {
                 api.postCoachPlan(equipment = equip, withAdaptDemo = false)
-                    .getOrElse { LocalCoachSeed.build(equipment = equip) }
+                    .getOrElse { offlineSeed(equip) }
             }
         } else {
-            LocalCoachSeed.build(equipment = equip)
+            offlineSeed(equip)
         }
         savePlanResponse(plan)
         return plan
@@ -94,6 +93,12 @@ class CoachPlanRepository(
         val client = api ?: return Result.failure(IllegalStateException("coach offline"))
         return client.postTrainerAsk(body)
     }
+
+    private suspend fun offlineSeed(equipment: String): CoachPlanResponseDto = LocalCoachSeed.build(
+        equipment = equipment,
+        history = dao.coachWorkingSets(),
+        weightUnit = prefs.weightUnit(),
+    )
 
     private suspend fun savePlanResponse(resp: CoachPlanResponseDto) {
         dao.upsertCoachPlan(

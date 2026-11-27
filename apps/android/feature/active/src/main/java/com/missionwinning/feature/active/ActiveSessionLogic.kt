@@ -1,8 +1,10 @@
 package com.missionwinning.feature.active
 
+import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.LoggedSet
 import com.missionwinning.core.model.SetKind
+import com.missionwinning.core.model.WeightUnits
 
 /**
  * Pure helpers for Active logger — unit-tested without Android runtime.
@@ -79,6 +81,21 @@ object ActiveSessionLogic {
 
     fun defaultWeight(previousWeight: Double?): Double =
         (previousWeight ?: 0.0).coerceAtLeast(0.0)
+
+    fun startingWeight(
+        seedWeight: Double?,
+        previousWeight: Double?,
+        preferSeed: Boolean,
+        starterWorkingWeight: Double? = null,
+    ): Double = defaultWeight(when {
+        preferSeed && seedWeight == 0.0 -> starterWorkingWeight ?: seedWeight
+        preferSeed -> seedWeight
+        else -> previousWeight?.takeIf { it > 0.0 } ?: seedWeight
+    })
+
+    fun starterWorkingWeight(workingSet: SetLogEntity?, displayUnit: String, targetReps: Int): Double? =
+        workingSet?.takeIf { it.reps >= targetReps.coerceIn(1, 99) }
+            ?.let { WeightUnits.convertExact(it.weight, it.weightUnit, displayUnit) }
 
     /**
      * Rest after completing a set. Skip rest when the session is fully logged.

@@ -3,6 +3,7 @@ package com.missionwinning.feature.active
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.common.ActiveSessionHub
+import com.missionwinning.core.data.LocalCoachSeed
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.data.SetLogEntity
@@ -11,6 +12,7 @@ import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.LoggedSet
 import com.missionwinning.core.model.Progression
 import com.missionwinning.core.model.SetKind
+import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -214,6 +216,7 @@ class ActiveViewModel @Inject constructor(
                 workoutName = workoutName,
                 fallbackSets = fallbackSets,
                 displayUnit = unit,
+                seedUnit = if (LocalCoachSeed.isOfflinePlan(plan.plan)) plan.plan.weightUnit else null,
             )
             _state.value = ActiveUiState(
                 workoutName = workoutName,
@@ -732,6 +735,7 @@ class ActiveViewModel @Inject constructor(
         workoutName: String,
         fallbackSets: Int,
         displayUnit: String,
+        seedUnit: String? = null,
     ): List<ActiveExercise> {
         val source = if (sessionExercises.isNotEmpty()) {
             sessionExercises
@@ -740,13 +744,21 @@ class ActiveViewModel @Inject constructor(
         }
         return source.map { ex ->
             val name = ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
+            val targetReps = ActiveSessionLogic.defaultReps(ex.reps, null)
+            val starterWorkingWeight = if (seedUnit != null && LocalCoachSeed.needsWorkingWeight(ex)) {
+                ActiveSessionLogic.starterWorkingWeight(
+                    repository.latestWorkingLoad(ex.exerciseId, targetReps), displayUnit, targetReps,
+                )
+            } else null
             buildSetsForExercise(
                 exerciseId = ex.exerciseId,
                 exerciseName = name,
                 setCount = ex.sets,
-                targetReps = ex.reps,
-                seedWeight = null,
+                targetReps = targetReps,
+                seedWeight = seedUnit?.let { WeightUnits.convertExact(ex.weight, it, displayUnit) },
                 displayUnit = displayUnit,
+                preferSeed = seedUnit != null,
+                starterWorkingWeight = starterWorkingWeight,
             )
         }
     }
@@ -782,6 +794,8 @@ class ActiveViewModel @Inject constructor(
         targetReps: Int,
         seedWeight: Double?,
         displayUnit: String,
+        preferSeed: Boolean = false,
+        starterWorkingWeight: Double? = null,
     ): ActiveExercise {
         val sets = (0 until setCount.coerceIn(1, 12)).map { idx ->
             val prev = repository.previousSet(exerciseId, idx)
@@ -790,17 +804,13 @@ class ActiveViewModel @Inject constructor(
                 storedUnit = prev?.weightUnit,
                 displayUnit = displayUnit,
             )
-            val weight = when {
-                prevWeight != null && prevWeight > 0.0 -> ActiveSessionLogic.defaultWeight(prevWeight)
-                seedWeight != null -> ActiveSessionLogic.defaultWeight(seedWeight)
-                else -> ActiveSessionLogic.defaultWeight(null)
-            }
+            val weight = ActiveSessionLogic.startingWeight(seedWeight, prevWeight, preferSeed, starterWorkingWeight)
             LoggedSet(
                 id = UUID.randomUUID().toString(),
                 exerciseId = exerciseId,
                 exerciseName = exerciseName,
                 setIndex = idx,
-                reps = ActiveSessionLogic.defaultReps(targetReps, prev?.reps),
+                reps = ActiveSessionLogic.defaultReps(targetReps, if (preferSeed) null else prev?.reps),
                 weight = weight,
                 previousReps = prev?.reps,
                 previousWeight = prevWeight,

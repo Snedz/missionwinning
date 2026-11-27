@@ -13,9 +13,6 @@ interface MwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertCoachPlan(row: CoachPlanEntity)
 
-    @Query("DELETE FROM coach_plan")
-    suspend fun clearCoachPlan()
-
     @Query("SELECT * FROM workout_logs WHERE deletedAt IS NULL ORDER BY completedAt DESC")
     suspend fun allWorkouts(): List<WorkoutLogEntity>
 
@@ -129,6 +126,29 @@ interface MwDao {
         """,
     )
     suspend fun recentWeightedSets(limit: Int = 500): List<SetLogEntity>
+
+    @Query(
+        """
+        SELECT s.* FROM set_logs s
+        INNER JOIN workout_logs w ON w.id = s.workoutId
+        WHERE w.deletedAt IS NULL AND s.setKind = 'normal' AND s.reps > 0 AND s.weight >= 0
+        ORDER BY w.completedAt DESC, w.id DESC, s.setIndex DESC, s.id DESC
+        LIMIT 1000
+        """,
+    )
+    suspend fun coachWorkingSets(): List<SetLogEntity>
+
+    @Query(
+        """
+        SELECT s.* FROM set_logs s
+        INNER JOIN workout_logs w ON w.id = s.workoutId
+        WHERE w.deletedAt IS NULL AND s.exerciseId = :exerciseId AND s.setKind = 'normal'
+          AND s.reps >= :targetReps AND s.weight > 0 AND s.weightUnit IN ('kg', 'lb')
+        ORDER BY julianday(w.completedAt) DESC, w.id DESC, s.setIndex DESC, s.id DESC
+        LIMIT 1
+        """,
+    )
+    suspend fun latestWorkingLoad(exerciseId: String, targetReps: Int): SetLogEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun enqueueOutbox(row: SyncOutboxEntity)

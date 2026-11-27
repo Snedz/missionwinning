@@ -157,7 +157,7 @@ class CoachViewModel @Inject constructor(
         }
         val exercise = session.exercises.firstOrNull() ?: return
         viewModelScope.launch {
-            val reply = repository.askTrainer(trainerBody(exercise))
+            val reply = repository.askTrainer(trainerBody(exercise, _local.value.plan?.plan?.weightUnit ?: "kg"))
             _local.update {
                 it.copy(
                     trainerLine = reply.getOrNull()?.text,
@@ -178,7 +178,7 @@ class CoachViewModel @Inject constructor(
     }
 
     companion object {
-        fun trainerBody(exercise: PlanExerciseDto): TrainerAskRequestDto {
+        fun trainerBody(exercise: PlanExerciseDto, unitLabel: String = "kg"): TrainerAskRequestDto {
             val reps = exercise.reps.coerceIn(0, 200)
             val sets = exercise.sets.coerceIn(1, 40)
             return TrainerAskRequestDto(
@@ -187,7 +187,7 @@ class CoachViewModel @Inject constructor(
                 setCount = sets,
                 reps = reps,
                 weight = exercise.weight.coerceIn(0.0, 2000.0),
-                unitLabel = "kg",
+                unitLabel = unitLabel,
                 rowType = if (exercise.weight <= 0.0) "bodyweight" else "weight",
                 hardCount = 0,
             )

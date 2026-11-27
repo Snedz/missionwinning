@@ -1,5 +1,6 @@
 package com.missionwinning.feature.active
 
+import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.LoggedSet
 import com.missionwinning.core.model.SetKind
@@ -10,6 +11,30 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ActiveUiStateTest {
+    @Test
+    fun starterDoesNotAskForFiveRepsAtTheLastSingleRepLoad() {
+        val single = SetLogEntity(
+            id = "single", exerciseId = "db-press", exerciseName = "Dumbbell bench press",
+            setIndex = 0, reps = 1, weight = 35.0, completedAt = "2026-05-18T12:00:00Z",
+            sessionId = null, workoutId = "strength",
+        )
+        fun nextLoad(lastSet: SetLogEntity): Double {
+            val workingWeight = ActiveSessionLogic.starterWorkingWeight(lastSet, "kg", targetReps = 5)
+            return ActiveSessionLogic.startingWeight(0.0, lastSet.weight, preferSeed = true, starterWorkingWeight = workingWeight)
+        }
+        assertEquals(0.0, nextLoad(single), 0.0)
+        assertEquals(22.5, nextLoad(single.copy(reps = 5, weight = 22.5)), 0.0)
+        assertEquals(20.0, nextLoad(single.copy(reps = 8, weight = 20.0)), 0.0)
+    }
+
+    @Test
+    fun unloadedSeedCarriesForwardNewWorkingWeight() {
+        assertEquals(22.5, ActiveSessionLogic.startingWeight(0.0, 50.0, preferSeed = true, starterWorkingWeight = 22.5), 0.0)
+        assertEquals(22.5, ActiveSessionLogic.startingWeight(0.0, null, preferSeed = true, starterWorkingWeight = 22.5), 0.0)
+        assertEquals(0.0, ActiveSessionLogic.startingWeight(0.0, 50.0, preferSeed = true), 0.0)
+        assertEquals(15.0, ActiveSessionLogic.startingWeight(15.0, 22.5, preferSeed = true), 0.0)
+    }
+
     private fun set(
         id: String,
         done: Boolean,

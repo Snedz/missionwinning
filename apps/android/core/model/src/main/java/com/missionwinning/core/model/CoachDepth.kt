@@ -157,6 +157,9 @@ object CoachDepth {
         val k = whyKey.trim().lowercase()
         if (k.isBlank()) return null
         return when {
+            k == "coachwhyhold" -> "Last working set"
+            k == "coachwhybodyweightreps" -> "Bodyweight starter"
+            k == "coachfindworkingweight" -> "Find a comfortable working weight"
             k.contains("adapt") -> "Adapted move"
             k.contains("progress") -> "Progression"
             k.contains("recover") -> "Recovery"

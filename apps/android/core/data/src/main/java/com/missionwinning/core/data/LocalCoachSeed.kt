@@ -1,16 +1,26 @@
 package com.missionwinning.core.data
 
+import com.missionwinning.core.model.ExerciseCatalog
+import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.AdaptBeatDto
 import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.PlanExerciseDto
 import com.missionwinning.core.network.PlanSessionDto
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
+import kotlin.math.round
+import kotlin.math.roundToInt
 
-/** Offline seed mirroring packages/mw-core createSeedCoachPlan. */
+/** Conservative offline fallback; the server remains authoritative for full planning. */
 object LocalCoachSeed {
+    private const val HISTORY_SEED_PREFIX = "offline-seed-"
+    private const val FIND_WORKING_WEIGHT = "coachFindWorkingWeight"
+    private val fullBodyGroups = listOf("Chest", "Back", "Legs", "Shoulders", "Arms", "Core")
+
     fun weekStartMonday(d: LocalDate = LocalDate.now()): String {
         val monday = d.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         return monday.toString()
@@ -26,33 +36,36 @@ object LocalCoachSeed {
     fun build(
         withAdaptDemo: Boolean = false,
         equipment: String = "bodyweight",
+        history: List<SetLogEntity> = emptyList(),
+        weightUnit: String = "kg",
+        now: Instant = Instant.now(),
+        zone: ZoneId = ZoneId.systemDefault(),
     ): CoachPlanResponseDto {
         val equip = normalizeEquipment(equipment)
-        val weekStart = weekStartMonday()
-        val revision = if (withAdaptDemo) 2 else 1
-        var sessions = baseSessions(equip, withAdaptDemo)
-        if (withAdaptDemo) {
-            sessions = sessions.toMutableList().also {
-                it[1] = it[1].copy(
-                    kind = "recovery",
-                    name = "Recovery (adapted)",
-                    status = "swapped",
-                    focusGroups = listOf("recovery", "walk"),
-                    exercises = listOf(
-                        PlanExerciseDto("walk", 1, 20, whyKey = "adapt"),
-                        PlanExerciseDto("plank", 2, 30, whyKey = "recover"),
-                    ),
-                    estMinutes = 25,
-                )
-            }
-            // Premium-depth beat: equipment intelligence note for demo
+        val today = now.atZone(zone).toLocalDate()
+        val weekStart = weekStartMonday(today)
+        if (!withAdaptDemo) return buildOffline(equip, history, weightUnit, now, today, weekStart)
+
+        val revision = 2
+        val sessions = demoSessions(equip).toMutableList().also {
+            it[1] = it[1].copy(
+                kind = "recovery",
+                name = "Recovery (adapted)",
+                status = "swapped",
+                focusGroups = listOf("recovery", "walk"),
+                exercises = listOf(
+                    PlanExerciseDto("walk", 1, 20, whyKey = "adapt"),
+                    PlanExerciseDto("plank", 2, 30, whyKey = "recover"),
+                ),
+                estMinutes = 25,
+            )
         }
         val plan = CoachPlanDto(
             revision = revision,
             weekStart = weekStart,
             daysPerWeek = 3,
             sessions = sessions,
-            generatedAt = java.time.Instant.now().toString(),
+            generatedAt = now.toString(),
             contextHash = "seed-$equip-$revision",
             equipmentProfile = equip,
         )
@@ -81,13 +94,11 @@ object LocalCoachSeed {
                 swapped,
             )
         }
-        if (withAdaptDemo) {
-            beats += AdaptBeatDto(
-                "coachAdaptEquipmentNote",
-                "Equipment profile “$equip” kept moves train-anywhere friendly while recovery days protect the streak.",
-                1,
-            )
-        }
+        beats += AdaptBeatDto(
+            "coachAdaptEquipmentNote",
+            "Equipment profile “$equip” kept moves train-anywhere friendly while recovery days protect the streak.",
+            1,
+        )
         return CoachPlanResponseDto(
             plan = plan,
             adaptBeats = beats,
@@ -95,7 +106,101 @@ object LocalCoachSeed {
         )
     }
 
-    private fun baseSessions(equip: String, withAdaptDemo: Boolean): List<PlanSessionDto> {
+    fun isOfflinePlan(plan: CoachPlanDto): Boolean = plan.contextHash.startsWith(HISTORY_SEED_PREFIX)
+
+    fun needsWorkingWeight(exercise: PlanExerciseDto): Boolean =
+        exercise.weight == 0.0 && exercise.whyKey == FIND_WORKING_WEIGHT
+
+    private fun buildOffline(
+        equip: String,
+        history: List<SetLogEntity>,
+        weightUnit: String,
+        now: Instant,
+        today: LocalDate,
+        weekStart: String,
+    ): CoachPlanResponseDto {
+        val unit = WeightUnits.normalize(weightUnit)
+        val workingSets = history.mapNotNull { set ->
+            val at = runCatching { Instant.parse(set.completedAt) }.getOrNull()
+            if (set.setKind != "normal" || set.reps < 1 || !set.weight.isFinite() || set.weight < 0 ||
+                set.weightUnit !in setOf("kg", "lb") || at == null || at > now) null
+            else set to at
+        }.sortedWith(compareByDescending<Pair<SetLogEntity, Instant>> { it.second }
+            .thenByDescending { it.first.workoutId }.thenByDescending { it.first.setIndex }.thenByDescending { it.first.id })
+            .map { it.first }
+        val latestByExercise = workingSets.filter { set ->
+            val move = catalogMove(set.exerciseId)
+            move != null && equip in move.equipment &&
+                (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
+        }.groupBy { it.exerciseId }.mapValues { (_, sets) ->
+            val latest = sets.first()
+            sets.filter { it.workoutId == latest.workoutId }
+        }
+
+        val defaults = when (equip) {
+            "full-gym" -> listOf("back-squat", "bench-press", "barbell-row")
+            "dumbbells" -> listOf("goblet-squat", "db-press", "db-row")
+            else -> listOf("squat", "pushup", "row")
+        }
+        val families = listOf(setOf("quads", "glutes"), setOf("chest", "shoulders"), setOf("back"))
+        val used = mutableSetOf<String>()
+        val exercises = defaults.mapIndexed { index, fallback ->
+            val familiar = latestByExercise.entries.firstOrNull { (id, _) ->
+                id !in used && catalogMove(id)?.muscleGroups?.any { it in families[index] } == true
+            }
+            val id = familiar?.key ?: fallback
+            used += id
+            val sets = familiar?.value
+            val latest = sets?.first()
+            if (sets != null && latest != null) {
+                val converted = WeightUnits.convertExact(latest.weight, latest.weightUnit, unit)
+                val weight = if (latest.weightUnit == unit) converted
+                else (round(converted * 100) / 100).takeIf { it > 0.0 } ?: converted
+                PlanExerciseDto(id, sets.size.coerceIn(1, 3), latest.reps.coerceIn(1, 12), weight, "coachWhyHold")
+            } else {
+                val why = if (ExerciseCatalog.get(id)?.isBodyweight == true) "coachWhyBodyweightReps"
+                else FIND_WORKING_WEIGHT
+                PlanExerciseDto(id, 3, 5, whyKey = why)
+            }
+        }
+        val offsets = if (workingSets.isEmpty()) listOf(0, 3) else listOf(0, 2, 4)
+        val floor = today.dayOfWeek.value - 1
+        val count = minOf(offsets.size, 7 - floor)
+        val scheduledDays = when {
+            offsets.first() >= floor -> offsets
+            count == 1 -> listOf(floor)
+            else -> List(count) { floor + (it * (6 - floor).toDouble() / (count - 1)).roundToInt() }
+        }
+        val sessions = scheduledDays.map { day ->
+            PlanSessionDto(
+                id = "$weekStart-d$day",
+                dayOffset = day,
+                kind = "strength",
+                name = "Full Body Strength",
+                focusGroups = fullBodyGroups,
+                exercises = exercises,
+                estMinutes = exercises.sumOf { it.sets * 8 }.coerceIn(20, 60),
+                status = "planned",
+            )
+        }
+        return CoachPlanResponseDto(
+            plan = CoachPlanDto(
+                revision = 1,
+                weekStart = weekStart,
+                daysPerWeek = offsets.size,
+                sessions = sessions,
+                generatedAt = now.toString(),
+                contextHash = "$HISTORY_SEED_PREFIX$equip-$weekStart",
+                equipmentProfile = equip,
+                weightUnit = unit,
+            ),
+        )
+    }
+
+    private fun catalogMove(exerciseId: String) =
+        ExerciseCatalog.get(if (exerciseId == "lunges") "lunge" else exerciseId)
+
+    private fun demoSessions(equip: String): List<PlanSessionDto> {
         val (pushA, pushB, legsA, legsB, pullA, pullB) = when (equip) {
             "dumbbells" -> EquipmentMoves(
                 "db-press", "db-fly", "goblet-squat", "db-rdl", "db-row", "db-curl",
@@ -123,7 +228,7 @@ object LocalCoachSeed {
                     PlanExerciseDto(pushB, 3, if (equip == "bodyweight") 40 else 12, whyKey = "balance"),
                 ),
                 estMinutes = 35,
-                status = if (withAdaptDemo) "missed" else "planned",
+                status = "missed",
             ),
             PlanSessionDto(
                 id = "seed-wed",
@@ -140,7 +245,7 @@ object LocalCoachSeed {
                     PlanExerciseDto(legsB, 3, 10, whyKey = "progress"),
                 ),
                 estMinutes = 40,
-                status = if (withAdaptDemo) "swapped" else "planned",
+                status = "swapped",
             ),
             PlanSessionDto(
                 id = "seed-fri",
