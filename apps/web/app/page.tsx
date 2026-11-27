@@ -30,7 +30,9 @@ const exampleInput: Parameters<typeof generateNotebookWeek>[0] = {
 };
 const firstPlan = generateNotebookWeek(exampleInput, new Date(2026, 5, 10, 12));
 const rebuiltPlan = generateNotebookWeek({ ...exampleInput, revision: 2 }, new Date(2026, 5, 11, 12));
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const originalDays = new Set(firstPlan.sessions.map(({ dayOffset }) => dayOffset));
+const rebuiltDays = new Set(rebuiltPlan.sessions.map(({ dayOffset }) => dayOffset));
 const signInAvailable = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 function Arrow({ down = false }: { down?: boolean }) {
@@ -41,6 +43,47 @@ function Arrow({ down = false }: { down?: boolean }) {
 
 function LogLink() {
   return <a href={quickStartHref} className="button primary-button">Log a set <Arrow /></a>;
+}
+
+function WeekComparison() {
+  const changes = (matches: (day: number) => boolean) => weekdays.filter((_, day) => matches(day)).join(' and ');
+  const removed = changes((day) => originalDays.has(day) && !rebuiltDays.has(day));
+  const added = changes((day) => rebuiltDays.has(day) && !originalDays.has(day));
+  const kept = changes((day) => rebuiltDays.has(day) && originalDays.has(day));
+  const firstExercise = rebuiltPlan.sessions[0]?.exercises[0];
+  return <div className={styles.plan}>
+    <div className={styles.planHeader}><h3 id="sample-week">Example week</h3><span className="eyebrow">Sample data · Dumbbells</span></div>
+    <table aria-labelledby="sample-week" aria-describedby="schedule-change" className={styles.calendar}>
+      <thead><tr>
+        <th scope="col"><span className="sr-only">Plan version</span></th>
+        {weekdays.map((day) => <th key={day} scope="col">
+          <span aria-hidden="true">{day.slice(0, 3)}</span><span className="sr-only">{day}</span>
+        </th>)}
+      </tr></thead>
+      <tbody>
+        {[
+          { label: 'Original plan', days: originalDays },
+          { label: 'Rebuilt Thursday', days: rebuiltDays },
+        ].map(({ label, days }) => <tr key={label}>
+          <th scope="row">{label}</th>
+          {weekdays.map((day, index) => {
+            const scheduled = days.has(index);
+            return <td key={day} className={scheduled ? styles.scheduled : undefined}>
+              <span aria-hidden="true">{scheduled ? '●' : '–'}</span>
+              <span className="sr-only">{scheduled ? 'Session planned' : 'No session'}</span>
+            </td>;
+          })}
+        </tr>)}
+      </tbody>
+    </table>
+    <p className={styles.changeNote} id="schedule-change">
+      <strong>{removed} → {added}.</strong> {kept} stays on the plan.
+    </p>
+    <p className={styles.planFoot}>
+      {firstExercise && <>{getExerciseById(firstExercise.exerciseId)?.name} in the rebuilt plan: {firstExercise.sets} × {firstExercise.reps} at {firstExercise.weight} kg. </>}
+      Both schedules come from the notebook’s Coach planner.
+    </p>
+  </div>;
 }
 
 export default function LandingPage() {
@@ -87,27 +130,9 @@ export default function LandingPage() {
           <div className={styles.sectionCopy}>
             <p className={`eyebrow ${styles.kicker}`}>01 / From your log</p>
             <h2 id="example-title">Build a week from what you did.</h2>
-            <p>You logged three sets of lunges on Monday, then missed Wednesday’s session. Choose “Rebuild week” on Thursday and Coach fits the sessions onto the days that are left.</p>
+            <p>You logged three sets of lunges on Monday, then missed Wednesday’s session. On Thursday you choose “Rebuild week.” Coach plans the remaining days with the same workout history, dumbbells and three-day target.</p>
           </div>
-          <div className={styles.plan}>
-            <div className={styles.planHeader}><h3>Example week</h3><span className="eyebrow">3 days · Dumbbells</span></div>
-            <p className={styles.snapshot}>Original plan: <strong>{firstPlan.sessions.map(({ dayOffset }) => weekdays[dayOffset]).join(' · ')}</strong></p>
-            <p className={styles.snapshot}>Rebuilt on Thursday</p>
-            <ul aria-label="Example planned sessions">
-              {rebuiltPlan.sessions.map((session) => {
-                const movement = session.exercises[0];
-                return <li key={session.id}>
-                  <strong>{weekdays[session.dayOffset]}</strong>
-                  <span>{session.name}</span>
-                  {movement && <small>
-                    {getExerciseById(movement.exerciseId)?.name}<br />
-                    {movement.sets} × {movement.reps} · {movement.weight} kg
-                  </small>}
-                </li>;
-              })}
-            </ul>
-            <p>Generated from sample data with the notebook’s Coach planner.</p>
-          </div>
+          <WeekComparison />
         </div>
       </section>
       <section className={`${styles.frame} ${styles.questions}`} aria-labelledby="questions-title">

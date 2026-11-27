@@ -1,14 +1,31 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { audit } from './notebookChecks';
+
+async function checkWeekComparison(page: Page) {
+  const week = page.getByRole('table', { name: 'Example week' });
+  const headers = week.getByRole('columnheader');
+  const names = ['Plan version', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  await expect(headers).toHaveCount(names.length);
+  for (const [index, name] of names.entries()) await expect(headers.nth(index)).toHaveAccessibleName(name);
+  const statuses = (row: string) => week.getByRole('row').filter({ has: page.getByRole('rowheader', { name: row }) }).getByRole('cell');
+  const before = statuses('Original plan');
+  const after = statuses('Rebuilt Thursday');
+  await expect(before).toHaveCount(7);
+  await expect(after).toHaveCount(7);
+  for (let day = 0; day < 7; day++) {
+    await expect(before.nth(day)).toHaveAccessibleName([2, 4, 6].includes(day) ? 'Session planned' : 'No session');
+    await expect(after.nth(day)).toHaveAccessibleName([3, 5, 6].includes(day) ? 'Session planned' : 'No session');
+  }
+  await expect(page.getByText('Wednesday and Friday → Thursday and Saturday.')).toBeVisible();
+  await expect(page.getByText(/Sunday stays on the plan/)).toBeVisible();
+}
 
 test('landing explains the notebook accessibly and opens the guest set form directly', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Log a set.\s*Know what to train next\./);
   await expect(page.getByRole('list', { name: 'Example logged sets' }).getByRole('listitem')).toHaveCount(3);
-  await expect(page.getByText(/Original plan:/)).toHaveText('Original plan: Wed · Fri · Sun');
-  await expect(page.getByRole('list', { name: 'Example planned sessions' }).locator('li > strong'))
-    .toHaveText(['Thu', 'Sat', 'Sun']);
+  await checkWeekComparison(page);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -36,6 +53,18 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('11');
   await page.getByRole('button', { name: 'Finish workout' }).click();
   await expect(page.getByRole('heading', { name: 'Victory.' })).toBeVisible();
+});
+
+test('the sample is accessible at 320px and does not write notebook data', async ({ page, context }) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  const before = await context.storageState({ indexedDB: true });
+  await page.goto('/');
+  await page.getByRole('link', { name: 'See how a week adapts' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#example$/);
+  await checkWeekComparison(page);
+  await audit(page, 320);
+  expect(await context.storageState({ indexedDB: true })).toEqual(before);
 });
 
 test('landing CTA resumes a live workout instead of replacing it', async ({ page }) => {
