@@ -123,7 +123,7 @@ Not covered: `npm run e2e:visual` (needs deliberate Linux baselines) and Lightho
 
 Guard authoring and falsification: [docs/agents/TEST_AUDIT.md](docs/agents/TEST_AUDIT.md). In API handlers use rate limit → auth → Zod → delegate; keep the verified-user entitlement decision in `premiumServer.ts` and return opaque database errors to clients. `proxy.ts` checks the surface flag before the private gate.
 
-Every ship touching `src`, `app`, `scripts`, or `supabase` bumps `APP_BUILD_LABEL` in `src/lib/buildInfo.ts` past the base branch and updates `LOG.md` and `CONTEXT.md` `## Now` in the same commit. Keep at most 15 live LOG entries and 25 Now bullets. Use `[skip vercel]` unless a Preview is requested.
+Every ship touching `src`, `app`, `scripts`, or `supabase` bumps `APP_BUILD_LABEL` in `src/lib/buildInfo.ts` past the base branch and updates `LOG.md` and `CONTEXT.md` `## Now` in the same commit. Keep at most 15 live LOG entries and 25 Now bullets. Never use the Vercel skip tag (`[skip vercel]`) in a commit or squash message: it cancels the Production deploy.
 
 ---
 
@@ -201,7 +201,7 @@ See [INDEX.md](INDEX.md) §4. Highlights:
 
 ## Cursor Cloud specific instructions
 
-Durable, non-obvious notes for agents on a VM where the update script (`npm install`) has already run. Standard commands live in §Commands above and in [CLAUDE.md](CLAUDE.md) §4 — use those; this section only records gotchas.
+Durable, non-obvious notes for agents on a VM where the update script (`npm install`) has already run. Standard commands live in [§Commands](#commands) above — use those; this section only records gotchas.
 
 - **Runtime:** this is the web PWA at the repo root (Next.js 16). Android (`apps/android`) has a separate toolchain and is not needed for web tests.
 - **Node 22 is required.** Use Node 22.19+ for the optional Lighthouse budget.
