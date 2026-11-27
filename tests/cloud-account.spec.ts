@@ -150,7 +150,13 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   await expect(page.getByRole('button', { name: 'Sync now' })).toBeDisabled();
   await audit(page);
   await shot(page, 'you-account-offline.png');
+  const historyPull = (url: URL) => url.pathname === '/rest/v1/workout_logs' &&
+    url.searchParams.get('order') === 'id.asc';
+  await page.route(historyPull, (route) => route.abort());
   await context.setOffline(false);
+  await expect.poll(cloudNames).toEqual(['Existing account workout', 'Quick workout', 'Quick workout']);
+  await page.unroute(historyPull);
+  await page.getByRole('button', { name: 'Sync now' }).click();
   await expect(page.getByText('Workouts synced.')).toBeVisible({ timeout: 20_000 });
   expect(await cloudNames()).toEqual(['Existing account workout', 'Quick workout', 'Quick workout']);
 

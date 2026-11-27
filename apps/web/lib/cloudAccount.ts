@@ -161,6 +161,8 @@ export function syncAccount(retry = false): Promise<void> {
   async function run() {
     update('syncing');
     try {
+      await flush(queueKey, isCurrent);
+      if (!isCurrent()) return;
       const cloud = await transport(current!).pull();
       if (!isCurrent() || !useNotebook.getState().mergeCloud(owner, mapCloudToLocal(cloud))) {
         update('waiting');
