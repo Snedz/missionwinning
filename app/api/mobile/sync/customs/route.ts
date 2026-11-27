@@ -11,6 +11,7 @@ import { mobileSyncCustomPushBodySchema, parseJsonBody } from '@/lib/apiSchemas'
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { logSyncFailure, logSyncThrown } from '@/lib/sync/syncFailure';
+import { mobileSyncCursorFilter, nextMobileSyncCursor, parseMobileSyncCursor } from '@/lib/sync/mobileSyncCursor';
 
 type Supabase = SupabaseClient;
 
@@ -102,19 +103,23 @@ export const GET = withApiLogging('mobile/sync/customs', async (request: NextReq
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
-  const since = request.nextUrl.searchParams.get('since') ?? '1970-01-01T00:00:00.000Z';
+  const since = parseMobileSyncCursor(request.nextUrl.searchParams.get('since'));
+  if (!since) return NextResponse.json({ error: 'Invalid cursor' }, { status: 400 });
   const limitRaw = Number(request.nextUrl.searchParams.get('limit') ?? '100');
   const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(1, Math.floor(limitRaw)), 100) : 100;
 
-  const { data, error } = await supabase
+  const pull = supabase
     .from('custom_exercises')
     .select(
       'id, client_id, name, equipment, muscle_groups, revision, updated_at, deleted_at, created_at',
     )
     .eq('user_id', user.id)
-    .gt('updated_at', since)
     .order('updated_at', { ascending: true })
+    .order('id', { ascending: true })
     .limit(limit);
+  const { data, error } = await (since.id
+    ? pull.or(mobileSyncCursorFilter(since.updatedAt, since.id))
+    : pull.gt('updated_at', since.updatedAt));
 
   if (error) {
     /*
@@ -141,8 +146,7 @@ export const GET = withApiLogging('mobile/sync/customs', async (request: NextReq
     updatedAt: row.updated_at as string,
     deletedAt: (row.deleted_at as string | null) ?? null,
   }));
-  const nextCursor =
-    rows.length === limit ? (rows[rows.length - 1]?.updated_at as string | undefined) ?? null : null;
+  const nextCursor = nextMobileSyncCursor(rows, limit, since.id !== undefined);
 
   return NextResponse.json({ items, nextCursor });
 });

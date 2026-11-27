@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`.1142` ink rail](CONTEXT-now-1142-ink-rail.md) — Now bullet rotated for `.1207`.
+- [`.1191` stale link repairs and `.1192` translations](log/LOG-rotate-1191-for-1207.md) — `.1191` rotated for `.1207`; `.1192` recovered from commit `c82ae35b`.
 - [`.1138` Meta tests](CONTEXT-now-1138-meta-tests.md) — Now bullet rotated for `.1206`.
 - [`.1185` landing fallback](log/LOG-rotate-1185-for-1206.md) — LOG entry rotated for `.1206`.
 - [`CONTEXT-now-1141-set-row.md`](docs/archive/CONTEXT-now-1141-set-row.md) — `.1205` rotated the `.1141` Train set row Now bullet.

@@ -13,6 +13,9 @@ Contract: [openapi-mobile.yaml](openapi-mobile.yaml) · Guide: [ANDROID_NATIVE.m
 | POST/GET | `/api/mobile/sync/prefs` | Units / rest / equipment / bar prefs (Bearer) |
 | POST | `/api/mobile/telemetry` | Install heartbeat |
 
+See [mobile sync cursor formats](API.md#mobile-android--compose) for rollback
+compatibility.
+
 ## Auth while private gate is on
 
 | Mode | How Android connects |

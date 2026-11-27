@@ -659,6 +659,12 @@ Full contract: [API_MOBILE.md](API_MOBILE.md) · OpenAPI: [openapi-mobile.yaml](
 | `/api/mobile/sync/prefs` | Bearer | Units / rest / equipment / bar |
 | `/api/mobile/telemetry` | Soft | Install heartbeat |
 
+The workout, routine and custom-exercise pull routes accept `since` as an ISO
+timestamp or a v2 `timestamp~rowUUID` cursor. A bare timestamp excludes that
+instant; a composite cursor resumes after that row, including later rows with
+the same timestamp. Full pages return `nextCursor` in the requested format;
+clients should pass it back unchanged. Invalid cursors return `400`.
+
 ---
 
 ## Related

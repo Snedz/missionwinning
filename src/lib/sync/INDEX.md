@@ -16,6 +16,7 @@ Android already had sync v2 (`client_id`, `revision`, tombstones — see
 
 | File | Purpose |
 |------|---------|
+| `mobileSyncCursor.ts` | Parse legacy and v2 mobile pull cursors; keep their format across pages. |
 | `outbox.ts` | Durable queue: persist → retry with backoff → ack. No handler imports. |
 | `workoutSync.ts` | The `workout.upsert` handler; read-by-`client_id` then update/insert |
 | `openSessionSync.ts` | The `workout.active` handler; `profiles.open_session` latest-state (`.958`) |

@@ -162,6 +162,7 @@ paths:
           in: query
           schema:
             type: string
+            description: Exclusive ISO timestamp or v2 timestamp~rowUUID cursor.
         - name: limit
           in: query
           schema:
@@ -187,6 +188,7 @@ paths:
           in: query
           schema:
             type: string
+            description: Exclusive ISO timestamp or v2 timestamp~rowUUID cursor.
         - name: limit
           in: query
           schema:
@@ -267,7 +269,7 @@ paths:
           in: query
           schema:
             type: string
-            description: ISO updated_at cursor (exclusive)
+            description: Exclusive ISO timestamp or v2 timestamp~rowUUID cursor.
         - name: limit
           in: query
           schema:
