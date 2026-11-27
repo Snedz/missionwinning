@@ -24,7 +24,10 @@ const FLOOR_HREFS = ['/log', '/active', '/library', '/account'] as const;
 const MORE_ROOMS = ['/nutrition', '/profile', '/account'] as const;
 
 /** Quiet leftover foot — always listed, never a floor icon. */
-const QUIET_PILLARS = ['/move', '/mind', '/track', '/learn'] as const;
+const QUIET_PILLARS = [
+  '/move', '/mind', '/track', '/learn', '/learn/guide', '/programs',
+  '/benchmarks', '/calculators', '/leaderboard', '/server',
+] as const;
 
 test.describe('Mobile navigation @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {

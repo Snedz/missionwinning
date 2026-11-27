@@ -28,6 +28,11 @@ test('railGroupsForNav drops Pillars when hasFirstWorkout is false', () => {
 
   const after = railGroupsForNav({ hasFirstWorkout: true });
   assert.ok(after.some((g) => g.id === 'pillars'));
+  const afterHrefs = after.flatMap((g) => g.items.map((i) => i.href));
+  assert.ok(afterHrefs.includes('/nutrition'));
+  for (const href of ['/move', '/mind', '/track', '/learn', '/programs', '/benchmarks', '/leaderboard', '/server']) {
+    assert.ok(!afterHrefs.includes(href), `${href} stays in More after first workout`);
+  }
 });
 
 test('Sidebar wires hasFirstWorkout into railGroupsForNav', () => {

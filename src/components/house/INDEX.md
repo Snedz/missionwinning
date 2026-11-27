@@ -11,7 +11,7 @@
 | `HouseGuide.tsx` | One first-run coach-mark. Got it / X dismiss. No popup chain. |
 | `HouseFirstRoomsCard.tsx` | Persistent collapsible N-of-N under Start. Three MW rows. First-rooms Log a set is `href="/active"`. First-rooms Week is `href="/log#today-week"`. First-rooms History is `href="/history"`. |
 | `houseFirstRooms.ts` | Inferred ticks + lock for the three first rooms. |
-| `HouseMore.tsx` | Leftover rooms only (Fuel / You / Account + quiet pillars + Garage). Not the Home second bar. |
+| `HouseMore.tsx` | Fuel / You / Account plus quiet links to enabled secondary rooms and tools. Not the Home second bar. |
 | `houseNav.ts` | Rail hrefs + Today/Library rooms + More leftovers. `/coach` has no second bar. `/server` is quiet More only. |
 | `DESIGN.md` | House design system — tokens, type, layout, motion, rooms. Field-manual stays on `/private` / www. |
 | `house.css` | Runtime for that system, scoped to `.mw-house`. 4th skin is C2 instrument (`#0a0c0f` + `#ffb000`). Transferred rooms hide the old pillar header. |

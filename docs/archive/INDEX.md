@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`CONTEXT-now-1142-rail-mark.md`](docs/archive/CONTEXT-now-1142-rail-mark.md) — `.1207` rotated the `.1142` Icon rail drops the red mark Now bullet.
+- [`LOG-rotate-1191-for-1207.md`](docs/archive/log/LOG-rotate-1191-for-1207.md) — rotated by `.1207`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1137-log-line.md`](docs/archive/CONTEXT-now-1137-log-line.md) — `.1202` rotated the `.1137` Log a set. Offline. Now bullet.
 - [`CONTEXT-now-1136-coach-width.md`](docs/archive/CONTEXT-now-1136-coach-width.md) — `.1201` rotated the `.1136` coach-width Now bullet.
 - [`LOG-rotate-1187-for-1202.md`](docs/archive/log/LOG-rotate-1187-for-1202.md) — rotated by `.1202`, to keep the <=15 entry budget. `.1185` is the live floor.
