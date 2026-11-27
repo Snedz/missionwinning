@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "timeZone": "UTC",
+  "histories": {
+    "empty": [],
+    "mixed": [
+      {
+        "id": "dumbbells-lb",
+        "workoutName": "Dumbbell day",
+        "startedAt": "2026-05-13T12:00:00.000Z",
+        "completedAt": "2026-05-13T12:20:00.000Z",
+        "durationSeconds": 1200,
+        "weightUnit": "lb",
+        "totalVolume": 660,
+        "exercises": [
+          { "exerciseId": "lunges", "muscleGroups": ["Legs"], "sets": [
+            { "reps": 6, "weight": 55, "rpe": "med" }, { "reps": 6, "weight": 25, "weightUnit": "kg", "rpe": "med" }
+          ] }
+        ]
+      },
+      {
+        "id": "dumbbells-kg",
+        "workoutName": "Earlier dumbbell day",
+        "startedAt": "2026-05-04T12:00:00.000Z",
+        "completedAt": "2026-05-04T12:20:00.000Z",
+        "durationSeconds": 1200,
+        "weightUnit": "kg",
+        "totalVolume": 240,
+        "exercises": [
+          { "exerciseId": "lunges", "muscleGroups": ["Legs"], "sets": [
+            { "reps": 6, "weight": 20, "rpe": "med" }, { "reps": 6, "weight": 20, "rpe": "med" }
+          ] }
+        ]
+      },
+      {
+        "id": "deleted-press",
+        "workoutName": "Deleted test entry",
+        "startedAt": "2026-05-03T12:00:00.000Z",
+        "completedAt": "2026-05-03T12:20:00.000Z",
+        "durationSeconds": 1200,
+        "deletedAt": "2026-05-16T12:30:00.000Z",
+        "weightUnit": "kg",
+        "totalVolume": 600,
+        "exercises": [{ "exerciseId": "lunges", "sets": [{ "reps": 6, "weight": 100 }] }]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "cold-start-bodyweight",
+      "now": "2026-05-18T12:00:00.000Z",
+      "historyId": "empty",
+      "input": { "equipment": "bodyweight", "daysPerWeek": 2, "units": "metric", "revision": 1 },
+      "expectedPlan": {
+        "revision": 1,
+        "weekStart": "2026-05-18",
+        "daysPerWeek": 2,
+        "sessions": [
+          {
+            "id": "2026-05-18-d0",
+            "dayOffset": 0,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "superman", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "jump-squats", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-05-18-d3",
+            "dayOffset": 3,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "diamond-pushup", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "superman", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "good-morning-bw", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          }
+        ],
+        "generatedAt": "2026-05-18T12:00:00.000Z",
+        "contextHash": "380886455",
+        "equipmentProfile": "bodyweight",
+        "weightUnit": "kg"
+      }
+    },
+    {
+      "id": "mixed-history-metric",
+      "now": "2026-05-20T12:00:00.000Z",
+      "historyId": "mixed",
+      "input": { "equipment": "dumbbells", "daysPerWeek": 3, "units": "metric", "revision": 4 },
+      "expectedPlan": {
+        "revision": 4,
+        "weekStart": "2026-05-18",
+        "daysPerWeek": 3,
+        "sessions": [
+          {
+            "id": "2026-05-18-d2",
+            "dayOffset": 2,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "pull-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-05-18-d4",
+            "dayOffset": 4,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "bear-crawl", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-05-18-d6",
+            "dayOffset": 6,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "superman", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          }
+        ],
+        "generatedAt": "2026-05-20T12:00:00.000Z",
+        "contextHash": "1996347904",
+        "equipmentProfile": "dumbbells",
+        "weightUnit": "kg"
+      }
+    },
+    {
+      "id": "mixed-history-imperial",
+      "now": "2026-05-20T12:00:00.000Z",
+      "historyId": "mixed",
+      "input": { "equipment": "dumbbells", "daysPerWeek": 3, "units": "imperial", "revision": 4 },
+      "expectedPlan": {
+        "revision": 4,
+        "weekStart": "2026-05-18",
+        "daysPerWeek": 3,
+        "sessions": [
+          {
+            "id": "2026-05-18-d2",
+            "dayOffset": 2,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "pull-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-05-18-d4",
+            "dayOffset": 4,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "bear-crawl", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-05-18-d6",
+            "dayOffset": 6,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
+              {"exerciseId": "superman", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          }
+        ],
+        "generatedAt": "2026-05-20T12:00:00.000Z",
+        "contextHash": "2823732723",
+        "equipmentProfile": "dumbbells",
+        "weightUnit": "lb"
+      }
+    }
+  ]
+}

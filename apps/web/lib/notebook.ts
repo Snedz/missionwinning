@@ -8,11 +8,8 @@ import { getExerciseById } from '@/data/exercises';
 import { applyDeleteFinishedSession } from '@/lib/workout/deleteFinishedSession';
 import { mergePersistedWorkoutState } from '@/lib/workout/workoutRecovery';
 import { finishPartialFromActive, protectLiveStart } from '@/lib/workout/sessionResume';
-import { generateWeek } from '@/lib/coach/planEngine';
-import { loadBands } from '@/lib/coach/load';
-import { computeBodyScores, computeReadiness } from '@/lib/score';
-import { localWeekKey } from '@/lib/time/localDate';
-import { mergeWorkoutHistoriesDetailed, workoutInWeightUnit } from '@/lib/workout/workoutMerge';
+import { generateNotebookWeek } from '@/lib/coach/notebookWeek';
+import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 import { enqueue, getState as getOutboxState } from '@/lib/sync/outbox';
 import { alignLegacyWorkouts } from '@/lib/sync/workoutCloud';
 import type { CoachPlan, EquipmentProfile, PlanSession } from '@/lib/coach/types';
@@ -288,15 +285,9 @@ export const useNotebook = create<NotebookStore>((set, get) => {
 
     makePlan(equipment, daysPerWeek) {
       const { workoutHistory, units, plan } = get();
-      const weightUnit = weightUnitFor(units);
-      const history = workoutHistory.filter((entry) => !entry.deletedAt).map((entry) => workoutInWeightUnit(entry, weightUnit));
-      savePlan({ ...generateWeek({
-        experience: 'beginner', equipment, goalId: 'strength', daysPerWeek,
-        preferredDays: [], history, units, seedId: 'local',
-        readiness: computeReadiness(history),
-        bodyScores: computeBodyScores(history),
-        loadZone: loadBands(history).zone,
-      }, localWeekKey(), plan ? plan.revision + 1 : 1), weightUnit }, true);
+      savePlan(generateNotebookWeek({
+        equipment, daysPerWeek, units, history: workoutHistory, revision: (plan?.revision ?? 0) + 1,
+      }), true);
     },
 
     deleteWorkout(id) {

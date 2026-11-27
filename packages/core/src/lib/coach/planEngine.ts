@@ -41,7 +41,8 @@ export function generateWeek(
   ctx: CoachContext,
   weekStart: string,
   revision = 1,
-  today: string = localDateKey()
+  today: string = localDateKey(),
+  now = new Date()
 ): CoachPlan {
   const seed = hashString(`${weekStart}:${ctx.seedId}`);
   const rng = mulberry32(seed);
@@ -72,7 +73,7 @@ export function generateWeek(
     weekStart,
     daysPerWeek: ctx.daysPerWeek,
     sessions,
-    generatedAt: new Date().toISOString(),
+    generatedAt: now.toISOString(),
     contextHash,
     equipmentProfile: ctx.equipment,
   };

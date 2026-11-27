@@ -50,7 +50,8 @@ export async function computeReadinessIndex(
 
 /** Sync path — seed catalog first if any log lacks muscleGroups. */
 export function computeReadinessFromHistory(
-  workoutHistory: CompletedWorkoutLog[]
+  workoutHistory: CompletedWorkoutLog[],
+  now = Date.now()
 ): Record<MuscleGroup, ReadinessInfo> {
   if (needsCatalogBackfill(workoutHistory) && !catalogSeeded) {
     // Sync callers (score.ts) seed via seedExerciseMuscleMap before calling.
@@ -80,7 +81,7 @@ export function computeReadinessFromHistory(
   MAJOR_GROUPS.forEach((g) => {
     const last = lastByGroup[g];
     const days = last
-      ? Math.floor((Date.now() - last.getTime()) / (1000 * 3600 * 24))
+      ? Math.floor((now - last.getTime()) / (1000 * 3600 * 24))
       : 99;
     readiness[g] = { days, statusKey: readinessStatusKey(days) };
   });

@@ -46,8 +46,8 @@ export interface WinScoreBreakdown {
  * `await computeReadinessIndex(history)` first (lazy catalog seed).
  * HomePage above-fold uses `computeReadinessFromHistory` directly.
  */
-export function computeReadiness(workoutHistory: CompletedWorkoutLog[]): Record<MuscleGroup, ReadinessInfo> {
-  return computeReadinessFromHistory(workoutHistory);
+export function computeReadiness(workoutHistory: CompletedWorkoutLog[], now = Date.now()): Record<MuscleGroup, ReadinessInfo> {
+  return computeReadinessFromHistory(workoutHistory, now);
 }
 
 /**
@@ -206,6 +206,7 @@ function scoreLabelKey(
 }
 
 export type BodyScoresOpts = {
+  now?: number;
   assessmentRisk?: string;
   pillarWins?: number;
   /** Today's subjective check-in — bounded readiness modifier (±15). */
@@ -220,7 +221,8 @@ export function computeBodyScores(
   workoutHistory: CompletedWorkoutLog[],
   opts?: BodyScoresOpts
 ): BodyScores {
-  const readinessMap = computeReadiness(workoutHistory);
+  const now = opts?.now ?? Date.now();
+  const readinessMap = computeReadiness(workoutHistory, now);
   const groupScores = Object.values(readinessMap).map((r) =>
     r.days === 99 ? 50 : r.days >= 4 ? 90 : r.days >= 2 ? 70 : 40
   );
@@ -235,7 +237,7 @@ export function computeBodyScores(
   );
 
   const last7 = workoutHistory.filter(
-    (w) => (Date.now() - new Date(w.completedAt).getTime()) / 86400000 <= 7
+    (w) => (now - new Date(w.completedAt).getTime()) / 86400000 <= 7
   );
   const strain = Math.min(
     100,
@@ -243,7 +245,7 @@ export function computeBodyScores(
   );
 
   const daysSince = workoutHistory[0]
-    ? Math.floor((Date.now() - new Date(workoutHistory[0].completedAt).getTime()) / 86400000)
+    ? Math.floor((now - new Date(workoutHistory[0].completedAt).getTime()) / 86400000)
     : 3;
   const restBonus = daysSince >= 2 ? 25 : daysSince === 1 ? 10 : 0;
   const pillarBonus = Math.min(20, (opts?.pillarWins ?? 0) * 5);
