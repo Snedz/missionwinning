@@ -1047,7 +1047,8 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(programs, /content-card/);
   assert.doesNotMatch(programs, /<Card[\s>]/);
   assert.doesNotMatch(programs, /<Button[\s>]/);
-  assert.doesNotMatch(moreNav, /['"]\/programs['"]/);
+  assert.ok(HOUSE_MORE_QUIET.some((row) => row.href === '/programs'));
+  assert.ok(!Object.values(HOUSE_RAIL_HREFS).some((href: string) => href === '/programs'));
   assert.match(css, /\.house-programs/);
   assert.match(spec, /Programs leftover/);
   const help = read('src/page-components/HelpPage.tsx');
