@@ -12,6 +12,13 @@ When adding a doc:
 
 - [`.1138` Meta tests](CONTEXT-now-1138-meta-tests.md) — Now bullet rotated for `.1206`.
 - [`.1185` landing fallback](log/LOG-rotate-1185-for-1206.md) — LOG entry rotated for `.1206`.
+- [`CONTEXT-now-1141-set-row.md`](docs/archive/CONTEXT-now-1141-set-row.md) — `.1205` rotated the `.1141` Train set row Now bullet.
+- [`LOG-rotate-1190-for-1205.md`](docs/archive/log/LOG-rotate-1190-for-1205.md) — rotated by `.1205`, to keep the <=15 entry budget.
+- [`CONTEXT-now-1140-today-desk.md`](docs/archive/CONTEXT-now-1140-today-desk.md) — `.1204` rotated the `.1140` Today is the next workout and one number Now bullet.
+- [`LOG-rotate-1189-for-1204.md`](docs/archive/log/LOG-rotate-1189-for-1204.md) — rotated by `.1204`, to keep the <=15 entry budget.
+- The retired Expo notes and generated landing variant board are available in Git history before `.1203`.
+- [`CONTEXT-now-1139-first-set.md`](docs/archive/CONTEXT-now-1139-first-set.md) — `.1203` rotated the `.1139` First set is one tap Now bullet.
+- [`LOG-rotate-1188-for-1203.md`](docs/archive/log/LOG-rotate-1188-for-1203.md) — rotated by `.1203`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1137-log-line.md`](docs/archive/CONTEXT-now-1137-log-line.md) — `.1202` rotated the `.1137` Log a set. Offline. Now bullet.
 - [`CONTEXT-now-1136-coach-width.md`](docs/archive/CONTEXT-now-1136-coach-width.md) — `.1201` rotated the `.1136` coach-width Now bullet.
 - [`LOG-rotate-1187-for-1202.md`](docs/archive/log/LOG-rotate-1187-for-1202.md) — rotated by `.1202`, to keep the <=15 entry budget. `.1185` is the live floor.

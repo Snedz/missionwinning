@@ -35,7 +35,6 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 | API | `app/api/` | Route handlers — [app/api/INDEX.md](app/api/INDEX.md) |
 | Native apps | `apps/android/` | Compose Play product — [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md) |
 | Shared core | `packages/mw-core/` | Pure TS shared by web + mobile API |
-| Expo prototype | `apps/mobile/` | Flow reference only — not Play |
 
 **Pattern:** `app/(app)/foo/page.tsx` imports `FooPage` from `src/page-components/FooPage.tsx`.
 
@@ -87,6 +86,43 @@ Every agent change must end with `npm run verify` exiting 0, and the PR body mus
 - What "done" means: [docs/agents/DONE_CONTRACT.md](docs/agents/DONE_CONTRACT.md)
 - Adding or pruning tests: [docs/agents/TEST_AUDIT.md](docs/agents/TEST_AUDIT.md)
 - A red step is a stop, not a retry loop: after 3 failed attempts, stop and name the blocker.
+
+### `npm run gate` — 22 steps, in order
+
+`scripts/gate.mjs` runs everything CI would, on your machine, and builds with `PRIVATE_MODE=false` so the service worker compiles (the offline spec needs one). It starts and stops its own production server.
+
+1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. **Competitor names** (ops denylist; no-op if unmounted) · 5. **Idea graph**
+6. Lint · 7. Typecheck · 8. Unit tests · 9. Route contract tests · 10. **Coverage floors**
+11. i18n parity · 12. i18n coverage · 13. Dependency advisories · 14. Design system · 15. Locale split
+16. Display type · 17. Token sync (web ↔ www ↔ Android) · 18. **WWW build + checks (sites/www)** · 19. Production build · 20. Bundle budget
+21. Hero e2e (`@gate`) · 22. Accessibility (`@a11y`)
+
+> This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. **`.669` added Excellence gate** (Horizon W RESULT + surface stop-rule). A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
+
+Not covered: `npm run e2e:visual` (needs deliberate Linux baselines) and Lighthouse (needs Chrome).
+
+### Enforced engineering rules
+
+| Rule | Enforced by |
+|------|-------------|
+| **Never call `localStorage` directly** — use `@/lib/storage/safeStorage`; a bare call throws in Safari private mode and can blank the page | `eslint.config.js` (`no-restricted-globals`, error) |
+| **Never derive a calendar date from `toISOString()`** — use `localDateKey` / `previousLocalDateKey` in `src/lib/time/localDate.ts` | unit guard; the defect shipped a wrong shared week east of UTC |
+| **Every cloud write rides the durable outbox** (`src/lib/sync/outbox.ts`) — no raw `void fetch(...).catch(() => {})` | `sync/` guards; a one-shot fetch loses a tester's data on gym wifi |
+| **One definition per domain rule** — no second private copy of a predicate | `src/lib/launchTruth.test.ts` |
+| **The planner is blind to standing** — nothing under `src/lib/coach/` or `packages/mw-core/src/` may reach rewards/leaderboard/social, transitively, by static or dynamic import. The logging path may **emit** through a declared door symbol and must discard the result; it may never read back | `src/lib/domainBoundary.test.ts` (C1–C3, C7) + `reentryTone.ts` `club-identity` (C4) — the week is planned from logs alone, so social comparison is an input-integrity attack, not a tone problem ([docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md)) |
+| **Design tokens only** — paper/ink, radius 0, Archivo, light-only; red is exactly three tokens (`--accent-poster` fills/chrome · `--primary-fill` button fills · `--primary` small text) | `check-design-system` (strips comments first, by design) + `check-token-sync` (pins web ↔ Android Kotlin) |
+| **No off-palette hex, raw border-radius, glow/elevation or second typeface in components** | `check-design-system` |
+| **Strings live in `src/i18n/*Locales.ts`** — never `src/locales/`, never a key that exists in no pack | `i18n:parity` (packs vs packs) + `i18n:coverage` (opens `.tsx`) |
+| **Locale packs stay split to the English schema**; nothing on the root-layout path may value-import locale bodies | `check-locale-split` + `bundle-budget` |
+| **Initial gzipped JS only ratchets down**, measured off prerendered HTML | `scripts/bundle-budget.mjs` |
+| **Display type** — no `text-*` utility nullifying a `.display-*` clamp | `check-display-type` |
+| **Every idea-graph constraint has a live enforcer** — an `X-` node names a file and an anchor string that must both still exist, so a rule cannot go on being cited after the test that enforced it was renamed away. Mechanics are recorded as a closed set of behavioural primitives, never as prose, so a feature cannot be filed as a mechanic | `idea:validate` ([docs/IDEA_LOOP.md](docs/IDEA_LOOP.md)) — prose diversity rules were tried first and failed sixteen queue rows in a row |
+| **Every migration is written into the runbook** | `src/lib/migrationLedger.test.ts` |
+| **`CONTEXT.md` `## Now` stays ≤25 bullets and keeps stating the governing facts** | `src/lib/contextBudget.test.ts` (`MUST_STATE`) |
+
+Guard authoring and falsification: [docs/agents/TEST_AUDIT.md](docs/agents/TEST_AUDIT.md). In API handlers use rate limit → auth → Zod → delegate; keep the verified-user entitlement decision in `premiumServer.ts` and return opaque database errors to clients. `proxy.ts` checks the surface flag before the private gate.
+
+Every ship touching `src`, `app`, `scripts`, or `supabase` bumps `APP_BUILD_LABEL` in `src/lib/buildInfo.ts` past the base branch and updates `LOG.md` and `CONTEXT.md` `## Now` in the same commit. Keep at most 15 live LOG entries and 25 Now bullets. Never use the Vercel skip tag (`[skip vercel]`) in a commit or squash message: it cancels the Production deploy.
 
 ---
 
@@ -164,15 +200,14 @@ See [INDEX.md](INDEX.md) §4. Highlights:
 
 ## Cursor Cloud specific instructions
 
-Durable, non-obvious notes for agents on a VM where the update script (`npm install`) has already run. Standard commands live in §Commands above and in [CLAUDE.md](CLAUDE.md) §4 — use those; this section only records gotchas.
+Durable, non-obvious notes for agents on a VM where the update script (`npm install`) has already run. Standard commands live in [§Commands](#commands) above — use those; this section only records gotchas.
 
-- **Runtime:** this is the web PWA at the repo root (Next.js 16 + Turbopack). It is the only service that must run for end-to-end testing of the wedge (Train / Today / Coach / Fuel). Android (`apps/android`) and the Expo prototype (`apps/mobile`) are separate products with their own toolchains and are not needed for web work.
-- **Node 22 is required** but is not pinned by any `.nvmrc`/`engines`; the VM already runs Node 22. `nvm` is present — do not let it silently downgrade the shell to an older default.
+- **Runtime:** this is the web PWA at the repo root (Next.js 16). Android (`apps/android`) has a separate toolchain and is not needed for web tests.
+- **Node 22 is required.** Use Node 22.19+ for the optional Lighthouse budget.
 - **No env vars are needed to run or test the web app in dev.** `npm run dev` boots with an empty/absent `.env.local`. In dev the private gate is **off** (`isPrivateModeEnabled()` is only true in a production build with `PRIVATE_MODE` unset/true), free-beta is **on** so premium depth is unlocked, and Supabase/Stripe/Redis/LLM all degrade gracefully (localStorage "demo mode", in-memory rate limits, rule-based coach). Add Supabase URL + anon key to `.env.local` only when testing auth/cloud-sync/enrollment flows.
 - **Hello-world flow:** `/active` is the free Train logger. From a fresh state I-Day is Begin → Continue (lands `/log`); Today Start opens Train. Log a set by entering weight/reps and clicking **Log set**. No account. No Skip-sign-in step.
-- **`npm install` prints a harmless `EBADENGINE` warning** for `lighthouse` (wants Node ≥22.19; only used by the optional `npm run lighthouse-budget`). It does not affect install, dev, test, or build.
 - **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
-- **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). `[skip vercel]` on every commit unless the founder asked for a Preview. Do not treat `build-and-test` red as a product fail.
+- **CI availability:** See [CONTEXT.md](CONTEXT.md) and [docs/CI_LOCAL.md](docs/CI_LOCAL.md).
 
 
 <!-- BEGIN:nextjs-agent-rules -->

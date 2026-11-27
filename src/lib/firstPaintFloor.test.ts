@@ -282,7 +282,6 @@ test('first-paint copy drift only ever decreases', () => {
  */
 const FRONT_DOOR_FILES = [
   'app/private/PrivateTeaserClient.tsx',
-  'src/components/landing/CinematicWww.tsx',
   'src/components/layout/AppHeader.tsx',
   'src/page-components/WelcomePage.tsx',
   'src/components/profile/ProfileLanguageSwitcher.tsx',
