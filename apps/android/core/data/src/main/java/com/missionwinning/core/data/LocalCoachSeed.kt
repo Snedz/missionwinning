@@ -128,7 +128,11 @@ object LocalCoachSeed {
         }.sortedWith(compareByDescending<Pair<SetLogEntity, Instant>> { it.second }
             .thenByDescending { it.first.workoutId }.thenByDescending { it.first.setIndex }.thenByDescending { it.first.id })
             .map { it.first }
-        val latestByExercise = workingSets.groupBy { it.exerciseId }.mapValues { (_, sets) ->
+        val latestByExercise = workingSets.filter { set ->
+            val move = catalogMove(set.exerciseId)
+            move != null && equip in move.equipment &&
+                (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
+        }.groupBy { it.exerciseId }.mapValues { (_, sets) ->
             val latest = sets.first()
             sets.filter { it.workoutId == latest.workoutId }
         }
@@ -141,11 +145,8 @@ object LocalCoachSeed {
         val families = listOf(setOf("quads", "glutes"), setOf("chest", "shoulders"), setOf("back"))
         val used = mutableSetOf<String>()
         val exercises = defaults.mapIndexed { index, fallback ->
-            val familiar = latestByExercise.entries.firstOrNull { (id, rows) ->
-                val move = ExerciseCatalog.get(if (id == "lunges") "lunge" else id)
-                move != null && id !in used && equip in move.equipment &&
-                    (equip != "bodyweight" || move.isBodyweight && rows.first().weight == 0.0) &&
-                    move.muscleGroups.any { it in families[index] }
+            val familiar = latestByExercise.entries.firstOrNull { (id, _) ->
+                id !in used && catalogMove(id)?.muscleGroups?.any { it in families[index] } == true
             }
             val id = familiar?.key ?: fallback
             used += id
@@ -195,6 +196,9 @@ object LocalCoachSeed {
             ),
         )
     }
+
+    private fun catalogMove(exerciseId: String) =
+        ExerciseCatalog.get(if (exerciseId == "lunges") "lunge" else exerciseId)
 
     private fun demoSessions(equip: String): List<PlanSessionDto> {
         val (pushA, pushB, legsA, legsB, pullA, pullB) = when (equip) {

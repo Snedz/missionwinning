@@ -88,6 +88,33 @@ class CoachParityTest {
     }
 
     @Test
+    fun bodyweightSeedUsesOlderUnweightedHistoryWhenLatestWorkoutWasWeighted() {
+        val now = Instant.parse("2026-05-20T12:00:00Z")
+        val unweighted = SetLogEntity(
+            id = "bodyweight-0", exerciseId = "chinup", exerciseName = "Chin-up",
+            setIndex = 0, reps = 9, weight = 0.0, completedAt = "2026-05-18T12:00:00Z",
+            sessionId = null, workoutId = "unweighted",
+        )
+        val history = listOf(
+            unweighted.copy(id = "weighted-0", workoutId = "weighted", completedAt = "2026-05-19T12:00:00Z", weight = 10.0, reps = 4),
+            unweighted,
+            unweighted.copy(id = "bodyweight-1", setIndex = 1, reps = 7),
+        )
+        val zone = ZoneId.of("UTC")
+        val bodyweight = LocalCoachSeed.build(equipment = "bodyweight", history = history, now = now, zone = zone)
+        val pull = bodyweight.plan.sessions.first().exercises.first { it.exerciseId in setOf("chinup", "row") }
+        assertEquals("chinup", pull.exerciseId)
+        assertEquals(7, pull.reps)
+        assertEquals(2, pull.sets)
+        assertEquals(0.0, pull.weight, 0.0)
+        val gym = LocalCoachSeed.build(equipment = "full-gym", history = history, now = now, zone = zone)
+        val weighted = gym.plan.sessions.first().exercises.single { it.exerciseId == "chinup" }
+        assertEquals(4, weighted.reps)
+        assertEquals(1, weighted.sets)
+        assertEquals(10.0, weighted.weight, 0.0)
+    }
+
+    @Test
     fun coldStartOnLocalSundayNeverSchedulesInThePastOrInventsALoad() {
         val now = Instant.parse("2026-05-25T01:00:00Z")
         val response = LocalCoachSeed.build(
