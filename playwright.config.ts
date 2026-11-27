@@ -11,6 +11,7 @@ export default defineConfig({
   reporter: 'list',
   use: {
     ...devices['Pixel 7'],
+    viewport: { width: 390, height: 844 },
     defaultBrowserType: 'chromium',
     baseURL,
     actionTimeout: 8_000,

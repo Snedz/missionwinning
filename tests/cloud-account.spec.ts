@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { expect, test } from '@playwright/test';
+import { audit, shot } from './notebookChecks';
 
 const api = 'http://127.0.0.1:54321';
 const mail = 'http://127.0.0.1:54324';
@@ -52,7 +53,27 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
 
   await finishWorkout();
   await page.goto('/profile');
+  await expect(page.getByRole('button', { name: 'Email sign-in link' })).toBeVisible();
+  await audit(page);
+  await shot(page, 'you-account-guest.png');
   await page.getByRole('textbox', { name: 'Account email' }).fill(athlete.email);
+  let finishRequest: () => void = () => {};
+  const holdRequest = new Promise<void>((resolve) => { finishRequest = resolve; });
+  await page.route(`${api}/auth/v1/otp**`, async (route) => {
+    await holdRequest;
+    await route.abort();
+  }, { times: 1 });
+  try {
+    await page.getByRole('button', { name: 'Email sign-in link' }).click();
+    await expect(page.getByRole('button', { name: 'Sending…' })).toBeDisabled();
+    await shot(page, 'you-account-sending.png');
+  } finally {
+    finishRequest();
+  }
+  await expect(page.getByRole('region', { name: 'Use your existing account.' }).getByRole('alert'))
+    .toHaveText('Could not send a link. Verify the address and try again online.');
+  await audit(page);
+  await shot(page, 'you-account-error.png');
   await page.getByRole('button', { name: 'Email sign-in link' }).click();
   await expect(page.getByText('Check your email for a sign-in link.')).toBeVisible();
 
@@ -70,6 +91,8 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   expect(verificationURL.origin).toBe(api);
   await page.goto(verificationURL.href);
   await expect(page.getByText('Workouts synced.')).toBeVisible();
+  await audit(page);
+  await shot(page, 'you-account-synced.png');
 
   async function cloudNames() {
     const response = await request.get(workoutPath + '?select=workout_name&deleted_at=is.null&order=workout_name', { headers: athlete.headers });
@@ -92,8 +115,12 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   await page.goto('/history');
   await expect(page.getByText('Quick workout', { exact: true })).toHaveCount(2);
   expect(await cloudNames()).toHaveLength(2);
-  await context.setOffline(false);
   await page.getByRole('link', { name: 'You', exact: true }).click();
+  await expect(page.getByText('Waiting to sync: 1.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sync now' })).toBeDisabled();
+  await audit(page);
+  await shot(page, 'you-account-offline.png');
+  await context.setOffline(false);
   await expect(page.getByText('Workouts synced.')).toBeVisible({ timeout: 20_000 });
   expect(await cloudNames()).toEqual(['Existing account workout', 'Quick workout', 'Quick workout']);
 

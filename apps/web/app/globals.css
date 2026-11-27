@@ -42,6 +42,8 @@ a { color: inherit; }
 h1, h2, h3, p { margin: 0; }
 
 .shell { max-width: var(--max); margin-inline: auto; min-height: 100dvh; }
+.skip-link { position: fixed; z-index: 4; top: .75rem; left: var(--pad); padding: .75rem; background: var(--card); }
+.skip-link:not(:focus) { clip-path: inset(50%); }
 .masthead {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   padding: .95rem var(--pad); border-bottom: 1px solid var(--line);
@@ -55,6 +57,7 @@ h1, h2, h3, p { margin: 0; }
 .device-status i, .session-strip i { width: .39rem; height: .39rem; display: inline-block; background: hsl(var(--accent)); }
 
 .content { padding: clamp(1.75rem, 5.5vw, 4rem) var(--pad) calc(6rem + env(safe-area-inset-bottom)); }
+.content:focus { outline: none; }
 .screen-heading { margin-bottom: 1.55rem; }
 .heading-index { color: var(--quiet); }
 .heading-index span { color: hsl(var(--accent)); margin-right: .3rem; }
@@ -169,12 +172,15 @@ input:not([type=file]), select {
 
 .data-panel { margin-bottom: .75rem; gap: .55rem; }
 .data-panel .action-row { margin-top: .25rem; }
+.account-panel p { overflow-wrap: anywhere; }
 .file-button { position: relative; overflow: hidden; cursor: pointer; }
 .file-button:focus-within { outline: 2px solid hsl(var(--accent)); outline-offset: 4px; }
 .file-button input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
 .danger-link { color: hsl(var(--accent)); }
 .notice { padding: .65rem .8rem; border: 1px solid var(--line); font-size: .88rem; margin-bottom: .75rem; }
 .notice.danger { border-color: hsl(var(--accent)); background: hsl(var(--accent-tint)); }
+.install-notice { display: flex; flex-wrap: wrap; gap: .25rem .75rem; align-items: center; justify-content: space-between; }
+.install-notice button { color: hsl(var(--accent)); }
 
 @media (min-width: 42rem) {
   .today-grid { grid-template-columns: 1.25fr 1fr; }

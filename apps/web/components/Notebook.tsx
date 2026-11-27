@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { coachCitationFact, coachLogCitation } from '@/lib/coach/logCitation';
@@ -87,9 +87,25 @@ function setCountLabel(count: number) {
   return `${count} ${count === 1 ? 'set' : 'sets'}`;
 }
 
+type InstallPrompt = Event & { prompt: () => Promise<unknown> };
+
 function useConnection() {
   const [online, setOnline] = useState(true);
   const [cached, setCached] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<InstallPrompt | null>(null);
+  useEffect(() => {
+    function offerInstall(event: Event) {
+      event.preventDefault();
+      setInstallPrompt(event as InstallPrompt);
+    }
+    function clearInstall() { setInstallPrompt(null); }
+    window.addEventListener('beforeinstallprompt', offerInstall);
+    window.addEventListener('appinstalled', clearInstall);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', offerInstall);
+      window.removeEventListener('appinstalled', clearInstall);
+    };
+  }, []);
   useEffect(() => {
     function sync() { setOnline(navigator.onLine); }
     sync();
@@ -111,7 +127,12 @@ function useConnection() {
       window.removeEventListener('offline', sync);
     };
   }, []);
-  return { online, cached };
+  async function install() {
+    if (!installPrompt) return;
+    setInstallPrompt(null);
+    await installPrompt.prompt().catch(() => undefined);
+  }
+  return { online, cached, canInstall: installPrompt !== null, install };
 }
 
 export function Notebook() {
@@ -119,23 +140,34 @@ export function Notebook() {
   const ready = useNotebook((store) => store.ready);
   const hydrate = useNotebook((store) => store.hydrate);
   const storageWarning = useNotebook((store) => store.storageWarning);
-  const { online, cached } = useConnection();
+  const { online, cached, canInstall, install } = useConnection();
   useEffect(() => { if (!ready) hydrate(); }, [ready, hydrate]);
   useEffect(() => { startCloudAccount(); }, []);
   const route = pathname === '/' ? '/log' : pathname;
+  const main = useRef<HTMLElement>(null);
+  const previousRoute = useRef(route);
+  useEffect(() => {
+    if (previousRoute.current !== route) {
+      previousRoute.current = route;
+      main.current?.focus({ preventScroll: true });
+    }
+  }, [route]);
   return <div className="shell">
+    <a className="skip-link" href="#content">Skip to notebook</a>
     <header className="masthead">
       <AppLink href="/log" className="brand"><span className="brand-mark" aria-hidden="true">MW</span><span>MISSION<br />WINNING</span></AppLink>
       <div className="masthead-right"><span className="edition">TRAINING NOTEBOOK / 02</span><span className="device-status" role="status"><i />{!online ? 'Offline' : cached ? 'Offline ready' : 'On this device'}</span></div>
     </header>
-    <main id="content" className="content" key={route} aria-busy={!ready}>
+    <main id="content" className="content" key={route} ref={main} tabIndex={-1} aria-busy={!ready}>
+      {!online && <p className="notice">You’re offline. Keep logging on this device; account sync needs a connection.</p>}
+      {online && canInstall && <div className="notice install-notice"><p>Open your notebook from your home screen.</p><button className="bare-button" onClick={() => void install()}>Install app</button></div>}
       {storageWarning && <p className="notice danger" role="alert">This device refused to save. Keep this tab open; new work may not survive a reload.</p>}
       {!ready ? <p className="loading">Opening your notebook…</p> :
         route === '/active' ? <Train /> :
         route === '/victory' ? <Victory /> :
         route === '/coach' ? <Coach /> :
         route === '/history' ? <History /> :
-        route === '/profile' ? <You /> : <Today />}
+        route === '/profile' ? <You online={online} /> : <Today />}
     </main>
     <nav className="dock" aria-label="Training notebook">
       {NAV.map((link) => <AppLink key={link.href} href={link.href} current={route === link.href} className="dock-item">
@@ -257,7 +289,7 @@ function Train() {
   return <>
     <Heading index="02" label="LIVE SESSION" title="Train.">{active ? active.workoutName : 'Start a quick workout whenever you’re ready.'}</Heading>
     {!active ? <button className="button primary-button" onClick={() => start()}>Start workout <Icon name="arrow" /></button> : <>
-      <div className="session-strip"><span className="eyebrow"><i /> {setCountLabel(count)} logged</span><Rest until={restUntil} /></div>
+      <div className="session-strip"><span className="eyebrow" role="status"><i /> {setCountLabel(count)} logged</span><Rest until={restUntil} /></div>
       <div className="move-row" aria-label="Movements in workout">
         {active.exercises.map((row, i) => <button key={`${row.exerciseId}-${i}`} className="chip" aria-pressed={row === exercise} onClick={() => setCurrent(row.exerciseId)}>{exerciseName(row.exerciseId)}</button>)}
         <button className="chip add-chip" aria-expanded={searchOpen} onClick={() => setSearchOpen((open) => !open)}><Icon name="plus" size={15} /> Add movement</button>
@@ -356,7 +388,7 @@ function History() {
   </>;
 }
 
-function You() {
+function You({ online }: { online: boolean }) {
   const { workoutHistory, hydrate, deleteWorkout, eraseDevice, owner } = useNotebook();
   const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
   const [confirm, setConfirm] = useState<string | null>(null);
@@ -382,7 +414,7 @@ function You() {
   return <>
     <Heading index="06" label="DEVICE & DATA" title="You.">Your notebook belongs to you. Keep a copy before changing devices.</Heading>
     {message && <p className={`notice ${message.ok ? '' : 'danger'}`} role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
-    {cloudConfigured && <AccountPanel key={owner ?? 'guest'} />}
+    {cloudConfigured && <AccountPanel key={owner ?? 'guest'} online={online} />}
     <section className="note-panel data-panel">
       <div className="eyebrow muted">PORTABLE BACKUP</div><h2>Take your training with you.</h2>
       <p>Use the same Mission Winning JSON format to bring your existing logs here or take them back.</p>
@@ -415,7 +447,7 @@ function You() {
   </>;
 }
 
-function AccountPanel() {
+function AccountPanel({ online }: { online: boolean }) {
   const { phase, email, pending } = useCloudAccount();
   const owner = useNotebook((state) => state.owner);
   const [busy, setBusy] = useState(false);
@@ -436,21 +468,23 @@ function AccountPanel() {
     setBusy(false);
   }
 
-  return <section className="note-panel data-panel">
+  return <section className="note-panel data-panel account-panel" aria-labelledby="account-heading">
     <div className="eyebrow muted">OPTIONAL ACCOUNT</div>
-    <h2>{owner ? 'Workout sync' : 'Use your existing account.'}</h2>
-    {message && <p role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
+    <h2 id="account-heading">{owner ? 'Workout sync' : 'Use your existing account.'}</h2>
+    {message && <p className={message.ok ? 'notice' : 'notice danger'} role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
     {phase === 'checking' ? <p role="status">Checking account…</p> : owner ? <>
       <p>{email ?? 'Signed in'}</p>
       <p role="status">{phase === 'syncing' ? 'Syncing workouts…' : phase === 'synced' ? 'Workouts synced.' : pending ? `Waiting to sync: ${pending}.` : 'Waiting for a connection to sync workouts.'}</p>
       <div className="action-row">
-        <button className="button outline-button" disabled={phase === 'syncing'} onClick={() => void syncAccount(true)}>Sync now</button>
+        <button className="button outline-button" disabled={!online || phase === 'syncing'} onClick={() => void syncAccount(true)}>Sync now</button>
         <button className="bare-button" disabled={busy} onClick={() => void signOut()}>Sign out</button>
       </div>
-    </> : <form className="data-panel grid gap-3" onSubmit={(event) => void signIn(event)}>
+    </> : <form className="grid gap-3" onSubmit={(event) => void signIn(event)}>
       <p>You can always log without signing in. The first account on this device will merge a copy of this guest notebook’s workout history.</p>
       <label>Account email<input name="email" type="email" autoComplete="email" required /></label>
-      <div><button className="button primary-button" disabled={busy} type="submit">{busy ? 'Sending…' : 'Email sign-in link'} <Icon name="arrow" /></button></div>
+      {!online && <p>Reconnect to request a sign-in link.</p>}
+      {busy && <p className="sr-only" role="status">Sending sign-in link…</p>}
+      <div><button className="button primary-button" disabled={busy || !online} type="submit">{busy ? 'Sending…' : 'Email sign-in link'} <Icon name="arrow" /></button></div>
     </form>}
   </section>;
 }
