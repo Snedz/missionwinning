@@ -32,6 +32,8 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Log a set.\s*Know what to train next\./);
   await expect(page.getByText('In your browser. No account needed.')).toBeVisible();
+  const home = page.getByRole('link', { name: 'Mission Winning home' });
+  expect((await home.innerText()).replace(/\s+/g, ' ')).toBe('MISSION WINNING');
   await expect(page.getByRole('list', { name: 'Example logged sets' }).getByRole('listitem')).toHaveCount(3);
   await checkWeekComparison(page);
   await page.keyboard.press('Tab');
@@ -49,7 +51,8 @@ test('landing explains the notebook accessibly and opens the guest set form dire
     const screen = screens.nth(index);
     await expect(screen).toHaveAttribute('loading', 'lazy');
     await screen.scrollIntoViewIfNeeded();
-    const format = width >= 1024 && name !== 'today' ? 'laptop' : 'phone';
+    const density = await page.evaluate(() => devicePixelRatio);
+    const format = width >= 1024 && name !== 'today' ? 'laptop' : density <= 1 ? 'phone-small' : 'phone';
     const path = `/preview-${name}-${format}.webp`;
     await expect.poll(() => screen.evaluate((img: HTMLImageElement) =>
       img.naturalWidth > 0 ? new URL(img.currentSrc).pathname : null,
@@ -92,6 +95,8 @@ test('landing delivers canonical share metadata and stays within its initial pay
   const origin = 'https://www.missionwinning.com';
   const response = await page.goto('/');
   expect(response?.ok()).toBe(true);
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/favicon.svg');
+  expect((await request.get('/favicon.svg')).headers()['content-type']).toContain('image/svg+xml');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', origin);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /without an account/);
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', origin);

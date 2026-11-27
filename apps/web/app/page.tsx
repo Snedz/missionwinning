@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.missionwinning.com'),
   title,
   description,
+  icons: { icon: { url: '/favicon.svg', type: 'image/svg+xml' } },
   alternates: { canonical: '/' },
   openGraph: { type: 'website', siteName: 'Mission Winning', title, description, url: '/', images: [shareImage] },
   twitter: { card: 'summary_large_image', title, description, images: [shareImage] },
@@ -102,7 +103,8 @@ function AppPreview() {
         </figcaption>
         <picture className={id === 'today' ? styles.phoneFrame : styles.adaptiveFrame}>
           {id !== 'today' && <source media="(min-width: 64rem)" srcSet={`/preview-${id}-laptop.webp`} width={960} height={600} />}
-          <img src={`/preview-${id}-phone.webp`} width={390} height={844} alt={alt} loading="lazy" decoding="async" />
+          <img src={`/preview-${id}-phone.webp`} srcSet={`/preview-${id}-phone-small.webp 246w, /preview-${id}-phone.webp 390w`}
+            sizes="15.375rem" width={390} height={844} alt={alt} loading="lazy" decoding="async" />
         </picture>
       </figure>)}
     </div>
@@ -115,7 +117,7 @@ export default function LandingPage() {
     <header className={styles.masthead}>
       <div className={styles.frame}>
         <a className="brand" href="/" aria-label="Mission Winning home">
-          <span className="brand-mark" aria-hidden="true">MW</span><span>MISSION<br />WINNING</span>
+          <span className={`brand-mark ${styles.brandMark}`} aria-hidden="true" /><span>MISSION<br />WINNING</span>
         </a>
         <a className={styles.returnLink} href="/log">Open notebook <Arrow /></a>
       </div>
