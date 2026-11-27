@@ -47,11 +47,15 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   await cta.click();
   await expect(page).toHaveURL(/\/active$/);
   await expect(page.getByRole('button', { name: 'Start workout' })).toHaveCount(0);
+  const sets = page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem');
+  await expect(sets).toHaveCount(0);
   await page.getByRole('spinbutton', { name: 'Reps' }).fill('11');
   await page.getByRole('button', { name: 'Log set' }).click();
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('11');
+  await expect(sets).toHaveCount(1);
   await page.reload();
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('11');
+  await expect(sets).toHaveCount(1);
   await page.getByRole('button', { name: 'Finish workout' }).click();
   await expect(page.getByRole('heading', { name: 'Victory.' })).toBeVisible();
 });
@@ -76,7 +80,9 @@ test('landing CTA resumes a live workout instead of replacing it', async ({ page
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('19');
 
   await page.goto('/');
+  await page.reload();
   await page.getByRole('link', { name: 'Log a set', exact: true }).last().click();
+  await expect(page).toHaveURL(/\/active$/);
   await expect(page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem')).toHaveCount(1);
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('19');
 });
@@ -107,8 +113,13 @@ test('the warmed notebook can follow the landing CTA offline', async ({ page, co
   await expect(page.getByText('Offline ready', { exact: true })).toBeVisible({ timeout: 20_000 });
   await context.setOffline(true);
   await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Log a set.\s*Know what to train next\./);
   await page.getByRole('link', { name: 'Log a set', exact: true }).first().click();
   await page.getByRole('spinbutton', { name: 'Reps' }).fill('14');
   await page.getByRole('button', { name: 'Log set' }).click();
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('14');
+  await page.reload();
+  const sets = page.getByRole('list', { name: 'Logged sets' });
+  await expect(sets.getByRole('listitem')).toHaveCount(1);
+  await expect(sets).toContainText('14');
 });
