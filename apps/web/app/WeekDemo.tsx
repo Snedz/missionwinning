@@ -40,15 +40,15 @@ export default function WeekDemo() {
       </select></label>
       <button className="button primary-button" type="submit">Rebuild week</button>
     </form>
-    <p className={styles.demoHint}>Original schedule: {scheduled.map((day) => weekdays[day]).join(', ')}. Rebuild runs the day after the missed session.</p>
+    <p className={styles.demoHint}>Original schedule: {scheduled.map((day) => weekdays[day]).join(', ')}. This sample starts on Wednesday; rebuild runs the day after the missed session.</p>
     <p className={styles.demoStatus} role="status" aria-atomic="true">{result && (rebuilt.length > 0
       ? `Missed ${weekdays[result.missed]}. Rebuilt schedule: ${rebuilt.map(({ dayOffset }) => weekdays[dayOffset]).join(', ')}.`
       : `Missed ${weekdays[result.missed]}. No days remain in this sample week.`)}</p>
-    {rebuilt.length > 0 && <ul className={styles.demoSessions} aria-label="Rebuilt sessions">
+    {rebuilt.length > 0 && <><p className={styles.demoHint}>First exercise in each session:</p><ul className={styles.demoSessions} aria-label="Rebuilt sessions">
       {rebuilt.map(({ id, dayOffset, exercises }) => {
         const example = exercises[0];
         return <li key={id}><strong>{weekdays[dayOffset]}</strong>{example && <span>{getExerciseById(example.exerciseId)?.name} · {example.sets} × {example.reps}</span>}</li>;
       })}
-    </ul>}
+    </ul></>}
   </div>;
 }

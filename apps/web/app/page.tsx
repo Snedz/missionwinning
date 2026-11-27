@@ -31,7 +31,7 @@ const rebuiltPlan = generateNotebookWeek({ ...exampleInput, revision: 2 }, sampl
 const originalDays = new Set(firstPlan.sessions.map(({ dayOffset }) => dayOffset));
 const rebuiltDays = new Set(rebuiltPlan.sessions.map(({ dayOffset }) => dayOffset));
 const appScreens = [
-  { id: 'today', name: 'Today', description: 'Start a workout or see what’s next.', alt: 'Today with a Start workout button, next session, and recent training.' },
+  { id: 'today', name: 'Today', description: 'Start a workout or see what’s next.', alt: 'Today with a Start workout button, an invitation to open Coach, and an empty workout history.' },
   { id: 'train', name: 'Train', description: 'Enter reps and load. See the sets you saved.', alt: 'Train showing a logged twelve-rep set and fields for reps and load.' },
   { id: 'coach', name: 'Coach', description: 'Build a week from your logged training.', alt: 'Coach showing a week plan and a citation from the logged workout.' },
 ];
@@ -93,7 +93,7 @@ function AppPreview() {
     <div className={styles.sectionCopy}>
       <p className={`eyebrow ${styles.kicker}`}>02 / Inside the notebook</p>
       <h2 id="preview-title">See the real app.</h2>
-      <p>Screens from the training notebook with an example workout.</p>
+      <p>See an empty notebook and how Train and Coach look after logging sample sets.</p>
     </div>
     <div className={styles.previewGrid}>
       {appScreens.map(({ id, name, description, alt }, index) => <figure key={id}>
@@ -155,7 +155,7 @@ export default function LandingPage() {
           <div className={styles.sectionCopy}>
             <p className={`eyebrow ${styles.kicker}`}>01 / From your log</p>
             <h2 id="example-title">Build a week from what you did.</h2>
-            <p>You logged three sets of lunges on Monday, then missed Wednesday’s session. On Thursday you choose “Rebuild week.” Coach plans the remaining days with the same workout history, dumbbells and three-day target.</p>
+            <p>In this example, you logged three sets of lunges on Monday and missed Wednesday’s session. On Thursday you choose “Rebuild week.” Coach makes a new schedule for the days left, using the same workout history, dumbbells and three-day target.</p>
           </div>
           <div><WeekComparison /><WeekDemoLoader /></div>
         </div>
@@ -174,8 +174,8 @@ export default function LandingPage() {
               <p>Open the notebook in a supported browser. Use “Install app” if the notebook offers it, or look for an install or Add to Home Screen option in your browser menu.</p>
             </div>
             <div>
-              <h3>Log in airplane mode</h3>
-              <p>Open the notebook online on this device first and wait for “Offline ready.” Then you can save sets without a connection. Account sync needs you back online.</p>
+              <h3>Save sets in airplane mode</h3>
+              <p>Open the notebook online on this device first and wait for “Offline ready.” You can then log without a connection. Saving still needs browser storage, and account sync needs you back online.</p>
             </div>
             <div>
               <h3>Separate native Android app</h3>
@@ -193,7 +193,7 @@ export default function LandingPage() {
           <details><summary>Do I need a gym or a wearable?</summary><p>No. Start with bodyweight, or tell Coach you have dumbbells or a full gym. Coach uses your workout history, not wearable readings.</p></details>
           <details>
             <summary>Where are my workouts saved?</summary>
-            <p>As a guest, your workouts are saved in this browser on this device. Export a backup from You before clearing browser data or moving to another device.</p>
+            <p>As a guest, your workouts are saved in this browser on this device, not synced to an account. If the browser blocks saving, the notebook warns you. Export a backup from You before clearing browser data or moving to another device.</p>
             {signInAvailable && <p>Already have a Mission Winning account? Sign in from You to sync workouts across devices. You can keep logging as a guest instead.</p>}
           </details>
         </div>

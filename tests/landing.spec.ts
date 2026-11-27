@@ -46,6 +46,7 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   const preview = page.getByRole('region', { name: 'See the real app.' });
   const screens = preview.getByRole('img');
   await expect(screens).toHaveCount(3);
+  await expect(screens.first()).toHaveAccessibleName(/empty workout history/);
   let previewBytes = 0;
   for (const [index, name] of ['today', 'train', 'coach'].entries()) {
     const screen = screens.nth(index);
@@ -228,6 +229,7 @@ test('the Coach demo loads on demand, responds to keyboard input, and leaves a r
   await page.keyboard.press('Enter');
   const result = page.getByRole('status').filter({ hasText: 'Missed' });
   await expect(result).toHaveText('Missed Wednesday. Rebuilt schedule: Thursday, Saturday, Sunday.');
+  await expect(page.getByText('First exercise in each session:')).toBeVisible();
   await expect(page.getByRole('list', { name: 'Rebuilt sessions' }).getByRole('listitem').first()).toContainText('Lunges');
   const deferredBytes = Object.entries(await scriptResources()).filter(([url]) => !(url in initialScripts))
     .reduce((bytes, [, size]) => bytes + size, 0);
@@ -278,6 +280,7 @@ test('the landing distinguishes guest backups from configured account sync', asy
   await page.goto('/');
   await page.getByText('Where are my workouts saved?', { exact: true }).click();
   await expect(page.getByText(/saved in this browser on this device.*Export a backup/)).toBeVisible();
+  await expect(page.getByText(/If the browser blocks saving, the notebook warns you/)).toBeVisible();
   const syncCopy = page.getByText(/Sign in from You to sync workouts across devices/);
   const signIn = page.getByRole('link', { name: 'Sign in', exact: true });
   if (cloudConfigured) {
@@ -298,8 +301,9 @@ test('the warmed notebook can follow the landing CTA offline', async ({ page, co
   await page.goto('/');
   const device = page.getByRole('region', { name: 'Train beyond Wi-Fi.' });
   await expect(device.getByRole('heading', { name: 'Add to your home screen' })).toBeVisible();
-  await expect(device.getByRole('heading', { name: 'Log in airplane mode' })).toBeVisible();
+  await expect(device.getByRole('heading', { name: 'Save sets in airplane mode' })).toBeVisible();
   await expect(device.getByText(/online on this device first and wait for “Offline ready/)).toBeVisible();
+  await expect(device.getByText(/Saving still needs browser storage/)).toBeVisible();
   await expect(device.getByRole('heading', { name: 'Separate native Android app' })).toBeVisible();
   await expect(device.getByRole('link')).toHaveCount(0);
   await page.goto('/log');
