@@ -62,15 +62,18 @@ object WeightUnits {
     }
 
     fun convert(value: Double, fromUnit: String, toUnit: String): Double {
+        if (normalize(fromUnit) == normalize(toUnit)) return value
+        return roundToStep(convertExact(value, fromUnit, toUnit), toUnit)
+    }
+
+    fun convertExact(value: Double, fromUnit: String, toUnit: String): Double {
         val from = normalize(fromUnit)
         val to = normalize(toUnit)
-        if (from == to) return value
-        val raw = when {
+        return when {
             from == "kg" && to == "lb" -> value * KG_TO_LB
             from == "lb" && to == "kg" -> value / KG_TO_LB
             else -> value
         }
-        return roundToStep(raw, to)
     }
 
     /** Compact display: 100, 2.5, 12.5 — no long floats. */

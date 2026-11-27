@@ -11,6 +11,7 @@ data class CoachPlanDto(
     val generatedAt: String,
     val contextHash: String,
     val equipmentProfile: String,
+    val weightUnit: String? = null,
 )
 
 @Serializable
