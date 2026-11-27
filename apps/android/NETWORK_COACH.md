@@ -14,6 +14,18 @@ Full API table: [docs/API_MOBILE.md](../../docs/API_MOBILE.md) · OpenAPI: [docs
 
 On any API failure (403/network), repository falls back to Room seed/cache.
 
+## Offline parity baseline
+
+`:core:data:testDebugUnitTest` runs `CoachParityTest` against the same cold-start and mixed-unit histories used for the web comparison. The fixture is generated here from `buildCoachContextFromInputs` and `generateWeek` in this repository, not from v2. The generator converts fixture units at the input boundary; it does not change how the web app reads its own history.
+
+To check or regenerate the fixture from the repository root with Node 22:
+
+```sh
+node --import tsx apps/android/scripts/generate-coach-parity.ts
+```
+
+Review the output against `core/data/src/test/resources/coach-parity.json` before replacing it. The JVM test decodes each web plan using the Android DTO, calls the real offline seed, and requires exactly the documented differences. It does not exercise the network seed, Room cache, or Compose rendering. A fixed fixture clock makes web output reproducible; Android's generation instant and local Monday are checked against its actual clock.
+
 ## Enable network coach on emulator/device
 
 1. Sign in to the private gate in a browser on www (or local Next).
