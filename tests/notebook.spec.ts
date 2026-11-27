@@ -68,6 +68,29 @@ test('a warmed PWA logs without a network, survives reload, and keeps the set on
   await expect(page.getByRole('region', { name: 'Completed workouts' })).toContainText('13');
 });
 
+test('a controlled page prefers fresh HTML online and uses the shell only offline', async ({ page, context }) => {
+  await page.goto('/log');
+  await expect(page.getByText('Offline ready', { exact: true })).toBeVisible({ timeout: 20_000 });
+  const replaced = await page.evaluate(async () => {
+    for (const name of await caches.keys()) {
+      const cache = await caches.open(name);
+      const entry = (await cache.keys()).find((request) => new URL(request.url).pathname === '/history');
+      if (!entry) continue;
+      await cache.put(entry, new Response('<h1>Older cached history shell</h1>', {
+        headers: { 'Content-Type': 'text/html' },
+      }));
+      return true;
+    }
+    return false;
+  });
+  expect(replaced).toBe(true);
+  await page.goto('/history');
+  await expect(page.getByRole('heading', { name: 'History.' })).toBeVisible();
+  await context.setOffline(true);
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Older cached history shell' })).toBeVisible();
+});
+
 test('empty screens, keyboard navigation, and backup errors are accessible at 390px', async ({ page }) => {
   await page.goto('/log');
   await expect(page.getByText('A clean page.')).toBeVisible();
