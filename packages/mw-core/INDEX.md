@@ -15,7 +15,7 @@
 
 ## Rule
 
-New Coach / logger / **shared platform** logic lands here first; web (`src/lib/coach/`, `src/lib/identity/`) and `apps/mobile` both consume it (web may re-export until fully migrated).
+New Coach / logger / **shared platform** logic lands here first; the web app and mobile API consume it.
 
 Platform contracts (prose): [docs/contracts/](../../docs/contracts/INDEX.md).
 
