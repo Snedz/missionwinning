@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { request as httpRequest } from 'node:http';
 import { expect, test } from '@playwright/test';
 
 const mobile = '/api/mobile';
@@ -44,6 +45,34 @@ test.describe('public mobile ingress', () => {
     }
     const blocked = await request.post('/api/coach/trainer', { headers, data: trainerAsk });
     expect(blocked.status()).toBe(429);
+  });
+
+  test('Trainer caps streamed request bytes without a declared length', async ({ baseURL }) => {
+    const status = await new Promise<number | undefined>((resolve, reject) => {
+      const request = httpRequest(new URL('/api/coach/trainer', baseURL), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+      }, (response) => {
+        response.resume();
+        resolve(response.statusCode);
+      });
+      request.on('error', reject);
+      request.write('{"question":"');
+      request.end('é'.repeat(4096) + '"}');
+    });
+    expect(status).toBe(413);
+  });
+
+  test('rejects invalid Coach session shapes and workout timestamps', async ({ request }) => {
+    const { plan } = await (await request.get('/api/mobile/coach/plan')).json();
+    const badPlan = { ...plan, sessions: [{ ...plan.sessions[0], exercises: [null] }] };
+    const adapt = await request.post('/api/mobile/coach/adapt', {
+      data: { plan: badPlan, sessionId: plan.sessions[0].id },
+    });
+    expect(adapt.status()).toBe(400);
+    const workout = await request.post('/api/mobile/workouts', {
+      data: { workoutName: 'Date validation', durationSeconds: 60, setCount: 1, totalVolume: 0, completedAt: 'not a date' },
+    });
+    expect(workout.status()).toBe(400);
   });
 
   test('Compose CoachPlanResponseDto supports GET, POST, and marking a session done', async ({ request }) => {

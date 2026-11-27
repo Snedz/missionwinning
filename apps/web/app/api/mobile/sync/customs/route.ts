@@ -3,7 +3,7 @@
  * Auth: Bearer required. Cursor pull includes tombstones.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../../lib/mobile/rateLimit';
 import { requireMobileUser } from '../../../../../lib/mobile/auth';
 import { mobileSyncCustomPushBodySchema, parseJsonBody } from '../../../../../lib/mobile/schemas';
@@ -29,7 +29,9 @@ export const POST = withApiLogging('mobile/sync/customs', async (request: NextRe
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = parseJsonBody(mobileSyncCustomPushBodySchema, raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 

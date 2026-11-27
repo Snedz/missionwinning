@@ -4,7 +4,7 @@
  * No email, no workout data. Service-role upsert only.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../lib/mobile/rateLimit';
 import { z } from 'zod';
 import { parseJsonBody } from '../../../../lib/mobile/schemas';
@@ -29,7 +29,9 @@ export const POST = withApiLogging('mobile/telemetry', async (request: NextReque
     );
   }
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = parseJsonBody(bodySchema, raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 

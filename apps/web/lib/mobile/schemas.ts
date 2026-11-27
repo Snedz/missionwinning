@@ -12,11 +12,26 @@ export const mobileCoachPlanBodySchema = z.object({
 /** Native mobile — mark session done / bump revision. */
 export const mobileCoachAdaptBodySchema = z.object({
   plan: z.object({
-    revision: z.number().int().min(0),
-    weekStart: z.string().max(20),
+    revision: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER - 1),
+    weekStart: z.iso.date(),
     daysPerWeek: z.number().int().min(1).max(7),
-    sessions: z.array(z.record(z.string(), z.unknown())).max(14),
-    generatedAt: z.string().max(40),
+    sessions: z.array(z.object({
+      id: z.string().min(1).max(80),
+      dayOffset: z.number().int().min(0).max(6),
+      kind: z.enum(['strength', 'conditioning', 'recovery']),
+      name: z.string().max(120),
+      focusGroups: z.array(z.string().max(80)).max(32).default([]),
+      exercises: z.array(z.object({
+        exerciseId: z.string().min(1).max(120),
+        sets: z.number().int().min(0).max(200),
+        reps: z.number().int().min(0).max(999),
+        weight: z.number().min(0).max(1_000_000).default(0),
+        whyKey: z.string().max(120).default(''),
+      }).passthrough()).max(48).default([]),
+      estMinutes: z.number().int().min(0).max(1440),
+      status: z.enum(['planned', 'done', 'missed', 'swapped']),
+    }).passthrough()).max(14),
+    generatedAt: syncTimestamp,
     contextHash: z.string().max(200),
     equipmentProfile: z.enum(['bodyweight', 'dumbbells', 'full-gym']),
   }),
@@ -30,7 +45,7 @@ export const mobileWorkoutLogBodySchema = z.object({
   setCount: z.number().int().min(0).max(200),
   totalVolume: z.number().min(0).max(1_000_000),
   sessionId: z.string().max(80).optional(),
-  completedAt: z.string().max(40).optional(),
+  completedAt: syncTimestamp.optional(),
 });
 
 /** Full-fidelity set row (mirrors Android SetLogEntity). */
@@ -120,7 +135,7 @@ export const mobileSyncPrefsSchema = z.object({
   barWeightKg: z.number().min(0).max(100).default(20),
   barWeightLb: z.number().min(0).max(200).default(45),
   revision: z.number().int().min(1).max(1_000_000).default(1),
-  updatedAt: z.string().max(40).optional(),
+  updatedAt: syncTimestamp.optional(),
 });
 
 export const mobileSyncPrefsPushBodySchema = z.object({

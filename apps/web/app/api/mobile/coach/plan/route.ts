@@ -4,7 +4,7 @@
  * Rate: 30/min/IP
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../../lib/mobile/rateLimit';
 import { allowMobileCoachBootstrap } from '../../../../../lib/mobile/auth';
 import { buildMobileCoachPlan } from '../../../../../lib/mobile/coach';
@@ -58,7 +58,9 @@ export const POST = withApiLogging('mobile/coach/plan', async (request: NextRequ
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = parseJsonBody(mobileCoachPlanBodySchema, raw ?? {});
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 

@@ -4,7 +4,7 @@
  * Bearer required. Logger never depends on this.
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '../../../../../lib/mobile/cookies';
 import { bearerAccessToken } from '../../../../../lib/mobile/auth';
@@ -52,7 +52,9 @@ export const POST = withApiLogging('mobile/premium/play-purchase', async (reques
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = bodySchema.safeParse(raw);
   if (!parsed.success) {
     return NextResponse.json(

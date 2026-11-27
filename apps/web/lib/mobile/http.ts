@@ -13,6 +13,33 @@ export function rejectOversizedBody(request: NextRequest, maxBytes = 32 * 1024) 
     ? NextResponse.json({ error: 'Payload too large' }, { status: 413 }) : null;
 }
 
+export async function readBoundedJson(request: Request, maxBytes = 32 * 1024): Promise<
+  { raw: unknown } | { oversized: NextResponse }
+> {
+  const reader = request.body?.getReader();
+  if (!reader) return { raw: null };
+  const decoder = new TextDecoder();
+  let body = '';
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > maxBytes) {
+        void reader.cancel().catch(() => undefined);
+        return { oversized: NextResponse.json({ error: 'Payload too large' }, { status: 413 }) };
+      }
+      body += decoder.decode(value, { stream: true });
+    }
+    return { raw: JSON.parse(body + decoder.decode()) as unknown };
+  } catch {
+    return { raw: null };
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 export function withApiLogging(route: string, handler: (request: NextRequest) => Promise<Response>) {
   return async (request: NextRequest) => {
     const privateMode = isPrivateModeEnabled();

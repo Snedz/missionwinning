@@ -4,10 +4,10 @@
  * Rate: 30/min/IP
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../../lib/mobile/rateLimit';
 import { allowMobileCoachBootstrap } from '../../../../../lib/mobile/auth';
-import { applySessionDone, type CoachPlan } from '../../../../../lib/mobile/coach';
+import { applySessionDone } from '../../../../../lib/mobile/coach';
 import { mobileCoachAdaptBodySchema, parseJsonBody } from '../../../../../lib/mobile/schemas';
 
 export const POST = withApiLogging('mobile/coach/adapt', async (request: NextRequest) => {
@@ -27,11 +27,13 @@ export const POST = withApiLogging('mobile/coach/adapt', async (request: NextReq
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = parseJsonBody(mobileCoachAdaptBodySchema, raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 
-  const plan = parsed.data.plan as unknown as CoachPlan;
-  const payload = applySessionDone(plan, parsed.data.sessionId);
+  const { plan, sessionId } = parsed.data;
+  const payload = applySessionDone(plan, sessionId);
   return NextResponse.json(payload);
 });

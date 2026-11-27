@@ -4,7 +4,7 @@
  * Rate: 40/min/IP
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../lib/mobile/rateLimit';
 import { bearerAccessToken, hasMobileAppAccess } from '../../../../lib/mobile/auth';
 import { mobileWorkoutLogBodySchema, parseJsonBody } from '../../../../lib/mobile/schemas';
@@ -23,7 +23,9 @@ export const POST = withApiLogging('mobile/workouts', async (request: NextReques
     );
   }
 
-  const raw = await request.json().catch(() => null);
+  const bodyRead = await readBoundedJson(request);
+  if ('oversized' in bodyRead) return bodyRead.oversized;
+  const { raw } = bodyRead;
   const parsed = parseJsonBody(mobileWorkoutLogBodySchema, raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 

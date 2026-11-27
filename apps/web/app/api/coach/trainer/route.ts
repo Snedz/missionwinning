@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { clientIp, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
+import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../lib/mobile/rateLimit';
 import { replyTrainer } from '../../../../lib/trainerReply';
 import { coachTrainerSchema } from '../../../../lib/trainerSchema';
@@ -12,7 +12,9 @@ export const POST = withApiLogging('coach/trainer', async (request: NextRequest)
   const limited = await rateLimitAsync(`coach-trainer:${clientIp(request)}`, 12, 60_000);
   if (!limited.ok) return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
 
-  const parsed = parseJsonBody(coachTrainerSchema, await request.json().catch(() => null));
+  const body = await readBoundedJson(request, 8 * 1024);
+  if ('oversized' in body) return body.oversized;
+  const parsed = parseJsonBody(coachTrainerSchema, body.raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
   return NextResponse.json(await replyTrainer(parsed.data));
 });
