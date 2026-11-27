@@ -1,6 +1,6 @@
 # Mission Winning — Training notebook
 
-A local-first comparison build of Mission Winning. Open Today, log a set without an account, finish to see Victory, and build a training week with Coach. Workouts stay on this device unless you export them.
+A local-first comparison build of Mission Winning. The public landing at `/` opens the set form without an account; `/log` opens your Today view. Finish a workout to see Victory, then build a training week with Coach. Guest workouts stay in this browser unless you export a backup or opt into account sync.
 
 ```sh
 npm ci

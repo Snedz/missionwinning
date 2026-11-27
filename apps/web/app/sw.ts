@@ -21,7 +21,7 @@ serwist.registerRoute(new NavigationRoute(async ({ request, url }) => {
     return await fetch(request, { cache: 'no-cache' });
   } catch (error) {
     if (url.origin === self.location.origin && !url.search) {
-      const offline = await serwist.matchPrecache(request);
+      const offline = await serwist.matchPrecache(url.pathname);
       if (offline) return offline;
     }
     throw error;

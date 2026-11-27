@@ -13,6 +13,7 @@ import type { EquipmentProfile, PlanSession } from '@/lib/coach/types';
 import type { ActiveExerciseLog, CompletedWorkoutLog } from '@/types';
 import { notebookNamespace, useNotebook } from '../lib/notebook';
 import { cloudConfigured, sendSignInLink, signOutAccount, startCloudAccount, syncAccount, useCloudAccount } from '../lib/cloudAccount';
+import { quickStartHash } from '../lib/trainEntry';
 
 type Route = '/log' | '/active' | '/victory' | '/coach' | '/history' | '/profile';
 type IconName = 'today' | 'train' | 'coach' | 'history' | 'you' | 'arrow' | 'plus' | 'check';
@@ -186,7 +187,7 @@ export function Notebook() {
   const desktop = useDesktop();
   useEffect(() => { if (!ready) hydrate(); }, [ready, hydrate]);
   useEffect(() => { startCloudAccount(); }, []);
-  const route = pathname === '/' ? '/log' : pathname;
+  const route = pathname;
   const deviceStatus = !online ? 'Offline' : cached ? 'Offline ready' : 'On this device';
   const main = useRef<HTMLElement>(null);
   const previousRoute = useRef(route);
@@ -341,6 +342,11 @@ function Train() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const active = activeWorkout;
+  useEffect(() => {
+    if (location.hash !== quickStartHash) return;
+    history.replaceState(null, '', location.pathname + location.search);
+    if (!useNotebook.getState().activeWorkout) start();
+  }, [start]);
   const exercise = active?.exercises.find((row) => row.exerciseId === current) ?? active?.exercises[0];
   const count = active?.exercises.reduce((n, row) => n + row.sets.filter((s) => s.completed).length, 0) ?? 0;
   const pickable = searchOpen
