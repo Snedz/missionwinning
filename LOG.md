@@ -1,5 +1,9 @@
 # Mission Winning — Development Log
 
+## 2026-11-27 — Resume Compose sync after a v2 rollback (`.1207`)
+
+Workout, routine and custom-exercise pulls accept v2's composite cursor and continue through tied timestamps without replaying the cursor row or skipping later rows. Bare ISO cursors retain the legacy contract. Reversing the row-ID comparison killed the new rollback test on all three routes. `[skip vercel]`. PRIVATE_MODE stays.
+
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 
 Split 4 of 5 (concern 5) from #1129 (Merge Steward asked for one concern per PR). This is #1129's docs rotation on its own: the `.1138` Meta tests Now bullet moves to `docs/archive/CONTEXT-now-1138-meta-tests.md`, and the `.1185` landing hero loading fallback entry moves to `docs/archive/log/LOG-rotate-1185-for-1206.md`, each with a `docs/archive/INDEX.md` row. Rotation moves; nothing is deleted. Label `2026.07-unified.1206`. PRIVATE_MODE stays.
@@ -53,11 +57,9 @@ Beta Field's browser QA (2026-11-04) found two claims on first-run surfaces. `ap
 
 `/` shipped every landing language because `LandingPage` imported `landingFaqKeysForSurface` from `landingLocales.ts`. `BY_LANG` plus the English spreads keep webpack from dropping unused packs, so the FAQ key list alone put the whole module (~19 KB gzip) on the first scripts. The keys now live in `landingSurface.ts`. The packs still load with hydrate, and the accordion still renders its English `defaultValue`s on first paint. Train and the house shell imported `@/lib/supabase` at module scope, which constructs the browser client (~54 KB gzip) before a set is logged. Cloud reads and writes now `await loadSupabase()`. Caps stay 351 / 420 / 516. Gzipped initial JS, CI `build-and-test` on this branch (`PRIVATE_MODE=false`): `/` 360.8 → 342.7 (margin 8.3), `/log` 410.8 → 340.5 (margin 79.5), `/active` 519.8 → 449.4 (margin 66.6). The hero spec still measures the door (Log a set. Offline., one Log a set to `/welcome`, one logger shot). `.1159` had replaced that first screen with the forge sheet, whose h1 read "Log a set. Your week rewrites itself." and whose CTA was "Start logging free" to `/log`, so the spec never matched and the Log a set link never appeared. That screen is `LandingDoor`, painted before the forge sheet; the sheet's headline is an h2. Local remeasure after the door: `/` 342.8 KB gzipped (cap 351). The FAQ split did not change those strings. `[skip vercel]`. PRIVATE_MODE stays.
 
-## 2026-10-22 — repair the stale links in the public repo's live documents (`.1191`)
-
-Eight documents pointed at files that are not where the link says, so a reader following any of them landed on a 404. `app/INDEX.md` reached the root `INDEX.md` through `../../`, one level too far; `media/inbox/README.md`, `public/locales/README.md` and `src/i18n/INDEX.md` reached their targets one directory too shallow; and `docs/INDEX.md`, `docs/PLAN.md`, `docs/EXERCISE_AS_MEDICINE.md` and `vision.md` pointed at a `VISION_STATUS.md` that now lives under `docs/archive/`. Docs only. Label `2026.07-unified.1191`. `[skip vercel]`.
-
 Chronological record of shipped work. Newest first.
+
+Latest rotation: [`.1191` stale link repairs](docs/archive/log/LOG-rotate-1191-for-1207.md) moved for `.1207`.
 
 **Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.242` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
 

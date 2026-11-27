@@ -39,6 +39,9 @@ Legend:
 | `mobile/premium/play-purchase` | POST | Bearer | 20/min/IP | Zod Play token. Payments off: 410, no Google verify, no enrollment. Logger never depends on this |
 | `mobile/telemetry` | POST | public (opaque install id only) | 20/min | Privacy-first weekly Android heartbeat |
 
+Workout, routine and custom-exercise pulls accept both timestamp and
+timestamp-plus-row-ID cursors; see [the mobile API contract](../../docs/API.md#mobile-android--compose).
+
 ### Gate & leads
 
 | Route | Methods | Auth | Rate | Body |

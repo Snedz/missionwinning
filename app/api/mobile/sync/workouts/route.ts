@@ -16,6 +16,7 @@ import {
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 import { logSyncFailure, logSyncThrown } from '@/lib/sync/syncFailure';
+import { mobileSyncCursorFilter, nextMobileSyncCursor, parseMobileSyncCursor } from '@/lib/sync/mobileSyncCursor';
 
 type Supabase = SupabaseClient;
 
@@ -108,19 +109,23 @@ export const GET = withApiLogging('mobile/sync/workouts', async (request: NextRe
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
-  const since = request.nextUrl.searchParams.get('since') ?? '1970-01-01T00:00:00.000Z';
+  const since = parseMobileSyncCursor(request.nextUrl.searchParams.get('since'));
+  if (!since) return NextResponse.json({ error: 'Invalid cursor' }, { status: 400 });
   const limitRaw = Number(request.nextUrl.searchParams.get('limit') ?? '100');
   const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(1, Math.floor(limitRaw)), 100) : 100;
 
-  const { data, error } = await supabase
+  const pull = supabase
     .from('workout_logs')
     .select(
       'id, client_id, workout_name, started_at, completed_at, duration_seconds, exercises, total_volume, revision, updated_at, deleted_at, weight_unit, session_id, set_count',
     )
     .eq('user_id', user.id)
-    .gt('updated_at', since)
     .order('updated_at', { ascending: true })
+    .order('id', { ascending: true })
     .limit(limit);
+  const { data, error } = await (since.id
+    ? pull.or(mobileSyncCursorFilter(since.updatedAt, since.id))
+    : pull.gt('updated_at', since.updatedAt));
 
   if (error) {
     /*
@@ -137,8 +142,7 @@ export const GET = withApiLogging('mobile/sync/workouts', async (request: NextRe
 
   const rows = data ?? [];
   const items = rows.map((row) => rowToSyncItem(row));
-  const nextCursor =
-    rows.length === limit ? (rows[rows.length - 1]?.updated_at as string | undefined) ?? null : null;
+  const nextCursor = nextMobileSyncCursor(rows, limit, since.id !== undefined);
 
   return NextResponse.json({ items, nextCursor });
 });
