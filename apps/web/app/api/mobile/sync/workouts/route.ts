@@ -320,7 +320,8 @@ function rowToSyncItem(row: Record<string, unknown>) {
   const sets = flattenExercises(
     (row.client_id as string | null) ?? (row.id as string),
     row.completed_at as string,
-    nested
+    nested,
+    row.weight_unit === 'lb' ? 'lb' : 'kg',
   );
   return {
     clientId: (row.client_id as string | null) ?? null,

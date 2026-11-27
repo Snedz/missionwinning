@@ -56,12 +56,16 @@ export function workoutIsAhead(log: CompletedWorkoutLog, remote: WorkoutCloudRow
 export async function withClientId(log: CompletedWorkoutLog): Promise<CompletedWorkoutLog> {
   if (cloudRowId(log) || uuid.test(log.clientId ?? '')) return log;
   const source = log.clientId ?? (log.id || workoutFingerprint(log));
-  const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`mission-winning:workout:${source}`))).slice(0, 16);
+  return { ...log, clientId: await stableClientId('workout', source) };
+}
+
+export async function stableClientId(kind: 'workout' | 'routine', source: string): Promise<string> {
+  if (uuid.test(source) && kind === 'routine') return source;
+  const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`mission-winning:${kind}:${source}`))).slice(0, 16);
   bytes[6] = (bytes[6] & 0x0f) | 0x80;
   bytes[8] = (bytes[8] & 0x3f) | 0x80;
   const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
-  const clientId = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-  return { ...log, clientId };
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
 export function createWorkoutCloud(input: {
@@ -141,7 +145,7 @@ export function createWorkoutCloud(input: {
       deleted_at: log.deletedAt ?? null, workout_name: log.workoutName,
       started_at: log.startedAt, completed_at: log.completedAt, duration_seconds: log.durationSeconds,
       total_volume: log.totalVolume, exercises: log.exercises,
-      weight_unit: existing?.weight_unit ?? weightUnit,
+      weight_unit: log.weightUnit ?? existing?.weight_unit ?? weightUnit,
       set_count: log.exercises.reduce((count, exercise) => count + exercise.sets.length, 0),
     };
     if (!existing) {

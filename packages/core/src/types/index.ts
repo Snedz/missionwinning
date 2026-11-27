@@ -142,6 +142,7 @@ export interface ActiveExerciseLog {
 }
 
 export interface ActiveWorkout {
+  weightUnit?: 'kg' | 'lb';
   workoutId?: string;
   workoutName: string;
   startedAt: string;
@@ -173,6 +174,7 @@ export interface ActiveWorkout {
 
 export interface CompletedWorkoutLog {
   id: string;
+  weightUnit?: 'kg' | 'lb';
   /**
    * Stable client-minted UUID — the identity used for cloud sync (sync v2).
    * Optional only for logs written before the migration in `workoutStore`;
@@ -201,6 +203,7 @@ export interface CompletedWorkoutLog {
     sets: {
       reps: number;
       weight: number;
+      weightUnit?: 'kg' | 'lb';
       kind?: SetKind;
       rpe?: 'easy' | 'med' | 'hard';
       side?: SetSide;

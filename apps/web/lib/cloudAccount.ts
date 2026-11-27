@@ -2,10 +2,13 @@
 
 import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js';
 import { create } from 'zustand';
-import { flush, getState, hasPendingOperation, msUntilNextAttempt, registerHandler, retryStuck } from '@/lib/sync/outbox';
+import { enqueue, flush, getState, hasPendingOperation, msUntilNextAttempt, registerHandler, retryStuck } from '@/lib/sync/outbox';
 import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 import { cloudRowId, createWorkoutCloud, withClientId, workoutIsAhead } from '@/lib/sync/workoutCloud';
 import { mapCloudToLocal } from '@/lib/workout/workoutMerge';
+import type { CoachPlan } from '@/lib/coach/types';
+import type { SavedWorkout } from '@/types';
+import { createNotebookCloud } from './notebookCloud';
 import { queueWorkout, useNotebook, workoutQueueKey, type WorkoutQueuePayload } from './notebook';
 
 const cloudUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -28,6 +31,12 @@ function transport(current: Session) {
   return createWorkoutCloud({
     url: cloudUrl!, publicKey: publicKey!, userId: current.user.id, accessToken: current.access_token,
   });
+}
+
+function contentTransport(current: Session) {
+  return createNotebookCloud(createClient(cloudUrl!, publicKey!, {
+    accessToken: async () => current.access_token,
+  }), current.user.id);
 }
 
 function setAccount(next: Session | null) {
@@ -68,6 +77,18 @@ export function startCloudAccount() {
     if (!payload || !current || payload.owner !== current.user.id || !payload.log) return false;
     return transport(current).push(await withClientId(payload.log), payload.weightUnit);
   });
+  registerHandler('coach.plan', async (value) => {
+    const payload = value as { owner: string; plan: CoachPlan } | null;
+    const current = session;
+    if (!payload || !current || payload.owner !== current.user.id) return false;
+    return contentTransport(current).pushPlan(payload.plan);
+  });
+  registerHandler('routine.upsert', async (value) => {
+    const payload = value as { owner: string; id: string; template: SavedWorkout } | null;
+    const current = session;
+    if (!payload || !current || payload.owner !== current.user.id) return false;
+    return contentTransport(current).pushTemplate(payload.id, payload.template);
+  });
   auth.auth.onAuthStateChange((_event, next) => { setAccount(next); });
 
   window.addEventListener('online', () => void syncAccount());
@@ -82,7 +103,8 @@ export function startCloudAccount() {
     if (document.visibilityState === 'visible') void syncAccount();
   }, 30_000);
   useNotebook.subscribe((next, previous) => {
-    if (next.owner && next.owner === previous.owner && next.workoutHistory !== previous.workoutHistory && !activeRun) {
+    if (next.owner && next.owner === previous.owner && !activeRun &&
+      (next.workoutHistory !== previous.workoutHistory || next.plan !== previous.plan || next.savedWorkouts !== previous.savedWorkouts)) {
       window.setTimeout(() => void syncAccount(), 0);
     }
   });
@@ -160,9 +182,35 @@ export function syncAccount(retry = false): Promise<void> {
         queueWorkout(owner, log, units);
         capacity--;
       }
+      let contentFailed = false;
+      try {
+        const content = contentTransport(current!);
+        const [cloudPlan, { templates, unsynced }] = await Promise.all([
+          content.pullPlan(),
+          content.pullTemplates(() => useNotebook.getState().savedWorkouts),
+        ]);
+        if (!isCurrent()) return;
+        const localPlan = useNotebook.getState().plan;
+        const pushPlan = localPlan && (!cloudPlan || localPlan.revision > cloudPlan.revision);
+        if (!useNotebook.getState().mergeCloudContent(owner, pushPlan ? localPlan : cloudPlan, templates)) {
+          contentFailed = true;
+        } else {
+          if (pushPlan && !hasPendingOperation('coach.plan', 'plan', queueKey)) {
+            enqueue('coach.plan', 'plan', { owner, plan: localPlan }, queueKey);
+          }
+          for (const [id, template] of unsynced) {
+            if (hasPendingOperation('routine.upsert', id, queueKey)) continue;
+            if (capacity <= 0) { remaining = true; break; }
+            enqueue('routine.upsert', id, { owner, id, template }, queueKey);
+            capacity--;
+          }
+        }
+      } catch {
+        contentFailed = true;
+      }
       await flush(queueKey, isCurrent);
       const { pending, stuck } = getState(queueKey);
-      update(pending || stuck || remaining ? 'waiting' : 'synced');
+      update(pending || stuck || remaining || contentFailed ? 'waiting' : 'synced');
       const retryIn = msUntilNextAttempt(queueKey);
       if (isCurrent() && navigator.onLine && retryIn !== null) {
         retryTimer = window.setTimeout(() => {

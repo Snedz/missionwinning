@@ -20,7 +20,10 @@ export default defineConfig({
   webServer: {
     command: `npm run start -w apps/web -- --hostname 127.0.0.1 --port ${port}`,
     url: `${baseURL}/log`,
-    env: { PRIVATE_MODE: process.env.PRIVATE_MODE ?? 'false' },
+    env: {
+      PRIVATE_MODE: process.env.PRIVATE_MODE ?? 'false',
+      GROQ_API_KEY: '', COACH_LLM_API_KEY: '', OPENROUTER_API_KEY: '',
+    },
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -1,7 +1,8 @@
-import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
+import type { ActiveWorkout, CompletedWorkoutLog, SavedWorkout } from '@/types';
 import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { readDurableSnapshot, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 /**
  * Full-device backup for users without an account (their only safety net)
@@ -36,6 +37,7 @@ export interface MwBackup {
 
 interface PersistedWorkoutState {
   state?: {
+    activeWorkout?: ActiveWorkout | null;
     savedWorkouts?: SavedWorkout[];
     workoutHistory?: CompletedWorkoutLog[];
     [k: string]: unknown;
@@ -77,7 +79,14 @@ export function mergeBackup(
       : {}) ?? {};
 
   const currentHistory = current.state?.workoutHistory ?? [];
-  const incomingHistory = incoming.state?.workoutHistory ?? [];
+  const importedUnit: CompletedWorkoutLog['weightUnit'] = backup.localKeys[STORAGE_KEYS.units] === 'imperial' ? 'lb'
+    : backup.localKeys[STORAGE_KEYS.units] === 'metric' ? 'kg' : undefined;
+  const incomingHistory = (incoming.state?.workoutHistory ?? []).map((log) =>
+    log && !log.weightUnit && importedUnit ? { ...log, weightUnit: importedUnit } : log);
+  const incomingActive = incoming.state?.activeWorkout;
+  const incomingState = incomingActive && !incomingActive.weightUnit && importedUnit
+    ? { ...incoming.state, activeWorkout: { ...incomingActive, weightUnit: importedUnit } }
+    : incoming.state;
   const { logs: mergedHistory } = mergeWorkoutHistoriesDetailed(currentHistory, incomingHistory, historyCap);
 
   const currentSaved = current.state?.savedWorkouts ?? [];
@@ -88,7 +97,7 @@ export function mergeBackup(
     ...current,
     version: current.version ?? incoming.version ?? 0,
     state: {
-      ...incoming.state,
+      ...incomingState,
       ...current.state,
       savedWorkouts: [...currentSaved, ...addedSaved],
       workoutHistory: mergedHistory,

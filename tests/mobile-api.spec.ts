@@ -6,6 +6,10 @@ const privateMode = process.env.PRIVATE_MODE === 'true' || process.env.PRIVATE_M
 const localApi = 'http://127.0.0.1:54321';
 const localStack = Boolean(process.env.V2_LOCAL_SUPABASE_TEST);
 const weekKey = '2025-W01';
+const trainerAsk = {
+  exerciseName: 'Bench press', setNumber: 2, setCount: 3, reps: 8,
+  weight: 45, unitLabel: 'lb', rowType: 'weight', hardCount: 0,
+};
 
 test('private mobile ingress returns the legacy 403 before route auth', async ({ request }) => {
   test.skip(!privateMode, 'Opt into the legacy private mobile perimeter.');
@@ -14,10 +18,33 @@ test('private mobile ingress returns the legacy 403 before route auth', async ({
   });
   expect(response.status()).toBe(403);
   expect(await response.json()).toEqual({ error: 'Private development gate' });
+  const trainer = await request.post('/api/coach/trainer', { data: trainerAsk });
+  expect(trainer.status()).toBe(403);
 });
 
 test.describe('public mobile ingress', () => {
   test.skip(privateMode, 'These requests target the public mobile ingress.');
+
+  test('Compose Trainer uses the free set-line fallback and validates the strict request', async ({ request }) => {
+    const route = '/api/coach/trainer';
+    const reply = await request.post(route, { data: trainerAsk });
+    expect(reply.status()).toBe(200);
+    expect(await reply.json()).toEqual({ text: 'Set 2 of 3. Bench press. 45 lb for 8.', source: 'rules' });
+    const invalid = await request.post(route, { data: { ...trainerAsk, checkoutUrl: 'https://example.com' } });
+    expect(invalid.status()).toBe(400);
+    const large = await request.post(route, { data: { ...trainerAsk, question: 'a'.repeat(8192) } });
+    expect(large.status()).toBe(413);
+  });
+
+  test('Compose Trainer accepts twelve requests per IP before throttling', async ({ request }) => {
+    const headers = { 'x-forwarded-for': '192.0.2.42' };
+    for (let i = 0; i < 12; i++) {
+      const response = await request.post('/api/coach/trainer', { headers, data: trainerAsk });
+      expect(response.status()).toBe(200);
+    }
+    const blocked = await request.post('/api/coach/trainer', { headers, data: trainerAsk });
+    expect(blocked.status()).toBe(429);
+  });
 
   test('Compose CoachPlanResponseDto supports GET, POST, and marking a session done', async ({ request }) => {
     const seed = await request.get(`${mobile}/coach/plan?equipment=dumbbells&adaptDemo=1`);
@@ -92,7 +119,7 @@ test.describe('public mobile ingress', () => {
       clientId: randomUUID(), workoutName: 'Compose workout', completedAt, durationSeconds: 60,
       setCount: 1, totalVolume: 50, sessionId: 'compose-session', weightUnit: 'lb', revision: 1,
       sets: [{ id: 'set-1', exerciseId: 'push-ups', exerciseName: 'Push-ups', setIndex: 0, reps: 10,
-        weight: 5, completedAt, weightUnit: 'lb', rpe: 8, setKind: 'normal', note: 'Smooth set' }],
+        weight: 5, completedAt, weightUnit: 'kg', rpe: 8, setKind: 'normal', note: 'Smooth set' }],
     };
     const routine = {
       clientId: randomUUID(), name: 'Compose routine', createdAt: completedAt, revision: 1,
@@ -128,7 +155,7 @@ test.describe('public mobile ingress', () => {
       if (resource === 'workouts') {
         expect(page.items[0]).toMatchObject({
           weightUnit: 'lb', sessionId: workout.sessionId, setCount: 1,
-          sets: [{ exerciseId: 'push-ups', reps: 10, weight: 5, note: 'Smooth set' }],
+          sets: [{ exerciseId: 'push-ups', reps: 10, weight: 5, weightUnit: 'kg', note: 'Smooth set' }],
         });
       }
       expect(await (await request.get(url + '?' + new URLSearchParams({ since: page.nextCursor }), { headers })).json()).toEqual({ items: [], nextCursor: null });

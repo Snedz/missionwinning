@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
 import { preserveSessionNote } from '@/lib/workout/sessionNote';
 import { preserveSessionTitle } from '@/lib/workout/nameFinishedSession';
+import { convertWeight, parseWeightUnit, type WeightUnit } from '@/lib/units';
 
 /**
  * Keep enough history for year-over-year comparisons. Truncation is reported
@@ -160,6 +161,7 @@ export function mapCloudToLocal(
     duration_seconds: number;
     exercises: unknown;
     total_volume: number;
+    weight_unit?: string | null;
   }[]
 ): CompletedWorkoutLog[] {
   return cloud.map((cl) => ({
@@ -168,6 +170,7 @@ export function mapCloudToLocal(
     ...(typeof cl.revision === 'number' ? { revision: cl.revision } : {}),
     ...(cl.updated_at ? { updatedAt: cl.updated_at } : {}),
     ...(cl.deleted_at ? { deletedAt: cl.deleted_at } : {}),
+    ...(parseWeightUnit(cl.weight_unit) ? { weightUnit: parseWeightUnit(cl.weight_unit) } : {}),
     workoutName: cl.workout_name,
     startedAt: cl.started_at,
     completedAt: cl.completed_at,
@@ -178,4 +181,26 @@ export function mapCloudToLocal(
     exercises: normalizeCloudExercises(cl.exercises),
     totalVolume: cl.total_volume,
   }));
+}
+
+export function workoutInWeightUnit(log: CompletedWorkoutLog, target: WeightUnit): CompletedWorkoutLog {
+  const source = log.weightUnit ?? target;
+  if (source === target && log.exercises.every((exercise) =>
+    exercise.sets.every((set) => !set.weightUnit || set.weightUnit === target))) return log;
+
+  const convert = (weight: number, unit: WeightUnit) =>
+    Math.round(convertWeight(weight, unit, target) * 100) / 100;
+  const mixed = log.exercises.some((exercise) => exercise.sets.some((set) => set.weightUnit && set.weightUnit !== source));
+  const exercises = log.exercises.map((exercise) => ({
+    ...exercise,
+    sets: exercise.sets.map((set) => ({
+      ...set, weight: convert(set.weight, set.weightUnit ?? source), weightUnit: target,
+    })),
+  }));
+  return {
+    ...log, weightUnit: target, exercises,
+    totalVolume: mixed
+      ? exercises.reduce((volume, exercise) => volume + exercise.sets.reduce((sum, set) => sum + set.reps * set.weight, 0), 0)
+      : convert(log.totalVolume, source),
+  };
 }

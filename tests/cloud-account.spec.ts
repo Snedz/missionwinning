@@ -25,13 +25,21 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   const athlete = await account();
   const other = await account();
   const workoutPath = `${api}/rest/v1/workout_logs`;
+  const profilesPath = `${api}/rest/v1/profiles`;
+  const routinesPath = '/api/mobile/sync/routines';
+  const nativeRoutine = randomUUID();
+  const webRoutine = randomUUID();
   async function seed(owner: Awaited<ReturnType<typeof account>>, name: string) {
     const result = await request.post(workoutPath, {
       headers: owner.headers,
       data: {
         user_id: owner.id, workout_name: name, started_at: '2025-01-01T16:00:00Z',
         completed_at: '2025-01-01T16:01:00Z', duration_seconds: 60, total_volume: 0,
-        exercises: [{ id: 'old-set-1', exerciseId: 'push-ups', reps: 12, weight: 0 }],
+        weight_unit: 'kg',
+        exercises: [
+          { id: 'old-set-1', exerciseId: 'push-ups', reps: 12, weight: 10, weightUnit: 'kg' },
+          { id: 'old-set-2', exerciseId: 'push-ups', reps: 8, weight: 44.09, weightUnit: 'lb' },
+        ],
       },
     });
     expect(result.ok()).toBe(true);
@@ -39,6 +47,25 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
 
   await seed(athlete, 'Existing account workout');
   await seed(other, 'Unrelated account workout');
+  expect((await request.patch(profilesPath + '?id=eq.' + athlete.id, {
+    headers: athlete.headers,
+    data: { units: 'imperial', coach_plan: {
+      revision: 7, weekStart: '2025-01-06', daysPerWeek: 3, equipmentProfile: 'dumbbells',
+      contextHash: 'legacy-plan', generatedAt: '2025-01-06T10:00:00Z',
+      sessions: [{
+        id: 'existing-day', dayOffset: 0, kind: 'strength', name: 'Existing account plan',
+        focusGroups: ['chest'], status: 'planned', estMinutes: 20,
+        exercises: [{ exerciseId: 'push-ups', sets: 2, reps: 10, weight: 22.05, whyKey: 'fixture' }],
+      }],
+    } },
+  })).ok()).toBe(true);
+  const native = {
+    clientId: nativeRoutine, name: 'Native saved workout', revision: 1, createdAt: '2025-01-01T10:00:00Z',
+    exercises: [{ exerciseId: 'push-ups', sets: 3, targetReps: 18, lastWeight: 12 }],
+  };
+  expect(await (await request.post(routinesPath, {
+    headers: athlete.headers, data: { routines: [native] },
+  })).json()).toMatchObject({ acks: [{ status: 'ok' }] });
   const foreign = await request.get(`${workoutPath}?user_id=eq.${other.id}`, { headers: athlete.headers });
   expect(foreign.ok()).toBe(true);
   expect(await foreign.json()).toEqual([]);
@@ -105,6 +132,9 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   expect(await cloudNames()).toEqual(['Existing account workout', 'Quick workout']);
   await page.goto('/history');
   await expect(page.getByText('Existing account workout', { exact: true })).toBeVisible();
+  await page.getByText('Existing account workout', { exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Completed workouts' })).toContainText('10 kg');
+  await expect(page.getByRole('region', { name: 'Completed workouts' })).toContainText('20 kg');
   await expect(page.getByText('Quick workout', { exact: true })).toHaveCount(1);
   await expect(page.getByText('Unrelated account workout', { exact: true })).toHaveCount(0);
 
@@ -123,6 +153,62 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   await context.setOffline(false);
   await expect(page.getByText('Workouts synced.')).toBeVisible({ timeout: 20_000 });
   expect(await cloudNames()).toEqual(['Existing account workout', 'Quick workout', 'Quick workout']);
+
+  await page.getByRole('link', { name: 'Coach', exact: true }).click();
+  await expect(page.getByText('Existing account plan', { exact: true })).toBeVisible();
+  await expect(page.locator('.citation')).toContainText(/(?:10|20)\s*kg/);
+  async function profilePlan() {
+    const response = await request.get(profilesPath + '?select=coach_plan,units', { headers: athlete.headers });
+    expect(response.ok()).toBe(true);
+    const [profile] = await response.json();
+    return { revision: profile.coach_plan.revision, weightUnit: profile.coach_plan.weightUnit, units: profile.units };
+  }
+  await context.setOffline(true);
+  await page.getByRole('button', { name: 'Rebuild week' }).click();
+  await page.getByRole('link', { name: 'You', exact: true }).click();
+  await page.reload();
+  await expect(page.getByText('Waiting to sync: 1.')).toBeVisible();
+  expect(await profilePlan()).toEqual({ revision: 7, weightUnit: undefined, units: 'imperial' });
+  await context.setOffline(false);
+  await expect.poll(profilePlan).toEqual({ revision: 8, weightUnit: 'kg', units: 'imperial' });
+
+  await page.getByRole('link', { name: 'Train', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Start Native saved workout' })).toBeVisible();
+  await page.getByRole('link', { name: 'You', exact: true }).click();
+  const authored = { id: webRoutine, name: 'Imported favorite', note: 'Tempo up',
+    createdAt: '2025-01-01T10:00:00Z',
+    exercises: [{ exerciseId: 'push-ups', sets: [{ reps: 4, weight: 5 }, { reps: 7, weight: 11 }] }] };
+  await page.getByLabel('Import backup').setInputFiles({
+    name: 'template.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({
+      app: 'mission-winning', version: 1, localKeys: {},
+      workoutStore: { state: { savedWorkouts: [authored] } },
+    })),
+  });
+  await expect(page.getByText('Backup imported.', { exact: false })).toBeVisible();
+  await expect.poll(async () => {
+    const response = await request.get(routinesPath, { headers: athlete.headers });
+    expect(response.ok()).toBe(true);
+    return (await response.json()).items.find((item: { clientId: string }) => item.clientId === webRoutine);
+  }).toMatchObject({
+    name: authored.name, exercises: [{
+      exerciseId: 'push-ups', sets: 2, targetReps: 4, lastWeight: 5,
+      webTemplate: authored.exercises[0], webNote: authored.note,
+    }],
+  });
+  const removed = await request.post(routinesPath, {
+    headers: athlete.headers, data: { routines: [{ ...native, revision: 2, deletedAt: '2025-01-02T10:00:00Z' }] },
+  });
+  expect(removed.ok()).toBe(true);
+  await page.getByRole('button', { name: 'Sync now' }).click();
+  await expect(page.getByText('Workouts synced.')).toBeVisible();
+  await page.getByRole('link', { name: 'Train', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Start Native saved workout' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Start Imported favorite' }).click();
+  await expect(page.getByRole('spinbutton', { name: 'Reps' })).toHaveValue('4');
+  await page.getByRole('button', { name: 'Log set' }).click();
+  await expect(page.getByRole('spinbutton', { name: 'Reps' })).toHaveValue('7');
+  await expect(page.getByRole('spinbutton', { name: 'Added load' })).toHaveValue('11');
+  await page.getByRole('link', { name: 'You', exact: true }).click();
 
   await page.getByRole('button', { name: 'Sign out' }).click();
   await expect(page.getByRole('button', { name: 'Email sign-in link' })).toBeVisible();

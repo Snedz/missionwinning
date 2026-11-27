@@ -14,8 +14,10 @@ test('a v1 export restores the current workout and leaves other feature keys int
   const persisted = JSON.parse(restored.nextStoreJson);
   const hydrated = mergePersistedWorkoutState(persisted.state, {});
   assert.equal(persisted.version, 1);
-  assert.deepEqual(hydrated.workoutHistory, exportFile.workoutStore.state.workoutHistory);
+  assert.deepEqual(hydrated.workoutHistory, exportFile.workoutStore.state.workoutHistory.map((log) =>
+    ({ ...log, weightUnit: 'kg' })));
   assert.ok(hasLoggedWork(hydrated.activeWorkout));
+  assert.equal(hydrated.activeWorkout?.weightUnit, 'kg');
   assert.equal(hydrated.activeWorkout?.exercises[0].sets[0].id, 'set-01');
   assert.equal(restored.keysToSet.mw_units, undefined);
   assert.equal(restored.keysToSet.mw_mind_checkins, exportFile.localKeys.mw_mind_checkins);

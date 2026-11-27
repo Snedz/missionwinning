@@ -24,6 +24,7 @@ export type OutboxKind =
   | 'workout.upsert'
   | 'workout.active'
   | 'coach.plan'
+  | 'routine.upsert'
   | 'journey.state'
   | 'leaderboard.push'
   | 'pft.push'

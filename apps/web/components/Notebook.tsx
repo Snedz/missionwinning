@@ -7,7 +7,8 @@ import { coachCitationFact, coachLogCitation } from '@/lib/coach/logCitation';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { exerciseFromCatalogLike, formatSetRowLine, resolveSetRowType, resolveSetRowTypeFromId } from '@/lib/workout/setRowType';
-import { weightUnitLabel } from '@/lib/units';
+import { unitsForWeight, weightUnitFor, weightUnitLabel } from '@/lib/units';
+import { workoutInWeightUnit } from '@/lib/workout/workoutMerge';
 import type { EquipmentProfile, PlanSession } from '@/lib/coach/types';
 import type { ActiveExerciseLog, CompletedWorkoutLog } from '@/types';
 import { notebookNamespace, useNotebook } from '../lib/notebook';
@@ -214,10 +215,12 @@ function Today() {
 }
 
 function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
-  const { undoSet, units, logSet, workoutHistory } = useNotebook();
+  const { undoSet, units: preference, activeWorkout, logSet, workoutHistory } = useNotebook();
+  const units = activeWorkout?.weightUnit ? unitsForWeight(activeWorkout.weightUnit) : preference;
   const kind = exerciseRowType(exercise.exerciseId);
   const next = exercise.sets.find((row) => !row.completed);
   const prior = workoutHistory.filter((row) => !row.deletedAt)
+    .map((row) => workoutInWeightUnit(row, weightUnitFor(units)))
     .flatMap((row) => row.exercises.filter((ex) => ex.exerciseId === exercise.exerciseId))[0]?.sets.at(-1);
   const logged = exercise.sets.filter((row) => row.completed);
   const labels = weightUnitLabel(units);
@@ -275,7 +278,7 @@ function Rest({ until }: { until: number }) {
 }
 
 function Train() {
-  const { activeWorkout, addExercise, finish, start, restUntil } = useNotebook();
+  const { activeWorkout, addExercise, finish, savedWorkouts, start, startSaved, restUntil } = useNotebook();
   const [current, setCurrent] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -288,7 +291,16 @@ function Train() {
     : [];
   return <>
     <Heading index="02" label="LIVE SESSION" title="Train.">{active ? active.workoutName : 'Start a quick workout whenever you’re ready.'}</Heading>
-    {!active ? <button className="button primary-button" onClick={() => start()}>Start workout <Icon name="arrow" /></button> : <>
+    {!active ? <>
+      <button className="button primary-button" onClick={() => start()}>Start workout <Icon name="arrow" /></button>
+      {savedWorkouts.some((template) => template.exercises.length) && <section className="note-panel plan-week">
+        <h2>Saved workouts</h2>
+        {savedWorkouts.filter((template) => template.exercises.length).map((template) =>
+          <button key={template.id} className="button outline-button" onClick={() => startSaved(template)}>
+            Start {template.name} <Icon name="arrow" />
+          </button>)}
+      </section>}
+    </> : <>
       <div className="session-strip"><span className="eyebrow" role="status"><i /> {setCountLabel(count)} logged</span><Rest until={restUntil} /></div>
       <div className="move-row" aria-label="Movements in workout">
         {active.exercises.map((row, i) => <button key={`${row.exerciseId}-${i}`} className="chip" aria-pressed={row === exercise} onClick={() => setCurrent(row.exerciseId)}>{exerciseName(row.exerciseId)}</button>)}
@@ -346,7 +358,8 @@ function Coach() {
   const { plan, workoutHistory, units, makePlan, start } = useNotebook();
   const [equipment, setEquipment] = useState<EquipmentProfile>(plan?.equipmentProfile ?? 'bodyweight');
   const [days, setDays] = useState(plan?.daysPerWeek ?? 3);
-  const citation = coachCitationFact(coachLogCitation(workoutHistory), 'en', weightUnitLabel(units));
+  const citation = coachCitationFact(coachLogCitation(workoutHistory.map((log) =>
+    workoutInWeightUnit(log, weightUnitFor(units)))), 'en', weightUnitLabel(units));
   return <>
     <Heading index="04" label="THE WEEK AHEAD" title="Coach.">A week that fits the equipment you have and the training you’ve logged.</Heading>
     <aside className="citation">
@@ -375,7 +388,8 @@ function Coach() {
 
 function History() {
   const { workoutHistory, units } = useNotebook();
-  const logs = workoutHistory.filter((log) => !log.deletedAt);
+  const logs = workoutHistory.filter((log) => !log.deletedAt)
+    .map((log) => workoutInWeightUnit(log, weightUnitFor(units)));
   return <>
     <Heading index="05" label="COMPLETED WORK" title="History.">The sets you actually did, not the ones you planned.</Heading>
     {logs.length ? <section className="history-list" aria-label="Completed workouts">{logs.map((log) => <details className="plan-card" key={log.id}>
@@ -470,7 +484,7 @@ function AccountPanel({ online }: { online: boolean }) {
 
   return <section className="note-panel data-panel account-panel" aria-labelledby="account-heading">
     <div className="eyebrow muted">OPTIONAL ACCOUNT</div>
-    <h2 id="account-heading">{owner ? 'Workout sync' : 'Use your existing account.'}</h2>
+    <h2 id="account-heading">{owner ? 'Notebook sync' : 'Use your existing account.'}</h2>
     {message && <p className={message.ok ? 'notice' : 'notice danger'} role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
     {phase === 'checking' ? <p role="status">Checking account…</p> : owner ? <>
       <p>{email ?? 'Signed in'}</p>

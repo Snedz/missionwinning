@@ -9,6 +9,7 @@ import {
   mergeWorkoutHistoriesDetailed,
   workoutFingerprint,
   mapCloudToLocal,
+  workoutInWeightUnit,
 } from './workoutMerge.ts';
 import { listSessionHistoryRows } from '@/lib/history/sessionHistoryList.ts';
 import type { CompletedWorkoutLog } from '@/types';
@@ -26,6 +27,22 @@ function log(
 }
 
 describe('workoutMerge', () => {
+  it('uses per-set units over session units without rewriting the persisted log', () => {
+    const [source] = mapCloudToLocal([{
+      id: 'mixed', workout_name: 'Mixed units', started_at: '2026-07-01T09:00:00Z',
+      completed_at: '2026-07-01T10:00:00Z', duration_seconds: 3600, total_volume: 160, weight_unit: 'kg',
+      exercises: [
+        { exerciseId: 'push-ups', setIndex: 0, reps: 5, weight: 10 },
+        { exerciseId: 'push-ups', setIndex: 1, reps: 5, weight: 22.05, weightUnit: 'lb' },
+      ],
+    }]);
+    const kg = workoutInWeightUnit(source, 'kg');
+    assert.deepEqual(kg.exercises[0].sets.map((set) => set.weight), [10, 10]);
+    assert.equal(kg.totalVolume, 100);
+    assert.deepEqual(workoutInWeightUnit(source, 'lb').exercises[0].sets.map((set) => set.weight), [22.05, 22.05]);
+    assert.deepEqual(source.exercises[0].sets.map((set) => set.weight), [10, 22.05]);
+  });
+
   it('fingerprints by name, minute bucket, volume', () => {
     const a = log({
       id: '1',

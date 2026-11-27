@@ -23,6 +23,7 @@
  */
 
 import type { CompletedWorkoutLog, Rpe, SetKind } from '@/types';
+import { parseWeightUnit } from '@/lib/units';
 import { parseSetSide } from '@/lib/workout/unilateral';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
 import { parseOptionalRir } from '@/lib/workout/rir';
@@ -133,6 +134,8 @@ export function groupFlatSets(rows: readonly unknown[]): NestedExercises {
     });
     const sets: NestedSet[] = entries.map(({ row }) => {
       const set: NestedSet = { reps: row.reps, weight: row.weight };
+      const weightUnit = parseWeightUnit(row.weightUnit);
+      if (weightUnit) set.weightUnit = weightUnit;
       const kind = setKindToKind(row.setKind);
       if (kind) set.kind = kind;
       const rpe = rpeNumberToCategory(row.rpe);
@@ -182,6 +185,8 @@ export function normalizeCloudExercises(value: unknown): NestedExercises {
       const s = raw as Record<string, unknown>;
       if (typeof s.reps !== 'number' || typeof s.weight !== 'number') continue;
       const set: NestedSet = { reps: s.reps, weight: s.weight };
+      const weightUnit = parseWeightUnit(s.weightUnit);
+      if (weightUnit) set.weightUnit = weightUnit;
       const kind = setKindToKind(typeof s.kind === 'string' ? s.kind : undefined);
       if (kind) set.kind = kind;
       // Web writes categorical; tolerate a numeric that slipped through from a mixed row.
@@ -218,7 +223,8 @@ export function normalizeCloudExercises(value: unknown): NestedExercises {
 export function flattenExercises(
   workoutKey: string,
   completedAt: string,
-  exercises: NestedExercises
+  exercises: NestedExercises,
+  defaultWeightUnit?: NestedSet['weightUnit'],
 ): FlatSetRow[] {
   const rows: FlatSetRow[] = [];
   let n = 0;
@@ -235,6 +241,8 @@ export function flattenExercises(
         setKind: set.kind ?? 'normal',
         rpe: rpeCategoryToNumber(set.rpe) ?? null,
       };
+      const weightUnit = set.weightUnit ?? defaultWeightUnit;
+      if (weightUnit) row.weightUnit = weightUnit;
       const side = parseSetSide(set.side);
       if (side) row.side = side;
       const rir = parseOptionalRir(set.rir);

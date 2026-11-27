@@ -12,11 +12,11 @@ import { generateWeek } from '@/lib/coach/planEngine';
 import { loadBands } from '@/lib/coach/load';
 import { computeBodyScores, computeReadiness } from '@/lib/score';
 import { localWeekKey } from '@/lib/time/localDate';
-import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
+import { mergeWorkoutHistoriesDetailed, workoutInWeightUnit } from '@/lib/workout/workoutMerge';
 import { enqueue, getState as getOutboxState } from '@/lib/sync/outbox';
 import { alignLegacyWorkouts } from '@/lib/sync/workoutCloud';
 import type { CoachPlan, EquipmentProfile, PlanSession } from '@/lib/coach/types';
-import type { UnitsPref } from '@/lib/units';
+import { convertWeight, weightUnitFor, type UnitsPref } from '@/lib/units';
 import type { ActiveWorkout, CompletedWorkoutLog, LoggedSet, SavedWorkout } from '@/types';
 
 const PLAN_KEY = 'mw_coach_plan';
@@ -38,8 +38,10 @@ type NotebookStore = Diary & {
   owner: string | null;
   switchOwner: (owner: string | null) => void;
   mergeCloud: (owner: string, rows: CompletedWorkoutLog[]) => boolean;
+  mergeCloudContent: (owner: string, plan: CoachPlan | null, templates: SavedWorkout[]) => boolean;
   hydrate: () => void;
   start: (session?: PlanSession) => void;
+  startSaved: (template: SavedWorkout) => void;
   addExercise: (id: string) => void;
   logSet: (exerciseId: string, input: Pick<LoggedSet, 'reps' | 'weight' | 'durationSeconds'>) => void;
   undoSet: (exerciseId: string, setId: string) => void;
@@ -64,7 +66,7 @@ export type WorkoutQueuePayload = {
 };
 
 export function queueWorkout(owner: string, log: CompletedWorkoutLog, units: UnitsPref) {
-  const payload: WorkoutQueuePayload = { owner, log, weightUnit: units === 'imperial' ? 'lb' : 'kg' };
+  const payload: WorkoutQueuePayload = { owner, log, weightUnit: log.weightUnit ?? weightUnitFor(units) };
   enqueue('workout.upsert', log.clientId ?? log.id, payload, workoutQueueKey(owner));
 }
 
@@ -104,9 +106,23 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     return ok;
   }
 
-  function savePlan(plan: CoachPlan) {
-    const ok = writeRaw(notebookNamespace(get().owner) + PLAN_KEY, JSON.stringify(plan));
+  function savePlan(plan: CoachPlan, queue = false) {
+    const { owner } = get();
+    const ok = writeRaw(notebookNamespace(owner) + PLAN_KEY, JSON.stringify(plan));
+    if (ok && owner && queue) enqueue('coach.plan', 'plan', { owner, plan }, workoutQueueKey(owner));
     set({ plan, storageWarning: !ok || get().storageWarning });
+    return ok;
+  }
+
+  function startWorkout(workoutName: string, exercises: ActiveWorkout['exercises']) {
+    const startedAt = now();
+    const clientId = crypto.randomUUID();
+    persist({ activeWorkout: {
+      clientId, revision: 1, workoutName, weightUnit: weightUnitFor(get().units),
+      startedAt, updatedAt: startedAt, exercises,
+    } });
+    set({ restUntil: 0 });
+    return clientId;
   }
 
   return {
@@ -154,38 +170,56 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       const legacyOwner = readRaw(STORAGE_KEYS.storageOwner);
       const guest = !claim && (!legacyOwner || legacyOwner === owner)
         ? mergePersistedWorkoutState(storedDiary(null).state, initialDiary()) : null;
-      const history = alignLegacyWorkouts([...current.workoutHistory, ...(guest?.workoutHistory ?? [])], rows);
+      const guestUnit = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'lb' : 'kg';
+      const guestHistory = (guest?.workoutHistory ?? []).map<CompletedWorkoutLog>((log) =>
+        log.weightUnit ? log : { ...log, weightUnit: guestUnit });
+      const history = alignLegacyWorkouts([...current.workoutHistory, ...guestHistory], rows);
       const combined = mergeWorkoutHistoriesDetailed(history, rows, Infinity);
       const local = {
-        activeWorkout: current.activeWorkout ?? guest?.activeWorkout ?? null,
+        activeWorkout: current.activeWorkout ?? (guest?.activeWorkout ? {
+          ...guest.activeWorkout, weightUnit: guest.activeWorkout.weightUnit ?? guestUnit,
+        } : null),
         savedWorkouts: Array.from(new Map([...(guest?.savedWorkouts ?? []), ...current.savedWorkouts].map((w) => [w.id, w])).values()),
         workoutHistory: combined.logs,
       };
       if (!persist(local)) return false;
+      const guestPlan = guest && !current.plan ? readJson<CoachPlan | null>(PLAN_KEY, null) : null;
+      if (guestPlan && Array.isArray(guestPlan.sessions) &&
+        !savePlan({ ...guestPlan, weightUnit: guestPlan.weightUnit ?? guestUnit })) return false;
       if (guest && !writeRaw(claimKey, owner)) return false;
       return true;
     },
 
+    mergeCloudContent(owner, nextPlan, templates) {
+      if (get().owner !== owner) return false;
+      return persist({ savedWorkouts: templates }) && (!nextPlan || nextPlan === get().plan || savePlan(nextPlan));
+    },
+
     start(session) {
       if (protectLiveStart(get().activeWorkout) === 'keep') return;
-      const startedAt = now();
+      const unit = weightUnitFor(get().units);
+      const planUnit = get().plan?.weightUnit ?? unit;
       const exercises: ActiveWorkout['exercises'] = session
         ? session.exercises.map((exercise) => ({
           exerciseId: exercise.exerciseId,
           muscleGroups: getExerciseById(exercise.exerciseId)?.muscleGroups,
           prescribed: true,
           sets: Array.from({ length: exercise.sets }, () => ({
-            id: crypto.randomUUID(), reps: exercise.reps, weight: exercise.weight, completed: false,
+            id: crypto.randomUUID(), reps: exercise.reps,
+            weight: Math.round(convertWeight(exercise.weight, planUnit, unit) * 100) / 100, completed: false,
           })),
         }))
         : [{ exerciseId: 'push-ups', sets: [], muscleGroups: getExerciseById('push-ups')?.muscleGroups }];
-      const clientId = crypto.randomUUID();
-      persist({ activeWorkout: {
-        clientId, revision: 1, workoutName: session?.name ?? 'Quick workout',
-        startedAt, updatedAt: startedAt, exercises,
-      } });
+      const clientId = startWorkout(session?.name ?? 'Quick workout', exercises);
       if (session) writeRaw(notebookNamespace(get().owner) + PLAN_SESSION_KEY, JSON.stringify({ clientId, sessionId: session.id }));
-      set({ restUntil: 0 });
+    },
+
+    startSaved(template) {
+      if (protectLiveStart(get().activeWorkout) === 'keep' || !template.exercises.length) return;
+      startWorkout(template.name, template.exercises.map((exercise) => ({
+        ...exercise, prescribed: true, muscleGroups: getExerciseById(exercise.exerciseId)?.muscleGroups,
+        sets: exercise.sets.map((set) => ({ ...set, id: crypto.randomUUID(), completed: false })),
+      })));
     },
 
     addExercise(id) {
@@ -225,20 +259,20 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     },
 
     finish() {
-      const { activeWorkout, workoutHistory, plan } = get();
+      const { activeWorkout, workoutHistory, plan, owner, units } = get();
       const result = finishPartialFromActive(activeWorkout);
       if (!result || !activeWorkout) return false;
       const id = activeWorkout.clientId ?? crypto.randomUUID();
       const completedAt = now();
       const entry: CompletedWorkoutLog = {
         id, clientId: id, revision: 1, updatedAt: completedAt, completedAt,
+        weightUnit: activeWorkout.weightUnit ?? weightUnitFor(units),
         startedAt: activeWorkout.startedAt, workoutName: activeWorkout.workoutName,
         ...(activeWorkout.sessionNote ? { sessionNote: activeWorkout.sessionNote } : {}),
         durationSeconds: Math.max(0, Math.round((Date.parse(completedAt) - Date.parse(activeWorkout.startedAt)) / 1000)),
         exercises: result.exercises, totalVolume: result.volume,
       };
       const stored = persist({ activeWorkout: null, workoutHistory: [entry, ...workoutHistory.filter((log) => log.clientId !== id)] });
-      const { owner, units } = get();
       if (owner && stored) queueWorkout(owner, entry, units);
       set({ lastFinishedId: id, restUntil: 0 });
       const planSessionKey = notebookNamespace(get().owner) + PLAN_SESSION_KEY;
@@ -246,7 +280,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       if (selected?.clientId === id && plan) {
         savePlan({ ...plan, revision: plan.revision + 1, sessions: plan.sessions.map((session) =>
           session.id === selected.sessionId ? { ...session, status: 'done' } : session
-        ) });
+        ) }, true);
         remove(planSessionKey);
       }
       return true;
@@ -254,14 +288,15 @@ export const useNotebook = create<NotebookStore>((set, get) => {
 
     makePlan(equipment, daysPerWeek) {
       const { workoutHistory, units, plan } = get();
-      const history = workoutHistory.filter((entry) => !entry.deletedAt);
-      savePlan(generateWeek({
+      const weightUnit = weightUnitFor(units);
+      const history = workoutHistory.filter((entry) => !entry.deletedAt).map((entry) => workoutInWeightUnit(entry, weightUnit));
+      savePlan({ ...generateWeek({
         experience: 'beginner', equipment, goalId: 'strength', daysPerWeek,
         preferredDays: [], history, units, seedId: 'local',
         readiness: computeReadiness(history),
         bodyScores: computeBodyScores(history),
         loadZone: loadBands(history).zone,
-      }, localWeekKey(), plan ? plan.revision + 1 : 1));
+      }, localWeekKey(), plan ? plan.revision + 1 : 1), weightUnit }, true);
     },
 
     deleteWorkout(id) {

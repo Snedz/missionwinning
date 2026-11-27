@@ -1,7 +1,7 @@
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { BodyScores, ReadinessInfo } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
-import type { UnitsPref } from '@/lib/units';
+import type { UnitsPref, WeightUnit } from '@/lib/units';
 import type { LoadZone } from '@/lib/coach/load';
 import type { HomeGymKit } from '@/lib/workout/homeGymKit';
 import type { CoachConceptId } from '@/lib/coach/coachConcept';
@@ -38,6 +38,7 @@ export interface PlanSession {
 }
 
 export interface CoachPlan {
+  weightUnit?: WeightUnit;
   revision: number;
   weekStart: string;
   daysPerWeek: number;
