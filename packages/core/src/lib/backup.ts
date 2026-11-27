@@ -1,7 +1,7 @@
 import type { ActiveWorkout, CompletedWorkoutLog, SavedWorkout } from '@/types';
 import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
-import { readDurableSnapshot, writeRaw } from '@/lib/storage/safeStorage';
+import { readDurableSnapshot, remove, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 /**
@@ -47,22 +47,51 @@ interface PersistedWorkoutState {
 }
 
 export function isMwBackup(value: unknown): value is MwBackup {
-  if (typeof value !== 'object' || value === null) return false;
-  const v = value as Record<string, unknown>;
-  return (
-    v.app === 'mission-winning' &&
-    typeof v.version === 'number' &&
-    typeof v.localKeys === 'object' &&
-    v.localKeys !== null
-  );
+  if (!isRecord(value) || value.app !== 'mission-winning' || value.version !== BACKUP_VERSION ||
+      typeof value.exportedAt !== 'string' || !isRecord(value.localKeys) ||
+      !Object.values(value.localKeys).every((entry) => typeof entry === 'string')) return false;
+  if (value.workoutStore === null) return true;
+  if (!isRecord(value.workoutStore)) return false;
+  const state = value.workoutStore.state;
+  if (state === undefined) return true;
+  if (!isRecord(state)) return false;
+  const active = state.activeWorkout;
+  return (active == null || (isWorkout(active) && active.exercises.every((exercise) =>
+    exercise.sets.every((set) => typeof set.id === 'string' && typeof set.completed === 'boolean')))) &&
+    optionalArray(state.workoutHistory, (log) => isWorkout(log) && typeof log.id === 'string' &&
+      isDate(log.completedAt) && typeof log.durationSeconds === 'number' && typeof log.totalVolume === 'number') &&
+    optionalArray(state.savedWorkouts, (template) => isRecord(template) && typeof template.id === 'string' &&
+      typeof template.name === 'string' && validExercises(template.exercises));
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function optionalArray(value: unknown, validate: (entry: unknown) => boolean) {
+  return value === undefined || (Array.isArray(value) && value.every(validate));
+}
+
+function isDate(value: unknown) {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+function validExercises(value: unknown): value is { sets: Record<string, unknown>[] }[] {
+  return Array.isArray(value) && value.every((exercise) => isRecord(exercise) &&
+    typeof exercise.exerciseId === 'string' && Array.isArray(exercise.sets) &&
+    exercise.sets.every((set) => isRecord(set) && typeof set.reps === 'number' && typeof set.weight === 'number'));
+}
+
+function isWorkout(value: unknown): value is Record<string, unknown> & { exercises: { sets: Record<string, unknown>[] }[] } {
+  return isRecord(value) && typeof value.workoutName === 'string' &&
+    isDate(value.startedAt) && validExercises(value.exercises);
+}
 /** Pure core: merge a backup into the current storage snapshot. */
 export function mergeBackup(
   backup: MwBackup,
   currentStoreJson: string | null,
   currentKeys: Record<string, string>,
-  historyCap?: number,
+  historyCap = Infinity,
 ): {
   nextStoreJson: string;
   keysToSet: Record<string, string>;
@@ -91,7 +120,11 @@ export function mergeBackup(
 
   const currentSaved = current.state?.savedWorkouts ?? [];
   const seen = new Set(currentSaved.map((w) => w.id));
-  const addedSaved = (incoming.state?.savedWorkouts ?? []).filter((w) => w?.id && !seen.has(w.id));
+  const addedSaved = (incoming.state?.savedWorkouts ?? []).filter((w) => {
+    if (!w?.id || seen.has(w.id)) return false;
+    seen.add(w.id);
+    return true;
+  });
 
   const nextState: PersistedWorkoutState = {
     ...current,
@@ -99,6 +132,7 @@ export function mergeBackup(
     state: {
       ...incomingState,
       ...current.state,
+      activeWorkout: current.state?.activeWorkout ?? incomingState?.activeWorkout,
       savedWorkouts: [...currentSaved, ...addedSaved],
       workoutHistory: mergedHistory,
     },
@@ -204,12 +238,15 @@ export function restoreBackupFromJson(json: string, namespace = ''): {
    * keys half-written — which is the one state a restore must never report as a
    * clean success.
    */
+  const attemptedKeys: string[] = [];
   try {
-    const result = mergeBackup(parsed, snapshot.extra, snapshot.entries, namespace ? Infinity : undefined);
-    if (!writeRaw(snapshot.workoutKey, result.nextStoreJson)) throw new Error();
+    const result = mergeBackup(parsed, snapshot.extra, snapshot.entries);
     for (const [k, v] of Object.entries(result.keysToSet)) {
-      if (!writeRaw(namespace + k, v)) throw new Error();
+      const key = namespace + k;
+      attemptedKeys.push(key);
+      if (!writeRaw(key, v)) throw new Error();
     }
+    if (!writeRaw(snapshot.workoutKey, result.nextStoreJson)) throw new Error();
     return {
       ok: true,
       workoutsMerged: result.workoutsMerged,
@@ -217,6 +254,7 @@ export function restoreBackupFromJson(json: string, namespace = ''): {
       keysRestored: result.keysRestored,
     };
   } catch {
+    for (const key of attemptedKeys) remove(key);
     return {
       ok: false,
       error:

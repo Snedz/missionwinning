@@ -2,6 +2,7 @@ import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isMwBackup,
+  WORKOUT_STORE_KEY,
   mergeBackup,
   buildBackup,
   restoreBackupFromJson,
@@ -45,6 +46,24 @@ describe('backup', () => {
     const next = JSON.parse(result.nextStoreJson);
     assert.equal(next.state.workoutHistory.length, 1);
     assert.equal(result.workoutsMerged, 1);
+  });
+
+  it('imports a running session into an idle diary without truncating guest history', () => {
+    const history = Array.from({ length: 1001 }, (_, i) =>
+      log(String(i), 'Training', new Date(Date.UTC(2020, 0, 1, i)).toISOString(), i));
+    const backup = backupWith(history);
+    const activeWorkout = { workoutName: 'In progress', startedAt: history[0].startedAt, exercises: [] };
+    const current = JSON.stringify({ state: { activeWorkout: null, workoutHistory: [] } });
+    const result = mergeBackup({ ...backup, workoutStore: { state: { workoutHistory: history, activeWorkout } } },
+      current, {});
+    assert.equal(JSON.parse(result.nextStoreJson).state.workoutHistory.length, 1001);
+    assert.deepEqual(JSON.parse(result.nextStoreJson).state.activeWorkout, activeWorkout);
+  });
+
+  it('rejects broken exercise data before merging a backup', () => {
+    const malformed = { ...log('a', 'Push', '2026-06-01T10:00:00Z', 10), exercises: [{ sets: [null] }] };
+    const backup = { ...backupWith([]), workoutStore: { state: { workoutHistory: [malformed] } } };
+    assert.equal(restoreBackupFromJson(JSON.stringify(backup)).ok, false);
   });
 
   it('merges without duplicating identical workouts', () => {
@@ -157,13 +176,16 @@ describe('backup survives a device that will not cooperate', () => {
 
   it('a denied write during restore reports failure instead of half-restoring', () => {
     let written = 0;
+    const storage = memStorage();
+    storage.setItem(WORKOUT_STORE_KEY, '{}');
     stubStorage(
-      memStorage({
+      {
+        ...storage,
         setItem: () => {
           // Refuse partway through, the way a full disk does.
           if (written++ > 0) throw new DOMException('quota', 'QuotaExceededError');
         },
-      })
+      },
     );
     originalLocalStorage = undefined;
 
@@ -174,5 +196,6 @@ describe('backup survives a device that will not cooperate', () => {
 
     assert.equal(result.ok, false);
     assert.match(result.error ?? '', /clear some storage space/i);
+    assert.equal(storage.getItem(WORKOUT_STORE_KEY), '{}');
   });
 });
