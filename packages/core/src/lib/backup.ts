@@ -28,7 +28,7 @@ function backupStorage(namespace: string) {
 export interface MwBackup {
   app: 'mission-winning';
   version: number;
-  exportedAt: string;
+  exportedAt?: string;
   /** Parsed zustand persist payload (state.savedWorkouts / state.workoutHistory). */
   workoutStore: unknown;
   /** All localStorage keys beginning with mw_ (journey, nutrition, prefs…). */
@@ -48,7 +48,7 @@ interface PersistedWorkoutState {
 
 export function isMwBackup(value: unknown): value is MwBackup {
   if (!isRecord(value) || value.app !== 'mission-winning' || value.version !== BACKUP_VERSION ||
-      typeof value.exportedAt !== 'string' || !isRecord(value.localKeys) ||
+      (value.exportedAt !== undefined && typeof value.exportedAt !== 'string') || !isRecord(value.localKeys) ||
       !Object.values(value.localKeys).every((entry) => typeof entry === 'string')) return false;
   if (value.workoutStore === null) return true;
   if (!isRecord(value.workoutStore)) return false;
@@ -180,7 +180,7 @@ const STORAGE_UNREADABLE =
  * no message, and `track('backup_exported')` firing anyway — analytics recording a
  * successful export that never happened.
  */
-export function buildBackup(namespace = ''): BackupResult<MwBackup> {
+export function buildBackup(namespace = ''): BackupResult<MwBackup & { exportedAt: string }> {
   const snapshot = backupStorage(namespace);
   if (!snapshot) return { ok: false, error: STORAGE_UNREADABLE };
 
