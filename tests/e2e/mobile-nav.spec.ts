@@ -39,6 +39,12 @@ test.describe('Mobile navigation @gate', () => {
     await seedLegacyOnboarding(page);
   });
 
+  test('the retired landing preview redirects home', async ({ context }) => {
+    const response = await context.request.get('/forge-preview', { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe('/');
+  });
+
   test('the floor rail fits the narrowest phone we support', async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
     await page.goto('/log', { waitUntil: 'domcontentloaded' });

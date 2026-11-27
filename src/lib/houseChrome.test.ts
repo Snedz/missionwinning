@@ -1020,7 +1020,8 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(calc, /content-card/);
   assert.doesNotMatch(calc, /<Card[\s>]/);
   assert.match(account, /href="\/calculators"/);
-  assert.doesNotMatch(moreNav, /['"]\/calculators['"]/);
+  assert.ok(HOUSE_MORE_QUIET.some((row) => row.href === '/calculators'));
+  assert.ok(!Object.values(HOUSE_RAIL_HREFS).some((href: string) => href === '/calculators'));
   assert.match(css, /\.house-calc/);
   assert.match(spec, /Calculator leftover/);
   const coaching = read('src/page-components/CoachingPage.tsx');

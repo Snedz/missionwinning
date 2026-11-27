@@ -2,7 +2,7 @@
 
 ## 2026-11-27 — Trim the wedge without moving athlete data (`.1203`)
 
-Removed the Expo prototype, unused cinematic landing components, preview-only Forge route and design variant board. Kept the live logger, Android app and mobile APIs. Enabled secondary pillars remain in More rather than primary navigation. Data, entitlements and provider integrations did not change. AGENTS owns the gate and ship instructions. Label `2026.07-unified.1203`. PRIVATE_MODE stays. [skip vercel].
+Removed the Expo prototype, unused cinematic landing components and design variant board. The old Forge preview redirects home. Kept the live logger, Android app and mobile APIs. Enabled secondary pillars remain in More rather than primary navigation. Data, entitlements and provider integrations did not change. AGENTS owns the gate and ship instructions. Label `2026.07-unified.1203`. PRIVATE_MODE stays. [skip vercel].
 
 ## 2026-11-23 — react and react-dom 19.3.1 paired (`.1202`)
 

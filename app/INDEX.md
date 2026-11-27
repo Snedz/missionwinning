@@ -18,7 +18,6 @@
 | `/log` | Today | `HomePage.tsx` — segment `loading.tsx` is house leftover, not group Loading |
 | `/active` | Train | `ActiveWorkoutPage.tsx` — segment `loading.tsx` is house compose leftover, not group Loading |
 | `/nutrition` | Fuel | `NutritionPage.tsx` — Fuel first paint is house leftover (static import, no `RouteLoading`) |
-| `/track` | Track | `TrackPage.tsx` — Track first paint is house leftover (static import, no `RouteLoading`). Quiet Track weight / tape (`.975`); walks / GPS in Show more |
 | `/profile` | You | `ProfilePage.tsx` — You leftover; first paint is house leftover (static import, no `RouteLoading`) |
 | `/account` | Account | `AccountPage.tsx` — settings leftover; first paint is house leftover (static import, no `RouteLoading`) |
 
@@ -63,6 +62,7 @@
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 | `/explore` | `ExplorePlacesPage.tsx` | Places pin-board (Decision 009). Quiet Account / More door. Not a shop. Not the training catalog. |
 | `/calculators` | `CalculatorsPage.tsx` | Leftover 1RM / macros / plates. Quiet Account More-settings door. Never a rail. Not a shop. |
+| `/track` | `TrackPage.tsx` | Quiet More door for weight and tape; walks and GPS under Show more. |
 | `/programs` | `ProgramsPage.tsx` | Leftover education outlines. Unlock / price in Show all. Never a rail. Not a shop. |
 | `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). Signed-in rooms persist. More → You. Not a tab. `robots: noindex` |
 
@@ -71,6 +71,7 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → teaser until the gate cookie; cookie → `LandingPage` (forge restyle of the old homepage, not cinematic). Gated + no cookie → `/private`. Gate ifs unchanged. |
+| `/forge-preview` | Retired landing preview; permanently redirects to `/`. |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle first paint is house leftover (static page; title + offer, not RouteLoading). Free-beta 307s to `/notify`. Phantom checkout stays parked. |
 | `/notify` | `app/notify/page.tsx` → `NotifyPage` — Super Bundle email waitlist (checkout not live). Public while gated. `robots: noindex`. |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
