@@ -36,6 +36,7 @@ function transport(current: Session) {
 function contentTransport(current: Session) {
   return createNotebookCloud(createClient(cloudUrl!, publicKey!, {
     accessToken: async () => current.access_token,
+    db: { timeout: 10_000 },
   }), current.user.id);
 }
 

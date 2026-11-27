@@ -216,6 +216,31 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   await expect(page.getByRole('spinbutton', { name: 'Added load' })).toHaveValue('11');
   await page.getByRole('link', { name: 'You', exact: true }).click();
 
+  await expect(page.getByText('Workouts synced.')).toBeVisible();
+  await page.clock.install();
+  let signalPlan: () => void = () => {};
+  const planStarted = new Promise<void>((resolve) => { signalPlan = resolve; });
+  let releasePlan: () => void = () => {};
+  const holdPlan = new Promise<void>((resolve) => { releasePlan = resolve; });
+  const planPull = (url: URL) => url.origin === api && url.pathname === '/rest/v1/profiles' &&
+    url.searchParams.get('select')?.includes('coach_plan') === true;
+  await page.route(planPull, async (route) => {
+    signalPlan();
+    await holdPlan;
+    await route.abort().catch(() => undefined);
+  }, { times: 1 });
+  try {
+    await page.getByRole('button', { name: 'Sync now' }).click();
+    await planStarted;
+    await expect(page.getByText('Syncing workouts…')).toBeVisible();
+    await page.clock.fastForward(11_000);
+    await expect(page.getByText('Waiting for a connection to sync workouts.')).toBeVisible();
+  } finally {
+    releasePlan();
+  }
+  await page.getByRole('button', { name: 'Sync now' }).click();
+  await expect(page.getByText('Workouts synced.')).toBeVisible();
+
   await page.getByRole('button', { name: 'Sign out' }).click();
   await expect(page.getByRole('button', { name: 'Email sign-in link' })).toBeVisible();
   await page.goto('/history');
