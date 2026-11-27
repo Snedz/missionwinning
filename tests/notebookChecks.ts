@@ -2,9 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
 
-export async function audit(page: Page) {
+export async function audit(page: Page, width = 390) {
   expect(await page.evaluate(() => ({ width: innerWidth, contentWidth: document.documentElement.scrollWidth })))
-    .toEqual({ width: 390, contentWidth: 390 });
+    .toEqual({ width, contentWidth: width });
   const { violations } = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();

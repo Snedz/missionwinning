@@ -12,6 +12,8 @@ test('guest logs a first set under 90 seconds and reaches Victory, Coach and His
   const startedAt = performance.now();
   await page.goto('/log');
   await expect(page.getByRole('heading', { name: 'Today.' })).toBeVisible();
+  await expect(page.locator('.dock')).toBeVisible();
+  await expect(page.locator('.desktop-rail')).toBeHidden();
   await shot(page, '01-today.png');
   await page.getByRole('button', { name: 'Start workout' }).click();
   await page.getByRole('spinbutton', { name: 'Added load' }).fill('5');

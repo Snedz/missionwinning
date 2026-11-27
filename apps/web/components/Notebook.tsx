@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type MouseEvent, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { coachCitationFact, coachLogCitation } from '@/lib/coach/logCitation';
@@ -39,6 +39,47 @@ const NAV = [
   { href: '/history', label: 'History', icon: 'history' },
   { href: '/profile', label: 'You', icon: 'you' },
 ] as const;
+
+const desktopQuery = '(min-width: 64rem)';
+function subscribeDesktop(change: () => void) {
+  const media = window.matchMedia(desktopQuery);
+  media.addEventListener('change', change);
+  return () => media.removeEventListener('change', change);
+}
+
+function useDesktop() {
+  return useSyncExternalStore(subscribeDesktop, () => window.matchMedia(desktopQuery).matches, () => false);
+}
+
+function Navigation({ route, rail = false }: { route: string; rail?: boolean }) {
+  return <nav className={rail ? 'rail-nav' : 'dock'} aria-label="Training notebook">
+    {NAV.map((link) => <AppLink key={link.href} href={link.href}
+      current={route === link.href}
+      className="dock-item">
+      <Icon name={link.icon} /><span>{link.label}</span>
+    </AppLink>)}
+  </nav>;
+}
+
+function Brand() {
+  return <AppLink href="/log" className="brand"><span className="brand-mark" aria-hidden="true">MW</span><span>MISSION<br />WINNING</span></AppLink>;
+}
+
+function DesktopRail({ route, online, status }: { route: string; online: boolean; status: string }) {
+  const owner = useNotebook((state) => state.owner);
+  const { phase } = useCloudAccount();
+  const accountStatus = !cloudConfigured ? 'Local notebook' : phase === 'checking' ? 'Checking account…' :
+    !owner ? 'Guest notebook' : !online ? 'Sync paused' : phase === 'syncing' ? 'Syncing workouts…' :
+      phase === 'synced' ? 'Workouts synced' : 'Signed in';
+  return <aside className="desktop-rail">
+    <div className="rail-brand"><Brand /><span className="edition">Notebook / 02</span></div>
+    <Navigation route={route} rail />
+    <div className="rail-status">
+      <span className="device-status" role="status"><i />{status}</span>
+      <span className="eyebrow muted">{accountStatus}</span>
+    </div>
+  </aside>;
+}
 
 function go(href: Route) {
   if (location.pathname === href) return;
@@ -142,9 +183,11 @@ export function Notebook() {
   const hydrate = useNotebook((store) => store.hydrate);
   const storageWarning = useNotebook((store) => store.storageWarning);
   const { online, cached, canInstall, install } = useConnection();
+  const desktop = useDesktop();
   useEffect(() => { if (!ready) hydrate(); }, [ready, hydrate]);
   useEffect(() => { startCloudAccount(); }, []);
   const route = pathname === '/' ? '/log' : pathname;
+  const deviceStatus = !online ? 'Offline' : cached ? 'Offline ready' : 'On this device';
   const main = useRef<HTMLElement>(null);
   const previousRoute = useRef(route);
   useEffect(() => {
@@ -155,10 +198,11 @@ export function Notebook() {
   }, [route]);
   return <div className="shell">
     <a className="skip-link" href="#content">Skip to notebook</a>
-    <header className="masthead">
-      <AppLink href="/log" className="brand"><span className="brand-mark" aria-hidden="true">MW</span><span>MISSION<br />WINNING</span></AppLink>
-      <div className="masthead-right"><span className="edition">TRAINING NOTEBOOK / 02</span><span className="device-status" role="status"><i />{!online ? 'Offline' : cached ? 'Offline ready' : 'On this device'}</span></div>
-    </header>
+    {desktop && <DesktopRail route={route} online={online} status={deviceStatus} />}
+    {!desktop && <header className="masthead">
+      <Brand />
+      <div className="masthead-right"><span className="edition">TRAINING NOTEBOOK / 02</span><span className="device-status" role="status"><i />{deviceStatus}</span></div>
+    </header>}
     <main id="content" className="content" key={route} ref={main} tabIndex={-1} aria-busy={!ready}>
       {!online && <p className="notice">You’re offline. Keep logging on this device; account sync needs a connection.</p>}
       {online && canInstall && <div className="notice install-notice"><p>Open your notebook from your home screen.</p><button className="bare-button" onClick={() => void install()}>Install app</button></div>}
@@ -167,14 +211,10 @@ export function Notebook() {
         route === '/active' ? <Train /> :
         route === '/victory' ? <Victory /> :
         route === '/coach' ? <Coach /> :
-        route === '/history' ? <History /> :
+        route === '/history' ? <History desktop={desktop} /> :
         route === '/profile' ? <You online={online} /> : <Today />}
     </main>
-    <nav className="dock" aria-label="Training notebook">
-      {NAV.map((link) => <AppLink key={link.href} href={link.href} current={route === link.href} className="dock-item">
-        <Icon name={link.icon} /><span>{link.label}</span>
-      </AppLink>)}
-    </nav>
+    {!desktop && <Navigation route={route} />}
   </div>;
 }
 
@@ -225,6 +265,7 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
   const logged = exercise.sets.filter((row) => row.completed);
   const labels = weightUnitLabel(units);
   const loadLabel = kind === 'assisted' ? 'Assist' : kind === 'bodyweight' ? 'Added load' : 'Load';
+  const restoreFocus = useRef<string | null>(null);
   function display(set: { weight: number; reps: number; durationSeconds?: number }) {
     return formatSetRowLine({ type: kind, reps: set.reps, weight: set.weight, durationSeconds: set.durationSeconds, unitLabel: labels });
   }
@@ -234,6 +275,10 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
     const reps = Number(values.get('reps'));
     const weight = Number(values.get('weight'));
     const durationSeconds = Number(values.get('seconds'));
+    const input = document.activeElement;
+    if (window.matchMedia(desktopQuery).matches && input instanceof HTMLInputElement && input.form === event.currentTarget) {
+      restoreFocus.current = input.name;
+    }
     if (kind === 'duration') {
       if (!Number.isFinite(durationSeconds) || durationSeconds < 1) return;
       logSet(exercise.exerciseId, { reps: 0, weight: 0, durationSeconds });
@@ -243,9 +288,14 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
     }
   }
   return <section className="exercise-panel">
+    <div className="movement-heading">
     <div className="eyebrow muted">MOVEMENT / {getExerciseById(exercise.exerciseId)?.equipment ?? 'Notebook'}</div>
     <h2>{exerciseName(exercise.exerciseId)}</h2>
     <p className="subtle">{next ? `Target: ${display(next)}` : prior ? `Last time: ${display(prior)}` : 'Start where you are.'}</p>
+    </div>
+    <div className="set-record">
+    <p className="desktop-only eyebrow muted">Logged sets</p>
+    {logged.length === 0 && <p className="desktop-only subtle">Completed sets appear here.</p>}
     {logged.length > 0 && <ol className="set-list" aria-label="Logged sets">
       {logged.map((set, i) => <li key={set.id}>
         <span className="set-number">{String(i + 1).padStart(2, '0')}</span>
@@ -253,7 +303,14 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
         <button className="bare-button" onClick={() => undoSet(exercise.exerciseId, set.id)} aria-label={`Undo set ${i + 1}`}>Undo</button>
       </li>)}
     </ol>}
-    <form className="set-form" onSubmit={submit} key={next?.id ?? exercise.exerciseId}>
+    </div>
+    <form className="set-form" onSubmit={submit} key={next?.id ?? exercise.exerciseId} ref={(form) => {
+      if (form && restoreFocus.current) {
+        const input = form.elements.namedItem(restoreFocus.current);
+        restoreFocus.current = null;
+        if (input instanceof HTMLInputElement && document.activeElement !== input) input.focus({ preventScroll: true });
+      }
+    }}>
       <div className="set-inputs">
         {kind === 'duration' ? <label>Seconds<input name="seconds" type="number" inputMode="numeric" min="1" max="86400" required defaultValue={prior?.durationSeconds ?? ''} /></label> : <>
           <label>{loadLabel} ({labels})<input name="weight" type="number" inputMode="decimal" min="0" max="5000" step="any" required defaultValue={next?.weight ?? prior?.weight ?? 0} /></label>
@@ -261,6 +318,7 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
         </>}
       </div>
       <button className="button primary-button" type="submit">Log set <Icon name="check" /></button>
+      <p className="desktop-only subtle set-shortcut">Press <kbd>Enter</kbd> in a field to log.</p>
     </form>
   </section>;
 }
@@ -301,7 +359,10 @@ function Train() {
           </button>)}
       </section>}
     </> : <>
+      <div className="train-layout">
       <div className="session-strip"><span className="eyebrow" role="status"><i /> {setCountLabel(count)} logged</span><Rest until={restUntil} /></div>
+      <div className="train-movements">
+      <p className="desktop-only eyebrow muted">Session movements</p>
       <div className="move-row" aria-label="Movements in workout">
         {active.exercises.map((row, i) => <button key={`${row.exerciseId}-${i}`} className="chip" aria-pressed={row === exercise} onClick={() => setCurrent(row.exerciseId)}>{exerciseName(row.exerciseId)}</button>)}
         <button className="chip add-chip" aria-expanded={searchOpen} onClick={() => setSearchOpen((open) => !open)}><Icon name="plus" size={15} /> Add movement</button>
@@ -314,10 +375,12 @@ function Train() {
           </button></li>
         )}</ul>}
       </section>}
+      </div>
       {exercise && <SetEntry key={exercise.exerciseId} exercise={exercise} />}
       <div className="finish-row">
         <p className="subtle">{count ? 'Only completed sets go into History.' : 'Log a set to finish this workout.'}</p>
         <button className="button outline-button" disabled={count === 0} onClick={() => { if (finish()) go('/victory'); }}>Finish workout <Icon name="arrow" /></button>
+      </div>
       </div>
     </>}
   </>;
@@ -329,7 +392,7 @@ function Victory() {
     workoutHistory.find((entry) => !entry.deletedAt);
   return <>
     <Heading index="03" label="SESSION RECEIPT" title="Victory.">{log ? 'The work is in your notebook.' : 'Finish a workout to see its receipt here.'}</Heading>
-    {log ? <>
+    {log ? <div className="victory-layout">
       <section className="victory-panel">
         <div className="eyebrow stamp"><Icon name="check" size={15} /> COMPLETE · {shortDate(log.completedAt)}</div>
         <h2>{log.workoutName}</h2>
@@ -340,7 +403,7 @@ function Victory() {
         </div>
       </section>
       <div className="action-row"><AppLink href="/coach" className="button primary-button">Plan with Coach <Icon name="arrow" /></AppLink><AppLink href="/history" className="button outline-button">View History</AppLink></div>
-    </> : <AppLink href="/active" className="button primary-button">Open Train <Icon name="arrow" /></AppLink>}
+    </div> : <AppLink href="/active" className="button primary-button">Open Train <Icon name="arrow" /></AppLink>}
   </>;
 }
 
@@ -362,6 +425,7 @@ function Coach() {
     workoutInWeightUnit(log, weightUnitFor(units)))), 'en', weightUnitLabel(units));
   return <>
     <Heading index="04" label="THE WEEK AHEAD" title="Coach.">A week that fits the equipment you have and the training you’ve logged.</Heading>
+    <div className="coach-tools">
     <aside className="citation">
       <span className="eyebrow"><Icon name="coach" size={16} /> {citation ? 'FROM YOUR LOG' : 'NO LOGS YET'}</span>
       <p>{citation ?? 'Log a set for Coach to use. A starter week can still use your equipment and schedule.'}</p>
@@ -375,6 +439,7 @@ function Coach() {
       </select></label>
       <button type="submit" className={`button ${plan ? 'outline-button' : 'primary-button'}`}>{plan ? 'Rebuild week' : 'Generate week'} <Icon name="arrow" /></button>
     </form>
+    </div>
     {plan && <section className="plan-week" aria-label="Week plan">
       <div className="section-rule"><h2>Week of {formatLocalDateKey(plan.weekStart, 'en', { month: 'short', day: 'numeric' })}</h2><span className="eyebrow muted">{plan.sessions.length} SESSIONS</span></div>
       <div className="plan-list">{[...plan.sessions].sort((a, b) => a.dayOffset - b.dayOffset).map((session) => <details className="plan-card" key={session.id}>
@@ -386,18 +451,37 @@ function Coach() {
   </>;
 }
 
-function History() {
+function HistoryMovements({ log, unitLabel }: { log: CompletedWorkoutLog; unitLabel: string }) {
+  return log.exercises.map((exercise, i) => <div className="history-movement" key={`${exercise.exerciseId}-${i}`}><h3>{exerciseName(exercise.exerciseId)}</h3>
+    <ul>{exercise.sets.map((set, j) => <li key={j}><span>Set {j + 1}</span><strong>{formatSetRowLine({ ...set, type: exerciseRowType(exercise.exerciseId), unitLabel })}</strong></li>)}</ul>
+    {exercise.note && <p>{exercise.note}</p>}
+  </div>);
+}
+
+function History({ desktop }: { desktop: boolean }) {
   const { workoutHistory, units } = useNotebook();
+  const [selectedId, setSelectedId] = useState<string>();
   const logs = workoutHistory.filter((log) => !log.deletedAt)
     .map((log) => workoutInWeightUnit(log, weightUnitFor(units)));
+  const selected = logs.find((log) => log.id === selectedId) ?? logs[0];
+  const unitLabel = weightUnitLabel(units);
   return <>
     <Heading index="05" label="COMPLETED WORK" title="History.">The sets you actually did, not the ones you planned.</Heading>
-    {logs.length ? <section className="history-list" aria-label="Completed workouts">{logs.map((log) => <details className="plan-card" key={log.id}>
+    {selected && desktop ? <div className="history-layout">
+      <section className="history-list" aria-label="Completed workouts">
+        <div className="section-rule"><h2>Notebook</h2><span className="eyebrow muted">{logs.length} {logs.length === 1 ? 'workout' : 'workouts'}</span></div>
+        {logs.map((log) => <button className="history-item" aria-pressed={log.id === selected.id} key={log.id} onClick={() => setSelectedId(log.id)}>
+          <span><span className="eyebrow">{shortDate(log.completedAt)} · {setCountLabel(setsIn(log))}</span><strong>{log.sessionTitle ?? log.workoutName}</strong></span>
+          <Icon name="arrow" size={17} />
+        </button>)}
+      </section>
+      <section className="plan-card history-detail" aria-label="Workout detail">
+        <div className="history-detail-heading"><div className="eyebrow muted">{shortDate(selected.completedAt)} · {setCountLabel(setsIn(selected))}</div><h2>{selected.sessionTitle ?? selected.workoutName}</h2></div>
+        <HistoryMovements log={selected} unitLabel={unitLabel} />
+      </section>
+    </div> : logs.length ? <section className="history-list" aria-label="Completed workouts">{logs.map((log) => <details className="plan-card" key={log.id}>
       <summary><span><span className="eyebrow muted">{shortDate(log.completedAt)} · {setCountLabel(setsIn(log))}</span><strong>{log.sessionTitle ?? log.workoutName}</strong></span><Icon name="plus" size={19} /></summary>
-      {log.exercises.map((exercise, i) => <div className="history-movement" key={`${exercise.exerciseId}-${i}`}><h3>{exerciseName(exercise.exerciseId)}</h3>
-        <ul>{exercise.sets.map((set, j) => <li key={j}><span>Set {j + 1}</span><strong>{formatSetRowLine({ ...set, type: exerciseRowType(exercise.exerciseId), unitLabel: weightUnitLabel(units) })}</strong></li>)}</ul>
-        {exercise.note && <p>{exercise.note}</p>}
-      </div>)}
+      <HistoryMovements log={log} unitLabel={unitLabel} />
     </details>)}</section> : <section className="note-panel empty-panel"><div className="eyebrow muted">NO WORKOUTS YET</div><h2>Your first session goes here.</h2><AppLink href="/active" className="text-link">Open Train <Icon name="arrow" size={17} /></AppLink></section>}
   </>;
 }
@@ -428,6 +512,7 @@ function You({ online }: { online: boolean }) {
   return <>
     <Heading index="06" label="DEVICE & DATA" title="You.">Your notebook belongs to you. Keep a copy before changing devices.</Heading>
     {message && <p className={`notice ${message.ok ? '' : 'danger'}`} role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
+    <div className="you-grid">
     {cloudConfigured && <AccountPanel key={owner ?? 'guest'} online={online} />}
     <section className="note-panel data-panel">
       <div className="eyebrow muted">PORTABLE BACKUP</div><h2>Take your training with you.</h2>
@@ -458,6 +543,7 @@ function You({ online }: { online: boolean }) {
         <div className="action-row"><button className="button primary-button" onClick={() => { const ok = eraseDevice(); setConfirm(null); setMessage({ ok, text: ok ? 'App data deleted from this device.' : 'The device copy could not be removed. Finish pending sync first if signed in.' }); }}>Delete app data</button><button className="button outline-button" onClick={() => setConfirm(null)}>Cancel</button></div>
       </div>}
     </section>
+    </div>
   </>;
 }
 

@@ -10,13 +10,22 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    ...devices['Pixel 7'],
-    viewport: { width: 390, height: 844 },
-    defaultBrowserType: 'chromium',
     baseURL,
     actionTimeout: 8_000,
     trace: 'retain-on-failure',
   },
+  projects: [
+    {
+      name: 'mobile-chromium',
+      testIgnore: '**/desktop.spec.ts',
+      use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } },
+    },
+    {
+      name: 'desktop-chromium',
+      testMatch: '**/desktop.spec.ts',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+    },
+  ],
   webServer: {
     command: `npm run start -w apps/web -- --hostname 127.0.0.1 --port ${port}`,
     url: `${baseURL}/log`,
