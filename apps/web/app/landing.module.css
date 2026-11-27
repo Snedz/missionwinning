@@ -81,6 +81,22 @@
 .calendar .scheduled { color: hsl(var(--accent)); }
 .changeNote, .planFoot { padding: .65rem .8rem; font-size: .8rem; }
 .planFoot { border-top: 1px solid var(--line); }
+.demo { margin-top: 1rem; }
+.demoHint { margin-top: .55rem; font-size: .88rem; line-height: 1.45; color: var(--quiet); }
+.demoPanel { margin-top: 1rem; padding: .85rem; background: var(--canvas); border: 1px solid var(--line); }
+.demoForm { display: grid; gap: .75rem; }
+.demoForm label { display: grid; gap: .3rem; font-size: .86rem; font-weight: 750; }
+.demoForm select {
+  min-height: 2.75rem; width: 100%; padding: .35rem .45rem; background: var(--card);
+  border: 1px solid var(--text); border-radius: var(--radius); font-size: 1rem;
+}
+.demoForm button { justify-self: start; }
+.demoStatus:not(:empty) { margin-top: .75rem; font-weight: 800; }
+.demoSessions { list-style: none; padding: 0; margin: .65rem 0 0; }
+.demoSessions li {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem .75rem;
+  border-top: 1px solid var(--line); padding-block: .45rem; font-size: .87rem;
+}
 .appPreview { padding-block: clamp(2.6rem, 6vw, 5rem); }
 .previewGrid {
   display: grid; grid-template-columns: minmax(0, 1fr);
@@ -116,6 +132,7 @@
   .exampleGrid, .questions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .previewGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .availabilityGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .demoForm { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; }
 }
 @media (min-width: 64rem) {
   .previewGrid { grid-template-columns: minmax(0, .64fr) repeat(2, minmax(0, 1fr)); }

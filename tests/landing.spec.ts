@@ -179,6 +179,76 @@ test('the sample is accessible at 320px and does not write notebook data', async
   await expect(page).toHaveURL(/#example$/);
   await checkWeekComparison(page);
   await audit(page, 320);
+  await page.getByRole('button', { name: 'Try the week demo' }).click();
+  await expect(page.getByRole('combobox', { name: 'Equipment' })).toBeVisible();
+  await page.getByRole('button', { name: 'Rebuild week' }).click();
+  await expect(page.getByRole('list', { name: 'Rebuilt sessions' }).getByRole('listitem')).toHaveCount(3);
+  await audit(page, 320);
+  expect(await context.storageState({ indexedDB: true })).toEqual(before);
+});
+
+test('the Coach demo loads on demand, responds to keyboard input, and leaves a real workout untouched', async ({ page, context }) => {
+  await page.goto('/active');
+  await page.getByRole('button', { name: 'Start workout' }).click();
+  await page.getByRole('button', { name: 'Log set' }).click();
+  await expect(page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem')).toHaveCount(1);
+  const before = await context.storageState({ indexedDB: true });
+  await page.goto('/');
+  const writes: string[] = [];
+  page.on('request', (request) => {
+    if (!['GET', 'HEAD'].includes(request.method()) || new URL(request.url()).pathname.startsWith('/api/')) writes.push(request.url());
+  });
+  const scriptResources = () => page.evaluate(() => Object.fromEntries(
+    (performance.getEntriesByType('resource') as PerformanceResourceTiming[])
+      .filter(({ name }) => new URL(name).pathname.endsWith('.js'))
+      .map(({ name, decodedBodySize }) => [name, decodedBodySize]),
+  ));
+  const initialScripts = await scriptResources();
+  const toggle = page.getByRole('button', { name: 'Try the week demo' });
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  const equipment = page.getByRole('combobox', { name: 'Equipment' });
+  await expect(equipment).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Hide week demo' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(equipment).toBeFocused();
+  const rebuild = page.getByRole('button', { name: 'Rebuild week' });
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('combobox', { name: 'Days per week' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  const missed = page.getByRole('combobox', { name: 'Missed session' });
+  await expect(missed).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(rebuild).toBeFocused();
+  await page.keyboard.press('Enter');
+  const result = page.getByRole('status').filter({ hasText: 'Missed' });
+  await expect(result).toHaveText('Missed Wednesday. Rebuilt schedule: Thursday, Saturday, Sunday.');
+  await expect(page.getByRole('list', { name: 'Rebuilt sessions' }).getByRole('listitem').first()).toContainText('Lunges');
+  const deferredBytes = Object.entries(await scriptResources()).filter(([url]) => !(url in initialScripts))
+    .reduce((bytes, [, size]) => bytes + size, 0);
+  console.log(`Landing demo deferred JS: ${deferredBytes} decoded bytes`);
+  expect(deferredBytes).toBeGreaterThan(0);
+  expect(deferredBytes).toBeLessThanOrEqual(220 * 1024);
+  const { width, height } = page.viewportSize()!;
+  await audit(page, width);
+  await expect(rebuild).toBeFocused();
+  const dir = process.env.V2_LANDING_SCREENSHOTS_DIR;
+  if (dir) await page.screenshot({ path: join(dir, `${width}x${height}-week-demo.png`), fullPage: true, animations: 'disabled', scale: 'css' });
+
+  await equipment.selectOption('bodyweight');
+  await page.getByRole('combobox', { name: 'Days per week' }).selectOption('2');
+  await expect(page.getByText(/Original schedule: Wednesday, Sunday/)).toBeVisible();
+  await rebuild.click();
+  await expect(result).toHaveText('Missed Wednesday. Rebuilt schedule: Thursday, Sunday.');
+  await expect(page.getByRole('list', { name: 'Rebuilt sessions' }).getByRole('listitem')).toHaveCount(2);
+  await missed.selectOption({ label: 'Sunday' });
+  await rebuild.click();
+  await expect(result).toHaveText('Missed Sunday. No days remain in this sample week.');
+  await expect(page.getByRole('list', { name: 'Rebuilt sessions' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Hide week demo' }).click();
+  await expect(equipment).toBeHidden();
+  await expect(page.getByText('Could not load the demo. Check your connection and try again.')).toHaveCount(0);
+  expect(writes).toEqual([]);
   expect(await context.storageState({ indexedDB: true })).toEqual(before);
 });
 

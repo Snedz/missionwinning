@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { getExerciseById } from '@/data/exercises';
 import { generateNotebookWeek } from '@/lib/coach/notebookWeek';
-import type { CompletedWorkoutLog } from '@/types';
 import { quickStartHref } from '../lib/trainEntry';
+import { exampleHistory, exampleSets, sampleDay, weekdays } from './landingExample';
+import WeekDemoLoader from './WeekDemoLoader';
 import styles from './landing.module.css';
 
 const title = 'Mission Winning — Log a set. Know what to train next.';
@@ -21,28 +22,11 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title, description, images: [shareImage] },
 };
 
-const exampleSets = [
-  { id: 'one', reps: 10, weight: 20, completed: true },
-  { id: 'two', reps: 10, weight: 20, completed: true },
-  { id: 'three', reps: 10, weight: 20, completed: true },
-];
-const exampleDate = new Date(2026, 5, 8, 12);
-const exampleWorkout: CompletedWorkoutLog = {
-  id: 'landing-example',
-  workoutName: 'Lower body',
-  completedAt: exampleDate.toISOString(),
-  startedAt: exampleDate.toISOString(),
-  durationSeconds: 600,
-  weightUnit: 'kg',
-  totalVolume: exampleSets.reduce((volume, set) => volume + set.reps * set.weight, 0),
-  exercises: [{ exerciseId: 'lunges', sets: exampleSets }],
-};
 const exampleInput: Parameters<typeof generateNotebookWeek>[0] = {
-  equipment: 'dumbbells', daysPerWeek: 3, units: 'metric', history: [exampleWorkout], revision: 1,
+  equipment: 'dumbbells', daysPerWeek: 3, units: 'metric', history: exampleHistory, revision: 1,
 };
-const firstPlan = generateNotebookWeek(exampleInput, new Date(2026, 5, 10, 12));
-const rebuiltPlan = generateNotebookWeek({ ...exampleInput, revision: 2 }, new Date(2026, 5, 11, 12));
-const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const firstPlan = generateNotebookWeek(exampleInput, sampleDay(2));
+const rebuiltPlan = generateNotebookWeek({ ...exampleInput, revision: 2 }, sampleDay(3));
 const originalDays = new Set(firstPlan.sessions.map(({ dayOffset }) => dayOffset));
 const rebuiltDays = new Set(rebuiltPlan.sessions.map(({ dayOffset }) => dayOffset));
 const appScreens = [
@@ -171,7 +155,7 @@ export default function LandingPage() {
             <h2 id="example-title">Build a week from what you did.</h2>
             <p>You logged three sets of lunges on Monday, then missed Wednesday’s session. On Thursday you choose “Rebuild week.” Coach plans the remaining days with the same workout history, dumbbells and three-day target.</p>
           </div>
-          <WeekComparison />
+          <div><WeekComparison /><WeekDemoLoader /></div>
         </div>
       </section>
       <AppPreview />

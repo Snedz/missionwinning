@@ -33,7 +33,7 @@ Evidence checklist:
 - Accessibility: keyboard access, axe, and no horizontal overflow at 320, 390, and 1440 pixels. Inspect first-fold and full-page captures at 390×844 and 1440×900 separately.
 - Observed human task (separate from automation, not yet run): on a cold browser, ask a first-time visitor to “Log the next set you did.” Then ask what changed in the sample week and where their workout lives. Record completion, elapsed time, and confusion, not workout contents. A scripted pass is not a usability result.
 
-The suite also checks the landing's canonical/share tags and local image and payload budgets. The canonical points to the intended public homepage, `https://www.missionwinning.com/`; local builds don't change that site's routing. Budgets are 45 KiB HTML, 600 KiB JavaScript, and 38 KiB CSS, measured as initial decoded bytes in a clean browser, plus 80 KiB for the selected preview gallery and 75 KiB for the 1200×630 share image. These aren't field performance measurements.
+The suite also checks the landing's canonical/share tags and local image and payload budgets. The canonical points to the intended public homepage, `https://www.missionwinning.com/`; local builds don't change that site's routing. Budgets are 45 KiB HTML, 600 KiB JavaScript, and 38 KiB CSS, measured as initial decoded bytes in a clean browser, plus 80 KiB for the selected preview gallery and 75 KiB for the 1200×630 share image. The optional week demo has its own 220 KiB JavaScript budget and is loaded only when opened. These aren't field performance measurements.
 
 ### First saved set: local only
 
