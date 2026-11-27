@@ -1,29 +1,36 @@
 /** Rate limiting — Upstash Redis when configured, else in-memory (local dev). */
 
-type Bucket = { count: number; resetAt: number };
-
-const buckets = new Map<string, Bucket>();
+const MAX_MEMORY_BUCKETS = 10_000;
 
 export type RateLimitResult = { ok: boolean; retryAfterSec?: number };
 
-function memoryRateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
-  const now = Date.now();
-  const bucket = buckets.get(key);
-  if (!bucket || now > bucket.resetAt) {
-    buckets.set(key, { count: 1, resetAt: now + windowMs });
+export function createMemoryRateLimit(maxBuckets = MAX_MEMORY_BUCKETS, clock = Date.now) {
+  const buckets = new Map<string, { count: number; resetAt: number }>();
+  let sweepAt = 0;
+
+  return (key: string, limit: number, windowMs: number): RateLimitResult => {
+    const now = clock();
+    if (now >= sweepAt) {
+      for (const [id, bucket] of buckets) {
+        if (bucket.resetAt <= now) buckets.delete(id);
+      }
+      sweepAt = now + 1000;
+    }
+    const bucket = buckets.get(key);
+    if (!bucket || now >= bucket.resetAt) {
+      if (!bucket && buckets.size >= maxBuckets) return { ok: false, retryAfterSec: 1 };
+      buckets.set(key, { count: 1, resetAt: now + windowMs });
+      return { ok: true };
+    }
+    if (bucket.count >= limit) {
+      return { ok: false, retryAfterSec: Math.ceil((bucket.resetAt - now) / 1000) };
+    }
+    bucket.count += 1;
     return { ok: true };
-  }
-  if (bucket.count >= limit) {
-    return { ok: false, retryAfterSec: Math.ceil((bucket.resetAt - now) / 1000) };
-  }
-  bucket.count += 1;
-  return { ok: true };
+  };
 }
 
-/** Sync rate limit (in-memory only). */
-export function rateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
-  return memoryRateLimit(key, limit, windowMs);
-}
+const memoryRateLimit = createMemoryRateLimit();
 
 /** Async rate limit — Upstash when UPSTASH_REDIS_* env is set. */
 export async function rateLimitAsync(

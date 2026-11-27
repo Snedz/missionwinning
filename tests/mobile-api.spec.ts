@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { request as httpRequest } from 'node:http';
 import { expect, test } from '@playwright/test';
+import { createMemoryRateLimit } from '../apps/web/lib/mobile/rateLimit';
 
 const mobile = '/api/mobile';
 const privateMode = process.env.PRIVATE_MODE === 'true' || process.env.PRIVATE_MODE === '1';
@@ -11,6 +12,17 @@ const trainerAsk = {
   exerciseName: 'Bench press', setNumber: 2, setCount: 3, reps: 8,
   weight: 45, unitLabel: 'lb', rowType: 'weight', hardCount: 0,
 };
+
+test('local rate limit bounds live buckets without resetting existing quotas', () => {
+  let clock = 1;
+  const limit = createMemoryRateLimit(2, () => clock);
+  expect(limit('first', 1, 1000).ok).toBe(true);
+  expect(limit('second', 1, 1000).ok).toBe(true);
+  expect(limit('third', 1, 1000)).toEqual({ ok: false, retryAfterSec: 1 });
+  expect(limit('first', 1, 1000).ok).toBe(false);
+  clock += 1000;
+  expect(limit('third', 1, 1000).ok).toBe(true);
+});
 
 test('private mobile ingress returns the legacy 403 before route auth', async ({ request }) => {
   test.skip(!privateMode, 'Opt into the legacy private mobile perimeter.');
