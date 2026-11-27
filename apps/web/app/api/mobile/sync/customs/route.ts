@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../../lib/mobile/rateLimit';
 import { requireMobileUser } from '../../../../../lib/mobile/auth';
+import { nextSyncCursor, parseSyncCursor, syncCursorFilter } from '../../../../../lib/mobile/syncCursor';
 import { mobileSyncCustomPushBodySchema, parseJsonBody } from '../../../../../lib/mobile/schemas';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { logSyncFailure, logSyncThrown } from '../../../../../lib/mobile/syncFailure';
@@ -76,19 +77,23 @@ export const GET = withApiLogging('mobile/sync/customs', async (request: NextReq
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
-  const since = request.nextUrl.searchParams.get('since') ?? '1970-01-01T00:00:00.000Z';
+  const since = parseSyncCursor(request.nextUrl.searchParams.get('since'));
+  if (!since) return NextResponse.json({ error: 'Invalid sync cursor' }, { status: 400 });
   const limitRaw = Number(request.nextUrl.searchParams.get('limit') ?? '100');
   const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(1, Math.floor(limitRaw)), 100) : 100;
 
-  const { data, error } = await supabase
+  const pull = supabase
     .from('custom_exercises')
     .select(
       'id, client_id, name, equipment, muscle_groups, revision, updated_at, deleted_at, created_at',
     )
     .eq('user_id', user.id)
-    .gt('updated_at', since)
     .order('updated_at', { ascending: true })
+    .order('id', { ascending: true })
     .limit(limit);
+  const { data, error } = await (since.id
+    ? pull.or(syncCursorFilter({ ...since, id: since.id }))
+    : pull.gt('updated_at', since.updatedAt));
 
   if (error) {
     /*
@@ -115,8 +120,7 @@ export const GET = withApiLogging('mobile/sync/customs', async (request: NextReq
     updatedAt: row.updated_at as string,
     deletedAt: (row.deleted_at as string | null) ?? null,
   }));
-  const nextCursor =
-    rows.length === limit ? (rows[rows.length - 1]?.updated_at as string | undefined) ?? null : null;
+  const nextCursor = nextSyncCursor(rows, limit);
 
   return NextResponse.json({ items, nextCursor });
 });
@@ -145,11 +149,11 @@ async function upsertCustom(
   error?: string;
 }> {
   const now = new Date().toISOString();
-  const updatedAt = ex.updatedAt && ex.updatedAt > now ? ex.updatedAt : now;
+  const updatedAt = now;
 
   const { data: existing } = await supabase
     .from('custom_exercises')
-    .select('id, revision, deleted_at')
+    .select('id, revision, deleted_at, updated_at')
     .eq('user_id', userId)
     .eq('client_id', ex.clientId)
     .maybeSingle();
@@ -158,13 +162,15 @@ async function upsertCustom(
     const serverRev = (existing.revision as number) ?? 1;
     const incomingDeleted = Boolean(ex.deletedAt);
     const serverDeleted = Boolean(existing.deleted_at);
-    const shouldApply = incomingDeleted || (!serverDeleted && ex.revision >= serverRev);
+    const shouldApply = ex.revision > serverRev
+      ? incomingDeleted || !serverDeleted
+      : ex.revision === serverRev && incomingDeleted && !serverDeleted;
     if (!shouldApply) {
       return {
         clientId: ex.clientId,
         serverId: existing.id as string,
         revision: serverRev,
-        updatedAt,
+        updatedAt: existing.updated_at,
         status: 'ok',
       };
     }
@@ -180,6 +186,8 @@ async function upsertCustom(
         deleted_at: ex.deletedAt ?? null,
       })
       .eq('id', existing.id)
+      .eq('revision', serverRev)
+      .eq('updated_at', existing.updated_at)
       .select('id, revision, updated_at')
       .single();
     if (error) {

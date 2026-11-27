@@ -148,13 +148,13 @@ test.describe('public mobile ingress', () => {
         headers: { apikey: key }, data: { email: `${randomUUID()}@example.com`, password: randomUUID() },
       });
       expect(response.ok()).toBe(true);
-      const { access_token: token } = await response.json();
+      const { access_token: token, user } = await response.json();
       expect(Boolean(token)).toBe(true);
-      return { Authorization: `Bearer ${token}` };
+      return { headers: { Authorization: `Bearer ${token}` }, userId: user.id as string };
     }
 
-    const headers = await signUp();
-    const other = await signUp();
+    const { headers, userId } = await signUp();
+    const { headers: other } = await signUp();
     const completedAt = '2025-01-02T12:00:00Z';
     const workout = {
       clientId: randomUUID(), workoutName: 'Compose workout', completedAt, durationSeconds: 60,
@@ -201,6 +201,9 @@ test.describe('public mobile ingress', () => {
       }
       expect(await (await request.get(url + '?' + new URLSearchParams({ since: page.nextCursor }), { headers })).json()).toEqual({ items: [], nextCursor: null });
       expect(await (await request.get(url, { headers: other })).json()).toEqual({ items: [], nextCursor: null });
+      const future = '2099-01-01T00:00:00Z';
+      const replay = await request.post(url, { headers, data: { [key]: [{ ...item, updatedAt: future }] } });
+      expect(await replay.json()).toMatchObject({ acks: [{ revision: 1, status: 'ok', updatedAt: push.acks[0].updatedAt }] });
       const removed = await request.post(url, { headers, data: { [key]: [{ ...item, revision: 2, deletedAt: completedAt }] } });
       expect(await removed.json()).toMatchObject({ acks: [{ serverId: push.acks[0].serverId, revision: 2, status: 'ok' }] });
       const retry = await request.post(url, { headers, data: { [key]: [item] } });
@@ -213,9 +216,30 @@ test.describe('public mobile ingress', () => {
     const prefsUrl = `${mobile}/sync/prefs`;
     expect(await (await request.post(prefsUrl, { headers, data: { prefs } })).json()).toEqual({ ok: true, revision: 2 });
     expect(await (await request.get(prefsUrl, { headers })).json()).toMatchObject({ prefs });
+
+    const sharedTimestamp = '2028-01-01T00:00:00Z';
+    const inserted = await request.post(`${localApi}/rest/v1/custom_exercises`, {
+      headers: { ...headers, apikey: key },
+      data: ['tied-one', 'tied-two'].map((id) => ({
+        user_id: userId, client_id: id, name: id, updated_at: sharedTimestamp,
+      })),
+    });
+    expect(inserted.ok()).toBe(true);
+    const customsUrl = `${mobile}/sync/customs`;
+    const tiedPage = await (await request.get(customsUrl, {
+      headers, params: { since: '2027-12-31T00:00:00Z', limit: 1 },
+    })).json();
+    const next = await (await request.get(customsUrl, {
+      headers, params: { since: tiedPage.nextCursor, limit: 1 },
+    })).json();
+    expect([tiedPage.items[0].clientId, next.items[0].clientId].sort()).toEqual(['tied-one', 'tied-two']);
+    expect((await request.get(customsUrl, { headers, params: { since: 'invalid-date' } })).status()).toBe(400);
     expect(await (await request.get(prefsUrl, { headers: other })).json()).toEqual({ prefs: null });
     expect(await (await request.post(prefsUrl, { headers, data: { prefs: { ...prefs, revision: 1 } } })).json())
       .toEqual({ ok: true, skipped: true, revision: 2 });
+    expect(await (await request.post(prefsUrl, { headers, data: { prefs: { ...prefs, barWeightKg: 50 } } })).json())
+      .toEqual({ ok: true, skipped: true, revision: 2 });
+    expect(await (await request.get(prefsUrl, { headers })).json()).toMatchObject({ prefs });
 
     const purchase = await request.post(`${mobile}/premium/play-purchase`, {
       headers, data: { productId: 'mw_super_bundle', purchaseToken: 'synthetic-local-token', packageName: 'com.missionwinning.app' },

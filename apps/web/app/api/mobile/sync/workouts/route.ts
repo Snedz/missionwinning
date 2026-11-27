@@ -4,10 +4,10 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { flattenExercises, groupFlatSets, normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
-import { incomingWorkoutBeats } from '@/lib/workout/workoutMerge';
 import { clientIp, readBoundedJson, rejectOversizedBody, withApiLogging } from '../../../../../lib/mobile/http';
 import { rateLimitAsync } from '../../../../../lib/mobile/rateLimit';
 import { requireMobileUser } from '../../../../../lib/mobile/auth';
+import { nextSyncCursor, parseSyncCursor, syncCursorFilter } from '../../../../../lib/mobile/syncCursor';
 import {
   mobileSyncPushBodySchema,
   parseJsonBody,
@@ -82,19 +82,23 @@ export const GET = withApiLogging('mobile/sync/workouts', async (request: NextRe
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
-  const since = request.nextUrl.searchParams.get('since') ?? '1970-01-01T00:00:00.000Z';
+  const since = parseSyncCursor(request.nextUrl.searchParams.get('since'));
+  if (!since) return NextResponse.json({ error: 'Invalid sync cursor' }, { status: 400 });
   const limitRaw = Number(request.nextUrl.searchParams.get('limit') ?? '100');
   const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(1, Math.floor(limitRaw)), 100) : 100;
 
-  const { data, error } = await supabase
+  const pull = supabase
     .from('workout_logs')
     .select(
       'id, client_id, workout_name, started_at, completed_at, duration_seconds, exercises, total_volume, revision, updated_at, deleted_at, weight_unit, session_id, set_count',
     )
     .eq('user_id', user.id)
-    .gt('updated_at', since)
     .order('updated_at', { ascending: true })
+    .order('id', { ascending: true })
     .limit(limit);
+  const { data, error } = await (since.id
+    ? pull.or(syncCursorFilter({ ...since, id: since.id }))
+    : pull.gt('updated_at', since.updatedAt));
 
   if (error) {
     /*
@@ -111,8 +115,7 @@ export const GET = withApiLogging('mobile/sync/workouts', async (request: NextRe
 
   const rows = data ?? [];
   const items = rows.map((row) => rowToSyncItem(row));
-  const nextCursor =
-    rows.length === limit ? (rows[rows.length - 1]?.updated_at as string | undefined) ?? null : null;
+  const nextCursor = nextSyncCursor(rows, limit);
 
   return NextResponse.json({ items, nextCursor });
 });
@@ -145,7 +148,7 @@ async function upsertWorkout(
   error?: string;
 }> {
   const now = new Date().toISOString();
-  const updatedAt = w.updatedAt && w.updatedAt > now ? w.updatedAt : now;
+  const updatedAt = now;
   const completedAt = w.completedAt;
   const started = new Date(new Date(completedAt).getTime() - w.durationSeconds * 1000).toISOString();
   // Store the canonical nested shape so web engines can read what Android logged.
@@ -155,7 +158,7 @@ async function upsertWorkout(
   // Existing by client_id
   const { data: byClient } = await supabase
     .from('workout_logs')
-    .select('id, revision, deleted_at')
+    .select('id, revision, deleted_at, updated_at')
     .eq('user_id', userId)
     .eq('client_id', w.clientId)
     .maybeSingle();
@@ -165,19 +168,14 @@ async function upsertWorkout(
     // Higher revision wins, including restore (`.1006`). Equal-rev tombstone still beats live.
     const incomingDeleted = Boolean(w.deletedAt);
     const serverDeleted = Boolean(byClient.deleted_at);
-    const shouldApply = incomingWorkoutBeats({
-      incomingRevision: w.revision,
-      serverRevision: serverRev,
-      incomingDeleted,
-      serverDeleted,
-    });
+    const shouldApply = w.revision > serverRev || (w.revision === serverRev && incomingDeleted && !serverDeleted);
 
     if (!shouldApply) {
       return {
         clientId: w.clientId,
         serverId: byClient.id as string,
         revision: serverRev,
-        updatedAt,
+        updatedAt: byClient.updated_at,
         status: 'ok',
       };
     }
@@ -200,6 +198,8 @@ async function upsertWorkout(
         set_count: w.setCount,
       })
       .eq('id', byClient.id)
+      .eq('revision', serverRev)
+      .eq('updated_at', byClient.updated_at)
       .select('id, revision, updated_at')
       .single();
 
@@ -225,7 +225,7 @@ async function upsertWorkout(
   // Legacy-claim: match fabricated rows without client_id
   const { data: legacy } = await supabase
     .from('workout_logs')
-    .select('id, revision')
+    .select('id, revision, updated_at, deleted_at')
     .eq('user_id', userId)
     .is('client_id', null)
     .eq('workout_name', w.workoutName)
@@ -235,9 +235,11 @@ async function upsertWorkout(
 
   if (legacy) {
     const nextRev = Math.max((legacy.revision as number) ?? 1, w.revision);
+    const preserveLegacy = legacy.revision > w.revision ||
+      (legacy.revision === w.revision && legacy.deleted_at && !w.deletedAt);
     const { data: claimed, error } = await supabase
       .from('workout_logs')
-      .update({
+      .update(preserveLegacy ? { client_id: w.clientId, updated_at: updatedAt } : {
         client_id: w.clientId,
         workout_name: w.workoutName,
         started_at: started,
@@ -253,6 +255,9 @@ async function upsertWorkout(
         set_count: w.setCount,
       })
       .eq('id', legacy.id)
+      .eq('revision', legacy.revision)
+      .eq('updated_at', legacy.updated_at)
+      .is('client_id', null)
       .select('id, revision, updated_at')
       .single();
 

@@ -33,18 +33,19 @@ export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequ
 
   const p = parsed.data.prefs;
   const now = new Date().toISOString();
-  const { data: existing } = await supabase
+  const { data: existing, error: readError } = await supabase
     .from('mobile_user_prefs')
-    .select('revision')
+    .select('revision, updated_at')
     .eq('user_id', user.id)
     .maybeSingle();
 
-  const serverRev = (existing?.revision as number | undefined) ?? 0;
-  if (p.revision < serverRev) {
+  if (readError) return NextResponse.json({ error: 'sync_failed' }, { status: 500 });
+  const serverRev = existing?.revision ?? 0;
+  if (p.revision <= serverRev) {
     return NextResponse.json({ ok: true, skipped: true, revision: serverRev });
   }
 
-  const { error } = await supabase.from('mobile_user_prefs').upsert({
+  const row = {
     user_id: user.id,
     weight_unit: p.weightUnit,
     default_rest_seconds: p.defaultRestSeconds,
@@ -52,9 +53,13 @@ export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequ
     bar_weight_kg: p.barWeightKg,
     bar_weight_lb: p.barWeightLb,
     revision: p.revision,
-    updated_at: p.updatedAt ?? now,
-  });
-  if (error) {
+    updated_at: now,
+  };
+  const table = supabase.from('mobile_user_prefs');
+  const { data, error } = await (existing
+    ? table.update(row).eq('user_id', user.id).eq('revision', serverRev).eq('updated_at', existing.updated_at)
+    : table.insert(row)).select('user_id').maybeSingle();
+  if (error || !data) {
     /*
      * `.211` — an opaque code, not the database's own words.
      *
@@ -63,7 +68,7 @@ export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequ
      * — a free schema map for anyone probing the mobile sync surface. The
      * detail still reaches the server log, where the person debugging it is.
      */
-    console.error('[mobile/sync] %s', error.message);
+    console.error('[mobile/sync] %s', error?.code ?? 'concurrent update');
     return NextResponse.json({ error: 'sync_failed' }, { status: 500 });
   }
   return NextResponse.json({ ok: true, revision: p.revision });
