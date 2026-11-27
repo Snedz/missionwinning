@@ -322,7 +322,10 @@ test('Home and Library docks transfer the real rooms, Start composes', () => {
   );
   assert.deepEqual(
     HOUSE_MORE_QUIET.map((row) => row.href),
-    ['/move', '/mind', '/track', '/learn', '/feedback', '/server']
+    [
+      '/move', '/mind', '/track', '/learn', '/learn/guide', '/programs',
+      '/benchmarks', '/calculators', '/leaderboard', '/feedback', '/server',
+    ]
   );
   assert.equal(houseSecondDockForPath('/log'), 'home');
   assert.equal(houseSecondDockForPath('/history'), 'home');
@@ -1017,7 +1020,8 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(calc, /content-card/);
   assert.doesNotMatch(calc, /<Card[\s>]/);
   assert.match(account, /href="\/calculators"/);
-  assert.doesNotMatch(moreNav, /['"]\/calculators['"]/);
+  assert.ok(HOUSE_MORE_QUIET.some((row) => row.href === '/calculators'));
+  assert.ok(!Object.values(HOUSE_RAIL_HREFS).some((href: string) => href === '/calculators'));
   assert.match(css, /\.house-calc/);
   assert.match(spec, /Calculator leftover/);
   const coaching = read('src/page-components/CoachingPage.tsx');
@@ -1043,7 +1047,8 @@ test('house design system is the signed-in token table', () => {
   assert.doesNotMatch(programs, /content-card/);
   assert.doesNotMatch(programs, /<Card[\s>]/);
   assert.doesNotMatch(programs, /<Button[\s>]/);
-  assert.doesNotMatch(moreNav, /['"]\/programs['"]/);
+  assert.ok(HOUSE_MORE_QUIET.some((row) => row.href === '/programs'));
+  assert.ok(!Object.values(HOUSE_RAIL_HREFS).some((href: string) => href === '/programs'));
   assert.match(css, /\.house-programs/);
   assert.match(spec, /Programs leftover/);
   const help = read('src/page-components/HelpPage.tsx');
@@ -2007,4 +2012,3 @@ test('on the sheet, Today starts with the session — one Start, no nested hero 
   const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
   assert.match(second, /row\.id === 'start'\) return false/);
 });
-
