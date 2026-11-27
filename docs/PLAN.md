@@ -6,6 +6,193 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Idea plan — 2026-11-27 (owner review before build)
+
+### Summary
+
+**Proposed decision: keep Train + Mission Coach and validate the loop on the web before expanding.**
+Mission Winning is a consumer product, not an internal tool or a hackathon entry. Start with adults
+who strength-train at home, outdoors, or with limited equipment. Let them log a set for free without
+signing in, then show how their own logs change what they should train next. Alpha should answer whether
+that second step gives them a reason to come back. This proposal does not authorize implementation or a
+production flip; the roadmap below and [horizon rules](../ORCHESTRATION.md) remain in force.
+
+### Current state
+
+- The [README](../README.md), [thesis](THESIS.md), and [current status](../CONTEXT.md)
+  identify Alpha 0.1.0, an always-free logger, and optional Super Bundle depth. Web Horizon W passed;
+  production remains private and does not install a service worker. Checkout remains muted pending EIN.
+  Public source availability is not evidence of public access, offline validation, or traction.
+- [Architecture](ARCHITECTURE.md), the [mobile API spec](openapi-mobile.yaml), and the [platform contracts](contracts/INDEX.md)
+  describe a Next.js PWA (`app/`, `src/`), local workout state and a durable sync outbox, a TypeScript
+  coaching engine (`src/lib/coach/`, `packages/mw-core/`), Supabase, and a native Compose/Room app
+  (`apps/android/`). Gradle declares `targetSdk = 36`; Android Accept B is a separate founder decision.
+- Full clone at `dd0c8ceb` (`master`, 2026-11-27): 7 commits in the last 7 days and 24 in the last 30,
+  with 6 open PRs at review time. Recent work removed the retired Expo prototype and unused landing
+  variants, consolidated agent docs, and updated dependencies. This is an active product, not a rewrite candidate.
+- Quick local web baseline: `npm run typecheck` and `npm run lint` exited 0 (lint emitted Node's
+  `MODULE_TYPELESS_PACKAGE_JSON` warning); `npm test` passed **5,096/5,096**, 0 failed, in 38.5 seconds.
+  `npm run build` exited 0 and generated all 1,230 static pages; private-mode Serwist was disabled.
+  Android Gradle, browser/device flows, and the full gate were not run.
+
+### Research findings
+
+**Problem and audience.** A [systematic review of adult muscle-strengthening participation](https://pmc.ncbi.nlm.nih.gov/articles/PMC11261455/)
+estimated that 22.8% met the twice-weekly guideline (95% CI 18.18–27.77%). That identifies a broad
+participation gap, not demand for this app. The [strength-training intervention scoping review](https://pmc.ncbi.nlm.nih.gov/articles/PMC8812857/)
+and [fitness self-tracking review](https://www.tandfonline.com/doi/full/10.1080/0144929X.2020.1801840)
+support testing a concrete behavior rather than assuming that adding a tracker necessarily changes habits.
+The [repo thesis](THESIS.md#3-who-it-is-for) supplies the sharper, still unvalidated segment: adults
+already trying to train consistently with a phone, little kit, and no desire for a wearable or another
+subscription. In interviews, ask what they used in their last session and what they did when the plan
+stopped fitting; don't ask whether they like the idea.
+
+**Alternatives and U.S. reference pricing (November 2026 spot check, not a market average).**
+
+| Alternative | Observed price or cost | What it already solves / what to test |
+|---|---|---|
+| Paper, notes, spreadsheet, or a static program | Often free with tools the athlete already has | Flexible and often offline. Test whether an explained next workout is worth switching for. |
+| Dedicated set loggers | Free tiers; sampled paid plans about US$3–5/mo or US$24–30/yr | Fast entry, history, and routines are already competitive. Free alone is not differentiation. |
+| Adaptive strength-plan apps | Sampled plan about US$16/mo or US$96/yr | The athlete buys less programming work. Test whether adaptation from sparse, real logs is credible. |
+| Wearable-led coaching | Sampled standard tiers US$199–359/yr, including hardware | Good at sensor-driven feedback. Compete on the job of planning strength work, not on physiological measurement. |
+
+Prices came from vendor checkout/help or U.S. store listings; named entries are omitted under the
+[public repo classification rules](CLASSIFICATION.md). Verify local prices separately before any paid test.
+Core logging stays free; this review does not set new prices or revive a paid launch before the owner clears it.
+
+**Distribution and platform constraints.**
+
+- **Web PWA:** [MDN caching guidance](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Caching)
+  explains why the offline app shell needs a service worker and a successful online bootstrap. Browser
+  [storage can be evicted](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria)
+  or cleared; do not promise first-ever offline load or permanent local backup. Test after setup with the
+  browser fully closed and the phone offline. Never cache the private app just to test the public claim.
+- **Play health and privacy:** complete the [Health apps declaration](https://support.google.com/googleplay/android-developer/answer/14738291)
+  for the actual fitness features and align the privacy policy with [Health Content and Services](https://support.google.com/googleplay/android-developer/answer/16679511).
+  [Data safety](https://support.google.com/googleplay/android-developer/answer/10787469) must match what is
+  transmitted, including SDKs and optional sync, not just what is stored locally. If the app offers account
+  creation, verify [in-app and web deletion paths](https://support.google.com/googleplay/android-developer/answer/13327111).
+  No Health Connect dependency for this wedge; any later integration needs its own permission and policy review.
+- **Play builds and billing:** [target API rules](https://support.google.com/googleplay/android-developer/answer/11926878)
+  require API 36 for new phone apps and updates from August 31, 2026. Verify the actual AAB and Console track
+  at submission. Check whether the [new personal-account test rule](https://support.google.com/googleplay/android-developer/answer/14151465)
+  applies (12 opted-in testers for 14 continuous days); that is not Mission Winning's retired invite beta.
+  For digital subscriptions, use [Play Billing by default](https://support.google.com/googleplay/android-developer/answer/9858738);
+  qualify for any regional exception before showing another payment route. Verify renewal, price, and cancellation
+  disclosures against the [subscription policy](https://support.google.com/googleplay/android-developer/answer/9900533).
+- **Not a TWA shortcut:** [Chrome's TWA guide](https://developer.chrome.com/docs/android/trusted-web-activity/quick-start)
+  requires Digital Asset Links with the correct Play signing certificate; failed verification shows browser UI.
+  The wrapper still depends on the site's caching/storage and must meet Play policy. The [native decision](ANDROID_NATIVE.md)
+  stands: PWA for web, Compose for the Android product; the [TWA playbook](TWA_MOBILE_PLAYBOOK.md) is contingency only.
+
+### Reuse candidates
+
+GitHub repository and README verified; stars and last push are GitHub metadata as observed on 2026-11-27.
+Repo-level licenses do not automatically cover assets, premium plugins, or a hosted service.
+
+| GitHub repo | License | Stars | Last push (UTC) | Specific use and decision |
+|---|---|---:|---|---|
+| [serwist/serwist](https://github.com/serwist/serwist) | MIT | 1,509 | 2026-11-24 | Already installed. Keep the existing Next.js worker and use its precache/runtime strategies to verify the post-install Train route; don't add a second worker. |
+| [yuhonas/free-exercise-db](https://github.com/yuhonas/free-exercise-db) | Unlicense | 2,195 | 2026-09-27 | If athlete feedback reveals missing minimal-kit moves, review terms and use selected JSON entries as a catalog cross-check. Do not import images; their rights are [unverified](https://github.com/yuhonas/free-exercise-db/issues/2). |
+| [GoogleChromeLabs/bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) | Apache-2.0 | 3,180 | 2026-11-26 | Only if the owner reopens TWA: generate a disposable signing/origin verification fixture against the manifest; don't replace Compose. |
+| [powersync-ja/powersync-js](https://github.com/powersync-ja/powersync-js) | Apache-2.0 SDK | 742 | 2026-11-27 | If real athletes hit recurring signed-in sync loss, prototype SQLite replication for one test workout table against non-production Supabase. Validate deletion/conflicts first; no replacement of the outbox in Alpha. Check [the service release's license](https://powersync.com/legal/licensing-terms): current Open Edition is Apache-2.0; historical FSL is restricted source-available. |
+| [pubkey/rxdb](https://github.com/pubkey/rxdb) | Apache-2.0 core | 23,447 | 2026-11-27 | Alternative sync spike, not a second dependency: compare duplicate replay and offline reads for the same synthetic table. The dedicated [IndexedDB storage plugin](https://rxdb.info/rx-storage-indexeddb.html) is commercial; verify plugin/storage terms and web bundle cost before choosing. |
+
+Prefer MIT/Apache-2.0 and keep required notices. Strong copyleft (e.g. AGPL) is not automatically
+disqualifying in this AGPL repo, but warrants a code/asset compatibility review before importing anything.
+Milestone 1 needs no new packages, content imports, or sync-service migration.
+
+### Options considered
+
+| Direction | Upside | Main cost / decision |
+|---|---|---|
+| **A. Keep current direction: Train + Mission Coach** | Reuses both shipped strengths. Tests whether a low-friction entry and a useful next workout reinforce each other. | Guest measurement and founder distribution must work. **Pick this, with a web-first evidence milestone.** |
+| **B. Logger only** | Simplest promise and fewer safety/expectation risks. | Good free alternatives already exist. Keep as a fallback if athletes return to log but do not value adaptation. |
+| **C. Coach-first subscription / wearable product** | Clearer paid comparison and richer inputs for some athletes. | Reverses the low-friction promise, adds policy and hardware constraints, and tests willingness to pay before usefulness. Defer. |
+| **D. Android-first distribution** | A store presence and native offline persistence. | Adds Accept B, Play compliance, and device QA before testing the same product hypothesis. Keep native as the established later channel, not a parallel launch requirement. |
+
+### Final idea
+
+**Log offline. See what to train next, based on what you actually did.** Use the existing accountless
+Train path, then an earned Mission Coach revision on Today/Coach after eligible work. Explain the specific
+reason for any genuine change; show an honest no-change or insufficient-history state otherwise. A missed
+session should make the next action easier, not generate a penalty or a medical/readiness claim.
+The logger remains fully useful without signup, telemetry consent, payment, or a wearable. Lead with
+this loop, not the breadth of the supporting pillars. No new pillars, locales, devices, billing routes,
+catalog import, or planner rewrite for the first milestone.
+
+### Milestones
+
+#### Milestone 1 — Prove the guest loop and prepare a measurable Alpha (after owner approval)
+
+Use one production-equivalent public-mode QA build, not a production flag change. Walk the existing
+Today (`/log`) → Train (`/active`) → Victory → Mission Coach path on a real Android phone in Chrome;
+run one iPhone Safari browser sanity pass for the web experience, not a native iOS project. Use a paired
+run: a fresh guest to test honest defaults, then controlled history with a documented set or missed
+session that should change the week. Fix only verified launch-blocking defects in the approved scope.
+The owner separately signs off the production-readiness and measurement checklist in the [launch runbook](LAUNCH_RUNBOOK.md).
+
+**Acceptance criteria**
+
+| Check | Evidence or pass condition |
+|---|---|
+| First session | On fresh phone state, reach and save a working set in ≤90 seconds with no login, wearable, payment, push, or analytics prompt blocking it. Today has one clear next training action. |
+| Offline continuity | After an online bootstrap, turn on airplane mode and close/reopen the app. Save a workout, relaunch, and see the set and workout exactly once in history, with edits preserved. Reconnect and verify no duplicate; verify the optional signed-in outbox replay separately. |
+| Coach usefulness | In the controlled-history case an eligible log or missed session produces the expected next-session change and a truthful reason. With insufficient history there is no fabricated trend; the athlete can still start or resume training. |
+| Measurement integrity | Founder verifies the [device-week migration](../supabase/migrations/20261009_week_logged_device_owners.sql) and the consent prerequisites in the launch runbook in the authorized environment. A synthetic eligible guest gets one week row despite repeat writes; a non-consenting guest can log normally and is not counted. Verify the weekly reader with seeded week-4 positive/negative cases or mark measurement blocked. |
+| Decision packet | Record device/build, timings, outcomes, unresolved blockers, and which users the measure covers. Founder chooses one recruiting channel, confirms privacy/territory and a rollback path, then records **go / no-go** for the existing free Alpha flip. No live switch or outreach without this decision. |
+
+Guest writes require an optional push subscription. The weekly rollup is **consent-limited** for guests;
+it can merge a device into an account after sign-in. A return means a qualifying log in the fourth ISO
+week, not days 21–27 from the first workout as in the legacy signed-in metric. Report the weekly reader's
+eligible denominator and coverage separately; do not combine these metrics or count opt-outs as
+non-returners. Don't require an account or push subscription to improve measurement. If the report cannot
+be interpreted, reach a measurement decision with the owner before using retention as a release gate.
+
+#### Milestone 2 — Free Alpha and two mature cohorts
+
+After founder authorization, run the [post-flip smoke](LAUNCH_RUNBOOK.md), recruit through one owner-approved
+channel, and ask athletes who return and who lapse what helped them choose the next workout. Report week-4
+retention with counts, cohort windows, and consent coverage. Use the [existing 10% two-cohort bar](POST_LAUNCH_CADENCE.md)
+as a directional checkpoint for the eligible population, not as statistical proof; don't declare success
+on a tiny or unmatured denominator. If the loop misses the bar, pause acquisition and investigate where it breaks.
+
+#### Milestone 3 — Extend only after the evidence gates
+
+Use Android Accept B and Play review to decide store timing. Revisit paid depth after owner clearance on EIN,
+billing, and territories and evidence of repeated value. Leave iOS, wearables, and pillar expansion behind
+their existing gates.
+
+### Risks
+
+- Private mode and a passing web build do not prove offline behavior or release readiness. Require the
+  public-mode phone pass and founder post-flip smoke before promoting the offline promise.
+- Opt-in, uninstall, and multi-device behavior bias device-week readings; cross-check interviews and report
+  denominators rather than treating account-free usage as invisible or claiming all-athlete retention.
+- Thin logs may not support a useful recommendation. Use conservative defaults and hold off on claims about
+  injury, treatment, or physiological recovery ([safety posture](LEGAL_SAFETY.md)).
+- Demand and willingness to pay are unknown. Free competitors are good, and the sampled prices don't show
+  what this audience will pay. Defer checkout work, new dependencies, and native expansion until needed.
+
+### Open decisions for the owner
+
+1. Approve the single free web-first milestone, an initial training community/channel, and the conditions
+   and timing for the founder-owned public flip.
+2. Confirm the migration/consent status and how much sample coverage is enough to interpret the week-4
+   checkpoint without weakening the accountless promise.
+3. Confirm live territories and the wording for log-driven recommendations. Decide whether to use “AI coach”
+   in the public pitch or lead with the observable behavior.
+4. Confirm the Android Console account/track and Accept B timing; defer price, lifetime terms, and paid
+   distribution until the existing legal and payment gates clear.
+
+### Recommendation
+
+**BUILD, after owner review: authorize Milestone 1 only.** Validate the existing free Train → Coach loop;
+do not build a second app, broaden scope, merge into another repo, or archive an active product. If the
+owner cannot make the Alpha measurable and accessible, pause expansion rather than substituting feature work.
+
+---
+
 ## Frozen plan — `.1054` v0 catalog labeling (2026-08-27)
 
 > **Frozen.** Implement only this section + root
