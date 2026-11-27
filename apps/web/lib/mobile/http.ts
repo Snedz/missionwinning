@@ -1,13 +1,10 @@
-import { isIP } from 'node:net';
 import { NextResponse, type NextRequest } from 'next/server';
 import { hasPrivateAccessCookie } from './auth';
 import { isPrivateModeEnabled } from './privateMode';
+import { trustedClientIp } from './rateLimit';
 
 export function clientIp(request: NextRequest): string {
-  const ip = (process.env.VERCEL === '1'
-    ? request.headers.get('x-vercel-forwarded-for')
-    : request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip'))?.split(',')[0]?.trim();
-  return ip && isIP(ip) ? ip : 'unknown';
+  return trustedClientIp(request.headers, process.env);
 }
 
 export function rejectOversizedBody(request: NextRequest, maxBytes = 32 * 1024) {

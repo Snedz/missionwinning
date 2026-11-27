@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { request as httpRequest } from 'node:http';
 import { expect, test } from '@playwright/test';
-import { createMemoryRateLimit } from '../apps/web/lib/mobile/rateLimit';
+import { createMemoryRateLimit, trustedClientIp } from '../apps/web/lib/mobile/rateLimit';
 
 const mobile = '/api/mobile';
 const privateMode = process.env.PRIVATE_MODE === 'true' || process.env.PRIVATE_MODE === '1';
@@ -22,6 +22,13 @@ test('local rate limit bounds live buckets without resetting existing quotas', (
   expect(limit('first', 1, 1000).ok).toBe(false);
   clock += 1000;
   expect(limit('third', 1, 1000).ok).toBe(true);
+});
+
+test('IP rate limits ignore forwarded headers unless the deployment controls them', () => {
+  const headers = new Headers({ 'x-forwarded-for': '192.0.2.45', 'x-vercel-forwarded-for': '192.0.2.80' });
+  expect(trustedClientIp(headers, {})).toBe('unknown');
+  expect(trustedClientIp(headers, { VERCEL: '1' })).toBe('192.0.2.80');
+  expect(trustedClientIp(headers, { MW_TRUST_PROXY_HEADERS: '1' })).toBe('192.0.2.45');
 });
 
 test('private mobile ingress returns the legacy 403 before route auth', async ({ request }) => {

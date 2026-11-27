@@ -22,6 +22,7 @@ export default defineConfig({
     url: `${baseURL}/log`,
     env: {
       PRIVATE_MODE: process.env.PRIVATE_MODE ?? 'false',
+      MW_TRUST_PROXY_HEADERS: '1',
       GROQ_API_KEY: '', COACH_LLM_API_KEY: '', OPENROUTER_API_KEY: '',
     },
     reuseExistingServer: !process.env.CI,

@@ -1,8 +1,18 @@
 /** Rate limiting — Upstash Redis when configured, else in-memory (local dev). */
 
+import { isIP } from 'node:net';
+
 const MAX_MEMORY_BUCKETS = 10_000;
 
 export type RateLimitResult = { ok: boolean; retryAfterSec?: number };
+
+export function trustedClientIp(headers: Headers, env: Record<string, string | undefined>): string {
+  const raw = env.VERCEL === '1' ? headers.get('x-vercel-forwarded-for')
+    : env.MW_TRUST_PROXY_HEADERS === '1' ? headers.get('x-forwarded-for') ?? headers.get('x-real-ip')
+    : null;
+  const ip = raw?.split(',')[0]?.trim();
+  return ip && isIP(ip) ? ip : 'unknown';
+}
 
 export function createMemoryRateLimit(maxBuckets = MAX_MEMORY_BUCKETS, clock = Date.now) {
   const buckets = new Map<string, { count: number; resetAt: number }>();
