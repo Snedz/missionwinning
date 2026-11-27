@@ -87,8 +87,6 @@
     "www:tokens": "node scripts/build-marketing-tokens.mjs",
     "design:concepts": "node scripts/design-concepts/serve.mjs",
     "design:stills": "node scripts/design-concepts/stills.mjs",
-    "mobile": "npm --prefix apps/mobile start",
-    "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
     "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts",
     "check-design-system": "node scripts/check-design-system.mjs",
