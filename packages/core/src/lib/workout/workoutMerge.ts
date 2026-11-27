@@ -27,9 +27,18 @@ export function workoutFingerprint(
   return `${log.workoutName}|${bucket}|${Math.round(log.totalVolume)}`;
 }
 
-/** Identity for merge purposes: the sync-v2 client id, else the legacy fingerprint. */
+/** Prefer stable client and database IDs to the legacy fingerprint. */
 export function workoutIdentity(log: CompletedWorkoutLog): string {
-  return log.clientId ? `cid:${log.clientId}` : `fp:${workoutFingerprint(log)}`;
+  if (log.clientId) return `cid:${log.clientId}`;
+  const rowId = cloudRowId(log);
+  return rowId ? `row:${rowId}` : `fp:${workoutFingerprint(log)}`;
+}
+
+const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
+
+export function cloudRowId(log: CompletedWorkoutLog): string | null {
+  const id = log.id?.startsWith('cloud-') ? log.id.slice(6) : '';
+  return uuid.test(id) ? id : null;
 }
 
 function revisionOf(log: CompletedWorkoutLog): number {
@@ -106,22 +115,34 @@ export function mergeWorkoutHistoriesDetailed(
   local: CompletedWorkoutLog[],
   cloud: CompletedWorkoutLog[],
   historyCap = HISTORY_CAP,
+  preferServer = false,
 ): MergeResult {
   const byIdentity = new Map<string, CompletedWorkoutLog>();
+  const rowClients = new Map<string, string>();
+  for (const log of [...local, ...cloud]) {
+    const rowId = log && cloudRowId(log);
+    if (rowId && log.clientId) rowClients.set(rowId, log.clientId);
+  }
 
-  const consider = (log: CompletedWorkoutLog) => {
-    if (!log) return;
+  const consider = (original: CompletedWorkoutLog, incoming: boolean) => {
+    if (!original) return;
+    const rowId = cloudRowId(original);
+    const clientId = rowId && rowClients.get(rowId);
+    const log = clientId && !original.clientId ? { ...original, clientId } : original;
     const key = workoutIdentity(log);
     const existing = byIdentity.get(key);
-    byIdentity.set(key, existing ? pickWinner(existing, log) : log);
+    const serverWins = preferServer && incoming && existing &&
+      revisionOf(existing) === revisionOf(log) && !!existing.deletedAt === !!log.deletedAt;
+    byIdentity.set(key, !existing ? log : serverWins
+      ? preserveSessionTitle(preserveSessionNote(log, existing), existing) : pickWinner(existing, log));
   };
 
-  for (const log of local) consider(log);
-  for (const log of cloud) consider(log);
+  for (const log of local) consider(log, false);
+  for (const log of cloud) consider(log, true);
 
   // A log that gained a clientId in the cloud would otherwise appear twice: once
   // under `fp:` (stale local copy) and once under `cid:`. Collapse those pairs.
-  const withClientId = [...byIdentity.values()].filter((l) => l.clientId);
+  const withClientId = [...byIdentity.values()].filter((l) => l.clientId && !cloudRowId(l));
   for (const log of withClientId) {
     const legacyKey = `fp:${workoutFingerprint(log)}`;
     const legacy = byIdentity.get(legacyKey);

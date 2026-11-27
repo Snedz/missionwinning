@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { alignLegacyWorkouts, createWorkoutCloud, withClientId } from './workoutCloud';
-import { mapCloudToLocal, mergeWorkoutHistories } from '@/lib/workout/workoutMerge';
+import { mapCloudToLocal, mergeWorkoutHistories, mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 
 const legacy = {
   id: '11111111-1111-4111-8111-111111111111',
@@ -53,6 +53,7 @@ test('workout deletion uses the existing row, compare-and-set, and preserves sto
         const body = JSON.parse(String(options.body));
         assert.deepEqual(Object.keys(body).sort(), ['deleted_at', 'revision', 'updated_at']);
         assert.equal(body.deleted_at, deletion.deletedAt);
+        assert.equal(body.updated_at, 'now');
         return Response.json([{ ...legacy, ...body }]);
       }
       return Response.json([legacy]);
@@ -60,4 +61,43 @@ test('workout deletion uses the existing row, compare-and-set, and preserves sto
   });
   assert.equal(await transport.push(deletion, 'kg'), true);
   assert.equal(patched, true);
+});
+
+test('a lost workout insert response can retry without duplicating the row or winning by device time', async () => {
+  const clientId = '33333333-3333-4333-8333-333333333333';
+  const log = {
+    ...mapCloudToLocal([legacy])[0], id: clientId, clientId,
+    updatedAt: '2099-01-01T00:00:00Z',
+  };
+  let inserted = false;
+  let writes = 0;
+  const transport = createWorkoutCloud({
+    url: 'http://127.0.0.1:54321', publicKey: 'test-public-key', userId: legacy.user_id, accessToken: 'test-token',
+    fetcher: async (_url, options) => {
+      if (options?.method === 'GET') return Response.json(inserted ? [{ ...legacy, client_id: clientId }] : []);
+      writes++;
+      assert.equal(options?.method, 'POST');
+      const body = JSON.parse(String(options?.body));
+      assert.equal(body.client_id, clientId);
+      assert.equal(body.updated_at, 'now');
+      inserted = true;
+      throw new Error('response lost after commit');
+    },
+  });
+  await assert.rejects(transport.push(log, 'lb'), /response lost/);
+  assert.equal(await transport.push(log, 'lb'), true);
+  assert.equal(writes, 1);
+});
+
+test('server merges retain distinct legacy rows and reconcile a claimed ID despite client clock skew', () => {
+  const [older, distinct] = mapCloudToLocal([legacy, { ...legacy, id: '44444444-4444-4444-8444-444444444444' }]);
+  const [claimed] = mapCloudToLocal([{ ...legacy,
+    client_id: '55555555-5555-4555-8555-555555555555', total_volume: 15,
+  }]);
+  const { logs } = mergeWorkoutHistoriesDetailed(
+    [{ ...older, totalVolume: 99, updatedAt: '2099-01-01T00:00:00Z' }], [claimed, distinct], Infinity, true,
+  );
+  assert.equal(logs.length, 2);
+  assert.deepEqual(logs.find((entry) => entry.id === older.id), claimed);
+  assert.ok(logs.some((entry) => entry.id === distinct.id));
 });

@@ -1,5 +1,5 @@
 import type { CompletedWorkoutLog } from '@/types';
-import { incomingWorkoutBeats, mapCloudToLocal, workoutFingerprint } from '@/lib/workout/workoutMerge';
+import { cloudRowId, mapCloudToLocal, workoutFingerprint } from '@/lib/workout/workoutMerge';
 
 export type WorkoutCloudRow = Parameters<typeof mapCloudToLocal>[0][number] & {
   id: string;
@@ -18,11 +18,6 @@ const COLUMNS = 'id,user_id,client_id,revision,updated_at,deleted_at,workout_nam
 const PAGE_SIZE = 200;
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
 
-export function cloudRowId(log: CompletedWorkoutLog): string | null {
-  const id = log.id.startsWith('cloud-') ? log.id.slice(6) : '';
-  return uuid.test(id) ? id : null;
-}
-
 function exactLegacyKey(log: CompletedWorkoutLog) {
   return JSON.stringify([log.workoutName, Date.parse(log.startedAt), Date.parse(log.completedAt)]);
 }
@@ -31,25 +26,19 @@ export function alignLegacyWorkouts(local: CompletedWorkoutLog[], cloud: Complet
   const knownClients = new Set(cloud.map((log) => log.clientId).filter(Boolean));
   const legacy = new Map<string, CompletedWorkoutLog | null>();
   for (const log of cloud) {
-    if (log.clientId) continue;
     const key = exactLegacyKey(log);
     legacy.set(key, legacy.has(key) ? null : log);
   }
   return local.map((log) => {
     const match = !cloudRowId(log) && !knownClients.has(log.clientId) && legacy.get(exactLegacyKey(log));
-    return match && workoutFingerprint(match) === workoutFingerprint(log)
-      ? { ...log, id: match.id, clientId: undefined } : log;
+    return match && (!match.clientId || !log.clientId) && workoutFingerprint(match) === workoutFingerprint(log)
+      ? { ...log, id: match.id, clientId: match.clientId } : log;
   });
 }
 
 export function workoutIsAhead(log: CompletedWorkoutLog, remote: WorkoutCloudRow) {
   const revision = log.revision ?? 1;
-  if (!incomingWorkoutBeats({
-    incomingRevision: revision, serverRevision: remote.revision,
-    incomingDeleted: !!log.deletedAt, serverDeleted: !!remote.deleted_at,
-  })) return false;
-  return revision !== remote.revision || !!log.deletedAt !== !!remote.deleted_at ||
-    Date.parse(log.updatedAt ?? log.completedAt) > Date.parse(remote.updated_at);
+  return revision > remote.revision || (revision === remote.revision && !!log.deletedAt && !remote.deleted_at);
 }
 
 /** Stable after a reload or repeated import; preserve every valid original UUID. */
@@ -141,7 +130,7 @@ export function createWorkoutCloud(input: {
     if (!existing && id) return true; // do not recreate hard-deleted server rows
     const row: WorkoutWrite = {
       user_id: input.userId, client_id: existing ? existing.client_id : clientId, revision: log.revision ?? 1,
-      updated_at: new Date(Math.max(Date.now(), Date.parse(log.updatedAt ?? log.completedAt))).toISOString(),
+      updated_at: 'now',
       deleted_at: log.deletedAt ?? null, workout_name: log.workoutName,
       started_at: log.startedAt, completed_at: log.completedAt, duration_seconds: log.durationSeconds,
       total_volume: log.totalVolume, exercises: log.exercises,

@@ -4,8 +4,8 @@ import { createClient, type Session, type SupabaseClient } from '@supabase/supab
 import { create } from 'zustand';
 import { enqueue, flush, getState, hasPendingOperation, msUntilNextAttempt, registerHandler, retryStuck } from '@/lib/sync/outbox';
 import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
-import { cloudRowId, createWorkoutCloud, withClientId, workoutIsAhead } from '@/lib/sync/workoutCloud';
-import { mapCloudToLocal } from '@/lib/workout/workoutMerge';
+import { createWorkoutCloud, withClientId, workoutIsAhead } from '@/lib/sync/workoutCloud';
+import { cloudRowId, mapCloudToLocal } from '@/lib/workout/workoutMerge';
 import type { CoachPlan } from '@/lib/coach/types';
 import type { SavedWorkout } from '@/types';
 import { createNotebookCloud } from './notebookCloud';

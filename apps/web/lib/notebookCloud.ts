@@ -97,7 +97,7 @@ export function createNotebookCloud(client: SupabaseClient, owner: string) {
     const row = await profile();
     const remote = readPlan(row?.coach_plan, row?.units);
     if (remote && remote.revision >= plan.revision) return true;
-    const updated_at = new Date().toISOString();
+    const updated_at = 'now';
     if (!row) {
       const { error } = await client.from('profiles').insert({ id: owner, coach_plan: plan, updated_at });
       return !error;

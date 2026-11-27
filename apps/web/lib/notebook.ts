@@ -171,7 +171,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       const guestHistory = (guest?.workoutHistory ?? []).map<CompletedWorkoutLog>((log) =>
         log.weightUnit ? log : { ...log, weightUnit: guestUnit });
       const history = alignLegacyWorkouts([...current.workoutHistory, ...guestHistory], rows);
-      const combined = mergeWorkoutHistoriesDetailed(history, rows, Infinity);
+      const combined = mergeWorkoutHistoriesDetailed(history, rows, Infinity, true);
       const local = {
         activeWorkout: current.activeWorkout ?? (guest?.activeWorkout ? {
           ...guest.activeWorkout, weightUnit: guest.activeWorkout.weightUnit ?? guestUnit,
