@@ -14,10 +14,10 @@ export function rejectOversizedBody(request: NextRequest, maxBytes = 32 * 1024) 
 }
 
 export async function readBoundedJson(request: Request, maxBytes = 32 * 1024): Promise<
-  { raw: unknown } | { oversized: NextResponse }
+  { raw: unknown; empty?: true } | { oversized: NextResponse }
 > {
   const reader = request.body?.getReader();
-  if (!reader) return { raw: null };
+  if (!reader) return { raw: null, empty: true };
   const decoder = new TextDecoder();
   let body = '';
   let size = 0;
@@ -32,7 +32,7 @@ export async function readBoundedJson(request: Request, maxBytes = 32 * 1024): P
       }
       body += decoder.decode(value, { stream: true });
     }
-    return { raw: JSON.parse(body + decoder.decode()) as unknown };
+    return size === 0 ? { raw: null, empty: true } : { raw: JSON.parse(body + decoder.decode()) as unknown };
   } catch {
     return { raw: null };
   } finally {

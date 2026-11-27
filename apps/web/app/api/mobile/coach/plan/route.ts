@@ -60,8 +60,7 @@ export const POST = withApiLogging('mobile/coach/plan', async (request: NextRequ
 
   const bodyRead = await readBoundedJson(request);
   if ('oversized' in bodyRead) return bodyRead.oversized;
-  const { raw } = bodyRead;
-  const parsed = parseJsonBody(mobileCoachPlanBodySchema, raw ?? {});
+  const parsed = parseJsonBody(mobileCoachPlanBodySchema, bodyRead.empty ? {} : bodyRead.raw);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
 
   const payload = buildMobileCoachPlan({

@@ -126,6 +126,14 @@ test.describe('public mobile ingress', () => {
     expect((await request.get(`${mobile}/coach/plan?equipment=unknown`)).status()).toBe(400);
   });
 
+  test('Coach seed accepts an empty request but rejects invalid JSON', async ({ request }) => {
+    const url = `${mobile}/coach/plan`;
+    expect((await request.post(url)).status()).toBe(200);
+    for (const data of ['{"equipment":', 'null']) {
+      expect((await request.post(url, { data, headers: { 'Content-Type': 'application/json' } })).status()).toBe(400);
+    }
+  });
+
   test('unauthenticated Compose logging stays local; sync is Bearer-only', async ({ request }) => {
     const data = { workoutName: 'Quick workout', completedAt: '2025-01-02T12:00:00Z', durationSeconds: 60, setCount: 1, totalVolume: 0 };
     const result = await request.post(`${mobile}/workouts`, { data });
