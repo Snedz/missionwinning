@@ -4,21 +4,35 @@ This build does not replace the production app, change its data, or redirect ins
 
 The portable envelope is unchanged: `{ app: "mission-winning", version: 1, exportedAt, workoutStore, localKeys }`. The restore routine merges workout IDs and revisions and retains populated device keys on conflict. Older feature data under `mw_*` can round-trip even when no v2 screen reads it. An existing destination session takes precedence over an imported one. Use a fresh destination to restore the source session.
 
-## Supabase and Compose Android
+## Accounts and workout sync
 
-No schema migration is required for the core adapter. `mapCloudToLocal` in `packages/core/src/lib/workout/workoutMerge.ts` accepts existing `workout_logs` fields (`id`, `client_id`, `revision`, `updated_at`, `deleted_at`, `workout_name`, `started_at`, `completed_at`, `duration_seconds`, `exercises`, and `total_volume`). It normalizes both web nested exercise sets and Android flat sets. `mergeWorkoutHistories` reconciles logical client IDs and revisions; `flattenExercises` is the reverse boundary used by the current Android API. The compatibility fixtures are synthetic examples shaped from the original contracts, not customer data. V2 does not yet fetch cloud rows or accept a raw rows file through You.
+With no Supabase settings, v2 is a local notebook. For a pilot, set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` before building, and allow the pilot origin's `/profile` in Supabase Auth. In **You**, an existing user can request a PKCE email link and open it in the same browser. This does not provision new users or carry over a session or device storage from another origin. The first eligible account merges a copy of guest workout history without removing the guest copy; sign-out returns to the guest notebook.
 
-Keep deployed Compose clients on the current service:
+No v2 migration changes the existing `workout_logs` schema or RLS. `mapCloudToLocal` reads nested web and flat Android sets; `mergeWorkoutHistories` reconciles client IDs, revisions, and tombstones. Account writes use a durable outbox scoped to the signed-in user. This syncs workout history, not active sessions, plans, templates, or all device settings. **You** accepts the backup envelope, not raw database rows.
 
-| Contract | Maintain at the existing backend |
+## Compose Android HTTP contracts
+
+The following paths are implemented in v2. Keep installed clients on their existing backend until an installed build has passed staging verification.
+
+| Path | V2 behavior |
 |---|---|
-| `/api/mobile/coach/plan`, `/api/mobile/coach/adapt` | Existing JSON plan/adapt DTOs and access behavior (guest when public; cookie or Bearer for private); shared seed for offline starts |
+| `/api/mobile/coach/plan`, `/api/mobile/coach/adapt` | Legacy seed/adapt DTOs; unauthenticated bootstrap when the mobile perimeter is public |
+| `/api/mobile/workouts` | Legacy optional-auth logging; public unauthenticated requests receive `synced: false` |
 | `/api/mobile/sync/workouts` | Supabase Bearer auth, push/pull, native flat sets; preserve client IDs, revisions, tombstones, and idempotency |
-| `/api/mobile/sync/routines`, `/api/mobile/sync/customs`, `/api/mobile/sync/prefs` | Supabase Bearer auth and existing DTOs |
-| Premium, purchase and telemetry routes | Remain on the existing app; v2 does not handle these requests |
+| `/api/mobile/sync/routines`, `/api/mobile/sync/customs`, `/api/mobile/sync/prefs` | Supabase Bearer auth and existing DTOs/tables; these endpoints do not add web UI for those settings |
+| `/api/mobile/premium/status`, `/api/mobile/premium/play-purchase` | Legacy premium source response and payments-off purchase response (`410` after auth and validation); no purchase processing |
+| `/api/mobile/telemetry` | Legacy heartbeat response; stores a valid heartbeat only when the server's Supabase service role is configured and storage succeeds |
 
-Before a rollout, run a read-only authenticated pilot against the existing contracts, compare web/Android history, and test revision conflicts and deletions on staging. Only then add authenticated transport that drains the durable outbox. Keep the old service as rollback until both clients are verified.
+In private mode, the legacy upstream perimeter checks the gate cookie before route-level auth; a Bearer token alone does not bypass it. V2's perimeter applies to `/api/mobile/*`, not the web notebook. Confirm the intended flag, cookie distribution, and rate-limit configuration on staging. The separate `/api/coach/trainer` call in Compose is not part of this port.
+
+## Verification and next gates
+
+- **Fixture/contract-tested:** unchanged v1 backup structure and recovery, synthetic nested web and flat Android rows, and HTTP behaviors derived from the old routes and Kotlin DTOs. These tests do not run the Kotlin client.
+- **Verified locally:** local Supabase with the original base, workout-sync, routines, customs/prefs, and telemetry migrations plus Mailpit. Browser tests covered email sign-in, existing history, guest merge without duplicates, account isolation, offline logging/reconnect, and sign-out. HTTP tests covered Bearer sync round-trips, legacy workout claiming, cursor and revision handling, tombstones, RLS, heartbeat storage, free-beta status, and payments-off. A separate private-mode run checked the cookie-less `403`.
+- **Mobile web:** 390px Chromium and axe checked the six notebook screens, empty and error states, and the account panel. The suite verified warm offline logging and exercised the app's install button with a simulated browser event, not a real OS install.
+
+Before any cutover, verify the real coaching/API origin and redirect allowlist, stage with non-customer data, and run an installed Compose build against the intended host and access settings. Compare history across actual clients, including mixed units, simultaneous edits, retries, and deletes. Validate production entitlements, provider reconciliation, service-worker updates, monitoring, and rollback. Production accounts, Android devices, hosted routing, and billing have not been verified.
 
 ## Deliberately left out
 
-Live accounts, cloud sync, Android binaries or API replacement, analytics, payments, wearables, Fuel, Move, Mind, Track, Learn, leaderboards, social, and marketing pages. Existing app data and routes remain in the existing product; they are not deleted by this prototype.
+Production migration, Android binaries, Trainer, analytics dashboards, payment processing, wearables, Fuel, Move, Mind, Track, Learn, leaderboards, social, and marketing pages. Nothing in the existing product, including its provider records, was removed by v2.
