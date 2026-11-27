@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  coachSheetSessions,
+  resolveCoachBossSessionId,
+} from '@/lib/coach/resolveCoachBossSessionId';
+
+describe('resolveCoachBossSessionId', () => {
+  const week = [
+    { id: 'mon', dayOffset: 0, status: 'done' },
+    { id: 'tue', dayOffset: 1, status: 'pending' },
+    { id: 'wed', dayOffset: 2, status: 'pending' },
+    { id: 'fri', dayOffset: 4, status: 'pending' },
+  ];
+
+  it('prefers today when that session is still pending', () => {
+    assert.equal(resolveCoachBossSessionId(week, 1), 'tue');
+  });
+
+  it('skips done today and picks the next upcoming pending', () => {
+    assert.equal(resolveCoachBossSessionId(week, 0), 'tue');
+  });
+
+  it('on a rest day in the middle, picks next pending at or after today', () => {
+    assert.equal(resolveCoachBossSessionId(week, 3), 'fri');
+  });
+
+  it('sheet first paint is the boss session only', () => {
+    assert.deepEqual(
+      coachSheetSessions(week, 1).map((s) => s.id),
+      ['tue']
+    );
+    assert.deepEqual(coachSheetSessions(week, 0).map((s) => s.id), ['tue']);
+    assert.deepEqual(
+      coachSheetSessions(
+        [
+          { id: 'a', dayOffset: 0, status: 'done' },
+          { id: 'b', dayOffset: 2, status: 'done' },
+        ],
+        1
+      ),
+      []
+    );
+  });
+
+  it('returns undefined when every session is done', () => {
+    assert.equal(
+      resolveCoachBossSessionId(
+        [
+          { id: 'a', dayOffset: 0, status: 'done' },
+          { id: 'b', dayOffset: 2, status: 'done' },
+        ],
+        1
+      ),
+      undefined
+    );
+  });});

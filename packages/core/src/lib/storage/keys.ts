@@ -1,0 +1,272 @@
+/**
+ * Registry of every browser-storage key this app owns.
+ *
+ * Purpose is typing + discoverability ("what does the app persist?"), not backup
+ * enumeration — `src/lib/backup.ts` deliberately prefix-scans `mw_*` at runtime so
+ * a stale registry can never silently drop a key from an export.
+ *
+ * Adding a key: add it here and use `safeStorage` to read/write it.
+ */
+
+/** Zustand persist key — not `mw_`-prefixed for historical reasons. */
+export const WORKOUT_STORE_KEY = 'workout-tracker-storage';
+
+/**
+ * i18next's own language key. Owned by the library, not by us — it is written by
+ * `i18next-browser-languagedetector` too, so never rename it, and it is deliberately
+ * outside `MW_PREFIX` so backup/restore leaves the detector's state alone.
+ */
+export const I18N_LANG_KEY = 'i18nextLng';
+
+/** Prefix for every app-owned key. Backup/restore scans on this. */
+export const MW_PREFIX = 'mw_';
+
+/**
+ * Exact keys, grouped by the surface that owns them.
+ * Wedge groups (train/today/coach/fuel) survive surface parking; the rest may
+ * become unreachable when their surface is parked (see `src/lib/surface.ts`).
+ */
+export const STORAGE_KEYS = {
+  // ── Train / Today (wedge) ──
+  lastWorkoutDate: 'mw_last_workout_date',
+  /**
+   * `.1005` — local calendar day week strip / Coach / streak start from.
+   * Older sessions stay in History. Empty clears the fold.
+   */
+  startHistoryFrom: 'mw_start_history_from',
+  /**
+   * `.990` — named custom movements they typed on Train. Device-local
+   * notebook, not a public catalog. Unlimited. Empty invents nothing.
+   */
+  customExercises: 'mw_custom_exercises',
+  /**
+   * `.1111` — offline program templates (week → session → suggested sets).
+   * Not workout history. Not a premium gate.
+   */
+  programShell: 'mw_program_shell',
+  /**
+   * `.1004` — exercise ids hidden from Add / search / picker.
+   * History / PRs / notes stay. Empty invents nothing.
+   */
+  hiddenExercises: 'mw_hidden_exercises',
+  streak: 'mw_streak',
+  /**
+   * `.217` — the day `mw_streak` was last incremented. The override was a
+   * counter with **no date**, so nothing could tell a streak of 5 ending today
+   * from one ending three months ago, and nothing stopped three taps in one
+   * afternoon adding +3 to a "day streak".
+   */
+  streakLastBump: 'mw_streak_last_bump',
+  /** YYYY-MM-DD list. Bridges a consecutive-day streak; never a train session. */
+  plannedRestDays: 'mw_planned_rest_days',
+  challenges: 'mw_challenges',
+  /** Mission Rewards — XP, ranks, badges (local-first). */
+  rewards: 'mw_rewards',
+  /** `.610` — Athlete Card cosmetic picks. Device-local; never synced, never published. */
+  athleteCard: 'mw_athlete_card',
+  /** `.621` — Athlete Page authored config (table picks + kit id). Local only until S4. */
+  athletePage: 'mw_athlete_page',
+  /**
+   * `.623` — private note. Local free text only; never on public projection or share
+   * (C5). Key name is grepped by privateNoteBoundary.test.ts.
+   */
+  athletePrivateNote: 'mw_athlete_private_note',
+  /** Mission Server messenger — rooms, messages, local presence. */
+  missionServer: 'mw_mission_server',
+  defaultRestSec: 'mw_default_rest_sec',
+  /**
+   * `.715` / `.995` — last chosen rest per exercise id. A stored number is
+   * work (legacy). Warmup is a sibling field. Device-local; skip never
+   * writes. Cap lives in restTimer.ts, not here.
+   */
+  lastRestByExercise: 'mw_last_rest_by_exercise',
+  /**
+   * `.996` — pinned reminder per exercise id. Device-local. Not History.
+   * Empty deletes. Cap lives in exercisePin.ts, not here.
+   */
+  pinnedNoteByExercise: 'mw_pinned_note_by_exercise',
+  /** Last ecc/pause/con tempo per exercise id — prefill on the next set (`.734`). */
+  lastTempoByExercise: 'mw_last_tempo_by_exercise',
+  /** `.761` — hide educational session e1RM on the Active exercise row. Default shown. */
+  showSessionE1rm: 'mw_show_session_e1rm',
+  activityLog: 'mw_activity_log',
+  todaySectionsV1: 'mw_today_sections_v1',
+  todaySectionsV2: 'mw_today_sections_v2',
+  /** Summary pin ids (session / fuel / coach). Missing → default one session pin. */
+  summaryPins: 'mw_summary_pins',
+  pillarWins: 'mw_pillar_wins',
+  uiMode: 'mw_ui_mode',
+  outbox: 'mw_outbox_v1',
+  sessionJournal: 'mw_session_journal',
+  /**
+   * `.247` — every local day that holds data, `YYYY-MM-DD`, newest first.
+   * **Deliberately uncapped**: it is the one store that must outlive the
+   * caps on every other one, at ~10 bytes a day. See `journey/daysWithData`.
+   */
+  daysWithData: 'mw_days_with_data',
+  /** Newest workout_logs.updated_at pulled — cursor for incremental sync. */
+  cloudPullCursor: 'mw_cloud_pull_cursor',
+
+  // ── Coach (wedge) ──
+  coachPlan: 'mw_coach_plan',
+  coachTasterUsed: 'mw_coach_taster_used',
+  daysPerWeek: 'mw_days_per_week',
+  preferredDays: 'mw_preferred_days',
+  equipment: 'mw_equipment',
+  /**
+   * `.763` — local Home gym kit (barbell, rack, plates, dumbbells, pull-up-bar,
+   * floor). Device-only; the logger and Coach read it as equipment. Unset means
+   * keep the coarse `mw_equipment` 3-profile.
+   */
+  homeGymKit: 'mw_home_gym_kit',
+  experience: 'mw_experience',
+  primaryGoal: 'mw_primary_goal',
+  goals: 'mw_goals',
+  deviceId: 'mw_device_id',
+  /** Last time the post-session notification offer was shown (or declined). */
+  windDownAskedAt: 'mw_wind_down_asked_at',
+  /** Last time the evening day-review offer was shown (or declined). */
+  dayReviewAskedAt: 'mw_day_review_asked_at',
+  /**
+   * The hour the athlete chose for the evening review, as a string, or absent.
+   * Kept on the device as well as the server row so Profile can show the
+   * current setting without a round trip — and so the offer knows it has
+   * already been answered.
+   */
+  dayReviewHour: 'mw_day_review_hour',
+
+  // ── Fuel (wedge) ──
+  nutritionLog: 'mw_nutrition_log',
+  macroTargets: 'mw_macro_targets',
+  savedMeals: 'mw_saved_meals',
+  fuelPlan: 'mw_fuel_plan',
+  fuelGoal: 'mw_fuel_goal',
+  fuelStreak: 'mw_fuel_streak',
+  fuelLastLogDate: 'mw_fuel_last_log_date',
+  fuelAdaptEnabled: 'mw_fuel_adapt_enabled',
+  /** Typed extras for this week's restock list (.965). Their words. */
+  fuelRestockExtras: 'mw_fuel_restock_extras',
+  water: 'mw_water',
+  bodyMetrics: 'mw_body_metrics',
+
+  // ── Journey / profile ──
+  journeyState: 'mw_journey_state',
+  journeyEvents: 'mw_journey_events',
+  journeyStarted: 'mw_journey_started',
+  commissionedAt: 'mw_commissioned_at',
+  commissionedCelebrated: 'mw_commissioned_celebrated',
+  operatorName: 'mw_operator_name',
+  units: 'mw_units',
+  /**
+   * `.948` — editable barbell weight on the free set row. Shape
+   * `{ metric, imperial }`. Missing / invalid falls back to 20 / 45.
+   */
+  barWeight: 'mw_bar_weight',
+  /**
+   * Pairs of each plate, per unit. Shape `{ metric, imperial }`.
+   * Missing / invalid falls back to the default rack.
+   */
+  plateInventory: 'mw_plate_inventory',
+  unitsExplicit: 'mw_units_explicit',
+  langExplicit: 'mw_lang_explicit',
+  /** Explicit first-visit language choice (not detector drift). */
+  localeChoice: 'mw_locale_choice',
+  /** ISO country from first-visit region picker. */
+  countryPref: 'mw_country_pref',
+  regionDefaults: 'mw_region_defaults_v1',
+  remindersPref: 'mw_reminders_pref',
+  sessionCheckinSkipped: 'mw_session_checkin_skipped',
+  /** Explore places dex — optional GPS pins, local only. */
+  placeDex: 'mw_place_dex',
+  /**
+   * Signed-in user id that currently owns athlete-local `mw_*` on this device.
+   * Empty means guest. Used to refuse OR-merging the previous athlete's PAR-Q
+   * onto the next account (P1-5).
+   */
+  storageOwner: 'mw_storage_owner',
+  /**
+   * Timestamp (ms) written immediately before an athlete-initiated sign-out.
+   * Survives the wipe keep-list so other tabs can see the intent.
+   * `SIGNED_OUT` without a fresh mark must not clear the guest log.
+   */
+  explicitSignOut: 'mw_explicit_sign_out',
+  /** Counsel-hold pregnancy / postpartum flag — symptom line only. */
+  pregnancyFlag: 'mw_pregnancy_flag',
+  /** Five-event field test published-table scale key. */
+  fieldTestScaleKey: 'mw_field_test_scale_key',
+
+  // ── Consent / privacy ──
+  privacyConsent: 'mw_privacy_consent_v1',
+  analyticsPref: 'mw_analytics_pref_v1',
+  attribution: 'mw_attribution',
+
+  // ── Access / premium ──
+  privateAccess: 'mw_private_access',
+  premium: 'mw_premium',
+  premiumEmail: 'mw_premium_email',
+  bundleActive: 'mw_bundle_active',
+
+  // ── Learn / guidebook ──
+  learnCompleted: 'mw_learn_completed',
+  guidebookProgress: 'mw_guidebook_progress',
+  premiumCourseProgress: 'mw_premium_course_progress',
+
+  // ── Move / Mind / Track ──
+  /** `.969` — optional rest-day walk / easy session on Move. Not a Train day. */
+  quietMoveLog: 'mw_quiet_move_log',
+  /** `.977` — one quiet Fuel / Move / Track row on an empty week-strip day. */
+  quietWeekRows: 'mw_quiet_week_rows',
+  mindCheckIns: 'mw_mind_checkins',
+  lastAssessment: 'mw_last_assessment',
+  wearablesHubSamples: 'mw_wearables_hub_samples',
+
+  // ── Beta / growth ──
+  /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */
+  betaBannerDismissed: 'mw_beta_banner_dismissed',
+  firstStepsDismissed: 'mw_first_steps_dismissed',
+  /** House first-run popup. Checklist is separate and never owns Start. */
+  houseGuideDismissed: 'mw_house_guide_dismissed',
+  /** Inferred: they opened the week pane or visited Coach. */
+  houseWeekOpened: 'mw_house_week_opened',
+  /** Inferred: they opened History after a finish. */
+  houseHistoryOpened: 'mw_house_history_opened',
+  /** Collapsed the persistent first-rooms checklist. */
+  houseChecklistCollapsed: 'mw_house_checklist_collapsed',
+  /** D13 — last `APP_BUILD_LABEL` the athlete acknowledged in What’s New. */
+  whatsNewSeenLabel: 'mw_whats_new_seen_label',
+  betaContributor: 'mw_beta_contributor',
+  betaFeedback: 'mw_beta_feedback',
+  /**
+   * `.216` — founder's reading position in the feedback inbox. Device-local by
+   * design: a reading position is not data, and syncing it would need a table
+   * and a migration for a fact exactly one person holds.
+   */
+  feedbackReviewedAt: 'mw_feedback_reviewed_at',
+  leads: 'mw_leads',
+  referralCode: 'mw_referral_code',
+  squadCode: 'mw_squad_code',
+  week4Retention: 'mw_week4_retention',
+
+  // ── America / PFT / school (parkable) ──
+  pftResults: 'mw_pft_results',
+  pftLastAt: 'mw_pft_last_at',
+  pftLastTier: 'mw_pft_last_tier',
+  classCode: 'mw_class_code',
+  teacherClasses: 'mw_teacher_classes',
+  youthMode: 'mw_youth_mode',
+  youthParentConsent: 'mw_youth_parent_consent',
+} as const;
+
+export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
+
+/** Keys built at runtime with a suffix — never exhaustively enumerable. */
+export const STORAGE_KEY_PREFIXES = {
+  /** `mw_event_<name>` one-shot analytics de-dupe flags. */
+  event: 'mw_event_',
+  /** `mw_teacher_pin_<code>` hashed teacher PINs. */
+  teacherPin: 'mw_teacher_pin_',
+  /** `mw_fuel_plan_sync_<userId>` last fuel plan pushed, per signed-in user. */
+  fuelPlanSync: 'mw_fuel_plan_sync_',
+  /** `mw_premium_course_sync_<userId>` last course progress pushed, per signed-in user. */
+  premiumCourseSync: 'mw_premium_course_sync_',
+} as const;

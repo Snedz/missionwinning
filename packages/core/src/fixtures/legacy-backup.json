@@ -1,0 +1,42 @@
+{
+  "app": "mission-winning",
+  "version": 1,
+  "exportedAt": "2026-10-17T18:30:00.000Z",
+  "workoutStore": {
+    "version": 1,
+    "state": {
+      "savedWorkouts": [],
+      "workoutHistory": [{
+        "id": "c1425d6f-bf9a-42c8-9f02-6ce2671e0c05",
+        "clientId": "c1425d6f-bf9a-42c8-9f02-6ce2671e0c05",
+        "revision": 2,
+        "updatedAt": "2026-10-17T17:51:00.000Z",
+        "startedAt": "2026-10-17T17:30:00.000Z",
+        "completedAt": "2026-10-17T17:50:00.000Z",
+        "workoutName": "Push",
+        "durationSeconds": 1200,
+        "totalVolume": 300,
+        "exercises": [{
+          "exerciseId": "bench-press",
+          "note": "Pause each rep",
+          "sets": [{"weight": 60, "reps": 5, "rpe": "med", "rpe10": 8, "rir": 2}]
+        }]
+      }],
+      "activeWorkout": {
+        "clientId": "9a4fe3ce-f855-4350-a88d-f677c84f5fac",
+        "workoutName": "Push-ups practice",
+        "startedAt": "2026-10-17T18:25:00.000Z",
+        "revision": 2,
+        "exercises": [{
+          "exerciseId": "push-ups",
+          "sets": [{"id": "set-01", "reps": 8, "weight": 0, "completed": true, "kind": "normal"}]
+        }]
+      }
+    }
+  },
+  "localKeys": {
+    "mw_units": "metric",
+    "mw_mind_checkins": "[{\"date\":\"2026-10-17\",\"mood\":3}]",
+    "mw_nutrition_log": "[]"
+  }
+}

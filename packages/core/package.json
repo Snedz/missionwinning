@@ -1,0 +1,27 @@
+{
+  "name": "@missionwinning/mw-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "exports": {
+    "./coach": "./src/coach/index.ts",
+    "./workout": "./src/workout/index.ts",
+    "./data/*": "./src/data/*.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./types": "./src/types/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test 'src/**/*.test.ts'"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "i18next": "27.1.1",
+    "react": "19.3.1",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0"
+  }
+}

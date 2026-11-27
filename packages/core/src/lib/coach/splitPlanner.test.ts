@@ -1,0 +1,107 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { chooseSplit, mapToCalendar } from '@/lib/coach/splitPlanner';
+
+describe('chooseSplit', () => {
+  it('2 days yields full-body x2', () => {
+    const split = chooseSplit(2, 'beginner', 'general');
+    assert.equal(split.length, 2);
+    assert.ok(split.every((d) => d.kind === 'strength'));
+  });
+
+  it('3 days beginner yields full-body x3', () => {
+    const split = chooseSplit(3, 'beginner', 'strength');
+    assert.equal(split.length, 3);
+    assert.equal(split[0].nameKey, 'coachSessionFullBody');
+  });
+
+  it('4 days yields upper/lower x2', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength');
+    assert.equal(split.length, 4);
+    assert.equal(split[0].nameKey, 'coachSessionUpper');
+    assert.equal(split[1].nameKey, 'coachSessionLower');
+  });
+
+  it('5 days includes conditioning for endurance goal', () => {
+    const split = chooseSplit(5, 'advanced', 'endurance');
+    assert.ok(split.some((d) => d.kind === 'conditioning'));
+  });
+
+  it('mobility goal injects recovery day', () => {
+    const split = chooseSplit(4, 'intermediate', 'mobility');
+    assert.ok(split.some((d) => d.kind === 'recovery'));
+  });
+
+  it('high strain injects recovery day', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      readiness: 55,
+      strain: 75,
+      recovery: 40,
+    });
+    assert.ok(split.some((d) => d.kind === 'recovery'));
+  });
+
+  it('very high strain swaps last strength to recovery', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      readiness: 40,
+      strain: 90,
+      recovery: 30,
+    });
+    const recoveryCount = split.filter((d) => d.kind === 'recovery').length;
+    assert.ok(recoveryCount >= 2);
+  });
+
+  it('high loadZone is not the same week as steady at the same strain', () => {
+    const signals = { readiness: 80, strain: 50, recovery: 80 };
+    const steady = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...signals,
+      loadZone: 'steady',
+    });
+    const high = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...signals,
+      loadZone: 'high',
+    });
+    const steadyRec = steady.filter((d) => d.kind === 'recovery').length;
+    const highRec = high.filter((d) => d.kind === 'recovery').length;
+    assert.equal(steadyRec, 0, 'steady + moderate strain stays on strength');
+    assert.ok(highRec >= 1, 'high zone inserts a recovery day');
+    assert.ok(highRec > steadyRec, 'high must be lighter than steady');
+  });
+
+  it('high loadZone still moves the week after strain has already saturated', () => {
+    const saturated = { readiness: 40, strain: 90, recovery: 30 };
+    const strainOnly = chooseSplit(4, 'intermediate', 'strength', undefined, saturated);
+    const withHigh = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...saturated,
+      loadZone: 'high',
+    });
+    const a = strainOnly.filter((d) => d.kind === 'recovery').length;
+    const b = withHigh.filter((d) => d.kind === 'recovery').length;
+    assert.ok(a >= 2, 'strain ≥85 already inserted two recoveries');
+    assert.ok(b > a, 'high zone adds one more recovery after strain is done');
+  });
+});
+
+describe('mapToCalendar', () => {
+  it('honors preferredDays', () => {
+    const split = chooseSplit(3, 'beginner', 'general');
+    const mapped = mapToCalendar(split, [1, 3, 5], '2026-07-06');
+    assert.deepEqual(
+      mapped.map((m) => m.dayOffset),
+      [1, 3, 5]
+    );
+  });
+
+  it('avoids back-to-back same focus when possible', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength');
+    const mapped = mapToCalendar(split, [], '2026-07-06');
+    for (let i = 1; i < mapped.length; i++) {
+      const prev = mapped[i - 1];
+      const cur = mapped[i];
+      if (cur.dayOffset - prev.dayOffset === 1 && prev.day.kind === 'strength' && cur.day.kind === 'strength') {
+        const shared = prev.day.focusGroups.some((g) => cur.day.focusGroups.includes(g));
+        assert.equal(shared, false, 'same focus should not be back-to-back');
+      }
+    }
+  });
+});

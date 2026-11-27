@@ -1,0 +1,433 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import type { CompletedWorkoutLog } from '@/types';
+import type { CoachPlan, PlanSession } from '@/lib/coach/types';
+import { nextDayFromLogs } from './nextDayFromLogs.ts';
+
+const root = path.join(import.meta.dirname, '..', '..', '..');
+const read = (rel: string) => readFileSync(path.join(root, rel), 'utf8');
+
+const NOW = { weekStart: '2026-08-17', dayOffset: 0 };
+const TWO_DAYS_LATER = { weekStart: '2026-08-17', dayOffset: 2 };
+
+function log(
+  over: Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id' | 'workoutName'>
+): CompletedWorkoutLog {
+  return {
+    startedAt: '2026-08-17T10:00:00.000Z',
+    completedAt: '2026-08-17T11:00:00.000Z',
+    durationSeconds: 3600,
+    totalVolume: 1000,
+    exercises: [
+      {
+        exerciseId: 'bench-press',
+        sets: [{ reps: 5, weight: 100 }],
+      },
+    ],
+    ...over,
+  };
+}
+
+function session(over: Partial<PlanSession> & Pick<PlanSession, 'id' | 'dayOffset' | 'name'>): PlanSession {
+  return {
+    kind: 'strength',
+    focusGroups: ['Chest'],
+    exercises: [{ exerciseId: 'bench-press', sets: 3, reps: 5, weight: 100, whyKey: 'hold' }],
+    estMinutes: 45,
+    status: 'planned',
+    ...over,
+  };
+}
+
+function plan(over: Partial<CoachPlan> & { sessions: PlanSession[] }): CoachPlan {
+  return {
+    revision: 1,
+    weekStart: NOW.weekStart,
+    daysPerWeek: 3,
+    generatedAt: '2026-08-17T00:00:00.000Z',
+    contextHash: 'x',
+    equipmentProfile: 'full-gym',
+    ...over,
+  };
+}
+
+describe('nextDayFromLogs', () => {
+  it('empty history invents nothing', () => {
+    assert.equal(nextDayFromLogs({ history: [], now: NOW }), null);
+  });
+
+  it('one unnamed live log invents nothing', () => {
+    assert.equal(
+      nextDayFromLogs({
+        history: [log({ id: 'blank', workoutName: '   ' })],
+        now: NOW,
+      }),
+      null
+    );
+  });
+
+  it('one named log is not a rotation', () => {
+    assert.equal(
+      nextDayFromLogs({
+        history: [log({ id: 'only', workoutName: 'Push' })],
+        now: NOW,
+      }),
+      null
+    );
+  });
+
+  it('two named logs (Push then Pull) invent nothing — a notebook, not a rotation', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    assert.equal(nextDayFromLogs({ history, now: NOW }), null);
+    assert.equal(nextDayFromLogs({ history, now: TWO_DAYS_LATER }), null);
+  });
+
+  it('three live named sessions still rotate (Push · Pull · Push ⇒ unused Pull)', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
+    ];
+    const a = nextDayFromLogs({ history, now: NOW });
+    const b = nextDayFromLogs({ history, now: NOW });
+    assert.ok(a);
+    assert.equal(a!.source, 'logs');
+    assert.equal(a!.name, 'Pull');
+    assert.equal(a!.template?.name, 'Pull');
+    assert.equal(a!.template?.exercises[0]?.exerciseId, 'barbell-row');
+    assert.deepEqual(a, b);
+  });
+
+  it('same diary two days later still names the same Wednesday until that session is logged', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
+    ];
+    const monday = nextDayFromLogs({ history, now: NOW });
+    const wednesday = nextDayFromLogs({ history, now: TWO_DAYS_LATER });
+    assert.equal(monday?.name, 'Pull');
+    assert.equal(wednesday?.name, 'Pull');
+    assert.equal(monday?.source, 'logs');
+    assert.equal(wednesday?.source, 'logs');
+  });
+
+  it('after they log Wednesday, the following day advances (not a re-roll)', () => {
+    const before = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
+    ];
+    assert.equal(nextDayFromLogs({ history: before, now: NOW })?.name, 'Pull');
+
+    const after = [
+      ...before,
+      log({
+        id: 'wed',
+        workoutName: 'Pull',
+        completedAt: '2026-08-20T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const next = nextDayFromLogs({ history: after, now: TWO_DAYS_LATER });
+    assert.equal(next?.name, 'Push');
+    assert.notEqual(next?.name, 'Pull');
+  });
+
+  it('Push · Pull · Legs with Push then Pull logged ⇒ unused slot is Legs', () => {
+    const history = [
+      log({ id: 'a', workoutName: 'Push', completedAt: '2026-08-10T11:00:00.000Z' }),
+      log({
+        id: 'b',
+        workoutName: 'Pull',
+        completedAt: '2026-08-11T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'c',
+        workoutName: 'Legs',
+        completedAt: '2026-08-12T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
+      log({ id: 'd', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'e',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Legs');
+    assert.equal(cite?.source, 'logs');
+    assert.equal(cite?.template?.exercises[0]?.exerciseId, 'squats');
+  });
+
+  it('live Coach plan owning the next day wins over a guessed rotation', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const live = plan({
+      sessions: [
+        session({ id: 'wed-plan', dayOffset: 2, name: 'Upper Strength' }),
+        session({ id: 'fri-plan', dayOffset: 4, name: 'Lower Strength' }),
+      ],
+    });
+    const cite = nextDayFromLogs({ history, plan: live, now: NOW });
+    assert.equal(cite?.source, 'plan');
+    assert.equal(cite?.name, 'Upper Strength');
+    assert.equal(cite?.planSessionId, 'wed-plan');
+    assert.equal(cite?.template, undefined);
+  });
+
+  it('stale or done plan does not steal the log rotation', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
+    ];
+    const stale = plan({
+      weekStart: '2026-08-10',
+      sessions: [session({ id: 'old', dayOffset: 2, name: 'Catalog Invented' })],
+    });
+    assert.equal(nextDayFromLogs({ history, plan: stale, now: NOW })?.name, 'Pull');
+
+    const done = plan({
+      sessions: [session({ id: 'wed', dayOffset: 2, name: 'Upper Strength', status: 'done' })],
+    });
+    assert.equal(nextDayFromLogs({ history, plan: done, now: NOW })?.name, 'Pull');
+  });
+
+  it('stale plan + two sessions invents nothing (thin wins over a guessed wrap)', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const stale = plan({
+      weekStart: '2026-08-10',
+      sessions: [session({ id: 'old', dayOffset: 2, name: 'Catalog Invented' })],
+    });
+    assert.equal(nextDayFromLogs({ history, plan: stale, now: NOW }), null);
+  });
+
+  it('tombstoned / 0-rep / deleted logs do not count', () => {
+    const history = [
+      log({
+        id: 'gone',
+        workoutName: 'Legs',
+        deletedAt: '2026-08-18T00:00:00.000Z',
+        completedAt: '2026-08-19T11:00:00.000Z',
+      }),
+      log({
+        id: 'zero',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T12:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 0, weight: 140 }] }],
+      }),
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Pull');
+    assert.notEqual(cite?.name, 'Legs');
+  });
+
+  it('quotes last work set RPE/RIR when the cited log has them', () => {
+    const history = [
+      log({
+        id: 'p1',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rpe10: 9, rir: 1 }] },
+        ],
+      }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite?.intensity, 'RPE 9 · RIR 1');
+  });
+
+  it('empty last work set invents no intensity token', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite && 'intensity' in cite, false);
+  });
+
+  it('does not invent RPE 9 from categorical hard', () => {
+    const history = [
+      log({
+        id: 'p1',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rpe: 'hard' }] }],
+      }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite && 'intensity' in cite, false);
+  });
+});
+
+
+  it('warmup-only named session is not a Wednesday day', () => {
+    const history = [
+      log({
+        id: 'warm',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [{ reps: 8, weight: 40, kind: 'warmup' }],
+          },
+        ],
+      }),
+      log({
+        id: 'pull',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    assert.equal(nextDayFromLogs({ history, now: NOW }), null);
+  });
+
+  it('Wednesday template drops warmup slots from a mixed session', () => {
+    const history = [
+      log({
+        id: 'push',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          {
+            exerciseId: 'bench-press',
+            sets: [
+              { reps: 8, weight: 40, kind: 'warmup' },
+              { reps: 5, weight: 100, kind: 'normal' },
+            ],
+          },
+        ],
+      }),
+      log({
+        id: 'pull',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'legs',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite?.template?.exercises[0]?.sets.length, 1);
+    assert.equal(cite?.template?.exercises[0]?.sets[0]?.weight, 100);
+  });
+
+describe('nextDayFromLogs refuses catalog / shop / generateWeek', () => {
+  const files = [
+    'src/lib/coach/nextDayFromLogs.ts',
+  ];
+  it('mutant that calls generateWeek / catalog pick / shop / Trainer onboarding dies', () => {
+    for (const rel of files) {
+      const src = read(rel);
+      assert.doesNotMatch(src, /generateWeek\s*\(/, rel);
+      assert.doesNotMatch(src, /from ['"]@\/lib\/coach\/planEngine['"]/, rel);
+      assert.doesNotMatch(src, /from ['"]@\/lib\/coach\/selector['"]/, rel);
+      assert.doesNotMatch(src, /from ['"]@\/data\/exercises['"]/, rel);
+      assert.doesNotMatch(src, /pickExercises|buildSession|chooseSplit/, rel);
+      assert.doesNotMatch(src, /Trainer onboarding|11k catalog/i, rel);
+      assert.doesNotMatch(src, /from ['"]@\/components\/auth\/SignInPrompt['"]/, rel);
+    }
+  });
+});

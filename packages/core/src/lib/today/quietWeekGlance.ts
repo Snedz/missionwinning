@@ -1,0 +1,111 @@
+/**
+ * Quiet Mon–Sun glance for Today — diary, not a shame grid.
+ *
+ * Done = a live log on that local calendar day. Empty stays empty.
+ * Planned holes are not an input. Dates stay local-field.
+ */
+
+import type { CompletedWorkoutLog } from '@/types';
+import { isThinHistory } from '@/lib/workout/thinHistory';
+import {
+  localDateKey,
+  localDateKeyFromIso,
+  startOfLocalWeek,
+} from '@/lib/time/localDate';
+import type { BodyMetricEntry } from '@/lib/bodyMetrics';
+import { quietKindForDate, type QuietWeekRow, type QuietWeekRowKind } from './quietWeekRow';
+import {
+  decideQuietWeekTrackTrend,
+  trackQuietDateKeys,
+  type QuietWeekTrackTrend,
+} from './quietWeekTrackTrend';
+
+export type QuietWeekDay = {
+  dateKey: string;
+  offset: number;
+  done: boolean;
+  isToday: boolean;
+  /** Present only on an empty rest day that already has one quiet row. */
+  quiet?: QuietWeekRowKind;
+  /** Two Track diary numbers — last → this. Never on Done / Fuel / Walk. */
+  trackTrend?: QuietWeekTrackTrend;
+};
+
+export type QuietWeekGlance = {
+  weekStart: string;
+  todayOffset: number;
+  days: QuietWeekDay[];
+  /** 0–2 live sessions — a notebook, not a dataset. */
+  thin: boolean;
+};
+
+function isPerformedSet(set: { reps?: number }): boolean {
+  return (set.reps ?? 0) > 0;
+}
+
+function isLiveLog(log: CompletedWorkoutLog): boolean {
+  if (log.deletedAt) return false;
+  return (log.exercises ?? []).some((ex) => (ex.sets ?? []).some(isPerformedSet));
+}
+
+function localDateKeyPlusDays(key: string, days: number): string {
+  const [y, m, d] = key.split('-').map(Number);
+  if (!y || !m || !d) return '';
+  return localDateKey(new Date(y, m - 1, d + days));
+}
+
+function loggedDateKeys(history: readonly CompletedWorkoutLog[]): Set<string> {
+  const keys = new Set<string>();
+  for (const log of history) {
+    if (!isLiveLog(log)) continue;
+    const key = localDateKeyFromIso(log.completedAt || log.startedAt);
+    if (!key) continue;
+    keys.add(key);
+  }
+  return keys;
+}
+
+/**
+ * Seven local days of this week. Empty history invents no shame.
+ */
+export function quietWeekGlance(opts: {
+  history: readonly CompletedWorkoutLog[];
+  quietRows?: readonly QuietWeekRow[];
+  trackEntries?: readonly BodyMetricEntry[];
+  now?: Date;
+}): QuietWeekGlance {
+  const now = opts.now ?? new Date();
+  const weekStart = localDateKey(startOfLocalWeek(now));
+  const todayKey = localDateKey(now);
+  const doneKeys = loggedDateKeys(opts.history);
+  const quietRows = opts.quietRows ?? [];
+  const trackEntries = opts.trackEntries ?? [];
+  const diaryTrackDates = trackQuietDateKeys(trackEntries);
+  const days: QuietWeekDay[] = [];
+  let todayOffset = 0;
+
+  for (let offset = 0; offset <= 6; offset++) {
+    const dateKey = localDateKeyPlusDays(weekStart, offset);
+    const isToday = dateKey === todayKey;
+    if (isToday) todayOffset = offset;
+    const done = doneKeys.has(dateKey);
+    const rowKind = quietKindForDate(quietRows, dateKey);
+    const quiet = !done
+      ? rowKind ?? (diaryTrackDates.has(dateKey) ? 'track' : undefined)
+      : undefined;
+    const trackTrend =
+      !done && quiet === 'track'
+        ? decideQuietWeekTrackTrend({ entries: trackEntries, date: dateKey }) ?? undefined
+        : undefined;
+    days.push({
+      dateKey,
+      offset,
+      done,
+      isToday,
+      ...(quiet ? { quiet } : {}),
+      ...(trackTrend ? { trackTrend } : {}),
+    });
+  }
+
+  return { weekStart, todayOffset, days, thin: isThinHistory(opts.history) };
+}

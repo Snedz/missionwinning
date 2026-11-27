@@ -1,0 +1,33 @@
+[
+  {
+    "id": "102ca080-d5c3-4b4c-8a54-444a9a0c5487",
+    "user_id": "26e25192-b773-45e0-bd76-f0e598978593",
+    "client_id": "c1425d6f-bf9a-42c8-9f02-6ce2671e0c05",
+    "revision": 2,
+    "updated_at": "2026-10-17T17:51:00.000Z",
+    "deleted_at": null,
+    "workout_name": "Push",
+    "started_at": "2026-10-17T17:30:00.000Z",
+    "completed_at": "2026-10-17T17:50:00.000Z",
+    "duration_seconds": 1200,
+    "total_volume": 300,
+    "exercises": [
+      {"exerciseId": "bench-press", "note": "Pause each rep", "sets": [{"weight": 60, "reps": 5, "rpe": "med", "rpe10": 8, "rir": 2}]},
+      {"exerciseId": "plank", "sets": [{"weight": 0, "reps": 0, "durationSeconds": 30}]}
+    ]
+  },
+  {
+    "id": "d8a4326d-484f-4689-a1a0-81fab149ccb3",
+    "user_id": "26e25192-b773-45e0-bd76-f0e598978593",
+    "client_id": "32f22781-094d-4a23-9f75-6ea27e2f0a7f",
+    "revision": 3,
+    "updated_at": "2026-10-16T12:30:00.000Z",
+    "deleted_at": "2026-10-16T12:30:00.000Z",
+    "workout_name": "Native push",
+    "started_at": "2026-10-16T12:00:00.000Z",
+    "completed_at": "2026-10-16T12:20:00.000Z",
+    "duration_seconds": 1200,
+    "total_volume": 0,
+    "exercises": [{"id": "set-android-01", "exerciseId": "push-ups", "setIndex": 0, "weight": 0, "reps": 12, "rpe": 9, "rir": 1, "note": "Paused", "setKind": "normal"}]
+  }
+]
