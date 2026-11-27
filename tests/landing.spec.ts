@@ -297,6 +297,91 @@ test('the landing distinguishes guest backups from configured account sync', asy
   }
 });
 
+test('a guest set from the landing changes the real Coach week', async ({ page }) => {
+  const setDay = (day: number) => page.clock.setFixedTime(new Date(2026, 5, day, 12));
+  async function finishLunges(weight: number) {
+    await page.getByRole('button', { name: 'Add movement' }).click();
+    await page.getByRole('searchbox', { name: 'Find a movement' }).fill('lunges');
+    await page.getByRole('button', { name: 'Lunges', exact: true }).click();
+    await page.getByRole('spinbutton', { name: /load/i }).fill(String(weight));
+    await page.getByRole('spinbutton', { name: 'Reps' }).fill('10');
+    await page.getByRole('button', { name: 'Log set', exact: true }).click();
+    await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText(String(weight));
+    await page.getByRole('button', { name: 'Finish workout' }).click();
+    await expect(page.getByRole('heading', { name: 'Victory.' })).toBeVisible();
+    await page.getByRole('link', { name: 'Plan with Coach' }).click();
+  }
+
+  await setDay(10);
+  await page.goto('/active');
+  await page.getByRole('button', { name: 'Start workout' }).click();
+  await finishLunges(20);
+  await page.getByRole('combobox', { name: 'Equipment' }).selectOption('dumbbells');
+  await page.getByRole('button', { name: 'Generate week' }).click();
+  const week = page.getByRole('region', { name: 'Week plan' });
+  await expect(week).toContainText('Wed, Jun 10');
+  const report = page.getByRole('region', { name: 'What changed and why' });
+  await expect(report).toHaveCount(0);
+
+  await setDay(11);
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Log a set' }).first().click();
+  await expect(page.getByRole('heading', { name: 'Train.' })).toBeVisible();
+  await finishLunges(30);
+  await expect(report).toHaveCount(0);
+  const rebuild = page.getByRole('button', { name: 'Rebuild week' });
+  await rebuild.focus();
+  await page.keyboard.press('Enter');
+  await expect(rebuild).toBeFocused();
+  await expect(page.getByRole('status').filter({ hasText: '2 moved' })).toContainText('1 load change');
+  const schedule = report.getByRole('region', { name: 'Schedule' });
+  await expect(schedule).toContainText(/Wed, Jun 10.*Thu, Jun 11/);
+  await expect(schedule).toContainText(/Fri, Jun 12.*Sat, Jun 13/);
+  await expect(schedule).toContainText('Your log shows 1 finished workout on the original day.');
+  const load = report.getByRole('region', { name: 'Load & reps' });
+  await expect(load).toContainText('Lunges');
+  await expect(load).toContainText(/Before.*1 set × 10 reps · 20 kg/);
+  await expect(load).toContainText(/After.*1 set × 10 reps · 30 kg/);
+  await expect(load).toContainText('Quick workout, Thu, Jun 11. First working set: 10 reps at 30 kg.');
+  await expect(week).not.toContainText('Wed, Jun 10');
+  await page.reload();
+  await expect(report.getByText('First working set:', { exact: false })).toBeVisible();
+  const { width, height } = page.viewportSize()!;
+  await audit(page, width);
+  const captureDir = process.env.V2_COACH_DIFF_SCREENSHOTS_DIR;
+  if (captureDir) {
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+    await page.screenshot({ path: join(captureDir, `${width}x${height}-coach-full.png`), fullPage: true, scale: 'css' });
+    if (width < 640) await report.evaluate((element) => element.scrollIntoView({ block: 'start' }));
+    await page.screenshot({ path: join(captureDir, `${width}x${height}-coach-diff.png`), scale: 'css' });
+  }
+
+  await page.getByRole('combobox', { name: 'Days per week' }).selectOption('4');
+  await rebuild.click();
+  await expect(schedule.getByText('Dropped', { exact: true })).toHaveCount(3);
+  await expect(schedule.getByText('Added', { exact: true })).toHaveCount(4);
+  await expect(schedule).toContainText('You changed your target from 3 to 4 days per week.');
+  if (captureDir) await page.screenshot({
+    path: join(captureDir, `${width}x${height}-coach-added-dropped.png`), fullPage: true, scale: 'css',
+  });
+
+  await week.locator('summary').first().click();
+  await week.getByRole('button', { name: 'Start session' }).click();
+  await page.getByRole('button', { name: 'Log set', exact: true }).click();
+  await page.getByRole('button', { name: 'Finish workout' }).click();
+  await page.getByRole('link', { name: 'Plan with Coach' }).click();
+  await expect(report).toContainText('AFTER YOUR WORKOUT');
+  await expect(report).toContainText(/You finished .* on Thu, Jun 11/);
+  await expect(report.getByText('Dropped', { exact: true })).toHaveCount(0);
+  await page.goto('/profile');
+  const deletion = page.getByRole('combobox', { name: 'Delete one workout' });
+  await deletion.selectOption({ index: 1 });
+  await page.getByRole('button', { name: 'Delete selected workout' }).click();
+  await page.goto('/coach');
+  await expect(week).toBeVisible();
+  await expect(report).toHaveCount(0);
+});
+
 test('the warmed notebook can follow the landing CTA offline', async ({ page, context }) => {
   await page.goto('/');
   const device = page.getByRole('region', { name: 'Train beyond Wi-Fi.' });

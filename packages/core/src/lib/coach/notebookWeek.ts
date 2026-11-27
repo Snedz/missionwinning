@@ -6,6 +6,7 @@ import { workoutInWeightUnit } from '@/lib/workout/workoutMerge';
 import { loadBands } from './load';
 import { generateWeek } from './planEngine';
 import type { CoachPlan, EquipmentProfile } from './types';
+import { describeWeekChange } from './weekChange';
 
 export function generateNotebookWeek(input: {
   equipment: EquipmentProfile;
@@ -26,5 +27,19 @@ export function generateNotebookWeek(input: {
       loadZone: loadBands(history, now).zone,
     }, localWeekKey(now), revision, localDateKey(now), now),
     weightUnit,
+  };
+}
+
+export function rebuildNotebookWeek(input: Parameters<typeof generateNotebookWeek>[0], before: CoachPlan | null, now = new Date()) {
+  const plan = generateNotebookWeek(input, now);
+  const withoutHistory = before?.weekStart === plan.weekStart && input.history.some((log) => !log.deletedAt)
+    ? generateNotebookWeek({ ...input, history: [] }, now)
+    : undefined;
+  return {
+    plan,
+    change: before ? describeWeekChange({
+      before, after: plan, history: input.history, unit: weightUnitFor(input.units), now,
+      source: 'rebuild', withoutHistory,
+    }) : null,
   };
 }

@@ -12,6 +12,7 @@ import { exerciseFromCatalogLike, formatSetRowLine, resolveSetRowType, resolveSe
 import { unitsForWeight, weightUnitFor, weightUnitLabel } from '@/lib/units';
 import { workoutInWeightUnit } from '@/lib/workout/workoutMerge';
 import type { EquipmentProfile, PlanSession } from '@/lib/coach/types';
+import { hasWeekChanges, type WeekChange } from '@/lib/coach/weekChange';
 import type { ActiveExerciseLog, CompletedWorkoutLog } from '@/types';
 import { notebookNamespace, useNotebook } from '../lib/notebook';
 import { cloudConfigured, sendSignInLink, signOutAccount, startCloudAccount, syncAccount, useCloudAccount } from '../lib/cloudAccount';
@@ -435,8 +436,103 @@ function sessionLabel(session: PlanSession) {
   return session.status === 'done' ? 'Complete' : session.kind;
 }
 
+function changeDate(date: string) {
+  return formatLocalDateKey(date, 'en', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function scheduleWhy(reason: WeekChange['schedule'][number]['reason']) {
+  switch (reason.kind) {
+    case 'calendar': {
+      const count = reason.finishedOnOldDay;
+      return `The rebuild schedules from ${changeDate(reason.from)} onward.${count === undefined ? '' :
+        count === 0 ? ' No finished workouts were logged on the original day.' :
+          ` Your log shows ${count} finished ${count === 1 ? 'workout' : 'workouts'} on the original day.`}`;
+    }
+    case 'frequency': return `You changed your target from ${reason.before} to ${reason.after} days per week.`;
+    case 'history': return `The same rebuild schedules this differently without your ${reason.finished} finished ${reason.finished === 1 ? 'workout' : 'workouts'}.`;
+    case 'sync': return 'Your synced plan uses a different schedule. The reason isn’t available on this device.';
+    case 'schedule': return 'Coach used the current schedule. No specific log entry explains this change.';
+  }
+}
+
+function loadWhy(key: string | null, hasLog: boolean) {
+  switch (key) {
+    case 'coachWhyHold': return 'The new target follows your logged working sets without a progression bump.';
+    case 'coachWhyHoldHard': return 'Hold the target after hard working sets.';
+    case 'coachWhySteadyWeek': return 'Hold off increasing the target because your recent training load is high.';
+    case 'coachWhyLoadUp': return 'Progress the working weight from your log.';
+    case 'coachWhyRepProgress': return 'Progress reps from your log before adding weight.';
+    case 'coachWhyDeload': return 'Ease the target based on recent hard sets or a stall.';
+    case 'coachWhyPlateauDeload': return 'Ease the target after a plateau in your log.';
+    case 'coachWhyBodyweightReps': return 'Use a starter rep target for this bodyweight movement.';
+    case 'coachFindWorkingWeight': return 'Start without a set weight until you log working sets.';
+    case null: return 'This target came from your synced plan. The reason isn’t available on this device.';
+    default: return hasLog ? 'Coach used your training history to set the target.' : 'No matching working set was available to cite.';
+  }
+}
+
+function targetText(target: WeekChange['loads'][number]['after'], unit: WeekChange['unit']) {
+  const prescription = `${target.sets} ${target.sets === 1 ? 'set' : 'sets'} × ${target.reps} reps`;
+  return `${prescription} · ${target.unset ? 'weight not set' : `${target.weight} ${unit}`}`;
+}
+
+function CoachChange({ change }: { change: WeekChange | null }) {
+  const counts = change && [
+    ...(['moved', 'dropped', 'added'] as const).map((kind) => ({ label: kind, count: change.schedule.filter((row) => row.kind === kind).length })),
+    { label: 'load changes', count: change.loads.length },
+    { label: 'completed', count: change.completed.length },
+  ].filter(({ count }) => count > 0).map(({ label, count }) => `${count} ${count === 1 && label === 'load changes' ? 'load change' : label}`).join(' · ');
+  const summary = change?.newWeek ? 'This plan starts a new week, so there’s no same-week comparison.'
+    : change && !hasWeekChanges(change) ? 'No schedule or load changes to show.' : counts;
+  return <>
+    <div className="coach-change-status subtle" role="status" aria-atomic="true">{summary}</div>
+    {change && !change.newWeek && hasWeekChanges(change) && <section className="note-panel coach-change" aria-labelledby="coach-change-title">
+      <header>
+        <span className="eyebrow muted">{change.source === 'sync' ? 'SYNCED UPDATE' : change.source === 'adapt' ? 'AFTER YOUR WORKOUT' : 'LATEST REBUILD'}</span>
+        <h2 id="coach-change-title">What changed and why</h2>
+      </header>
+      <div className="coach-change-body">
+        {(change.schedule.length > 0 || change.completed.length > 0) && <section aria-labelledby="coach-schedule-title">
+          <h3 id="coach-schedule-title">Schedule</h3>
+          <ul className="coach-change-list">
+            {change.schedule.map((row, index) => <li key={index}>
+              <span className="eyebrow change-kind">{row.kind === 'moved' ? 'Moved' : row.kind === 'added' ? 'Added' : 'Dropped'}</span>
+              <strong>{('after' in row ? row.after : row.before).name}</strong>
+              <p>{row.kind === 'moved'
+                ? <>{sessionDate(change.weekStart, row.before.dayOffset)} <span aria-hidden="true">→</span><span className="sr-only"> to </span> {sessionDate(change.weekStart, row.after.dayOffset)}</>
+                : sessionDate(change.weekStart, (row.kind === 'added' ? row.after : row.before).dayOffset)}</p>
+              <p>{scheduleWhy(row.reason)}</p>
+            </li>)}
+            {change.completed.map(({ session, workout }, index) => <li key={`done-${index}`}>
+              <span className="eyebrow change-kind">Completed</span>
+              <strong>{session.name}</strong>
+              <p>{sessionDate(change.weekStart, session.dayOffset)}</p>
+              <p>{workout ? `You finished ${workout.name} on ${changeDate(workout.date)}.` : 'Marked complete in your synced plan.'}</p>
+            </li>)}
+          </ul>
+        </section>}
+        {change.loads.length > 0 && <section aria-labelledby="coach-load-title">
+          <h3 id="coach-load-title">Load &amp; reps</h3>
+          <ul className="coach-change-list">
+            {change.loads.map((row, index) => <li key={index}>
+              <strong>{exerciseName(row.exerciseId)}</strong>
+              <p>{row.days.map((day) => sessionDate(change.weekStart, day)).join(' · ')}</p>
+              <dl className="target-comparison">
+                <div><dt>Before</dt><dd>{targetText(row.before, change.unit)}</dd></div>
+                <div><dt>After</dt><dd>{targetText(row.after, change.unit)}</dd></div>
+              </dl>
+              <p>{loadWhy(row.whyKey, Boolean(row.log))}</p>
+              {row.log && <p><b>From your log:</b> {row.log.name}, {changeDate(row.log.date)}. First working set: {row.log.reps} reps at {row.log.weight} {change.unit}.</p>}
+            </li>)}
+          </ul>
+        </section>}
+      </div>
+    </section>}
+  </>;
+}
+
 function Coach() {
-  const { plan, workoutHistory, units, makePlan, start } = useNotebook();
+  const { plan, planChange, workoutHistory, units, makePlan, start } = useNotebook();
   const [equipment, setEquipment] = useState<EquipmentProfile>(plan?.equipmentProfile ?? 'bodyweight');
   const [days, setDays] = useState(plan?.daysPerWeek ?? 3);
   const citation = coachCitationFact(coachLogCitation(workoutHistory.map((log) =>
@@ -458,6 +554,7 @@ function Coach() {
       <button type="submit" className={`button ${plan ? 'outline-button' : 'primary-button'}`}>{plan ? 'Rebuild week' : 'Generate week'} <Icon name="arrow" /></button>
     </form>
     </div>
+    <CoachChange change={planChange} />
     {plan && <section className="plan-week" aria-label="Week plan">
       <div className="section-rule"><h2>Week of {formatLocalDateKey(plan.weekStart, 'en', { month: 'short', day: 'numeric' })}</h2><span className="eyebrow muted">{plan.sessions.length} SESSIONS</span></div>
       <div className="plan-list">{[...plan.sessions].sort((a, b) => a.dayOffset - b.dayOffset).map((session) => <details className="plan-card" key={session.id}>

@@ -8,7 +8,8 @@ import { getExerciseById } from '@/data/exercises';
 import { applyDeleteFinishedSession } from '@/lib/workout/deleteFinishedSession';
 import { mergePersistedWorkoutState } from '@/lib/workout/workoutRecovery';
 import { finishPartialFromActive, protectLiveStart } from '@/lib/workout/sessionResume';
-import { generateNotebookWeek } from '@/lib/coach/notebookWeek';
+import { rebuildNotebookWeek } from '@/lib/coach/notebookWeek';
+import { describeWeekChange, hasWeekChanges, type WeekChange } from '@/lib/coach/weekChange';
 import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 import { enqueue, getState as getOutboxState } from '@/lib/sync/outbox';
 import { alignLegacyWorkouts } from '@/lib/sync/workoutCloud';
@@ -18,6 +19,7 @@ import type { ActiveWorkout, CompletedWorkoutLog, LoggedSet, SavedWorkout } from
 
 const PLAN_KEY = 'mw_coach_plan';
 const PLAN_SESSION_KEY = 'mw_v2_plan_session';
+const PLAN_CHANGE_KEY = 'v2-coach-change';
 
 type Diary = {
   activeWorkout: ActiveWorkout | null;
@@ -30,6 +32,7 @@ type NotebookStore = Diary & {
   storageWarning: boolean;
   units: UnitsPref;
   plan: CoachPlan | null;
+  planChange: WeekChange | null;
   restUntil: number;
   lastFinishedId: string | null;
   owner: string | null;
@@ -84,6 +87,31 @@ function updateSession(active: ActiveWorkout, exercises: ActiveWorkout['exercise
   return { ...active, exercises, revision: (active.revision ?? 0) + 1, updatedAt: now() };
 }
 
+function planVersion(plan: CoachPlan) {
+  return JSON.stringify([plan.weekStart, plan.revision, plan.generatedAt, plan.contextHash, plan.weightUnit,
+    plan.sessions.map((session) => [session.id, session.dayOffset, session.kind, session.status, session.name,
+      session.focusGroups, session.exercises.map((exercise) =>
+        [exercise.exerciseId, exercise.sets, exercise.reps, exercise.weight, exercise.whyKey])])]);
+}
+
+function visibleChange(change: WeekChange | null, history: CompletedWorkoutLog[]) {
+  if (!change) return null;
+  const cited = [
+    ...change.loads.flatMap(({ log }) => log ? [log.id] : []),
+    ...change.completed.flatMap(({ workout }) => workout ? [workout.id] : []),
+  ];
+  return cited.every((id) => history.some((log) => !log.deletedAt && (log.clientId ?? log.id) === id)) ? change : null;
+}
+
+function readPlanChange(namespace: string, plan: CoachPlan | null, history: CompletedWorkoutLog[]) {
+  if (!plan) return null;
+  const receipt = readJson<{ version: string; change: WeekChange } | null>(namespace + PLAN_CHANGE_KEY, null);
+  if (!receipt || receipt.version !== planVersion(plan)) return null;
+  const { change } = receipt;
+  return change && Array.isArray(change.schedule) && Array.isArray(change.loads) && Array.isArray(change.completed)
+    ? visibleChange(change, history) : null;
+}
+
 export const useNotebook = create<NotebookStore>((set, get) => {
   function persist(patch: Partial<Diary>) {
     const current = get();
@@ -99,15 +127,21 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       version: prior.version ?? 1,
       state: { ...prior.state, ...next },
     }));
-    set({ ...next, storageWarning: !ok });
+    const planChange = visibleChange(current.planChange, next.workoutHistory);
+    if (current.planChange && !planChange) remove(notebookNamespace(current.owner) + PLAN_CHANGE_KEY);
+    set({ ...next, planChange, storageWarning: !ok });
     return ok;
   }
 
-  function savePlan(plan: CoachPlan, queue = false) {
+  function savePlan(plan: CoachPlan, queue = false, planChange: WeekChange | null = null) {
     const { owner } = get();
-    const ok = writeRaw(notebookNamespace(owner) + PLAN_KEY, JSON.stringify(plan));
+    const namespace = notebookNamespace(owner);
+    const ok = writeRaw(namespace + PLAN_KEY, JSON.stringify(plan));
+    const receiptOk = planChange
+      ? writeRaw(namespace + PLAN_CHANGE_KEY, JSON.stringify({ version: planVersion(plan), change: planChange }))
+      : remove(namespace + PLAN_CHANGE_KEY);
     if (ok && owner && queue) enqueue('coach.plan', 'plan', { owner, plan }, workoutQueueKey(owner));
-    set({ plan, storageWarning: !ok || get().storageWarning });
+    set({ plan, planChange, storageWarning: !ok || !receiptOk || get().storageWarning });
     return ok;
   }
 
@@ -128,6 +162,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     storageWarning: false,
     units: 'metric',
     plan: null,
+    planChange: null,
     restUntil: 0,
     lastFinishedId: null,
     owner: null,
@@ -136,12 +171,13 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       const current = get();
       const namespace = notebookNamespace(current.owner);
       const next = mergePersistedWorkoutState(storedDiary(current.owner).state, current);
-      const plan = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
+      const stored = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
+      const plan = stored && Array.isArray(stored.sessions) ? stored : null;
       set({
         activeWorkout: next.activeWorkout ?? null,
         workoutHistory: next.workoutHistory ?? [],
         savedWorkouts: next.savedWorkouts ?? [],
-        plan: plan && Array.isArray(plan.sessions) ? plan : null,
+        plan, planChange: readPlanChange(namespace, plan, next.workoutHistory ?? []),
         units: (readRaw(namespace + STORAGE_KEYS.units) ?? readRaw(STORAGE_KEYS.units)) === 'imperial' ? 'imperial' : 'metric',
         ready: true,
       });
@@ -151,10 +187,11 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       if (get().owner === owner) return;
       const namespace = notebookNamespace(owner);
       const next = mergePersistedWorkoutState(storedDiary(owner).state, initialDiary());
-      const plan = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
+      const stored = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
+      const plan = stored && Array.isArray(stored.sessions) ? stored : null;
       set({
         ...initialDiary(), ...next, owner, ready: true, restUntil: 0, lastFinishedId: null,
-        plan: plan && Array.isArray(plan.sessions) ? plan : null, storageWarning: false,
+        plan, planChange: readPlanChange(namespace, plan, next.workoutHistory ?? []), storageWarning: false,
         units: (readRaw(namespace + STORAGE_KEYS.units) ?? readRaw(STORAGE_KEYS.units)) === 'imperial' ? 'imperial' : 'metric',
       });
     },
@@ -188,14 +225,21 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     },
 
     mergeCloudContent(owner, nextPlan, templates) {
-      if (get().owner !== owner) return false;
-      return persist({ savedWorkouts: templates }) && (!nextPlan || nextPlan === get().plan || savePlan(nextPlan));
+      const { owner: currentOwner, plan: before, workoutHistory, units } = get();
+      if (currentOwner !== owner || !persist({ savedWorkouts: templates })) return false;
+      if (!nextPlan || nextPlan === before) return true;
+      if (before && planVersion(before) === planVersion(nextPlan)) return savePlan(nextPlan, false, get().planChange);
+      const change = before && describeWeekChange({
+        before, after: nextPlan, history: workoutHistory, now: new Date(), unit: weightUnitFor(units), source: 'sync',
+      });
+      return savePlan(nextPlan, false, change && hasWeekChanges(change) ? change : null);
     },
 
     start(session) {
       if (protectLiveStart(get().activeWorkout) === 'keep') return;
       const unit = weightUnitFor(get().units);
-      const planUnit = get().plan?.weightUnit ?? unit;
+      const plan = get().plan;
+      const planUnit = plan?.weightUnit ?? unit;
       const exercises: ActiveWorkout['exercises'] = session
         ? session.exercises.map((exercise) => ({
           exerciseId: exercise.exerciseId,
@@ -208,7 +252,9 @@ export const useNotebook = create<NotebookStore>((set, get) => {
         }))
         : [{ exerciseId: 'push-ups', sets: [], muscleGroups: getExerciseById('push-ups')?.muscleGroups }];
       const clientId = startWorkout(session?.name ?? 'Quick workout', exercises);
-      if (session) writeRaw(notebookNamespace(get().owner) + PLAN_SESSION_KEY, JSON.stringify({ clientId, sessionId: session.id }));
+      if (session) writeRaw(notebookNamespace(get().owner) + PLAN_SESSION_KEY, JSON.stringify({
+        clientId, sessionId: session.id, planVersion: plan && planVersion(plan),
+      }));
     },
 
     startSaved(template) {
@@ -274,11 +320,19 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       if (owner && stored) queueWorkout(owner, entry, units);
       set({ lastFinishedId: id, restUntil: 0 });
       const planSessionKey = notebookNamespace(get().owner) + PLAN_SESSION_KEY;
-      const selected = readJson<{ clientId: string; sessionId: string } | null>(planSessionKey, null);
-      if (selected?.clientId === id && plan) {
-        savePlan({ ...plan, revision: plan.revision + 1, sessions: plan.sessions.map((session) =>
-          session.id === selected.sessionId ? { ...session, status: 'done' } : session
-        ) }, true);
+      const selected = readJson<{ clientId: string; sessionId: string; planVersion?: string } | null>(planSessionKey, null);
+      if (selected?.clientId === id) {
+        if (plan && (!selected.planVersion || selected.planVersion === planVersion(plan)) &&
+            plan.sessions.some((session) => session.id === selected.sessionId && session.status !== 'done')) {
+          const after: CoachPlan = { ...plan, revision: plan.revision + 1, sessions: plan.sessions.map((session) =>
+            session.id === selected.sessionId ? { ...session, status: 'done' } : session
+          ) };
+          const change = describeWeekChange({
+            before: plan, after, history: get().workoutHistory, completedWorkout: entry,
+            unit: weightUnitFor(units), now: new Date(completedAt), source: 'adapt',
+          });
+          savePlan(after, true, change);
+        }
         remove(planSessionKey);
       }
       return true;
@@ -286,9 +340,10 @@ export const useNotebook = create<NotebookStore>((set, get) => {
 
     makePlan(equipment, daysPerWeek) {
       const { workoutHistory, units, plan } = get();
-      savePlan(generateNotebookWeek({
+      const { plan: next, change } = rebuildNotebookWeek({
         equipment, daysPerWeek, units, history: workoutHistory, revision: (plan?.revision ?? 0) + 1,
-      }), true);
+      }, plan);
+      savePlan(next, true, change);
     },
 
     deleteWorkout(id) {
@@ -304,10 +359,10 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       const workoutKey = namespace + WORKOUT_STORE_KEY;
       const snapshot = readDurableSnapshot(namespace + 'mw_', workoutKey);
       if (!snapshot) return false;
-      const results = [workoutKey, ...Object.keys(snapshot.entries), ...(!owner ? [STORAGE_KEYS.landingFirstSavedSet] : [])].map(remove);
+      const results = [workoutKey, namespace + PLAN_CHANGE_KEY, ...Object.keys(snapshot.entries), ...(!owner ? [STORAGE_KEYS.landingFirstSavedSet] : [])].map(remove);
       get().hydrate();
       if (!results.every(Boolean)) return false;
-      set({ ...initialDiary(), plan: null, restUntil: 0, lastFinishedId: null, storageWarning: false });
+      set({ ...initialDiary(), plan: null, planChange: null, restUntil: 0, lastFinishedId: null, storageWarning: false });
       return true;
     },
   };
