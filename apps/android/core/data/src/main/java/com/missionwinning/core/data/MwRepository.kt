@@ -71,6 +71,8 @@ class MwRepository(
     // —— Workouts ——
     suspend fun previousSet(exerciseId: String, setIndex: Int): SetLogEntity? =
         workouts.previousSet(exerciseId, setIndex)
+    suspend fun latestWorkingLoad(exerciseId: String): SetLogEntity? =
+        workouts.latestWorkingLoad(exerciseId)
     suspend fun finishWorkout(
         workoutName: String,
         durationSeconds: Int,

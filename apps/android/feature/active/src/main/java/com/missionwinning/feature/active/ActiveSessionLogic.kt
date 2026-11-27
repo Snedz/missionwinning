@@ -80,6 +80,17 @@ object ActiveSessionLogic {
     fun defaultWeight(previousWeight: Double?): Double =
         (previousWeight ?: 0.0).coerceAtLeast(0.0)
 
+    fun startingWeight(
+        seedWeight: Double?,
+        previousWeight: Double?,
+        preferSeed: Boolean,
+        starterWorkingWeight: Double? = null,
+    ): Double = defaultWeight(when {
+        preferSeed && seedWeight == 0.0 -> starterWorkingWeight ?: seedWeight
+        preferSeed -> seedWeight
+        else -> previousWeight?.takeIf { it > 0.0 } ?: seedWeight
+    })
+
     /**
      * Rest after completing a set. Skip rest when the session is fully logged.
      * If a rest is already ticking, keep it (unless all done).

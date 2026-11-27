@@ -18,6 +18,7 @@ import kotlin.math.roundToInt
 /** Conservative offline fallback; the server remains authoritative for full planning. */
 object LocalCoachSeed {
     private const val HISTORY_SEED_PREFIX = "offline-seed-"
+    private const val FIND_WORKING_WEIGHT = "coachFindWorkingWeight"
     private val fullBodyGroups = listOf("Chest", "Back", "Legs", "Shoulders", "Arms", "Core")
 
     fun weekStartMonday(d: LocalDate = LocalDate.now()): String {
@@ -107,6 +108,9 @@ object LocalCoachSeed {
 
     fun isOfflinePlan(plan: CoachPlanDto): Boolean = plan.contextHash.startsWith(HISTORY_SEED_PREFIX)
 
+    fun needsWorkingWeight(exercise: PlanExerciseDto): Boolean =
+        exercise.weight == 0.0 && exercise.whyKey == FIND_WORKING_WEIGHT
+
     private fun buildOffline(
         equip: String,
         history: List<SetLogEntity>,
@@ -154,7 +158,7 @@ object LocalCoachSeed {
                 PlanExerciseDto(id, sets.size.coerceIn(1, 3), latest.reps.coerceIn(1, 12), weight, "coachWhyHold")
             } else {
                 val why = if (ExerciseCatalog.get(id)?.isBodyweight == true) "coachWhyBodyweightReps"
-                else "coachFindWorkingWeight"
+                else FIND_WORKING_WEIGHT
                 PlanExerciseDto(id, 3, 5, whyKey = why)
             }
         }

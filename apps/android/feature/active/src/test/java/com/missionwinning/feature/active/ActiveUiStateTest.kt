@@ -10,6 +10,14 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ActiveUiStateTest {
+    @Test
+    fun unloadedSeedCarriesForwardNewWorkingWeight() {
+        assertEquals(22.5, ActiveSessionLogic.startingWeight(0.0, 50.0, preferSeed = true, starterWorkingWeight = 22.5), 0.0)
+        assertEquals(22.5, ActiveSessionLogic.startingWeight(0.0, null, preferSeed = true, starterWorkingWeight = 22.5), 0.0)
+        assertEquals(0.0, ActiveSessionLogic.startingWeight(0.0, 50.0, preferSeed = true), 0.0)
+        assertEquals(15.0, ActiveSessionLogic.startingWeight(15.0, 22.5, preferSeed = true), 0.0)
+    }
+
     private fun set(
         id: String,
         done: Boolean,

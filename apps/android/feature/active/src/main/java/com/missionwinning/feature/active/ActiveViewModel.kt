@@ -744,6 +744,11 @@ class ActiveViewModel @Inject constructor(
         }
         return source.map { ex ->
             val name = ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
+            val starterWorkingWeight = if (seedUnit != null && LocalCoachSeed.needsWorkingWeight(ex)) {
+                repository.latestWorkingLoad(ex.exerciseId)?.let {
+                    WeightUnits.convertExact(it.weight, it.weightUnit, displayUnit)
+                }
+            } else null
             buildSetsForExercise(
                 exerciseId = ex.exerciseId,
                 exerciseName = name,
@@ -752,6 +757,7 @@ class ActiveViewModel @Inject constructor(
                 seedWeight = seedUnit?.let { WeightUnits.convertExact(ex.weight, it, displayUnit) },
                 displayUnit = displayUnit,
                 preferSeed = seedUnit != null,
+                starterWorkingWeight = starterWorkingWeight,
             )
         }
     }
@@ -788,6 +794,7 @@ class ActiveViewModel @Inject constructor(
         seedWeight: Double?,
         displayUnit: String,
         preferSeed: Boolean = false,
+        starterWorkingWeight: Double? = null,
     ): ActiveExercise {
         val sets = (0 until setCount.coerceIn(1, 12)).map { idx ->
             val prev = repository.previousSet(exerciseId, idx)
@@ -796,12 +803,7 @@ class ActiveViewModel @Inject constructor(
                 storedUnit = prev?.weightUnit,
                 displayUnit = displayUnit,
             )
-            val weight = when {
-                preferSeed -> ActiveSessionLogic.defaultWeight(seedWeight)
-                prevWeight != null && prevWeight > 0.0 -> ActiveSessionLogic.defaultWeight(prevWeight)
-                seedWeight != null -> ActiveSessionLogic.defaultWeight(seedWeight)
-                else -> ActiveSessionLogic.defaultWeight(null)
-            }
+            val weight = ActiveSessionLogic.startingWeight(seedWeight, prevWeight, preferSeed, starterWorkingWeight)
             LoggedSet(
                 id = UUID.randomUUID().toString(),
                 exerciseId = exerciseId,
