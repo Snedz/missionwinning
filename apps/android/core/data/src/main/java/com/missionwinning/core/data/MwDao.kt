@@ -143,12 +143,12 @@ interface MwDao {
         SELECT s.* FROM set_logs s
         INNER JOIN workout_logs w ON w.id = s.workoutId
         WHERE w.deletedAt IS NULL AND s.exerciseId = :exerciseId AND s.setKind = 'normal'
-          AND s.reps > 0 AND s.weight > 0 AND s.weightUnit IN ('kg', 'lb')
+          AND s.reps >= :targetReps AND s.weight > 0 AND s.weightUnit IN ('kg', 'lb')
         ORDER BY julianday(w.completedAt) DESC, w.id DESC, s.setIndex DESC, s.id DESC
         LIMIT 1
         """,
     )
-    suspend fun latestWorkingLoad(exerciseId: String): SetLogEntity?
+    suspend fun latestWorkingLoad(exerciseId: String, targetReps: Int): SetLogEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun enqueueOutbox(row: SyncOutboxEntity)
