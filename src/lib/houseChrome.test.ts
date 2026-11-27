@@ -322,7 +322,10 @@ test('Home and Library docks transfer the real rooms, Start composes', () => {
   );
   assert.deepEqual(
     HOUSE_MORE_QUIET.map((row) => row.href),
-    ['/move', '/mind', '/track', '/learn', '/feedback', '/server']
+    [
+      '/move', '/mind', '/track', '/learn', '/learn/guide', '/programs',
+      '/benchmarks', '/calculators', '/leaderboard', '/feedback', '/server',
+    ]
   );
   assert.equal(houseSecondDockForPath('/log'), 'home');
   assert.equal(houseSecondDockForPath('/history'), 'home');
@@ -2007,4 +2010,3 @@ test('on the sheet, Today starts with the session — one Start, no nested hero 
   const second = stripComments(read('src/components/house/HouseSecondRail.tsx'));
   assert.match(second, /row\.id === 'start'\) return false/);
 });
-

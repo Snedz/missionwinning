@@ -10,6 +10,10 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`.1138` Meta tests](CONTEXT-now-1138-meta-tests.md) — Now bullet rotated for `.1203`.
+- [`.1185` landing fallback](log/LOG-rotate-1185-for-1203.md) — LOG entry rotated for `.1203`.
+- The retired Expo notes and generated landing variant board are available in Git history before `.1203`.
+
 - [`CONTEXT-now-1137-log-line.md`](docs/archive/CONTEXT-now-1137-log-line.md) — `.1202` rotated the `.1137` Log a set. Offline. Now bullet.
 - [`CONTEXT-now-1136-coach-width.md`](docs/archive/CONTEXT-now-1136-coach-width.md) — `.1201` rotated the `.1136` coach-width Now bullet.
 - [`LOG-rotate-1187-for-1202.md`](docs/archive/log/LOG-rotate-1187-for-1202.md) — rotated by `.1202`, to keep the <=15 entry budget. `.1185` is the live floor.

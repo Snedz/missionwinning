@@ -52,27 +52,6 @@ export const GATE_EN: Record<string, string> = {
     'Enter the access code from your email, then complete I-Day and log your first workout.',
   gateBetaGuide: 'Start guide',
   gateBetaGuideFoot: 'Have a code? See the',
-  cineSetEyebrow: 'Set',
-  cinePublicLine: 'Log a set.',
-  cineHeroHeadline: 'Log a set.',
-  cineHeroLead: 'No account. No wearable.',
-  cineWeekKicker: 'Mission Coach',
-  cineWeekTitle: 'The week does not fail.',
-  cineWeekLead:
-    'Authored from the log. Not a calendar you already broke. Not a wearable.',
-  cineDoorLead:
-    'Enter with a code if you have one. Or leave an email — one note when access is ready. No spam.',
-  cineDoorFoot:
-    'A first logged set in about 30s in the browser. Nothing to install, nothing to pay.',
-  cineWeekWhy:
-    'Wednesday was a gym squat. You logged travel. The session became a hotel-room push-up. The week did not fail.',
-  cineAnywhereKicker: 'Anywhere',
-  cineAnywhereTitle: 'Garage. Hotel carpet. A park at dusk.',
-  cineAnywhereLead:
-    'Sets save on the device. Signal is optional. The plan comes from what you logged, so nothing needs charging for it to work.',
-  cineLater:
-    'Mission Winning Health. History you own. Later: an athlete page you author. Today is not a Feed.',
-  cineNever: 'Never · 24 Aug 2026 · feed · wearable required · account to log.',
   offlineEyebrow: 'No connection',
   offlineTitle: "You're offline. The log isn't.",
   offlineBody:

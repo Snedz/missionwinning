@@ -203,7 +203,7 @@ export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: 
     id: 'pillars',
     title: 'Pillars',
     titleKey: 'navGroupPillars',
-    hrefs: ['/nutrition', '/move', '/mind', '/track', '/learn'],
+    hrefs: ['/nutrition'],
   },
   {
     id: 'toolkit',

@@ -35,6 +35,11 @@ export const HOUSE_MORE_QUIET = [
   { href: '/mind', labelKey: 'navMind', label: 'Mind' },
   { href: '/track', labelKey: 'navTrack', label: 'Track' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn' },
+  { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
+  { href: '/programs', labelKey: 'infoProgramsTitle', label: 'Learn programs' },
+  { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests' },
+  { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
+  { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
   { href: '/feedback', labelKey: 'navFeedback', label: 'Feedback' },
   { href: '/server', labelKey: 'navGarage', label: 'Garage' },
 ] as const;

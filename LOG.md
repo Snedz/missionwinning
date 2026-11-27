@@ -1,5 +1,9 @@
 # Mission Winning — Development Log
 
+## 2026-11-27 — Trim the wedge without moving athlete data (`.1203`)
+
+Removed the Expo prototype, unused cinematic landing components, preview-only Forge route and design variant board. Kept the live logger, Android app and mobile APIs. Enabled secondary pillars remain in More rather than primary navigation. Data, entitlements and provider integrations did not change. AGENTS owns the gate and ship instructions. Label `2026.07-unified.1203`. PRIVATE_MODE stays. [skip vercel].
+
 ## 2026-11-23 — react and react-dom 19.3.1 paired (`.1202`)
 
 Dependabot #1125 bumps `react` to 19.3.1 but leaves `react-dom` on 19.3.0, so four unit tests fail with React's incompatible-version guard (`useSafetyTrainDecision.test.ts` 47–49, `yearHeatmapSurface.test.ts`). This ship bumps both packages together in root `package.json` and the lockfile. Supersedes #1125. Rotates `.1187` to `docs/archive/log/LOG-rotate-1187-for-1202.md`. Label `2026.07-unified.1202`. PRIVATE_MODE stays.
@@ -56,9 +60,7 @@ Test-only: `src/lib/legal/legalPackWire.test.ts` still asserted two sentences of
 
 Built on the free-model lane (`KITCHEN/bin/free-build.mjs`). Label `2026.07-unified.1188`.
 
-## 2026-10-21 — landing hero loading fallback announces itself (`.1185`)
-
-`LogToPlanHeroFallback` is now wrapped in `role="status" aria-busy="true"` (inner shell stays `aria-hidden`), clearing the `loadingStatesAnnounce` meta test. Label `2026.07-unified.1185`. `[skip vercel]`.
+Rotated: [landing hero loading fallback (`.1185`)](docs/archive/log/LOG-rotate-1185-for-1203.md).
 
 Chronological record of shipped work. Newest first.
 

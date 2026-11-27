@@ -43,18 +43,8 @@ const NAV_EXEMPT: { path: string; reason: string }[] = [
       'ISSA-style intake at Mission Coach generate — not a More/rail feature you go do. Route stays for the sheet and deep links. Logger never waits on it.',
   },
   {
-    path: '/benchmarks',
-    reason:
-      'Founder decision pending: promote to RAIL_GROUPS.toolkit, or keep as a destination the Learn path links into. Recorded here so it is a choice, not the drift it was.',
-  },
-  {
-    path: '/programs',
-    reason:
-      'Zero in-app links today. Open question whether it is a screen at all or marketing-only; until that is answered a rail entry would be advertising something unfinished.',
-  },
-  {
     path: '/paths',
-    reason: 'Reached from inside /learn, which is in the rail. A second top-level entry to the same content would split it.',
+    reason: 'Reached from inside /learn, which is in More. A second entry to the same content would split it.',
   },
   {
     path: '/guide',

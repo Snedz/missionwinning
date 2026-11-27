@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
+import { isPathEnabled } from '@/lib/surface';
 import { HOUSE_MORE_QUIET, HOUSE_MORE_ROOMS } from './houseNav';
 
 type Props = {
@@ -49,7 +50,7 @@ export function HouseMore({ open, onClose }: Props) {
           })}
         </nav>
         <div className="house-more-quiet">
-          {HOUSE_MORE_QUIET.map((row) => {
+          {HOUSE_MORE_QUIET.filter((row) => isPathEnabled(row.href)).map((row) => {
             const on = pathname === row.href || pathname.startsWith(`${row.href}/`);
             return (
               <Link

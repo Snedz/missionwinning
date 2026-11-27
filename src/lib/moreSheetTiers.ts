@@ -51,7 +51,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'wedge',
     title: 'Wedge',
     titleKey: 'moreTierWedge',
-    hrefs: ['/active', '/coach', '/nutrition', '/history', '/leaderboard', '/library', '/builder'],
+    hrefs: ['/active', '/coach', '/nutrition', '/history', '/library', '/builder'],
   },
   {
     id: 'pillars',
@@ -63,7 +63,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile', '/server', '/account'],
+    hrefs: ['/profile', '/server', '/leaderboard', '/account'],
   },
 ];
 
@@ -72,6 +72,8 @@ export const MORE_SHEET_QUIET: readonly MoreQuietLink[] = [
   { href: '/explore', labelKey: 'navExplore', label: 'Explore' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
+  { href: '/programs', labelKey: 'infoProgramsTitle', label: 'Learn programs' },
+  { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests' },
   { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },
   { href: '/vision', labelKey: 'navOurMission', label: 'Our mission' },
   { href: '/about', labelKey: 'about', label: 'About' },

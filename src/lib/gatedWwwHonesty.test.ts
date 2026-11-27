@@ -28,8 +28,6 @@ const SURFACE_FILES = [
   'src/i18n/firstStepsLocales.ts',
   'src/i18n/navLocales.ts',
   'src/components/layout/AppHeader.tsx',
-  'src/components/landing/CinematicWww.tsx',
-  'src/components/landing/CinematicLogger.tsx',
   'src/page-components/LandingPage.tsx',
   'app/private/PrivateTeaserClient.tsx',
   'app/private/page.tsx',
