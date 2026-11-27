@@ -71,7 +71,7 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → teaser until the gate cookie; cookie → `LandingPage` (forge restyle of the old homepage, not cinematic). Gated + no cookie → `/private`. Gate ifs unchanged. |
-| `/forge-preview` | `app/forge-preview/page.tsx` → `LandingPage`. Preview and local only; `notFound()` when `VERCEL_ENV=production`. `robots: noindex`. Not a public path. |
+| `/forge-preview` | Retired landing preview; permanently redirects to `/` before the private gate. |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle first paint is house leftover (static page; title + offer, not RouteLoading). Free-beta 307s to `/notify`. Phantom checkout stays parked. |
 | `/notify` | `app/notify/page.tsx` → `NotifyPage` — Super Bundle email waitlist (checkout not live). Public while gated. `robots: noindex`. |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
@@ -84,7 +84,7 @@
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
-| `/private` | `app/private/page.tsx` → `GateTeaser` → tight lock (`PrivateTeaserClient`: hero + notify + Enter with code). `CinematicWww` is not first paint. |
+| `/private` | `app/private/page.tsx` → `GateTeaser` → tight lock (`PrivateTeaserClient`: hero + notify + Enter with code). |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 

@@ -35,7 +35,6 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 | API | `app/api/` | Route handlers — [app/api/INDEX.md](app/api/INDEX.md) |
 | Native apps | `apps/android/` | Compose Play product — [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md) |
 | Shared core | `packages/mw-core/` | Pure TS shared by web + mobile API |
-| Expo prototype | `apps/mobile/` | Flow reference only — not Play |
 
 **Pattern:** `app/(app)/foo/page.tsx` imports `FooPage` from `src/page-components/FooPage.tsx`.
 

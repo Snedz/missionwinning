@@ -73,14 +73,7 @@ const SOURCES = new Map(SOURCE_FILES.map((f) => [f, stripComments(read(f))]));
  * asked for and `designSystem.test.ts` uses. A blanket "skip LandingPage" would
  * quietly cover the next anonymous box added to it.
  */
-const NOT_A_PLACEHOLDER: { file: string; fallback: string; why: string; fixWhen: string }[] = [
-  {
-    file: 'src/components/landing/CinematicWww.tsx',
-    fallback: 'CinematicLoggerFallback',
-    why: 'Renders the hero logger for real rather than standing in for it — same component serves as the permanent no-JS shell, so from the reader\'s point of view nothing is loading and there is no busy state to announce.',
-    fixWhen: 'It stops being the no-JS shell and becomes a placeholder shape.',
-  },
-];
+const NOT_A_PLACEHOLDER: { file: string; fallback: string; why: string; fixWhen: string }[] = [];
 
 const exempt = (file: string, fallback: string) =>
   NOT_A_PLACEHOLDER.some((e) => e.file === file && e.fallback === fallback);

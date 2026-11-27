@@ -18,8 +18,8 @@
 
 # Native surfaces. Nothing in app/ or src/ imports from here; the web build has
 # no use for a Gradle tree (11,159 files, the bulk of the overage). Its build
-# output is excluded by apps/android/.gitignore and apps/mobile/.gitignore —
-# nested files, hence invisible to the CLI, hence the overage.
+# output is excluded by apps/android/.gitignore — a nested file, hence invisible
+# to the CLI, hence the overage.
 apps/
 
 # The www surface — a separate Astro site deployed to Cloudflare Pages, not to
