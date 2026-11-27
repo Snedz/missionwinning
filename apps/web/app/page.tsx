@@ -33,6 +33,11 @@ const rebuiltPlan = generateNotebookWeek({ ...exampleInput, revision: 2 }, new D
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const originalDays = new Set(firstPlan.sessions.map(({ dayOffset }) => dayOffset));
 const rebuiltDays = new Set(rebuiltPlan.sessions.map(({ dayOffset }) => dayOffset));
+const appScreens = [
+  { id: 'today', name: 'Today', description: 'Start a workout or see what’s next.', alt: 'Today with a Start workout button, next session, and recent training.' },
+  { id: 'train', name: 'Train', description: 'Enter reps and load. See the sets you saved.', alt: 'Train showing a logged twelve-rep set and fields for reps and load.' },
+  { id: 'coach', name: 'Coach', description: 'Build a week from your logged training.', alt: 'Coach showing a week plan and a citation from the logged workout.' },
+];
 const signInAvailable = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 function Arrow({ down = false }: { down?: boolean }) {
@@ -86,6 +91,28 @@ function WeekComparison() {
   </div>;
 }
 
+function AppPreview() {
+  return <section className={`${styles.frame} ${styles.appPreview}`} aria-labelledby="preview-title">
+    <div className={styles.sectionCopy}>
+      <p className={`eyebrow ${styles.kicker}`}>02 / Inside the notebook</p>
+      <h2 id="preview-title">See the real app.</h2>
+      <p>Screens from the training notebook with an example workout.</p>
+    </div>
+    <div className={styles.previewGrid}>
+      {appScreens.map(({ id, name, description, alt }, index) => <figure key={id}>
+        <figcaption>
+          <span className="eyebrow">0{index + 1} / {name}</span>
+          <p>{description}</p>
+        </figcaption>
+        <picture className={id === 'today' ? styles.phoneFrame : styles.adaptiveFrame}>
+          {id !== 'today' && <source media="(min-width: 64rem)" srcSet={`/preview-${id}-laptop.webp`} width={960} height={600} />}
+          <img src={`/preview-${id}-phone.webp`} width={390} height={844} alt={alt} loading="lazy" decoding="async" />
+        </picture>
+      </figure>)}
+    </div>
+  </section>;
+}
+
 export default function LandingPage() {
   return <div className={styles.landing}>
     <a className="skip-link" href="#main">Skip to content</a>
@@ -135,9 +162,10 @@ export default function LandingPage() {
           <WeekComparison />
         </div>
       </section>
+      <AppPreview />
       <section className={`${styles.frame} ${styles.questions}`} aria-labelledby="questions-title">
         <div className={styles.sectionCopy}>
-          <p className={`eyebrow ${styles.kicker}`}>02 / Good to know</p>
+          <p className={`eyebrow ${styles.kicker}`}>03 / Good to know</p>
           <h2 id="questions-title">Just you and your training.</h2>
         </div>
         <div className={styles.answers}>

@@ -34,6 +34,20 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   const { width, height } = page.viewportSize()!;
   await audit(page, width);
 
+  const preview = page.getByRole('region', { name: 'See the real app.' });
+  const screens = preview.getByRole('img');
+  await expect(screens).toHaveCount(3);
+  for (const [index, name] of ['today', 'train', 'coach'].entries()) {
+    const screen = screens.nth(index);
+    await expect(screen).toHaveAttribute('loading', 'lazy');
+    await screen.scrollIntoViewIfNeeded();
+    const format = width >= 1024 && name !== 'today' ? 'laptop' : 'phone';
+    await expect.poll(() => screen.evaluate((img: HTMLImageElement) =>
+      img.naturalWidth > 0 ? new URL(img.currentSrc).pathname : null,
+    )).toBe(`/preview-${name}-${format}.webp`);
+  }
+  await page.evaluate(() => window.scrollTo(0, 0));
+
   const dir = process.env.V2_LANDING_SCREENSHOTS_DIR;
   if (dir) {
     await page.evaluate(() => document.fonts.ready.then(() => undefined));

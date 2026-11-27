@@ -81,6 +81,21 @@
 .calendar .scheduled { color: hsl(var(--accent)); }
 .changeNote, .planFoot { padding: .65rem .8rem; font-size: .8rem; }
 .planFoot { border-top: 1px solid var(--line); }
+.appPreview { padding-block: clamp(2.6rem, 6vw, 5rem); }
+.previewGrid {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem; margin-top: 1.75rem;
+}
+.previewGrid figure { margin: 0; }
+.previewGrid figcaption { border-top: 1px solid var(--line); padding-block: .7rem 1rem; }
+.previewGrid figcaption > span { color: hsl(var(--accent)); }
+.previewGrid figcaption > p { margin-top: .3rem; font-size: .92rem; }
+.phoneFrame, .adaptiveFrame {
+  display: block; width: min(100%, 16rem); margin-inline: auto;
+  border: .35rem solid var(--text); border-block-width: .65rem; background: var(--text);
+}
+.previewGrid img { display: block; width: 100%; height: auto; }
+.questions { border-top: 1px solid var(--line); }
 .answers details { border-bottom: 1px solid var(--line); }
 .answers details:first-child { border-top: 1px solid var(--line); }
 .answers summary { padding: .9rem .15rem; min-height: 2.75rem; font-weight: 800; }
@@ -95,4 +110,9 @@
 @media (min-width: 48rem) {
   .hero { grid-template-columns: minmax(0, 1.13fr) minmax(0, .87fr); }
   .exampleGrid, .questions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .previewGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 64rem) {
+  .previewGrid { grid-template-columns: minmax(0, .64fr) repeat(2, minmax(0, 1fr)); }
+  .adaptiveFrame { width: 100%; border-bottom-width: .85rem; }
 }
