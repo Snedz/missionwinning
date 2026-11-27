@@ -107,7 +107,7 @@ export default function LandingPage() {
             <LogLink />
             <a className={styles.inlineLink} href="#example">See how a week adapts <Arrow down /></a>
           </div>
-          <p className={styles.reassurance}>No account needed to log.</p>
+          <p className={styles.reassurance}>In your browser. No account needed.</p>
         </div>
         <figure className={styles.plate} aria-labelledby="plate-caption">
           <figcaption id="plate-caption"><span>From the notebook</span><span>Sample data</span></figcaption>
@@ -143,7 +143,11 @@ export default function LandingPage() {
         <div className={styles.answers}>
           <details><summary>Can I log offline?</summary><p>Yes. Open the notebook online first and wait for “Offline ready.” After that you can log on this device without a connection.</p></details>
           <details><summary>Do I need a gym or a wearable?</summary><p>No. Start with bodyweight, or tell Coach you have dumbbells or a full gym. Coach uses your workout history, not wearable readings.</p></details>
-          <details><summary>Where are my workouts saved?</summary><p>Guest workouts stay in this browser on this device. Export a backup from You to keep a copy or move to another browser.</p></details>
+          <details>
+            <summary>Where are my workouts saved?</summary>
+            <p>As a guest, your workouts are saved in this browser on this device. Export a backup from You before clearing browser data or moving to another device.</p>
+            {signInAvailable && <p>Already have a Mission Winning account? Sign in from You to sync workouts across devices. You can keep logging as a guest instead.</p>}
+          </details>
         </div>
       </section>
       <div className={styles.finalBand}>

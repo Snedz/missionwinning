@@ -24,6 +24,7 @@ async function checkWeekComparison(page: Page) {
 test('landing explains the notebook accessibly and opens the guest set form directly', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Log a set.\s*Know what to train next\./);
+  await expect(page.getByText('In your browser. No account needed.')).toBeVisible();
   await expect(page.getByRole('list', { name: 'Example logged sets' }).getByRole('listitem')).toHaveCount(3);
   await checkWeekComparison(page);
   await page.keyboard.press('Tab');
@@ -78,6 +79,27 @@ test('landing CTA resumes a live workout instead of replacing it', async ({ page
   await page.getByRole('link', { name: 'Log a set', exact: true }).last().click();
   await expect(page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem')).toHaveCount(1);
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('19');
+});
+
+test('the landing distinguishes guest backups from configured account sync', async ({ page }) => {
+  const cloudConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  await page.goto('/');
+  await page.getByText('Where are my workouts saved?', { exact: true }).click();
+  await expect(page.getByText(/saved in this browser on this device.*Export a backup/)).toBeVisible();
+  const syncCopy = page.getByText(/Sign in from You to sync workouts across devices/);
+  const signIn = page.getByRole('link', { name: 'Sign in', exact: true });
+  if (cloudConfigured) {
+    await expect(syncCopy).toBeVisible();
+    await signIn.click();
+    await expect(page).toHaveURL(/\/profile$/);
+    await expect(page.getByRole('button', { name: 'Email sign-in link' })).toBeVisible();
+  } else {
+    await expect(syncCopy).toHaveCount(0);
+    await expect(signIn).toHaveCount(0);
+    await page.getByRole('link', { name: 'Open notebook' }).first().click();
+    await expect(page).toHaveURL(/\/log$/);
+    await expect(page.getByRole('heading', { name: 'Today.' })).toBeVisible();
+  }
 });
 
 test('the warmed notebook can follow the landing CTA offline', async ({ page, context }) => {
