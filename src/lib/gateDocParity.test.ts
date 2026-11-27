@@ -1,5 +1,5 @@
 /**
- * `CLAUDE.md`'s description of the gate must match the gate.
+ * The shared agent contract's description of the gate must match the gate.
  *
  * It did not. Until `.562` that section read **"16 steps, in order"** against a
  * gate that runs **18**, and the numbered list omitted **Coverage floors**
@@ -7,7 +7,7 @@
  * `.544` (411 untested files) through `.561` (415) against a floor of 407. The
  * port guard was missing from the list too.
  *
- * That is not a typo, it is a failure mode. `CLAUDE.md` is the file every agent
+ * That is not a typo, it is a failure mode. `AGENTS.md` is the file every agent
  * reads before touching this repo, so a step absent from that list is a step
  * nobody is looking for when the gate is skipped — and the gate *was* being
  * skipped, which is how the floor drifted for four ships without a word.
@@ -30,7 +30,7 @@ const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 const GATE = 'scripts/gate.mjs';
-const DOC = 'CLAUDE.md';
+const DOC = 'AGENTS.md';
 
 /** The body of `function run(...)`, which is the one incrementer that repeats. */
 function runBody(src: string): string {
@@ -72,7 +72,7 @@ function gateStepCount(): number {
   return calls + oneShot;
 }
 
-/** The `— N steps` figure in the CLAUDE.md heading. */
+/** The `— N steps` figure in the AGENTS.md heading. */
 function docClaimedCount(): number {
   const m = /### `npm run gate` — (\d+) steps/.exec(read(DOC));
   assert.ok(m, `${DOC} no longer heads that section with "— N steps" — this guard is pointing at nothing`);
@@ -90,16 +90,16 @@ function docListedSteps(): number[] {
   const start = doc.indexOf('### `npm run gate`');
   assert.notEqual(start, -1, `${DOC} has no gate section`);
   const block = doc.slice(start, doc.indexOf('Not covered:', start));
-  assert.ok(block.length > 100, 'gate section in CLAUDE.md is suspiciously short');
+  assert.ok(block.length > 100, 'gate section in AGENTS.md is suspiciously short');
 
   return [...block.matchAll(/(?:^|·\s|\n)(\d+)\.\s/g)].map((m) => Number(m[1]));
 }
 
-test('CLAUDE.md claims the number of steps the gate actually runs', () => {
+test('AGENTS.md claims the number of steps the gate actually runs', () => {
   assert.equal(
     docClaimedCount(),
     gateStepCount(),
-    `CLAUDE.md says ${docClaimedCount()} gate steps; scripts/gate.mjs runs ${gateStepCount()}. ` +
+    `AGENTS.md says ${docClaimedCount()} gate steps; scripts/gate.mjs runs ${gateStepCount()}. ` +
       `A map of the gate that cannot see a step is how the step stops being run.`
   );
 });
@@ -110,7 +110,7 @@ test('the doc lists every step, numbered 1..N with no gaps', () => {
   assert.deepEqual(
     listed,
     expected,
-    `CLAUDE.md's gate list is [${listed.join(', ')}] — expected 1..${gateStepCount()}. ` +
+    `AGENTS.md's gate list is [${listed.join(', ')}] — expected 1..${gateStepCount()}. ` +
       `The .562 defect was an omitted entry (Coverage floors), not a wrong total, so the ` +
       `ordinals are checked rather than just the count.`
   );
@@ -130,7 +130,7 @@ test('the ratchet steps are named in the doc, not just counted', () => {
   for (const label of ['Coverage floors', 'Bundle budget', 'i18n coverage']) {
     assert.ok(
       block.includes(label),
-      `"${label}" runs in the gate but is not in CLAUDE.md's list — that is exactly the .562 defect`
+      `"${label}" runs in the gate but is not in AGENTS.md's list — that is exactly the .562 defect`
     );
   }
 });
