@@ -28,6 +28,10 @@ The following paths are implemented in v2. Keep installed clients on their exist
 
 In private mode, the API perimeter checks the gate cookie before route-level auth; a Bearer token alone does not bypass it. V2 applies this perimeter to the mobile and Trainer APIs, not the web notebook. Confirm the intended flag, cookie distribution, rate-limit configuration, and optional Trainer provider settings on staging.
 
+For a multi-instance host, configure Upstash Redis: without durable rate-limit storage, counters are per process, including when Redis returns an error. Vercel uses its platform-provided client IP. For self-hosting, only enable `MW_TRUST_PROXY_HEADERS=1` if the trusted proxy replaces forwarded IP headers and cannot be bypassed; otherwise requests share the unknown-IP bucket. These API limits do not govern direct Supabase calls; keep auth limits, quotas, grants, and RLS configured there. Unauthenticated telemetry is not evidence of a real install.
+
+V2 accepts legacy timestamp cursors and can emit a timestamp plus row ID when paging workouts, routines, or custom exercises. The current Compose sync engine passes this value through as an opaque string. Before a same-origin cutover, make the rollback API accept both formats too: Compose persists the cursor between pages, and the legacy API expects a bare timestamp. The old workout summary endpoint has no stable per-workout retry key; keep full-fidelity clients on `/api/mobile/sync/workouts` for idempotent retries.
+
 ## Verification and next gates
 
 - **Fixture/contract-tested:** unchanged v1 backup envelope and recovery, synthetic nested web and flat Android rows, and HTTP behaviors derived from the old routes and Kotlin DTOs. The [shared Coach fixtures](packages/core/src/fixtures/COACH_PARITY.md) compare complete cold-start and mixed-unit plans against the core planner used by web. They document Compose DTO consumption; the current mobile seed endpoint is not a history-aware planner. These tests do not run the Kotlin client.
