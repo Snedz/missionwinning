@@ -1,6 +1,21 @@
 import { randomUUID } from 'node:crypto';
 import withSerwistInit from '@serwist/next';
 
+const publicKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+if (publicKey) {
+  const parts = publicKey.split('.');
+  let anonJwt = false;
+  if (parts.length === 3) {
+    try {
+      anonJwt = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')).role === 'anon';
+    } catch {}
+  }
+  if ((!anonJwt && !/^sb_publishable_[a-z0-9_-]+$/i.test(publicKey)) ||
+      publicKey === process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY must be a publishable or anon key, never a server credential.');
+  }
+}
+
 const revision = randomUUID();
 const withSerwist = withSerwistInit({
   swSrc: 'app/sw.ts',
