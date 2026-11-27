@@ -3,7 +3,7 @@
 **Status:** FROZEN (rev. C2). Implement only what this file names.  
 **Base:** `cursor/active-compose-first-paint` @ `23d4b13c` (`.1058` set table).  
 **Paper:** stamp `.1059`. Master paper stays `.1057` (`f302f40f`). Do not promote.  
-**Law:** Design Polish **C2 · Instrument** (`scripts/design-variants/themes.mjs` id `c2-instrument`, `docs/design/variants/c2-instrument.html`). Token conflict resolved: C2 wins. Not the research brief `#F5C400` / `#0A0A0A` table. Not zinc `#f5c518`.  
+**Law:** Design Polish **C2 · Instrument**, recorded in the token table below. Not the research brief `#F5C400` / `#0A0A0A` table. Not zinc `#f5c518`.
 **Scope (lineage review):** this craft = `.mw-house` only. Founder override (`.1137`): the gated door (`/private`) and the cookie homepage ride this skin. Do not restyle public www (`sites/www`). Field-manual paper/ink stays on www. Recreate Today / house rail+sheet / `/log` / `/active` set table / Victory / Coach, plus Library / Builder if they already ride house chrome.  
 **Not** `docs/PLAN.md` (build phases A–I). This file is the craft-window freeze.
 
@@ -18,8 +18,6 @@ Elevate the signed-in house beyond thin black/white. Keep modernist IA (rooms, S
 House 4th-skin materials and first-paint density on the real Train / Today / Victory / Coach loops. Nothing else.
 
 ## Token table (C2 · Instrument)
-
-Source: `scripts/design-variants/themes.mjs` id `c2-instrument` + `docs/design/variants/c2-instrument.html`.
 
 | Role | Hex |
 |------|-----|

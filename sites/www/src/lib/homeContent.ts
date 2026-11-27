@@ -1,18 +1,6 @@
 /*
  * Everything the homepage says, in one place.
  *
- * This existed inline in `src/pages/index.astro` until `.643`, which was fine
- * while there was one page. There are now nine renderings of this copy — the
- * real page plus eight art-direction variants under `docs/design/variants/` —
- * and the entire value of that comparison board is that **only the art
- * direction differs**. Copy living in the page it is rendered by makes that
- * property impossible to hold: the first edit to either side silently turns the
- * board into a comparison of two different pages.
- *
- * So the board and the site read the same module, and `build-design-variants`
- * asserts the rendered text of all eight variants is identical. One fact, one
- * home — the rule this repo opens with.
- *
  * Numbers come from `contentFloors`, never typed. Strings that already exist in
  * the app's locale pack come from there, so this surface cannot say something
  * the product does not.
@@ -153,4 +141,3 @@ export const ADAPT_WEEK = {
   note: 'A planned week. Miss a day and the rest of it moves — the door is kept, not dropped.',
   action: 'Miss Wednesday',
 } as const;
-

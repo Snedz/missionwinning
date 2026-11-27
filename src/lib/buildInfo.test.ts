@@ -81,7 +81,6 @@ test('about and version chips import the public stamp', () => {
 test('gated door does not stamp Alpha 0.1.0', () => {
   for (const file of [
     'app/private/PrivateTeaserClient.tsx',
-    'src/components/landing/CinematicWww.tsx',
   ]) {
     const src = read(file);
     assert.doesNotMatch(

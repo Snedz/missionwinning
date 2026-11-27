@@ -10,6 +10,9 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`CONTEXT-now-1140-today-desk.md`](docs/archive/CONTEXT-now-1140-today-desk.md) — `.1204` rotated the `.1140` Today is the next workout and one number Now bullet.
+- [`LOG-rotate-1189-for-1204.md`](docs/archive/log/LOG-rotate-1189-for-1204.md) — rotated by `.1204`, to keep the <=15 entry budget.
+- The retired Expo notes and generated landing variant board are available in Git history before `.1203`.
 - [`CONTEXT-now-1139-first-set.md`](docs/archive/CONTEXT-now-1139-first-set.md) — `.1203` rotated the `.1139` First set is one tap Now bullet.
 - [`LOG-rotate-1188-for-1203.md`](docs/archive/log/LOG-rotate-1188-for-1203.md) — rotated by `.1203`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1137-log-line.md`](docs/archive/CONTEXT-now-1137-log-line.md) — `.1202` rotated the `.1137` Log a set. Offline. Now bullet.

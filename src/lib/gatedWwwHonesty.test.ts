@@ -28,8 +28,6 @@ const SURFACE_FILES = [
   'src/i18n/firstStepsLocales.ts',
   'src/i18n/navLocales.ts',
   'src/components/layout/AppHeader.tsx',
-  'src/components/landing/CinematicWww.tsx',
-  'src/components/landing/CinematicLogger.tsx',
   'src/page-components/LandingPage.tsx',
   'app/private/PrivateTeaserClient.tsx',
   'app/private/page.tsx',
@@ -60,19 +58,10 @@ test('EN door pack is Free / Get notified / Enter with code', () => {
   assert.equal(GATED_WWW_HONESTY.landingNavStartGated, 'Enter with code');
 });
 
-test('nested mission: public line + support + Coach beat + quiet later, never a feed', () => {
+test('live door promises a first set without an account or wearable', () => {
   const en = gateStringsFor('en');
-  assert.equal(en.cinePublicLine, 'Log a set.');
-  assert.equal(en.cineHeroHeadline, 'Log a set.');
-  assert.equal(en.cineHeroLead, 'No account. No wearable.');
+  assert.equal(en.gateTitle1, 'Log a set.');
   assert.equal(en.gateSubtitle, 'No account. No wearable.');
-  assert.equal(en.cineWeekKicker, 'Mission Coach');
-  assert.match(en.cineLater, /Mission Winning Health/);
-  assert.match(en.cineLater, /History you own/);
-  assert.match(en.cineLater, /Today is not a Feed/);
-  assert.match(en.cineNever, /Never/);
-  assert.doesNotMatch(en.cineNever, /traction|users|athletes signed/i);
-  assert.doesNotMatch(en.cineLater, /WeChat|mini-program|MySpace|Fuel · Move · Mind/i);
 });
 
 test('banned regex catches Win Daily-as-tagline and Free beta on the door', () => {

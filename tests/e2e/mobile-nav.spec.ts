@@ -26,6 +26,12 @@ const MORE_ROOMS = ['/nutrition', '/profile', '/account'] as const;
 /** Quiet leftover foot — always listed, never a floor icon. */
 const QUIET_PILLARS = ['/move', '/mind', '/track', '/learn'] as const;
 
+test('the retired landing preview redirects home without a gate cookie @gate', async ({ request }) => {
+  const response = await request.get('/forge-preview', { maxRedirects: 0 });
+  expect(response.status()).toBe(308);
+  expect(response.headers().location).toBe('/');
+});
+
 test.describe('Mobile navigation @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
