@@ -745,9 +745,7 @@ class ActiveViewModel @Inject constructor(
         return source.map { ex ->
             val name = ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
             val starterWorkingWeight = if (seedUnit != null && LocalCoachSeed.needsWorkingWeight(ex)) {
-                repository.latestWorkingLoad(ex.exerciseId)?.let {
-                    WeightUnits.convertExact(it.weight, it.weightUnit, displayUnit)
-                }
+                ActiveSessionLogic.starterWorkingWeight(repository.latestWorkingLoad(ex.exerciseId), displayUnit, ex.reps)
             } else null
             buildSetsForExercise(
                 exerciseId = ex.exerciseId,
