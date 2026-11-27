@@ -3,7 +3,6 @@
 **Status:** Active product path for store Android.  
 **Code:** [`apps/android`](../apps/android)  
 **Contract:** [`docs/openapi-mobile.yaml`](openapi-mobile.yaml)  
-**UX reference (not the product):** [`apps/mobile`](../apps/mobile) Expo  
 **Thesis:** [YC_THESIS.md](YC_THESIS.md) · **Brand:** [brand-guidelines.md](brand-guidelines.md)  
 **iOS:** Deferred until Android Phase 1 is founder-accepted — see [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)
 
@@ -52,7 +51,7 @@ cd apps/android
 1. [AGENTS.md](../AGENTS.md) + [INDEX.md](../INDEX.md)  
 2. [YC_THESIS.md](YC_THESIS.md) — Train + Coach wedge only  
 3. [brand-guidelines.md](brand-guidelines.md)  
-4. This file + Expo flows under `apps/mobile/app/` as UX reference  
+4. This file for Android architecture and flow.
 5. [openapi-mobile.yaml](openapi-mobile.yaml)
 
 ---
@@ -115,7 +114,7 @@ apps/android/
 Lane: Android only. Read apps/android/INDEX.md + docs/ANDROID_NATIVE.md + docs/openapi-mobile.yaml.
 Brand: navy #0a0c10, emerald #27b07d, brass #c7a860. Wedge: Train+Coach only.
 Task: <one screen or module>.
-Do not edit apps/mobile product code except to read UX. Do not port full web pillars.
+Do not port full web pillars.
 Acceptance: <bullets>. Run ./gradlew :app:assembleDebug.
 ```
 
