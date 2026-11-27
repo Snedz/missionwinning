@@ -280,6 +280,11 @@ function backoffDelay(attempts: number): number {
   return Math.round(exponential * (0.75 + jitter() * 0.5));
 }
 
+function remainingDelay(nextAttemptAt: number, now: number) {
+  const delay = nextAttemptAt - now;
+  return delay > 0 && delay <= MAX_DELAY_MS * 1.25 ? delay : 0;
+}
+
 /**
  * Attempt every due op once. Safe to call often — concurrent calls collapse.
  * Returns the number of ops that completed.
@@ -308,7 +313,8 @@ export async function flush(storageKey: string = STORAGE_KEYS.outbox, canContinu
   flushes.set(storageKey, currentFlush);
   let completed = 0;
   try {
-    const due = load(storageKey).filter((op) => !op.stuck && op.nextAttemptAt <= clock());
+    const now = clock();
+    const due = load(storageKey).filter((op) => !op.stuck && remainingDelay(op.nextAttemptAt, now) === 0);
     for (const op of due) {
       if (!canContinue()) break;
       const handler = handlers.get(op.kind);
@@ -364,11 +370,12 @@ export function retryStuck(storageKey?: string): void {
 
 /** Milliseconds until the next op is due, or null when the queue is idle. */
 export function msUntilNextAttempt(storageKey?: string): number | null {
+  const now = clock();
   const times = load(storageKey)
     .filter((o) => !o.stuck)
-    .map((o) => o.nextAttemptAt);
+    .map((o) => remainingDelay(o.nextAttemptAt, now));
   if (!times.length) return null;
-  return Math.max(0, Math.min(...times) - clock());
+  return Math.min(...times);
 }
 
 /** Test-only hooks. */

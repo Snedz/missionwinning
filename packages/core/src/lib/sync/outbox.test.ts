@@ -142,6 +142,23 @@ test('outbox', async (t) => {
     }
   });
 
+  await t.test('a device clock correction does not strand a scheduled retry', async () => {
+    const uninstall = setup();
+    try {
+      let connected = false;
+      registerHandler('workout.upsert', async () => connected);
+      enqueue('workout.upsert', 'clock-skew', {});
+      assert.equal(await flush(), 0);
+      assert.equal(msUntilNextAttempt(), 10_000);
+      now -= 60 * 60_000;
+      connected = true;
+      assert.equal(msUntilNextAttempt(), 0);
+      assert.equal(await flush(), 1);
+    } finally {
+      uninstall();
+    }
+  });
+
   await t.test('a handler that throws is treated as a retry, not a loss', async () => {
     const uninstall = setup();
     try {
