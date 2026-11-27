@@ -10,6 +10,8 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`.1138` Meta tests](CONTEXT-now-1138-meta-tests.md) — Now bullet rotated for `.1206`.
+- [`.1185` landing fallback](log/LOG-rotate-1185-for-1206.md) — LOG entry rotated for `.1206`.
 - [`CONTEXT-now-1141-set-row.md`](docs/archive/CONTEXT-now-1141-set-row.md) — `.1205` rotated the `.1141` Train set row Now bullet.
 - [`LOG-rotate-1190-for-1205.md`](docs/archive/log/LOG-rotate-1190-for-1205.md) — rotated by `.1205`, to keep the <=15 entry budget.
 - [`CONTEXT-now-1140-today-desk.md`](docs/archive/CONTEXT-now-1140-today-desk.md) — `.1204` rotated the `.1140` Today is the next workout and one number Now bullet.
