@@ -33,7 +33,7 @@
 
 | Option | Why not |
 |--------|---------|
-| React Native / Expo | We built it (`apps/mobile`) and deliberately demoted it to flow reference ([NATIVE_MOBILE.md](NATIVE_MOBILE.md)). A JS bridge and a third ecosystem fight the thin-client goal; one dependency owning both platforms is concentration risk. |
+| React Native / Expo | The prototype was retired. A JS bridge and a third ecosystem fight the thin-client goal; one dependency owning both platforms is concentration risk. |
 | Flutter | Foreign renderer, zero reuse of the shipped Compose wedge and its 14 stable Gradle modules; a second UI language for the same thin client. |
 | Kotlin Multiplatform | The only layer KMP would share — domain logic — is the layer MW deliberately keeps **server-side** (planEngine is never ported; sync semantics live behind the contract). It buys ~nothing and taxes the stable Android build. |
 | TWA / Capacitor WebView | Packaging, not product. TWA stays an optional **web** PWA package ([TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md)); an iOS WebView shell is superseded by the native SwiftUI lock. |

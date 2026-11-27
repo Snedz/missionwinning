@@ -23,7 +23,7 @@
 
 ## Scope at open (wedge only)
 
-I-Day → Today → Active logger → Victory → Coach. Nothing else in v1 — no pillars, no watch app, no widgets until the wedge is accepted. Screen specs: [../apps/android/UX.md](../apps/android/UX.md) + Maestro flow strings ([../apps/android/.maestro/wedge.yaml](../apps/android/.maestro/wedge.yaml)) + Expo flow reference under `apps/mobile/app/`.
+I-Day → Today → Active logger → Victory → Coach. Nothing else in v1 — no pillars, no watch app, no widgets until the wedge is accepted. Screen specs: [Android UX](../apps/android/UX.md) and [Maestro wedge flow](../apps/android/.maestro/wedge.yaml).
 
 ## Lane rules (mirror [../apps/android/AGENTS.md](../apps/android/AGENTS.md))
 

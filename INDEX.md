@@ -46,7 +46,6 @@
 | Pay-ready legal (six docs) | [docs/PAY_READY_LEGAL.md](docs/PAY_READY_LEGAL.md), `/refunds`, [docs/legal/](docs/legal/) | Claiming enterprise SLAs on consumer Bundle |
 | Mobile / native apps | [docs/MOBILE_PLAYBOOK.md](docs/MOBILE_PLAYBOOK.md), [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android), [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) |
 | UX process / design standards | [docs/UX_PLAYBOOK.md](docs/UX_PLAYBOOK.md) + [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) | Projects with no problem-register entry; hi-fi mockups outside code |
-| Mobile (Expo prototype) | [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md), [`apps/mobile`](apps/mobile) | Shipping Expo to Play as the product |
 | Mobile (TWA optional) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Using TWA instead of Compose native |
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
 | Premium / conversion | [docs/FREE_BETA.md](docs/FREE_BETA.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md); strategy/redteam full text → mission-ops | Recreating REDTEAM/STRATEGY full memos in product git |
@@ -107,7 +106,6 @@
 | Mission Coach chat | [src/lib/coach/agent/INDEX.md](src/lib/coach/agent/INDEX.md) | Local RAG + tools + ReAct (ZDR one-shot) |
 | Mission Identity (web) | [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | Call sign, Athlete Card storage |
 | Shared pure TS (web + native) | [packages/mw-core/INDEX.md](packages/mw-core/INDEX.md) | coach, workout, identity, economy, module contracts |
-| Native Expo app | [apps/mobile/INDEX.md](apps/mobile/INDEX.md) | Flow prototype only (not Play product) |
 | Android Compose app | [apps/android/INDEX.md](apps/android/INDEX.md) | Play product path — Train + Coach |
 | Fuel Coach engine | [src/lib/fuelCoach/INDEX.md](src/lib/fuelCoach/INDEX.md) | Adaptive meal plan |
 | Full-page UI | [src/page-components/INDEX.md](src/page-components/INDEX.md) | Page components |
