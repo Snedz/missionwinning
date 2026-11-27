@@ -95,7 +95,11 @@
   border: .35rem solid var(--text); border-block-width: .65rem; background: var(--text);
 }
 .previewGrid img { display: block; width: 100%; height: auto; }
-.questions { border-top: 1px solid var(--line); }
+.availability { background: var(--card); border-block: 1px solid var(--line); }
+.availabilityGrid { display: grid; gap: 1.2rem 1.75rem; margin-top: 1.75rem; }
+.availabilityGrid > div { border-top: 1px solid var(--line); padding-top: .8rem; }
+.availabilityGrid h3 { font-size: 1.12rem; font-weight: 850; }
+.availabilityGrid p { margin-top: .35rem; color: var(--quiet); line-height: 1.5; max-width: 32ch; }
 .answers details { border-bottom: 1px solid var(--line); }
 .answers details:first-child { border-top: 1px solid var(--line); }
 .answers summary { padding: .9rem .15rem; min-height: 2.75rem; font-weight: 800; }
@@ -111,6 +115,7 @@
   .hero { grid-template-columns: minmax(0, 1.13fr) minmax(0, .87fr); }
   .exampleGrid, .questions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .previewGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .availabilityGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 64rem) {
   .previewGrid { grid-template-columns: minmax(0, .64fr) repeat(2, minmax(0, 1fr)); }

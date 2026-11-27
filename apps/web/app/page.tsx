@@ -163,13 +163,35 @@ export default function LandingPage() {
         </div>
       </section>
       <AppPreview />
+      <section className={styles.availability} aria-labelledby="availability-title">
+        <div className={`${styles.frame} ${styles.appPreview}`}>
+          <div className={styles.sectionCopy}>
+            <p className={`eyebrow ${styles.kicker}`}>03 / On your device</p>
+            <h2 id="availability-title">Train beyond Wi-Fi.</h2>
+            <p>Start in your browser. Install the web app if you want a home-screen shortcut.</p>
+          </div>
+          <div className={styles.availabilityGrid}>
+            <div>
+              <h3>Add to your home screen</h3>
+              <p>Open the notebook in a supported browser. Use “Install app” if the notebook offers it, or look for an install or Add to Home Screen option in your browser menu.</p>
+            </div>
+            <div>
+              <h3>Log in airplane mode</h3>
+              <p>Open the notebook online on this device first and wait for “Offline ready.” Then you can save sets without a connection. Account sync needs you back online.</p>
+            </div>
+            <div>
+              <h3>Separate native Android app</h3>
+              <p>Mission Winning also has a native Android app. This page opens the web notebook; no native app is needed to log here.</p>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className={`${styles.frame} ${styles.questions}`} aria-labelledby="questions-title">
         <div className={styles.sectionCopy}>
-          <p className={`eyebrow ${styles.kicker}`}>03 / Good to know</p>
+          <p className={`eyebrow ${styles.kicker}`}>04 / Good to know</p>
           <h2 id="questions-title">Just you and your training.</h2>
         </div>
         <div className={styles.answers}>
-          <details><summary>Can I log offline?</summary><p>Yes. Open the notebook online first and wait for “Offline ready.” After that you can log on this device without a connection.</p></details>
           <details><summary>Do I need a gym or a wearable?</summary><p>No. Start with bodyweight, or tell Coach you have dumbbells or a full gym. Coach uses your workout history, not wearable readings.</p></details>
           <details>
             <summary>Where are my workouts saved?</summary>

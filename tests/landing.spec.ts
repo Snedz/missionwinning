@@ -123,6 +123,13 @@ test('the landing distinguishes guest backups from configured account sync', asy
 });
 
 test('the warmed notebook can follow the landing CTA offline', async ({ page, context }) => {
+  await page.goto('/');
+  const device = page.getByRole('region', { name: 'Train beyond Wi-Fi.' });
+  await expect(device.getByRole('heading', { name: 'Add to your home screen' })).toBeVisible();
+  await expect(device.getByRole('heading', { name: 'Log in airplane mode' })).toBeVisible();
+  await expect(device.getByText(/online on this device first and wait for “Offline ready/)).toBeVisible();
+  await expect(device.getByRole('heading', { name: 'Separate native Android app' })).toBeVisible();
+  await expect(device.getByRole('link')).toHaveCount(0);
   await page.goto('/log');
   await expect(page.getByText('Offline ready', { exact: true })).toBeVisible({ timeout: 20_000 });
   await context.setOffline(true);
