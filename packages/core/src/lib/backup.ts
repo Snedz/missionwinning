@@ -1,5 +1,5 @@
 import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
-import { mergeWorkoutHistories } from '@/lib/workout/workoutMerge';
+import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { readDurableSnapshot, writeRaw } from '@/lib/storage/safeStorage';
 
@@ -11,6 +11,18 @@ import { readDurableSnapshot, writeRaw } from '@/lib/storage/safeStorage';
 
 export const WORKOUT_STORE_KEY = 'workout-tracker-storage';
 export const BACKUP_VERSION = 1;
+
+function backupStorage(namespace: string) {
+  const workoutKey = namespace + WORKOUT_STORE_KEY;
+  const snapshot = readDurableSnapshot(namespace + 'mw_', workoutKey);
+  if (!snapshot) return null;
+  return {
+    workoutKey,
+    extra: snapshot.extra,
+    entries: Object.fromEntries(Object.entries(snapshot.entries).map(([key, value]) =>
+      [key.slice(namespace.length), value])),
+  };
+}
 
 export interface MwBackup {
   app: 'mission-winning';
@@ -47,7 +59,8 @@ export function isMwBackup(value: unknown): value is MwBackup {
 export function mergeBackup(
   backup: MwBackup,
   currentStoreJson: string | null,
-  currentKeys: Record<string, string>
+  currentKeys: Record<string, string>,
+  historyCap?: number,
 ): {
   nextStoreJson: string;
   keysToSet: Record<string, string>;
@@ -65,7 +78,7 @@ export function mergeBackup(
 
   const currentHistory = current.state?.workoutHistory ?? [];
   const incomingHistory = incoming.state?.workoutHistory ?? [];
-  const mergedHistory = mergeWorkoutHistories(currentHistory, incomingHistory);
+  const { logs: mergedHistory } = mergeWorkoutHistoriesDetailed(currentHistory, incomingHistory, historyCap);
 
   const currentSaved = current.state?.savedWorkouts ?? [];
   const seen = new Set(currentSaved.map((w) => w.id));
@@ -124,8 +137,8 @@ const STORAGE_UNREADABLE =
  * no message, and `track('backup_exported')` firing anyway — analytics recording a
  * successful export that never happened.
  */
-export function buildBackup(): BackupResult<MwBackup> {
-  const snapshot = readDurableSnapshot('mw_', WORKOUT_STORE_KEY);
+export function buildBackup(namespace = ''): BackupResult<MwBackup> {
+  const snapshot = backupStorage(namespace);
   if (!snapshot) return { ok: false, error: STORAGE_UNREADABLE };
 
   return {
@@ -140,8 +153,8 @@ export function buildBackup(): BackupResult<MwBackup> {
   };
 }
 
-export function downloadBackup(): BackupResult {
-  const built = buildBackup();
+export function downloadBackup(namespace = ''): BackupResult {
+  const built = buildBackup(namespace);
   if (!built.ok) return built;
 
   const blob = new Blob([JSON.stringify(built.value, null, 2)], { type: 'application/json' });
@@ -154,7 +167,7 @@ export function downloadBackup(): BackupResult {
   return { ok: true };
 }
 
-export function restoreBackupFromJson(json: string): {
+export function restoreBackupFromJson(json: string, namespace = ''): {
   ok: boolean;
   error?: string;
   workoutsMerged?: number;
@@ -171,7 +184,7 @@ export function restoreBackupFromJson(json: string): {
     return { ok: false, error: 'Not a Mission Winning backup file.' };
   }
 
-  const snapshot = readDurableSnapshot('mw_', WORKOUT_STORE_KEY);
+  const snapshot = backupStorage(namespace);
   if (!snapshot) return { ok: false, error: STORAGE_UNREADABLE };
   /*
    * Guarded, and it reports failure rather than propagating.
@@ -183,10 +196,10 @@ export function restoreBackupFromJson(json: string): {
    * clean success.
    */
   try {
-    const result = mergeBackup(parsed, snapshot.extra, snapshot.entries);
-    if (!writeRaw(WORKOUT_STORE_KEY, result.nextStoreJson)) throw new Error();
+    const result = mergeBackup(parsed, snapshot.extra, snapshot.entries, namespace ? Infinity : undefined);
+    if (!writeRaw(snapshot.workoutKey, result.nextStoreJson)) throw new Error();
     for (const [k, v] of Object.entries(result.keysToSet)) {
-      if (!writeRaw(k, v)) throw new Error();
+      if (!writeRaw(namespace + k, v)) throw new Error();
     }
     return {
       ok: true,

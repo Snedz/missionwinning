@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const port = process.env.V2_LOCAL_SUPABASE_TEST ? 3000 : 4300;
+const baseURL = `http://127.0.0.1:${port}`;
+
 export default defineConfig({
   testDir: './tests',
   timeout: 90_000,
@@ -9,13 +12,13 @@ export default defineConfig({
   use: {
     ...devices['Pixel 7'],
     defaultBrowserType: 'chromium',
-    baseURL: 'http://127.0.0.1:4300',
+    baseURL,
     actionTimeout: 8_000,
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'npm run start -w apps/web -- --hostname 127.0.0.1 --port 4300',
-    url: 'http://127.0.0.1:4300/log',
+    command: `npm run start -w apps/web -- --hostname 127.0.0.1 --port ${port}`,
+    url: `${baseURL}/log`,
     reuseExistingServer: !process.env.CI,
   },
 });

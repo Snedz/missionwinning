@@ -74,9 +74,8 @@ const changeListeners = new Set<(state: OutboxState) => void>();
 
 let clock: () => number = () => Date.now();
 let jitter: () => number = () => Math.random();
-let flushing = false;
 /** When the in-flight flush began — lets a wedged flag expire (`.211`). */
-let flushStartedAt = 0;
+const flushes = new Map<string, { startedAt: number }>();
 
 /**
  * How long one handler may take before the flush treats it as failed. Generous:
@@ -129,8 +128,8 @@ function newId(): string {
   return `op-${clock()}-${Math.floor(jitter() * 1e9).toString(36)}`;
 }
 
-function load(): OutboxOp[] {
-  const ops = readJson<OutboxOp[]>(STORAGE_KEYS.outbox, []);
+function load(storageKey = STORAGE_KEYS.outbox as string): OutboxOp[] {
+  const ops = readJson<OutboxOp[]>(storageKey, []);
   if (!Array.isArray(ops)) return [];
   // Tolerate hand-edited or partially written payloads.
   return ops.filter(
@@ -185,8 +184,8 @@ export function capQueue(ops: OutboxOp[], max: number = MAX_QUEUE): OutboxOp[] {
   return ops.filter((_, i) => !dropping.has(i));
 }
 
-function save(ops: OutboxOp[]): void {
-  writeJson(STORAGE_KEYS.outbox, capQueue(ops, MAX_QUEUE));
+function save(ops: OutboxOp[], storageKey = STORAGE_KEYS.outbox as string): void {
+  writeJson(storageKey, capQueue(ops, MAX_QUEUE));
 }
 
 function summarize(ops: OutboxOp[]): OutboxState {
@@ -220,8 +219,8 @@ export function subscribe(listener: (state: OutboxState) => void): () => void {
   return () => changeListeners.delete(listener);
 }
 
-export function getState(): OutboxState {
-  return summarize(load());
+export function getState(storageKey?: string): OutboxState {
+  return summarize(load(storageKey));
 }
 
 /** One waiting item, for display. */
@@ -248,8 +247,8 @@ export function listPending(): PendingItem[] {
 }
 
 /** Queue a write. Persists synchronously; safe to call from a store action. */
-export function enqueue(kind: OutboxKind, dedupeKey: string, payload: unknown): void {
-  const ops = load();
+export function enqueue(kind: OutboxKind, dedupeKey: string, payload: unknown, storageKey?: string): void {
+  const ops = load(storageKey);
   const now = clock();
   const existingIdx = ops.findIndex((o) => o.kind === kind && o.dedupeKey === dedupeKey);
   const op: OutboxOp = {
@@ -266,8 +265,12 @@ export function enqueue(kind: OutboxKind, dedupeKey: string, payload: unknown): 
   };
   if (existingIdx >= 0) ops[existingIdx] = op;
   else ops.push(op);
-  save(ops);
-  emit(ops);
+  save(ops, storageKey);
+  if (!storageKey) emit(ops);
+}
+
+export function hasPendingOperation(kind: OutboxKind, dedupeKey: string, storageKey?: string): boolean {
+  return load(storageKey).some((op) => op.kind === kind && op.dedupeKey === dedupeKey);
 }
 
 function backoffDelay(attempts: number): number {
@@ -280,7 +283,7 @@ function backoffDelay(attempts: number): number {
  * Attempt every due op once. Safe to call often — concurrent calls collapse.
  * Returns the number of ops that completed.
  */
-export async function flush(): Promise<number> {
+export async function flush(storageKey: string = STORAGE_KEYS.outbox, canContinue = () => true): Promise<number> {
   /*
    * `.211` — a hung fetch used to kill the outbox for the life of the tab.
    *
@@ -298,13 +301,15 @@ export async function flush(): Promise<number> {
    * races a timeout below, and the flag itself expires so a flush that somehow
    * escapes the race cannot wedge the queue permanently.
    */
-  if (flushing && clock() - flushStartedAt < FLUSH_STUCK_MS) return 0;
-  flushing = true;
-  flushStartedAt = clock();
+  const inFlight = flushes.get(storageKey);
+  if (inFlight && clock() - inFlight.startedAt < FLUSH_STUCK_MS) return 0;
+  const currentFlush = { startedAt: clock() };
+  flushes.set(storageKey, currentFlush);
   let completed = 0;
   try {
-    const due = load().filter((op) => !op.stuck && op.nextAttemptAt <= clock());
+    const due = load(storageKey).filter((op) => !op.stuck && op.nextAttemptAt <= clock());
     for (const op of due) {
+      if (!canContinue()) break;
       const handler = handlers.get(op.kind);
       if (!handler) continue; // handler not registered yet on this surface
 
@@ -320,7 +325,7 @@ export async function flush(): Promise<number> {
 
       // Re-read: a newer enqueue may have replaced this op (new id) while the
       // request was in flight. Not finding our id means our work is obsolete.
-      const ops = load();
+      const ops = load(storageKey);
       const idx = ops.findIndex((o) => o.id === op.id);
       if (idx < 0) continue;
       const current = ops[idx];
@@ -338,27 +343,27 @@ export async function flush(): Promise<number> {
           lastError: error,
         };
       }
-      save(ops);
-      emit(ops);
+      save(ops, storageKey);
+      if (storageKey === STORAGE_KEYS.outbox) emit(ops);
     }
   } finally {
-    flushing = false;
+    if (flushes.get(storageKey) === currentFlush) flushes.delete(storageKey);
   }
   return completed;
 }
 
 /** Re-arm ops that exhausted their attempts (user asked, or a fresh sign-in). */
-export function retryStuck(): void {
-  const ops = load().map((op) =>
+export function retryStuck(storageKey?: string): void {
+  const ops = load(storageKey).map((op) =>
     op.stuck ? { ...op, stuck: false, attempts: 0, nextAttemptAt: clock() } : op
   );
-  save(ops);
-  emit(ops);
+  save(ops, storageKey);
+  if (!storageKey) emit(ops);
 }
 
 /** Milliseconds until the next op is due, or null when the queue is idle. */
-export function msUntilNextAttempt(): number | null {
-  const times = load()
+export function msUntilNextAttempt(storageKey?: string): number | null {
+  const times = load(storageKey)
     .filter((o) => !o.stuck)
     .map((o) => o.nextAttemptAt);
   if (!times.length) return null;
@@ -377,6 +382,6 @@ export function __resetForTests(): void {
   changeListeners.clear();
   clock = () => Date.now();
   jitter = () => Math.random();
-  flushing = false;
+  flushes.clear();
   save([]);
 }

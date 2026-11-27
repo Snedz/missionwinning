@@ -10,7 +10,8 @@ import { exerciseFromCatalogLike, formatSetRowLine, resolveSetRowType, resolveSe
 import { weightUnitLabel } from '@/lib/units';
 import type { EquipmentProfile, PlanSession } from '@/lib/coach/types';
 import type { ActiveExerciseLog, CompletedWorkoutLog } from '@/types';
-import { useNotebook } from '../lib/notebook';
+import { notebookNamespace, useNotebook } from '../lib/notebook';
+import { cloudConfigured, sendSignInLink, signOutAccount, startCloudAccount, syncAccount, useCloudAccount } from '../lib/cloudAccount';
 
 type Route = '/log' | '/active' | '/victory' | '/coach' | '/history' | '/profile';
 type IconName = 'today' | 'train' | 'coach' | 'history' | 'you' | 'arrow' | 'plus' | 'check';
@@ -120,6 +121,7 @@ export function Notebook() {
   const storageWarning = useNotebook((store) => store.storageWarning);
   const { online, cached } = useConnection();
   useEffect(() => { if (!ready) hydrate(); }, [ready, hydrate]);
+  useEffect(() => { startCloudAccount(); }, []);
   const route = pathname === '/' ? '/log' : pathname;
   return <div className="shell">
     <header className="masthead">
@@ -355,13 +357,19 @@ function History() {
 }
 
 function You() {
-  const { workoutHistory, hydrate, deleteWorkout, eraseDevice } = useNotebook();
+  const { workoutHistory, hydrate, deleteWorkout, eraseDevice, owner } = useNotebook();
   const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
   const [confirm, setConfirm] = useState<string | null>(null);
   const logs = workoutHistory.filter((log) => !log.deletedAt);
   async function importFile(file: File) {
+    const scope = notebookNamespace(owner);
     try {
-      const result = restoreBackupFromJson(await file.text());
+      const contents = await file.text();
+      if (useNotebook.getState().owner !== owner) {
+        setMessage({ ok: false, text: 'Account changed. Select the backup again.' });
+        return;
+      }
+      const result = restoreBackupFromJson(contents, scope);
       if (result.ok) hydrate();
       const added = result.workoutsMerged ?? 0;
       setMessage({ ok: result.ok, text: result.ok
@@ -374,11 +382,12 @@ function You() {
   return <>
     <Heading index="06" label="DEVICE & DATA" title="You.">Your notebook belongs to you. Keep a copy before changing devices.</Heading>
     {message && <p className={`notice ${message.ok ? '' : 'danger'}`} role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
+    {cloudConfigured && <AccountPanel key={owner ?? 'guest'} />}
     <section className="note-panel data-panel">
       <div className="eyebrow muted">PORTABLE BACKUP</div><h2>Take your training with you.</h2>
       <p>Use the same Mission Winning JSON format to bring your existing logs here or take them back.</p>
       <div className="action-row">
-        <button className="button primary-button" onClick={() => { const result = downloadBackup(); setMessage({ ok: result.ok, text: result.ok ? 'Backup downloaded.' : result.error }); }}>Export backup <Icon name="arrow" /></button>
+        <button className="button primary-button" onClick={() => { const result = downloadBackup(notebookNamespace(owner)); setMessage({ ok: result.ok, text: result.ok ? 'Backup downloaded.' : result.error }); }}>Export backup <Icon name="arrow" /></button>
         <label className="button outline-button file-button">Import backup
           <input aria-label="Import backup" type="file" accept="application/json,.json" onChange={(event) => {
             const file = event.currentTarget.files?.[0];
@@ -390,7 +399,7 @@ function You() {
     </section>
     <section className="note-panel data-panel">
       <div className="eyebrow muted">LOCAL STORAGE</div><h2>Manage this notebook.</h2>
-      <p>Nothing is uploaded here. Removing data on this device doesn’t change another copy.</p>
+      <p>{owner ? 'Deleting one workout syncs that deletion. Removing the device copy does not delete cloud workouts.' : 'Nothing is uploaded here. Removing data on this device doesn’t change another copy.'}</p>
       {logs.length > 0 && <label>Delete one workout<select value={confirm && confirm !== 'all' ? confirm : ''} onChange={(event) => setConfirm(event.target.value || null)}>
         <option value="">Select a workout</option>{logs.map((log) => <option key={log.id} value={log.id}>{log.workoutName} · {shortDate(log.completedAt)}</option>)}
       </select></label>}
@@ -399,9 +408,49 @@ function You() {
         {confirm !== 'all' && <button className="bare-button danger-link" onClick={() => setConfirm('all')}>Delete app data from this device…</button>}
       </div>
       {confirm === 'all' && <div className="notice danger" role="group" aria-label="Confirm device deletion">
-        <p>This removes workouts, in-progress sessions, plans, and other Mission Winning keys on this device. Export first if you want to keep them.</p>
-        <div className="action-row"><button className="button primary-button" onClick={() => { const ok = eraseDevice(); setConfirm(null); setMessage({ ok, text: ok ? 'App data deleted from this device.' : 'The device refused part of the deletion.' }); }}>Delete app data</button><button className="button outline-button" onClick={() => setConfirm(null)}>Cancel</button></div>
+        <p>This removes the notebook’s workouts, in-progress session and plan on this device. Export first if you want to keep them.</p>
+        <div className="action-row"><button className="button primary-button" onClick={() => { const ok = eraseDevice(); setConfirm(null); setMessage({ ok, text: ok ? 'App data deleted from this device.' : 'The device copy could not be removed. Finish pending sync first if signed in.' }); }}>Delete app data</button><button className="button outline-button" onClick={() => setConfirm(null)}>Cancel</button></div>
       </div>}
     </section>
   </>;
+}
+
+function AccountPanel() {
+  const { phase, email, pending } = useCloudAccount();
+  const owner = useNotebook((state) => state.owner);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
+
+  async function signIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const email = String(new FormData(event.currentTarget).get('email') ?? '').trim();
+    setBusy(true);
+    const ok = await sendSignInLink(email);
+    setMessage({ ok, text: ok ? 'Check your email for a sign-in link.' : 'Could not send a link. Verify the address and try again online.' });
+    setBusy(false);
+  }
+
+  async function signOut() {
+    setBusy(true);
+    if (!await signOutAccount()) setMessage({ ok: false, text: 'Could not sign out. Try again online.' });
+    setBusy(false);
+  }
+
+  return <section className="note-panel data-panel">
+    <div className="eyebrow muted">OPTIONAL ACCOUNT</div>
+    <h2>{owner ? 'Workout sync' : 'Use your existing account.'}</h2>
+    {message && <p role={message.ok ? 'status' : 'alert'}>{message.text}</p>}
+    {phase === 'checking' ? <p role="status">Checking account…</p> : owner ? <>
+      <p>{email ?? 'Signed in'}</p>
+      <p role="status">{phase === 'syncing' ? 'Syncing workouts…' : phase === 'synced' ? 'Workouts synced.' : pending ? `Waiting to sync: ${pending}.` : 'Waiting for a connection to sync workouts.'}</p>
+      <div className="action-row">
+        <button className="button outline-button" disabled={phase === 'syncing'} onClick={() => void syncAccount(true)}>Sync now</button>
+        <button className="bare-button" disabled={busy} onClick={() => void signOut()}>Sign out</button>
+      </div>
+    </> : <form className="data-panel grid gap-3" onSubmit={(event) => void signIn(event)}>
+      <p>You can always log without signing in. The first account on this device will merge a copy of this guest notebook’s workout history.</p>
+      <label>Account email<input name="email" type="email" autoComplete="email" required /></label>
+      <div><button className="button primary-button" disabled={busy} type="submit">{busy ? 'Sending…' : 'Email sign-in link'} <Icon name="arrow" /></button></div>
+    </form>}
+  </section>;
 }

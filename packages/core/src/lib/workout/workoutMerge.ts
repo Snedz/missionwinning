@@ -103,7 +103,8 @@ export interface MergeResult {
  */
 export function mergeWorkoutHistoriesDetailed(
   local: CompletedWorkoutLog[],
-  cloud: CompletedWorkoutLog[]
+  cloud: CompletedWorkoutLog[],
+  historyCap = HISTORY_CAP,
 ): MergeResult {
   const byIdentity = new Map<string, CompletedWorkoutLog>();
 
@@ -133,8 +134,8 @@ export function mergeWorkoutHistoriesDetailed(
   const tombs = all.filter((log) => !!log.deletedAt).sort(newestFirst);
 
   return {
-    logs: [...live.slice(0, HISTORY_CAP), ...tombs],
-    truncated: Math.max(0, live.length - HISTORY_CAP),
+    logs: [...live.slice(0, historyCap), ...tombs],
+    truncated: Math.max(0, live.length - historyCap),
   };
 }
 

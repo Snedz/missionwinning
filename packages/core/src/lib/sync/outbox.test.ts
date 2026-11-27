@@ -48,6 +48,28 @@ function setup() {
 }
 
 test('outbox', async (t) => {
+  await t.test('an account drain leaves every other account and the legacy queue untouched', async () => {
+    const uninstall = setup();
+    try {
+      const seen: unknown[] = [];
+      registerHandler('workout.upsert', async (payload) => {
+        seen.push(payload);
+        return true;
+      });
+      enqueue('workout.upsert', 'same-id', 'guest');
+      enqueue('workout.upsert', 'same-id', 'athlete A', 'account:A');
+      enqueue('workout.upsert', 'same-id', 'athlete B', 'account:B');
+      assert.equal(await flush('account:A', () => false), 0);
+      assert.equal(await flush('account:A'), 1);
+      assert.deepEqual(seen, ['athlete A']);
+      assert.equal(getState('account:A').pending, 0);
+      assert.equal(getState('account:B').pending, 1);
+      assert.equal(getState().pending, 1);
+    } finally {
+      uninstall();
+    }
+  });
+
   await t.test('a queued op is delivered and removed', async () => {
     const uninstall = setup();
     try {

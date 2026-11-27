@@ -12,6 +12,9 @@ import { generateWeek } from '@/lib/coach/planEngine';
 import { loadBands } from '@/lib/coach/load';
 import { computeBodyScores, computeReadiness } from '@/lib/score';
 import { localWeekKey } from '@/lib/time/localDate';
+import { mergeWorkoutHistoriesDetailed } from '@/lib/workout/workoutMerge';
+import { enqueue, getState as getOutboxState } from '@/lib/sync/outbox';
+import { alignLegacyWorkouts } from '@/lib/sync/workoutCloud';
 import type { CoachPlan, EquipmentProfile, PlanSession } from '@/lib/coach/types';
 import type { UnitsPref } from '@/lib/units';
 import type { ActiveWorkout, CompletedWorkoutLog, LoggedSet, SavedWorkout } from '@/types';
@@ -32,6 +35,9 @@ type NotebookStore = Diary & {
   plan: CoachPlan | null;
   restUntil: number;
   lastFinishedId: string | null;
+  owner: string | null;
+  switchOwner: (owner: string | null) => void;
+  mergeCloud: (owner: string, rows: CompletedWorkoutLog[]) => boolean;
   hydrate: () => void;
   start: (session?: PlanSession) => void;
   addExercise: (id: string) => void;
@@ -43,12 +49,31 @@ type NotebookStore = Diary & {
   eraseDevice: () => boolean;
 };
 
+export function notebookNamespace(owner: string | null) {
+  return owner ? `v2-notebook:${owner}:` : '';
+}
+
+export function workoutQueueKey(owner: string) {
+  return notebookNamespace(owner) + 'workout-queue';
+}
+
+export type WorkoutQueuePayload = {
+  owner: string;
+  log: CompletedWorkoutLog;
+  weightUnit: 'kg' | 'lb';
+};
+
+export function queueWorkout(owner: string, log: CompletedWorkoutLog, units: UnitsPref) {
+  const payload: WorkoutQueuePayload = { owner, log, weightUnit: units === 'imperial' ? 'lb' : 'kg' };
+  enqueue('workout.upsert', log.clientId ?? log.id, payload, workoutQueueKey(owner));
+}
+
 function initialDiary(): Diary {
   return { activeWorkout: null, workoutHistory: [], savedWorkouts: [] };
 }
 
-function storedDiary() {
-  const value = readJson<{ state?: Diary; version?: number }>(WORKOUT_STORE_KEY, {});
+function storedDiary(owner: string | null) {
+  const value = readJson<{ state?: Diary; version?: number }>(notebookNamespace(owner) + WORKOUT_STORE_KEY, {});
   return value && typeof value === 'object' ? value : {};
 }
 
@@ -63,14 +88,14 @@ function updateSession(active: ActiveWorkout, exercises: ActiveWorkout['exercise
 export const useNotebook = create<NotebookStore>((set, get) => {
   function persist(patch: Partial<Diary>) {
     const current = get();
-    const prior = storedDiary();
+    const prior = storedDiary(current.owner);
     const next = {
       activeWorkout: current.activeWorkout,
       workoutHistory: current.workoutHistory,
       savedWorkouts: current.savedWorkouts,
       ...patch,
     };
-    const ok = writeRaw(WORKOUT_STORE_KEY, JSON.stringify({
+    const ok = writeRaw(notebookNamespace(current.owner) + WORKOUT_STORE_KEY, JSON.stringify({
       ...prior,
       version: prior.version ?? 1,
       state: { ...prior.state, ...next },
@@ -80,7 +105,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
   }
 
   function savePlan(plan: CoachPlan) {
-    const ok = writeRaw(PLAN_KEY, JSON.stringify(plan));
+    const ok = writeRaw(notebookNamespace(get().owner) + PLAN_KEY, JSON.stringify(plan));
     set({ plan, storageWarning: !ok || get().storageWarning });
   }
 
@@ -92,19 +117,53 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     plan: null,
     restUntil: 0,
     lastFinishedId: null,
+    owner: null,
 
     hydrate() {
       const current = get();
-      const next = mergePersistedWorkoutState(storedDiary().state, current);
-      const plan = readJson<CoachPlan | null>(PLAN_KEY, null);
+      const namespace = notebookNamespace(current.owner);
+      const next = mergePersistedWorkoutState(storedDiary(current.owner).state, current);
+      const plan = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
       set({
         activeWorkout: next.activeWorkout ?? null,
         workoutHistory: next.workoutHistory ?? [],
         savedWorkouts: next.savedWorkouts ?? [],
         plan: plan && Array.isArray(plan.sessions) ? plan : null,
-        units: readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric',
+        units: (readRaw(namespace + STORAGE_KEYS.units) ?? readRaw(STORAGE_KEYS.units)) === 'imperial' ? 'imperial' : 'metric',
         ready: true,
       });
+    },
+
+    switchOwner(owner) {
+      if (get().owner === owner) return;
+      const namespace = notebookNamespace(owner);
+      const next = mergePersistedWorkoutState(storedDiary(owner).state, initialDiary());
+      const plan = readJson<CoachPlan | null>(namespace + PLAN_KEY, null);
+      set({
+        ...initialDiary(), ...next, owner, ready: true, restUntil: 0, lastFinishedId: null,
+        plan: plan && Array.isArray(plan.sessions) ? plan : null, storageWarning: false,
+        units: (readRaw(namespace + STORAGE_KEYS.units) ?? readRaw(STORAGE_KEYS.units)) === 'imperial' ? 'imperial' : 'metric',
+      });
+    },
+
+    mergeCloud(owner, rows) {
+      const current = get();
+      if (current.owner !== owner) return false;
+      const claimKey = 'v2-notebook:guest-claimed-by';
+      const claim = readRaw(claimKey);
+      const legacyOwner = readRaw(STORAGE_KEYS.storageOwner);
+      const guest = !claim && (!legacyOwner || legacyOwner === owner)
+        ? mergePersistedWorkoutState(storedDiary(null).state, initialDiary()) : null;
+      const history = alignLegacyWorkouts([...current.workoutHistory, ...(guest?.workoutHistory ?? [])], rows);
+      const combined = mergeWorkoutHistoriesDetailed(history, rows, Infinity);
+      const local = {
+        activeWorkout: current.activeWorkout ?? guest?.activeWorkout ?? null,
+        savedWorkouts: Array.from(new Map([...(guest?.savedWorkouts ?? []), ...current.savedWorkouts].map((w) => [w.id, w])).values()),
+        workoutHistory: combined.logs,
+      };
+      if (!persist(local)) return false;
+      if (guest && !writeRaw(claimKey, owner)) return false;
+      return true;
     },
 
     start(session) {
@@ -125,7 +184,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
         clientId, revision: 1, workoutName: session?.name ?? 'Quick workout',
         startedAt, updatedAt: startedAt, exercises,
       } });
-      if (session) writeRaw(PLAN_SESSION_KEY, JSON.stringify({ clientId, sessionId: session.id }));
+      if (session) writeRaw(notebookNamespace(get().owner) + PLAN_SESSION_KEY, JSON.stringify({ clientId, sessionId: session.id }));
       set({ restUntil: 0 });
     },
 
@@ -178,14 +237,17 @@ export const useNotebook = create<NotebookStore>((set, get) => {
         durationSeconds: Math.max(0, Math.round((Date.parse(completedAt) - Date.parse(activeWorkout.startedAt)) / 1000)),
         exercises: result.exercises, totalVolume: result.volume,
       };
-      persist({ activeWorkout: null, workoutHistory: [entry, ...workoutHistory.filter((log) => log.clientId !== id)] });
+      const stored = persist({ activeWorkout: null, workoutHistory: [entry, ...workoutHistory.filter((log) => log.clientId !== id)] });
+      const { owner, units } = get();
+      if (owner && stored) queueWorkout(owner, entry, units);
       set({ lastFinishedId: id, restUntil: 0 });
-      const selected = readJson<{ clientId: string; sessionId: string } | null>(PLAN_SESSION_KEY, null);
+      const planSessionKey = notebookNamespace(get().owner) + PLAN_SESSION_KEY;
+      const selected = readJson<{ clientId: string; sessionId: string } | null>(planSessionKey, null);
       if (selected?.clientId === id && plan) {
         savePlan({ ...plan, revision: plan.revision + 1, sessions: plan.sessions.map((session) =>
           session.id === selected.sessionId ? { ...session, status: 'done' } : session
         ) });
-        remove(PLAN_SESSION_KEY);
+        remove(planSessionKey);
       }
       return true;
     },
@@ -203,15 +265,19 @@ export const useNotebook = create<NotebookStore>((set, get) => {
     },
 
     deleteWorkout(id) {
-      const { workoutHistory, activeWorkout } = get();
+      const { workoutHistory, activeWorkout, owner, units } = get();
       const result = applyDeleteFinishedSession({ sessionId: id, history: workoutHistory, live: activeWorkout });
-      if (result) persist({ workoutHistory: result.history });
+      if (result && persist({ workoutHistory: result.history }) && owner) queueWorkout(owner, result.next, units);
     },
 
     eraseDevice() {
-      const snapshot = readDurableSnapshot('mw_', WORKOUT_STORE_KEY);
+      const { owner } = get();
+      if (owner && (getOutboxState(workoutQueueKey(owner)).pending || getOutboxState(workoutQueueKey(owner)).stuck)) return false;
+      const namespace = notebookNamespace(owner);
+      const workoutKey = namespace + WORKOUT_STORE_KEY;
+      const snapshot = readDurableSnapshot(namespace + 'mw_', workoutKey);
       if (!snapshot) return false;
-      const results = [WORKOUT_STORE_KEY, ...Object.keys(snapshot.entries)].map(remove);
+      const results = [workoutKey, ...Object.keys(snapshot.entries)].map(remove);
       get().hydrate();
       if (!results.every(Boolean)) return false;
       set({ ...initialDiary(), plan: null, restUntil: 0, lastFinishedId: null, storageWarning: false });
