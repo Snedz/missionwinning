@@ -19,6 +19,7 @@ export default defineConfig({
   webServer: {
     command: `npm run start -w apps/web -- --hostname 127.0.0.1 --port ${port}`,
     url: `${baseURL}/log`,
+    env: { PRIVATE_MODE: process.env.PRIVATE_MODE ?? 'false' },
     reuseExistingServer: !process.env.CI,
   },
 });

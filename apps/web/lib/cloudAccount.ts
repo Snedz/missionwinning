@@ -2,7 +2,7 @@
 
 import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js';
 import { create } from 'zustand';
-import { flush, getState, hasPendingOperation, registerHandler, retryStuck } from '@/lib/sync/outbox';
+import { flush, getState, hasPendingOperation, msUntilNextAttempt, registerHandler, retryStuck } from '@/lib/sync/outbox';
 import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 import { cloudRowId, createWorkoutCloud, withClientId, workoutIsAhead } from '@/lib/sync/workoutCloud';
 import { mapCloudToLocal } from '@/lib/workout/workoutMerge';
@@ -22,6 +22,7 @@ let session: Session | null = null;
 let connected = false;
 let generation = 0;
 let activeRun: Promise<void> | null = null;
+let retryTimer: number | undefined;
 
 function transport(current: Session) {
   return createWorkoutCloud({
@@ -32,7 +33,10 @@ function transport(current: Session) {
 function setAccount(next: Session | null) {
   const previous = session?.user.id;
   session = next;
-  if (previous !== next?.user.id) generation++;
+  if (previous !== next?.user.id) {
+    generation++;
+    window.clearTimeout(retryTimer);
+  }
   useNotebook.getState().switchOwner(next?.user.id ?? null);
   useCloudAccount.setState({
     email: next?.user.email ?? null,
@@ -68,6 +72,7 @@ export function startCloudAccount() {
 
   window.addEventListener('online', () => void syncAccount());
   window.addEventListener('offline', () => {
+    window.clearTimeout(retryTimer);
     if (session) useCloudAccount.setState({ phase: 'waiting' });
   });
   document.addEventListener('visibilitychange', () => {
@@ -113,6 +118,7 @@ export function syncAccount(retry = false): Promise<void> {
   const queueKey = workoutQueueKey(owner);
   if (retry) retryStuck(queueKey);
   if (activeRun) return activeRun;
+  window.clearTimeout(retryTimer);
   const version = generation;
   const isCurrent = () => generation === version && useNotebook.getState().owner === owner;
   const update = (phase: Phase) => {
@@ -157,6 +163,12 @@ export function syncAccount(retry = false): Promise<void> {
       await flush(queueKey, isCurrent);
       const { pending, stuck } = getState(queueKey);
       update(pending || stuck || remaining ? 'waiting' : 'synced');
+      const retryIn = msUntilNextAttempt(queueKey);
+      if (isCurrent() && navigator.onLine && retryIn !== null) {
+        retryTimer = window.setTimeout(() => {
+          if (document.visibilityState === 'visible') void syncAccount();
+        }, Math.max(1_000, retryIn));
+      }
     } catch {
       update('waiting');
     }

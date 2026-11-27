@@ -93,8 +93,8 @@ test('local Supabase: an existing account pulls its workout and adds the guest w
   await expect(page.getByText('Quick workout', { exact: true })).toHaveCount(2);
   expect(await cloudNames()).toHaveLength(2);
   await context.setOffline(false);
-  await page.goto('/profile');
-  await expect(page.getByText('Workouts synced.')).toBeVisible();
+  await page.getByRole('link', { name: 'You', exact: true }).click();
+  await expect(page.getByText('Workouts synced.')).toBeVisible({ timeout: 20_000 });
   expect(await cloudNames()).toEqual(['Existing account workout', 'Quick workout', 'Quick workout']);
 
   await page.getByRole('button', { name: 'Sign out' }).click();
