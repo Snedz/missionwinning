@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { coachCitationFact, coachLogCitation } from '@/lib/coach/logCitation';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { exerciseFromCatalogLike, formatSetRowLine, resolveSetRowType, resolveSetRowTypeFromId } from '@/lib/workout/setRowType';
 import { unitsForWeight, weightUnitFor, weightUnitLabel } from '@/lib/units';
@@ -255,7 +257,7 @@ function Today() {
   </>;
 }
 
-function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
+function SetEntry({ exercise, fromLanding }: { exercise: ActiveExerciseLog; fromLanding: boolean }) {
   const { undoSet, units: preference, activeWorkout, logSet, workoutHistory } = useNotebook();
   const units = activeWorkout?.weightUnit ? unitsForWeight(activeWorkout.weightUnit) : preference;
   const kind = exerciseRowType(exercise.exerciseId);
@@ -280,12 +282,16 @@ function SetEntry({ exercise }: { exercise: ActiveExerciseLog }) {
     if (window.matchMedia(desktopQuery).matches && input instanceof HTMLInputElement && input.form === event.currentTarget) {
       restoreFocus.current = input.name;
     }
+    let saved: boolean;
     if (kind === 'duration') {
       if (!Number.isFinite(durationSeconds) || durationSeconds < 1) return;
-      logSet(exercise.exerciseId, { reps: 0, weight: 0, durationSeconds });
+      saved = logSet(exercise.exerciseId, { reps: 0, weight: 0, durationSeconds });
     } else {
       if (!Number.isInteger(reps) || reps < 1 || !Number.isFinite(weight) || weight < 0) return;
-      logSet(exercise.exerciseId, { reps, weight });
+      saved = logSet(exercise.exerciseId, { reps, weight });
+    }
+    if (saved && fromLanding && !useNotebook.getState().owner && readRaw(STORAGE_KEYS.landingFirstSavedSet) !== '1') {
+      writeRaw(STORAGE_KEYS.landingFirstSavedSet, '1');
     }
   }
   return <section className="exercise-panel">
@@ -341,11 +347,17 @@ function Train() {
   const [current, setCurrent] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const landingWorkout = useRef<string | undefined>(undefined);
   const active = activeWorkout;
   useEffect(() => {
     if (location.hash !== quickStartHash) return;
     history.replaceState(null, '', location.pathname + location.search);
-    if (!useNotebook.getState().activeWorkout) start();
+    const notebook = useNotebook.getState();
+    if (notebook.activeWorkout) return;
+    start();
+    if (!notebook.owner && notebook.workoutHistory.length === 0) {
+      landingWorkout.current = useNotebook.getState().activeWorkout?.clientId;
+    }
   }, [start]);
   const exercise = active?.exercises.find((row) => row.exerciseId === current) ?? active?.exercises[0];
   const count = active?.exercises.reduce((n, row) => n + row.sets.filter((s) => s.completed).length, 0) ?? 0;
@@ -382,7 +394,7 @@ function Train() {
         )}</ul>}
       </section>}
       </div>
-      {exercise && <SetEntry key={exercise.exerciseId} exercise={exercise} />}
+      {exercise && <SetEntry key={exercise.exerciseId} exercise={exercise} fromLanding={Boolean(active.clientId && active.clientId === landingWorkout.current)} />}
       <div className="finish-row">
         <p className="subtle">{count ? 'Only completed sets go into History.' : 'Log a set to finish this workout.'}</p>
         <button className="button outline-button" disabled={count === 0} onClick={() => { if (finish()) go('/victory'); }}>Finish workout <Icon name="arrow" /></button>

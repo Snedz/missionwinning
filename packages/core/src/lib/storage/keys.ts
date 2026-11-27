@@ -92,6 +92,8 @@ export const STORAGE_KEYS = {
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',
   todaySectionsV2: 'mw_today_sections_v2',
+  /** Browser-local measurement, deliberately outside portable backups. */
+  landingFirstSavedSet: 'v2-landing-first-saved-set',
   /** Summary pin ids (session / fuel / coach). Missing → default one session pin. */
   summaryPins: 'mw_summary_pins',
   pillarWins: 'mw_pillar_wins',

@@ -5,8 +5,20 @@ import type { CompletedWorkoutLog } from '@/types';
 import { quickStartHref } from '../lib/trainEntry';
 import styles from './landing.module.css';
 
+const title = 'Mission Winning — Log a set. Know what to train next.';
+const description = 'A training notebook for sets, reps, and load. Log in your browser without an account, then use your training history to build your week.';
+const shareImage = {
+  url: '/landing-share.png', width: 1200, height: 630,
+  alt: 'Mission Winning training notebook. Log a set. Know what to train next. In your browser. No account needed.',
+};
+
 export const metadata: Metadata = {
-  title: 'Mission Winning — Log a set. Know what to train next.',
+  metadataBase: new URL('https://www.missionwinning.com'),
+  title,
+  description,
+  alternates: { canonical: '/' },
+  openGraph: { type: 'website', siteName: 'Mission Winning', title, description, url: '/', images: [shareImage] },
+  twitter: { card: 'summary_large_image', title, description, images: [shareImage] },
 };
 
 const exampleSets = [

@@ -40,7 +40,7 @@ type NotebookStore = Diary & {
   start: (session?: PlanSession) => void;
   startSaved: (template: SavedWorkout) => void;
   addExercise: (id: string) => void;
-  logSet: (exerciseId: string, input: Pick<LoggedSet, 'reps' | 'weight' | 'durationSeconds'>) => void;
+  logSet: (exerciseId: string, input: Pick<LoggedSet, 'reps' | 'weight' | 'durationSeconds'>) => boolean;
   undoSet: (exerciseId: string, setId: string) => void;
   finish: () => boolean;
   makePlan: (equipment: EquipmentProfile, days: number) => void;
@@ -231,7 +231,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
 
     logSet(exerciseId, input) {
       const active = get().activeWorkout;
-      if (!active) return;
+      if (!active?.exercises.some((exercise) => exercise.exerciseId === exerciseId)) return false;
       const exercises = active.exercises.map((exercise) => {
         if (exercise.exerciseId !== exerciseId) return exercise;
         const target = exercise.sets.findIndex((item) => !item.completed);
@@ -241,8 +241,9 @@ export const useNotebook = create<NotebookStore>((set, get) => {
         };
         return { ...exercise, sets: target < 0 ? [...exercise.sets, set] : exercise.sets.map((row, i) => i === target ? set : row) };
       });
-      persist({ activeWorkout: updateSession(active, exercises) });
+      const saved = persist({ activeWorkout: updateSession(active, exercises) });
       set({ restUntil: Date.now() + 90_000 });
+      return saved;
     },
 
     undoSet(exerciseId, setId) {
@@ -303,7 +304,7 @@ export const useNotebook = create<NotebookStore>((set, get) => {
       const workoutKey = namespace + WORKOUT_STORE_KEY;
       const snapshot = readDurableSnapshot(namespace + 'mw_', workoutKey);
       if (!snapshot) return false;
-      const results = [workoutKey, ...Object.keys(snapshot.entries)].map(remove);
+      const results = [workoutKey, ...Object.keys(snapshot.entries), ...(!owner ? [STORAGE_KEYS.landingFirstSavedSet] : [])].map(remove);
       get().hydrate();
       if (!results.every(Boolean)) return false;
       set({ ...initialDiary(), plan: null, restUntil: 0, lastFinishedId: null, storageWarning: false });

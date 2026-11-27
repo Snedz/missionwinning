@@ -1,6 +1,13 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type BrowserContext, type Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '../packages/core/src/lib/storage/keys';
 import { audit } from './notebookChecks';
+
+async function landingFirstSet(context: BrowserContext) {
+  const { origins } = await context.storageState();
+  return origins.flatMap(({ localStorage }) => localStorage).find(({ name }) => name === STORAGE_KEYS.landingFirstSavedSet)?.value;
+}
 
 async function checkWeekComparison(page: Page) {
   const week = page.getByRole('table', { name: 'Example week' });
@@ -21,7 +28,7 @@ async function checkWeekComparison(page: Page) {
   await expect(page.getByText(/Sunday stays on the plan/)).toBeVisible();
 }
 
-test('landing explains the notebook accessibly and opens the guest set form directly', async ({ page }) => {
+test('landing explains the notebook accessibly and opens the guest set form directly', async ({ page, request }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Log a set.\s*Know what to train next\./);
   await expect(page.getByText('In your browser. No account needed.')).toBeVisible();
@@ -37,15 +44,22 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   const preview = page.getByRole('region', { name: 'See the real app.' });
   const screens = preview.getByRole('img');
   await expect(screens).toHaveCount(3);
+  let previewBytes = 0;
   for (const [index, name] of ['today', 'train', 'coach'].entries()) {
     const screen = screens.nth(index);
     await expect(screen).toHaveAttribute('loading', 'lazy');
     await screen.scrollIntoViewIfNeeded();
     const format = width >= 1024 && name !== 'today' ? 'laptop' : 'phone';
+    const path = `/preview-${name}-${format}.webp`;
     await expect.poll(() => screen.evaluate((img: HTMLImageElement) =>
       img.naturalWidth > 0 ? new URL(img.currentSrc).pathname : null,
-    )).toBe(`/preview-${name}-${format}.webp`);
+    )).toBe(path);
+    const asset = await request.get(path);
+    expect(asset.ok()).toBe(true);
+    previewBytes += (await asset.body()).byteLength;
   }
+  console.log(`Landing ${width}px preview gallery: ${previewBytes} bytes`);
+  expect(previewBytes).toBeLessThanOrEqual(80 * 1024);
   await page.evaluate(() => window.scrollTo(0, 0));
 
   const dir = process.env.V2_LANDING_SCREENSHOTS_DIR;
@@ -74,6 +88,88 @@ test('landing explains the notebook accessibly and opens the guest set form dire
   await expect(page.getByRole('heading', { name: 'Victory.' })).toBeVisible();
 });
 
+test('landing delivers canonical share metadata and stays within its initial payload budgets', async ({ page, request }) => {
+  const origin = 'https://www.missionwinning.com';
+  const response = await page.goto('/');
+  expect(response?.ok()).toBe(true);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', origin);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /without an account/);
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', origin);
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', await page.title());
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', `${origin}/landing-share.png`);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
+  const share = await request.get('/landing-share.png');
+  expect(share.ok()).toBe(true);
+  expect(share.headers()['content-type']).toContain('image/png');
+  const png = await share.body();
+  expect(png.readUInt32BE(16)).toBe(1200);
+  expect(png.readUInt32BE(20)).toBe(630);
+
+  const resources = await page.evaluate(() =>
+    performance.getEntriesByType('resource').map((entry) => {
+      const resource = entry as PerformanceResourceTiming;
+      return { path: new URL(resource.name).pathname, bytes: resource.decodedBodySize };
+    }),
+  );
+  const payload = (extension: string) => {
+    const assets = resources.filter(({ path }) => path.startsWith('/_next/static/') && path.endsWith(extension));
+    expect(assets.length).toBeGreaterThan(0);
+    expect(assets.every(({ bytes }) => bytes > 0)).toBe(true);
+    return [...new Map(assets.map(({ path, bytes }) => [path, bytes])).values()].reduce((sum, bytes) => sum + bytes, 0);
+  };
+  const htmlBytes = (await response!.body()).byteLength;
+  const jsBytes = payload('.js');
+  const cssBytes = payload('.css');
+  console.log(`Landing initial decoded bytes: HTML ${htmlBytes}, JS ${jsBytes}, CSS ${cssBytes}; share PNG ${png.byteLength}`);
+  expect(htmlBytes).toBeLessThanOrEqual(45 * 1024);
+  expect(jsBytes).toBeLessThanOrEqual(600 * 1024);
+  expect(cssBytes).toBeLessThanOrEqual(38 * 1024);
+  expect(png.byteLength).toBeLessThanOrEqual(75 * 1024);
+});
+
+test('the first-set count is local, durable, capped at one, and erased with guest data', async ({ page, context }) => {
+  await page.goto('/');
+  expect(await landingFirstSet(context)).toBeUndefined();
+  await page.getByRole('link', { name: 'Log a set', exact: true }).first().click();
+  const log = page.getByRole('button', { name: 'Log set' });
+  await expect(log).toBeVisible();
+  expect(await landingFirstSet(context)).toBeUndefined();
+  await page.getByRole('spinbutton', { name: 'Reps' }).fill('13');
+  await log.click();
+  await expect.poll(() => landingFirstSet(context)).toBe('1');
+  await log.click();
+  await page.reload();
+  await expect(page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem')).toHaveCount(2);
+  expect(await landingFirstSet(context)).toBe('1');
+
+  await page.goto('/profile');
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export backup' }).click();
+  const backup = JSON.parse(await readFile((await (await download).path())!, 'utf8'));
+  expect(backup.localKeys).not.toHaveProperty(STORAGE_KEYS.landingFirstSavedSet);
+  await page.getByRole('button', { name: 'Delete app data from this device…' }).click();
+  await page.getByRole('button', { name: 'Delete app data', exact: true }).click();
+  await expect(page.getByText('App data deleted from this device.')).toBeVisible();
+  expect(await landingFirstSet(context)).toBeUndefined();
+});
+
+test('a set kept only in memory does not count as saved', async ({ page, context }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Log a set', exact: true }).first().click();
+  await expect(page.getByRole('button', { name: 'Log set' })).toBeVisible();
+  await page.evaluate((workoutKey) => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === workoutKey) throw new DOMException('Test refused workout write', 'QuotaExceededError');
+      return original.call(this, key, value);
+    };
+  }, WORKOUT_STORE_KEY);
+  await page.getByRole('button', { name: 'Log set' }).click();
+  await expect(page.getByText(/This device refused to save/)).toBeVisible();
+  await expect(page.getByRole('list', { name: 'Logged sets' })).toBeVisible();
+  expect(await landingFirstSet(context)).toBeUndefined();
+});
+
 test('the sample is accessible at 320px and does not write notebook data', async ({ page, context }) => {
   await page.setViewportSize({ width: 320, height: 844 });
   const before = await context.storageState({ indexedDB: true });
@@ -86,7 +182,7 @@ test('the sample is accessible at 320px and does not write notebook data', async
   expect(await context.storageState({ indexedDB: true })).toEqual(before);
 });
 
-test('landing CTA resumes a live workout instead of replacing it', async ({ page }) => {
+test('landing CTA resumes a live workout instead of replacing it', async ({ page, context }) => {
   await page.goto('/active');
   await page.getByRole('button', { name: 'Start workout' }).click();
   await page.getByRole('spinbutton', { name: 'Reps' }).fill('19');
@@ -99,6 +195,7 @@ test('landing CTA resumes a live workout instead of replacing it', async ({ page
   await expect(page).toHaveURL(/\/active$/);
   await expect(page.getByRole('list', { name: 'Logged sets' }).getByRole('listitem')).toHaveCount(1);
   await expect(page.getByRole('list', { name: 'Logged sets' })).toContainText('19');
+  expect(await landingFirstSet(context)).toBeUndefined();
 });
 
 test('the landing distinguishes guest backups from configured account sync', async ({ page }) => {

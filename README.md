@@ -33,4 +33,12 @@ Evidence checklist:
 - Accessibility: keyboard access, axe, and no horizontal overflow at 320, 390, and 1440 pixels. Inspect first-fold and full-page captures at 390×844 and 1440×900 separately.
 - Observed human task (separate from automation, not yet run): on a cold browser, ask a first-time visitor to “Log the next set you did.” Then ask what changed in the sample week and where their workout lives. Record completion, elapsed time, and confusion, not workout contents. A scripted pass is not a usability result.
 
+The suite also checks the landing's canonical/share tags and local image and payload budgets. The canonical points to the intended public homepage, `https://www.missionwinning.com/`; local builds don't change that site's routing. Budgets are 45 KiB HTML, 600 KiB JavaScript, and 38 KiB CSS, measured as initial decoded bytes in a clean browser, plus 80 KiB for the selected preview gallery and 75 KiB for the 1200×630 share image. These aren't field performance measurements.
+
+### First saved set: local only
+
+The landing quick start records a single browser-local `1` under `v2-landing-first-saved-set` only after a new guest with no workout history saves a set to durable storage in that Train visit. Missing means no qualifying save recorded. Clicking the CTA, viewing the sample, resuming a workout, signed-in logging, or saving only in memory does not count. Leaving or reloading Train before saving ends attribution. Additional sets cannot increment the count.
+
+The marker stores no IDs, timestamps, reps, or load. It is not sent to a server or included in backups; there is no tracker, audience count, or cross-browser conversion rate. It can be inspected in the browser's site storage during a local rehearsal. Clearing site data or using **You → Delete app data from this device** as a guest removes it. No backend or environment settings are required.
+
 Licensed under [AGPL-3.0-only](LICENSE). See the bundled notices for the exercise data and Archivo font.
