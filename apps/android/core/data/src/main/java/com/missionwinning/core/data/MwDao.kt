@@ -5,6 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+internal const val LATEST_SET_FOR_SQL = """
+    SELECT s.* FROM set_logs s
+    LEFT JOIN workout_logs w ON w.id = s.workoutId
+    WHERE w.deletedAt IS NULL AND s.exerciseId IN (:exerciseIds) AND s.setIndex = :setIndex
+    ORDER BY s.completedAt DESC
+    LIMIT 1
+"""
+
 @Dao
 interface MwDao {
     @Query("SELECT * FROM coach_plan WHERE id = 1 LIMIT 1")
@@ -107,14 +115,7 @@ interface MwDao {
     )
     suspend fun setsForWorkout(workoutId: String): List<SetLogEntity>
 
-    @Query(
-        """
-        SELECT * FROM set_logs
-        WHERE exerciseId IN (:exerciseIds) AND setIndex = :setIndex
-        ORDER BY completedAt DESC
-        LIMIT 1
-        """,
-    )
+    @Query(LATEST_SET_FOR_SQL)
     suspend fun latestSetFor(exerciseIds: List<String>, setIndex: Int): SetLogEntity?
 
     @Query(
