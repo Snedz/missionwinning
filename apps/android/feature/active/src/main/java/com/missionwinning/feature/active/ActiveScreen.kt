@@ -87,6 +87,13 @@ fun ActiveRoute(
     ) -> Unit,
     onCancel: () -> Unit,
     viewModel: ActiveViewModel = hiltViewModel(),
+    presentation: (@Composable (
+        ActiveUiState,
+        (ActiveEvent) -> Unit,
+        () -> Unit,
+        () -> Unit,
+        suspend (String, String?, String?) -> List<ExerciseDef>,
+    ) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -104,12 +111,22 @@ fun ActiveRoute(
     KeepScreenOn()
     ActiveSessionForeground()
 
-    ActiveScreen(
-        state = state,
-        onEvent = viewModel::onEvent,
-        onCancel = onCancel,
-        searchExercises = { q, equip, muscle -> viewModel.searchExercises(q, equip, muscle) },
-    )
+    if (presentation == null) {
+        ActiveScreen(
+            state = state,
+            onEvent = viewModel::onEvent,
+            onCancel = onCancel,
+            searchExercises = { q, equip, muscle -> viewModel.searchExercises(q, equip, muscle) },
+        )
+    } else {
+        presentation(
+            state,
+            viewModel::onEvent,
+            { viewModel.leaveKeepingDraft(onCancel) },
+            { viewModel.discardDraft(onCancel) },
+            viewModel::searchExercises,
+        )
+    }
 }
 
 @Composable

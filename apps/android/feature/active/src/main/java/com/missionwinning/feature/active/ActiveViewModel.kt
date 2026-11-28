@@ -16,6 +16,7 @@ import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +47,7 @@ data class ActiveUiState(
     val streakDays: Int = 0,
     /** Transient: last completed set was a PR (drives haptic / toast chip). */
     val lastPrSetId: String? = null,
+    internal val workoutSaved: Boolean = false,
 ) {
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
@@ -124,7 +126,7 @@ class ActiveViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _state.collect { st ->
-                if (st.sessionId.isBlank() || st.finished != null || st.finishing) return@collect
+                if (st.sessionId.isBlank() || st.workoutSaved || st.finishing) return@collect
                 if (st.exercises.isEmpty() && !MwRepository.isFreeformSession(st.sessionId)) return@collect
                 draftJob?.cancel()
                 draftJob = viewModelScope.launch {
@@ -655,8 +657,8 @@ class ActiveViewModel @Inject constructor(
     }
 
     private fun finish() {
-        if (_state.value.finishing) return
         val st = _state.value
+        if (st.finishing || st.workoutSaved) return
         if (!ActiveSessionLogic.canFinish(st.exercises)) {
             _state.update {
                 it.copy(error = "Complete at least one set before finishing.")
@@ -666,6 +668,7 @@ class ActiveViewModel @Inject constructor(
         viewModelScope.launch {
             restDeadlineMs = null
             _state.update { it.copy(finishing = true, error = null) }
+            draftJob?.cancelAndJoin()
             ActiveSessionHub.clear()
             runCatching {
                 val snap = _state.value
@@ -713,6 +716,7 @@ class ActiveViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         finishing = false,
+                        workoutSaved = true,
                         finished = FinishedPayload(
                             name = snap.workoutName,
                             sets = entities.size,
@@ -819,7 +823,35 @@ class ActiveViewModel @Inject constructor(
         return ActiveExercise(exerciseId = exerciseId, name = exerciseName, sets = sets)
     }
 
-    private suspend fun persistDraft(st: ActiveUiState) {
+    fun leaveKeepingDraft(onSaved: () -> Unit) {
+        viewModelScope.launch {
+            val snapshot = _state.value
+            if (snapshot.finishing || snapshot.workoutSaved) return@launch
+            if (snapshot.sessionId.isBlank() || snapshot.exercises.isEmpty()) {
+                onSaved()
+                return@launch
+            }
+            draftJob?.cancelAndJoin()
+            persistDraft(snapshot).onSuccess { onSaved() }.onFailure {
+                _state.update { it.copy(error = "Could not save your draft. Keep this workout open and try again.") }
+            }
+        }
+    }
+
+    internal fun discardDraft(onDiscarded: () -> Unit) {
+        viewModelScope.launch {
+            if (_state.value.finishing || _state.value.workoutSaved) return@launch
+            _state.update { it.copy(finishing = true, error = null) }
+            draftJob?.cancelAndJoin()
+            runCatching { sessionDrafts.clear() }
+                .onSuccess { onDiscarded() }
+                .onFailure {
+                    _state.update { it.copy(finishing = false, error = "Could not discard your draft. Try again.") }
+                }
+        }
+    }
+
+    private suspend fun persistDraft(st: ActiveUiState): Result<Unit> =
         runCatching {
             sessionDrafts.save(
                 SessionDraftRepository.DraftPayload(
@@ -857,7 +889,6 @@ class ActiveViewModel @Inject constructor(
                 ),
             )
         }
-    }
 
     private fun SessionDraftRepository.DraftExercise.toActive(): ActiveExercise =
         ActiveExercise(

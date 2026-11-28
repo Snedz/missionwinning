@@ -14,10 +14,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,9 +28,21 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.missionwinning.app.BuildConfig
+import com.missionwinning.app.R
+import com.missionwinning.app.preview.V2Change
+import com.missionwinning.app.preview.V2Coach
+import com.missionwinning.app.preview.V2History
+import com.missionwinning.app.preview.V2HistoryDetail
+import com.missionwinning.app.preview.V2Navigation
+import com.missionwinning.app.preview.V2Today
+import com.missionwinning.app.preview.V2Train
+import com.missionwinning.app.preview.V2Victory
+import com.missionwinning.app.preview.compareCompletedPlan
 import com.missionwinning.feature.auth.AuthScreen
 import com.missionwinning.app.feature.debug.DesignSystemGalleryScreen
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.SessionDraftRepository
+import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.designsystem.MwBottomNav
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwHubTab
@@ -49,11 +63,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import java.net.URLDecoder
+import kotlinx.coroutines.launch
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface RepoEntryPoint {
     fun repository(): MwRepository
+    fun drafts(): SessionDraftRepository
 }
 
 sealed interface PendingDeepLink {
@@ -63,17 +79,29 @@ sealed interface PendingDeepLink {
 }
 
 private val HUB_ROUTES = setOf(Routes.TODAY, Routes.COACH, Routes.AUTH)
+private const val V2_HISTORY = "history"
+private val V2_HUB_ITEMS = listOf(
+    Routes.TODAY to R.string.v2_today,
+    Routes.COACH to R.string.v2_coach,
+    V2_HISTORY to R.string.v2_history,
+    Routes.AUTH to R.string.v2_account,
+)
 
 @Composable
 fun MwNavHost(
     pendingDeepLink: PendingDeepLink? = null,
     onDeepLinkConsumed: () -> Unit = {},
+    v2Shell: Boolean = false,
 ) {
     val context = LocalContext.current.applicationContext
     val repository = remember {
         EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).repository()
     }
     val nav = rememberNavController()
+    val scope = rememberCoroutineScope()
+    var change by remember(v2Shell) { mutableStateOf<V2Change?>(null) }
+    val hubRoutes = if (v2Shell) HUB_ROUTES + V2_HISTORY else HUB_ROUTES
+    val quickLogName = stringResource(R.string.v2_quick_log)
     var bootDone by remember { mutableStateOf(false) }
     var start by remember { mutableStateOf(Routes.BOOT) }
 
@@ -132,7 +160,7 @@ fun MwNavHost(
 
     val backStack by nav.currentBackStackEntryAsState()
     val route = backStack?.destination?.route
-    val showHubNav = route in HUB_ROUTES
+    val showHubNav = route in hubRoutes
     val selectedTab = when (route) {
         Routes.COACH -> MwHubTab.Coach
         Routes.AUTH -> MwHubTab.Account
@@ -149,8 +177,8 @@ fun MwNavHost(
                 navController = nav,
                 startDestination = start,
                 enterTransition = {
-                    val fromHub = initialState.destination.route in HUB_ROUTES
-                    val toHub = targetState.destination.route in HUB_ROUTES
+                    val fromHub = initialState.destination.route in hubRoutes
+                    val toHub = targetState.destination.route in hubRoutes
                     if (fromHub && toHub) {
                         fadeIn(tween(MwMotion.HubTabMs))
                     } else {
@@ -164,8 +192,8 @@ fun MwNavHost(
                     fadeOut(tween(MwMotion.RoutePopMs - 100))
                 },
                 popEnterTransition = {
-                    val fromHub = initialState.destination.route in HUB_ROUTES
-                    val toHub = targetState.destination.route in HUB_ROUTES
+                    val fromHub = initialState.destination.route in hubRoutes
+                    val toHub = targetState.destination.route in hubRoutes
                     if (fromHub && toHub) {
                         fadeIn(tween(MwMotion.HubTabMs))
                     } else {
@@ -189,6 +217,18 @@ fun MwNavHost(
                     )
                 }
                 composable(Routes.TODAY) {
+                    if (v2Shell) {
+                        val drafts = remember {
+                            EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).drafts()
+                        }
+                        V2Today(
+                            repository = repository,
+                            drafts = drafts,
+                            onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },
+                            onQuickLog = { nav.navigate(Routes.active(MwRepository.freeformSessionId(), quickLogName, 0)) },
+                            onHistory = { nav.navigatePreviewHub(V2_HISTORY) },
+                        )
+                    } else {
                     TodayScreen(
                         onStartWorkout = { id, name, sets ->
                             nav.navigate(Routes.active(id, name, sets))
@@ -202,6 +242,18 @@ fun MwNavHost(
                         onOpenProgress = { nav.navigate(Routes.PROGRESS) },
                         onOpenRoutines = { nav.navigate(Routes.ROUTINES) },
                     )
+                    }
+                }
+                composable(V2_HISTORY) {
+                    if (v2Shell) {
+                        V2History(
+                            repository = repository,
+                            onWorkout = { nav.navigate(Routes.history(it)) },
+                            onProgress = { nav.navigate(Routes.PROGRESS) },
+                            onRoutines = { nav.navigate(Routes.ROUTINES) },
+                            onCatalog = { nav.navigate(Routes.CATALOG) },
+                        )
+                    }
                 }
                 composable(Routes.CATALOG) {
                     CatalogScreen(onBack = { nav.popBackStack() })
@@ -223,26 +275,41 @@ fun MwNavHost(
                         navArgument("workoutId") { type = NavType.StringType },
                     ),
                 ) { entry ->
-                    HistoryScreen(
-                        workoutId = entry.arguments!!.getString("workoutId")!!.decode(),
-                        onBack = {
+                    val workoutId = entry.arguments!!.getString("workoutId")!!.decode()
+                    val onBack: () -> Unit = {
                             if (!nav.popBackStack()) {
-                                nav.navigateHub(Routes.TODAY)
+                                if (v2Shell) nav.navigatePreviewHub(V2_HISTORY)
+                                else nav.navigateHub(Routes.TODAY)
                             }
-                        },
-                        onOpenRoutines = {
-                            nav.navigate(Routes.ROUTINES) {
-                                launchSingleTop = true
-                            }
-                        },
-                    )
+                    }
+                    val onOpenRoutines: () -> Unit = {
+                        nav.navigate(Routes.ROUTINES) { launchSingleTop = true }
+                    }
+                    if (v2Shell) {
+                        V2HistoryDetail(workoutId, onBack, onOpenRoutines)
+                    } else {
+                        HistoryScreen(workoutId = workoutId, onBack = onBack, onOpenRoutines = onOpenRoutines)
+                    }
                 }
                 composable(Routes.COACH) {
+                    if (v2Shell) {
+                        val drafts = remember {
+                            EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).drafts()
+                        }
+                        V2Coach(
+                            repository = repository,
+                            drafts = drafts,
+                            change = change,
+                            onChange = { change = it },
+                            onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },
+                        )
+                    } else {
                     CoachScreen(
                         onStartWorkout = { id, name, sets ->
                             nav.navigate(Routes.active(id, name, sets))
                         },
                     )
+                    }
                 }
                 composable(Routes.AUTH) {
                     AuthScreen(
@@ -273,11 +340,31 @@ fun MwNavHost(
                     val sessionId = entry.arguments!!.getString("sessionId")!!.decode()
                     val name = entry.arguments!!.getString("name")!!.decode()
                     val sets = entry.arguments!!.getInt("sets")
+                    var before by remember(sessionId, v2Shell) { mutableStateOf<CoachPlanDto?>(null) }
+                    LaunchedEffect(sessionId, v2Shell) {
+                        if (v2Shell && MwRepository.isCoachSession(sessionId)) {
+                            before = runCatching { repository.ensureCoachPlan(preferNetwork = false).plan }.getOrNull()
+                        }
+                    }
                     ActiveRoute(
                         sessionId = sessionId,
                         workoutName = name,
                         targetSets = sets,
                         onFinished = { n, s, d, w, volume, unit, workoutId ->
+                            if (v2Shell) {
+                                val previous = before
+                                change = null
+                                if (previous != null && workoutId.isNotBlank()) {
+                                    scope.launch {
+                                        val updated = runCatching {
+                                            repository.ensureCoachPlan(preferNetwork = false).plan
+                                        }.getOrNull()
+                                        if (updated != null) {
+                                            change = compareCompletedPlan(previous, updated, sessionId, workoutId)
+                                        }
+                                    }
+                                }
+                            }
                             nav.navigate(
                                 Routes.victory(
                                     name = n,
@@ -293,6 +380,9 @@ fun MwNavHost(
                             }
                         },
                         onCancel = { nav.popBackStack() },
+                        presentation = if (v2Shell) {
+                            { state, onEvent, onExit, onDiscard, search -> V2Train(state, onEvent, onExit, onDiscard, search) }
+                        } else null,
                     )
                 }
                 composable(
@@ -308,6 +398,16 @@ fun MwNavHost(
                     ),
                 ) { entry ->
                     val rawWorkoutId = entry.arguments!!.getString("workoutId")!!.decode()
+                    if (v2Shell) {
+                        V2Victory(
+                            repository = repository,
+                            name = entry.arguments!!.getString("name")!!.decode(),
+                            workoutId = rawWorkoutId,
+                            change = change,
+                            onCoach = { nav.navigatePreviewHub(Routes.COACH) },
+                            onHistory = { nav.navigatePreviewHub(V2_HISTORY) },
+                        )
+                    } else {
                     VictoryScreen(
                         workoutName = entry.arguments!!.getString("name")!!.decode(),
                         sets = entry.arguments!!.getInt("sets"),
@@ -339,11 +439,14 @@ fun MwNavHost(
                             }
                         },
                     )
+                    }
                 }
             }
         }
 
-        if (showHubNav) {
+        if (showHubNav && v2Shell) {
+            V2Navigation(route, V2_HUB_ITEMS, nav::navigatePreviewHub)
+        } else if (showHubNav) {
             MwBottomNav(
                 selected = selectedTab,
                 onSelect = { tab ->
@@ -367,6 +470,13 @@ private fun NavHostController.navigateHub(route: String) {
         }
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+private fun NavHostController.navigatePreviewHub(route: String) {
+    navigate(route) {
+        popUpTo(Routes.TODAY)
+        launchSingleTop = true
     }
 }
 
