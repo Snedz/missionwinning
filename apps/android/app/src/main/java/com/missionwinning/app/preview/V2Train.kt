@@ -1,5 +1,6 @@
 package com.missionwinning.app.preview
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -21,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -54,6 +56,7 @@ internal fun V2Train(
 ) {
     var dialog by remember { mutableStateOf<TrainDialog?>(null) }
     var classic by rememberSaveable { mutableStateOf(false) }
+    val finishing by rememberUpdatedState(state.finishing)
     if (classic) {
         Column(Modifier.fillMaxSize()) {
             androidx.compose.foundation.layout.Box(Modifier.weight(1f)) {
@@ -63,11 +66,12 @@ internal fun V2Train(
                 V2Secondary(stringResource(R.string.v2_back_to_train), Modifier.fillMaxWidth()) { classic = false }
             }
         }
+        BackHandler(enabled = state.finishing) {}
         return
     }
-    PredictiveBackHandler(enabled = dialog == null && !state.finishing) { progress ->
+    PredictiveBackHandler(enabled = dialog == null) { progress ->
         progress.collect()
-        dialog = TrainDialog.Leave
+        if (!finishing) dialog = TrainDialog.Leave
     }
     V2Theme {
         Column(Modifier.fillMaxSize().imePadding()) {

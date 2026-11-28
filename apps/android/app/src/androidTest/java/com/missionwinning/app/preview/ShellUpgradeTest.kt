@@ -8,6 +8,7 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import com.missionwinning.app.MainActivity
 import com.missionwinning.app.nav.RepoEntryPoint
+import com.missionwinning.core.data.MwDatabase
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.data.SetLogEntity
@@ -21,6 +22,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.Instant
 import java.util.UUID
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 @RunWith(AndroidJUnit4::class)
@@ -126,6 +129,35 @@ class ShellUpgradeTest {
         await("Discard").click()
         await("MISSION WINNING / 01")
         await("Quick log")
+        assertNull(runBlocking { entry.drafts().load() })
+    }
+
+    @Test fun backCannotLeavePreviewTrainWhileSaving() {
+        val entry = seedCompletedDraft()
+        launch(preview = true)
+        await("Resume workout").click()
+        await("SET BY SET / 02")
+        val locked = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val writer = Thread {
+            MwDatabase.get(context).runInTransaction {
+                locked.countDown()
+                release.await(30, TimeUnit.SECONDS)
+                Unit
+            }
+        }
+        writer.start()
+        try {
+            assertTrue(locked.await(5, TimeUnit.SECONDS))
+            await("Finish workout").click()
+            await("Saving…")
+            device.pressBack()
+            assertFalse("Back popped a saving workout", device.wait(Until.gone(By.text("SET BY SET / 02")), 1_000))
+        } finally {
+            release.countDown()
+            writer.join()
+        }
+        await("Workout saved")
         assertNull(runBlocking { entry.drafts().load() })
     }
 
