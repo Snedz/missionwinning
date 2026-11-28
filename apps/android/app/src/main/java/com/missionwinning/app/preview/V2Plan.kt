@@ -8,6 +8,7 @@ import com.missionwinning.core.network.PlanSessionDto
 
 internal data class V2TargetChange(
     val sessionName: String,
+    val dayOffset: Int,
     val before: PlanExerciseDto,
     val after: PlanExerciseDto,
 )
@@ -68,7 +69,7 @@ private fun changedTargets(before: CoachPlanDto, after: CoachPlanDto): List<V2Ta
             if (updated.exercises.count { it.exerciseId == exercise.exerciseId } != 1) return@mapNotNull null
             if (old.sets == exercise.sets && old.reps == exercise.reps && old.weight == exercise.weight) null
             else if (old.weight != exercise.weight && after.weightUnit !in setOf("kg", "lb")) null
-            else V2TargetChange(updated.name, old, exercise)
+            else V2TargetChange(updated.name, updated.dayOffset, old, exercise)
         }
     }
 }

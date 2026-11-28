@@ -46,8 +46,10 @@ import com.missionwinning.feature.today.HistoryViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 private data class TodayData(val plan: CoachPlanDto, val draft: SessionDraftRepository.DraftPayload?)
 private data class VictoryData(val setCount: Int, val exerciseIds: List<String>)
@@ -147,7 +149,13 @@ internal fun V2Coach(
                     Text(stringResource(R.string.v2_what_changed), Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineSmall)
                     change.completedName?.let { Text(stringResource(R.string.v2_marked_done, it)) }
                     change.targets.forEach { target ->
-                        Text(target.sessionName, style = MaterialTheme.typography.titleMedium)
+                        val date = runCatching {
+                            LocalDate.parse(current.weekStart).plusDays(target.dayOffset.toLong())
+                                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+                        }.getOrNull()
+                        val title = if (date == null) target.sessionName
+                        else stringResource(R.string.v2_changed_session, target.sessionName, date)
+                        Text(title, style = MaterialTheme.typography.titleMedium)
                         Text(exerciseName(target.after), style = MaterialTheme.typography.bodyLarge)
                         Text(stringResource(R.string.v2_before, prescription(target.before, current.weightUnit)))
                         Text(stringResource(R.string.v2_after, prescription(target.after, current.weightUnit)))
@@ -320,5 +328,5 @@ private fun prescription(exercise: PlanExerciseDto, unit: String?): String {
 
 private fun workoutDate(raw: String): String =
     runCatching {
-        Instant.parse(raw).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM))
+        Instant.parse(raw).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
     }.getOrDefault(raw)

@@ -27,6 +27,7 @@
     <string name="v2_rebuild_failed">Could not rebuild the week. Try again.</string>
     <string name="v2_what_changed">What changed</string>
     <string name="v2_marked_done">Marked complete: %1$s</string>
+    <string name="v2_changed_session">%1$s · %2$s</string>
     <string name="v2_before">Before: %1$s</string>
     <string name="v2_after">After: %1$s</string>
     <string name="v2_next_time">NEXT TIME</string>

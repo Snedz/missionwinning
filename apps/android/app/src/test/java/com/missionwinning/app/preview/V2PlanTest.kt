@@ -67,6 +67,7 @@ class V2PlanTest {
         assertEquals(22.5, target.before.weight, 0.0)
         assertEquals(27.5, target.after.weight, 0.0)
         assertEquals("Second", target.sessionName)
+        assertEquals(1, target.dayOffset)
     }
 
     @Test fun noReceiptForUnrelatedRevisionUnitSwitchOrMissingSave() {
