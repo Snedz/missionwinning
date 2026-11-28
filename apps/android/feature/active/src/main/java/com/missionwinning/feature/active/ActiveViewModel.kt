@@ -47,6 +47,7 @@ data class ActiveUiState(
     val streakDays: Int = 0,
     /** Transient: last completed set was a PR (drives haptic / toast chip). */
     val lastPrSetId: String? = null,
+    internal val workoutSaved: Boolean = false,
 ) {
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
@@ -125,7 +126,7 @@ class ActiveViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _state.collect { st ->
-                if (st.sessionId.isBlank() || st.finished != null || st.finishing) return@collect
+                if (st.sessionId.isBlank() || st.workoutSaved || st.finishing) return@collect
                 if (st.exercises.isEmpty() && !MwRepository.isFreeformSession(st.sessionId)) return@collect
                 draftJob?.cancel()
                 draftJob = viewModelScope.launch {
@@ -656,8 +657,8 @@ class ActiveViewModel @Inject constructor(
     }
 
     private fun finish() {
-        if (_state.value.finishing) return
         val st = _state.value
+        if (st.finishing || st.workoutSaved) return
         if (!ActiveSessionLogic.canFinish(st.exercises)) {
             _state.update {
                 it.copy(error = "Complete at least one set before finishing.")
@@ -667,6 +668,7 @@ class ActiveViewModel @Inject constructor(
         viewModelScope.launch {
             restDeadlineMs = null
             _state.update { it.copy(finishing = true, error = null) }
+            draftJob?.cancelAndJoin()
             ActiveSessionHub.clear()
             runCatching {
                 val snap = _state.value
@@ -714,6 +716,7 @@ class ActiveViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         finishing = false,
+                        workoutSaved = true,
                         finished = FinishedPayload(
                             name = snap.workoutName,
                             sets = entities.size,
@@ -823,7 +826,7 @@ class ActiveViewModel @Inject constructor(
     fun leaveKeepingDraft(onSaved: () -> Unit) {
         viewModelScope.launch {
             val snapshot = _state.value
-            if (snapshot.finishing) return@launch
+            if (snapshot.finishing || snapshot.workoutSaved) return@launch
             if (snapshot.sessionId.isBlank() || snapshot.exercises.isEmpty()) {
                 onSaved()
                 return@launch

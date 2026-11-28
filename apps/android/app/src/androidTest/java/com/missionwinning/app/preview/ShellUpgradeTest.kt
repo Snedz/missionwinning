@@ -15,6 +15,7 @@ import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -99,6 +100,8 @@ class ShellUpgradeTest {
         await("Today").click()
         await("MISSION WINNING / 01")
         assertFalse(device.hasObject(By.text("Workout saved")))
+        await("Quick log")
+        runBlocking { assertNull(repository.drafts().load()) }
     }
 
     private fun launch(preview: Boolean? = null) {
