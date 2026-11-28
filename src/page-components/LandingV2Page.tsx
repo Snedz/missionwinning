@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { LANDING_PREVIEW_EN as copy } from '@/i18n/landingPreviewLocales';
 import { landingPreviewWeek, previewSets } from '@/lib/coach/landingPreviewWeek';
 import LandingV2DemoLoader from './LandingV2DemoLoader';
 import s from './landingV2.module.css';
 
 function LogLink() {
-  return <Link href="/active" className={s.primary}>{copy.log} <span aria-hidden="true">↗</span></Link>;
+  return <a href="/active" className={s.primary}>{copy.log} <span aria-hidden="true">↗</span></a>;
 }
 
 function WeekComparison() {
@@ -45,8 +44,8 @@ export default function LandingV2Page() {
       <a className="sr-only focus:not-sr-only" href="#notebook-main">{copy.skip}</a>
       <header className={s.masthead}>
         <div className={s.frame}>
-          <Link href="/" className={s.brand}>{copy.brand}</Link>
-          <Link href="/log" className={s.inline}>{copy.notebook} <span aria-hidden="true">↗</span></Link>
+          <a href="/" className={s.brand}>{copy.brand}</a>
+          <a href="/log" className={s.inline}>{copy.notebook} <span aria-hidden="true">↗</span></a>
         </div>
       </header>
       <main id="notebook-main" tabIndex={-1}>
@@ -103,7 +102,7 @@ export default function LandingV2Page() {
         </section>
         <div className={`${s.frame} ${s.final}`}><p>{copy.final}</p><LogLink /></div>
       </main>
-      <footer className={`${s.frame} ${s.footer}`}><span>{copy.brand}</span><Link className={s.inline} href="/log">{copy.notebook}</Link></footer>
+      <footer className={`${s.frame} ${s.footer}`}><span>{copy.brand}</span><a className={s.inline} href="/log">{copy.notebook}</a></footer>
     </div>
   );
 }
