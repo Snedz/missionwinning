@@ -1,5 +1,7 @@
 # Mission Winning — Development Log
 
+**Dependency maintenance (2026-11-28):** Pinned Serwist’s Zod dependencies from 4.4.3 to 4.6.6, the patched version already used by the app, for [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5). No app code or build label change.
+
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 
 Split 4 of 5 (concern 5) from #1129 (Merge Steward asked for one concern per PR). This is #1129's docs rotation on its own: the `.1138` Meta tests Now bullet moves to `docs/archive/CONTEXT-now-1138-meta-tests.md`, and the `.1185` landing hero loading fallback entry moves to `docs/archive/log/LOG-rotate-1185-for-1206.md`, each with a `docs/archive/INDEX.md` row. Rotation moves; nothing is deleted. Label `2026.07-unified.1206`. PRIVATE_MODE stays.
