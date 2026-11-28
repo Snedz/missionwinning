@@ -134,7 +134,8 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) and product [docs/contracts/MODULE.md](..
 - Preflight: `python3 scripts/check-release-readiness.py` (store-assets + Sentry + smoke tasks)
 - Screenshots: `python3 scripts/wedge-adb-walk.py --screenshots` → [store-assets/](store-assets/)
 - Room schemas: `core/data/schemas/` (`exportSchema = true`)
-- Offline Coach uses the web beginner/strength catalog and seeded ranking for its starter sessions; prescriptions and adaptation remain server-authoritative. To refresh the checked-in catalog, run `npx tsx apps/android/scripts/generate-offline-coach-catalog.ts > apps/android/core/model/src/main/java/com/missionwinning/core/model/OfflineCoachCatalog.kt` from the repo root.
+- Offline Coach uses the web beginner/strength catalog and seeded ranking for its starter sessions. Finishing a planned workout offline updates matching exercises in open sessions from logged work, including rep and load progression, holds and deloads. Rebuilding a starter plan and adapting a server plan are separate paths.
+- From the repo root, refresh the catalog with `npx tsx apps/android/scripts/generate-offline-coach-catalog.ts` and progression expectations with `npx tsx apps/android/scripts/generate-coach-parity.ts --progression`; the latter writes to stdout for `core/data/src/test/resources/coach-progression-parity.json`.
 - Play upload: `-Pmw.requireUploadKeystore=true` fails without `keystore.properties`
 
 ## Commands

@@ -1,6 +1,8 @@
 package com.missionwinning.core.data
 
 import com.missionwinning.core.network.CoachPlanDto
+import com.missionwinning.core.network.PlanExerciseDto
+import com.missionwinning.core.network.PlanSessionDto
 import com.missionwinning.core.model.WeightUnits
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -19,6 +21,55 @@ import kotlin.math.abs
 
 class CoachParityTest {
     private val json = Json { ignoreUnknownKeys = true }
+
+    @Test
+    fun offlineCompletionMatchesWebProgression() {
+        val fixture = requireNotNull(javaClass.getResourceAsStream("/coach-progression-parity.json"))
+            .bufferedReader().use { json.parseToJsonElement(it.readText()).jsonObject }
+        assertEquals(1, fixture.getValue("version").jsonPrimitive.int)
+        val zone = ZoneId.of(fixture.getValue("timeZone").jsonPrimitive.content)
+        val progressions = fixture.getValue("progressions").jsonArray.map { it.jsonObject }
+        assertTrue("Expected progression fixtures", progressions.isNotEmpty())
+        val mismatches = buildList {
+            for (case in progressions) {
+                val id = case.getValue("id").jsonPrimitive.content
+                val move = case.getValue("exerciseId").jsonPrimitive.content
+                val unit = if (case.getValue("units").jsonPrimitive.content == "imperial") "lb" else "kg"
+                val workoutId = case.getValue("workoutId").jsonPrimitive.content
+                val history = case.getValue("history").jsonArray.map { it.jsonObject }
+                val sets = history.flatMap { log ->
+                    roomRows(log, unit).map {
+                        CoachProgressionSet(it, it.completedAt, log.getValue("durationSeconds").jsonPrimitive.int)
+                    }
+                }
+                val expected = json.decodeFromJsonElement(PlanExerciseDto.serializer(), JsonObject(
+                    case.getValue("expected").jsonObject + ("exerciseId" to case.getValue("exerciseId")),
+                ))
+                val prescribed = PlanExerciseDto(move, 3, 5)
+                val current = PlanSessionDto("mon", 0, "strength", "Monday", exercises = listOf(prescribed),
+                    estMinutes = 30, status = "planned")
+                val plan = CoachPlanDto(
+                    revision = 1, weekStart = "2026-05-18", daysPerWeek = 3,
+                    sessions = listOf(current, current.copy(id = "wed", dayOffset = 2),
+                        current.copy(id = "fri", dayOffset = 4, status = "swapped")),
+                    generatedAt = case.getValue("now").jsonPrimitive.content, contextHash = "offline-seed-test",
+                    equipmentProfile = if (move == "push-ups") "bodyweight" else "dumbbells", weightUnit = unit,
+                )
+                val next = LocalCoachSeed.markDone(
+                    plan, current.id, workoutId, sets, Instant.parse(plan.generatedAt), zone,
+                ).plan
+                assertEquals(id, current.copy(status = "done"), next.sessions.first())
+                for (session in next.sessions.drop(1)) {
+                    val actual = session.exercises.single()
+                    if (actual.copy(weight = expected.weight) != expected || abs(actual.weight - expected.weight) > 1e-6) {
+                        add("$id ${session.id}: web=$expected, Android=$actual")
+                    }
+                }
+            }
+        }
+        assertTrue("${mismatches.size} mismatches in ${progressions.size * 2} prescriptions:\n" +
+            mismatches.joinToString("\n"), mismatches.isEmpty())
+    }
 
     @Test
     fun offlineSeedMatchesExactlyTheListedWebDifferences() {
@@ -236,6 +287,12 @@ class CoachParityTest {
                     weightUnit = set["weightUnit"]?.jsonPrimitive?.contentOrNull
                         ?: log["weightUnit"]?.jsonPrimitive?.contentOrNull ?: unit,
                     workoutId = id,
+                    rpe = when (set["rpe"]?.jsonPrimitive?.contentOrNull) {
+                        "easy" -> 6
+                        "med" -> 7
+                        "hard" -> 9
+                        else -> null
+                    },
                     setKind = set["kind"]?.jsonPrimitive?.contentOrNull ?: "normal",
                 )
             }

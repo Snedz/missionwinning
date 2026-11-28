@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs';
 import { mock } from 'node:test';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
+import { loadBands } from '@/lib/coach/load';
+import { nextTargets } from '@/lib/coach/progression';
 import { localDateKey, localWeekKey } from '@/lib/time/localDate';
 import { displayToKg, kgToDisplay, type UnitsPref } from '@/lib/units';
 import type { CompletedWorkoutLog } from '@/types';
@@ -45,7 +47,7 @@ function historyInUnits(history: Log[], units: UnitsPref): CompletedWorkoutLog[]
 }
 
 process.env.TZ = fixture.timeZone;
-const cases = fixture.cases.map(({ id, now, historyId, input }) => {
+const seedCases = () => fixture.cases.map(({ id, now, historyId, input }) => {
   const date = new Date(now);
   mock.timers.enable({ apis: ['Date'], now: date });
   try {
@@ -59,7 +61,64 @@ const cases = fixture.cases.map(({ id, now, historyId, input }) => {
     mock.timers.reset();
   }
 });
-const json = JSON.stringify({ ...fixture, cases }, null, 2)
+
+const now = '2026-05-18T12:00:00.000Z';
+const push = 'push-ups';
+const lift = 'lunges';
+type Set = Log['exercises'][number]['sets'][number];
+const set = (reps: number, weight = 0, rpe?: Set['rpe'], kind?: Set['kind']): Set =>
+  ({ reps, weight, rpe, kind });
+function workout(day: number, sets: Set[], exerciseId = lift, extras: Partial<Log> = {}): Log {
+  const at = `2026-05-${String(day).padStart(2, '0')}T10:00:00.000Z`;
+  return {
+    id: `${day}-${exerciseId}`, workoutName: 'Parity workout', startedAt: at, completedAt: at,
+    durationSeconds: 1200, totalVolume: 0, weightUnit: 'kg',
+    exercises: [{ exerciseId, sets }], ...extras,
+  };
+}
+function progression(id: string, history: Log[], exerciseId = lift, units: UnitsPref = 'metric') {
+  const normalized = historyInUnits(history, units).filter((log) => log.completedAt <= now);
+  const zone = loadBands(normalized, new Date(now)).zone;
+  return {
+    id, now, exerciseId, units, workoutId: normalized[0].id, history,
+    expected: nextTargets(exerciseId, normalized, units, 'strength', 'beginner', zone),
+  };
+}
+const progressions = [
+  progression('unrated-bodyweight-gains-a-rep', [workout(18, [set(4)], push)], push),
+  progression('easy-bodyweight-gains-two-reps', [workout(18, [set(4, 0, 'easy')], push)], push),
+  progression('bodyweight-hard-deload', [workout(18, [set(6, 0, 'hard')], push)], push),
+  progression('bodyweight-flat-deload', [18, 16, 14].map((day) => workout(day, [set(6)], push)), push),
+  progression('unrated-weighted-hold', [workout(18, [set(6, 30)])]),
+  progression('weighted-rpe-reps', [workout(18, [set(5, 30, 'med'), set(4, 20)])]),
+  progression('percent-load-up', [workout(18, [set(6, 50, 'easy')])]),
+  progression('percent-load-capped-at-limit', [workout(18, [set(3, 100, 'easy')])]),
+  progression('percent-hard-hold', [workout(18, [set(6, 30, 'hard'), set(6, 25, 'hard'), set(6, 25, 'easy')])]),
+  progression('percent-deload-imperial', [workout(18, [set(6, 25, 'hard'), set(6, 25, 'hard')])], lift, 'imperial'),
+  progression('absolute-load-up-no-e1rm', [workout(18, [set(15, 20, 'easy')])]),
+  progression('absolute-hard-deload-no-e1rm', [workout(18, [set(15, 20, 'hard')])]),
+  progression('weighted-flat-deload', [18, 16, 14].map((day) => workout(day, [set(6, 40)]))),
+  progression('weighted-plateau-deload', [35, 30, 35, 30, 50]
+    .map((weight, i) => workout(18 - i * 2, [set(6, weight)]))),
+  progression('recent-pr-blocks-false-stall', [42, 40, 40, 30, 30]
+    .map((weight, i) => workout(18 - i * 2, [set(6, weight)]))),
+  progression('high-load-caps-progression', [
+    workout(18, [set(4, 25, 'easy')], lift, { durationSeconds: 5400 }),
+    workout(1, [set(5)], push),
+  ]),
+  progression('failure-and-drop-can-count-as-working-sets', [
+    workout(18, [set(8, 100, 'hard', 'warmup'), set(4, 30), set(4, 60, 'med', 'failure'), set(4, 25, 'med', 'drop')]),
+  ]),
+  progression('ignores-deleted-and-future-workouts', [
+    workout(19, [set(5, 150)]),
+    workout(18, [set(5, 100)], lift, { id: 'deleted', deletedAt: now }),
+    workout(18, [set(5, 25), set(5, 30, 'med', 'warmup')]),
+  ]),
+];
+const output = process.argv.includes('--progression')
+  ? { version: 1, timeZone: fixture.timeZone, progressions }
+  : { ...fixture, cases: seedCases() };
+const json = JSON.stringify(output, null, 2)
   .replace(/\{\n\s+"(exerciseId|reps)": [^{}]+\}/g, (record) =>
     JSON.stringify(JSON.parse(record)).replaceAll('":', '": ').replaceAll(',"', ', "'));
 process.stdout.write(json + '\n');

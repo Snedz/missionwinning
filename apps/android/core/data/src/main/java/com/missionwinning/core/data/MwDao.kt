@@ -149,6 +149,16 @@ interface MwDao {
     )
     suspend fun coachWorkingSets(): List<SetLogEntity>
 
+    @Query(
+        """
+        SELECT s.*, w.completedAt AS workoutCompletedAt, w.durationSeconds AS workoutDurationSeconds
+        FROM set_logs s
+        INNER JOIN workout_logs w ON w.id = s.workoutId
+        WHERE w.deletedAt IS NULL AND s.setKind != 'warmup'
+        """,
+    )
+    suspend fun coachProgressionHistory(): List<CoachProgressionSet>
+
     @Query(LATEST_WORKING_LOAD_SQL)
     suspend fun latestWorkingLoad(exerciseIds: List<String>, targetReps: Int, workoutId: String? = null): SetLogEntity?
 

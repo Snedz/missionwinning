@@ -1,6 +1,5 @@
 package com.missionwinning.core.data
 
-import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.TrainerAskRequestDto
@@ -70,9 +69,7 @@ class CoachPlanRepository(
                 LocalCoachSeed.markDone(current.plan, sessionId)
             }
         } else {
-            LocalCoachSeed.markDone(current.plan, sessionId) { exerciseId, targetReps ->
-                dao.latestWorkingLoad(ExerciseCatalog.equivalentCoachIds(exerciseId), targetReps, workoutId)
-            }
+            LocalCoachSeed.markDone(current.plan, sessionId, workoutId, dao.coachProgressionHistory())
         }
         savePlanResponse(next)
         return next
