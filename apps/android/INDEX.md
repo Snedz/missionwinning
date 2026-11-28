@@ -25,8 +25,9 @@
 The default Android UI is unchanged. On an installed debug APK, opt in with
 `adb shell am start --activity-single-top -n com.missionwinning.app.debug/com.missionwinning.app.MainActivity --ez mw_android_v2 true`.
 Pass `false` to return to the existing UI. The choice persists on the device; release builds ignore it.
-Both shells use the same workout history and draft. The preview receipt compares the observed local plan
-before and after completion; it disappears when the plan changes or the app process restarts.
+Both shells use the same workout history and draft. Victory shows upcoming Coach targets only for
+movements in the saved workout. The preview receipt compares actual targets before and after completion
+or an explicit week rebuild; it disappears when the plan changes or the app process restarts.
 
 Checks: `./gradlew testDebugUnitTest :app:assembleDebug` and `./gradlew :app:connectedDebugAndroidTest`
 on a disposable Android emulator.

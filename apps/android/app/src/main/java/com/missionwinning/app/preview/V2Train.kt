@@ -2,12 +2,15 @@ package com.missionwinning.app.preview
 
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -21,8 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.missionwinning.app.R
@@ -71,7 +78,7 @@ internal fun V2Train(
                 Text(state.workoutName, style = MaterialTheme.typography.headlineSmall)
                 V2Label(stringResource(R.string.v2_set_progress, state.doneCount, state.totalSets))
                 if (state.restSeconds > 0) {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(
                             stringResource(R.string.v2_rest_seconds, state.restSeconds),
                             style = MaterialTheme.typography.titleMedium,
@@ -83,29 +90,17 @@ internal fun V2Train(
                 val current = state.exercises.firstNotNullOfOrNull { exercise -> exercise.sets.find { it.id == currentId } }
                 if (current != null) {
                     V2Rule()
-                    Text(current.exerciseName, style = MaterialTheme.typography.titleMedium)
+                    Text(current.exerciseName, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleMedium)
+                    ActiveSessionLogic.currentSetInExercise(state.exercises)?.let { (index, total) ->
+                        Text(stringResource(R.string.v2_current_set, index, total))
+                    }
                     SetEntry(current, state.weightUnit, !state.finishing, onEvent)
                 } else if (state.exercises.isEmpty()) {
                     Text(stringResource(R.string.v2_empty_train))
                 }
-                state.exercises.forEach { exercise ->
-                    val completed = exercise.sets.filter { it.done }
-                    if (completed.isNotEmpty()) {
-                        V2Label(exercise.name)
-                        completed.forEach { set ->
-                            Text(stringResource(R.string.v2_logged_set, set.setIndex + 1, set.reps, WeightUnits.formatWithUnit(set.weight, state.weightUnit)))
-                        }
-                    }
+                state.error?.let {
+                    Text(it, Modifier.semantics { liveRegion = LiveRegionMode.Polite }, color = V2Colors.Red)
                 }
-                if (!state.finishing) {
-                    V2Secondary(stringResource(R.string.v2_add_exercise), Modifier.fillMaxWidth()) { dialog = TrainDialog.Exercise }
-                    if (current != null) {
-                        V2Secondary(stringResource(R.string.v2_add_set), Modifier.fillMaxWidth()) {
-                            onEvent(ActiveEvent.AddSet(current.exerciseId))
-                        }
-                    }
-                }
-                state.error?.let { Text(it, color = V2Colors.Red) }
                 if (state.doneCount > 0) {
                     V2Action(
                         stringResource(if (state.finishing) R.string.v2_saving else R.string.v2_finish),
@@ -115,8 +110,23 @@ internal fun V2Train(
                     }
                 }
                 if (!state.finishing) {
+                    V2Secondary(stringResource(R.string.v2_add_exercise), Modifier.fillMaxWidth()) { dialog = TrainDialog.Exercise }
+                    if (current != null) {
+                        V2Secondary(stringResource(R.string.v2_add_set), Modifier.fillMaxWidth()) {
+                            onEvent(ActiveEvent.AddSet(current.exerciseId))
+                        }
+                    }
                     V2Secondary(stringResource(R.string.v2_full_controls), Modifier.fillMaxWidth()) { classic = true }
                     V2Secondary(stringResource(R.string.v2_leave), Modifier.fillMaxWidth()) { dialog = TrainDialog.Leave }
+                }
+                state.exercises.forEach { exercise ->
+                    val completed = exercise.sets.filter { it.done }
+                    if (completed.isNotEmpty()) {
+                        V2Label(exercise.name)
+                        completed.forEach { set ->
+                            Text(stringResource(R.string.v2_logged_set, set.setIndex + 1, set.reps, WeightUnits.formatWithUnit(set.weight, state.weightUnit)))
+                        }
+                    }
                 }
             }
         }
@@ -147,36 +157,43 @@ private fun SetEntry(set: LoggedSet, unit: String, enabled: Boolean, onEvent: (A
     if (previousWeight != null && previousReps != null) {
         Text(stringResource(R.string.v2_last_set, previousReps, WeightUnits.formatWithUnit(previousWeight, unit)))
     }
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        OutlinedTextField(
-            value = reps,
-            onValueChange = { raw ->
-                if (raw.isEmpty() || raw.toIntOrNull()?.let { it in 1..99 } == true) {
-                    reps = raw
-                    raw.toIntOrNull()?.let { onEvent(ActiveEvent.UpdateReps(set.id, it)) }
-                }
-            },
-            modifier = Modifier.weight(1f),
-            enabled = enabled,
-            label = { Text(stringResource(R.string.v2_reps)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-        OutlinedTextField(
-            value = load,
-            onValueChange = { raw ->
-                val parsed = raw.replace(',', '.').toDoubleOrNull()
-                if (raw.isEmpty() || parsed?.let { it.isFinite() && it >= 0 } == true) {
-                    load = raw
-                    parsed?.let { onEvent(ActiveEvent.UpdateWeight(set.id, it)) }
-                }
-            },
-            modifier = Modifier.weight(1f),
-            enabled = enabled,
-            label = { Text(stringResource(R.string.v2_weight, unit)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        )
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val columns = if (maxWidth / LocalDensity.current.fontScale < 275.dp) 1 else 2
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            maxItemsInEachRow = columns,
+        ) {
+            OutlinedTextField(
+                value = reps,
+                onValueChange = { raw ->
+                    if (raw.isEmpty() || raw.toIntOrNull()?.let { it in 1..99 } == true) {
+                        reps = raw
+                        raw.toIntOrNull()?.let { onEvent(ActiveEvent.UpdateReps(set.id, it)) }
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                enabled = enabled,
+                label = { Text(stringResource(R.string.v2_reps)) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
+            OutlinedTextField(
+                value = load,
+                onValueChange = { raw ->
+                    val parsed = raw.replace(',', '.').toDoubleOrNull()
+                    if (raw.isEmpty() || parsed?.let { it.isFinite() && it >= 0 } == true) {
+                        load = raw
+                        parsed?.let { onEvent(ActiveEvent.UpdateWeight(set.id, it)) }
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                enabled = enabled,
+                label = { Text(stringResource(R.string.v2_weight, unit)) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            )
+        }
     }
     V2Action(stringResource(R.string.v2_complete_set), enabled && reps.isNotEmpty() && load.isNotEmpty()) {
         onEvent(ActiveEvent.ToggleSet(set.id))
@@ -200,7 +217,7 @@ private fun ExercisePicker(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.v2_add_exercise)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },

@@ -20,6 +20,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.Instant
 import java.util.UUID
+import kotlin.math.roundToInt
 
 @RunWith(AndroidJUnit4::class)
 class ShellUpgradeTest {
@@ -57,9 +58,15 @@ class ShellUpgradeTest {
 
         launch(preview = true)
         await("MISSION WINNING / 01")
-        await("Resume workout").click()
+        val minTargetPx = (48 * context.resources.displayMetrics.density).roundToInt()
+        val todayTab = checkNotNull(device.wait(Until.findObject(By.text("Today").selected(true).clickable(true)), 10_000))
+        assertTrue(todayTab.visibleBounds.height() >= minTargetPx)
+        val resume = await("Resume workout")
+        assertTrue(resume.visibleBounds.height() >= minTargetPx)
+        resume.click()
         await("SET BY SET / 02")
         await(draft)
+        await("Set 1 of 1 for this exercise")
         await("27.5")
         await("9")
         device.pressBack()

@@ -51,6 +51,7 @@
     <string name="v2_load_unavailable">load unavailable</string>
     <string name="v2_back_to_train">Back to Train preview</string>
     <string name="v2_set_progress">%1$d OF %2$d SETS COMPLETE</string>
+    <string name="v2_current_set">Set %1$d of %2$d for this exercise</string>
     <string name="v2_rest_seconds">Rest · %1$ds</string>
     <string name="v2_skip_rest">Skip rest</string>
     <string name="v2_empty_train">Add an exercise to start your first set.</string>

@@ -28,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -81,10 +83,10 @@ internal fun V2Today(
                 else -> Text(stringResource(R.string.v2_no_next))
             }
             if (draft == null) {
-                V2Secondary(stringResource(R.string.v2_quick_log), Modifier.fillMaxWidth(), onQuickLog)
+                V2Secondary(stringResource(R.string.v2_quick_log), Modifier.fillMaxWidth(), onClick = onQuickLog)
             }
             V2Rule()
-            V2Secondary(stringResource(R.string.v2_open_history), Modifier.fillMaxWidth(), onHistory)
+            V2Secondary(stringResource(R.string.v2_open_history), Modifier.fillMaxWidth(), onClick = onHistory)
         }
     }
 }
@@ -142,7 +144,7 @@ internal fun V2Coach(
                 if (rebuildFailed) Text(stringResource(R.string.v2_rebuild_failed))
                 if (change?.plan == current) {
                     V2Rule()
-                    Text(stringResource(R.string.v2_what_changed), style = MaterialTheme.typography.headlineSmall)
+                    Text(stringResource(R.string.v2_what_changed), Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineSmall)
                     change.completedName?.let { Text(stringResource(R.string.v2_marked_done, it)) }
                     change.targets.forEach { target ->
                         Text(target.sessionName, style = MaterialTheme.typography.titleMedium)
@@ -187,7 +189,7 @@ internal fun V2Victory(
                 targets.forEach { ExerciseTarget(it, plan?.weightUnit) }
             }
             V2Action(stringResource(R.string.v2_open_coach), onClick = onCoach)
-            V2Secondary(stringResource(R.string.v2_open_history), Modifier.fillMaxWidth(), onHistory)
+            V2Secondary(stringResource(R.string.v2_open_history), Modifier.fillMaxWidth(), onClick = onHistory)
         }
     }
 }
@@ -207,20 +209,21 @@ internal fun V2History(
         LazyColumn(
             Modifier.fillMaxSize().statusBarsPadding()
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                .v2ContentWidth()
                 .padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item {
                 Column(Modifier.padding(top = 18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     V2Label(stringResource(R.string.v2_marker_history))
-                    Text(stringResource(R.string.v2_history), style = MaterialTheme.typography.displaySmall)
+                    Text(stringResource(R.string.v2_history), Modifier.semantics { heading() }, style = MaterialTheme.typography.displaySmall)
                     V2Rule()
                 }
             }
             item {
-                V2Secondary(stringResource(R.string.v2_progress), Modifier.fillMaxWidth(), onProgress)
-                V2Secondary(stringResource(R.string.v2_routines), Modifier.fillMaxWidth(), onRoutines)
-                V2Secondary(stringResource(R.string.v2_catalog), Modifier.fillMaxWidth(), onCatalog)
+                V2Secondary(stringResource(R.string.v2_progress), Modifier.fillMaxWidth(), onClick = onProgress)
+                V2Secondary(stringResource(R.string.v2_routines), Modifier.fillMaxWidth(), onClick = onRoutines)
+                V2Secondary(stringResource(R.string.v2_catalog), Modifier.fillMaxWidth(), onClick = onCatalog)
             }
             if (workouts == null) item { Text(stringResource(R.string.v2_loading)) }
             else if (workouts.isNullOrEmpty()) item { Text(stringResource(R.string.v2_empty_history)) }

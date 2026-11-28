@@ -2,11 +2,14 @@ package com.missionwinning.app.preview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -15,7 +18,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -28,20 +35,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.selected
 import com.missionwinning.core.designsystem.R as DesignR
 
 internal object V2Colors {
@@ -80,7 +91,7 @@ internal fun V2Theme(content: @Composable () -> Unit) {
             primary = V2Colors.Red, onPrimary = Color.White, secondary = V2Colors.QuietInk,
             background = V2Colors.Paper, onBackground = V2Colors.Ink,
             surface = V2Colors.Paper, onSurface = V2Colors.Ink,
-            onSurfaceVariant = V2Colors.QuietInk, outline = V2Colors.Rule,
+            onSurfaceVariant = V2Colors.QuietInk, outline = V2Colors.QuietInk,
         ),
         typography = V2Typography,
         shapes = Shapes(Square, Square, Square, Square, Square),
@@ -99,15 +110,19 @@ internal fun V2Page(
     Column(
         Modifier.fillMaxSize().background(V2Colors.Paper).statusBarsPadding().then(bottom)
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+            .v2ContentWidth()
             .verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 18.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         V2Label(marker)
-        Text(title, style = MaterialTheme.typography.displaySmall)
+        Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.displaySmall)
         V2Rule()
         content()
     }
 }
+
+internal fun Modifier.v2ContentWidth(): Modifier =
+    wrapContentWidth(Alignment.CenterHorizontally).widthIn(max = 680.dp).fillMaxWidth()
 
 @Composable
 internal fun V2Label(text: String) {
@@ -123,7 +138,7 @@ internal fun V2Rule() {
 internal fun V2Action(label: String, enabled: Boolean = true, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(containerColor = V2Colors.Fill, contentColor = Color.White),
         shape = RectangleShape,
@@ -131,33 +146,39 @@ internal fun V2Action(label: String, enabled: Boolean = true, onClick: () -> Uni
 }
 
 @Composable
-internal fun V2Secondary(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    V2Secondary(label, modifier, enabled = true, onClick = onClick)
-}
-
-@Composable
-internal fun V2Secondary(label: String, modifier: Modifier, enabled: Boolean, onClick: () -> Unit) {
-    OutlinedButton(onClick, modifier = modifier, enabled = enabled, shape = RectangleShape) { Text(label) }
+internal fun V2Secondary(label: String, modifier: Modifier = Modifier, enabled: Boolean = true, onClick: () -> Unit) {
+    OutlinedButton(onClick, modifier = modifier.heightIn(min = 48.dp), enabled = enabled, shape = RectangleShape) { Text(label) }
 }
 
 @Composable
 internal fun V2Navigation(route: String?, items: List<Pair<String, Int>>, onSelect: (String) -> Unit) {
     V2Theme {
-        Column(Modifier.background(V2Colors.Paper).navigationBarsPadding()) {
+        Column(Modifier.background(V2Colors.Paper).navigationBarsPadding()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))) {
             V2Rule()
-            Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items.forEach { (destination, label) ->
-                    androidx.compose.material3.TextButton(
-                        onClick = { onSelect(destination) },
-                        modifier = Modifier.weight(1f).then(
-                            Modifier.semantics { selected = destination == route },
-                        ),
-                    ) {
-                        Text(
-                            stringResource(label),
-                            color = if (destination == route) V2Colors.Red else V2Colors.Ink,
-                            fontWeight = if (destination == route) FontWeight.Bold else FontWeight.Normal,
-                        )
+            BoxWithConstraints(Modifier.v2ContentWidth().selectableGroup()) {
+                val columns = if (maxWidth / LocalDensity.current.fontScale < 310.dp) 2 else 4
+                Column {
+                    items.chunked(columns).forEach { row ->
+                        Row(Modifier.fillMaxWidth()) {
+                            row.forEach { (destination, label) ->
+                                val selected = destination == route
+                                Box(
+                                    Modifier.weight(1f).heightIn(min = 48.dp)
+                                        .selectable(selected, role = Role.Tab) { onSelect(destination) }
+                                        .padding(horizontal = 6.dp, vertical = 8.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(
+                                        stringResource(label),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = if (selected) V2Colors.Red else V2Colors.Ink,
+                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
