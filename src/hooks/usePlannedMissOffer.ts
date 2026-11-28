@@ -8,13 +8,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import {
-  applyPlannedMissSkip,
-  applyPlannedMissSlide,
   findPlannedMiss,
   type PlannedMissOffer,
 } from '@/lib/coach/plannedMiss';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
-import { loadPlan, savePlan } from '@/lib/coach/storage';
+import { loadPlan, savePlannedMissEdit } from '@/lib/coach/storage';
 import type { PlanSession } from '@/lib/coach/types';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import { plannedMissMayMount } from '@/lib/today/todayGuidanceMount';
@@ -55,16 +53,14 @@ export function usePlannedMissOffer(phase: JourneyPhase, sessionOpen: boolean) {
   }, [offer, startCoachSession]);
 
   const skip = useCallback(() => {
-    const existing = loadPlan();
-    if (!existing || !offer?.session) return;
-    savePlan(applyPlannedMissSkip(existing, offer.session.id));
+    if (!offer?.session) return;
+    savePlannedMissEdit(currentWeekStart(), offer.session.id, 'skip');
   }, [offer]);
 
   const slide = useCallback(() => {
-    const existing = loadPlan();
-    if (!existing || !offer?.session) return;
+    if (!offer?.session) return;
     const weekStart = currentWeekStart();
-    savePlan(applyPlannedMissSlide(existing, offer.session.id, todayDayOffset(weekStart)));
+    savePlannedMissEdit(weekStart, offer.session.id, { slideFrom: todayDayOffset(weekStart) });
   }, [offer]);
 
   return { offer, doNow, skip, slide };

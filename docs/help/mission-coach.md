@@ -21,6 +21,10 @@ If Coach shows a lock icon, see [premium-and-billing.md](premium-and-billing.md)
 
 Chat on `/coach` is Super Bundle chrome. It does not replace the week.
 
+### What changed and why
+
+After Coach revises your current week, look for **What changed and why** below your session. It shows sessions that moved, dropped off the schedule, were added, or were marked complete. For changes to a lift you still have planned, compare its old and new weight, sets, and reps. When Coach can trace a change to a saved workout, it shows the first working set it used. If no specific set explains the change, it doesn't quote one.
+
 ## Personal trainer
 
 Today, Train, and Coach show a personal trainer card for the set in front of you:

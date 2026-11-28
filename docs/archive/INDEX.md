@@ -10,6 +10,9 @@ When adding a doc:
 
 ## Archived (Wave 9)
 
+- [`.1142` icon rail](CONTEXT-now-1142-icon.md) — Now bullet rotated for `.1212`.
+- [`.1191` stale-link repair](log/LOG-rotate-1191-for-1212.md) — LOG entry rotated for `.1212`.
+- [`.1192` homepage translations](log/LOG-restore-1192.md) — original LOG entry restored from history at the live/archive boundary.
 - [`.1138` Meta tests](CONTEXT-now-1138-meta-tests.md) — Now bullet rotated for `.1206`.
 - [`.1185` landing fallback](log/LOG-rotate-1185-for-1206.md) — LOG entry rotated for `.1206`.
 - [`CONTEXT-now-1141-set-row.md`](docs/archive/CONTEXT-now-1141-set-row.md) — `.1205` rotated the `.1141` Train set row Now bullet.

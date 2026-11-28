@@ -16,6 +16,7 @@ import {
   type CoachConceptId,
 } from '@/lib/coach/coachConcept';
 import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
+import { describeCoachWeekChange } from '@/lib/coach/weekChange';
 import {
   getOrCreateDeviceId,
   loadPlan,
@@ -113,7 +114,7 @@ export function adaptPlanAfterFinishedLog(input: {
     if (wroteNextEnv && next.revision === existing.revision) {
       next = { ...next, revision: existing.revision + 1 };
     }
-    savePlan(next);
+    savePlan(next, describeCoachWeekChange(existing, next, ctx, 'adapt'));
   }
 
   return {

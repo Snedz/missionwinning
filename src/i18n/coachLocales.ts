@@ -127,6 +127,21 @@ type CoachStrings = {
   coachWeekDoseConditioning: string;
   coachWeekDoseRecovery: string;
   coachWeekDoseMixed: string;
+  coachChangeTitle: string;
+  coachChangeRebuild: string;
+  coachChangeAdapt: string;
+  coachChangeScheduleList: string;
+  coachChangeMoved: string;
+  coachChangeAdded: string;
+  coachChangeCompleted: string;
+  coachChangeMissed: string;
+  coachChangeDropped: string;
+  coachChangePrescriptions: string;
+  coachChangeBefore: string;
+  coachChangeAfter: string;
+  coachChangeTarget: string;
+  coachChangeUnset: string;
+  coachChangeSavedSet: string;
   coachAdaptReentryLead: string;
   coachAdaptJustGo: string;
   coachAdaptLighterWeek: string;
@@ -502,6 +517,21 @@ const en: CoachStrings = {
   coachWeekDoseConditioning: 'conditioning focus',
   coachWeekDoseRecovery: 'recovery-heavy',
   coachWeekDoseMixed: 'mixed strength & recovery',
+  coachChangeTitle: 'What changed and why',
+  coachChangeRebuild: 'Latest rebuild',
+  coachChangeAdapt: 'Latest adjustment',
+  coachChangeScheduleList: 'Schedule changes',
+  coachChangeMoved: 'Moved {{name}} from {{from}} to {{day}}.',
+  coachChangeAdded: 'Added {{name}} on {{day}}.',
+  coachChangeCompleted: 'Marked {{name}} on {{day}} complete.',
+  coachChangeMissed: 'Dropped {{name}} from {{day}} after a missed session.',
+  coachChangeDropped: 'Dropped {{name}} from {{day}}.',
+  coachChangePrescriptions: 'Prescription changes',
+  coachChangeBefore: 'Before',
+  coachChangeAfter: 'After',
+  coachChangeTarget: '{{sets}} sets × {{reps}} reps · {{load}}',
+  coachChangeUnset: 'weight not set',
+  coachChangeSavedSet: 'First working set from your {{date}} log: {{reps}} reps at {{load}}.',
   coachAdaptReentryLead: 'Ready to train again?',
   coachAdaptJustGo: 'Just Go — log one set',
   coachAdaptLighterWeek: 'Open Today',

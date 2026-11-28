@@ -21,6 +21,7 @@
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
 8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.766`, survey clarity 2.56/5)
 8c4. `weekDiff.ts` — session-count proposal (`N sessions → M`) plus the stored fact; replaces the adapt assertion (H-02 / `.861`)
+8c4a. `weekChange.ts` — same-week revision comparison with schedule changes, before/after prescriptions, and a saved working set only when removing its workout changes the progression result
 8c5. `sessionRationale.ts` — log-cited why-this-session for the boss/next session (inputs · rule · effect), or honest empty; Coach opt-in only (`.932` / reserved `.699` / F-012)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8d2. `plannedMiss.ts` — planned-day miss offer (do it now / skip / slide). Skip does not stamp `missed` (`.945`)

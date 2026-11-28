@@ -7,6 +7,7 @@
 | File | Purpose |
 |------|---------|
 | `CoachAdaptBanner.tsx` | Adapt banner is house leftover. Compact first paint; reentry Start stays extra. Log-cited why-this-week. Re-entry copy follows the safety decision. |
+| `CoachWeekChangePanel.tsx` | Latest same-week rebuild or adaptation: schedule changes, before/after prescriptions, and verified working-set citations. |
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
 | `WeekStrip.tsx` | House week names the day (Rest, Lift, Condition, Mobility, Done, Missed). Landing demo keeps the field-manual glyphs. |
