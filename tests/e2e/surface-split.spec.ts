@@ -44,9 +44,30 @@ test.describe('Desktop surface @gate', () => {
   test('shell is the rail, not the tab bar', async ({ page }) => {
     await page.goto('/log');
 
+    if (process.env.DESKTOP_SHELL_PREVIEW === 'true') {
+      const rail = page.locator('.desktop-preview-rail');
+      await expect(rail).toBeVisible();
+      await expect(rail.getByRole('link', { name: 'Today' })).toHaveAttribute('aria-current', 'page');
+      await expect(page.locator('nav.house-rail')).toBeHidden();
+      await expect(page.locator('.desktop-preview-today-links a[href="/coach"]')).toBeVisible();
+
+      await rail.getByRole('link', { name: 'Train' }).click();
+      await expect(rail.getByRole('link', { name: 'Train' })).toHaveAttribute('aria-current', 'page');
+      await expect(page.getByTestId('set-log-table').first()).toBeVisible();
+
+      await rail.locator('a[href="/coach"]').click();
+      await expect(rail.locator('a[href="/coach"]')).toHaveAttribute('aria-current', 'page', { timeout: 20_000 });
+      await expect(page.locator('.house-session-grid.is-sheet > .house-session').nth(1)).toBeVisible();
+      await page.setViewportSize({ width: 1023, height: 900 });
+      await expect(rail).toBeHidden();
+      await expect(page.locator('.house-session-grid.is-sheet > .house-session')).toHaveCount(1);
+      return;
+    }
+
     // House leftover desktop: side icon rail. Floor hides ≥723. More stays on
     // the rail (not a compact Search tab). The old AppLayout `aside` is gone.
     await expect(page.locator('nav.house-rail')).toBeVisible();
+    await expect(page.locator('.desktop-preview-rail')).toHaveCount(0);
     await expect(page.locator('nav.house-floor')).toBeHidden();
     await expect(page.locator('nav.house-rail [data-house-rail-open="more"]')).toBeVisible();
 

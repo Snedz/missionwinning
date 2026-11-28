@@ -30,10 +30,14 @@ import {
   houseSecondDockForPath,
   isHouseAccountPath,
   isHouseCatalogPath,
+  isHouseCoachPath,
+  isHouseTodayPath,
   isHouseTrainPath,
 } from './houseNav';
+import { HouseDesktopPreview, HouseDesktopRail } from './HouseDesktopRail';
 import { TrainSidecar } from './TrainSidecar';
 import './house.css';
+import './houseDesktopPreview.css';
 
 const CommissioningCeremony = dynamic(
   () =>
@@ -44,7 +48,7 @@ const CommissioningCeremony = dynamic(
 );
 
 
-export function HouseShell({ children }: { children: React.ReactNode }) {
+export function HouseShell({ children, desktopPreview = false }: { children: React.ReactNode; desktopPreview?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useTranslation();
@@ -67,6 +71,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
   }, [router]);
   const keyboardOverlap = useVisualViewportKeyboardOverlap();
   const train = isHouseTrainPath(pathname);
+  const preview = desktopPreview && (train || isHouseTodayPath(pathname) || isHouseCoachPath(pathname));
   const compose = train;
   const catalog = isHouseCatalogPath(pathname);
   const account = isHouseAccountPath(pathname);
@@ -108,6 +113,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
         <JourneySyncBoot />
         <div
           className="mw-house flex h-screen flex-col overflow-hidden"
+          data-house-desktop-preview={preview ? '' : undefined}
           style={keyboardOverlap > 0 ? { paddingBottom: keyboardOverlap } : undefined}
         >
           {compose ? (
@@ -135,6 +141,7 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
             data-house-frame={dock ? 'second-left' : 'rail'}
             style={{ flex: 1, minHeight: 0 }}
           >
+            {preview ? <HouseDesktopRail pathname={pathname} onOpenMore={compose ? undefined : openMore} moreOpen={moreOpen} /> : null}
             {compose ? null : (
               <HouseIconRail
                 onOpenMore={openMore}
@@ -158,8 +165,14 @@ export function HouseShell({ children }: { children: React.ReactNode }) {
                 <div className="house-stage">
                   <main className="house-canvas">
                     <div className={padClass} data-house-transferred={transferred ? '1' : undefined}>
-                      {canvasTitle ? <h1 className="sr-only">{canvasTitle}</h1> : null}
-                      <PageTransition>{children}</PageTransition>
+                      {canvasTitle ? (
+                        <h1 className="sr-only" data-desktop-preview-title={preview && isHouseTodayPath(pathname) ? '' : undefined}>
+                          {canvasTitle}
+                        </h1>
+                      ) : null}
+                      <HouseDesktopPreview.Provider value={preview}>
+                        <PageTransition>{children}</PageTransition>
+                      </HouseDesktopPreview.Provider>
                     </div>
                   </main>
                   {account ? <AccountSidecar /> : null}

@@ -16,11 +16,13 @@ import { useTranslation } from 'react-i18next';
 import { usePlannedMissOffer } from '@/hooks/usePlannedMissOffer';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { HouseDesktopTodayLinks } from '@/components/house/HouseDesktopRail';
 import { TodayReentryCard } from '@/components/today/TodayReentryCard';
 import { TodayPlannedMissPrompt } from '@/components/today/TodayPlannedMissPrompt';
 import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { loadPlan } from '@/lib/coach/storage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
+import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
 import { computeReentry } from '@/lib/reentry';
 import { pickHonoredStart } from '@/lib/workout/honorSavedRoutine';
 import {
@@ -193,6 +195,12 @@ export function TodayDesk() {
     day: 'numeric',
   });
   const weekCount = quietWeekGlance({ history }).days.filter((day) => day.done).length;
+  const weekStart = currentWeekStart();
+  const nextSession = snap?.plan?.weekStart === weekStart
+    ? snap.plan.sessions
+        .filter((session) => session.dayOffset >= todayDayOffset(weekStart) && (session.status === 'planned' || session.status === 'swapped'))
+        .sort((a, b) => a.dayOffset - b.dayOffset)[0]
+    : undefined;
 
   const reentryShowing =
     reentry &&
@@ -250,6 +258,7 @@ export function TodayDesk() {
           </div>
         ) : null}
       </section>
+      <HouseDesktopTodayLinks nextSession={nextSession?.name} lastWorkout={history.find((log) => !log.deletedAt)?.workoutName} />
     </div>
   );
 }

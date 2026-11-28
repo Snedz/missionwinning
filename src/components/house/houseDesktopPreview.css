@@ -1,0 +1,210 @@
+.desktop-preview-rail,
+.desktop-preview-today-links {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --preview-paper: var(--background);
+    --preview-card: var(--card);
+    --preview-ink: var(--foreground);
+    --preview-muted: var(--muted);
+    --preview-muted-ink: var(--muted-foreground);
+    --preview-border: var(--border);
+    --preview-red: var(--primary);
+    --preview-red-fill: var(--primary-fill);
+    --preview-red-poster: var(--accent-poster);
+    --preview-red-ink: var(--primary-foreground);
+    --preview-tint: var(--accent-tint);
+    --preview-radius: var(--radius);
+  }
+
+  .mw-house[data-house-desktop-preview] {
+    --preview-rail: clamp(11.5rem, 15vw, 14rem);
+    --house-rail: var(--preview-rail);
+    --background: var(--preview-paper);
+    --card: var(--preview-card);
+    --card-foreground: var(--preview-ink);
+    --foreground: var(--preview-ink);
+    --popover: var(--preview-card);
+    --popover-foreground: var(--preview-ink);
+    --muted: var(--preview-muted);
+    --muted-foreground: var(--preview-muted-ink);
+    --secondary: var(--preview-muted);
+    --secondary-foreground: var(--preview-ink);
+    --border: var(--preview-border);
+    --input: var(--preview-border);
+    --primary: var(--preview-red);
+    --primary-fill: var(--preview-red-fill);
+    --primary-fill-hover: var(--preview-red);
+    --primary-foreground: var(--preview-red-ink);
+    --accent: var(--preview-tint);
+    --accent-foreground: var(--preview-ink);
+    --accent-tint: var(--preview-tint);
+    --accent-100: var(--preview-tint);
+    --accent-poster: var(--preview-red-poster);
+    --surface-raised: var(--preview-card);
+    --radius: var(--preview-radius);
+    --house-void: hsl(var(--background));
+    --house-stage: hsl(var(--background));
+    --house-paper: hsl(var(--background));
+    --house-soft: hsl(var(--card));
+    --house-ink: hsl(var(--foreground));
+    --house-line: hsl(var(--border));
+    --house-muted: hsl(var(--muted-foreground));
+    --house-faint: var(--house-muted);
+    --house-press: hsl(var(--primary-fill));
+    --house-press-deep: hsl(var(--primary));
+    --house-press-tint: hsl(var(--accent-tint));
+    --house-press-ink: hsl(var(--primary-foreground));
+    --house-amber: hsl(var(--primary));
+    --house-chip: hsl(var(--muted));
+    --house-selected: hsl(var(--accent-tint));
+    --house-radius: var(--radius);
+    --house-radius-sm: var(--radius);
+    --house-radius-row: var(--radius);
+    --house-radius-rail: var(--radius);
+    --house-radius-sheet: var(--radius);
+    --house-pill: var(--radius);
+    color-scheme: light;
+    font-family: var(--font-archivo), sans-serif;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-frame {
+    grid-template-columns: var(--preview-rail) minmax(0, 1fr);
+    transition: none;
+  }
+
+  .mw-house[data-house-desktop-preview] :is(.house-rail, .house-second) {
+    display: none;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-sheet {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+    border: 0;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-sheet > .house-stage {
+    grid-column: 1;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-frame > .house-stage {
+    grid-column: 2;
+  }
+
+  .desktop-preview-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    grid-column: 1;
+    overflow: auto;
+    padding: 1.5rem 1rem;
+    border-inline-end: 1px solid var(--house-line);
+    background: var(--house-soft);
+  }
+
+  .desktop-preview-brand,
+  .desktop-preview-rail nav :is(a, button) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0.5rem;
+    border-inline-start: 2px solid transparent;
+    text-align: start;
+  }
+
+  .desktop-preview-brand,
+  .desktop-preview-rail [aria-current] {
+    font-weight: 800;
+  }
+
+  .desktop-preview-rail nav {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .desktop-preview-rail nav :is(a, button):is(:hover, [aria-current]) {
+    background: hsl(var(--muted));
+  }
+
+  .desktop-preview-rail nav a[aria-current] {
+    border-inline-start-color: hsl(var(--primary));
+  }
+
+  .mw-house[data-house-desktop-preview] .house-canvas-pad {
+    width: min(88rem, calc(100% - clamp(3rem, 7vw, 8rem)));
+    padding-top: clamp(2rem, 5vh, 4rem);
+  }
+
+  .mw-house [data-desktop-preview-title].sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 0.5rem;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    font-size: clamp(2.625rem, 6vw, 4.75rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .mw-house[data-house-desktop-preview] [data-house-desk='today'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .mw-house[data-house-desktop-preview] [data-house-desk='today'] > .house-kicker {
+    grid-column: 1 / -1;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-sheet .house-card-hero,
+  .mw-house[data-house-desktop-preview] .desktop-preview-today-links .house-card {
+    margin: 0;
+    min-height: 15rem;
+    padding: 1.25rem;
+    border: 1px solid var(--house-line);
+  }
+
+  .mw-house[data-house-desktop-preview] .desktop-preview-today-links {
+    display: contents;
+  }
+
+  .desktop-preview-today-links .house-card {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.75rem;
+  }
+
+  .desktop-preview-today-links .house-btn {
+    margin-top: auto;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-stage.is-compose {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.85fr) minmax(0, 3fr);
+  }
+
+  .mw-house[data-house-desktop-preview] .house-stage.is-compose > .house-canvas {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-stage.is-compose > .house-sidecar {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    border-inline: 0 solid var(--house-line);
+    border-inline-end-width: 1px;
+  }
+
+  .mw-house[data-house-desktop-preview] .house-session-grid.is-sheet {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
