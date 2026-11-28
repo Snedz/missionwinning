@@ -90,7 +90,7 @@ internal fun V2Theme(content: @Composable () -> Unit) {
         colorScheme = lightColorScheme(
             primary = V2Colors.Red, onPrimary = Color.White, secondary = V2Colors.QuietInk,
             background = V2Colors.Paper, onBackground = V2Colors.Ink,
-            surface = V2Colors.Paper, onSurface = V2Colors.Ink,
+            surface = V2Colors.Paper, surfaceContainerHigh = V2Colors.Paper, onSurface = V2Colors.Ink,
             onSurfaceVariant = V2Colors.QuietInk, outline = V2Colors.QuietInk,
         ),
         typography = V2Typography,
@@ -122,7 +122,7 @@ internal fun V2Page(
 }
 
 internal fun Modifier.v2ContentWidth(): Modifier =
-    wrapContentWidth(Alignment.CenterHorizontally).widthIn(max = 680.dp).fillMaxWidth()
+    fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally).widthIn(max = 680.dp).fillMaxWidth()
 
 @Composable
 internal fun V2Label(text: String) {
