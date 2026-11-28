@@ -132,7 +132,19 @@ export function describeCoachWeekChange(
   // IDs in a rebuild identify calendar slots, not workouts.
   if (source === 'adapt') match((old, other) => old.id === other.id);
   match((old, other) => old.dayOffset === other.dayOffset);
-  if (source === 'rebuild') match(() => true);
+  const recreated = new Map<PlanSession, PlanSession>();
+  if (source === 'rebuild') {
+    for (const other of next) {
+      if (consumed.has(other)) continue;
+      const earlier = before.sessions.find((old) =>
+        old.status === 'done' && old.dayOffset === other.dayOffset && focusKey(old) === focusKey(other)
+      );
+      if (!earlier) continue;
+      recreated.set(other, earlier);
+      consumed.add(other);
+    }
+    match(() => true);
+  }
 
   function compareTargets(old: PlanSession, other: PlanSession) {
     for (const exercise of other.exercises) {
@@ -162,13 +174,9 @@ export function describeCoachWeekChange(
     compareTargets(old, other);
   }
   for (const other of next) {
-    if (consumed.has(other)) continue;
-    schedule.push({ kind: 'added', after: session(other) });
-    if (source !== 'rebuild') continue;
-    const earlier = before.sessions.find((old) =>
-      old.status === 'done' && old.dayOffset === other.dayOffset && focusKey(old) === focusKey(other)
-    );
+    const earlier = recreated.get(other);
     if (earlier) compareTargets(earlier, other);
+    else if (!consumed.has(other)) schedule.push({ kind: 'added', after: session(other) });
   }
   if (!schedule.length && !loads.length) return null;
   return {

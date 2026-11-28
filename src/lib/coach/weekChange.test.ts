@@ -63,11 +63,11 @@ test('unchanged plans, reordered arrays and week rollovers do not invent a recei
   assert.equal(describeCoachWeekChange(before, { ...plan(2, [strength(3)]), weekStart: '2026-11-30' }, ctx, 'rebuild'), null);
 });
 
-test('a rebuilt slot can explain a changed prescription from its prior completed session', () => {
-  const before = plan(1, [{ ...strength(2), status: 'done' }]);
+test('a recreated completed slot explains prescription changes without being counted as added', () => {
+  const before = plan(1, [strength(0), { ...strength(2), status: 'done' }]);
   const after = plan(2, [strength(2, [heavy, light])]);
   const change = describeCoachWeekChange(before, after, { ...ctx, history: [heavy, light] }, 'rebuild');
-  assert.deepEqual(change?.schedule.map((row) => row.kind), ['added']);
+  assert.deepEqual(change?.schedule.map((row) => row.kind), ['dropped']);
   assert.equal(change?.loads[0].savedSet?.workoutId, heavy.id);
 });
 
