@@ -2,7 +2,7 @@
 
 ## 2026-11-27 — Preview the v2 training notebook landing (`.1209`)
 
-Use `LANDING_V2_PREVIEW=true` to replace Forge only after the existing homepage gate admits the visitor. The preview links to guest Train, compares two real Coach sample schedules, and runs the interactive demo in memory without saving workouts. Forge remains the default.
+Use `LANDING_V2_PREVIEW=true` to replace Forge only after the existing homepage gate admits the visitor. The preview links to guest Train, compares two real Coach sample schedules, and runs the interactive demo in memory without saving workouts. The sample starts on Monday so even a six-session schedule fits before a missed day is selected. Forge remains the default.
 
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 

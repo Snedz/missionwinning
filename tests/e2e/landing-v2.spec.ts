@@ -28,9 +28,9 @@ test('the opt-in homepage leaves Forge as the default and keeps the demo sandbox
   await rebuild.click();
   await expect(page.getByRole('status').filter({ hasText: 'Rebuilt schedule:' })).toContainText('Thursday, Saturday, Sunday');
   await page.getByLabel('Equipment').selectOption('bodyweight');
-  await page.getByLabel('Missed session').selectOption('6');
+  await page.getByLabel('Missed session').selectOption('4');
   await rebuild.click();
-  await expect(page.getByText('No days remain in this sample week.')).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: 'Rebuilt schedule:' })).toContainText('Saturday, Sunday');
   expect(await storage()).toEqual(before);
   await log.click();
   await expect(page).toHaveURL(/\/active(?:\?|$)/);

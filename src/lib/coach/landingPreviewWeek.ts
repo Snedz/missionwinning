@@ -17,7 +17,7 @@ const history: CompletedWorkoutLog[] = [{
 }];
 
 export function landingPreviewWeek(equipment: EquipmentProfile, daysPerWeek: number, missedDay?: number) {
-  const start = missedDay === undefined ? 2 : missedDay + 1;
+  const start = missedDay === undefined ? 0 : missedDay + 1;
   if (start > 6) return [];
   const context: CoachContext = {
     equipment,
