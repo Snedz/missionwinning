@@ -113,6 +113,29 @@ class CoachParityTest {
     }
 
     @Test
+    fun legacyFamiliarityIsRankedWithoutBiasFromWorkoutRecency() {
+        val ids = listOf("back-squat", "db-curl", "db-hammer-curl", "bench-press")
+        val history = ids.mapIndexed { index, id ->
+            SetLogEntity(
+                id = id, exerciseId = id, exerciseName = id, setIndex = 0, reps = 6,
+                weight = 20.0, completedAt = "2026-05-1${index + 4}T12:00:00Z",
+                sessionId = null, weightUnit = "kg", workoutId = id,
+            )
+        }
+        fun picks(rows: List<SetLogEntity>) = LocalCoachSeed.build(
+            equipment = "full-gym", history = rows,
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan.sessions.map { session -> session.exercises.map { it.exerciseId } }
+
+        val original = picks(history)
+        val reversed = picks(history.mapIndexed { index, row ->
+            row.copy(completedAt = history[history.lastIndex - index].completedAt)
+        })
+        assertEquals(original, reversed)
+        assertTrue(original.all { it.first() == "bench-press" })
+    }
+
+    @Test
     fun bodyweightSeedUsesOlderUnweightedHistoryWhenLatestWorkoutWasWeighted() {
         val now = Instant.parse("2026-05-20T12:00:00Z")
         val unweighted = SetLogEntity(

@@ -8,7 +8,7 @@ internal class OfflineCoachSelection(
     equipment: String,
     private val familiar: Set<String>,
 ) {
-    private val pool = OfflineCoachCatalog.moves.filter { it.supports(equipment) }
+    private val webPool = OfflineCoachCatalog.moves.filter { it.supports(equipment) }
 
     private var seed = "$weekStart:local".let { key ->
         key.fold(1779033703 xor key.length) { hash, char ->
@@ -27,7 +27,8 @@ internal class OfflineCoachSelection(
         (if (move.id in familiar) 4 else 0) + (if (move.compound) 2 else 0) + (if (move.strength) 1 else 0)
 
     fun pick(legacy: List<OfflineCoachMove>): List<OfflineCoachMove> {
-        val ranked = if (pool.size < 128) {
+        val pool = webPool + legacy.sortedBy { it.id }
+        val candidates = if (pool.size < 128) {
             rankShortWebPool(pool) { first, second ->
                 val a = priority(first)
                 val b = priority(second)
@@ -38,7 +39,6 @@ internal class OfflineCoachSelection(
                 .sortedWith(compareByDescending<Pair<OfflineCoachMove, Int>> { priority(it.first) }.thenBy { it.second })
                 .map { it.first }
         }
-        val candidates = legacy + ranked
         val picks = mutableListOf<OfflineCoachMove>()
         val groups = mutableSetOf<Int>()
         for (move in candidates) {
