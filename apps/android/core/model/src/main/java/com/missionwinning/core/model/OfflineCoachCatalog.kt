@@ -4,7 +4,7 @@ package com.missionwinning.core.model
 object OfflineCoachCatalog {
     val moves: List<OfflineCoachMove> = """
 push-ups|Push-ups|0|7|1|1|1
-pull-ups|Pull-ups|1|7|1|1|1
+pull-ups|Pull-ups|1|5|1|1|1
 bench-press|Bench Press|0|4|1|1|0
 incline-bench|Incline Bench Press|0|4|1|1|0
 squats|Squats|2|4|1|1|0
@@ -31,9 +31,9 @@ sprint-drag-carry|Sprint-drag-carry|2|4|1|0|0
 field-shuttle-carry|Shuttle + farmer carry|2|6|1|0|0
 two-mile-run|2-mile run|2|7|1|0|1
 crunches|Crunches|5|7|0|1|1
-hanging-leg-raise|Hanging Leg Raise|5|7|0|1|1
-box-jump|Box Jump|2|7|1|0|0
-kettlebell-swing|Kettlebell Swing|2|6|1|0|0
+hanging-leg-raise|Hanging Leg Raise|5|5|0|1|1
+box-jump|Box Jump|2|5|1|0|0
+kettlebell-swing|Kettlebell Swing|2|4|1|0|0
 hip-thrust|Hip Thrust|2|4|1|1|0
 dumbbell-fly|Dumbbell Fly|0|6|0|0|0
 cable-crossover|Cable Crossover|0|4|0|0|0
@@ -43,28 +43,28 @@ triceps-extension|Overhead Triceps Extension|4|6|0|1|0
 leg-extension|Leg Extension|2|4|0|0|0
 seated-calf|Seated Calf Raise|2|4|0|1|0
 preacher-curl|Preacher Curl|4|4|0|0|0
-band-pull-apart|Band Pull-Apart|3|6|1|0|0
+band-pull-apart|Band Pull-Apart|3|4|1|0|0
 dead-bug|Dead Bug|5|7|0|0|1
 bird-dog|Bird Dog|5|7|1|0|1
 glute-bridge|Glute Bridge|2|7|1|0|1
-face-pull-band|Face Pull (Band)|3|6|1|0|0
+face-pull-band|Face Pull (Band)|3|4|1|0|0
 cat-camel|Cat-Camel|5|7|1|0|1
 superman|Superman Hold|1|7|1|1|1
 wall-sit|Wall Sit|2|7|0|0|1
-step-ups|Step-Ups|2|7|0|1|0
-inverted-row|Inverted Row (under table/bar)|1|7|0|1|1
+step-ups|Step-Ups|2|5|0|1|0
+inverted-row|Inverted Row (under table/bar)|1|5|0|1|1
 pike-pushup|Pike Push-ups|3|7|0|1|1
 mountain-climbers|Mountain Climbers|5|7|1|0|1
 jump-squats|Jump Squats|2|7|1|1|1
-dips-chair|Chair Dips|4|7|0|1|0
+dips-chair|Chair Dips|4|5|0|1|0
 side-plank|Side Plank|5|7|0|1|1
-wall-ball|Wall Ball|2|6|1|1|0
-kettlebell-swing-2h|Two-Handed Kettlebell Swing|2|6|1|1|0
+wall-ball|Wall Ball|2|4|1|1|0
+kettlebell-swing-2h|Two-Handed Kettlebell Swing|2|4|1|1|0
 sled-push|Sled Push|2|4|1|1|0
 superset-bench-row|Superset: Bench Press + Bent Over Row|0|4|1|1|0
 peak-contraction-curl|Peak Contraction Bicep Curl|4|6|0|0|0
 staggered-curls|Staggered Concentration Curls|4|6|0|0|0
-pre-exhaust-fly|Pre-Exhaust Fly to Bench|0|6|0|1|0
+pre-exhaust-fly|Pre-Exhaust Fly to Bench|0|4|0|1|0
 couch-stretch|Couch Stretch|2|7|0|0|1
 inchworm|Inchworm|5|7|1|0|1
 bear-crawl|Bear Crawl|5|7|1|1|1
@@ -94,8 +94,8 @@ air-squat|Air Squat|2|7|1|1|1
 hollow-hold|Hollow Body Hold|5|7|0|1|1
 v-up|V-Up|5|7|0|1|1
 reverse-lunge|Reverse Lunge|2|7|0|1|1
-scap-pullup|Scapular Pull-up|1|7|1|1|1
-banded-dislocate|Banded Shoulder Dislocate|3|6|1|1|0
+scap-pullup|Scapular Pull-up|1|5|1|1|1
+banded-dislocate|Banded Shoulder Dislocate|3|4|1|1|0
 farmers-walk-dbs|Farmer's Walk (DBs/Bags)|5|6|1|0|0
 suitcase-carry|Suitcase Carry|5|6|1|1|0
 high-knees|High Knees|2|7|1|0|1
@@ -106,7 +106,7 @@ tuck-jump|Tuck Jump|2|7|1|1|1
 ring-row|Ring/TRX Row|1|4|1|1|0
 diamond-pushup|Diamond Push-up|0|7|1|1|1
 split-squat|Split Squat|2|7|0|1|1
-medicine-ball-slam|Med Ball Slam|5|6|1|1|0
+medicine-ball-slam|Med Ball Slam|5|4|1|1|0
 battle-rope-alt|Battle Rope Alternating Waves|4|4|1|0|0
 sled-drag-reg|Sled Drag Regression (Tow Strap)|2|4|1|0|0
     """.trim().lineSequence().map { row ->
