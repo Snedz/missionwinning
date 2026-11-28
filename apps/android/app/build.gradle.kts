@@ -31,6 +31,7 @@ android {
         targetSdk = 36
         versionCode = 55
         versionName = "1.25.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Release (and every non-debug type) keeps these literals. local.properties
         // is applied in the debug build type only — a release APK must not carry a
         // laptop API host, private-gate cookie, Supabase anon key, or Sentry DSN.
@@ -153,4 +154,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.uiautomator)
 }

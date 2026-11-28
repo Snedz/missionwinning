@@ -20,7 +20,19 @@
 | `:core:network` | Mobile OpenAPI client |
 | `:benchmark` | Macrobenchmark Baseline Profile generator (F2.5) |
 
+## Android shell preview (debug)
+
+The default Android UI is unchanged. On an installed debug APK, opt in with
+`adb shell am start --activity-single-top -n com.missionwinning.app.debug/com.missionwinning.app.MainActivity --ez mw_android_v2 true`.
+Pass `false` to return to the existing UI. The choice persists on the device; release builds ignore it.
+Both shells use the same workout history and draft. The preview receipt compares the observed local plan
+before and after completion; it disappears when the plan changes or the app process restarts.
+
+Checks: `./gradlew testDebugUnitTest :app:assembleDebug` and `./gradlew :app:connectedDebugAndroidTest`
+on a disposable Android emulator.
+
 ## Deferred — Mission OS minis
+
 
 `:minis:clearshot` is **not** added in this ship. Reason: web + `mw-core` stubs land first (`packages/mw-core/src/module/`, `src/lib/minis/`). The Kotlin library and a standalone Play product stay later.
 

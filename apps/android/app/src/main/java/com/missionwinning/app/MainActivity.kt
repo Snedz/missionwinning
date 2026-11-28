@@ -4,16 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.missionwinning.app.nav.MwNavHost
 import com.missionwinning.app.nav.PendingDeepLink
+import com.missionwinning.app.preview.V2Colors
+import com.missionwinning.app.preview.ShellPreview
 import com.missionwinning.core.designsystem.MissionWinningTheme
 import com.missionwinning.core.designsystem.MwColors
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,12 +25,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var deepLink by mutableStateOf<PendingDeepLink?>(null)
+    private var v2Shell by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Manifest uses splash theme for cold start; switch to main before Compose draws.
         setTheme(R.style.Theme_MissionWinning)
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        updateShellPreview(intent)
         // Which API this build talks to is invisible in BuildConfig by design
         // (the URL is not a secret, but a debug build silently pointing at
         // production is a real trap: the coach reports "offline" for want of a
@@ -40,11 +45,14 @@ class MainActivity : ComponentActivity() {
         deepLink = parseDeepLink(intent)
         setContent {
             MissionWinningTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MwColors.Navy) {
-                    MwNavHost(
-                        pendingDeepLink = deepLink,
-                        onDeepLinkConsumed = { deepLink = null },
-                    )
+                Surface(modifier = Modifier.fillMaxSize(), color = if (v2Shell) V2Colors.Paper else MwColors.Navy) {
+                    key(v2Shell) {
+                        MwNavHost(
+                            pendingDeepLink = deepLink,
+                            onDeepLinkConsumed = { deepLink = null },
+                            v2Shell = v2Shell,
+                        )
+                    }
                 }
             }
         }
@@ -53,7 +61,26 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        updateShellPreview(intent)
         deepLink = parseDeepLink(intent)
+    }
+
+    private fun updateShellPreview(intent: Intent?) {
+        val preferences = getSharedPreferences(ShellPreview.PREFERENCES, MODE_PRIVATE)
+        val requested = intent?.takeIf { it.hasExtra(ShellPreview.EXTRA) }
+            ?.getBooleanExtra(ShellPreview.EXTRA, false)
+        v2Shell = ShellPreview.enabled(BuildConfig.DEBUG, preferences.getBoolean(ShellPreview.KEY, false), requested)
+        if (BuildConfig.DEBUG && requested != null) {
+            preferences.edit().putBoolean(ShellPreview.KEY, v2Shell).apply()
+        }
+        if (v2Shell) {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT),
+                navigationBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.BLACK),
+            )
+        } else {
+            enableEdgeToEdge()
+        }
     }
 
     private fun parseDeepLink(intent: Intent?): PendingDeepLink? {

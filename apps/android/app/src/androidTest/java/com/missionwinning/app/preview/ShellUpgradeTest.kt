@@ -1,0 +1,92 @@
+package com.missionwinning.app.preview
+
+import android.content.Intent
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
+import com.missionwinning.app.MainActivity
+import com.missionwinning.app.nav.RepoEntryPoint
+import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.SessionDraftRepository
+import com.missionwinning.core.data.SetLogEntity
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.time.Instant
+import java.util.UUID
+
+@RunWith(AndroidJUnit4::class)
+class ShellUpgradeTest {
+    private val instrumentation = InstrumentationRegistry.getInstrumentation()
+    private val context = instrumentation.targetContext
+    private val device = UiDevice.getInstance(instrumentation)
+
+    @After fun resetPreview() {
+        context.getSharedPreferences(ShellPreview.PREFERENCES, 0).edit().clear().commit()
+    }
+
+    @Test fun legacyGuestWorkoutAndDraftLoadAfterOptInAndLegacyStillOpens() {
+        val label = UUID.randomUUID().toString().take(7)
+        val workout = "Saved guest $label"
+        val draft = "Guest draft $label"
+        val repository = EntryPointAccessors.fromApplication(context.applicationContext, RepoEntryPoint::class.java)
+        context.getSharedPreferences(ShellPreview.PREFERENCES, 0).edit().clear().commit()
+        runBlocking {
+            val sessionId = MwRepository.freeformSessionId()
+            repository.repository().markIdayDone()
+            repository.repository().finishWorkout(
+                workout, 60,
+                listOf(SetLogEntity("saved-$label", "goblet-squat", "Goblet squat", 0, 10, 22.5, Instant.now().toString(), sessionId)),
+                sessionId,
+            )
+            val pending = SessionDraftRepository.DraftSet("draft-$label", "goblet-squat", "Goblet squat", 0, 9, 27.5)
+            repository.drafts().save(SessionDraftRepository.DraftPayload(
+                MwRepository.freeformSessionId(), draft, System.currentTimeMillis(), "kg",
+                exercises = listOf(SessionDraftRepository.DraftExercise("goblet-squat", "Goblet squat", listOf(pending))),
+            ))
+        }
+        launch()
+        await("Today")
+        assertFalse(device.hasObject(By.text("MISSION WINNING / 01")))
+
+        launch(preview = true)
+        await("MISSION WINNING / 01")
+        await("Resume workout").click()
+        await("SET BY SET / 02")
+        await(draft)
+        await("27.5")
+        await("9")
+        device.pressBack()
+        await("Leave workout").click()
+        await("MISSION WINNING / 01")
+        await("Open history").click()
+        await("WORKOUT LOG / 05")
+        await("View $workout").click()
+        await("Set 1 · 22.5 kg × 10")
+
+        launch(preview = false)
+        await("Today")
+        assertFalse(device.hasObject(By.text("MISSION WINNING / 01")))
+        assertTrue(device.hasObject(By.desc("Account tab")))
+        runBlocking {
+            assertTrue(repository.drafts().load()?.workoutName == draft)
+            assertTrue(repository.repository().recentWorkouts().any { it.workoutName == workout })
+        }
+    }
+
+    private fun launch(preview: Boolean? = null) {
+        val intent = Intent(context, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        if (preview != null) intent.putExtra(ShellPreview.EXTRA, preview)
+        context.startActivity(intent)
+    }
+
+    private fun await(text: String) =
+        checkNotNull(device.wait(Until.findObject(By.text(text)), 10_000)) { "Not visible: $text" }
+}

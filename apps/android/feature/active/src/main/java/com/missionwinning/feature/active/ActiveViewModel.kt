@@ -16,6 +16,7 @@ import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -819,7 +820,22 @@ class ActiveViewModel @Inject constructor(
         return ActiveExercise(exerciseId = exerciseId, name = exerciseName, sets = sets)
     }
 
-    private suspend fun persistDraft(st: ActiveUiState) {
+    fun leaveKeepingDraft(onSaved: () -> Unit) {
+        viewModelScope.launch {
+            val snapshot = _state.value
+            if (snapshot.finishing) return@launch
+            if (snapshot.sessionId.isBlank() || snapshot.exercises.isEmpty()) {
+                onSaved()
+                return@launch
+            }
+            draftJob?.cancelAndJoin()
+            persistDraft(snapshot).onSuccess { onSaved() }.onFailure {
+                _state.update { it.copy(error = "Could not save your draft. Keep this workout open and try again.") }
+            }
+        }
+    }
+
+    private suspend fun persistDraft(st: ActiveUiState): Result<Unit> =
         runCatching {
             sessionDrafts.save(
                 SessionDraftRepository.DraftPayload(
@@ -857,7 +873,6 @@ class ActiveViewModel @Inject constructor(
                 ),
             )
         }
-    }
 
     private fun SessionDraftRepository.DraftExercise.toActive(): ActiveExercise =
         ActiveExercise(
