@@ -8,13 +8,8 @@ const BODYWEIGHT_EQ = new Set([
   'box',
 ]);
 
-const DUMBBELLS_EXTRA = new Set([
-  'dumbbells',
-  'kettlebell',
-  'band',
-  'bench',
-  'medicine ball',
-]);
+const DUMBBELLS_KIT: HomeGymKit = { items: ['dumbbells', 'floor'] };
+const EXTRA_GEAR_IN_SETUP = /\b(?:bench(?:es)?|chair|box|block|platform|rack|smith machine|stability ball|swiss ball|exercise ball|foam roller|sliders?|step[- ]ups?|elevated|anchor(?:ed)? (?:your )?feet|ankles? under|jump rope)\b/i;
 
 const FULL_GYM_ONLY = new Set(['sled', 'tire', 'various']);
 
@@ -44,18 +39,19 @@ export function equipmentMatches(
   profile: EquipmentProfile,
   kit?: HomeGymKit | null
 ): boolean {
-  if (kit) return kitMatchesExercise(ex, kit);
   const eq = normalizeEquipment(ex.equipment);
 
+  if (profile === 'dumbbells') {
+    return (eq === 'dumbbells' || eq === 'bodyweight') &&
+      !EXTRA_GEAR_IN_SETUP.test(`${ex.name} ${ex.cues ?? ''}`) &&
+      kitMatchesExercise(ex, DUMBBELLS_KIT) &&
+      (!kit || kitMatchesExercise(ex, kit));
+  }
+
+  if (kit) return kitMatchesExercise(ex, kit);
   if (FULL_GYM_ONLY.has(eq) && profile !== 'full-gym') return false;
 
   if (profile === 'full-gym') return true;
 
-  if (profile === 'bodyweight') {
-    return matchesBodyweight(eq);
-  }
-
-  // dumbbells profile
-  const base = eq.split('/')[0].trim();
-  return matchesBodyweight(eq) || DUMBBELLS_EXTRA.has(base) || DUMBBELLS_EXTRA.has(eq);
+  return matchesBodyweight(eq);
 }

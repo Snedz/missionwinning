@@ -12,6 +12,7 @@ export function createSeedCoachPlan(opts?: {
 }): CoachPlan {
   const weekStart = weekStartMonday();
   const equipment = opts?.equipment ?? 'bodyweight';
+  const dumbbells = equipment === 'dumbbells';
   const revision = opts?.revision ?? (opts?.withAdaptDemo ? 2 : 1);
 
   const sessions: CoachPlan['sessions'] = [
@@ -22,7 +23,7 @@ export function createSeedCoachPlan(opts?: {
       name: 'Push + core',
       focusGroups: ['chest', 'shoulders'],
       exercises: [
-        { exerciseId: 'pushup', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
+        { exerciseId: dumbbells ? 'db-floor-press' : 'pushup', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
         { exerciseId: 'plank', sets: 3, reps: 40, weight: 0, whyKey: 'seed' },
       ],
       estMinutes: 35,
@@ -35,8 +36,8 @@ export function createSeedCoachPlan(opts?: {
       name: 'Legs + hinge',
       focusGroups: ['quads', 'glutes'],
       exercises: [
-        { exerciseId: 'squat', sets: 3, reps: 12, weight: 0, whyKey: 'seed' },
-        { exerciseId: 'hip-hinge', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
+        { exerciseId: dumbbells ? 'goblet-squat' : 'squat', sets: 3, reps: 12, weight: 0, whyKey: 'seed' },
+        { exerciseId: dumbbells ? 'db-rdl' : 'hip-hinge', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
       ],
       estMinutes: 40,
       status: opts?.withAdaptDemo ? 'swapped' : 'planned',
@@ -48,8 +49,8 @@ export function createSeedCoachPlan(opts?: {
       name: 'Pull + carry',
       focusGroups: ['back', 'biceps'],
       exercises: [
-        { exerciseId: 'row', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
-        { exerciseId: 'chinup', sets: 3, reps: 6, weight: 0, whyKey: 'seed' },
+        { exerciseId: dumbbells ? 'db-row' : 'row', sets: 3, reps: 10, weight: 0, whyKey: 'seed' },
+        { exerciseId: dumbbells ? 'db-curl' : 'chinup', sets: 3, reps: 6, weight: 0, whyKey: 'seed' },
       ],
       estMinutes: 35,
       status: 'planned',

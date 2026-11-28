@@ -284,6 +284,30 @@ describe('adaptPlan', () => {
     assert.equal(done?.status, 'done');
   });
 
+  it('rebuilds a saved dumbbells week with incompatible future exercises only once', () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const done = { ...plan.sessions[0], status: 'done' as const };
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [done, {
+        ...pending,
+        exercises: [{ ...pending.exercises[0], exerciseId: 'banded-dislocate' }],
+      }],
+    };
+    const adapted = adaptForEquipmentChange(legacy, ctx, 1);
+    assert.equal(adapted.revision, 2);
+    assert.equal(adapted.sessions[0], done);
+    assert.ok(adapted.sessions.some((s) => s.status !== 'done' && s.exercises.length > 0));
+    assert.ok(!adapted.sessions.flatMap((s) => s.exercises).some((e) => e.exerciseId === 'banded-dislocate'));
+    assert.equal(adaptForEquipmentChange(adapted, ctx, 1), adapted);
+  });
+
   it('regenerateFutureSessions is idempotent when the week is unchanged', () => {
     const history: CompletedWorkoutLog[] = Array.from({ length: 20 }, (_, i) => ({
       id: `w-${i}`,
