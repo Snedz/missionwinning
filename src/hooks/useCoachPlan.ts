@@ -101,17 +101,17 @@ export function useCoachPlan() {
      * `todayOffset` above was already derived from the real clock and used three
      * lines down — the date was in scope the whole time.
      */
-    let next = await adaptForEquipmentChange(adaptPlan(existing, ctx, localDateKey()), ctx, todayOffset);
+    const adapted = adaptPlan(existing, ctx, localDateKey());
+    const fatigued = premium && ctx.bodyScores.strain >= 70 && todayOffset < 6
+      ? regenerateFutureSessions(adapted, ctx, todayOffset)
+      : adapted;
+
+    const next = await adaptForEquipmentChange(fatigued, ctx, todayOffset);
     if (!isCurrent()) return;
 
-    if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
-      const regen = regenerateFutureSessions(next, ctx, todayOffset);
-      if (regen.revision !== next.revision) {
-        next = regen;
-        track('coach_plan_regenerated_fatigue', { strain: ctx.bodyScores.strain });
-      }
+    if (fatigued !== adapted) {
+      track('coach_plan_regenerated_fatigue', { strain: ctx.bodyScores.strain });
     }
-
     if (next.revision !== existing.revision) {
       track('coach_plan_adapted', { revision: next.revision });
       savePlan(next);

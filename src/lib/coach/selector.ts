@@ -26,7 +26,7 @@ const GOAL_TAG_MAP: Record<string, string[]> = {
   pft: ['strength', 'conditioning'],
 };
 
-function levelAllows(ex: Exercise, experience: string): boolean {
+export function levelAllows(ex: Exercise, experience: string): boolean {
   if (!ex.level) return true;
   if (experience === 'beginner') return ex.level === 'beginner';
   if (experience === 'intermediate') return ex.level !== 'advanced';

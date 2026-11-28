@@ -2,7 +2,7 @@
 
 ## 2026-11-27 — Dumbbells means dumbbells in Mission Coach (`.1208`)
 
-The weekly planner now allows dumbbells and bodyweight exercises that don't require other exercise equipment. A saved Home gym kit cannot add bands, kettlebells, or other equipment to this profile. Incompatible future sessions in saved dumbbells weeks rebuild; completed sessions are preserved. Rotated the `.1191` LOG entry and the `.1142` Now bullet into [docs/archive/](docs/archive/INDEX.md). Label `2026.07-unified.1208`. PRIVATE_MODE stays.
+The weekly planner now allows dumbbells and bodyweight exercises that don't require other exercise equipment. A saved Home gym kit cannot add bands, kettlebells, or other equipment to this profile. Coach replaces incompatible exercises in upcoming workouts without rescheduling them or changing completed workouts. Fatigue can turn a strength workout into recovery without giving it a new day or ID. Rotated the `.1191` LOG entry and the `.1142` Now bullet into [docs/archive/](docs/archive/INDEX.md). Label `2026.07-unified.1208`. PRIVATE_MODE stays.
 
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 
