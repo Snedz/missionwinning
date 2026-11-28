@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-11-27 · web `2026.07-unified.1206` · Android `1.24.1`)
+## Now (2026-11-28 · web `2026.07-unified.1212` · Android `1.24.1`)
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
@@ -62,7 +62,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.1183`:** (`2026.07-unified.1183`) **HTTP route contracts** — Existing API handlers are called in the route lane. Each covered route locks success JSON, bad-input status, and session or secret refusal where the route requires one. Food search and the database client are a local fetch stand-in. Payments stay off and those bodies have no payment URL. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1145`:** (`2026.07-unified.1145`) **Vs-last puts the win on the session** — The Victory vs-last strip opens with one line: "N of M up vs last time", counting only lifts that had a prior on the same session name. All-new lifts say first time honestly. No feed, likes, or paywalled chart. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1144`:** (`2026.07-unified.1144`) **Large history stays fast** — Seed 2,000 sessions / 40k sets in tests; History list, career line, volume sum, and memoised personal bests finish inside the first-paint budget and match brute-force bests. `[skip vercel]`. PRIVATE_MODE stays.
-- **`.1142`:** (`2026.07-unified.1142`) **Icon rail drops the red mark** — The Train icon’s live dot is ink. `--house-live` stays declared and is not painted on the rail. `[skip vercel]`. PRIVATE_MODE stays.
+- **`.1212`:** (`2026.07-unified.1212`) **Coach shows what changed and why** — Real same-week plan revisions show schedule and prescription changes, with a saved working set only when it affected the target. The comparison stays on this device.
 
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Alpha 0.1.0 · mute-pay:** LLC + EIN pending — Super Bundle shop merchandised, checkout muted; full depth unlocked; More/rail **Pillars demoted until first workout** (F-004 / `.695`). Offer is free tracker or Super Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

@@ -16,6 +16,7 @@ import {
   START_HISTORY_FROM_CHANGED,
 } from '@/lib/workout/startHistoryFrom';
 import { generateWeek } from '@/lib/coach/planEngine';
+import { describeCoachWeekChange } from '@/lib/coach/weekChange';
 import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
 import { localDateKey } from '@/lib/time/localDate';
@@ -114,7 +115,7 @@ export function useCoachPlan() {
 
     if (next.revision !== existing.revision) {
       track('coach_plan_adapted', { revision: next.revision });
-      savePlan(next);
+      savePlan(next, describeCoachWeekChange(existing, next, ctx, 'adapt'));
       scheduleCoachPush();
     }
     setPlan(next);
@@ -167,11 +168,12 @@ export function useCoachPlan() {
       track('coach_taster_locked');
       return null;
     }
-    const next = generateWeek(ctx, weekStart, (plan?.revision ?? 0) + 1);
+    const before = loadPlan();
+    const next = generateWeek(ctx, weekStart, (before?.revision ?? 0) + 1);
     if (!tasterUsed) markTasterUsed();
-    savePlan(next);
+    savePlan(next, before && describeCoachWeekChange(before, next, ctx, 'rebuild'));
     scheduleCoachPush();
-    setPlan(next);
+    setPlan(loadPlan() ?? next);
     track('coach_week_generated', { weekStart, premium: !!premium, manual: true });
     return next;
   }, [ctx, weekStart, plan, premium, tasterUsed]);
@@ -187,7 +189,7 @@ export function useCoachPlan() {
       if (!plan || plan.weekStart !== weekStart) return null;
       const next = adjustTodaySession(plan, ctx, todayOffset, constraint);
       if (!next) return null;
-      savePlan(next);
+      savePlan(next, describeCoachWeekChange(plan, next, ctx, 'adapt'));
       scheduleCoachPush();
       setPlan(next);
       const props: Record<string, string | number | boolean> = { type: constraint.type };

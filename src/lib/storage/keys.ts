@@ -109,6 +109,7 @@ export const STORAGE_KEYS = {
 
   // ── Coach (wedge) ──
   coachPlan: 'mw_coach_plan',
+  coachWeekChange: 'mw_coach_week_change',
   coachTasterUsed: 'mw_coach_taster_used',
   daysPerWeek: 'mw_days_per_week',
   preferredDays: 'mw_preferred_days',

@@ -18,6 +18,7 @@ import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
+import { CoachWeekChangePanel } from '@/components/coach/CoachWeekChangePanel';
 import { CoachLoadBand } from '@/components/coach/CoachLoadBand';
 import { MuscleBalanceMap } from '@/components/coach/MuscleBalanceMap';
 import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
@@ -34,6 +35,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 import { useUnits } from '@/hooks/useUnits';
 import { SessionTrainerCard } from '@/components/coach/SessionTrainerCard';
 import { sessionTrainerSeedFromPlan } from '@/lib/coach/sessionTrainer';
+import { loadCoachWeekChange } from '@/lib/coach/storage';
 
 const CoachVoiceCard = dynamic(
   () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
@@ -74,6 +76,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
   } = useCoachPlan();
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
+  const weekChange = plan ? loadCoachWeekChange(plan) : null;
   const weekDose = plan ? summarizeWeekDose(plan) : null;
   const doseIntentKey =
     weekDose?.intent === 'strength'
@@ -310,6 +313,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }}
           />
           <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
+          {weekChange && (
+            <CoachWeekChangePanel change={weekChange} history={ctx.history} />
+          )}
         </div>
       )}
 
