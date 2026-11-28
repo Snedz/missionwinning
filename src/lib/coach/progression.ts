@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
 import { roundToStep, workingSets } from '@/lib/workout/setMath';
+import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
 import type { LoadZone } from '@/lib/coach/load';
@@ -169,8 +170,14 @@ export function nextTargets(
   // they differ only in what the athlete is told, because "three flat sessions" and
   // "your best is a month old" are different facts and the second used to be invisible.
   const stall: StallKind = stallSignal(history, exerciseId).kind;
-  const deloading = stall !== 'none';
-  const stallWhyKey = stall === 'plateaued' ? 'coachWhyPlateauDeload' : 'coachWhyDeload';
+  const latestSets = sessions[0].sets;
+  const deloadWhy = stall === 'plateaued' ? 'coachWhyPlateauDeload'
+    : stall === 'stalled' || allHard(latestSets) ? 'coachWhyDeload' : undefined;
+
+  if (deloadWhy && (bodyweight || resolveSetRowType(EXERCISES.find((e) => e.id === exerciseId)) === 'assisted')) {
+    return { sets: setCount, reps: Math.min(reps, Math.max(range.min, Math.round(reps * 0.9))),
+      weight, whyKey: deloadWhy };
+  }
 
   const workingMax = !bodyweight ? workingMaxFromHistory(exerciseId, history) : null;
   const usePct = workingMax != null && workingMax > 0 && weight > 0;
@@ -197,20 +204,11 @@ export function nextTargets(
       basePct
     );
 
-    if (deloading) {
-      loadPct *= 0.9;
-      whyKey = stallWhyKey;
-      weight = weightFromLoadPct(workingMax, loadPct, units);
-      return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
-    }
-
-    const latestSets = sessions[0].sets;
-
-    if (allHard(latestSets)) {
-      loadPct *= 0.9;
-      weight = weightFromLoadPct(workingMax, loadPct, units);
+    if (deloadWhy) {
+      loadPct = Math.min(basePct, (weight / workingMax) * 100) * 0.9;
+      const deloadWeight = Math.min(weight, weightFromLoadPct(workingMax, loadPct, units));
       return withLoadPct(
-        { sets: setCount, reps, weight, whyKey: 'coachWhyDeload' },
+        { sets: setCount, reps, weight: deloadWeight, whyKey: deloadWhy },
         loadPct
       );
     }
@@ -268,24 +266,9 @@ export function nextTargets(
     whyKey: 'coachWhyHold',
   };
 
-  if (deloading) {
-    if (bodyweight) {
-      reps = Math.max(range.min, Math.round(reps * 0.9));
-    } else {
-      weight = roundToStep(Math.max(0, weight * 0.9), step);
-    }
-    return { sets: setCount, reps, weight, whyKey: stallWhyKey };
-  }
-
-  const latestSets = sessions[0].sets;
-
-  if (allHard(latestSets)) {
-    if (bodyweight) {
-      reps = Math.max(range.min, Math.round(reps * 0.9));
-    } else {
-      weight = roundToStep(Math.max(0, weight * 0.9), step);
-    }
-    return { sets: setCount, reps, weight, whyKey: 'coachWhyDeload' };
+  if (deloadWhy) {
+    weight = Math.min(weight, roundToStep(Math.max(0, weight * 0.9), step));
+    return { sets: setCount, reps, weight, whyKey: deloadWhy };
   }
 
   if (anyHardOnTwoPlus(latestSets)) {
