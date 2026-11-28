@@ -11,7 +11,7 @@
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only at the set-weight layer; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit` (`loadZone` reaches here from context), `mapToCalendar`. `high` inserts one extra recovery day after the strain rules (same primitive as `strain ≥ 85`)
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
-7. `planEngine.ts` — `generateWeek`, `computeContextHash`. Only product caller: `src/hooks/useCoachPlan.ts` (`weekWriter.test.ts`, docs/IA_SKELETON.md WEEK loop).
+7. `planEngine.ts` — `generateWeek`, `computeContextHash`. Only product caller of `generateWeek`: `src/hooks/useCoachPlan.ts` (`weekWriter.test.ts`, docs/IA_SKELETON.md WEEK loop). The landing demo uses `planWeekSessions` for sample sessions without creating a plan.
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8a0. `coachConcept.ts` — discrete `CoachConceptId` + Victory concept-first cite (.1067)
 8a0a. `src/lib/today/todayConceptChip.ts` — TodayDesk glance chip from `nextConceptId` / next open session (`.1071`)

@@ -29,20 +29,7 @@ export function computeContextHash(ctx: CoachContext, weekStart: string): string
   return String(hashString(stableStringify(slice)));
 }
 
-/**
- * Build a week plan.
- *
- * `today` (YYYY-MM-DD local) pins the calendar so a mid-week first generate
- * only places sessions on remaining days. Without that, Mon/Wed/Fri land in
- * the past and the next `adaptPlan` paints them **Missed** with
- * "Life happened" — the cold-start shame bug.
- */
-export function generateWeek(
-  ctx: CoachContext,
-  weekStart: string,
-  revision = 1,
-  today: string = localDateKey()
-): CoachPlan {
+export function planWeekSessions(ctx: CoachContext, weekStart: string, today: string): CoachPlan['sessions'] {
   const seed = hashString(`${weekStart}:${ctx.seedId}`);
   const rng = mulberry32(seed);
 
@@ -61,10 +48,26 @@ export function generateWeek(
   const notBefore = scheduleFromOffset(weekStart, today);
   const calendar = mapToCalendar(split, ctx.preferredDays, weekStart, notBefore);
 
-  const sessions = calendar.map(({ day, dayOffset }) =>
+  return calendar.map(({ day, dayOffset }) =>
     buildSession(day, dayOffset, weekStart, ctx, rng)
   );
+}
 
+/**
+ * Build a week plan.
+ *
+ * `today` (YYYY-MM-DD local) pins the calendar so a mid-week first generate
+ * only places sessions on remaining days. Without that, Mon/Wed/Fri land in
+ * the past and the next `adaptPlan` paints them **Missed** with
+ * "Life happened" — the cold-start shame bug.
+ */
+export function generateWeek(
+  ctx: CoachContext,
+  weekStart: string,
+  revision = 1,
+  today: string = localDateKey()
+): CoachPlan {
+  const sessions = planWeekSessions(ctx, weekStart, today);
   const contextHash = computeContextHash(ctx, weekStart);
 
   return {

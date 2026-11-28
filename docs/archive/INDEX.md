@@ -929,6 +929,9 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-1174-for-1190.md](./log/LOG-rotate-1174-for-1190.md) | rotated 2026-10-22 for `.1190` fitness-test age band value |
 | [log/LOG-rotate-1175-for-1191.md](./log/LOG-rotate-1175-for-1191.md) | rotated 2026-10-22 for `.1191` stale doc links |
 | [log/LOG-rotate-1176-for-1192.md](./log/LOG-rotate-1176-for-1192.md) | rotated 2026-10-22 for `.1192` es/pt landing strings |
+| [log/LOG-rotate-1191-for-1209.md](./log/LOG-rotate-1191-for-1209.md) | rotated `.1191` for the landing preview |
+| [log/LOG-restore-1192.md](./log/LOG-restore-1192.md) | restored the original `.1192` entry from git history |
+| [CONTEXT-now-1142-icon.md](./CONTEXT-now-1142-icon.md) | rotated the `.1142` icon rail entry |
 | [log/LOG-rotate-1177-for-1193.md](./log/LOG-rotate-1177-for-1193.md) | rotated 2026-10-22 for `.1193` bundle budget initial JS |
 | [log/LOG-rotate-1178-for-1194.md](./log/LOG-rotate-1178-for-1194.md) | rotated 2026-11-04 for `.1194` honest /beta copy and manifest name |
 | [log/LOG-rotate-1179-for-1195.md](./log/LOG-rotate-1179-for-1195.md) | rotated 2026-11-04 for `.1195` drop Offline. from the headline |
