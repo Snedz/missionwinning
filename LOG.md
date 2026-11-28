@@ -2,7 +2,7 @@
 
 ## 2026-11-28 — Coach deload targets never increase load or reps (`.1214`)
 
-Mission Coach now bases a percent-load deload on no more than the last working weight, even when a much heavier historical max would set a higher baseline. Rounding can't raise the final load above the logged weight, and the goal range's lower bound can't raise bodyweight reps above the latest working performance. The rule applies to hard workouts, stalls, and plateaus. Label `2026.07-unified.1214`. PRIVATE_MODE stays.
+Mission Coach now bases a percent-load deload on no more than the last working weight, even when a much heavier historical max would set a higher baseline. Rounding can't raise the final load above the logged weight, and the goal range's lower bound can't raise reps above the latest working performance. Assisted exercises keep the logged support and deload reps rather than treating assistance as added resistance. The rule applies to hard workouts, stalls, and plateaus. Label `2026.07-unified.1214`. PRIVATE_MODE stays.
 
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 

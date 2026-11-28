@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { ensureFullExerciseCatalog } from '@/data/exercises';
 import { nextTargets } from '@/lib/coach/progression';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -85,6 +86,18 @@ describe('nextTargets', () => {
     const history = [logWithExercise('push-ups', [{ reps: 3, weight: 0, rpe: 'hard' }])];
     assert.deepEqual(nextTargets('push-ups', history, 'metric', 'strength', 'beginner'), {
       sets: 1, reps: 3, weight: 0, whyKey: 'coachWhyDeload',
+    });
+  });
+
+  it('deloads assisted pull-ups without reducing the last logged support', async () => {
+    await ensureFullExerciseCatalog();
+    const id = 'fedb-band-assisted-pull-up';
+    const history = [
+      logWithExercise(id, [{ reps: 6, weight: 30, rpe: 'hard' }]),
+      logWithExercise(id, [{ reps: 1, weight: 50 }], 2),
+    ];
+    assert.deepEqual(nextTargets(id, history, 'metric', 'strength', 'beginner'), {
+      sets: 1, reps: 5, weight: 30, whyKey: 'coachWhyDeload',
     });
   });
 

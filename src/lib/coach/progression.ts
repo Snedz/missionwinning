@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
 import { roundToStep, workingSets } from '@/lib/workout/setMath';
+import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
 import type { LoadZone } from '@/lib/coach/load';
@@ -173,6 +174,11 @@ export function nextTargets(
   const deloadWhy = stall === 'plateaued' ? 'coachWhyPlateauDeload'
     : stall === 'stalled' || allHard(latestSets) ? 'coachWhyDeload' : undefined;
 
+  if (deloadWhy && (bodyweight || resolveSetRowType(EXERCISES.find((e) => e.id === exerciseId)) === 'assisted')) {
+    return { sets: setCount, reps: Math.min(reps, Math.max(range.min, Math.round(reps * 0.9))),
+      weight, whyKey: deloadWhy };
+  }
+
   const workingMax = !bodyweight ? workingMaxFromHistory(exerciseId, history) : null;
   const usePct = workingMax != null && workingMax > 0 && weight > 0;
 
@@ -261,11 +267,7 @@ export function nextTargets(
   };
 
   if (deloadWhy) {
-    if (bodyweight) {
-      reps = Math.min(reps, Math.max(range.min, Math.round(reps * 0.9)));
-    } else {
-      weight = Math.min(weight, roundToStep(Math.max(0, weight * 0.9), step));
-    }
+    weight = Math.min(weight, roundToStep(Math.max(0, weight * 0.9), step));
     return { sets: setCount, reps, weight, whyKey: deloadWhy };
   }
 
