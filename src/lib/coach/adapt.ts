@@ -306,13 +306,18 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
     recovery: ctx.bodyScores.recovery,
     loadZone: ctx.loadZone,
   });
-  const preferred = ctx.preferredDays.filter((d) => d >= todayOffset);
-  const calendar = mapToCalendar(split, preferred.length ? preferred : [], plan.weekStart);
+  const usedDays = new Set(doneSessions.map((s) => s.dayOffset));
+  const available = [0, 1, 2, 3, 4, 5, 6].filter((d) => d >= todayOffset && !usedDays.has(d));
+  const pendingSplit = split.slice(0, Math.min(daysLeft, available.length));
+  const preferred = ctx.preferredDays.filter((d) => available.includes(d));
+  const mapped = mapToCalendar(pendingSplit, preferred, plan.weekStart, todayOffset);
+  const calendar = mapped.some(({ dayOffset }) => usedDays.has(dayOffset))
+    ? mapToCalendar(pendingSplit, [...preferred, ...available.filter((d) => !preferred.includes(d))]
+      .slice(0, pendingSplit.length), plan.weekStart, todayOffset)
+    : mapped;
   const rng = mulberry32(hashString(`${plan.weekStart}:${ctx.seedId}:regen`));
 
-  const future = calendar
-    .filter(({ dayOffset }) => dayOffset >= todayOffset)
-    .map(({ day, dayOffset }) => buildSession(day, dayOffset, plan.weekStart, ctx, rng));
+  const future = calendar.map(({ day, dayOffset }) => buildSession(day, dayOffset, plan.weekStart, ctx, rng));
 
   const sessions = [...doneSessions, ...future];
 

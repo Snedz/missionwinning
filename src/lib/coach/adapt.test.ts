@@ -308,6 +308,31 @@ describe('adaptPlan', () => {
     assert.equal(adaptForEquipmentChange(adapted, ctx, 1), adapted);
   });
 
+  it('keeps one compatible catch-up workout when equipment changes on Friday', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+      preferredDays: [],
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const done = { ...plan.sessions[0], status: 'done' as const };
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [done, {
+        ...pending, id: `${week}-d4`, dayOffset: 4, status: 'swapped' as const,
+        exercises: [{ ...pending.exercises[0], exerciseId: 'banded-dislocate' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 4);
+    assert.equal(adapted.sessions[0], done);
+    assert.equal(adapted.sessions.length, 2, 'keep exactly one remaining workout');
+    assert.ok(adapted.sessions[1].dayOffset >= 4);
+    assert.ok(adapted.sessions[1].exercises.length > 0);
+    assert.ok(adapted.sessions[1].exercises.every((e) => e.exerciseId !== 'banded-dislocate'));
+  });
+
   it('regenerateFutureSessions is idempotent when the week is unchanged', () => {
     const history: CompletedWorkoutLog[] = Array.from({ length: 20 }, (_, i) => ({
       id: `w-${i}`,
