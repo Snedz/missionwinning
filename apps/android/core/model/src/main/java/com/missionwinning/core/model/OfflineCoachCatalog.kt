@@ -7,6 +7,7 @@ push-ups|Push-ups|0|7|1|1|1
 pull-ups|Pull-ups|1|5|1|1|1
 bench-press|Bench Press|0|4|1|1|0
 incline-bench|Incline Bench Press|0|4|1|1|0
+dumbbell-press|Dumbbell Chest Press|0|4|1|1|0
 squats|Squats|2|4|1|1|0
 front-squat|Front Squat|2|4|1|1|0
 deadlift|Deadlift|1|4|1|1|0
@@ -35,7 +36,7 @@ hanging-leg-raise|Hanging Leg Raise|5|5|0|1|1
 box-jump|Box Jump|2|5|1|0|0
 kettlebell-swing|Kettlebell Swing|2|4|1|0|0
 hip-thrust|Hip Thrust|2|4|1|1|0
-dumbbell-fly|Dumbbell Fly|0|6|0|0|0
+dumbbell-fly|Dumbbell Fly|0|4|0|1|0
 cable-crossover|Cable Crossover|0|4|0|0|0
 lateral-raise-db|Lateral Raise|3|6|0|0|0
 rear-delt-fly|Rear Delt Fly|3|6|1|0|0

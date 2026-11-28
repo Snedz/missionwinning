@@ -93,7 +93,10 @@ class CoachParityTest {
 
     @Test
     fun dumbbellsSeedDoesNotAddGearFromHistoryOrTheAdaptDemo() {
-        val history = listOf("banded-dislocate", "kettlebell-swing", "db-press", "bench-dip", "pull-ups", "db-floor-press")
+        val history = listOf(
+            "dumbbell-fly", "db-fly", "banded-dislocate", "kettlebell-swing", "db-press",
+            "bench-dip", "pull-ups", "db-floor-press",
+        )
             .map { id ->
                 SetLogEntity(
                     id = id, exerciseId = id, exerciseName = id, setIndex = 0, reps = 6,
@@ -111,6 +114,21 @@ class CoachParityTest {
             assertEquals("demo=$demo", emptySet<String>(), ids.intersect(blocked))
             if (!demo) assertTrue("a compatible history lift should be retained", "db-floor-press" in ids)
         }
+    }
+
+    @Test
+    fun dumbbellsSeedDoesNotPrescribeSyncedBenchFly() {
+        val history = listOf(SetLogEntity(
+            id = "fly", exerciseId = "dumbbell-fly", exerciseName = "Dumbbell Fly", setIndex = 0,
+            reps = 10, weight = 15.0, completedAt = "2026-05-17T12:00:00Z", sessionId = null,
+            weightUnit = "kg", workoutId = "recent",
+        ))
+        val plan = LocalCoachSeed.build(
+            equipment = "dumbbells", history = history,
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan
+        assertTrue("synced bench fly returned to the plan",
+            plan.sessions.flatMap { it.exercises }.none { it.exerciseId == "dumbbell-fly" })
     }
 
     @Test
