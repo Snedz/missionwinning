@@ -29,7 +29,7 @@ describe('equipmentMatches', () => {
     for (const kit of [null, parseHomeGymKit(['dumbbells', 'floor', 'pull-up-bar'])]) {
       assert.equal(equipmentMatches(curl, 'dumbbells', kit), true);
       assert.equal(equipmentMatches(push, 'dumbbells', kit), true);
-      for (const id of ['band-pull-apart', 'kettlebell-swing', 'wall-ball', 'step-ups', 'pull-ups', 'pre-exhaust-fly', 'decline-pushup']) {
+      for (const id of ['band-pull-apart', 'kettlebell-swing', 'wall-ball', 'step-ups', 'pull-ups', 'pre-exhaust-fly', 'decline-pushup', 'dumbbell-fly', 'dumbbell-press']) {
         const exercise = EXERCISES.find((e) => e.id === id);
         assert.ok(exercise, id);
         assert.equal(equipmentMatches(exercise, 'dumbbells', kit), false, id);
