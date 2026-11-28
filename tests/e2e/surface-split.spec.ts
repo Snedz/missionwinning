@@ -44,9 +44,30 @@ test.describe('Desktop surface @gate', () => {
   test('shell is the rail, not the tab bar', async ({ page }) => {
     await page.goto('/log');
 
+    if (process.env.DESKTOP_SHELL_PREVIEW === 'true') {
+      const rail = page.locator('.desktop-preview-rail');
+      await expect(rail).toBeVisible();
+      await expect(rail.getByRole('link', { name: 'Today' })).toHaveAttribute('aria-current', 'page');
+      await expect(page.locator('nav.house-rail')).toBeHidden();
+      await expect(page.locator('.desktop-preview-today-links a[href="/coach"]')).toBeVisible();
+
+      await rail.getByRole('link', { name: 'Train' }).click();
+      await expect(rail.getByRole('link', { name: 'Train' })).toHaveAttribute('aria-current', 'page');
+      await expect(page.getByTestId('set-log-table').first()).toBeVisible();
+
+      await rail.locator('a[href="/coach"]').click();
+      await expect(rail.locator('a[href="/coach"]')).toHaveAttribute('aria-current', 'page', { timeout: 20_000 });
+      await expect(page.locator('.house-session-grid.is-sheet > .house-session').nth(1)).toBeVisible();
+      await page.setViewportSize({ width: 1023, height: 900 });
+      await expect(rail).toBeHidden();
+      await expect(page.locator('.house-session-grid.is-sheet > .house-session')).toHaveCount(1);
+      return;
+    }
+
     // House leftover desktop: side icon rail. Floor hides ≥723. More stays on
     // the rail (not a compact Search tab). The old AppLayout `aside` is gone.
     await expect(page.locator('nav.house-rail')).toBeVisible();
+    await expect(page.locator('.desktop-preview-rail')).toHaveCount(0);
     await expect(page.locator('nav.house-floor')).toBeHidden();
     await expect(page.locator('nav.house-rail [data-house-rail-open="more"]')).toBeVisible();
 
@@ -62,6 +83,48 @@ test.describe('Desktop surface @gate', () => {
     // entry point to the same action.
     await expect(page.getByRole('button', { name: /^add exercise$/i })).toBeHidden();
     await expect(page.getByPlaceholder(/add exercise — search/i)).toBeVisible();
+  });
+
+  test('desktop Today distinguishes a finished plan from an unplanned week', async ({ page }) => {
+    test.skip(process.env.DESKTOP_SHELL_PREVIEW !== 'true', 'Desktop shell preview is off');
+    await page.clock.setFixedTime(new Date('2026-11-25T12:00:00'));
+    await page.addInitScript(() => {
+      localStorage.setItem('mw_coach_plan', JSON.stringify({
+        weekStart: '2026-11-23',
+        revision: 1,
+        sessions: [{ id: 'last-session', name: 'Final workout', dayOffset: 2, status: 'done', exercises: [] }],
+      }));
+    });
+    await page.goto('/log');
+    const links = page.locator('.desktop-preview-today-links');
+    await expect(links.getByText('No sessions left this week')).toBeVisible();
+    await expect(links.getByText('No plan this week')).toHaveCount(0);
+  });
+
+  test('desktop Today shows the most recently completed workout after a backfill', async ({ page }) => {
+    test.skip(process.env.DESKTOP_SHELL_PREVIEW !== 'true', 'Desktop shell preview is off');
+    await page.clock.setFixedTime(new Date('2026-11-25T12:00:00'));
+    await page.addInitScript(() => {
+      const log = (id: string, workoutName: string, completedAt: string) => ({
+        id, workoutName, completedAt, startedAt: completedAt, durationSeconds: 60, totalVolume: 0,
+        exercises: [{ exerciseId: 'push-ups', sets: [{ reps: 4, weight: 0 }] }],
+      });
+      localStorage.setItem('workout-tracker-storage', JSON.stringify({
+        state: {
+          workoutHistory: [
+            log('backfill', 'Backfilled workout', '2026-11-21T10:00:00'),
+            { ...log('deleted', 'Deleted workout', '2026-11-25T10:00:00'), deletedAt: '2026-11-25T11:00:00' },
+            log('latest', 'Latest workout', '2026-11-24T10:00:00'),
+          ],
+        },
+        version: 1,
+      }));
+    });
+    await page.goto('/log');
+    const links = page.locator('.desktop-preview-today-links');
+    await expect(links.getByText('Latest workout')).toBeVisible();
+    await expect(links.getByText('Backfilled workout')).toHaveCount(0);
+    await expect(links.getByText('Deleted workout')).toHaveCount(0);
   });
 
   test('Today fills the column instead of a phone measure', async ({ page }) => {

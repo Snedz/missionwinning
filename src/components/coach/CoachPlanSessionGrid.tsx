@@ -24,6 +24,7 @@ type Props = {
   rationaleHints?: SessionRationaleHints;
   /** sheet — first paint, the one session. week — Show all. */
   mode?: 'week' | 'sheet';
+  showWeek?: boolean;
 };
 
 export function CoachPlanSessionGrid({
@@ -33,10 +34,11 @@ export function CoachPlanSessionGrid({
   onSwapExercise,
   rationaleHints,
   mode = 'week',
+  showWeek = false,
 }: Props) {
   const bossId = resolveCoachBossSessionId(sessions, todayOffset);
   const rows =
-    mode === 'sheet'
+    mode === 'sheet' && !showWeek
       ? coachSheetSessions(sessions, todayOffset)
       : sessions.slice().sort((a, b) => a.dayOffset - b.dayOffset);
 

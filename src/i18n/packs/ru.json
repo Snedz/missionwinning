@@ -1,4 +1,5 @@
 {
+  "coachNoSessionsLeftThisWeek": "На этой неделе больше нет тренировок",
   "activeReentryStart": "Начать более легкую сессию",
   "activeReentryStartDesc": "Первая сессия после паузы короче — её можно закончить, затем неделя перестроится.",
   "coachChatListenReply": "Слушать",

@@ -6,6 +6,7 @@
 |------|---------|
 | `HouseShell.tsx` | Root signed-in chrome. Journey sync + outbox drain stay mounted. Desktop wraps second + canvas in `.house-sheet`. More closes on Escape and restores floor/rail focus. |
 | `HouseIconRail.tsx` | Left icon rail (desktop) and floor icons (compact). Account avatar + hover labels. |
+| `HouseDesktopRail.tsx` / `houseDesktopPreview.css` | Optional labelled notebook rail and wide layouts for Today, Train, and Coach at ≥1024px. Opt in at build time with `DESKTOP_SHELL_PREVIEW=true`; default is off. |
 | `HouseSecondRail.tsx` | Left column next to the icon rail (`grid-column: 2`). Home rooms or Library objects. Week pane is the real week + `/coach` (`generateWeek`). Not More. |
 | `HousePane.tsx` | Pane context + visit ticks (week / History). Home click closes the pane. |
 | `HouseGuide.tsx` | One first-run coach-mark. Got it / X dismiss. No popup chain. |

@@ -225,6 +225,7 @@ type CoachStrings = {
   coachPreferredDaysUsed: string;
   coachPreferredDaysSpread: string;
   coachGenerateEmptyTitle: string;
+  coachNoSessionsLeftThisWeek: string;
   coachFreeBetaNextWeek: string;
   coachGenerateEmptyDesc: string;
   coachManageCancel: string;
@@ -590,6 +591,7 @@ const en: CoachStrings = {
   coachPreferredDaysSpread:
     'Pick at least {{count}} to choose your own days — otherwise sessions spread evenly.',
   coachGenerateEmptyTitle: 'No plan this week',
+  coachNoSessionsLeftThisWeek: 'No sessions left this week',
   coachFreeBetaNextWeek: "From last week's logs.",
   coachGenerateEmptyDesc: 'From your logs. No wearable.',
   coachManageCancel: 'Cancel',

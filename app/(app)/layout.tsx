@@ -9,5 +9,5 @@ export default function AppGroupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <HouseShell>{children}</HouseShell>;
+  return <HouseShell desktopPreview={process.env.DESKTOP_SHELL_PREVIEW === 'true'}>{children}</HouseShell>;
 }

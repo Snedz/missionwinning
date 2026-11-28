@@ -1,4 +1,5 @@
 {
+  "coachNoSessionsLeftThisWeek": "इस हफ़्ते कोई सत्र बाकी नहीं है",
   "activeReentryStart": "आसान सत्र शुरू करें",
   "activeReentryStartDesc": "वापसी का पहला सत्र छोटा — पूरा हो सकेगा, फिर सप्ताह फिर से बनेगा।",
   "activeSetsCompleted": "{{done}}/{{total}} सेट पूरा हो गया",

@@ -12,6 +12,7 @@ import { ChevronRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { useHouseDesktopPreview } from '@/components/house/HouseDesktopRail';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
@@ -57,6 +58,7 @@ type CoachPageProps = {
 
 export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
   const { t } = useTranslation();
+  const desktopPreview = useHouseDesktopPreview();
   const {
     plan,
     loading,
@@ -300,6 +302,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
           <CoachPlanSessionGrid
             mode="sheet"
+            showWeek={desktopPreview}
             sessions={plan.sessions}
             todayOffset={todayOffset}
             onAdjustToday={() => setAdjustOpen(true)}
