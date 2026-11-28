@@ -96,15 +96,18 @@ internal fun V2Today(
 @Composable
 internal fun V2Coach(
     repository: MwRepository,
+    drafts: SessionDraftRepository,
     change: V2Change?,
     onChange: (V2Change?) -> Unit,
     onStart: (String, String, Int) -> Unit,
 ) {
     var plan by remember(repository) { mutableStateOf<CoachPlanDto?>(null) }
+    var draft by remember(drafts) { mutableStateOf<SessionDraftRepository.DraftPayload?>(null) }
     var rebuilding by remember { mutableStateOf(false) }
     var rebuildFailed by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    LaunchedEffect(repository, change) {
+    LaunchedEffect(repository, drafts, change) {
+        draft = drafts.load()?.takeIf { it.exercises.isNotEmpty() }
         plan = repository.ensureCoachPlan(preferNetwork = false).plan
     }
     V2Theme {
@@ -117,9 +120,18 @@ internal fun V2Coach(
                 val next = current.nextSession()
                 if (next != null) {
                     SessionSummary(next, current.weightUnit)
-                    V2Action(stringResource(R.string.v2_start), enabled = !rebuilding) { next.start(onStart) }
                 } else {
                     Text(stringResource(R.string.v2_no_next))
+                }
+                val pending = draft
+                if (pending != null) {
+                    V2Label(stringResource(R.string.v2_draft))
+                    Text(pending.workoutName, style = MaterialTheme.typography.titleMedium)
+                    V2Action(stringResource(R.string.v2_resume), enabled = !rebuilding) {
+                        onStart(pending.sessionId, pending.workoutName, 0)
+                    }
+                } else if (next != null) {
+                    V2Action(stringResource(R.string.v2_start), enabled = !rebuilding) { next.start(onStart) }
                 }
                 V2Secondary(
                     stringResource(R.string.v2_rebuild),

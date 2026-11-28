@@ -104,6 +104,35 @@ class ShellUpgradeTest {
         runBlocking { assertNull(repository.drafts().load()) }
     }
 
+    @Test fun coachResumesTheExistingDraftInsteadOfStartingOver() {
+        val entry = seedCompletedDraft()
+        launch(preview = true)
+        await("Resume workout")
+        await("Coach").click()
+        await("THE TRAINING PLAN / 04")
+        assertFalse(device.hasObject(By.text("Start workout")))
+        await("Resume workout").click()
+        await("Completed quick-log draft")
+        await("Set 1 · 9 reps at 27.5 kg")
+        assertTrue(runBlocking { entry.drafts().load()?.exercises?.single()?.sets?.single()?.done == true })
+    }
+
+    private fun seedCompletedDraft(): RepoEntryPoint {
+        val entry = EntryPointAccessors.fromApplication(context.applicationContext, RepoEntryPoint::class.java)
+        runBlocking {
+            entry.repository().markIdayDone()
+            entry.repository().forceReseedPlan()
+            entry.drafts().save(SessionDraftRepository.DraftPayload(
+                MwRepository.freeformSessionId(), "Completed quick-log draft", System.currentTimeMillis(), "kg",
+                exercises = listOf(SessionDraftRepository.DraftExercise(
+                    "goblet-squat", "Goblet squat",
+                    listOf(SessionDraftRepository.DraftSet("completed-draft", "goblet-squat", "Goblet squat", 0, 9, 27.5, done = true)),
+                )),
+            ))
+        }
+        return entry
+    }
+
     private fun launch(preview: Boolean? = null) {
         val intent = Intent(context, MainActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

@@ -293,8 +293,12 @@ fun MwNavHost(
                 }
                 composable(Routes.COACH) {
                     if (v2Shell) {
+                        val drafts = remember {
+                            EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).drafts()
+                        }
                         V2Coach(
                             repository = repository,
+                            drafts = drafts,
                             change = change,
                             onChange = { change = it },
                             onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },
