@@ -11,6 +11,8 @@ Welcome to Mission Winning — a free workout tracker and health companion that 
 
 No app store required.
 
+If you are reviewing the training notebook landing preview, **Log a set** opens Train without an account once you are through the existing access gate. **Try the week demo** uses sample workouts. It does not save to your workout history or change your Coach plan.
+
 ## Free gate
 
 If you see the **gate** (`/private`), the door says **Free**. Public line: **Log a set. Offline.** Support: **No account. No wearable.** Leave an email to **Get notified**, or **Enter with code** if you have an access code. Super Bundle checkout is not open. The logger stays free.

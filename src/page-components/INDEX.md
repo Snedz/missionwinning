@@ -17,6 +17,7 @@
 | `TodayDesk.tsx` | `/log` desk | Live session object + coach week rail. Compact hero Start is `href="/active"` (writes compose on click). Concept chip (`today-concept-chip`) glances Coach plan truth before Start when a next open session exists (`.1071`). |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` (cookie). `LandingDoor.tsx` is the first screen (headline, Log a set, logger shot). Forge sheet follows in `landingForge.module.css`. |
+| `LandingV2Page.tsx` | Opt-in homepage after the same gate. The interactive week demo uses only sample training history. |
 
 ### Train
 

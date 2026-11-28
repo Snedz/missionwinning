@@ -1,0 +1,111 @@
+.page {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-archivo), sans-serif;
+  line-height: 1.5;
+}
+
+.frame { width: min(100% - 2.5rem, 75rem); margin-inline: auto; }
+.masthead, .band { border-block-end: 1px solid hsl(var(--border)); }
+.masthead .frame, .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1.125rem;
+}
+.brand, .kicker, .recordHead { font-weight: 800; letter-spacing: .095em; text-transform: uppercase; }
+.brand { font-size: .88rem; }
+.kicker, .recordHead { font-size: .75rem; }
+.kicker { color: hsl(var(--primary)); }
+.hero, .example { display: grid; align-items: center; gap: clamp(1.75rem, 5vw, 5rem); }
+.hero { padding-block: clamp(2.5rem, 6vw, 6.25rem); }
+.hero h1 {
+  margin-block: .75rem 1.2rem;
+  font-size: clamp(2.75rem, 6.1vw, 5.85rem);
+  font-weight: 900;
+  letter-spacing: -.055em;
+  line-height: .98;
+  text-wrap: balance;
+}
+.lead { font-size: clamp(1.05rem, 2.3vw, 1.25rem); max-width: 33rem; }
+.actions, .final { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; }
+.actions { margin-block: 1.4rem .8rem; }
+.primary, .secondary, .inline {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 2.75rem;
+  font-weight: 750;
+}
+.primary, .secondary { justify-content: center; padding: .65rem 1.1rem; }
+.primary { background: hsl(var(--primary-fill)); color: hsl(var(--primary-foreground)); }
+.primary:hover { background: hsl(var(--primary-fill-hover)); }
+.secondary { border: 1px solid hsl(var(--foreground)); }
+.secondary:hover { background: hsl(var(--card)); }
+.inline { text-decoration: underline; text-underline-offset: .23em; }
+.note, .recordNote { color: hsl(var(--muted-foreground)); font-size: .875rem; }
+.record { border: 1px solid hsl(var(--foreground)); }
+.recordHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+  padding: .7rem 1rem;
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+.recordHead h3 { font: inherit; }
+.receipt { padding: clamp(1.2rem, 3vw, 2rem); }
+.receipt h2 { margin-block-end: .75rem; font-size: 2rem; font-weight: 900; }
+.receipt ol, .demoSessions { font-variant-numeric: tabular-nums; }
+.receipt li, .demoSessions li {
+  display: flex;
+  justify-content: space-between;
+  gap: .65rem;
+  border-block-start: 1px solid hsl(var(--border));
+  padding-block: .75rem;
+}
+.receipt li span:first-child { color: hsl(var(--muted-foreground)); }
+.band { background: hsl(var(--card)); border-block-start: 1px solid hsl(var(--border)); }
+.section, .example { padding-block: clamp(2.5rem, 5vw, 5rem); }
+.sectionCopy h2 {
+  margin-block: .4rem .9rem;
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  font-weight: 900;
+  letter-spacing: -.038em;
+  line-height: 1.05;
+}
+.sectionCopy p:not(.kicker) { max-width: 48ch; }
+.calendar { width: 100%; table-layout: fixed; font-size: clamp(.59rem, 1.3vw, .9rem); text-align: center; }
+.calendar th, .calendar td { padding: .45rem .11rem; border-block-end: 1px solid hsl(var(--border)); }
+.calendar tr > :first-child { width: 24%; text-align: start; padding-inline-start: .45rem; }
+.planned { color: hsl(var(--primary)); background: hsl(var(--accent-tint)); }
+.recordNote { padding: .65rem 1rem; }
+.demo { margin-block-start: 1rem; }
+.demo .note { margin-block: .55rem; }
+.demoPanel { border-block-start: 1px solid hsl(var(--border)); padding-block-start: .8rem; }
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .65rem; align-items: end; }
+.form label { display: grid; gap: .25rem; font-weight: 700; }
+.form select { width: 100%; min-height: 2.75rem; padding-inline: .45rem; background: hsl(var(--background)); border: 1px solid hsl(var(--foreground)); }
+.demoSessions span { text-align: end; }
+.screens, .devices { display: grid; gap: 1.25rem; margin-block-start: 1.5rem; }
+.screens figure, .devices > div { min-width: 0; border-block-start: 1px solid hsl(var(--foreground)); padding-block-start: .85rem; }
+.screens img { border: 1px solid hsl(var(--border)); width: 100%; max-width: 16.5rem; height: auto; margin-block-start: .65rem; }
+.laptop { display: none; }
+.devices h3 { font-weight: 800; font-size: 1.15rem; margin-block-end: .3rem; }
+.final { justify-content: space-between; padding-block: 2.25rem; }
+.final p { font-weight: 850; font-size: clamp(1.4rem, 3vw, 2.15rem); }
+.footer { border-block-start: 1px solid hsl(var(--border)); font-size: .875rem; }
+
+@media (min-width: 48rem) {
+  .hero { grid-template-columns: 1.5fr 1fr; }
+  .example { grid-template-columns: .85fr 1.15fr; }
+  .screens, .devices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64rem) {
+  .screens { grid-template-columns: .6fr 1fr 1fr; }
+  .screens figure:has(.laptop) .phone { display: none; }
+  .screens .laptop { display: block; max-width: none; }
+}
