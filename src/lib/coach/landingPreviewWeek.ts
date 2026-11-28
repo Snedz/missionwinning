@@ -1,4 +1,4 @@
-import { generateWeek } from '@/lib/coach/planEngine';
+import { planWeekSessions } from '@/lib/coach/planEngine';
 import type { CoachContext, EquipmentProfile } from '@/lib/coach/types';
 import { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
@@ -38,6 +38,6 @@ export function landingPreviewWeek(equipment: EquipmentProfile, daysPerWeek: num
     units: 'metric',
     seedId: 'landing-preview',
   };
-  return generateWeek(context, weekStart, missedDay === undefined ? 1 : 2, `2026-06-${String(8 + start).padStart(2, '0')}`)
-    .sessions.toSorted((a, b) => a.dayOffset - b.dayOffset);
+  return planWeekSessions(context, weekStart, `2026-06-${String(8 + start).padStart(2, '0')}`)
+    .toSorted((a, b) => a.dayOffset - b.dayOffset);
 }
