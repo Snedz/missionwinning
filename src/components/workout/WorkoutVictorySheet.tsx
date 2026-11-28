@@ -71,7 +71,9 @@ import { topLiftDeltas } from '@/lib/workout/victoryVsLastLifts';
 import { normalizeVictoryDiaryLine } from '@/lib/workout/victoryDiaryLine';
 
 const VictoryNextTargets = dynamic(
-  () => import('@/components/workout/VictoryNextTargets').then((m) => m.VictoryNextTargets),
+  () => import('@/components/workout/VictoryNextTargets')
+    .then((m) => m.VictoryNextTargets)
+    .catch(() => () => null),
   { ssr: false }
 );
 
