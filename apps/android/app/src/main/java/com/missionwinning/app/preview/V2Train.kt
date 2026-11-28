@@ -4,7 +4,7 @@ import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -78,7 +78,7 @@ internal fun V2Train(
                 Text(state.workoutName, style = MaterialTheme.typography.headlineSmall)
                 V2Label(stringResource(R.string.v2_set_progress, state.doneCount, state.totalSets))
                 if (state.restSeconds > 0) {
-                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
                             stringResource(R.string.v2_rest_seconds, state.restSeconds),
                             style = MaterialTheme.typography.titleMedium,
@@ -157,42 +157,50 @@ private fun SetEntry(set: LoggedSet, unit: String, enabled: Boolean, onEvent: (A
     if (previousWeight != null && previousReps != null) {
         Text(stringResource(R.string.v2_last_set, previousReps, WeightUnits.formatWithUnit(previousWeight, unit)))
     }
+    val repsField: @Composable (Modifier) -> Unit = { modifier ->
+        OutlinedTextField(
+            value = reps,
+            onValueChange = { raw ->
+                if (raw.isEmpty() || raw.toIntOrNull()?.let { it in 1..99 } == true) {
+                    reps = raw
+                    raw.toIntOrNull()?.let { onEvent(ActiveEvent.UpdateReps(set.id, it)) }
+                }
+            },
+            modifier = modifier,
+            enabled = enabled,
+            label = { Text(stringResource(R.string.v2_reps)) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+    }
+    val loadField: @Composable (Modifier) -> Unit = { modifier ->
+        OutlinedTextField(
+            value = load,
+            onValueChange = { raw ->
+                val parsed = raw.replace(',', '.').toDoubleOrNull()
+                if (raw.isEmpty() || parsed?.let { it.isFinite() && it >= 0 } == true) {
+                    load = raw
+                    parsed?.let { onEvent(ActiveEvent.UpdateWeight(set.id, it)) }
+                }
+            },
+            modifier = modifier,
+            enabled = enabled,
+            label = { Text(stringResource(R.string.v2_weight, unit)) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        )
+    }
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-        val columns = if (maxWidth / LocalDensity.current.fontScale < 275.dp) 1 else 2
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            maxItemsInEachRow = columns,
-        ) {
-            OutlinedTextField(
-                value = reps,
-                onValueChange = { raw ->
-                    if (raw.isEmpty() || raw.toIntOrNull()?.let { it in 1..99 } == true) {
-                        reps = raw
-                        raw.toIntOrNull()?.let { onEvent(ActiveEvent.UpdateReps(set.id, it)) }
-                    }
-                },
-                modifier = Modifier.weight(1f),
-                enabled = enabled,
-                label = { Text(stringResource(R.string.v2_reps)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-            OutlinedTextField(
-                value = load,
-                onValueChange = { raw ->
-                    val parsed = raw.replace(',', '.').toDoubleOrNull()
-                    if (raw.isEmpty() || parsed?.let { it.isFinite() && it >= 0 } == true) {
-                        load = raw
-                        parsed?.let { onEvent(ActiveEvent.UpdateWeight(set.id, it)) }
-                    }
-                },
-                modifier = Modifier.weight(1f),
-                enabled = enabled,
-                label = { Text(stringResource(R.string.v2_weight, unit)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            )
+        if (maxWidth / LocalDensity.current.fontScale < 275.dp) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                repsField(Modifier.fillMaxWidth())
+                loadField(Modifier.fillMaxWidth())
+            }
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                repsField(Modifier.weight(1f))
+                loadField(Modifier.weight(1f))
+            }
         }
     }
     V2Action(stringResource(R.string.v2_complete_set), enabled && reps.isNotEmpty() && load.isNotEmpty()) {
