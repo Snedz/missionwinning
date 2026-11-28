@@ -288,17 +288,50 @@ object LocalCoachSeed {
         val pullB: String,
     )
 
-    fun markDone(plan: CoachPlanDto, sessionId: String): CoachPlanResponseDto {
-        val sessions = plan.sessions.map {
-            if (it.id == sessionId) it.copy(status = "done") else it
+    fun markDone(plan: CoachPlanDto, sessionId: String): CoachPlanResponseDto =
+        finishSession(plan, sessionId, plan.sessions)
+
+    suspend fun markDone(
+        plan: CoachPlanDto,
+        sessionId: String,
+        workingSet: suspend (exerciseId: String, targetReps: Int) -> SetLogEntity?,
+    ): CoachPlanResponseDto {
+        val completed = plan.sessions.find { it.id == sessionId }
+        val unit = plan.weightUnit
+        val sessions = plan.sessions.map { session ->
+            when {
+                session.id == sessionId || completed == null || unit == null ||
+                    plan.equipmentProfile == "bodyweight" -> session
+                session.dayOffset < completed.dayOffset || session.status !in setOf("planned", "swapped") -> session
+                else -> session.copy(exercises = session.exercises.map { exercise ->
+                    if (exercise.weight == 0.0 && ExerciseCatalog.get(exercise.exerciseId)?.isBodyweight == true) {
+                        exercise
+                    } else {
+                        val saved = workingSet(exercise.exerciseId, exercise.reps.coerceIn(1, 99))
+                        if (saved == null || !saved.weight.isFinite()) exercise
+                        else exercise.copy(
+                            weight = WeightUnits.convertExact(saved.weight, saved.weightUnit, unit),
+                            whyKey = "coachWhyHold",
+                        )
+                    }
+                })
+            }
         }
+        return finishSession(plan, sessionId, sessions)
+    }
+
+    private fun finishSession(
+        plan: CoachPlanDto,
+        sessionId: String,
+        sessions: List<PlanSessionDto>,
+    ): CoachPlanResponseDto {
         val next = plan.copy(
-            sessions = sessions,
+            sessions = sessions.map { if (it.id == sessionId) it.copy(status = "done") else it },
             revision = plan.revision + 1,
             generatedAt = java.time.Instant.now().toString(),
             contextHash = "${plan.contextHash}-done-$sessionId",
         )
-        val done = sessions.count { it.status == "done" }
+        val done = next.sessions.count { it.status == "done" }
         val beats = listOf(
             AdaptBeatDto(
                 "coachAdaptLoggedNote",

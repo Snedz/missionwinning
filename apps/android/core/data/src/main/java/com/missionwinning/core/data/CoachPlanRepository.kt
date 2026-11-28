@@ -1,5 +1,6 @@
 package com.missionwinning.core.data
 
+import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.TrainerAskRequestDto
@@ -62,14 +63,16 @@ class CoachPlanRepository(
         return demo
     }
 
-    suspend fun markSessionDone(sessionId: String): CoachPlanResponseDto {
+    suspend fun markSessionDone(sessionId: String, workoutId: String): CoachPlanResponseDto {
         val current = ensureCoachPlan(preferNetwork = false)
         val next = if (api != null && !LocalCoachSeed.isOfflinePlan(current.plan)) {
             api.adaptPlan(current.plan, sessionId).getOrElse {
                 LocalCoachSeed.markDone(current.plan, sessionId)
             }
         } else {
-            LocalCoachSeed.markDone(current.plan, sessionId)
+            LocalCoachSeed.markDone(current.plan, sessionId) { exerciseId, targetReps ->
+                dao.latestWorkingLoad(ExerciseCatalog.equivalentCoachIds(exerciseId), targetReps, workoutId)
+            }
         }
         savePlanResponse(next)
         return next

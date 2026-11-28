@@ -62,8 +62,8 @@ class MwRepository(
     suspend fun ensureCoachPlan(preferNetwork: Boolean = true): CoachPlanResponseDto =
         coach.ensureCoachPlan(preferNetwork)
     suspend fun seedAdaptDemo(): CoachPlanResponseDto = coach.seedAdaptDemo()
-    suspend fun markSessionDone(sessionId: String): CoachPlanResponseDto =
-        coach.markSessionDone(sessionId)
+    suspend fun markSessionDone(sessionId: String, workoutId: String): CoachPlanResponseDto =
+        coach.markSessionDone(sessionId, workoutId)
     suspend fun forceReseedPlan(): CoachPlanResponseDto = coach.forceReseedPlan()
     suspend fun askTrainer(body: TrainerAskRequestDto): Result<TrainerAskResponseDto> =
         coach.askTrainer(body)
