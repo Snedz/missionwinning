@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
+import { coachWhyLine } from '@/lib/coach/coachWhyDefaults';
 import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
 import type { CoachPlan } from '@/lib/coach/types';
 import { victoryNextTargets } from '@/lib/coach/victoryNext';
@@ -45,7 +46,9 @@ export function VictoryNextTargets({ log, history, plan }: {
                 ? `${fmt.num(target.weight, { maximumFractionDigits: 2 })} ${unit}`
                 : bodyweight
                   ? t('victoryNextBodyweight', { defaultValue: 'bodyweight' })
-                  : t('victoryNextUnloaded', { defaultValue: 'unloaded' })}
+                  : target.whyKey === 'coachFindWorkingWeight'
+                    ? coachWhyLine(target.whyKey, t)
+                    : t('victoryNextUnloaded', { defaultValue: 'unloaded' })}
             </p>
           </li>
         ))}

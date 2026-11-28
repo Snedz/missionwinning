@@ -15,7 +15,7 @@ export type VictoryNextContext = Pick<CoachContext, 'units' | 'goalId' | 'experi
 
 type VictoryNextTarget = {
   exerciseId: string;
-  target: Pick<ProgressionTargets, 'sets' | 'reps' | 'weight'>;
+  target: Pick<ProgressionTargets, 'sets' | 'reps' | 'weight' | 'whyKey'>;
   source: 'plan' | 'progression';
   bodyweight: boolean;
 };

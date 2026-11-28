@@ -6,17 +6,49 @@ import { seedLegacyOnboarding } from './helpers/journey';
 
 test.use({ serviceWorkers: 'block' });
 
-async function logLunges(page: Page) {
+async function logGuestSet(page: Page) {
   await startEmptyActiveWorkout(page);
   await dismissHouseOverlays(page);
-  await page.getByRole('button', { name: /^add exercise$/i }).click();
-  await page.getByPlaceholder(/search exercises/i).fill('lunges');
-  await page.getByRole('option', { name: /^lunges\b/i }).first().click();
-  await page.getByRole('button', { name: /add selected exercise/i }).click();
-  await page.getByTestId('set-table-open-load').last().fill('30');
-  await page.getByRole('textbox', { name: 'Reps', exact: true }).last().fill('6');
+  await page.getByRole('textbox', { name: 'Reps', exact: true }).first().fill('6');
   await logSetButton(page).first().click();
   await page.getByTestId('rest-skip').click();
+}
+
+async function seedLunges(page: Page, weight: number, whyKey: string, weightUnits?: 'metric' | 'imperial') {
+  await page.addInitScript(({ weight, whyKey, weightUnits }) => {
+    localStorage.setItem('workout-tracker-storage', JSON.stringify({
+      version: 1,
+      state: {
+        activeWorkout: {
+          workoutName: 'Lunges',
+          startedAt: new Date().toISOString(),
+          exercises: [{ exerciseId: 'lunges', sets: [{ weight: 30, reps: 6, completed: true }] }],
+        },
+      },
+    }));
+    localStorage.setItem('mw_coach_plan', JSON.stringify({
+      weekStart: '2026-11-23',
+      revision: 1,
+      daysPerWeek: 3,
+      generatedAt: new Date().toISOString(),
+      contextHash: 'review-fixture',
+      equipmentProfile: 'bodyweight',
+      sessions: [4, 6].map((dayOffset) => ({
+        id: `strength-${dayOffset}`,
+        dayOffset,
+        kind: 'strength',
+        status: 'planned',
+        name: 'Strength',
+        focusGroups: ['Legs'],
+        estMinutes: 20,
+        exercises: [{ exerciseId: 'lunges', sets: 3, reps: 8, weight, whyKey, weightUnits }],
+      })),
+    }));
+  }, { weight, whyKey, weightUnits });
+  await page.goto('/active', { waitUntil: 'domcontentloaded' });
+  await dismissHouseOverlays(page);
+  const skipCheckIn = page.getByRole('button', { name: /not now/i });
+  if (await skipCheckIn.isVisible()) await skipCheckIn.click();
 }
 
 test.describe('Victory Next time @gate', () => {
@@ -29,7 +61,7 @@ test.describe('Victory Next time @gate', () => {
   });
 
   test('keeps the saved receipt if the Next time chunk is unavailable offline', async ({ page, context }) => {
-    await logLunges(page);
+    await logGuestSet(page);
     const failedChunk = page.waitForEvent('requestfailed', {
       predicate: (request) => request.url().includes('/_next/static/chunks/') && request.resourceType() === 'script',
     });
@@ -41,5 +73,13 @@ test.describe('Victory Next time @gate', () => {
     expect(routeErrorAppeared).toBe(false);
     await expect(page.getByRole('dialog')).toContainText('Session locked');
     await expect(page.getByRole('region', { name: 'Next time' })).toHaveCount(0);
+  });
+
+  test('an unset Coach load asks the guest to find a working weight', async ({ page }) => {
+    await seedLunges(page, 0, 'coachFindWorkingWeight');
+    await page.getByRole('button', { name: /^finish$/i }).click();
+    const target = page.getByRole('region', { name: 'Next time' }).getByRole('listitem').filter({ hasText: /^Lunges/ });
+    await expect(target).toContainText('Upcoming Coach session');
+    await expect(target).toContainText('Find a weight you could do for 2 more reps.');
   });
 });
