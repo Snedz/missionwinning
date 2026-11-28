@@ -5,6 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+internal const val LATEST_SET_FOR_SQL = """
+    SELECT s.* FROM set_logs s
+    LEFT JOIN workout_logs w ON w.id = s.workoutId
+    WHERE w.deletedAt IS NULL AND s.exerciseId IN (:exerciseIds) AND s.setIndex = :setIndex
+    ORDER BY s.completedAt DESC
+    LIMIT 1
+"""
+
 @Dao
 interface MwDao {
     @Query("SELECT * FROM coach_plan WHERE id = 1 LIMIT 1")
@@ -107,15 +115,8 @@ interface MwDao {
     )
     suspend fun setsForWorkout(workoutId: String): List<SetLogEntity>
 
-    @Query(
-        """
-        SELECT * FROM set_logs
-        WHERE exerciseId = :exerciseId AND setIndex = :setIndex
-        ORDER BY completedAt DESC
-        LIMIT 1
-        """,
-    )
-    suspend fun latestSetFor(exerciseId: String, setIndex: Int): SetLogEntity?
+    @Query(LATEST_SET_FOR_SQL)
+    suspend fun latestSetFor(exerciseIds: List<String>, setIndex: Int): SetLogEntity?
 
     @Query(
         """
@@ -142,13 +143,13 @@ interface MwDao {
         """
         SELECT s.* FROM set_logs s
         INNER JOIN workout_logs w ON w.id = s.workoutId
-        WHERE w.deletedAt IS NULL AND s.exerciseId = :exerciseId AND s.setKind = 'normal'
+        WHERE w.deletedAt IS NULL AND s.exerciseId IN (:exerciseIds) AND s.setKind = 'normal'
           AND s.reps >= :targetReps AND s.weight > 0 AND s.weightUnit IN ('kg', 'lb')
         ORDER BY julianday(w.completedAt) DESC, w.id DESC, s.setIndex DESC, s.id DESC
         LIMIT 1
         """,
     )
-    suspend fun latestWorkingLoad(exerciseId: String, targetReps: Int): SetLogEntity?
+    suspend fun latestWorkingLoad(exerciseIds: List<String>, targetReps: Int): SetLogEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun enqueueOutbox(row: SyncOutboxEntity)

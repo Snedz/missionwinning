@@ -1,6 +1,8 @@
 package com.missionwinning.core.data
 
 import com.missionwinning.core.model.ExerciseCatalog
+import com.missionwinning.core.model.OfflineCoachCatalog
+import com.missionwinning.core.model.OfflineCoachMove
 import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.AdaptBeatDto
 import com.missionwinning.core.network.CoachPlanDto
@@ -19,7 +21,7 @@ import kotlin.math.roundToInt
 object LocalCoachSeed {
     private const val HISTORY_SEED_PREFIX = "offline-seed-"
     private const val FIND_WORKING_WEIGHT = "coachFindWorkingWeight"
-    private val fullBodyGroups = listOf("Chest", "Back", "Legs", "Shoulders", "Arms", "Core")
+    private val fullBodyGroups = OfflineCoachMove.focusGroups
 
     fun weekStartMonday(d: LocalDate = LocalDate.now()): String {
         val monday = d.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
@@ -129,39 +131,30 @@ object LocalCoachSeed {
             .thenByDescending { it.first.workoutId }.thenByDescending { it.first.setIndex }.thenByDescending { it.first.id })
             .map { it.first }
         val latestByExercise = workingSets.filter { set ->
-            val move = catalogMove(set.exerciseId)
-            move != null && equip in move.equipment &&
-                (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
-        }.groupBy { it.exerciseId }.mapValues { (_, sets) ->
+            val webMove = OfflineCoachCatalog.byId[ExerciseCatalog.canonicalCoachId(set.exerciseId)]
+            if (webMove != null) {
+                webMove.supports(equip) && (equip != "bodyweight" || set.weight == 0.0)
+            } else {
+                val move = ExerciseCatalog.get(set.exerciseId)
+                move != null && equip in move.equipment &&
+                    (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
+            }
+        }.groupBy { ExerciseCatalog.canonicalCoachId(it.exerciseId) }.mapValues { (_, sets) ->
             val latest = sets.first()
             sets.filter { it.workoutId == latest.workoutId }
         }
 
-        val defaults = when (equip) {
-            "full-gym" -> listOf("back-squat", "bench-press", "barbell-row")
-            "dumbbells" -> listOf("goblet-squat", "db-press", "db-row")
-            else -> listOf("squat", "pushup", "row")
-        }
-        val families = listOf(setOf("quads", "glutes"), setOf("chest", "shoulders"), setOf("back"))
-        val used = mutableSetOf<String>()
-        val exercises = defaults.mapIndexed { index, fallback ->
-            val familiar = latestByExercise.entries.firstOrNull { (id, _) ->
-                id !in used && catalogMove(id)?.muscleGroups?.any { it in families[index] } == true
-            }
-            val id = familiar?.key ?: fallback
-            used += id
-            val sets = familiar?.value
-            val latest = sets?.first()
-            if (sets != null && latest != null) {
-                val converted = WeightUnits.convertExact(latest.weight, latest.weightUnit, unit)
-                val weight = if (latest.weightUnit == unit) converted
-                else (round(converted * 100) / 100).takeIf { it > 0.0 } ?: converted
-                PlanExerciseDto(id, sets.size.coerceIn(1, 3), latest.reps.coerceIn(1, 12), weight, "coachWhyHold")
-            } else {
-                val why = if (ExerciseCatalog.get(id)?.isBodyweight == true) "coachWhyBodyweightReps"
-                else FIND_WORKING_WEIGHT
-                PlanExerciseDto(id, 3, 5, whyKey = why)
-            }
+        val legacy = latestByExercise.keys.filterNot { it in OfflineCoachCatalog.byId }.mapNotNull { id ->
+            val move = ExerciseCatalog.get(id) ?: return@mapNotNull null
+            val group = move.muscleGroups.firstNotNullOfOrNull { muscle ->
+                when (muscle) {
+                    "quads", "glutes", "hamstrings", "calves" -> "Legs"
+                    "triceps", "biceps", "forearms" -> "Arms"
+                    else -> fullBodyGroups.find { it.equals(muscle, ignoreCase = true) }
+                }
+            } ?: return@mapNotNull null
+            OfflineCoachMove(id, move.name, fullBodyGroups.indexOf(group), 0,
+                move.muscleGroups.size >= 2, false, move.isBodyweight)
         }
         val offsets = if (workingSets.isEmpty()) listOf(0, 3) else listOf(0, 2, 4)
         val floor = today.dayOfWeek.value - 1
@@ -171,7 +164,21 @@ object LocalCoachSeed {
             count == 1 -> listOf(floor)
             else -> List(count) { floor + (it * (6 - floor).toDouble() / (count - 1)).roundToInt() }
         }
+        val selector = OfflineCoachSelection(weekStart, equip, latestByExercise.keys)
         val sessions = scheduledDays.map { day ->
+            val exercises = selector.pick(legacy).map { move ->
+                val sets = latestByExercise[move.id].orEmpty()
+                val latest = sets.firstOrNull()
+                if (latest != null) {
+                    val converted = WeightUnits.convertExact(latest.weight, latest.weightUnit, unit)
+                    val weight = if (latest.weightUnit == unit) converted
+                    else (round(converted * 100) / 100).takeIf { it > 0.0 } ?: converted
+                    PlanExerciseDto(move.id, sets.size.coerceIn(1, 3), latest.reps.coerceIn(1, 12), weight, "coachWhyHold")
+                } else {
+                    val why = if (move.bodyweight || equip == "bodyweight") "coachWhyBodyweightReps" else FIND_WORKING_WEIGHT
+                    PlanExerciseDto(move.id, 3, 5, whyKey = why)
+                }
+            }
             PlanSessionDto(
                 id = "$weekStart-d$day",
                 dayOffset = day,
@@ -196,9 +203,6 @@ object LocalCoachSeed {
             ),
         )
     }
-
-    private fun catalogMove(exerciseId: String) =
-        ExerciseCatalog.get(if (exerciseId == "lunges") "lunge" else exerciseId)
 
     private fun demoSessions(equip: String): List<PlanSessionDto> {
         val (pushA, pushB, legsA, legsB, pullA, pullB) = when (equip) {

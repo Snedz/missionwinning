@@ -43,6 +43,10 @@ class CoachParityTest {
             val native = response.plan
             assertTrue(id, response.adaptBeats.isEmpty() && !response.hasAdaptSignal)
             assertEquals(id, unit, native.weightUnit)
+            for ((webSession, nativeSession) in web.sessions.zip(native.sessions)) {
+                assertEquals("$id ${webSession.id} exercise selection",
+                    webSession.exercises.map { it.exerciseId }, nativeSession.exercises.map { it.exerciseId })
+            }
             assertEquals(id, expectedDifferences.getValue(id), differenceFields(web, native, unit))
             assertEquals(id, 1, native.revision)
             if (history.isNotEmpty()) {
@@ -80,11 +84,55 @@ class CoachParityTest {
         assertEquals(12.5, press.weight, 0.0)
         assertEquals(7, press.reps)
         assertEquals(2, press.sets)
-        val unlogged = plan.sessions.first().exercises.single { it.exerciseId == "db-row" }
-        assertEquals("coachFindWorkingWeight", unlogged.whyKey)
-        assertEquals(0.0, unlogged.weight, 0.0)
+        val unlogged = plan.sessions.first().exercises.filterNot { it.exerciseId == "db-press" }
+        assertEquals(2, unlogged.size)
+        assertTrue(unlogged.all { it.weight == 0.0 })
         val withoutGear = LocalCoachSeed.build(history = history, now = now, zone = ZoneId.of("UTC")).plan
         assertTrue(withoutGear.sessions.flatMap { it.exercises }.none { it.weight > 0 || it.exerciseId == "db-press" })
+    }
+
+    @Test
+    fun manualAndPlannerJumpSquatIdsShareOneTargetAndOneHistory() {
+        val manual = SetLogEntity(
+            id = "manual", exerciseId = "jump-squat", exerciseName = "Jump squat",
+            setIndex = 1, reps = 8, weight = 0.0, completedAt = "2026-05-17T12:00:00Z",
+            sessionId = null, weightUnit = "kg", workoutId = "recent",
+        )
+        val planner = manual.copy(id = "plan", exerciseId = "jump-squats", setIndex = 0, reps = 6)
+        val push = manual.copy(id = "push", exerciseId = "pushup", completedAt = "2026-05-16T12:00:00Z")
+        val plan = LocalCoachSeed.build(
+            history = listOf(manual, planner, push),
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan
+        for (session in plan.sessions) {
+            val jumps = session.exercises.filter { it.exerciseId in setOf("jump-squat", "jump-squats") }
+            assertEquals(listOf("jump-squats"), jumps.map { it.exerciseId })
+            assertEquals(8, jumps.single().reps)
+            assertEquals(2, jumps.single().sets)
+        }
+    }
+
+    @Test
+    fun legacyFamiliarityIsRankedWithoutBiasFromWorkoutRecency() {
+        val ids = listOf("back-squat", "db-curl", "db-hammer-curl", "bench-press")
+        val history = ids.mapIndexed { index, id ->
+            SetLogEntity(
+                id = id, exerciseId = id, exerciseName = id, setIndex = 0, reps = 6,
+                weight = 20.0, completedAt = "2026-05-1${index + 4}T12:00:00Z",
+                sessionId = null, weightUnit = "kg", workoutId = id,
+            )
+        }
+        fun picks(rows: List<SetLogEntity>) = LocalCoachSeed.build(
+            equipment = "full-gym", history = rows,
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan.sessions.map { session -> session.exercises.map { it.exerciseId } }
+
+        val original = picks(history)
+        val reversed = picks(history.mapIndexed { index, row ->
+            row.copy(completedAt = history[history.lastIndex - index].completedAt)
+        })
+        assertEquals(original, reversed)
+        assertTrue(original.all { it.first() == "bench-press" })
     }
 
     @Test
@@ -118,7 +166,7 @@ class CoachParityTest {
     fun coldStartOnLocalSundayNeverSchedulesInThePastOrInventsALoad() {
         val now = Instant.parse("2026-05-25T01:00:00Z")
         val response = LocalCoachSeed.build(
-            equipment = "dumbbells", now = now, zone = ZoneId.of("America/New_York"),
+            equipment = "full-gym", now = now, zone = ZoneId.of("America/New_York"),
         )
         assertEquals("2026-05-18", response.plan.weekStart)
         assertEquals(listOf(6), response.plan.sessions.map { it.dayOffset })
@@ -174,7 +222,6 @@ class CoachParityTest {
             compare("focus-groups", w.focusGroups, n.focusGroups)
             compare("estimates", w.estMinutes, n.estMinutes)
             compare("statuses", w.status, n.status)
-            compare("exercise-ids", w.exercises.map { it.exerciseId }, n.exercises.map { it.exerciseId })
             // Lists include order/size; compare prescriptions separately so each gap is measured.
             compare("sets", w.exercises.map { it.sets }, n.exercises.map { it.sets })
             compare("reps", w.exercises.map { it.reps }, n.exercises.map { it.reps })
@@ -188,16 +235,14 @@ class CoachParityTest {
         }
     }
 
-    private val offlineVsWeb = setOf(
-        "context-hash", // Offline source marker, not the web readiness/load context fingerprint.
-        "exercise-ids", // Small native equipment template rather than the ranked web catalog.
-    )
+    // Offline source marker, not the web readiness/load context fingerprint.
+    private val offlineVsWeb = setOf("context-hash")
 
     private val expectedDifferences = mapOf(
         "cold-start-bodyweight" to offlineVsWeb,
-        // A fresh seed starts at revision 1. Unlogged dumbbell lifts ask for a working
-        // weight rather than selecting the unloaded bodyweight alternatives in web.
-        "mixed-history-metric" to offlineVsWeb + setOf("revision", "rationale-keys"),
-        "mixed-history-imperial" to offlineVsWeb + setOf("revision", "rationale-keys"),
+        "cold-start-dumbbells" to offlineVsWeb,
+        // Fresh offline seeds start at revision 1.
+        "mixed-history-metric" to offlineVsWeb + "revision",
+        "mixed-history-imperial" to offlineVsWeb + "revision",
     )
 }

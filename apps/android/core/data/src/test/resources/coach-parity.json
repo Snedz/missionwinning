@@ -68,6 +68,69 @@
   },
   "cases": [
     {
+      "id": "cold-start-dumbbells",
+      "now": "2026-01-26T12:00:00.000Z",
+      "historyId": "empty",
+      "input": {
+        "equipment": "dumbbells",
+        "daysPerWeek": 2,
+        "units": "metric",
+        "revision": 1
+      },
+      "expectedPlan": {
+        "revision": 1,
+        "weekStart": "2026-01-26",
+        "daysPerWeek": 2,
+        "sessions": [
+          {
+            "id": "2026-01-26-d0",
+            "dayOffset": 0,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "jump-squats", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          },
+          {
+            "id": "2026-01-26-d3",
+            "dayOffset": 3,
+            "kind": "strength",
+            "name": "Full Body Strength",
+            "focusGroups": [
+              "Chest",
+              "Back",
+              "Legs",
+              "Shoulders",
+              "Arms",
+              "Core"
+            ],
+            "exercises": [
+              {"exerciseId": "shrimp-squat-reg", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "banded-dislocate", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachFindWorkingWeight"},
+              {"exerciseId": "scap-pullup", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+            ],
+            "estMinutes": 60,
+            "status": "planned"
+          }
+        ],
+        "generatedAt": "2026-01-26T12:00:00.000Z",
+        "contextHash": "1231169741",
+        "equipmentProfile": "dumbbells"
+      }
+    },
+    {
       "id": "cold-start-bodyweight",
       "now": "2026-05-18T12:00:00.000Z",
       "historyId": "empty",

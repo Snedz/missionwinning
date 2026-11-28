@@ -336,12 +336,25 @@ object ExerciseCatalog {
     )
 
     private val byId: Map<String, ExerciseDef> = all.associateBy { it.id }
+    private val legacyCoachIds = mapOf("jump-squat" to "jump-squats", "pullup" to "pull-ups")
+    private val aliasesByCoachId = legacyCoachIds.entries.groupBy({ it.value }, { it.key })
 
-    fun get(id: String): ExerciseDef? = byId[normalizeId(id)]
+    fun canonicalCoachId(id: String): String = legacyCoachIds[id] ?: id
+
+    fun equivalentCoachIds(id: String): List<String> {
+        val canonical = canonicalCoachId(id)
+        return listOf(canonical) + aliasesByCoachId[canonical].orEmpty()
+    }
+
+    fun get(id: String): ExerciseDef? {
+        val key = normalizeId(id)
+        val legacy = byId[key]
+        return OfflineCoachCatalog.byId[key]?.toExerciseDef(legacy) ?: legacy
+    }
 
     fun displayName(id: String): String {
         val key = normalizeId(id)
-        return byId[key]?.name ?: humanize(key)
+        return byId[key]?.name ?: OfflineCoachCatalog.byId[key]?.name ?: humanize(key)
     }
 
     fun search(query: String, equipment: String? = null, muscle: String? = null): List<ExerciseDef> {

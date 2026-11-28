@@ -35,4 +35,5 @@ dependencies {
     // EntryPoint only — no ksp needed for SyncWorker EntryPoint
 
     testImplementation(libs.junit)
+    testImplementation("org.xerial:sqlite-jdbc:3.41.2.2")
 }

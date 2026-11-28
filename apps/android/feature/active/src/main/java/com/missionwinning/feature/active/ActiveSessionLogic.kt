@@ -2,6 +2,7 @@ package com.missionwinning.feature.active
 
 import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
+import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.LoggedSet
 import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.model.WeightUnits
@@ -250,14 +251,15 @@ object ActiveSessionLogic {
         defaultWeight: Double = 0.0,
         previousByIndex: Map<Int, Pair<Int?, Double?>> = emptyMap(),
     ): List<ActiveExercise> {
-        val existing = exercises.find { it.exerciseId == exerciseId }
+        val canonicalId = ExerciseCatalog.canonicalCoachId(exerciseId)
+        val existing = exercises.find { ExerciseCatalog.canonicalCoachId(it.exerciseId) == canonicalId }
         if (existing != null) {
             var result = exercises
             val room = (MAX_SETS_PER_EXERCISE - existing.sets.size).coerceAtLeast(0)
             val toAdd = setCount.coerceIn(1, room.coerceAtLeast(1)).coerceAtMost(room)
             if (toAdd <= 0) return exercises
             newSetIds.take(toAdd).forEach { id ->
-                result = addSet(result, exerciseId, id)
+                result = addSet(result, existing.exerciseId, id)
             }
             return result
         }
@@ -269,7 +271,7 @@ object ActiveSessionLogic {
             val prev = previousByIndex[idx]
             LoggedSet(
                 id = id,
-                exerciseId = exerciseId,
+                exerciseId = canonicalId,
                 exerciseName = exerciseName,
                 setIndex = idx,
                 reps = (prev?.first ?: defaultReps).coerceIn(1, 99),
@@ -283,7 +285,7 @@ object ActiveSessionLogic {
             )
         }
         return exercises + ActiveExercise(
-            exerciseId = exerciseId,
+            exerciseId = canonicalId,
             name = exerciseName,
             sets = sets,
             supersetGroup = "",
