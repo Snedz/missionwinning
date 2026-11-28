@@ -1,12 +1,11 @@
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById, isFullExerciseCatalogLoaded } from '@/data/exercises';
 import type { MuscleGroup } from '@/lib/muscleGroups';
-import type { CompletedWorkoutLog, Exercise } from '@/types';
+import type { CompletedWorkoutLog } from '@/types';
 import type { CoachContext, CoachPlan, PlanExercise, PlanSession } from '@/lib/coach/types';
 import { chooseSplit, todayDayOffset } from '@/lib/coach/splitPlanner';
-import { buildSession, estimateMinutes, levelAllows, pickExercises } from '@/lib/coach/selector';
+import { buildSession, compatibleSessionCandidates, estimateMinutes, planExerciseForSession } from '@/lib/coach/selector';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
 import { equipmentMatches } from '@/lib/coach/equipment';
-import { nextTargets } from '@/lib/coach/progression';
 import { listGarageSwaps } from '@/lib/workout/garageSwap';
 
 export function recoverySession(dayOffset: number, weekStart: string): PlanSession {
@@ -191,8 +190,12 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
       }
     };
 
-    assign(strengthDays);
-    assign(otherDays);
+    if (remaining.some((s) => s.status === 'swapped' && s.kind === 'recovery')) {
+      assign([...remaining].sort((a, b) => a.dayOffset - b.dayOffset));
+    } else {
+      assign(strengthDays);
+      assign(otherDays);
+    }
 
     /*
      * Missed days stay in the week.
@@ -307,13 +310,17 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
     recovery: ctx.bodyScores.recovery,
     loadZone: ctx.loadZone,
   });
+  let remainingRecovery = split.slice(0, pending.length).filter((day) => day.kind === 'recovery').length -
+    pending.filter((session) => session.kind === 'recovery').length;
+  if (remainingRecovery <= 0) return plan;
   const rng = mulberry32(hashString(`${plan.weekStart}:${ctx.seedId}:regen`));
   const replacements = new Map<PlanSession, PlanSession>();
   pending.forEach((session, i) => {
     const day = split[i];
-    if (session.kind !== 'strength' || day?.kind !== 'recovery') return;
+    if (remainingRecovery <= 0 || session.kind !== 'strength' || day?.kind !== 'recovery') return;
     const recovery = buildSession(day, session.dayOffset, plan.weekStart, ctx, rng);
     replacements.set(session, { ...recovery, id: session.id, status: 'swapped' });
+    remainingRecovery--;
   });
   if (!replacements.size) return plan;
 
@@ -329,6 +336,13 @@ function isUpcoming(session: PlanSession, todayOffset: number): boolean {
   return session.dayOffset >= todayOffset && (session.status === 'planned' || session.status === 'swapped');
 }
 
+function needsEquipmentRepair(session: PlanSession, ctx: CoachContext): boolean {
+  return session.exercises.some((target) => {
+    const exercise = getExerciseById(target.exerciseId);
+    return exercise && !equipmentMatches(exercise, ctx.equipment, ctx.homeGymKit);
+  });
+}
+
 function repairSessionEquipment(session: PlanSession, ctx: CoachContext): PlanSession {
   const checks = session.exercises.map((target) => {
     const exercise = getExerciseById(target.exerciseId);
@@ -337,36 +351,21 @@ function repairSessionEquipment(session: PlanSession, ctx: CoachContext): PlanSe
   if (checks.every(({ compatible }) => compatible)) return session;
 
   const used = new Set(checks.filter(({ compatible }) => compatible).map(({ target }) => target.exerciseId));
-  const recovery = session.kind === 'recovery'
-    ? pickExercises({ kind: 'recovery', focusGroups: session.focusGroups, nameKey: '' }, ctx,
-      mulberry32(hashString(session.id))).exercises
-    : [];
-  const eligible = (ex: Exercise) =>
-    !used.has(ex.id) && levelAllows(ex, ctx.experience) && equipmentMatches(ex, ctx.equipment, ctx.homeGymKit);
-
+  const candidates = compatibleSessionCandidates(session, ctx);
+  const byId = new Map(candidates.map((ex) => [ex.id, ex]));
   const exercises = checks.flatMap(({ target, exercise, compatible }): PlanExercise[] => {
     if (compatible || !exercise) return [target];
-    if (session.kind === 'recovery') {
-      const replacement = recovery.find((candidate) => {
-        const data = getExerciseById(candidate.exerciseId);
-        return data && eligible(data);
-      });
-      if (!replacement) return [];
-      used.add(replacement.exerciseId);
-      return [replacement];
-    }
-    const explicit = [...(exercise.alternatives ?? []).map(getExerciseById), ...listGarageSwaps(exercise.id)]
-      .find((ex) => ex && eligible(ex));
+    const alternatives = [...(exercise.alternatives ?? []), ...listGarageSwaps(exercise.id).map((ex) => ex.id)];
+    const explicit = alternatives.find((id) => byId.has(id) && !used.has(id));
     const primary = exercise.muscleGroups[0];
-    const replacement = explicit ?? EXERCISES.find((ex) =>
-      !!primary && ex.muscleGroups[0] === primary && eligible(ex)
-    );
+    const available = candidates.filter((ex) => !used.has(ex.id));
+    const replacement = (explicit && byId.get(explicit)) ??
+      available.find((ex) => ex.muscleGroups[0] === primary) ??
+      available.find((ex) => !!primary && ex.muscleGroups.includes(primary)) ??
+      available[0];
     if (!replacement) return [];
     used.add(replacement.id);
-    return [{
-      exerciseId: replacement.id,
-      ...nextTargets(replacement.id, ctx.history, ctx.units, ctx.goalId, ctx.experience, ctx.loadZone),
-    }];
+    return [planExerciseForSession(replacement, session.kind, ctx)];
   });
   return { ...session, exercises, estMinutes: estimateMinutes(exercises, session.kind) };
 }
@@ -377,14 +376,14 @@ export async function adaptForEquipmentChange(
   todayOffset: number
 ): Promise<CoachPlan> {
   const profileChanged = plan.equipmentProfile !== ctx.equipment;
-  const futureIds = plan.sessions
-    .filter((s) => isUpcoming(s, todayOffset))
-    .flatMap((s) => s.exercises.map((ex) => ex.exerciseId));
+  const upcoming = plan.sessions.filter((s) => isUpcoming(s, todayOffset));
   const checkEquipment = profileChanged || ctx.equipment === 'dumbbells' || !!ctx.homeGymKit;
-  if (checkEquipment && !isFullExerciseCatalogLoaded() && futureIds.some((id) => !getExerciseById(id))) {
+  if (!checkEquipment) return plan;
+  if (!isFullExerciseCatalogLoaded() && upcoming.some((s) =>
+    needsEquipmentRepair(s, ctx) || s.exercises.some((ex) => !getExerciseById(ex.exerciseId))
+  )) {
     await ensureFullExerciseCatalog();
   }
-  if (!checkEquipment) return plan;
   const sessions = plan.sessions.map((s) => isUpcoming(s, todayOffset) ? repairSessionEquipment(s, ctx) : s);
   if (!profileChanged && sessions.every((s, i) => s === plan.sessions[i])) return plan;
   return {

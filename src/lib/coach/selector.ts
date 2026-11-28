@@ -26,7 +26,7 @@ const GOAL_TAG_MAP: Record<string, string[]> = {
   pft: ['strength', 'conditioning'],
 };
 
-export function levelAllows(ex: Exercise, experience: string): boolean {
+function levelAllows(ex: Exercise, experience: string): boolean {
   if (!ex.level) return true;
   if (experience === 'beginner') return ex.level === 'beginner';
   if (experience === 'intermediate') return ex.level !== 'advanced';
@@ -91,16 +91,36 @@ function rankExercises(
   });
 }
 
-function pickRecoveryExercises(rng: () => number): PlanExercise[] {
-  const pool = RECOVERY_IDS.filter((id) => EXERCISES.some((e) => e.id === id));
-  const shuffled = [...pool].sort(() => rng() - 0.5);
-  return shuffled.slice(0, 4).map((id) => ({
-    exerciseId: id,
-    sets: 2,
-    reps: 10,
-    weight: 0,
-    whyKey: 'coachWhyRecovery',
-  }));
+function recoveryCandidates(): Exercise[] {
+  return RECOVERY_IDS.flatMap((id) => {
+    const exercise = EXERCISES.find((e) => e.id === id);
+    return exercise ? [exercise] : [];
+  });
+}
+
+export function compatibleSessionCandidates(
+  day: Pick<SplitDay, 'kind' | 'focusGroups'>,
+  ctx: CoachContext
+): Exercise[] {
+  const pool = day.kind === 'recovery' ? recoveryCandidates() : EXERCISES;
+  return pool.filter((ex) =>
+    equipmentMatches(ex, ctx.equipment, ctx.homeGymKit) &&
+    (day.kind === 'recovery' || levelAllows(ex, ctx.experience)) &&
+    (day.kind === 'recovery' || (day.kind === 'conditioning'
+      ? ex.tags?.includes('conditioning') || ex.muscleGroups.includes('Cardio') ||
+        ex.muscleGroups.includes('Full Body')
+      : intersectsGroups(ex, day.focusGroups)))
+  );
+}
+
+export function planExerciseForSession(ex: Exercise, kind: SplitDay['kind'], ctx: CoachContext): PlanExercise {
+  if (kind === 'recovery') {
+    return { exerciseId: ex.id, sets: 2, reps: 10, weight: 0, whyKey: 'coachWhyRecovery' };
+  }
+  return {
+    exerciseId: ex.id,
+    ...nextTargets(ex.id, ctx.history, ctx.units, ctx.goalId, ctx.experience, ctx.loadZone),
+  };
 }
 
 export function estimateMinutes(exercises: PlanExercise[], kind: SplitDay['kind']): number {
@@ -115,32 +135,15 @@ export function pickExercises(
   rng: () => number
 ): { exercises: PlanExercise[]; estMinutes: number } {
   if (day.kind === 'recovery') {
-    const exercises = pickRecoveryExercises(rng);
+    const exercises = recoveryCandidates().sort(() => rng() - 0.5).slice(0, 4)
+      .map((ex) => planExerciseForSession(ex, day.kind, ctx));
     return { exercises, estMinutes: estimateMinutes(exercises, day.kind) };
   }
 
   const familiar = historyExerciseIds(ctx.history);
   const count = exerciseCountForDay(day.kind, ctx.experience, ctx.bodyScores.strain);
 
-  let candidates = EXERCISES.filter(
-    (ex) =>
-      equipmentMatches(ex, ctx.equipment, ctx.homeGymKit) &&
-      levelAllows(ex, ctx.experience) &&
-      intersectsGroups(ex, day.focusGroups)
-  );
-
-  if (day.kind === 'conditioning') {
-    candidates = EXERCISES.filter(
-      (ex) =>
-        equipmentMatches(ex, ctx.equipment, ctx.homeGymKit) &&
-        levelAllows(ex, ctx.experience) &&
-        (ex.tags?.includes('conditioning') ||
-          ex.muscleGroups.includes('Cardio' as never) ||
-          ex.muscleGroups.includes('Full Body' as never))
-    );
-  }
-
-  const ranked = rankExercises(candidates, familiar, ctx.goalId, rng);
+  const ranked = rankExercises(compatibleSessionCandidates(day, ctx), familiar, ctx.goalId, rng);
   const picked: Exercise[] = [];
   const usedGroups = new Set<MuscleGroup>();
 
@@ -161,24 +164,7 @@ export function pickExercises(
     picked.push(next);
   }
 
-  const exercises: PlanExercise[] = picked.map((ex) => {
-    const t = nextTargets(
-      ex.id,
-      ctx.history,
-      ctx.units,
-      ctx.goalId,
-      ctx.experience,
-      ctx.loadZone
-    );
-    return {
-      exerciseId: ex.id,
-      sets: t.sets,
-      reps: t.reps,
-      weight: t.weight,
-      whyKey: t.whyKey,
-      ...(t.loadPct != null ? { loadPct: t.loadPct } : {}),
-    };
-  });
+  const exercises = picked.map((ex) => planExerciseForSession(ex, day.kind, ctx));
 
   return { exercises, estMinutes: estimateMinutes(exercises, day.kind) };
 }
