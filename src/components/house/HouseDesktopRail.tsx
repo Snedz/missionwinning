@@ -30,7 +30,8 @@ export function useHouseDesktopPreview() {
   return preview && desktop;
 }
 
-export function HouseDesktopTodayLinks({ nextSession, lastWorkout }: {
+export function HouseDesktopTodayLinks({ hasWeekPlan, nextSession, lastWorkout }: {
+  hasWeekPlan: boolean;
   nextSession?: string;
   lastWorkout?: string;
 }) {
@@ -41,7 +42,11 @@ export function HouseDesktopTodayLinks({ nextSession, lastWorkout }: {
     <div className="desktop-preview-today-links">
       <section className="house-card">
         <h2 className="house-kicker">{t('navCoach', { defaultValue: 'Weekly plan' })}</h2>
-        <p className="house-lede">{nextSession || t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}</p>
+        <p className="house-lede">
+          {nextSession || (hasWeekPlan
+            ? t('coachNoSessionsLeftThisWeek', { defaultValue: 'No sessions left this week' })
+            : t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' }))}
+        </p>
         <Link className="house-btn" href="/coach">{t('coachPageTitle', { defaultValue: 'Mission Coach' })}</Link>
       </section>
       <section className="house-card">

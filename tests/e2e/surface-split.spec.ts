@@ -85,6 +85,22 @@ test.describe('Desktop surface @gate', () => {
     await expect(page.getByPlaceholder(/add exercise — search/i)).toBeVisible();
   });
 
+  test('desktop Today distinguishes a finished plan from an unplanned week', async ({ page }) => {
+    test.skip(process.env.DESKTOP_SHELL_PREVIEW !== 'true', 'Desktop shell preview is off');
+    await page.clock.setFixedTime(new Date('2026-11-25T12:00:00'));
+    await page.addInitScript(() => {
+      localStorage.setItem('mw_coach_plan', JSON.stringify({
+        weekStart: '2026-11-23',
+        revision: 1,
+        sessions: [{ id: 'last-session', name: 'Final workout', dayOffset: 2, status: 'done', exercises: [] }],
+      }));
+    });
+    await page.goto('/log');
+    const links = page.locator('.desktop-preview-today-links');
+    await expect(links.getByText('No sessions left this week')).toBeVisible();
+    await expect(links.getByText('No plan this week')).toHaveCount(0);
+  });
+
   test('Today fills the column instead of a phone measure', async ({ page }) => {
     await page.goto('/log');
     const shell = todayDesk(page);

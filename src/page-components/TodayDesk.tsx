@@ -196,8 +196,9 @@ export function TodayDesk() {
   });
   const weekCount = quietWeekGlance({ history }).days.filter((day) => day.done).length;
   const weekStart = currentWeekStart();
-  const nextSession = snap?.plan?.weekStart === weekStart
-    ? snap.plan.sessions
+  const weekPlan = snap?.plan?.weekStart === weekStart ? snap.plan : null;
+  const nextSession = weekPlan
+    ? weekPlan.sessions
         .filter((session) => session.dayOffset >= todayDayOffset(weekStart) && (session.status === 'planned' || session.status === 'swapped'))
         .sort((a, b) => a.dayOffset - b.dayOffset)[0]
     : undefined;
@@ -258,7 +259,11 @@ export function TodayDesk() {
           </div>
         ) : null}
       </section>
-      <HouseDesktopTodayLinks nextSession={nextSession?.name} lastWorkout={history.find((log) => !log.deletedAt)?.workoutName} />
+      <HouseDesktopTodayLinks
+        hasWeekPlan={weekPlan !== null}
+        nextSession={nextSession?.name}
+        lastWorkout={history.find((log) => !log.deletedAt)?.workoutName}
+      />
     </div>
   );
 }

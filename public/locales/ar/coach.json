@@ -192,6 +192,7 @@
   "coachPreferredDaysUsed": "Your coach week will use these days.",
   "coachPreferredDaysSpread": "Pick at least {{count}} to choose your own days — otherwise sessions spread evenly.",
   "coachGenerateEmptyTitle": "No plan this week",
+  "coachNoSessionsLeftThisWeek": "لا توجد حصص تدريبية متبقية هذا الأسبوع",
   "coachFreeBetaNextWeek": "Generate next week from your latest logs. Free while beta is open.",
   "coachGenerateEmptyDesc": "One week from your logs. Free every week — no wearable.",
   "coachManageCancel": "Cancel",
