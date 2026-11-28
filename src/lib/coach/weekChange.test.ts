@@ -102,3 +102,16 @@ test('an adaptation reports an overdue missed session that was completed late', 
   const change = describeCoachWeekChange(plan(1, [missed]), plan(2, [done]), ctx, 'adapt');
   assert.deepEqual(change?.schedule.map((row) => row.kind), ['completed']);
 });
+
+test('a rebuild keeps the original prescription weight unit and does not guess for legacy plans', () => {
+  const slotWithLoad = (weight: number, weightUnits?: CoachContext['units']): PlanSession => {
+    const slot = strength(2);
+    return { ...slot, exercises: [{ ...slot.exercises[0], weight, weightUnits }] };
+  };
+  const after = plan(2, [slotWithLoad(135, 'imperial')]);
+  const imperial = { ...ctx, units: 'imperial' } as const;
+  const change = describeCoachWeekChange(plan(1, [slotWithLoad(60, 'metric')]), after, imperial, 'rebuild');
+  assert.deepEqual(change?.loads.map((row) => [row.before.weightUnits, row.after.weightUnits]), [['metric', 'imperial']]);
+  const legacy = describeCoachWeekChange(plan(1, [slotWithLoad(60)]), after, imperial, 'rebuild');
+  assert.deepEqual(legacy?.loads.map((row) => [row.before.weightUnits, row.after.weightUnits]), [[undefined, 'imperial']]);
+});

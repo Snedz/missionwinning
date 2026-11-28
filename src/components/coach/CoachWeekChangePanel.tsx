@@ -28,7 +28,9 @@ export function CoachWeekChangePanel({
   const target = (line: CoachWeekChange['loads'][number]['after']) => t('coachChangeTarget', {
     sets: line.sets,
     reps: line.reps,
-    load: line.unset ? t('coachChangeUnset', { defaultValue: 'weight not set' }) : `${formatNumber.format(line.weight)} ${unit}`,
+    load: line.unset
+      ? t('coachChangeUnset', { defaultValue: 'weight not set' })
+      : line.weightUnits ? `${formatNumber.format(line.weight)} ${weightUnitLabel(line.weightUnits)}` : formatNumber.format(line.weight),
     defaultValue: '{{sets}} sets × {{reps}} reps · {{load}}',
   });
 

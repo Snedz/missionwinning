@@ -4,7 +4,7 @@ import { nextTargets } from './progression';
 import type { CoachContext, CoachPlan, PlanExercise, PlanSession } from './types';
 
 type Session = Pick<PlanSession, 'name' | 'kind' | 'focusGroups' | 'dayOffset'>;
-type Target = Pick<PlanExercise, 'sets' | 'reps' | 'weight'> & { unset: boolean };
+type Target = Pick<PlanExercise, 'sets' | 'reps' | 'weight' | 'weightUnits'> & { unset: boolean };
 type SavedSet = { workoutId: string; completedAt: string; weight: number; reps: number };
 type ScheduleChange =
   | { kind: 'moved'; before: Session; after: Session }
@@ -41,8 +41,8 @@ function isPending(s: PlanSession): boolean {
   return s.status === 'planned' || s.status === 'swapped';
 }
 
-function target({ sets, reps, weight, whyKey }: PlanExercise): Target {
-  return { sets, reps, weight, unset: weight === 0 && whyKey === 'coachFindWorkingWeight' };
+function target({ sets, reps, weight, weightUnits, whyKey }: PlanExercise): Target {
+  return { sets, reps, weight, ...(weightUnits ? { weightUnits } : {}), unset: weight === 0 && whyKey === 'coachFindWorkingWeight' };
 }
 
 function sameTarget(a: Target, b: Target): boolean {
@@ -152,10 +152,11 @@ export function describeCoachWeekChange(
       if (!prior) continue;
       const from = target(prior);
       const to = target(exercise);
-      if (sameTarget(from, to)) continue;
+      const switchedUnits = !!from.weightUnits && !!to.weightUnits && from.weightUnits !== to.weightUnits;
+      if (sameTarget(from, to) && !(switchedUnits && to.weight > 0)) continue;
       loads.push({
         session: session(other), exerciseId: exercise.exerciseId, before: from, after: to,
-        ...progressionEvidence(from, exercise, ctx),
+        ...(switchedUnits ? {} : progressionEvidence(from, exercise, ctx)),
       });
     }
   }
