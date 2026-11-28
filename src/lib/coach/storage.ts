@@ -1,5 +1,6 @@
 import type { CoachPlan } from '@/lib/coach/types';
 import type { CoachWeekChange } from '@/lib/coach/weekChange';
+import { applyPlannedMissSkip, applyPlannedMissSlide } from '@/lib/coach/plannedMiss';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, readRaw, remove, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 
@@ -62,6 +63,28 @@ export function clearPlan(): void {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('mw-coach-plan-changed'));
   }
+}
+
+export function savePlannedMissEdit(weekStart: string, sessionId: string, action: 'skip' | { slideFrom: number }): void {
+  const plan = loadPlan();
+  if (!plan || plan.weekStart !== weekStart) return;
+  const original = plan.sessions.find((s) => s.id === sessionId && s.status !== 'done');
+  if (!original) return;
+  const next = action === 'skip'
+    ? applyPlannedMissSkip(plan, sessionId)
+    : applyPlannedMissSlide(plan, sessionId, action.slideFrom);
+  if (next === plan) return;
+  const { name, kind, focusGroups, dayOffset } = original;
+  const before = { name, kind, focusGroups, dayOffset };
+  const moved = next.sessions.find((s) => s.id === sessionId);
+  savePlan(next, {
+    source: 'adapt', weekStart, beforeRevision: plan.revision, afterRevision: next.revision,
+    units: readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric',
+    schedule: moved
+      ? [{ kind: 'moved', before, after: { ...before, dayOffset: moved.dayOffset } }]
+      : [{ kind: 'dropped', before, missed: false }],
+    loads: [],
+  });
 }
 
 export function isTasterUsed(): boolean {

@@ -30,12 +30,8 @@ import {
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useUnits } from '@/hooks/useUnits';
 import { weightUnitLabel } from '@/lib/units';
-import {
-  applyPlannedMissSkip,
-  applyPlannedMissSlide,
-  findPlannedMiss,
-} from '@/lib/coach/plannedMiss';
-import { savePlan } from '@/lib/coach/storage';
+import { findPlannedMiss } from '@/lib/coach/plannedMiss';
+import { savePlannedMissEdit } from '@/lib/coach/storage';
 
 type Props = {
   plan: CoachPlan;
@@ -328,7 +324,7 @@ export function CoachAdaptBanner({
                 <button
                   type="button"
                   data-testid="planned-miss-skip"
-                  onClick={() => savePlan(applyPlannedMissSkip(plan, plannedMiss.session.id))}
+                  onClick={() => savePlannedMissEdit(plan.weekStart, plannedMiss.session.id, 'skip')}
                   className="inline-flex min-h-[44px] items-center px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
                 >
                   {t('plannedMissSkip', { defaultValue: 'Skip' })}
@@ -338,9 +334,7 @@ export function CoachAdaptBanner({
                     type="button"
                     data-testid="planned-miss-slide"
                     onClick={() =>
-                      savePlan(
-                        applyPlannedMissSlide(plan, plannedMiss.session.id, todayOffset ?? 0)
-                      )
+                      savePlannedMissEdit(plan.weekStart, plannedMiss.session.id, { slideFrom: todayOffset ?? 0 })
                     }
                     className="inline-flex min-h-[44px] items-center px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
                   >

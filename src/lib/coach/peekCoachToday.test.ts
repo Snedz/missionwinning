@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { peekCoachToday } from './peekCoachToday.ts';
-import { clearPlan, savePlan } from './storage.ts';
+import { clearPlan, loadCoachWeekChange, loadPlan, savePlan, savePlannedMissEdit } from './storage.ts';
 import { currentWeekStart, todayDayOffset } from './splitPlanner.ts';
 import type { CoachPlan } from './types.ts';
 
@@ -101,4 +101,19 @@ describe('peekCoachToday', () => {
     savePlan(planWithToday('done'));
     assert.equal(peekCoachToday(), null);
   });
+
+  for (const action of ['skip', 'slide'] as const) {
+    it(`stores a receipt when the athlete chooses to ${action} a missed session`, () => {
+      const before = planWithToday('planned');
+      before.sessions[0] = { ...before.sessions[0], dayOffset: 0, status: 'missed' };
+      savePlan(before);
+      const id = before.sessions[0].id;
+      savePlannedMissEdit(before.weekStart, id, action === 'skip' ? 'skip' : { slideFrom: 2 });
+      const after = loadPlan()!;
+      const [row] = loadCoachWeekChange(after)?.schedule ?? [];
+      assert.equal(row?.kind, action === 'skip' ? 'dropped' : 'moved');
+      if (row?.kind === 'dropped') assert.equal(row.missed, false);
+      if (row?.kind === 'moved') assert.equal(row.after.dayOffset, 2);
+    });
+  }
 });
