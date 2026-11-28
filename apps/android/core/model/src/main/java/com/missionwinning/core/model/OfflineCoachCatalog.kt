@@ -82,7 +82,7 @@ wall-angels|Wall Angels|3|7|1|0|1
 thread-needle|Thread the Needle|1|7|1|0|1
 frog-pose|Frog Pose Hold|2|7|1|0|1
 bear-hug-hold|Bear Hug Hold (Imaginary)|1|7|1|0|1
-shrimp-squat-reg|Shrimp Squat Regression (Assisted)|2|7|1|1|1
+shrimp-squat-reg|Shrimp Squat Regression (Assisted)|2|5|1|1|1
 neck-circles-release|Neck Circles + Jaw Release|1|7|1|0|1
 ankle-dorsiflex-rock|Ankle Dorsiflexion Rocks|2|7|0|1|1
 thoracic-rot-quad|Thoracic Rotations on All Fours|1|7|1|1|1

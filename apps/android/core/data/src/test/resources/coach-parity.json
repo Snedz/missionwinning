@@ -96,8 +96,8 @@
               "Core"
             ],
             "exercises": [
+              {"exerciseId": "thoracic-rot-quad", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
               {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "air-squat", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
               {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
@@ -117,9 +117,9 @@
               "Core"
             ],
             "exercises": [
-              {"exerciseId": "superman", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+              {"exerciseId": "bear-crawl", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "jump-squats", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
             "status": "planned"
@@ -223,7 +223,7 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "thoracic-rot-quad", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
               {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
@@ -244,8 +244,8 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "air-squat", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+              {"exerciseId": "suitcase-carry", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachFindWorkingWeight"},
+              {"exerciseId": "jump-squats", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
             "status": "planned"
@@ -265,8 +265,8 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 25, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
             "status": "planned"
@@ -307,7 +307,7 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "thoracic-rot-quad", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
               {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
@@ -328,8 +328,8 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "superman-to-yti", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "air-squat", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+              {"exerciseId": "suitcase-carry", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachFindWorkingWeight"},
+              {"exerciseId": "jump-squats", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
             "status": "planned"
@@ -349,8 +349,8 @@
             ],
             "exercises": [
               {"exerciseId": "lunges", "sets": 2, "reps": 6, "weight": 55, "whyKey": "coachWhyHold", "loadPct": 86},
-              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
-              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
+              {"exerciseId": "push-ups", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"},
+              {"exerciseId": "hand-release-push-up", "sets": 3, "reps": 5, "weight": 0, "whyKey": "coachWhyBodyweightReps"}
             ],
             "estMinutes": 60,
             "status": "planned"
