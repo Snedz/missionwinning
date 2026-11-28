@@ -337,11 +337,15 @@ object ExerciseCatalog {
 
     private val byId: Map<String, ExerciseDef> = all.associateBy { it.id }
 
-    fun get(id: String): ExerciseDef? = byId[normalizeId(id)]
+    fun get(id: String): ExerciseDef? {
+        val key = normalizeId(id)
+        val legacy = byId[key]
+        return OfflineCoachCatalog.byId[key]?.toExerciseDef(legacy) ?: legacy
+    }
 
     fun displayName(id: String): String {
         val key = normalizeId(id)
-        return byId[key]?.name ?: humanize(key)
+        return byId[key]?.name ?: OfflineCoachCatalog.byId[key]?.name ?: humanize(key)
     }
 
     fun search(query: String, equipment: String? = null, muscle: String? = null): List<ExerciseDef> {
