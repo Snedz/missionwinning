@@ -25,7 +25,7 @@ const forgeMetadata: Metadata = publicPageMetadata({
 export function generateMetadata(): Metadata {
   if (!isLandingV2Enabled()) return forgeMetadata;
   const base = publicPageMetadata({ title: copy.title, description: copy.description, path: '/' });
-  const image = { url: '/brand/landing-share.png', width: 1200, height: 630, alt: copy.title };
+  const image = { url: '/photo/phone-bench.webp', width: 900, height: 1125, alt: copy.photoAlt };
   return {
     ...base,
     openGraph: { ...base.openGraph, images: [image] },

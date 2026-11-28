@@ -65,6 +65,41 @@
   outline-offset: 3px;
 }
 
+.previewTheme {
+  --preview-ink: #0a0a0a;
+  --preview-silver: #c8c8c8;
+  --preview-orange: #ff5400;
+  --preview-grey: #adadad;
+  --preview-line: #313131;
+  --preview-white: #f5f5f5;
+  --preview-masthead: #0c0c0c;
+  --preview-scan: #0002;
+  --preview-shade-deep: #080808fa;
+  --preview-shade-mid: #080808d4;
+  --preview-shade-light: #08080825;
+  --preview-shade-solid: #080808;
+  --preview-orange-text: #ff8144;
+  --preview-hover: #ff7a33;
+  --preview-action-tint: #1118;
+  --preview-edge: #aaa9;
+  --preview-controls: #151515;
+  --preview-ticker: #171311;
+  --preview-panel: #101010;
+  --preview-card: #181818;
+  --preview-card-back: #21150e;
+  --preview-book: #141414;
+  --preview-footer-stroke: #666;
+  --preview-dock: #111;
+  --preview-mobile-shade: #090909;
+  --preview-mobile-mid: #090909d9;
+  --preview-mobile-light: #09090920;
+  --preview-demo-line: #383838;
+  --preview-demo-dim: #bcbcbc;
+  --preview-demo-hover: #2a1711;
+  --preview-demo-select: #1c1c1c;
+  --preview-demo-result: #ff874c;
+}
+
 .grain {
   position: fixed;
   inset: -10%;

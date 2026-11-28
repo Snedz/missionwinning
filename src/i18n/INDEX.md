@@ -75,7 +75,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |
 | `landingLocales.ts` | Marketing landing copy. Client pages must not import this file — `BY_LANG` ships every language. |
-| `landingPreviewLocales.ts` | English copy for the opt-in training notebook preview; independent of Forge's locale packs. |
+| `landingPreviewLocales.ts` | English copy for the opt-in cinematic landing and sample week; independent of Forge's locale packs. |
 | `landingSurface.ts` | Landing FAQ + journey key lists only. No language tables, so `/` can render the accordion without the packs. |
 | `betaLocales.ts` | Beta gates |
 | `gateLocales.ts` | Private gate (EN lives in `gateEn.ts`) |

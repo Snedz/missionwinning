@@ -1,108 +1,153 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { LANDING_PREVIEW_EN as copy } from '@/i18n/landingPreviewLocales';
-import { landingPreviewWeek, previewSets } from '@/lib/coach/landingPreviewWeek';
+import { forgeFontClass } from './landingForgeFonts';
 import LandingV2DemoLoader from './LandingV2DemoLoader';
+import forge from './landingForge.module.css';
 import s from './landingV2.module.css';
 
-function LogLink() {
-  return <a href="/active" className={s.primary}>{copy.log} <span aria-hidden="true">↗</span></a>;
-}
+const photos = [
+  { src: '/photo/phone-bench.webp', position: 'center 45%' },
+  { src: '/photo/home-rack.webp', position: 'center 40%' },
+  { src: '/photo/bare-wrist.webp', position: 'center 45%' },
+];
 
-function WeekComparison() {
-  const rows = [
-    { label: copy.prior, sessions: landingPreviewWeek('dumbbells', 3) },
-    { label: copy.rebuilt, sessions: landingPreviewWeek('dumbbells', 3, 2) },
-  ];
-  return (
-    <div className={s.record}>
-      <header className={s.recordHead}><h3 id="preview-week">{copy.weekTitle}</h3><span>{copy.sample}</span></header>
-      <table className={s.calendar} aria-labelledby="preview-week">
-        <thead><tr><td />{copy.days.map((day, index) => (
-          <th scope="col" key={day}><span aria-hidden="true">{copy.shortDays[index]}</span><span className="sr-only">{day}</span></th>
-        ))}</tr></thead>
-        <tbody>{rows.map(({ label, sessions }) => (
-          <tr key={label}>
-            <th scope="row">{label}</th>
-            {copy.days.map((day, index) => {
-              const planned = sessions.some(({ dayOffset }) => dayOffset === index);
-              return <td key={day} className={planned ? s.planned : undefined}>
-                <span aria-hidden="true">{planned ? '●' : '–'}</span>
-                <span className="sr-only">{planned ? copy.hasSession : copy.noSession}</span>
-              </td>;
-            })}
-          </tr>
-        ))}</tbody>
-      </table>
-      <p className={s.recordNote}>{copy.weekSource}</p>
-    </div>
-  );
+function LogLink() {
+  return <a href="/active" className={s.cta}>{copy.log} <span aria-hidden="true">↗</span></a>;
 }
 
 export default function LandingV2Page() {
-  return (
-    <div className={s.page} lang="en">
-      <a className="sr-only focus:not-sr-only" href="#notebook-main">{copy.skip}</a>
-      <header className={s.masthead}>
-        <div className={s.frame}>
-          <a href="/" className={s.brand}>{copy.brand}</a>
-          <a href="/log" className={s.inline}>{copy.notebook} <span aria-hidden="true">↗</span></a>
+  const [frame, setFrame] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [dock, setDock] = useState(false);
+  const [openCard, setOpenCard] = useState<string>();
+  const hero = useRef<HTMLElement>(null);
+  const start = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!playing || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => setFrame(previous => (previous + 1) % photos.length), 6000);
+    return () => window.clearInterval(timer);
+  }, [playing]);
+
+  useEffect(() => {
+    const heroElement = hero.current;
+    const startElement = start.current;
+    if (!heroElement || !startElement) return;
+    const observer = new IntersectionObserver(() => {
+      const bounds = startElement.getBoundingClientRect();
+      setDock(heroElement.getBoundingClientRect().bottom <= 0 && bounds.top >= window.innerHeight);
+    });
+    observer.observe(heroElement);
+    observer.observe(startElement);
+    return () => observer.disconnect();
+  }, []);
+
+  return <div className={`${s.root} ${forge.previewTheme} ${forgeFontClass}`} lang="en">
+    <a className="sr-only focus:not-sr-only" href="#preview-main">{copy.skip}</a>
+    <header className={s.masthead}>
+      <div className={s.frame}>
+        <a href="/" className={s.brand}>
+          <span className={s.bolt} aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg></span>
+          <span><strong>{copy.brand}</strong><small>{copy.rail}</small></span>
+        </a>
+        <a href="#week-example" className={s.mastLink}>{copy.seeExample} <span aria-hidden="true">↓</span></a>
+      </div>
+    </header>
+    <main id="preview-main" tabIndex={-1}>
+      <section ref={hero} className={s.hero} aria-labelledby="preview-title">
+        <div className={s.reel} aria-hidden="true" data-playing={playing}>
+          {photos.map(({ src, position }, index) => (
+            <div key={src} className={index === frame ? s.current : undefined}>
+              <Image src={src} alt="" fill sizes="100vw" loading={index === 0 ? 'eager' : 'lazy'} style={{ objectPosition: position }} />
+            </div>
+          ))}
         </div>
-      </header>
-      <main id="notebook-main" tabIndex={-1}>
-        <section className={`${s.frame} ${s.hero}`} aria-labelledby="notebook-title">
-          <div>
-            <p className={s.kicker}>{copy.heroLabel}</p>
-            <h1 id="notebook-title">{copy.titleStart}<br />{copy.titleEnd}</h1>
-            <p className={s.lead}>{copy.description}</p>
-            <div className={s.actions}><LogLink /><a className={s.inline} href="#week-example">{copy.seeExample} <span aria-hidden="true">↓</span></a></div>
-            <p className={s.note}>{copy.guest}</p>
+        <div className={s.shade} />
+        <div className={`${s.frame} ${s.heroInner}`}>
+          <div className={s.heroCopy}>
+            <p className={s.marker}>{copy.heroLabel}</p>
+            <h1 id="preview-title">{copy.headline.map(line => <span key={line}>{line}</span>)}</h1>
+            <p className={s.description}>{copy.description}</p>
+            <div className={s.actions}><LogLink /><a href="#week-example" className={s.secondary}>{copy.seeExample}</a></div>
+            <p className={s.proof}>{copy.guest}</p>
           </div>
-          <figure className={s.record}>
-            <figcaption className={s.recordHead}><span>{copy.receipt}</span><span>{copy.sample}</span></figcaption>
-            <div className={s.receipt}>
-              <h2>{copy.movement}</h2>
-              <ol>{previewSets.map(({ reps, weight }, index) => (
-                <li key={index}><span>{String(index + 1).padStart(2, '0')}</span><strong>{reps} {copy.reps}</strong><span>{weight} kg</span></li>
-              ))}</ol>
-            </div>
-          </figure>
-        </section>
-        <section id="week-example" className={s.band} aria-labelledby="week-example-title">
-          <div className={`${s.frame} ${s.example}`}>
-            <div className={s.sectionCopy}>
-              <p className={s.kicker}>{copy.exampleLabel}</p>
-              <h2 id="week-example-title">{copy.exampleTitle}</h2>
-              <p>{copy.exampleDescription}</p>
-            </div>
-            <div><WeekComparison /><LandingV2DemoLoader /></div>
+          <div className={s.controls}>
+            <span>{copy.reel} / 0{frame + 1}</span>
+            <button type="button" aria-label={playing ? copy.pause : copy.play} onClick={() => setPlaying(value => !value)}>{playing ? 'Ⅱ' : '▶'}</button>
           </div>
-        </section>
-        <section className={`${s.frame} ${s.section}`} aria-labelledby="app-screens">
-          <div className={s.sectionCopy}>
-            <p className={s.kicker}>{copy.screensLabel}</p>
-            <h2 id="app-screens">{copy.screensTitle}</h2>
-            <p>{copy.screensIntro}</p>
-          </div>
-          <div className={s.screens}>{Object.entries(copy.screens).map(([id, screen], index) => (
-            <figure key={id}>
-              <figcaption className={s.kicker}>0{index + 1} / {screen.name}</figcaption>
-              <Image className={s.phone} src={`/brand/preview-${id}-phone.webp`} width={390} height={844} sizes="(max-width: 420px) 82vw, 265px" alt={screen.alt} />
-              {id !== 'today' && <Image className={s.laptop} src={`/brand/preview-${id}-laptop.webp`} width={960} height={600} sizes="(min-width: 1024px) 30vw, 1px" alt={screen.alt} />}
-            </figure>
+        </div>
+        <div key={frame} className={s.reelMeter} data-playing={playing} aria-hidden="true" />
+      </section>
+      <div className={s.ticker} aria-hidden="true">{copy.ticker.map(word => <span key={word}>{word}</span>)}</div>
+
+      <section className={s.section} aria-labelledby="preview-anywhere">
+        <div className={s.frame}>
+          <p className={s.marker}>{copy.anywhereLabel}</p>
+          <h2 id="preview-anywhere">{copy.anywhereTitle}</h2>
+          <div className={s.cards}>{copy.anywhere.map(({ heading, body, photo }) => (
+            <article key={heading}>
+              <div className={s.cardPhoto}><Image src={photo} alt="" fill sizes="(max-width: 680px) 92vw, 31vw" /></div>
+              <div className={s.cardText}><h3>{heading}</h3><p>{body}</p></div>
+            </article>
           ))}</div>
-        </section>
-        <section className={s.band} aria-labelledby="notebook-device">
-          <div className={`${s.frame} ${s.section}`}>
-            <div className={s.sectionCopy}>
-              <p className={s.kicker}>{copy.deviceLabel}</p>
-              <h2 id="notebook-device">{copy.deviceTitle}</h2>
-            </div>
-            <div className={s.devices}>{copy.devices.map(({ heading, body }) => <div key={heading}><h3>{heading}</h3><p>{body}</p></div>)}</div>
+        </div>
+      </section>
+
+      <section id="week-example" className={`${s.section} ${s.band}`} aria-labelledby="preview-week">
+        <div className={`${s.frame} ${s.coachGrid}`}>
+          <div>
+            <p className={s.marker}>{copy.exampleLabel}</p>
+            <h2 id="preview-week">{copy.exampleTitle}</h2>
+            <p className={s.description}>{copy.exampleDescription}</p>
           </div>
-        </section>
-        <div className={`${s.frame} ${s.final}`}><p>{copy.final}</p><LogLink /></div>
-      </main>
-      <footer className={`${s.frame} ${s.footer}`}><span>{copy.brand}</span><a className={s.inline} href="/log">{copy.notebook}</a></footer>
-    </div>
-  );
+          <LandingV2DemoLoader />
+        </div>
+      </section>
+
+      <section className={s.section} aria-labelledby="preview-goals">
+        <div className={s.frame}>
+          <p className={s.marker}>{copy.goalsLabel}</p>
+          <h2 id="preview-goals">{copy.goalsTitle}</h2>
+          <div className={s.goalList}>{copy.goals.map(({ heading, body }) => (
+            <article key={heading} className={s.cardText}><h3>{heading}</h3><p>{body}</p></article>
+          ))}</div>
+          <div className={s.ruleGrid}>{copy.rules.map(({ heading, body }) => (
+            <button
+              key={heading}
+              type="button"
+              className={s.flip}
+              aria-label={heading}
+              aria-expanded={openCard === heading}
+              onClick={() => setOpenCard(current => current === heading ? undefined : heading)}
+            >
+              <span className={s.flipTitle} aria-hidden="true">{heading} <span>↻</span></span>
+              <span className={s.flipBack} aria-hidden={openCard !== heading}>{body}</span>
+            </button>
+          ))}</div>
+        </div>
+      </section>
+
+      <section className={`${s.section} ${s.band}`} aria-labelledby="preview-devices">
+        <div className={s.frame}>
+          <p className={s.marker}>{copy.deviceLabel}</p>
+          <h2 id="preview-devices">{copy.deviceTitle}</h2>
+          <div className={s.deviceGrid}>{copy.devices.map(({ heading, body }) => (
+            <article key={heading} className={s.cardText}><h3>{heading}</h3><p>{body}</p></article>
+          ))}</div>
+        </div>
+      </section>
+
+      <section ref={start} className={s.section} aria-labelledby="preview-start">
+        <div className={`${s.frame} ${s.booking}`}>
+          <div><p className={s.marker}>{copy.closeLabel}</p><h2 id="preview-start">{copy.closeTitle}</h2><p className={s.description}>{copy.final}</p></div>
+          <LogLink />
+        </div>
+      </section>
+    </main>
+    <footer className={s.footer}><span aria-hidden="true">{copy.wordmark}</span><p>{copy.brand}</p></footer>
+    {dock && <div className={s.dock}><span>{copy.guest}</span><LogLink /></div>}
+  </div>;
 }

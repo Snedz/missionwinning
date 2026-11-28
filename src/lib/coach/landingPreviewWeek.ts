@@ -5,7 +5,7 @@ import type { CompletedWorkoutLog } from '@/types';
 
 const weekStart = '2026-06-08';
 const workoutTime = '2026-06-08T12:00:00.000Z';
-export const previewSets = Array.from({ length: 3 }, () => ({ reps: 10, weight: 20 }));
+const previewSets = Array.from({ length: 3 }, () => ({ reps: 10, weight: 20 }));
 const history: CompletedWorkoutLog[] = [{
   id: 'landing-example',
   workoutName: 'Lunges',

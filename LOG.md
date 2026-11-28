@@ -1,8 +1,8 @@
 # Mission Winning — Development Log
 
-## 2026-11-27 — Preview the v2 training notebook landing (`.1209`)
+## 2026-11-27 — Preview the cinematic Forge remix (`.1210`)
 
-Use `LANDING_V2_PREVIEW=true` to replace Forge only after the existing homepage gate admits the visitor. The preview links to guest Train, compares two real Coach sample schedules, and runs the interactive demo in memory without saving workouts. The sample starts on Monday so even a six-session schedule fits before a missed day is selected. Forge remains the default.
+Use `LANDING_V2_PREVIEW=true` to see the black-and-white training reel, guest Train link, and Forge’s offline and equipment cards. Mission Coach’s sample week rebuilds in memory, never saves workouts, and starts on Monday so six sessions fit. The page explains browser install, offline logging, and the separate native Android app. The access gate and default Forge homepage remain unchanged.
 
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 
