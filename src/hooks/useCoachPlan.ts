@@ -62,7 +62,7 @@ export function useCoachPlan() {
   // same-week on-demand regen stays premium (see generate()).
   const locked = false;
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback(async (isCurrent: () => boolean) => {
     let existing = loadPlan();
 
     if (!existing) {
@@ -101,17 +101,17 @@ export function useCoachPlan() {
      * `todayOffset` above was already derived from the real clock and used three
      * lines down — the date was in scope the whole time.
      */
-    let next = adaptPlan(existing, ctx, localDateKey());
-    next = adaptForEquipmentChange(next, ctx, todayOffset);
+    const adapted = adaptPlan(existing, ctx, localDateKey());
+    const fatigued = premium && ctx.bodyScores.strain >= 70 && todayOffset < 6
+      ? regenerateFutureSessions(adapted, ctx, todayOffset)
+      : adapted;
 
-    if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
-      const regen = regenerateFutureSessions(next, ctx, todayOffset);
-      if (regen.revision !== next.revision) {
-        next = regen;
-        track('coach_plan_regenerated_fatigue', { strain: ctx.bodyScores.strain });
-      }
+    const next = await adaptForEquipmentChange(fatigued, ctx, todayOffset);
+    if (!isCurrent()) return;
+
+    if (fatigued !== adapted) {
+      track('coach_plan_regenerated_fatigue', { strain: ctx.bodyScores.strain });
     }
-
     if (next.revision !== existing.revision) {
       track('coach_plan_adapted', { revision: next.revision });
       savePlan(next);
@@ -143,14 +143,25 @@ export function useCoachPlan() {
   }, []);
 
   useEffect(() => {
+    let generation = 0;
     setLoading(true);
-    refresh();
-    setLoading(false);
 
-    const onChange = () => refresh();
+    const onChange = () => {
+      const current = ++generation;
+      const isCurrent = () => current === generation;
+      void refresh(isCurrent)
+        .catch(() => {
+          if (isCurrent()) setPlan(loadPlan());
+        })
+        .finally(() => {
+          if (isCurrent()) setLoading(false);
+        });
+    };
     window.addEventListener('mw-coach-plan-changed', onChange);
     window.addEventListener('storage', onChange);
+    onChange();
     return () => {
+      generation++;
       window.removeEventListener('mw-coach-plan-changed', onChange);
       window.removeEventListener('storage', onChange);
     };

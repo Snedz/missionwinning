@@ -1,7 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { getExerciseById } from '@/data/exercises';
 import type { CompletedWorkoutLog } from '@/types';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
+import { equipmentMatches } from '@/lib/coach/equipment';
 import { generateWeek } from '@/lib/coach/planEngine';
 import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions, sessionsMateriallyEqual } from '@/lib/coach/adapt';
 
@@ -266,7 +268,28 @@ describe('adaptPlan', () => {
     }
   });
 
-  it('done sessions stay immutable on equipment change', () => {
+  it('checks lazy catalog exercises in saved dumbbells plans on a cold start', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    assert.equal(getExerciseById('incline-dumbbell-press'), undefined, 'start with the base catalog only');
+    const plan = generateWeek(ctx, week, 1, week);
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [plan.sessions[0], {
+        ...pending, exercises: [{ ...pending.exercises[0], exerciseId: 'incline-dumbbell-press' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 0);
+    assert.ok(getExerciseById('incline-dumbbell-press'), 'load the lazy exercise before checking its equipment');
+    assert.equal(adapted.revision, 2);
+    assert.ok(adapted.sessions.every((s) => s.exercises.every((e) => e.exerciseId !== 'incline-dumbbell-press')));
+  });
+
+  it('done sessions stay immutable on equipment change', async () => {
     const ctx = buildCoachContextFromInputs({
       history: [],
       experience: 'beginner',
@@ -279,9 +302,187 @@ describe('adaptPlan', () => {
     const doneId = plan.sessions[0].id;
     plan.sessions[0] = { ...plan.sessions[0], status: 'done' };
     const newCtx = { ...ctx, equipment: 'full-gym' as const };
-    const adapted = adaptForEquipmentChange(plan, newCtx, 1);
+    const adapted = await adaptForEquipmentChange(plan, newCtx, 1);
     const done = adapted.sessions.find((s) => s.id === doneId);
     assert.equal(done?.status, 'done');
+  });
+
+  it('rebuilds a saved dumbbells week with incompatible future exercises only once', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const done = { ...plan.sessions[0], status: 'done' as const };
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [done, {
+        ...pending,
+        exercises: [{ ...pending.exercises[0], exerciseId: 'banded-dislocate' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 1);
+    assert.equal(adapted.revision, 2);
+    assert.equal(adapted.sessions[0], done);
+    assert.ok(adapted.sessions.some((s) => s.status !== 'done' && s.exercises.length > 0));
+    assert.ok(!adapted.sessions.flatMap((s) => s.exercises).some((e) => e.exerciseId === 'banded-dislocate'));
+    assert.equal(await adaptForEquipmentChange(adapted, ctx, 1), adapted);
+  });
+
+  it('keeps one compatible catch-up workout when equipment changes on Friday', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+      preferredDays: [],
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const done = { ...plan.sessions[0], status: 'done' as const };
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [done, {
+        ...pending, id: `${week}-d4`, dayOffset: 4, status: 'swapped' as const,
+        exercises: [{ ...pending.exercises[0], exerciseId: 'banded-dislocate' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 4);
+    assert.equal(adapted.sessions[0], done);
+    assert.equal(adapted.sessions.length, 2, 'keep exactly one remaining workout');
+    assert.ok(adapted.sessions[1].dayOffset >= 4);
+    assert.ok(adapted.sessions[1].exercises.length > 0);
+    assert.ok(adapted.sessions[1].exercises.every((e) => e.exerciseId !== 'banded-dislocate'));
+  });
+
+  it('does not move the second workout back out of the catch-up slots during fatigue regeneration', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 5, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+      preferredDays: [],
+    });
+    ctx.bodyScores = { ...ctx.bodyScores, strain: 70 };
+    const plan = generateWeek(ctx, week, 1, week);
+    const saved = {
+      ...plan,
+      sessions: plan.sessions.map((s, i) => ({
+        ...(i === 4 ? plan.sessions[3] : s),
+        id: s.id,
+        dayOffset: [0, 1, 2, 4, 5][i],
+        status: i < 3 ? 'missed' as const : 'planned' as const,
+      })),
+    };
+    const fatigue = regenerateFutureSessions(saved, ctx, 4);
+    assert.deepEqual(fatigue.sessions.filter((s) => s.status !== 'missed').map((s) => s.dayOffset), [4, 5]);
+    const refresh = async (existing: Parameters<typeof adaptPlan>[0]) => adaptForEquipmentChange(
+      regenerateFutureSessions(adaptPlan(existing, ctx, '2026-01-30'), ctx, 4), ctx, 4
+    );
+    assert.equal(fatigue.sessions.find((s) => s.dayOffset === 5)?.kind, 'recovery');
+    assert.equal(await refresh(fatigue), fatigue, 'the saved result must not trigger another save');
+  });
+
+  it('keeps moved session IDs distinct when repairing incompatible equipment', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+      preferredDays: [],
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const [first, second] = plan.sessions;
+    const done = { ...first, id: `${week}-d5`, dayOffset: 4, status: 'done' as const };
+    const moved = {
+      ...second, dayOffset: 6,
+      exercises: [{ ...second.exercises[0], exerciseId: 'dumbbell-fly' }],
+    };
+    const adapted = await adaptForEquipmentChange({ ...plan, sessions: [done, moved] }, ctx, 5);
+    assert.equal(adapted.sessions[0], done);
+    assert.equal(adapted.sessions[1].id, moved.id);
+    assert.equal(adapted.sessions[1].dayOffset, moved.dayOffset);
+    assert.equal(new Set(adapted.sessions.map((s) => s.id)).size, 2);
+    assert.equal(adapted.sessions[1].exercises[0].exerciseId, 'push-ups');
+  });
+
+  it('repairs the exercises without turning a pending recovery session into strength', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:mobility', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const [first, recovery] = plan.sessions;
+    assert.equal(recovery.kind, 'recovery');
+    const legacy = {
+      ...plan,
+      sessions: [{ ...first, status: 'done' as const }, {
+        ...recovery, exercises: [{ ...recovery.exercises[0], exerciseId: 'banded-dislocate' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 1);
+    assert.equal(adapted.sessions[1].kind, 'recovery');
+    assert.equal(adapted.sessions[1].id, recovery.id);
+    assert.equal(adapted.sessions[1].dayOffset, recovery.dayOffset);
+    assert.ok(adapted.sessions[1].exercises.length > 0);
+    assert.ok(adapted.sessions[1].exercises.every((e) => e.exerciseId !== 'banded-dislocate'));
+  });
+
+  it('finds a compatible strength replacement when the original muscle has no eligible match', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: { items: ['dumbbells'] },
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const [session] = plan.sessions;
+    const saved = { ...plan, sessions: [{
+      ...session, exercises: [{ ...session.exercises[0], exerciseId: 'dumbbell-fly' }],
+    }] };
+    const repaired = await adaptForEquipmentChange(saved, ctx, 0);
+    const [replacement] = repaired.sessions[0].exercises;
+    assert.ok(replacement, 'the selector has compatible strength alternatives for the session');
+    const data = getExerciseById(replacement.exerciseId);
+    assert.ok(data && equipmentMatches(data, ctx.equipment, ctx.homeGymKit));
+    assert.equal(await adaptForEquipmentChange(repaired, ctx, 0), repaired);
+  });
+
+  it('does not spend the same fatigue recovery slot twice after a missed workout', () => {
+    const week = '2026-01-26';
+    const today = '2026-01-28';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 3, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    ctx.bodyScores = { ...ctx.bodyScores, readiness: 35, strain: 70 };
+    const refresh = (existing: typeof plan) => regenerateFutureSessions(adaptPlan(existing, ctx, today), ctx, 2);
+    const first = refresh(plan);
+    assert.equal(first.sessions.filter((s) => s.kind === 'recovery').length, 1);
+    const settled = refresh(first);
+    assert.equal(settled.sessions.filter((s) => s.kind === 'recovery').length, 1);
+    assert.equal(refresh(settled), settled);
+    assert.equal(adaptPlan(settled, ctx, today), settled);
+  });
+
+  it('repairs a conditioning session from the conditioning selector pool', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:endurance', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    const plan = generateWeek(ctx, week, 1, week);
+    const session = plan.sessions.find((s) => s.kind === 'conditioning');
+    assert.ok(session);
+    const saved = { ...plan, sessions: [{
+      ...session, exercises: [{ ...session.exercises[0], exerciseId: 'kettlebell-swing' }],
+    }] };
+    const repaired = await adaptForEquipmentChange(saved, ctx, 0);
+    const [replacement] = repaired.sessions[0].exercises;
+    assert.ok(replacement);
+    const data = getExerciseById(replacement.exerciseId);
+    assert.ok(data && (data.tags?.includes('conditioning') || data.muscleGroups.includes('Cardio') ||
+      data.muscleGroups.includes('Full Body')));
   });
 
   it('regenerateFutureSessions is idempotent when the week is unchanged', () => {

@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-11-27 · web `2026.07-unified.1206` · Android `1.24.1`)
+## Now (2026-11-27 · web `2026.07-unified.1208` · Android `1.24.1`)
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
@@ -44,6 +44,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.1208`:** (`2026.07-unified.1208`) **Dumbbells means dumbbells** — Coach uses dumbbells and bodyweight exercises that need no additional gear. It swaps incompatible exercises without rescheduling upcoming workouts or changing completed ones. [`.1142` Now bullet archived](docs/archive/CONTEXT-now-1142-icon-rail.md). PRIVATE_MODE stays.
 - **`.1206`:** (`2026.07-unified.1206`) **Oldest status and log entries rotated** — `.1138` Now bullet and `.1185` LOG entry moved to `docs/archive/` (#1129's rotation). Split 4 of 5 (concern 5) from #1129. PRIVATE_MODE stays.
 - **`.1205`:** (`2026.07-unified.1205`) **One shared agent contract** — `AGENTS.md` owns the gate list, enforced rules and ship instructions; `CLAUDE.md` is a pointer. `gateDocParity.test.ts` checks `AGENTS.md`. Split 3 of 5 (concern 4) from #1129. PRIVATE_MODE stays.
 - **`.1204`:** (`2026.07-unified.1204`) **Unused cinematic landing and design-variant board deleted** — Cinematic www components, their `cine*` strings, the variant board and its tooling are gone. `/forge-preview` permanently redirects to `/`. Live `LandingPage` / `LandingDoor` unchanged. Split 2 of 5 from #1129. PRIVATE_MODE stays.
@@ -62,7 +63,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.1183`:** (`2026.07-unified.1183`) **HTTP route contracts** — Existing API handlers are called in the route lane. Each covered route locks success JSON, bad-input status, and session or secret refusal where the route requires one. Food search and the database client are a local fetch stand-in. Payments stay off and those bodies have no payment URL. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1145`:** (`2026.07-unified.1145`) **Vs-last puts the win on the session** — The Victory vs-last strip opens with one line: "N of M up vs last time", counting only lifts that had a prior on the same session name. All-new lifts say first time honestly. No feed, likes, or paywalled chart. `[skip vercel]`. PRIVATE_MODE stays.
 - **`.1144`:** (`2026.07-unified.1144`) **Large history stays fast** — Seed 2,000 sessions / 40k sets in tests; History list, career line, volume sum, and memoised personal bests finish inside the first-paint budget and match brute-force bests. `[skip vercel]`. PRIVATE_MODE stays.
-- **`.1142`:** (`2026.07-unified.1142`) **Icon rail drops the red mark** — The Train icon’s live dot is ink. `--house-live` stays declared and is not painted on the rail. `[skip vercel]`. PRIVATE_MODE stays.
 
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Alpha 0.1.0 · mute-pay:** LLC + EIN pending — Super Bundle shop merchandised, checkout muted; full depth unlocked; More/rail **Pillars demoted until first workout** (F-004 / `.695`). Offer is free tracker or Super Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

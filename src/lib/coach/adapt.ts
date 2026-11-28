@@ -1,11 +1,12 @@
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog, getExerciseById, isFullExerciseCatalogLoaded } from '@/data/exercises';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
-import type { CoachContext, CoachPlan, PlanSession } from '@/lib/coach/types';
-import { chooseSplit, mapToCalendar, todayDayOffset } from '@/lib/coach/splitPlanner';
-import { buildSession } from '@/lib/coach/selector';
+import type { CoachContext, CoachPlan, PlanExercise, PlanSession } from '@/lib/coach/types';
+import { chooseSplit, todayDayOffset } from '@/lib/coach/splitPlanner';
+import { buildSession, compatibleSessionCandidates, estimateMinutes, planExerciseForSession } from '@/lib/coach/selector';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
-import { kitMatchesExercise } from '@/lib/workout/homeGymKit';
+import { equipmentMatches } from '@/lib/coach/equipment';
+import { listGarageSwaps } from '@/lib/workout/garageSwap';
 
 export function recoverySession(dayOffset: number, weekStart: string): PlanSession {
   const rng = mulberry32(hashString(`${weekStart}-recovery-${dayOffset}`));
@@ -184,13 +185,17 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
           break;
         }
         if (slotIdx >= slots.length) break;
-        reassigned.push({ ...s, dayOffset: slots[slotIdx]!, status: 'planned' });
+        reassigned.push({ ...s, dayOffset: slots[slotIdx]! });
         slotIdx++;
       }
     };
 
-    assign(strengthDays);
-    assign(otherDays);
+    if (remaining.some((s) => s.status === 'swapped' && s.kind === 'recovery')) {
+      assign([...remaining].sort((a, b) => a.dayOffset - b.dayOffset));
+    } else {
+      assign(strengthDays);
+      assign(otherDays);
+    }
 
     /*
      * Missed days stay in the week.
@@ -233,7 +238,7 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
       const swapped = recoverySession(todayOffset, weekStart);
       swapped.status = 'swapped';
       sessions = sessions.map((s) =>
-        s.id === todaySession.id ? swapped : s
+        s.id === todaySession.id ? { ...swapped, id: s.id } : s
       );
     }
   }
@@ -296,38 +301,91 @@ function sessionsEqual(a: PlanSession[], b: PlanSession[]): boolean {
 }
 
 export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, todayOffset: number): CoachPlan {
-  const doneSessions = plan.sessions.filter((s) => s.status === 'done' || s.dayOffset < todayOffset);
-  const daysLeft = ctx.daysPerWeek - doneSessions.length;
-  if (daysLeft <= 0) return plan;
-
-  const split = chooseSplit(daysLeft, ctx.experience, ctx.goalId, ctx.assessmentRisk, {
+  const pending = plan.sessions.filter((s) => isUpcoming(s, todayOffset))
+    .sort((a, b) => a.dayOffset - b.dayOffset);
+  if (!pending.length) return plan;
+  const split = chooseSplit(pending.length, ctx.experience, ctx.goalId, ctx.assessmentRisk, {
     readiness: ctx.bodyScores.readiness,
     strain: ctx.bodyScores.strain,
     recovery: ctx.bodyScores.recovery,
     loadZone: ctx.loadZone,
   });
-  const preferred = ctx.preferredDays.filter((d) => d >= todayOffset);
-  const calendar = mapToCalendar(split, preferred.length ? preferred : [], plan.weekStart);
+  let remainingRecovery = split.slice(0, pending.length).filter((day) => day.kind === 'recovery').length -
+    pending.filter((session) => session.kind === 'recovery').length;
+  if (remainingRecovery <= 0) return plan;
   const rng = mulberry32(hashString(`${plan.weekStart}:${ctx.seedId}:regen`));
+  const replacements = new Map<PlanSession, PlanSession>();
+  pending.forEach((session, i) => {
+    const day = split[i];
+    if (remainingRecovery <= 0 || session.kind !== 'strength' || day?.kind !== 'recovery') return;
+    const recovery = buildSession(day, session.dayOffset, plan.weekStart, ctx, rng);
+    replacements.set(session, { ...recovery, id: session.id, status: 'swapped' });
+    remainingRecovery--;
+  });
+  if (!replacements.size) return plan;
 
-  const future = calendar
-    .filter(({ dayOffset }) => dayOffset >= todayOffset)
-    .map(({ day, dayOffset }) => buildSession(day, dayOffset, plan.weekStart, ctx, rng));
+  return {
+    ...plan,
+    revision: plan.revision + 1,
+    sessions: plan.sessions.map((s) => replacements.get(s) ?? s),
+    generatedAt: new Date().toISOString(),
+  };
+}
 
-  const sessions = [...doneSessions, ...future];
+function isUpcoming(session: PlanSession, todayOffset: number): boolean {
+  return session.dayOffset >= todayOffset && (session.status === 'planned' || session.status === 'swapped');
+}
 
-  /*
-   * Same class of bug as `.207` on `adaptPlan`: this always returned
-   * `revision + 1`, and `useCoachPlan` saves when the revision moves then
-   * listens synchronously for `mw-coach-plan-changed`. On Today — free beta
-   * counts as premium, strain ≥ 70 triggers this path — every refresh rewrote
-   * the plan, re-fired the event, and recurse until the renderer stack blew
-   * (Chrome Aw, Snap! code 9 on /log).
-   */
-  if (sessionsEqual(plan.sessions, sessions) && plan.equipmentProfile === ctx.equipment) {
-    return plan;
+function needsEquipmentRepair(session: PlanSession, ctx: CoachContext): boolean {
+  return session.exercises.some((target) => {
+    const exercise = getExerciseById(target.exerciseId);
+    return exercise && !equipmentMatches(exercise, ctx.equipment, ctx.homeGymKit);
+  });
+}
+
+function repairSessionEquipment(session: PlanSession, ctx: CoachContext): PlanSession {
+  const checks = session.exercises.map((target) => {
+    const exercise = getExerciseById(target.exerciseId);
+    return { target, exercise, compatible: !exercise || equipmentMatches(exercise, ctx.equipment, ctx.homeGymKit) };
+  });
+  if (checks.every(({ compatible }) => compatible)) return session;
+
+  const used = new Set(checks.filter(({ compatible }) => compatible).map(({ target }) => target.exerciseId));
+  const candidates = compatibleSessionCandidates(session, ctx);
+  const byId = new Map(candidates.map((ex) => [ex.id, ex]));
+  const exercises = checks.flatMap(({ target, exercise, compatible }): PlanExercise[] => {
+    if (compatible || !exercise) return [target];
+    const alternatives = [...(exercise.alternatives ?? []), ...listGarageSwaps(exercise.id).map((ex) => ex.id)];
+    const explicit = alternatives.find((id) => byId.has(id) && !used.has(id));
+    const primary = exercise.muscleGroups[0];
+    const available = candidates.filter((ex) => !used.has(ex.id));
+    const replacement = (explicit && byId.get(explicit)) ??
+      available.find((ex) => ex.muscleGroups[0] === primary) ??
+      available.find((ex) => !!primary && ex.muscleGroups.includes(primary)) ??
+      available[0];
+    if (!replacement) return [];
+    used.add(replacement.id);
+    return [planExerciseForSession(replacement, session.kind, ctx)];
+  });
+  return { ...session, exercises, estMinutes: estimateMinutes(exercises, session.kind) };
+}
+
+export async function adaptForEquipmentChange(
+  plan: CoachPlan,
+  ctx: CoachContext,
+  todayOffset: number
+): Promise<CoachPlan> {
+  const profileChanged = plan.equipmentProfile !== ctx.equipment;
+  const upcoming = plan.sessions.filter((s) => isUpcoming(s, todayOffset));
+  const checkEquipment = profileChanged || ctx.equipment === 'dumbbells' || !!ctx.homeGymKit;
+  if (!checkEquipment) return plan;
+  if (!isFullExerciseCatalogLoaded() && upcoming.some((s) =>
+    needsEquipmentRepair(s, ctx) || s.exercises.some((ex) => !getExerciseById(ex.exerciseId))
+  )) {
+    await ensureFullExerciseCatalog();
   }
-
+  const sessions = plan.sessions.map((s) => isUpcoming(s, todayOffset) ? repairSessionEquipment(s, ctx) : s);
+  if (!profileChanged && sessions.every((s, i) => s === plan.sessions[i])) return plan;
   return {
     ...plan,
     revision: plan.revision + 1,
@@ -335,26 +393,4 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
     sessions,
     generatedAt: new Date().toISOString(),
   };
-}
-
-export function adaptForEquipmentChange(
-  plan: CoachPlan,
-  ctx: CoachContext,
-  todayOffset: number
-): CoachPlan {
-  const profileChanged = plan.equipmentProfile !== ctx.equipment;
-  const kit = ctx.homeGymKit ?? null;
-  const futureNeedsSwap =
-    !!kit &&
-    plan.sessions.some(
-      (s) =>
-        s.dayOffset >= todayOffset &&
-        s.status !== 'done' &&
-        s.exercises.some((ex) => {
-          const data = EXERCISES.find((e) => e.id === ex.exerciseId);
-          return data ? !kitMatchesExercise(data, kit) : false;
-        })
-    );
-  if (!profileChanged && !futureNeedsSwap) return plan;
-  return regenerateFutureSessions(plan, ctx, todayOffset);
 }

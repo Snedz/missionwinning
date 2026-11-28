@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { equipmentMatches } from '@/lib/coach/equipment';
 import { parseHomeGymKit } from '@/lib/workout/homeGymKit';
 
@@ -22,12 +22,20 @@ describe('equipmentMatches', () => {
     assert.equal(equipmentMatches(bench!, 'full-gym'), true);
   });
 
-  it('dumbbells profile includes dumbbells and bands', () => {
+  it('dumbbells allows dumbbells and gear-free bodyweight, even with a saved kit', () => {
     const curl = EXERCISES.find((e) => e.id === 'bicep-curl');
-    const band = EXERCISES.find((e) => e.id === 'band-pull-apart');
-    assert.ok(curl && band);
-    assert.equal(equipmentMatches(curl!, 'dumbbells'), true);
-    assert.equal(equipmentMatches(band!, 'dumbbells'), true);
+    const push = EXERCISES.find((e) => e.id === 'push-ups');
+    assert.ok(curl && push);
+    for (const kit of [null, parseHomeGymKit(['dumbbells', 'floor', 'pull-up-bar'])]) {
+      assert.equal(equipmentMatches(curl, 'dumbbells', kit), true);
+      assert.equal(equipmentMatches(push, 'dumbbells', kit), true);
+      for (const id of ['band-pull-apart', 'kettlebell-swing', 'wall-ball', 'step-ups', 'pull-ups', 'pre-exhaust-fly', 'decline-pushup', 'dumbbell-fly', 'dumbbell-press']) {
+        const exercise = EXERCISES.find((e) => e.id === id);
+        assert.ok(exercise, id);
+        assert.equal(equipmentMatches(exercise, 'dumbbells', kit), false, id);
+      }
+    }
+    assert.equal(equipmentMatches(curl, 'dumbbells', parseHomeGymKit(['floor'])), false);
   });
 
   it('sled/tire only for full-gym', () => {
@@ -35,6 +43,15 @@ describe('equipmentMatches', () => {
     assert.equal(equipmentMatches(sled as never, 'bodyweight'), false);
     assert.equal(equipmentMatches(sled as never, 'dumbbells'), false);
     assert.equal(equipmentMatches(sled as never, 'full-gym'), true);
+  });
+
+  it('excludes catalog moves whose setup requires extra gear despite their equipment label', async () => {
+    await ensureFullExerciseCatalog();
+    for (const id of ['incline-dumbbell-press', 'bulgarian-split-squat', 'nordic-curl-reg', 'fedb-dumbbell-bench-press', 'fedb-dumbbell-step-ups']) {
+      const exercise = EXERCISES.find((e) => e.id === id);
+      assert.ok(exercise, id);
+      assert.equal(equipmentMatches(exercise, 'dumbbells'), false, id);
+    }
   });
 
   it('null kit keeps the three-profile rules', () => {

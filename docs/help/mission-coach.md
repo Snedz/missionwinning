@@ -19,6 +19,8 @@ If Coach shows a lock icon, see [premium-and-billing.md](premium-and-billing.md)
 5. **Adapt** — Miss a session, change equipment, or report low readiness — the plan adjusts (swap to recovery, reschedule focus). If you skip a planned day, Today and Coach offer **Do it now**, **Skip**, or **Slide**. Skip is not a fail and does not break a streak.
 6. **Voice briefing** (optional) — A short weekly summary via AI when configured; falls back to rule-based messages if AI is unavailable.
 
+Choose **Dumbbells** for a plan that uses dumbbells or bodyweight moves that don't need additional exercise equipment. Coach won't ask you for bands, kettlebells, a bench, or a pull-up bar. When equipment changes, Coach replaces exercises where it can without moving the workouts to different days.
+
 Chat on `/coach` is Super Bundle chrome. It does not replace the week.
 
 ## Personal trainer

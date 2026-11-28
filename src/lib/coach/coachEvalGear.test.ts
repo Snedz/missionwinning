@@ -89,3 +89,26 @@ test('generateWeek programs only catalog ids legal for the declared gear', () =>
   }
   assertLegal('full-gym', GARAGE, 'full-gym+kit');
 });
+
+test('the formerly banded dumbbells starter week now needs no additional equipment', () => {
+  const monday = '2026-01-26';
+  const ctx = buildCoachContextFromInputs({
+    history: [],
+    experience: 'beginner',
+    equipment: 'dumbbells',
+    goal: 'goal:strength',
+    daysPerWeek: 2,
+    seedId: 'local',
+    includeCheckIn: false,
+  });
+  const plan = generateWeek(ctx, monday, 1, monday);
+  assert.equal(plan.sessions.length, 2);
+  for (const session of plan.sessions) {
+    assert.equal(session.exercises.length, 3);
+    for (const move of session.exercises) {
+      const exercise = EXERCISES.find((e) => e.id === move.exerciseId);
+      assert.ok(exercise, move.exerciseId);
+      assert.match(exercise.equipment ?? 'Bodyweight', /^(Dumbbells|Bodyweight)$/, exercise.id);
+    }
+  }
+});

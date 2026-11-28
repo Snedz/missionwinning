@@ -19,6 +19,15 @@ describe('mobileCoachApi', () => {
     assert.ok(plan.sessions.some((s) => s.status === 'missed' || s.status === 'swapped'));
   });
 
+  it('serves a dumbbells seed with no pull-up bar or bench required', () => {
+    const { plan } = buildMobileCoachPlan({ equipment: 'dumbbells' });
+    assert.deepEqual(plan.sessions.map((session) => session.exercises.map((e) => e.exerciseId)), [
+      ['db-floor-press', 'plank'],
+      ['goblet-squat', 'db-rdl'],
+      ['db-row', 'db-curl'],
+    ]);
+  });
+
   it('mark session done bumps revision', () => {
     const { plan } = buildMobileCoachPlan();
     const sessionId = plan.sessions.find((s) => s.status === 'planned')!.id;
