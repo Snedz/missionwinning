@@ -99,6 +99,38 @@
       }
     },
     {
+      "id": "bodyweight-deload-below-goal-floor",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "push-ups",
+      "units": "metric",
+      "workoutId": "18-push-ups",
+      "history": [
+        {
+          "id": "18-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 3, "weight": 0, "rpe": "hard"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 3,
+        "weight": 0,
+        "whyKey": "coachWhyDeload"
+      }
+    },
+    {
       "id": "bodyweight-flat-deload",
       "now": "2026-05-18T12:00:00.000Z",
       "exerciseId": "push-ups",
@@ -367,6 +399,56 @@
       }
     },
     {
+      "id": "percent-deload-below-historical-max",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 20, "rpe": "hard"}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 1, "weight": 100}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 17.5,
+        "whyKey": "coachWhyDeload",
+        "loadPct": 18
+      }
+    },
+    {
       "id": "absolute-load-up-no-e1rm",
       "now": "2026-05-18T12:00:00.000Z",
       "exerciseId": "lunges",
@@ -429,6 +511,88 @@
         "weight": 17.5,
         "whyKey": "coachWhyDeload"
       }
+    },
+    {
+      "id": "absolute-deload-rounding-ceiling",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 15, "weight": 4.5, "rpe": "hard"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 15,
+        "weight": 4.5,
+        "whyKey": "coachWhyDeload"
+      }
+    },
+    {
+      "id": "deload-keeps-logged-assistance",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "fedb-band-assisted-pull-up",
+      "units": "metric",
+      "workoutId": "18-fedb-band-assisted-pull-up",
+      "history": [
+        {
+          "id": "18-fedb-band-assisted-pull-up",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "fedb-band-assisted-pull-up",
+              "sets": [
+                {"reps": 6, "weight": 30, "rpe": "hard"}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-fedb-band-assisted-pull-up",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "fedb-band-assisted-pull-up",
+              "sets": [
+                {"reps": 1, "weight": 50}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 5,
+        "weight": 30,
+        "whyKey": "coachWhyDeload"
+      },
+      "androidExerciseId": "assisted-pullup"
     },
     {
       "id": "weighted-flat-deload",
