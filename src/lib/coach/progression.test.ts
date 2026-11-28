@@ -71,6 +71,30 @@ describe('nextTargets', () => {
     assert.ok(t.loadPct != null && t.loadPct > 0);
   });
 
+  it('deloads from the last logged load when an older max would raise it', () => {
+    const history = [
+      logWithExercise('lunges', [{ reps: 6, weight: 20, rpe: 'hard' }]),
+      logWithExercise('lunges', [{ reps: 1, weight: 100 }], 2),
+    ];
+    assert.deepEqual(nextTargets('lunges', history, 'metric', 'strength', 'beginner'), {
+      sets: 1, reps: 6, weight: 17.5, whyKey: 'coachWhyDeload', loadPct: 18,
+    });
+  });
+
+  it('does not raise bodyweight deload reps to the goal floor', () => {
+    const history = [logWithExercise('push-ups', [{ reps: 3, weight: 0, rpe: 'hard' }])];
+    assert.deepEqual(nextTargets('push-ups', history, 'metric', 'strength', 'beginner'), {
+      sets: 1, reps: 3, weight: 0, whyKey: 'coachWhyDeload',
+    });
+  });
+
+  it('does not round an absolute-load deload above the logged weight', () => {
+    const history = [logWithExercise('lunges', [{ reps: 15, weight: 4.5, rpe: 'hard' }])];
+    assert.deepEqual(nextTargets('lunges', history, 'metric', 'strength', 'beginner'), {
+      sets: 1, reps: 15, weight: 4.5, whyKey: 'coachWhyDeload',
+    });
+  });
+
   it('imperial increment is 5', () => {
     const history = [
       logWithExercise('bench-press', [{ reps: 8, weight: 100, rpe: 'easy' }]),
@@ -133,4 +157,3 @@ describe('nextTargets', () => {
     assert.equal(capped.whyKey, 'coachWhyPlateauDeload');
   });
 });
-

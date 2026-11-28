@@ -47,7 +47,7 @@ Both respect your pillar balance; daily insight does not replace the weekly sche
 1. Open **Coach** → review the week strip. A muscle balance view shows front and back from completed sessions in the last two weeks. It does not change the plan.
 2. Tap today's session → start exercises in **Train**.
 3. On a session line, **Swap** offers one or two floor or garage stand-ins when the machine is not there. It changes that line only — it does not rebuild the week.
-4. Log sets as usual — history feeds next week's plan.
+4. Log sets as usual — history feeds next week's plan. If Coach suggests a deload (an easier target for recovery), it won't increase the load or reps from your latest working sets.
 5. Change preferences in Profile (days per week, equipment, goals).
 
 ## Privacy

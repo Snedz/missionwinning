@@ -7,7 +7,7 @@
 1. `types.ts` — `CoachPlan`, `CoachContext`, `PlanSession`, `PlanExercise`
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
 3. `equipment.ts` — `equipmentMatches` (optional Home gym kit overlay — filter only, never rank), `mapStorageEquipment`
-4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
+4. `progression.ts` — `nextTargets` (RPE, stall, deload bounded by latest working performance, % of e1RM `loadPct`, optional `loadZone` cap)
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only at the set-weight layer; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit` (`loadZone` reaches here from context), `mapToCalendar`. `high` inserts one extra recovery day after the strain rules (same primitive as `strain ≥ 85`)
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
