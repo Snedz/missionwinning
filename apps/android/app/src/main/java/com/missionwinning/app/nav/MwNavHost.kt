@@ -40,6 +40,7 @@ import com.missionwinning.app.preview.V2Victory
 import com.missionwinning.app.preview.compareCompletedPlan
 import com.missionwinning.feature.auth.AuthScreen
 import com.missionwinning.app.feature.debug.DesignSystemGalleryScreen
+import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.network.CoachPlanDto
@@ -70,6 +71,7 @@ import kotlinx.coroutines.launch
 interface RepoEntryPoint {
     fun repository(): MwRepository
     fun drafts(): SessionDraftRepository
+    fun auth(): AuthRepository
 }
 
 sealed interface PendingDeepLink {
@@ -293,12 +295,13 @@ fun MwNavHost(
                 }
                 composable(Routes.COACH) {
                     if (v2Shell) {
-                        val drafts = remember {
-                            EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).drafts()
+                        val services = remember {
+                            EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java)
                         }
                         V2Coach(
                             repository = repository,
-                            drafts = drafts,
+                            drafts = services.drafts(),
+                            auth = services.auth(),
                             change = change,
                             onChange = { change = it },
                             onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },

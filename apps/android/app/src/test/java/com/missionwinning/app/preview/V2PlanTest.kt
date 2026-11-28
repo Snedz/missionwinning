@@ -3,6 +3,7 @@ package com.missionwinning.app.preview
 import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.network.PlanExerciseDto
 import com.missionwinning.core.network.PlanSessionDto
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -33,6 +34,25 @@ class V2PlanTest {
         val plan = before.copy(sessions = listOf(first.copy(exercises = emptyList()), second))
         assertEquals(second, plan.nextSession(today = 0))
         assertNull(plan.copy(sessions = listOf(first.copy(exercises = emptyList()))).nextSession(today = 0))
+    }
+
+    @Test fun signedInCoachRefreshesAStalePlanButDoesNotOverwriteACurrentRevision() = runBlocking {
+        val thisWeek = "2026-11-30"
+        val stale = before.copy(sessions = listOf(first.copy(status = "done")))
+        val fresh = before.copy(weekStart = thisWeek)
+        val requests = mutableListOf<Boolean>()
+        val load: suspend (Boolean) -> CoachPlanDto = { preferNetwork ->
+            requests += preferNetwork
+            if (preferNetwork) fresh else stale
+        }
+        assertEquals(fresh, loadPreviewCoachPlan(signedIn = true, weekStart = thisWeek, load = load))
+        assertEquals(listOf(false, true), requests)
+        requests.clear()
+        assertEquals(stale, loadPreviewCoachPlan(signedIn = false, weekStart = thisWeek, load = load))
+        assertEquals(listOf(false), requests)
+        requests.clear()
+        assertEquals(stale, loadPreviewCoachPlan(signedIn = true, weekStart = stale.weekStart, load = load))
+        assertEquals(listOf(false), requests)
     }
 
     @Test fun victoryUsesActualOpenTargetsForLoggedMovementsOnly() {

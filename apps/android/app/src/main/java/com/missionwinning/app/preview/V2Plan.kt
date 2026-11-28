@@ -1,5 +1,6 @@
 package com.missionwinning.app.preview
 
+import com.missionwinning.core.data.LocalCoachSeed
 import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.WorkoutStats
 import com.missionwinning.core.network.CoachPlanDto
@@ -22,6 +23,15 @@ internal data class V2Change(
 
 internal fun CoachPlanDto.nextSession(today: Int = WorkoutStats.mondayBasedOffset()): PlanSessionDto? =
     WorkoutStats.pickNextSession(sessions.filter { it.exercises.isNotEmpty() }, today, { it.dayOffset }, { it.status })
+
+internal suspend fun loadPreviewCoachPlan(
+    signedIn: Boolean,
+    weekStart: String = LocalCoachSeed.weekStartMonday(),
+    load: suspend (preferNetwork: Boolean) -> CoachPlanDto,
+): CoachPlanDto {
+    val cached = load(false)
+    return if (signedIn && cached.weekStart != weekStart) load(true) else cached
+}
 
 internal fun CoachPlanDto.nextTargetsFor(
     loggedExerciseIds: List<String>,
