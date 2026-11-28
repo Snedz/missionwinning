@@ -138,7 +138,7 @@ function applyAvoid(
   }
 
   exercises = exercises.map((e) => {
-    const weight = roundWeight(e.weight * 0.9, ctx.units);
+    const weight = roundWeight(e.weight * 0.9, e.weightUnits ?? ctx.units);
     const loadPct = scaleLoadPct(e.loadPct, 0.9);
     const { loadPct: _prev, ...rest } = e;
     return {

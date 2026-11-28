@@ -59,6 +59,10 @@ On History, open **Import workout CSV**. Pick a session export whose header has 
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
+**Where do my “Next time” targets come from?**
+
+Victory shows your next scheduled Coach target for a lift you logged when one is available. Otherwise, Coach uses the working sets you just saved to suggest sets, reps, and load. An unset load can ask you to find a weight you could do for two more reps. A saved target keeps its original units if you switch preferences; older targets without a known unit aren't labeled. Warmup-only sets don't create a new target.
+
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.
 

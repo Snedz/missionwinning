@@ -178,6 +178,11 @@ type ActiveWorkoutStrings = {
   victoryRecoveryDelta: string;
   victoryStreak: string;
   victoryNextLabel: string;
+  victoryNextTime: string;
+  victoryNextPlanSource: string;
+  victoryNextProgressionSource: string;
+  victoryNextBodyweight: string;
+  victoryNextUnloaded: string;
   /** Finish → adapt cite when next session was written from this log (`.1066`). */
   victoryNextEnvCite: string;
   victoryBackToday: string;
@@ -541,6 +546,11 @@ const en: ActiveWorkoutStrings = {
   victoryRecoveryDelta: 'Recovery {{delta}}',
   victoryStreak: '{{count}}-day streak',
   victoryNextLabel: 'Next',
+  victoryNextTime: 'Next time',
+  victoryNextPlanSource: 'Upcoming Coach session',
+  victoryNextProgressionSource: 'Coach progression from your log',
+  victoryNextBodyweight: 'bodyweight',
+  victoryNextUnloaded: 'unloaded',
   victoryNextEnvCite: 'Next session updated from this workout',
   victoryBackToday: 'Back to Today',
   victoryViewHistory: 'History',
@@ -733,6 +743,11 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: 'Próxima vez',
+  victoryNextPlanSource: 'Próxima sesión de Coach',
+  victoryNextProgressionSource: 'Progresión de Coach según tu registro',
+  victoryNextBodyweight: 'peso corporal',
+  victoryNextUnloaded: 'sin carga',
   resumeLastChip: 'Retomar la última',
   resumeLastTone: 'Sesión 2 — fija el hábito',
   victoryVsLastLiftsLabel: 'Vs la última',
@@ -843,6 +858,11 @@ const es: ActiveWorkoutStrings = {
 
 const zh: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: '下次训练',
+  victoryNextPlanSource: '即将进行的 Coach 训练',
+  victoryNextProgressionSource: 'Coach 根据你的记录给出的进阶目标',
+  victoryNextBodyweight: '自重',
+  victoryNextUnloaded: '无负重',
   activeLiveSession: '进行中',
   activeCoachSessionEyebrow: 'Mission Coach 训练',
   activeElapsed: '已用时',
@@ -860,6 +880,11 @@ const zh: ActiveWorkoutStrings = {
 
 const id: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: 'Lain kali',
+  victoryNextPlanSource: 'Sesi Coach berikutnya',
+  victoryNextProgressionSource: 'Progresi Coach dari catatanmu',
+  victoryNextBodyweight: 'berat badan',
+  victoryNextUnloaded: 'tanpa beban',
   activeLiveSession: 'Sesi langsung',
   activeCoachSessionEyebrow: 'Sesi Mission Coach',
   activeElapsed: 'Berjalan',
@@ -872,6 +897,11 @@ const id: ActiveWorkoutStrings = {
 
 const th: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: 'ครั้งถัดไป',
+  victoryNextPlanSource: 'การฝึกครั้งถัดไปจาก Coach',
+  victoryNextProgressionSource: 'เป้าหมายจาก Coach ตามบันทึกของคุณ',
+  victoryNextBodyweight: 'น้ำหนักตัว',
+  victoryNextUnloaded: 'ไม่เพิ่มน้ำหนัก',
   activeLiveSession: 'เซสชันสด',
   activeCoachSessionEyebrow: 'เซสชัน Mission Coach',
   activeElapsed: 'ผ่านไป',
@@ -884,6 +914,11 @@ const th: ActiveWorkoutStrings = {
 
 const ar: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: 'المرة القادمة',
+  victoryNextPlanSource: 'جلسة Coach القادمة',
+  victoryNextProgressionSource: 'تدرّج Coach بناءً على سجلك',
+  victoryNextBodyweight: 'وزن الجسم',
+  victoryNextUnloaded: 'بلا أوزان',
   activeLiveSession: 'جلسة مباشرة',
   activeCoachSessionEyebrow: 'جلسة Mission Coach',
   activeElapsed: 'المنقضي',
@@ -897,6 +932,11 @@ const ar: ActiveWorkoutStrings = {
 
 const de: ActiveWorkoutStrings = {
   ...en,
+  victoryNextTime: 'Nächstes Mal',
+  victoryNextPlanSource: 'Bevorstehende Coach-Einheit',
+  victoryNextProgressionSource: 'Coach-Fortschritt aus deinem Trainingsprotokoll',
+  victoryNextBodyweight: 'Körpergewicht',
+  victoryNextUnloaded: 'ohne Zusatzgewicht',
   activeLiveSession: 'Live-Einheit',
   activeCoachSessionEyebrow: 'Mission-Coach-Einheit',
   activeOverloadLastLabel: 'Zuletzt',
@@ -980,6 +1020,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    victoryNextTime: 'Da próxima vez',
+    victoryNextPlanSource: 'Próxima sessão do Coach',
+    victoryNextProgressionSource: 'Progressão do Coach com base no seu treino',
+    victoryNextBodyweight: 'peso corporal',
+    victoryNextUnloaded: 'sem carga',
     resumeLastChip: 'Retomar a última',
     resumeLastTone: 'Sessão 2 — fixa o hábito',
     victoryVsLastLiftsLabel: 'Vs a última',
@@ -1057,6 +1102,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   },
   it: {
     ...en,
+    victoryNextTime: 'Prossima volta',
+    victoryNextPlanSource: 'Prossima sessione di Coach',
+    victoryNextProgressionSource: 'Progressione di Coach dal tuo diario',
+    victoryNextBodyweight: 'peso corporeo',
+    victoryNextUnloaded: 'senza carico',
     activeNoWorkout: 'Nessun allenamento attivo',
     activeFinish: 'Fine',
     activeLiveSession: 'Sessione dal vivo',
@@ -1073,6 +1123,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   },
   ko: {
     ...en,
+    victoryNextTime: '다음 운동',
+    victoryNextPlanSource: '예정된 Coach 세션',
+    victoryNextProgressionSource: '운동 기록을 바탕으로 한 Coach 목표',
+    victoryNextBodyweight: '맨몸',
+    victoryNextUnloaded: '추가 중량 없음',
     activeNoWorkout: '진행 중인 운동 없음',
     activeFinish: '완료',
     activeLiveSession: '진행 중인 세션',
