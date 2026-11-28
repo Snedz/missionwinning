@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.missionwinning.app.R
-import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.data.WorkoutLogEntity
@@ -98,7 +97,6 @@ internal fun V2Today(
 internal fun V2Coach(
     repository: MwRepository,
     drafts: SessionDraftRepository,
-    auth: AuthRepository,
     change: V2Change?,
     onChange: (V2Change?) -> Unit,
     onStart: (String, String, Int) -> Unit,
@@ -108,12 +106,9 @@ internal fun V2Coach(
     var rebuilding by remember { mutableStateOf(false) }
     var rebuildFailed by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val authState by auth.state.collectAsStateWithLifecycle()
-    LaunchedEffect(repository, drafts, change, authState.signedIn) {
+    LaunchedEffect(repository, drafts, change) {
         draft = drafts.load()?.takeIf { it.exercises.isNotEmpty() }
-        plan = loadPreviewCoachPlan(authState.signedIn) { preferNetwork ->
-            repository.ensureCoachPlan(preferNetwork = preferNetwork).plan
-        }
+        plan = repository.ensureCoachPlan(preferNetwork = false).plan
     }
     V2Theme {
         V2Page(stringResource(R.string.v2_coach), stringResource(R.string.v2_marker_coach)) {
