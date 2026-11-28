@@ -135,7 +135,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) and product [docs/contracts/MODULE.md](..
 - Screenshots: `python3 scripts/wedge-adb-walk.py --screenshots` → [store-assets/](store-assets/)
 - Room schemas: `core/data/schemas/` (`exportSchema = true`)
 - Offline Coach uses the web beginner/strength catalog and seeded ranking for its starter sessions. Finishing a planned workout offline updates matching exercises in open sessions from logged work, including rep and load progression, holds and deloads. Rebuilding a starter plan and adapting a server plan are separate paths.
-- From the repo root, refresh the catalog with `npx tsx apps/android/scripts/generate-offline-coach-catalog.ts` and progression expectations with `npx tsx apps/android/scripts/generate-coach-parity.ts --progression`; the latter writes to stdout for `core/data/src/test/resources/coach-progression-parity.json`.
+- From the repo root, refresh the catalog with `npx tsx apps/android/scripts/generate-offline-coach-catalog.ts` and the starter fixture with `npx tsx apps/android/scripts/generate-coach-parity.ts` (stdout for `core/data/src/test/resources/coach-parity.json`). Generate both with the dumbbells-and-floor web policy from #1139. Until that lands, run the Android scripts and fixture input in a checkout with #1139's web changes applied; bare master allows other gear and produces different picks. For completion expectations, use `npx tsx apps/android/scripts/generate-coach-parity.ts --progression` (stdout for `core/data/src/test/resources/coach-progression-parity.json`).
 - Play upload: `-Pmw.requireUploadKeystore=true` fails without `keystore.properties`
 
 ## Commands
