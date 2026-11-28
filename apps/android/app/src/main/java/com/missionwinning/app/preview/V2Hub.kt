@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
@@ -40,6 +41,8 @@ import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.network.PlanExerciseDto
 import com.missionwinning.core.network.PlanSessionDto
 import com.missionwinning.feature.today.HistoryViewModel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -90,10 +93,15 @@ internal fun V2Today(
 internal fun V2Coach(
     repository: MwRepository,
     change: V2Change?,
+    onChange: (V2Change?) -> Unit,
     onStart: (String, String, Int) -> Unit,
 ) {
-    val plan by produceState<CoachPlanDto?>(null, repository, change) {
-        value = repository.ensureCoachPlan(preferNetwork = false).plan
+    var plan by remember(repository) { mutableStateOf<CoachPlanDto?>(null) }
+    var rebuilding by remember { mutableStateOf(false) }
+    var rebuildFailed by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(repository, change) {
+        plan = repository.ensureCoachPlan(preferNetwork = false).plan
     }
     V2Theme {
         V2Page(stringResource(R.string.v2_coach), stringResource(R.string.v2_marker_coach)) {
@@ -105,14 +113,37 @@ internal fun V2Coach(
                 val next = current.nextSession()
                 if (next != null) {
                     SessionSummary(next, current.weightUnit)
-                    V2Action(stringResource(R.string.v2_start)) { next.start(onStart) }
+                    V2Action(stringResource(R.string.v2_start), enabled = !rebuilding) { next.start(onStart) }
                 } else {
                     Text(stringResource(R.string.v2_no_next))
                 }
+                V2Secondary(
+                    stringResource(R.string.v2_rebuild),
+                    Modifier.fillMaxWidth(),
+                    enabled = !rebuilding,
+                ) {
+                    rebuilding = true
+                    rebuildFailed = false
+                    scope.launch {
+                        try {
+                            val rebuilt = repository.forceReseedPlan().plan
+                            onChange(compareRebuiltPlan(current, rebuilt))
+                            plan = rebuilt
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (_: Exception) {
+                            rebuildFailed = true
+                        } finally {
+                            rebuilding = false
+                        }
+                    }
+                }
+                if (rebuilding) Text(stringResource(R.string.v2_rebuilding))
+                if (rebuildFailed) Text(stringResource(R.string.v2_rebuild_failed))
                 if (change?.plan == current) {
                     V2Rule()
                     Text(stringResource(R.string.v2_what_changed), style = MaterialTheme.typography.headlineSmall)
-                    Text(stringResource(R.string.v2_marked_done, change.completedName))
+                    change.completedName?.let { Text(stringResource(R.string.v2_marked_done, it)) }
                     change.targets.forEach { target ->
                         Text(target.sessionName, style = MaterialTheme.typography.titleMedium)
                         Text(exerciseName(target.after), style = MaterialTheme.typography.bodyLarge)

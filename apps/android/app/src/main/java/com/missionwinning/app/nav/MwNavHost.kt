@@ -295,6 +295,7 @@ fun MwNavHost(
                         V2Coach(
                             repository = repository,
                             change = change,
+                            onChange = { change = it },
                             onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },
                         )
                     } else {

@@ -82,4 +82,18 @@ class V2PlanTest {
         val change = requireNotNull(compareCompletedPlan(before, completed, "first", "saved"))
         assertTrue(change.targets.isEmpty())
     }
+
+    @Test fun rebuildComparesRealOpenTargetsWithoutClaimingWhatCausedThem() {
+        val rebuilt = before.copy(
+            contextHash = "reseed",
+            sessions = listOf(first, second.copy(exercises = listOf(move.copy(sets = 1, weight = 30.0)))),
+        )
+        val change = requireNotNull(compareRebuiltPlan(before, rebuilt))
+        assertNull(change.completedName)
+        assertNull(change.workoutId)
+        assertEquals(30.0, change.targets.single().after.weight, 0.0)
+        assertEquals(1, change.targets.single().after.sets)
+        assertNull(compareRebuiltPlan(before, before.copy(contextHash = "regenerated")))
+        assertNull(compareRebuiltPlan(before, rebuilt.copy(equipmentProfile = "bodyweight")))
+    }
 }

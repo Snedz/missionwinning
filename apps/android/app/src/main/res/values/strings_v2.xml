@@ -22,6 +22,9 @@
     <string name="v2_loading">Loading on this device…</string>
     <string name="v2_no_next">No compatible workout is scheduled. You can still quick log from Today.</string>
     <string name="v2_revision">PLAN REVISION %1$d</string>
+    <string name="v2_rebuild">Rebuild week</string>
+    <string name="v2_rebuilding">Rebuilding week…</string>
+    <string name="v2_rebuild_failed">Could not rebuild the week. Try again.</string>
     <string name="v2_what_changed">What changed</string>
     <string name="v2_marked_done">Marked complete: %1$s</string>
     <string name="v2_before">Before: %1$s</string>

@@ -132,7 +132,12 @@ internal fun V2Action(label: String, enabled: Boolean = true, onClick: () -> Uni
 
 @Composable
 internal fun V2Secondary(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    OutlinedButton(onClick, modifier = modifier, shape = RectangleShape) { Text(label) }
+    V2Secondary(label, modifier, enabled = true, onClick = onClick)
+}
+
+@Composable
+internal fun V2Secondary(label: String, modifier: Modifier, enabled: Boolean, onClick: () -> Unit) {
+    OutlinedButton(onClick, modifier = modifier, enabled = enabled, shape = RectangleShape) { Text(label) }
 }
 
 @Composable

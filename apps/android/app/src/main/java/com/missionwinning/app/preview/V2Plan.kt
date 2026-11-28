@@ -13,9 +13,9 @@ internal data class V2TargetChange(
 )
 
 internal data class V2Change(
-    val workoutId: String,
+    val workoutId: String?,
     val plan: CoachPlanDto,
-    val completedName: String,
+    val completedName: String?,
     val targets: List<V2TargetChange>,
 )
 
@@ -41,14 +41,26 @@ internal fun compareCompletedPlan(
     sessionId: String,
     workoutId: String,
 ): V2Change? {
-    if (workoutId.isBlank() || before.weekStart != after.weekStart ||
-        before.equipmentProfile != after.equipmentProfile || before.weightUnit != after.weightUnit ||
+    if (workoutId.isBlank() || !before.isComparableTo(after) ||
         after.revision != before.revision + 1 || after.contextHash != "${before.contextHash}-done-$sessionId"
     ) return null
-    val originals = before.sessions.associateBy { it.id }
-    val completed = originals[sessionId] ?: return null
+    val completed = before.sessions.find { it.id == sessionId } ?: return null
     if (completed.status == "done" || after.sessions.none { it.id == sessionId && it.status == "done" }) return null
-    val targets = after.sessions.filter { WorkoutStats.isOpenSessionStatus(it.status) }.flatMap { updated ->
+    return V2Change(workoutId, after, completed.name, changedTargets(before, after))
+}
+
+internal fun compareRebuiltPlan(before: CoachPlanDto, after: CoachPlanDto): V2Change? {
+    if (!before.isComparableTo(after)) return null
+    val targets = changedTargets(before, after)
+    return if (targets.isEmpty()) null else V2Change(null, after, null, targets)
+}
+
+private fun CoachPlanDto.isComparableTo(other: CoachPlanDto) =
+    weekStart == other.weekStart && equipmentProfile == other.equipmentProfile && weightUnit == other.weightUnit
+
+private fun changedTargets(before: CoachPlanDto, after: CoachPlanDto): List<V2TargetChange> {
+    val originals = before.sessions.associateBy { it.id }
+    return after.sessions.filter { WorkoutStats.isOpenSessionStatus(it.status) }.flatMap { updated ->
         val original = originals[updated.id]
         if (original == null || !WorkoutStats.isOpenSessionStatus(original.status)) return@flatMap emptyList()
         updated.exercises.mapNotNull { exercise ->
@@ -59,5 +71,4 @@ internal fun compareCompletedPlan(
             else V2TargetChange(updated.name, old, exercise)
         }
     }
-    return V2Change(workoutId, after, completed.name, targets)
 }
