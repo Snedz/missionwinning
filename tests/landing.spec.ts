@@ -297,6 +297,53 @@ test('the landing distinguishes guest backups from configured account sync', asy
   }
 });
 
+test('Victory shows real next-time targets for the movements just logged', async ({ page }) => {
+  await page.clock.setFixedTime(new Date(2026, 5, 11, 12));
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Log a set', exact: true }).first().click();
+  const logSet = page.getByRole('button', { name: 'Log set', exact: true });
+  await page.getByRole('spinbutton', { name: 'Reps' }).fill('4');
+  await logSet.click();
+  async function addMovement(name: string) {
+    await page.getByRole('button', { name: 'Add movement' }).click();
+    await page.getByRole('searchbox', { name: 'Find a movement' }).fill(name);
+    await page.getByRole('button', { name, exact: true }).click();
+  }
+  await addMovement('Lunges');
+  await page.getByRole('spinbutton', { name: /load/i }).fill('30');
+  await page.getByRole('spinbutton', { name: 'Reps' }).fill('6');
+  await logSet.click();
+  await addMovement('Plank');
+  await page.getByRole('spinbutton', { name: 'Seconds' }).fill('20');
+  await logSet.click();
+  await page.getByRole('button', { name: 'Finish workout' }).click();
+  await expect(page).toHaveURL(/\/victory$/);
+  const targets = page.getByRole('region', { name: 'Next time' });
+  const movements = targets.getByRole('list', { name: 'Targets by movement' }).getByRole('listitem');
+  const verifyTargets = async () => {
+    await expect(movements).toHaveCount(3);
+    const named = (name: string) => movements.filter({ has: page.getByRole('heading', { name, exact: true }) });
+    await expect(named('Push-ups')).toContainText('1 set × 5 reps · bodyweight');
+    await expect(named('Push-ups')).toContainText('Progress reps from your log');
+    await expect(named('Lunges')).toContainText('1 set × 6 reps · 30 kg');
+    await expect(named('Lunges')).toContainText('without a progression bump');
+    await expect(named('Plank')).toContainText('Coach did not provide a time target');
+  };
+  await verifyTargets();
+  await page.reload();
+  await verifyTargets();
+
+  const { width, height } = page.viewportSize()!;
+  await audit(page, width);
+  const dir = process.env.V2_VICTORY_SCREENSHOTS_DIR;
+  if (dir) {
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+    await page.screenshot({ path: join(dir, `${width}x${height}-victory.png`), fullPage: true, scale: 'css' });
+  }
+  await page.getByRole('link', { name: 'Plan with Coach' }).click();
+  await expect(page.getByRole('heading', { name: 'Coach.' })).toBeVisible();
+});
+
 test('a guest set from the landing changes the real Coach week', async ({ page }) => {
   const setDay = (day: number) => page.clock.setFixedTime(new Date(2026, 5, day, 12));
   async function finishLunges(weight: number) {

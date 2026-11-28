@@ -13,6 +13,7 @@ import { unitsForWeight, weightUnitFor, weightUnitLabel } from '@/lib/units';
 import { workoutInWeightUnit } from '@/lib/workout/workoutMerge';
 import type { EquipmentProfile, PlanSession } from '@/lib/coach/types';
 import { hasWeekChanges, type WeekChange } from '@/lib/coach/weekChange';
+import { victoryNextTargets, type VictoryNextTarget } from '@/lib/coach/victoryNext';
 import type { ActiveExerciseLog, CompletedWorkoutLog } from '@/types';
 import { notebookNamespace, useNotebook } from '../lib/notebook';
 import { cloudConfigured, sendSignInLink, signOutAccount, startCloudAccount, syncAccount, useCloudAccount } from '../lib/cloudAccount';
@@ -406,9 +407,10 @@ function Train() {
 }
 
 function Victory() {
-  const { workoutHistory, lastFinishedId } = useNotebook();
+  const { workoutHistory, lastFinishedId, units, plan } = useNotebook();
   const log = workoutHistory.find((entry) => entry.id === lastFinishedId && !entry.deletedAt) ??
     workoutHistory.find((entry) => !entry.deletedAt);
+  const targets = log ? victoryNextTargets(log, workoutHistory, units, plan) : [];
   return <>
     <Heading index="03" label="SESSION RECEIPT" title="Victory.">{log ? 'The work is in your notebook.' : 'Finish a workout to see its receipt here.'}</Heading>
     {log ? <div className="victory-layout">
@@ -421,9 +423,36 @@ function Victory() {
           <div><strong>{Math.floor(log.durationSeconds / 60)}:{String(log.durationSeconds % 60).padStart(2, '0')}</strong><span>ELAPSED</span></div>
         </div>
       </section>
+      {targets.length > 0 && <section className="note-panel victory-next" aria-labelledby="victory-next-title">
+        <span className="eyebrow muted">Movement targets</span>
+        <h2 id="victory-next-title">Next time</h2>
+        <p className="subtle">Targets for the next time you train these movements, not a new schedule.</p>
+        <ul className="victory-targets" aria-label="Targets by movement">
+          {targets.map((target) => <VictoryTarget key={target.exerciseId} row={target} />)}
+        </ul>
+      </section>}
       <div className="action-row"><AppLink href="/coach" className="button primary-button">Plan with Coach <Icon name="arrow" /></AppLink><AppLink href="/history" className="button outline-button">View History</AppLink></div>
     </div> : <AppLink href="/active" className="button primary-button">Open Train <Icon name="arrow" /></AppLink>}
   </>;
+}
+
+function VictoryTarget({ row }: { row: VictoryNextTarget }) {
+  const noTarget = row.source === 'unavailable';
+  const load = noTarget ? null :
+    row.target.weight > 0 ? `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(row.target.weight)} ${row.unit}` :
+    exerciseRowType(row.exerciseId) === 'bodyweight' ? 'bodyweight' : 'weight not set';
+  return <li>
+    <h3>{exerciseName(row.exerciseId)}</h3>
+    {noTarget ? <>
+      <strong>No target yet</strong>
+      <p>{row.reason === 'duration' ? 'Coach did not provide a time target for this movement.' :
+        row.reason === 'assisted' ? 'Coach did not provide an assistance target for this movement.' :
+        'No working reps were logged and the next planned session has no matching target.'}</p>
+    </> : <>
+      <strong>{setCountLabel(row.target.sets)} × {row.target.reps} {row.target.reps === 1 ? 'rep' : 'reps'} · {load}</strong>
+      <p>{row.source === 'plan' && 'From your next planned session. '}{loadWhy(row.target.whyKey, row.source === 'progression')}</p>
+    </>}
+  </li>;
 }
 
 function sessionDate(weekStart: string, offset: number) {

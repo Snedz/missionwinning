@@ -147,6 +147,14 @@ input:not([type=file]), select {
 .receipt-stats > div { display: grid; gap: .2rem; padding-top: .65rem; }
 .receipt-stats strong { font-size: clamp(1.8rem, 8vw, 3rem); font-weight: 850; line-height: 1; }
 .receipt-stats span { font-size: .68rem; font-weight: 800; letter-spacing: .08em; }
+.victory-next { gap: .3rem; margin-bottom: .85rem; min-width: 0; }
+.victory-next h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); line-height: 1.05; letter-spacing: -.055em; font-weight: 900; }
+.victory-targets { list-style: none; margin: .35rem 0 0; padding: 0; }
+.victory-targets li { display: grid; grid-template-columns: minmax(0, 1fr); gap: .2rem; padding: .65rem 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.victory-targets li:last-child { padding-bottom: 0; }
+.victory-targets h3, .victory-targets strong { margin: 0; font-size: .97rem; line-height: 1.3; }
+.victory-targets strong { font-variant-numeric: tabular-nums; }
+.victory-targets p { margin: 0; color: var(--quiet); font-size: .87rem; }
 
 .citation { display: grid; gap: .43rem; padding: .85rem 1rem; border-left: 3px solid hsl(var(--accent)); background: hsl(var(--accent-tint)); margin-bottom: .75rem; }
 .citation .eyebrow { color: hsl(var(--accent)); display: inline-flex; align-items: center; gap: .35rem; }
@@ -265,9 +273,10 @@ input:not([type=file]), select {
   .set-list li { gap: .44rem; }
   .finish-row { grid-column: 2; margin-top: 0; }
 
-  .victory-layout { display: grid; grid-template-columns: minmax(0, 2.3fr) minmax(12rem, 1fr); gap: .9rem; align-items: start; }
-  .victory-panel { min-height: 15rem; align-content: space-between; margin: 0; }
-  .victory-layout .action-row { display: grid; padding: 1rem; border: 1px solid var(--line); background: var(--card); }
+  .victory-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr); gap: .9rem; align-items: start; }
+  .victory-panel { min-height: 15rem; align-content: space-between; margin: 0; grid-column: 1; grid-row: 1; }
+  .victory-next { grid-column: 2; grid-row: 1 / span 2; margin: 0; padding: 1.25rem; }
+  .victory-layout .action-row { grid-column: 1; grid-row: 2; padding: 1rem; border: 1px solid var(--line); background: var(--card); }
 
   .coach-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); gap: .85rem; }
   .coach-tools .citation { margin: 0; align-content: center; }

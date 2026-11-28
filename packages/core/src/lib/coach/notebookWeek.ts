@@ -2,8 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { computeBodyScores, computeReadiness } from '@/lib/score';
 import { localDateKey, localWeekKey } from '@/lib/time/localDate';
 import { weightUnitFor, type UnitsPref } from '@/lib/units';
-import { workoutInWeightUnit } from '@/lib/workout/workoutMerge';
-import { loadBands } from './load';
+import { notebookProgressionContext } from './notebookProgression';
 import { generateWeek } from './planEngine';
 import type { CoachPlan, EquipmentProfile } from './types';
 import { describeWeekChange } from './weekChange';
@@ -17,14 +16,13 @@ export function generateNotebookWeek(input: {
 }, now = new Date()): CoachPlan {
   const { equipment, daysPerWeek, units, revision } = input;
   const weightUnit = weightUnitFor(units);
-  const history = input.history.filter((entry) => !entry.deletedAt).map((entry) => workoutInWeightUnit(entry, weightUnit));
+  const progression = notebookProgressionContext(input.history, units, now);
+  const { history } = progression;
   return {
     ...generateWeek({
-      experience: 'beginner', equipment, goalId: 'strength', daysPerWeek,
-      preferredDays: [], history, units, seedId: 'local',
+      ...progression, equipment, daysPerWeek, preferredDays: [], seedId: 'local',
       readiness: computeReadiness(history, now.getTime()),
       bodyScores: computeBodyScores(history, { now: now.getTime() }),
-      loadZone: loadBands(history, now).zone,
     }, localWeekKey(now), revision, localDateKey(now), now),
     weightUnit,
   };
