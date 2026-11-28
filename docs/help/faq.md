@@ -61,7 +61,7 @@ A private receipt of the session you just logged — sets, load, duration when t
 
 **Where do my “Next time” targets come from?**
 
-Victory shows your next scheduled Coach target for a lift you logged when one is available. Otherwise, Coach uses the working sets you just saved to suggest sets, reps, and load. You may see the same weight next time, or a change in reps instead. Warmup-only sets don't create a new target.
+Victory shows your next scheduled Coach target for a lift you logged when one is available. Otherwise, Coach uses the working sets you just saved to suggest sets, reps, and load. An unset load can ask you to find a weight you could do for two more reps. A saved target keeps its original units if you switch preferences; older targets without a known unit aren't labeled. Warmup-only sets don't create a new target.
 
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.

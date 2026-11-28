@@ -19,10 +19,10 @@ export function VictoryNextTargets({ log, history, plan }: {
 }) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
-  const { rows, unit } = useMemo(() => {
+  const rows = useMemo(() => {
     const eligible = historyForWeek(history);
     const ctx = readLocalCoachContext(eligible);
-    return { rows: victoryNextTargets(log, eligible, { ...ctx, plan }), unit: weightUnitLabel(ctx.units) };
+    return victoryNextTargets(log, eligible, { ...ctx, plan });
   }, [history, log, plan]);
   if (!rows.length) return null;
   const title = t('victoryNextTime', { defaultValue: 'Next time' });
@@ -31,7 +31,7 @@ export function VictoryNextTargets({ log, history, plan }: {
     <section aria-label={title} className="border-t border-border py-3">
       <h3 className="house-eyebrow mb-2">{title}</h3>
       <ul className="divide-y divide-border">
-        {rows.map(({ exerciseId, target, source, bodyweight }) => (
+        {rows.map(({ exerciseId, target, source, bodyweight, weightUnits }) => (
           <li key={exerciseId} className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 py-2">
             <div>
               <p className="text-sm font-semibold">{exerciseDisplayName(exerciseId)}</p>
@@ -43,7 +43,7 @@ export function VictoryNextTargets({ log, history, plan }: {
             </div>
             <p className="text-sm tabular-nums">
               {fmt.num(target.sets)} × {fmt.num(target.reps)} · {target.weight > 0
-                ? `${fmt.num(target.weight, { maximumFractionDigits: 2 })} ${unit}`
+                ? `${fmt.num(target.weight, { maximumFractionDigits: 2 })}${weightUnits ? ` ${weightUnitLabel(weightUnits)}` : ''}`
                 : bodyweight
                   ? t('victoryNextBodyweight', { defaultValue: 'bodyweight' })
                   : target.whyKey === 'coachFindWorkingWeight'

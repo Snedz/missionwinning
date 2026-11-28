@@ -16,6 +16,7 @@ export type VictoryNextContext = Pick<CoachContext, 'units' | 'goalId' | 'experi
 type VictoryNextTarget = {
   exerciseId: string;
   target: Pick<ProgressionTargets, 'sets' | 'reps' | 'weight' | 'whyKey'>;
+  weightUnits?: CoachContext['units'];
   source: 'plan' | 'progression';
   bodyweight: boolean;
 };
@@ -61,9 +62,9 @@ export function victoryNextTargets(
     const next = nextOpenPlanSession(upcoming.filter((session) =>
       session.exercises.some((exercise) => exercise.exerciseId === exerciseId)));
     const prescribed = next?.exercises.find((exercise) => exercise.exerciseId === exerciseId);
-    if (prescribed) return [{ exerciseId, target: prescribed, source: 'plan', bodyweight }];
+    if (prescribed) return [{ exerciseId, target: prescribed, weightUnits: prescribed.weightUnits, source: 'plan', bodyweight }];
     if (!sets.length) return [];
     const target = nextTargets(exerciseId, throughFinish, units, goalId, experience, zone);
-    return [{ exerciseId, target, source: 'progression', bodyweight }];
+    return [{ exerciseId, target, weightUnits: units, source: 'progression', bodyweight }];
   });
 }

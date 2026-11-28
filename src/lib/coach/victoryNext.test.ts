@@ -45,6 +45,13 @@ test('prefers the earliest real upcoming prescription for each logged exercise',
   };
   const receipt = log([push, lunge]);
   assert.deepEqual(victoryNextTargets(receipt, [], { ...ctx, plan }).map((row) => row.target), [pushTarget, lungeTarget]);
+  const switched = { ...ctx, units: 'imperial' as const };
+  const stampedLunge = { ...lungeTarget, weightUnits: 'metric' as const };
+  const mixedPlan = { ...plan, sessions: [...plan.sessions.slice(0, -1), slot(5, 'planned', [stampedLunge])] };
+  assert.deepEqual(victoryNextTargets(receipt, [], { ...switched, plan: mixedPlan }).map((row) => row.weightUnits), [
+    undefined, 'metric',
+  ]);
+  assert.equal(victoryNextTargets(receipt, [], switched)[1]?.weightUnits, 'imperial');
   assert.deepEqual(
     victoryNextTargets(receipt, [], { ...ctx, plan: { ...plan, weekStart: '2026-11-16' } }),
     victoryNextTargets(receipt, [], ctx),

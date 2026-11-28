@@ -175,6 +175,7 @@ export function pickExercises(
       sets: t.sets,
       reps: t.reps,
       weight: t.weight,
+      weightUnits: ctx.units,
       whyKey: t.whyKey,
       ...(t.loadPct != null ? { loadPct: t.loadPct } : {}),
     };

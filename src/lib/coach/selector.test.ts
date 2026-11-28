@@ -36,6 +36,12 @@ const strengthDay: SplitDay = {
 };
 
 describe('pickExercises', () => {
+  it('stores each strength target in the units it was calculated in', () => {
+    const { exercises } = pickExercises(strengthDay, { ...baseCtx(), units: 'imperial' }, mulberry32(42));
+    assert.ok(exercises.length > 0);
+    assert.ok(exercises.every((exercise) => exercise.weightUnits === 'imperial'));
+  });
+
   it('respects bodyweight equipment', () => {
     const ctx = baseCtx({ equipment: 'bodyweight' });
     const { exercises } = pickExercises(strengthDay, ctx, mulberry32(42));

@@ -2,7 +2,7 @@
 
 ## 2026-11-28 — Victory shows Next time (`.1213`)
 
-After a workout, Victory shows the earliest upcoming Coach prescription for each supported lift you logged. Without a matching prescription, the same progression rules as Coach use the saved working sets instead; warmups alone don't generate a target. The section loads only when Victory opens. Rotates the `.1142` Now bullet and `.1191` LOG entry into [the archive](docs/archive/INDEX.md). PRIVATE_MODE stays.
+After a workout, Victory shows the earliest upcoming Coach prescription for each supported lift you logged. Without a matching prescription, the same progression rules as Coach use the saved working sets instead; warmups alone don't generate a target. Victory uses Coach's working-weight guidance and preserves the original units of prescriptions that have them. The optional section loads only when Victory opens and stays hidden if its chunk is unavailable. Rotates the `.1142` Now bullet and `.1191` LOG entry into [the archive](docs/archive/INDEX.md). PRIVATE_MODE stays.
 
 ## 2026-11-27 — Rotate the oldest Now bullet and LOG entry into `docs/archive/` (`.1206`)
 

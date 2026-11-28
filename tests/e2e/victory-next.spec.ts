@@ -16,6 +16,7 @@ async function logGuestSet(page: Page) {
 
 async function seedLunges(page: Page, weight: number, whyKey: string, weightUnits?: 'metric' | 'imperial') {
   await page.addInitScript(({ weight, whyKey, weightUnits }) => {
+    if (weightUnits === 'metric') localStorage.setItem('mw_units', 'imperial');
     localStorage.setItem('workout-tracker-storage', JSON.stringify({
       version: 1,
       state: {
@@ -81,5 +82,13 @@ test.describe('Victory Next time @gate', () => {
     const target = page.getByRole('region', { name: 'Next time' }).getByRole('listitem').filter({ hasText: /^Lunges/ });
     await expect(target).toContainText('Upcoming Coach session');
     await expect(target).toContainText('Find a weight you could do for 2 more reps.');
+  });
+
+  test('Victory keeps a saved metric prescription in kg after switching to imperial', async ({ page }) => {
+    await seedLunges(page, 60, 'coachWhyHold', 'metric');
+    await page.getByRole('button', { name: /^finish$/i }).click();
+    const target = page.getByRole('region', { name: 'Next time' }).getByRole('listitem').filter({ hasText: /^Lunges/ });
+    await expect(target).toContainText('Upcoming Coach session');
+    await expect(target).toContainText('60 kg');
   });
 });
