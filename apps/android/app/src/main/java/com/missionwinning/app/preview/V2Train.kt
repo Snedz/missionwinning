@@ -49,6 +49,7 @@ internal fun V2Train(
     state: ActiveUiState,
     onEvent: (ActiveEvent) -> Unit,
     onExit: () -> Unit,
+    onDiscard: () -> Unit,
     search: suspend (String, String?, String?) -> List<ExerciseDef>,
 ) {
     var dialog by remember { mutableStateOf<TrainDialog?>(null) }
@@ -56,7 +57,7 @@ internal fun V2Train(
     if (classic) {
         Column(Modifier.fillMaxSize()) {
             androidx.compose.foundation.layout.Box(Modifier.weight(1f)) {
-                ActiveScreen(state, onEvent, onExit, search)
+                ActiveScreen(state, onEvent, onDiscard, search)
             }
             V2Theme {
                 V2Secondary(stringResource(R.string.v2_back_to_train), Modifier.fillMaxWidth()) { classic = false }

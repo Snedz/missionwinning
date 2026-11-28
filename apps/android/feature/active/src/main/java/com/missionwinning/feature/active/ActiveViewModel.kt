@@ -838,6 +838,19 @@ class ActiveViewModel @Inject constructor(
         }
     }
 
+    internal fun discardDraft(onDiscarded: () -> Unit) {
+        viewModelScope.launch {
+            if (_state.value.finishing || _state.value.workoutSaved) return@launch
+            _state.update { it.copy(finishing = true, error = null) }
+            draftJob?.cancelAndJoin()
+            runCatching { sessionDrafts.clear() }
+                .onSuccess { onDiscarded() }
+                .onFailure {
+                    _state.update { it.copy(finishing = false, error = "Could not discard your draft. Try again.") }
+                }
+        }
+    }
+
     private suspend fun persistDraft(st: ActiveUiState): Result<Unit> =
         runCatching {
             sessionDrafts.save(

@@ -91,6 +91,7 @@ fun ActiveRoute(
         ActiveUiState,
         (ActiveEvent) -> Unit,
         () -> Unit,
+        () -> Unit,
         suspend (String, String?, String?) -> List<ExerciseDef>,
     ) -> Unit)? = null,
 ) {
@@ -118,7 +119,13 @@ fun ActiveRoute(
             searchExercises = { q, equip, muscle -> viewModel.searchExercises(q, equip, muscle) },
         )
     } else {
-        presentation(state, viewModel::onEvent, { viewModel.leaveKeepingDraft(onCancel) }, viewModel::searchExercises)
+        presentation(
+            state,
+            viewModel::onEvent,
+            { viewModel.leaveKeepingDraft(onCancel) },
+            { viewModel.discardDraft(onCancel) },
+            viewModel::searchExercises,
+        )
     }
 }
 

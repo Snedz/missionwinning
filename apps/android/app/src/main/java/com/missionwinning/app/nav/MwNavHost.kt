@@ -381,7 +381,7 @@ fun MwNavHost(
                         },
                         onCancel = { nav.popBackStack() },
                         presentation = if (v2Shell) {
-                            { state, onEvent, onExit, search -> V2Train(state, onEvent, onExit, search) }
+                            { state, onEvent, onExit, onDiscard, search -> V2Train(state, onEvent, onExit, onDiscard, search) }
                         } else null,
                     )
                 }

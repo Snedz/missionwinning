@@ -117,6 +117,18 @@ class ShellUpgradeTest {
         assertTrue(runBlocking { entry.drafts().load()?.exercises?.single()?.sets?.single()?.done == true })
     }
 
+    @Test fun discardingFromPreviewFullControlsClearsTheDraft() {
+        val entry = seedCompletedDraft()
+        launch(preview = true)
+        await("Resume workout").click()
+        await("More workout controls").click()
+        device.pressBack()
+        await("Discard").click()
+        await("MISSION WINNING / 01")
+        await("Quick log")
+        assertNull(runBlocking { entry.drafts().load() })
+    }
+
     private fun seedCompletedDraft(): RepoEntryPoint {
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, RepoEntryPoint::class.java)
         runBlocking {
