@@ -7,6 +7,57 @@ import org.junit.Test
 
 class WorkoutHistoryQueryTest {
     @Test
+    fun completionUsesQualifyingWorkingSetFromTheSavedNonDeletedWorkout() {
+        DriverManager.getConnection("jdbc:sqlite::memory:").use { db ->
+            db.createStatement().use { sql ->
+                sql.executeUpdate("CREATE TABLE workout_logs (id TEXT PRIMARY KEY, deletedAt TEXT, completedAt TEXT)")
+                sql.executeUpdate(
+                    """
+                    CREATE TABLE set_logs (
+                        id TEXT, exerciseId TEXT, workoutId TEXT, setIndex INTEGER, setKind TEXT, reps INTEGER,
+                        weight REAL, weightUnit TEXT
+                    )
+                    """.trimIndent(),
+                )
+                sql.executeUpdate(
+                    """
+                    INSERT INTO workout_logs VALUES
+                    ('saved', NULL, '2026-11-28'), ('deleted', '2026-11-29', '2026-11-28'),
+                    ('other', NULL, '2026-11-29')
+                    """.trimIndent(),
+                )
+                sql.executeUpdate(
+                    """
+                    INSERT INTO set_logs VALUES
+                    ('eligible', 'goblet-squat', 'saved', 0, 'normal', 10, 60, 'lb'),
+                    ('heavy-single', 'goblet-squat', 'saved', 1, 'normal', 1, 35, 'kg'),
+                    ('warmup', 'goblet-squat', 'saved', 2, 'warmup', 10, 15, 'kg'),
+                    ('bad-unit', 'goblet-squat', 'saved', 3, 'normal', 10, 100, 'unknown'),
+                    ('deleted-set', 'goblet-squat', 'deleted', 0, 'normal', 10, 40, 'kg'),
+                    ('other-set', 'goblet-squat', 'other', 0, 'normal', 10, 45, 'kg')
+                    """.trimIndent(),
+                )
+            }
+            val query = LATEST_WORKING_LOAD_SQL.replace(":exerciseIds", "?")
+                .replace(":targetReps", "?").replace(":workoutId", "?")
+            db.prepareStatement(query).use { sql ->
+                sql.setString(1, "goblet-squat")
+                sql.setInt(2, 10)
+                fun load(workoutId: String?): String? {
+                    sql.setString(3, workoutId)
+                    sql.setString(4, workoutId)
+                    return sql.executeQuery().use { rows -> if (rows.next()) rows.getString("id") else null }
+                }
+                assertEquals("eligible", load("saved"))
+                assertNull(load("deleted"))
+                assertEquals("other-set", load(null))
+                sql.setInt(2, 12)
+                assertNull(load("saved"))
+            }
+        }
+    }
+
+    @Test
     fun previousSetSkipsDeletedWorkoutAcrossAliasesAndKeepsUnlinkedHistory() {
         DriverManager.getConnection("jdbc:sqlite::memory:").use { db ->
             db.createStatement().use { sql ->

@@ -696,7 +696,7 @@ class ActiveViewModel @Inject constructor(
                 sessionDrafts.clear()
                 // Coach week progress only for plan sessions — not routines / freeform.
                 if (MwRepository.isCoachSession(snap.sessionId)) {
-                    runCatching { repository.markSessionDone(snap.sessionId) }
+                    runCatching { repository.markSessionDone(snap.sessionId, result.workoutId) }
                 }
                 // Optional Health Connect write (app module implements via reflection-free callback on repo side later)
                 runCatching {
