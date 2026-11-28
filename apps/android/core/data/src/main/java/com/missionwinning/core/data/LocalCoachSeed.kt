@@ -291,29 +291,27 @@ object LocalCoachSeed {
     fun markDone(plan: CoachPlanDto, sessionId: String): CoachPlanResponseDto =
         finishSession(plan, sessionId, plan.sessions)
 
-    suspend fun markDone(
+    internal fun markDone(
         plan: CoachPlanDto,
         sessionId: String,
-        workingSet: suspend (exerciseId: String, targetReps: Int) -> SetLogEntity?,
+        workoutId: String,
+        history: List<CoachProgressionSet>,
+        now: Instant = Instant.now(),
+        zone: ZoneId = ZoneId.systemDefault(),
     ): CoachPlanResponseDto {
-        val completed = plan.sessions.find { it.id == sessionId }
-        val unit = plan.weightUnit
+        val unit = plan.weightUnit ?: return markDone(plan, sessionId)
+        val weekStart = runCatching { LocalDate.parse(plan.weekStart) }.getOrNull()
+            ?: return markDone(plan, sessionId)
+        val today = now.atZone(zone).toLocalDate()
+        if (plan.sessions.none { it.id == sessionId }) return markDone(plan, sessionId)
+        val targets = OfflineCoachProgression.fromCompletion(history, workoutId, unit, now, zone)
         val sessions = plan.sessions.map { session ->
             when {
-                session.id == sessionId || completed == null || unit == null ||
-                    plan.equipmentProfile == "bodyweight" -> session
+                session.id == sessionId || weekStart.plusDays(session.dayOffset.toLong()) < today -> session
                 session.status !in setOf("planned", "swapped") -> session
                 else -> session.copy(exercises = session.exercises.map { exercise ->
-                    if (exercise.weight == 0.0 && ExerciseCatalog.get(exercise.exerciseId)?.isBodyweight == true) {
-                        exercise
-                    } else {
-                        val saved = workingSet(exercise.exerciseId, exercise.reps.coerceIn(1, 99))
-                        if (saved == null || !saved.weight.isFinite()) exercise
-                        else exercise.copy(
-                            weight = WeightUnits.convertExact(saved.weight, saved.weightUnit, unit),
-                            whyKey = "coachWhyHold",
-                        )
-                    }
+                    targets[ExerciseCatalog.canonicalCoachId(exercise.exerciseId)]
+                        ?.copy(exerciseId = exercise.exerciseId) ?: exercise
                 })
             }
         }

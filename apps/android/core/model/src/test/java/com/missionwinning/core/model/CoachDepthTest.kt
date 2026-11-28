@@ -78,6 +78,12 @@ class CoachDepthTest {
     @Test
     fun whyKeyLabel() {
         assertEquals("Adapted move", CoachDepth.whyKeyLabel("adapt"))
+        assertEquals("Hold after hard sets", CoachDepth.whyKeyLabel("coachWhyHoldHard"))
+        assertEquals("Hold during a high-load week", CoachDepth.whyKeyLabel("coachWhySteadyWeek"))
+        assertEquals("Add reps", CoachDepth.whyKeyLabel("coachWhyRepProgress"))
+        assertEquals("Increase working load", CoachDepth.whyKeyLabel("coachWhyLoadUp"))
+        assertEquals("Deload for recovery", CoachDepth.whyKeyLabel("coachWhyDeload"))
+        assertEquals("Deload after a plateau", CoachDepth.whyKeyLabel("coachWhyPlateauDeload"))
         assertFalse(CoachDepth.whyKeyLabel("").orEmpty().isNotEmpty())
     }
 }

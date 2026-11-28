@@ -1,0 +1,858 @@
+{
+  "version": 1,
+  "timeZone": "UTC",
+  "progressions": [
+    {
+      "id": "unrated-bodyweight-gains-a-rep",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "push-ups",
+      "units": "metric",
+      "workoutId": "18-push-ups",
+      "history": [
+        {
+          "id": "18-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 4, "weight": 0}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 5,
+        "weight": 0,
+        "whyKey": "coachWhyRepProgress"
+      }
+    },
+    {
+      "id": "easy-bodyweight-gains-two-reps",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "push-ups",
+      "units": "metric",
+      "workoutId": "18-push-ups",
+      "history": [
+        {
+          "id": "18-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 4, "weight": 0, "rpe": "easy"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 0,
+        "whyKey": "coachWhyRepProgress"
+      }
+    },
+    {
+      "id": "bodyweight-hard-deload",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "push-ups",
+      "units": "metric",
+      "workoutId": "18-push-ups",
+      "history": [
+        {
+          "id": "18-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 6, "weight": 0, "rpe": "hard"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 5,
+        "weight": 0,
+        "whyKey": "coachWhyDeload"
+      }
+    },
+    {
+      "id": "bodyweight-flat-deload",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "push-ups",
+      "units": "metric",
+      "workoutId": "18-push-ups",
+      "history": [
+        {
+          "id": "18-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 6, "weight": 0}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 6, "weight": 0}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "14-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-14T10:00:00.000Z",
+          "completedAt": "2026-05-14T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 6, "weight": 0}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 5,
+        "weight": 0,
+        "whyKey": "coachWhyDeload"
+      }
+    },
+    {
+      "id": "unrated-weighted-hold",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 30,
+        "whyKey": "coachWhyHold",
+        "loadPct": 86
+      }
+    },
+    {
+      "id": "weighted-rpe-reps",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 5, "weight": 30, "rpe": "med"},
+                {"reps": 4, "weight": 20}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 2,
+        "reps": 6,
+        "weight": 30,
+        "whyKey": "coachWhyRepProgress",
+        "loadPct": 88
+      }
+    },
+    {
+      "id": "percent-load-up",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 50, "rpe": "easy"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 52.5,
+        "whyKey": "coachWhyLoadUp",
+        "loadPct": 89
+      }
+    },
+    {
+      "id": "percent-load-capped-at-limit",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 3, "weight": 100, "rpe": "easy"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 3,
+        "weight": 100,
+        "whyKey": "coachWhyLoadUp",
+        "loadPct": 95
+      }
+    },
+    {
+      "id": "percent-hard-hold",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30, "rpe": "hard"},
+                {"reps": 6, "weight": 25, "rpe": "hard"},
+                {"reps": 6, "weight": 25, "rpe": "easy"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 3,
+        "reps": 6,
+        "weight": 30,
+        "whyKey": "coachWhyHoldHard",
+        "loadPct": 86
+      }
+    },
+    {
+      "id": "percent-deload-imperial",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "imperial",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 25, "rpe": "hard"},
+                {"reps": 6, "weight": 25, "rpe": "hard"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 2,
+        "reps": 6,
+        "weight": 50,
+        "whyKey": "coachWhyDeload",
+        "loadPct": 78
+      }
+    },
+    {
+      "id": "absolute-load-up-no-e1rm",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 15, "weight": 20, "rpe": "easy"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 15,
+        "weight": 22.5,
+        "whyKey": "coachWhyLoadUp"
+      }
+    },
+    {
+      "id": "absolute-hard-deload-no-e1rm",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 15, "weight": 20, "rpe": "hard"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 15,
+        "weight": 17.5,
+        "whyKey": "coachWhyDeload"
+      }
+    },
+    {
+      "id": "weighted-flat-deload",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 40}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 40}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "14-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-14T10:00:00.000Z",
+          "completedAt": "2026-05-14T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 40}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 35,
+        "whyKey": "coachWhyDeload",
+        "loadPct": 78
+      }
+    },
+    {
+      "id": "weighted-plateau-deload",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 35}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "14-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-14T10:00:00.000Z",
+          "completedAt": "2026-05-14T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 35}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "12-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-12T10:00:00.000Z",
+          "completedAt": "2026-05-12T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "10-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-10T10:00:00.000Z",
+          "completedAt": "2026-05-10T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 50}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 32.5,
+        "whyKey": "coachWhyPlateauDeload",
+        "loadPct": 54
+      }
+    },
+    {
+      "id": "recent-pr-blocks-false-stall",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 42}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "16-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-16T10:00:00.000Z",
+          "completedAt": "2026-05-16T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 40}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "14-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-14T10:00:00.000Z",
+          "completedAt": "2026-05-14T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 40}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "12-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-12T10:00:00.000Z",
+          "completedAt": "2026-05-12T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "10-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-10T10:00:00.000Z",
+          "completedAt": "2026-05-10T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 6, "weight": 30}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 42.5,
+        "whyKey": "coachWhyHold",
+        "loadPct": 86
+      }
+    },
+    {
+      "id": "high-load-caps-progression",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 5400,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 4, "weight": 25, "rpe": "easy"}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-push-ups",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-01T10:00:00.000Z",
+          "completedAt": "2026-05-01T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "push-ups",
+              "sets": [
+                {"reps": 5, "weight": 0}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 4,
+        "weight": 25,
+        "whyKey": "coachWhySteadyWeek",
+        "loadPct": 93
+      }
+    },
+    {
+      "id": "failure-and-drop-can-count-as-working-sets",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 8, "weight": 100, "rpe": "hard", "kind": "warmup"},
+                {"reps": 4, "weight": 30},
+                {"reps": 4, "weight": 60, "rpe": "med", "kind": "failure"},
+                {"reps": 4, "weight": 25, "rpe": "med", "kind": "drop"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 3,
+        "reps": 5,
+        "weight": 30,
+        "whyKey": "coachWhyRepProgress",
+        "loadPct": 91
+      }
+    },
+    {
+      "id": "ignores-deleted-and-future-workouts",
+      "now": "2026-05-18T12:00:00.000Z",
+      "exerciseId": "lunges",
+      "units": "metric",
+      "workoutId": "18-lunges",
+      "history": [
+        {
+          "id": "19-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-19T10:00:00.000Z",
+          "completedAt": "2026-05-19T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 5, "weight": 150}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "deleted",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 5, "weight": 100}
+              ]
+            }
+          ],
+          "deletedAt": "2026-05-18T12:00:00.000Z"
+        },
+        {
+          "id": "18-lunges",
+          "workoutName": "Parity workout",
+          "startedAt": "2026-05-18T10:00:00.000Z",
+          "completedAt": "2026-05-18T10:00:00.000Z",
+          "durationSeconds": 1200,
+          "totalVolume": 0,
+          "weightUnit": "kg",
+          "exercises": [
+            {
+              "exerciseId": "lunges",
+              "sets": [
+                {"reps": 5, "weight": 25},
+                {"reps": 5, "weight": 30, "rpe": "med", "kind": "warmup"}
+              ]
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "sets": 1,
+        "reps": 6,
+        "weight": 25,
+        "whyKey": "coachWhyRepProgress",
+        "loadPct": 89
+      }
+    }
+  ]
+}

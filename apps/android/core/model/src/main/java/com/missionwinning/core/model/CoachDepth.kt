@@ -158,6 +158,12 @@ object CoachDepth {
         if (k.isBlank()) return null
         return when {
             k == "coachwhyhold" -> "Last working set"
+            k == "coachwhyholdhard" -> "Hold after hard sets"
+            k == "coachwhysteadyweek" -> "Hold during a high-load week"
+            k == "coachwhyrepprogress" -> "Add reps"
+            k == "coachwhyloadup" -> "Increase working load"
+            k == "coachwhydeload" -> "Deload for recovery"
+            k == "coachwhyplateaudeload" -> "Deload after a plateau"
             k == "coachwhybodyweightreps" -> "Bodyweight starter"
             k == "coachfindworkingweight" -> "Find a comfortable working weight"
             k.contains("adapt") -> "Adapted move"
