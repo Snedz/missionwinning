@@ -6,6 +6,8 @@ import com.missionwinning.core.model.WorkoutStats
 import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.network.PlanExerciseDto
 import com.missionwinning.core.network.PlanSessionDto
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 internal data class V2TargetChange(
     val sessionName: String,
@@ -35,11 +37,16 @@ internal suspend fun loadPreviewCoachPlan(
 
 internal fun CoachPlanDto.nextTargetsFor(
     loggedExerciseIds: List<String>,
-    today: Int = WorkoutStats.mondayBasedOffset(),
+    today: LocalDate = LocalDate.now(),
 ): List<PlanExerciseDto> {
-    val open = sessions.filter { WorkoutStats.isOpenSessionStatus(it.status) }
-    val next = nextSession(today)
-    val byExercise = (listOfNotNull(next) + open.filter { it != next })
+    val monday = try {
+        LocalDate.parse(weekStart)
+    } catch (_: DateTimeParseException) {
+        return emptyList()
+    }
+    val byExercise = sessions
+        .filter { WorkoutStats.isOpenSessionStatus(it.status) && !monday.plusDays(it.dayOffset.toLong()).isBefore(today) }
+        .sortedBy { it.dayOffset }
         .flatMap { it.exercises }
         .groupBy { ExerciseCatalog.canonicalCoachId(it.exerciseId) }
     return loggedExerciseIds.map(ExerciseCatalog::canonicalCoachId).distinct()

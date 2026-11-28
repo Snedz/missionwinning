@@ -9,6 +9,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.LocalDate
 
 class V2PlanTest {
     private val move = PlanExerciseDto("goblet-squat", sets = 3, reps = 10, weight = 22.5)
@@ -65,18 +66,25 @@ class V2PlanTest {
         ))
         assertEquals(
             listOf(pushups, lunges),
-            plan.nextTargetsFor(listOf("pushup", "db-lunges", "db-lunges", "not-in-plan"), today = 1),
+            plan.nextTargetsFor(listOf("pushup", "db-lunges", "db-lunges", "not-in-plan"), today = LocalDate.parse("2026-11-24")),
         )
-        assertTrue(plan.nextTargetsFor(emptyList(), today = 1).isEmpty())
+        assertTrue(plan.nextTargetsFor(emptyList(), today = LocalDate.parse("2026-11-24")).isEmpty())
     }
 
-    @Test fun victoryUsesTheSameSessionPriorityAsTodayAndIgnoresMisses() {
+    @Test fun victoryUsesTheEarliestUpcomingOpenSessionAndIgnoresMisses() {
         val plan = before.copy(sessions = listOf(
-            first.copy(status = "missed", exercises = listOf(PlanExerciseDto("pushup", sets = 3, reps = 5))),
             second,
+            second.copy(id = "later", dayOffset = 4, exercises = listOf(move.copy(weight = 40.0))),
+            first.copy(id = "missed", dayOffset = 3, status = "missed", exercises = listOf(PlanExerciseDto("pushup", sets = 3, reps = 5))),
             second.copy(id = "today", dayOffset = 2, status = "swapped", exercises = listOf(move.copy(weight = 30.0))),
         ))
-        assertEquals(listOf(move.copy(weight = 30.0)), plan.nextTargetsFor(listOf("pushup", move.exerciseId), today = 2))
+        assertEquals(listOf(move.copy(weight = 30.0)), plan.nextTargetsFor(listOf("pushup", move.exerciseId), today = LocalDate.parse("2026-11-25")))
+    }
+
+    @Test fun victoryDoesNotUseOverdueOpenSessionsOrPlansFromLastWeek() {
+        val plan = before.copy(sessions = listOf(first))
+        assertTrue(plan.nextTargetsFor(listOf(move.exerciseId), today = LocalDate.parse("2026-11-24")).isEmpty())
+        assertTrue(plan.nextTargetsFor(listOf(move.exerciseId), today = LocalDate.parse("2026-11-30")).isEmpty())
     }
 
     @Test fun detectsActualBeforeAfterTargetsOnAnOpenSession() {
