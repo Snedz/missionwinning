@@ -62,7 +62,7 @@ export function useCoachPlan() {
   // same-week on-demand regen stays premium (see generate()).
   const locked = false;
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback(async (isCurrent: () => boolean) => {
     let existing = loadPlan();
 
     if (!existing) {
@@ -101,8 +101,8 @@ export function useCoachPlan() {
      * `todayOffset` above was already derived from the real clock and used three
      * lines down — the date was in scope the whole time.
      */
-    let next = adaptPlan(existing, ctx, localDateKey());
-    next = adaptForEquipmentChange(next, ctx, todayOffset);
+    let next = await adaptForEquipmentChange(adaptPlan(existing, ctx, localDateKey()), ctx, todayOffset);
+    if (!isCurrent()) return;
 
     if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
       const regen = regenerateFutureSessions(next, ctx, todayOffset);
@@ -143,14 +143,25 @@ export function useCoachPlan() {
   }, []);
 
   useEffect(() => {
+    let generation = 0;
     setLoading(true);
-    refresh();
-    setLoading(false);
 
-    const onChange = () => refresh();
+    const onChange = () => {
+      const current = ++generation;
+      const isCurrent = () => current === generation;
+      void refresh(isCurrent)
+        .catch(() => {
+          if (isCurrent()) setPlan(loadPlan());
+        })
+        .finally(() => {
+          if (isCurrent()) setLoading(false);
+        });
+    };
     window.addEventListener('mw-coach-plan-changed', onChange);
     window.addEventListener('storage', onChange);
+    onChange();
     return () => {
+      generation++;
       window.removeEventListener('mw-coach-plan-changed', onChange);
       window.removeEventListener('storage', onChange);
     };

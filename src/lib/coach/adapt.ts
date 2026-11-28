@@ -1,4 +1,4 @@
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog, getExerciseById, isFullExerciseCatalogLoaded } from '@/data/exercises';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
 import type { CoachContext, CoachPlan, PlanSession } from '@/lib/coach/types';
@@ -342,24 +342,24 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
   };
 }
 
-export function adaptForEquipmentChange(
+export async function adaptForEquipmentChange(
   plan: CoachPlan,
   ctx: CoachContext,
   todayOffset: number
-): CoachPlan {
+): Promise<CoachPlan> {
   const profileChanged = plan.equipmentProfile !== ctx.equipment;
   const kit = ctx.homeGymKit ?? null;
-  const futureNeedsSwap =
-    (ctx.equipment === 'dumbbells' || !!kit) &&
-    plan.sessions.some(
-      (s) =>
-        s.dayOffset >= todayOffset &&
-        s.status !== 'done' &&
-        s.exercises.some((ex) => {
-          const data = EXERCISES.find((e) => e.id === ex.exerciseId);
-          return data ? !equipmentMatches(data, ctx.equipment, kit) : false;
-        })
-    );
+  const futureIds = plan.sessions
+    .filter((s) => s.dayOffset >= todayOffset && s.status !== 'done')
+    .flatMap((s) => s.exercises.map((ex) => ex.exerciseId));
+  const checkEquipment = ctx.equipment === 'dumbbells' || !!kit;
+  if (checkEquipment && !isFullExerciseCatalogLoaded() && futureIds.some((id) => !getExerciseById(id))) {
+    await ensureFullExerciseCatalog();
+  }
+  const futureNeedsSwap = checkEquipment && futureIds.some((id) => {
+    const data = getExerciseById(id);
+    return data ? !equipmentMatches(data, ctx.equipment, kit) : false;
+  });
   if (!profileChanged && !futureNeedsSwap) return plan;
   return regenerateFutureSessions(plan, ctx, todayOffset);
 }

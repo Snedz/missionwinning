@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { getExerciseById } from '@/data/exercises';
 import type { CompletedWorkoutLog } from '@/types';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
@@ -266,7 +267,7 @@ describe('adaptPlan', () => {
     }
   });
 
-  it('done sessions stay immutable on equipment change', () => {
+  it('done sessions stay immutable on equipment change', async () => {
     const ctx = buildCoachContextFromInputs({
       history: [],
       experience: 'beginner',
@@ -279,12 +280,12 @@ describe('adaptPlan', () => {
     const doneId = plan.sessions[0].id;
     plan.sessions[0] = { ...plan.sessions[0], status: 'done' };
     const newCtx = { ...ctx, equipment: 'full-gym' as const };
-    const adapted = adaptForEquipmentChange(plan, newCtx, 1);
+    const adapted = await adaptForEquipmentChange(plan, newCtx, 1);
     const done = adapted.sessions.find((s) => s.id === doneId);
     assert.equal(done?.status, 'done');
   });
 
-  it('rebuilds a saved dumbbells week with incompatible future exercises only once', () => {
+  it('rebuilds a saved dumbbells week with incompatible future exercises only once', async () => {
     const week = '2026-01-26';
     const ctx = buildCoachContextFromInputs({
       history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
@@ -300,12 +301,12 @@ describe('adaptPlan', () => {
         exercises: [{ ...pending.exercises[0], exerciseId: 'banded-dislocate' }],
       }],
     };
-    const adapted = adaptForEquipmentChange(legacy, ctx, 1);
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 1);
     assert.equal(adapted.revision, 2);
     assert.equal(adapted.sessions[0], done);
     assert.ok(adapted.sessions.some((s) => s.status !== 'done' && s.exercises.length > 0));
     assert.ok(!adapted.sessions.flatMap((s) => s.exercises).some((e) => e.exerciseId === 'banded-dislocate'));
-    assert.equal(adaptForEquipmentChange(adapted, ctx, 1), adapted);
+    assert.equal(await adaptForEquipmentChange(adapted, ctx, 1), adapted);
   });
 
   it('keeps one compatible catch-up workout when equipment changes on Friday', async () => {
@@ -331,6 +332,27 @@ describe('adaptPlan', () => {
     assert.ok(adapted.sessions[1].dayOffset >= 4);
     assert.ok(adapted.sessions[1].exercises.length > 0);
     assert.ok(adapted.sessions[1].exercises.every((e) => e.exerciseId !== 'banded-dislocate'));
+  });
+
+  it('checks lazy catalog exercises in saved dumbbells plans on a cold start', async () => {
+    const week = '2026-01-26';
+    const ctx = buildCoachContextFromInputs({
+      history: [], equipment: 'dumbbells', daysPerWeek: 2, experience: 'beginner',
+      goal: 'goal:strength', seedId: 'local', includeCheckIn: false, homeGymKit: null,
+    });
+    assert.equal(getExerciseById('incline-dumbbell-press'), undefined, 'start with the base catalog only');
+    const plan = generateWeek(ctx, week, 1, week);
+    const pending = plan.sessions[1];
+    const legacy = {
+      ...plan,
+      sessions: [plan.sessions[0], {
+        ...pending, exercises: [{ ...pending.exercises[0], exerciseId: 'incline-dumbbell-press' }],
+      }],
+    };
+    const adapted = await adaptForEquipmentChange(legacy, ctx, 0);
+    assert.ok(getExerciseById('incline-dumbbell-press'), 'load the lazy exercise before checking its equipment');
+    assert.equal(adapted.revision, 2);
+    assert.ok(adapted.sessions.every((s) => s.exercises.every((e) => e.exerciseId !== 'incline-dumbbell-press')));
   });
 
   it('regenerateFutureSessions is idempotent when the week is unchanged', () => {
