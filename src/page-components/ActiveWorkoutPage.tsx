@@ -625,7 +625,8 @@ export function ActiveWorkoutPage() {
       hasCoachPlan: !!plan || !!adapt.plan,
       resolveExerciseName: (id) => exerciseDisplayName(id) || id.replace(/-/g, ' '),
     });
-        if (adapt.wroteNextEnv) {
+    assembled.victorySummary.nextCoachPlan = adapt.plan;
+    if (adapt.wroteNextEnv) {
       assembled.victorySummary.nextEnvFromLog = true;
       if (adapt.citeText) assembled.victorySummary.nextEnvCite = adapt.citeText;
       if (adapt.nextConceptId) {

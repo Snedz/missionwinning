@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { join } from 'node:path';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
@@ -19,6 +20,7 @@ test.describe('Logger depth @gate', () => {
   });
 
   test('start empty, add push-ups, log set, rest timer, skip rest, finish', async ({ page }) => {
+    const shotDir = process.env.VICTORY_SCREENSHOT_DIR;
     await startEmptyActiveWorkout(page);
     await dismissHouseOverlays(page);
 
@@ -50,6 +52,7 @@ test.describe('Logger depth @gate', () => {
     );
     await expect(page.getByTestId('set-row-target')).toHaveCount(0);
 
+    await page.getByRole('textbox', { name: 'Reps', exact: true }).last().fill('4');
     await logBtn.click();
 
     // Routine set feedback = completed row + rest timer (toast removed in D0).
@@ -72,12 +75,27 @@ test.describe('Logger depth @gate', () => {
     await page.getByTestId('rest-skip').click();
     await expect(rest).toBeHidden({ timeout: 5_000 });
 
+    await page.getByRole('textbox', { name: 'Reps', exact: true }).last().fill('4');
+    await logBtn.click();
+
+    await page.evaluate(() => localStorage.removeItem('mw_coach_plan'));
     await page.getByRole('button', { name: /^finish$/i }).click();
     // GNT-1 keeps this string. Leftover Victory often docks Coach; helper still
     // looks for /back to today/i then the next dock.
     await expect(
       page.getByRole('button', { name: /back to today/i }).or(page.getByTestId('victory-next-dock'))
     ).toBeVisible({ timeout: 15_000 });
+    const nextTime = page.getByRole('region', { name: 'Next time' });
+    const target = nextTime.getByRole('listitem').filter({ hasText: /push-ups/i });
+    await expect(target).toContainText('2 × 5 · bodyweight');
+    await expect(target).toContainText('Coach progression from your log');
+    if (shotDir) {
+      if (process.env.VICTORY_SCREENSHOT_DESKTOP === '1') {
+        await page.setViewportSize({ width: 1440, height: 900 });
+      }
+      await nextTime.scrollIntoViewIfNeeded();
+      await page.screenshot({ path: join(shotDir, `${page.viewportSize()?.width}-victory-next-time.png`) });
+    }
     await leaveVictoryTowardToday(page);
   });
 

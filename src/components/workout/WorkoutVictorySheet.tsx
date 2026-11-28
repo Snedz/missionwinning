@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Share2 } from 'lucide-react';
@@ -68,6 +69,11 @@ import {
 } from '@/lib/workout/victoryReceipt';
 import { topLiftDeltas } from '@/lib/workout/victoryVsLastLifts';
 import { normalizeVictoryDiaryLine } from '@/lib/workout/victoryDiaryLine';
+
+const VictoryNextTargets = dynamic(
+  () => import('@/components/workout/VictoryNextTargets').then((m) => m.VictoryNextTargets),
+  { ssr: false }
+);
 
 type Props = {
   open: boolean;
@@ -258,7 +264,7 @@ export function WorkoutVictorySheet({
     <>
       {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
       {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
-      {summary.progressionInsight ? (
+      {summary.nextCoachPlan === undefined && summary.progressionInsight ? (
         <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">
           {t(progressionInsightKey(summary.progressionInsight), {
             step: summary.progressionInsight.step,
@@ -344,6 +350,10 @@ export function WorkoutVictorySheet({
         />
 
         <VictoryVsLastLifts lifts={vsLastLifts} />
+
+        {open && finishedLog && summary.nextCoachPlan !== undefined ? (
+          <VictoryNextTargets log={finishedLog} history={workoutHistory} plan={summary.nextCoachPlan} />
+        ) : null}
 
         {workoutId ? (
           <VictoryDiaryLine

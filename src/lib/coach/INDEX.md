@@ -16,6 +16,7 @@
 8a0. `coachConcept.ts` — discrete `CoachConceptId` + Victory concept-first cite (.1067)
 8a0a. `src/lib/today/todayConceptChip.ts` — TodayDesk glance chip from `nextConceptId` / next open session (`.1071`)
 8a0b. `victoryNextEnvCite.ts` — Finish → adapt → Victory muted cite when next session was written from this log (`.1066`)
+8a0c. `victoryNext.ts` — Pure per-lift Victory targets: use the next matching Coach prescription or progression from real working sets
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
