@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import Image from 'next/image';
 import { LANDING_PREVIEW_EN as copy } from '@/i18n/landingPreviewLocales';
 import { forgeFontClass } from './landingForgeFonts';
@@ -23,6 +23,7 @@ export default function LandingV2Page() {
   const [playing, setPlaying] = useState(true);
   const [dock, setDock] = useState(false);
   const [openCard, setOpenCard] = useState<string>();
+  const rulesId = useId();
   const hero = useRef<HTMLElement>(null);
   const start = useRef<HTMLElement>(null);
 
@@ -114,19 +115,28 @@ export default function LandingV2Page() {
           <div className={s.goalList}>{copy.goals.map(({ heading, body }) => (
             <article key={heading} className={s.cardText}><h3>{heading}</h3><p>{body}</p></article>
           ))}</div>
-          <div className={s.ruleGrid}>{copy.rules.map(({ heading, body }) => (
-            <button
-              key={heading}
-              type="button"
-              className={s.flip}
-              aria-label={heading}
-              aria-expanded={openCard === heading}
-              onClick={() => setOpenCard(current => current === heading ? undefined : heading)}
-            >
-              <span className={s.flipTitle} aria-hidden="true">{heading} <span>↻</span></span>
-              <span className={s.flipBack} aria-hidden={openCard !== heading}>{body}</span>
-            </button>
-          ))}</div>
+          <div className={s.ruleGrid}>{copy.rules.map(({ heading, body }, index) => {
+            const answerId = `${rulesId}-answer-${index}`;
+            const triggerId = `${rulesId}-trigger-${index}`;
+            const expanded = openCard === heading;
+            return (
+              <div key={heading} className={s.flip}>
+                <button
+                  id={triggerId}
+                  type="button"
+                  className={s.flipTitle}
+                  aria-controls={answerId}
+                  aria-expanded={expanded}
+                  onClick={() => setOpenCard(current => current === heading ? undefined : heading)}
+                >
+                  {heading} <span aria-hidden="true">↻</span>
+                </button>
+                <div id={answerId} role="region" aria-labelledby={triggerId} className={s.flipBack} hidden={!expanded}>
+                  {body}
+                </div>
+              </div>
+            );
+          })}</div>
         </div>
       </section>
 

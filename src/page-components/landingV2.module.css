@@ -121,15 +121,14 @@
 .goalList, .deviceGrid { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: 1.75rem; }
 .goalList > article, .deviceGrid > article { border-top: 1px solid var(--line); padding: .4rem 0; }
 .ruleGrid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0,1fr)); margin-top: 1rem; }
-.flip { display: grid; width: 100%; min-height: 7rem; text-align: left; perspective: 650px; }
-.flip > span { grid-area: 1 / 1; padding: 1rem; backface-visibility: hidden; transition: transform .35s ease; border: 1px solid var(--line); }
-.flipTitle { display: flex; justify-content: space-between; align-items: center; gap: .75rem; background: var(--preview-controls); font: 600 1.2rem var(--font-forge-heading), sans-serif; }
+.flip { perspective: 650px; }
+.flipTitle, .flipBack { width: 100%; padding: 1rem; text-align: left; border: 1px solid var(--line); }
+.flipTitle { display: flex; justify-content: space-between; align-items: center; gap: .75rem; min-height: 7rem; background: var(--preview-controls); font: 600 1.2rem var(--font-forge-heading), sans-serif; }
 .flipTitle span { color: var(--preview-orange-text); }
-.flipBack { transform: rotateY(-180deg); background: var(--preview-card-back); color: var(--silver); }
-.flip[aria-expanded='true'] .flipTitle { transform: rotateY(180deg); }
-.flip[aria-expanded='true'] .flipBack { transform: rotateY(0deg); }
-@media (prefers-reduced-motion: reduce) {
-  .flip > span { transition: none; }
+.flipBack { border-top: 0; background: var(--preview-card-back); color: var(--silver); }
+@media (prefers-reduced-motion: no-preference) {
+  .flipBack:not([hidden]) { animation: flip-open .35s ease; transform-origin: top; }
+  @keyframes flip-open { from { transform: rotateX(-45deg); } to { transform: rotateX(0); } }
 }
 @media (max-width: 680px) {
   .goalList, .deviceGrid, .ruleGrid { grid-template-columns: minmax(0, 1fr); }

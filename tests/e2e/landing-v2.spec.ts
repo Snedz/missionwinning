@@ -48,9 +48,22 @@ for (const width of [320, 390, 1440]) test(`landing preview preserves Forge or r
   await page.getByLabel('Days per week').selectOption('6');
   await expect(page.getByLabel('Missed session').locator('option')).toHaveCount(6);
   const coachCard = page.getByRole('button', { name: 'What if there are no days left?' });
-  await coachCard.click();
+  const answerId = await coachCard.getAttribute('aria-controls');
+  expect(answerId).toBeTruthy();
+  const answer = page.locator(`[id="${answerId}"]`);
+  const answerRegion = page.getByRole('region', { name: 'What if there are no days left?' });
+  await expect(answer).toBeAttached();
+  expect(await answer.evaluate(node => node.previousElementSibling?.tagName)).toBe('BUTTON');
+  await expect(answer).toBeHidden();
+  await expect(answerRegion).toHaveCount(0);
+  await coachCard.focus();
+  await coachCard.press('Enter');
   await expect(coachCard).toHaveAttribute('aria-expanded', 'true');
-  await expect(coachCard.getByText('The sample planner', { exact: false })).toBeVisible();
+  await expect(coachCard).toBeFocused();
+  await expect(answerRegion).toContainText('The sample planner');
+  await coachCard.press('Space');
+  await expect(coachCard).toHaveAttribute('aria-expanded', 'false');
+  await expect(answer).toBeHidden();
   await expectNoOverflow();
   expect(await storage()).toEqual(before);
   if (width === 390 || width === 1440) {
