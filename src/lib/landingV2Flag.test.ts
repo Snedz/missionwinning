@@ -10,6 +10,18 @@ test('the landing preview requires an explicit opt-in', () => {
   assert.equal(isLandingV2Enabled({ LANDING_V2_PREVIEW: 'true' }), true);
 });
 
+test('the landing query opts in only outside Vercel production', () => {
+  const preview = { VERCEL_ENV: 'preview', LANDING_V2_PREVIEW: 'false' };
+  const production = { VERCEL_ENV: 'production' };
+  assert.equal(isLandingV2Enabled(preview), false);
+  assert.equal(isLandingV2Enabled(preview, 'v2'), true);
+  assert.equal(isLandingV2Enabled(preview, 'V2'), false);
+  assert.equal(isLandingV2Enabled(preview, ['v2']), false);
+  assert.equal(isLandingV2Enabled({}, 'v2'), true);
+  assert.equal(isLandingV2Enabled(production, 'v2'), false);
+  assert.equal(isLandingV2Enabled({ ...production, LANDING_V2_PREVIEW: 'true' }), true);
+});
+
 test('the sample planner rebuilds after the missed day without rewriting its original week', () => {
   const offsets = (plan: ReturnType<typeof landingPreviewWeek>) => plan.map((session) => session.dayOffset);
   assert.deepEqual(offsets(landingPreviewWeek('dumbbells', 3)), [0, 2, 4]);

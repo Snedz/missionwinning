@@ -62,7 +62,11 @@ function Homepage() {
   );
 }
 
-export default async function MissionWinningLanding() {
+export default async function MissionWinningLanding({
+  searchParams,
+}: {
+  searchParams: Promise<{ landing?: string | string[] }>;
+}) {
   const cookie = await hasPrivateAccessCookieOnServer();
   const surface = homeSurfaceAfterGate({
     privateMode: isPrivateModeEnabled(),
@@ -73,7 +77,7 @@ export default async function MissionWinningLanding() {
     redirect('/private');
   }
   if (surface === 'homepage') {
-    if (isLandingV2Enabled()) {
+    if (isLandingV2Enabled(process.env, (await searchParams).landing)) {
       const { default: LandingV2Page } = await import('@/page-components/LandingV2Page');
       return <LandingV2Page />;
     }
