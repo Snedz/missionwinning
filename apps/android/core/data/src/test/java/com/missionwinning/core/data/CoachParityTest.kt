@@ -72,7 +72,7 @@ class CoachParityTest {
     }
 
     @Test
-    fun offlineSeedMatchesExactlyTheListedWebDifferences() {
+    fun offlineStarterSelectionMatchesWebWithOnlyListedPlanDifferences() {
         val fixture = requireNotNull(javaClass.getResourceAsStream("/coach-parity.json"))
             .bufferedReader().use { json.parseToJsonElement(it.readText()).jsonObject }
         assertEquals("1", fixture.getValue("version").jsonPrimitive.content)
@@ -80,6 +80,7 @@ class CoachParityTest {
         assertEquals(expectedDifferences.keys.sorted(), cases.map { it.getValue("id").jsonPrimitive.content }.sorted())
         val zone = ZoneId.of(fixture.getValue("timeZone").jsonPrimitive.content)
         val histories = fixture.getValue("histories").jsonObject
+        val selectionMismatches = mutableListOf<String>()
 
         for (case in cases) {
             val id = case.getValue("id").jsonPrimitive.content
@@ -94,10 +95,17 @@ class CoachParityTest {
             val native = response.plan
             assertTrue(id, response.adaptBeats.isEmpty() && !response.hasAdaptSignal)
             assertEquals(id, unit, native.weightUnit)
+            val mismatchesBefore = selectionMismatches.size
             for ((webSession, nativeSession) in web.sessions.zip(native.sessions)) {
-                assertEquals("$id ${webSession.id} exercise selection",
-                    webSession.exercises.map { it.exerciseId }, nativeSession.exercises.map { it.exerciseId })
+                for (slot in 0 until maxOf(webSession.exercises.size, nativeSession.exercises.size)) {
+                    val expected = webSession.exercises.getOrNull(slot)?.exerciseId
+                    val actual = nativeSession.exercises.getOrNull(slot)?.exerciseId
+                    if (expected != actual) {
+                        selectionMismatches.add("$id ${webSession.id} #${slot + 1}: web=$expected, Android=$actual")
+                    }
+                }
             }
+            if (selectionMismatches.size != mismatchesBefore) continue
             assertEquals(id, expectedDifferences.getValue(id), differenceFields(web, native, unit))
             assertEquals(id, 1, native.revision)
             if (history.isNotEmpty()) {
@@ -111,6 +119,8 @@ class CoachParityTest {
                 }
             }
         }
+        assertTrue("${selectionMismatches.size} starter exercise-selection mismatches:\n" +
+            selectionMismatches.joinToString("\n"), selectionMismatches.isEmpty())
     }
 
     @Test

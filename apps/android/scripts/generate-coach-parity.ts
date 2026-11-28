@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { mock } from 'node:test';
+import { EXERCISES } from '@/data/exercises';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
+import { equipmentMatches } from '@/lib/coach/equipment';
 import { generateWeek } from '@/lib/coach/planEngine';
 import { loadBands } from '@/lib/coach/load';
 import { nextTargets } from '@/lib/coach/progression';
@@ -47,20 +49,28 @@ function historyInUnits(history: Log[], units: UnitsPref): CompletedWorkoutLog[]
 }
 
 process.env.TZ = fixture.timeZone;
-const seedCases = () => fixture.cases.map(({ id, now, historyId, input }) => {
-  const date = new Date(now);
-  mock.timers.enable({ apis: ['Date'], now: date });
-  try {
-    const ctx = buildCoachContextFromInputs({
-      ...input, history: historyInUnits(fixture.histories[historyId], input.units),
-      experience: 'beginner', goal: 'goal:strength', preferredDays: [], seedId: 'local', includeCheckIn: false,
-    });
-    const expectedPlan = generateWeek(ctx, localWeekKey(date), input.revision, localDateKey(date));
-    return { id, now, historyId, input, expectedPlan };
-  } finally {
-    mock.timers.reset();
+function seedCases() {
+  for (const [id, expected] of [['lateral-raise-db', true], ['dumbbell-fly', false], ['banded-dislocate', false]] as const) {
+    const exercise = EXERCISES.find((entry) => entry.id === id);
+    if (!exercise || equipmentMatches(exercise, 'dumbbells') !== expected) {
+      throw new Error('Regenerate starter fixtures with the dumbbells-and-floor web planner from #1139.');
+    }
   }
-});
+  return fixture.cases.map(({ id, now, historyId, input }) => {
+    const date = new Date(now);
+    mock.timers.enable({ apis: ['Date'], now: date });
+    try {
+      const ctx = buildCoachContextFromInputs({
+        ...input, history: historyInUnits(fixture.histories[historyId], input.units),
+        experience: 'beginner', goal: 'goal:strength', preferredDays: [], seedId: 'local', includeCheckIn: false,
+      });
+      const expectedPlan = generateWeek(ctx, localWeekKey(date), input.revision, localDateKey(date));
+      return { id, now, historyId, input, expectedPlan };
+    } finally {
+      mock.timers.reset();
+    }
+  });
+}
 
 const now = '2026-05-18T12:00:00.000Z';
 const push = 'push-ups';
