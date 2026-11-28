@@ -92,6 +92,27 @@ class CoachParityTest {
     }
 
     @Test
+    fun manualAndPlannerJumpSquatIdsShareOneTargetAndOneHistory() {
+        val manual = SetLogEntity(
+            id = "manual", exerciseId = "jump-squat", exerciseName = "Jump squat",
+            setIndex = 1, reps = 8, weight = 0.0, completedAt = "2026-05-17T12:00:00Z",
+            sessionId = null, weightUnit = "kg", workoutId = "recent",
+        )
+        val planner = manual.copy(id = "plan", exerciseId = "jump-squats", setIndex = 0, reps = 6)
+        val push = manual.copy(id = "push", exerciseId = "pushup", completedAt = "2026-05-16T12:00:00Z")
+        val plan = LocalCoachSeed.build(
+            history = listOf(manual, planner, push),
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan
+        for (session in plan.sessions) {
+            val jumps = session.exercises.filter { it.exerciseId in setOf("jump-squat", "jump-squats") }
+            assertEquals(listOf("jump-squats"), jumps.map { it.exerciseId })
+            assertEquals(8, jumps.single().reps)
+            assertEquals(2, jumps.single().sets)
+        }
+    }
+
+    @Test
     fun bodyweightSeedUsesOlderUnweightedHistoryWhenLatestWorkoutWasWeighted() {
         val now = Instant.parse("2026-05-20T12:00:00Z")
         val unweighted = SetLogEntity(

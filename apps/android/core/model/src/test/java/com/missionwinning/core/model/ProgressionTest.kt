@@ -31,6 +31,16 @@ class ProgressionTest {
     }
 
     @Test
+    fun manualAndPlannerIdsSharePersonalRecords() {
+        val manual = Progression.SetSample("jump-squat", "Jump squat", 12.5, 5, "2026-01-01T00:00:00Z")
+        val planner = manual.copy(exerciseId = "jump-squats", weight = 10.0)
+        val records = Progression.personalRecords(listOf(manual, planner))
+        assertEquals(listOf("jump-squats"), records.map { it.exerciseId })
+        assertEquals(12.5, records.single().weight, 0.0)
+        assertFalse(Progression.isPersonalRecord("jump-squats", 10.0, 5, priorSamples = listOf(manual)))
+    }
+
+    @Test
     fun barFractions_normalize() {
         assertEquals(listOf(0.5f, 1f, 0.25f), Progression.barFractions(listOf(50.0, 100.0, 25.0)))
         assertEquals(listOf(0f, 0f), Progression.barFractions(listOf(0.0, 0.0)))

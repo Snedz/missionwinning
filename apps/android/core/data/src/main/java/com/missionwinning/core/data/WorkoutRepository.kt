@@ -1,6 +1,7 @@
 package com.missionwinning.core.data
 
 import androidx.room.withTransaction
+import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.SetKind
 import java.util.UUID
 
@@ -15,10 +16,10 @@ class WorkoutRepository(
     private val dao = db.dao()
 
     suspend fun previousSet(exerciseId: String, setIndex: Int): SetLogEntity? =
-        dao.latestSetFor(exerciseId, setIndex)
+        dao.latestSetFor(ExerciseCatalog.equivalentCoachIds(exerciseId), setIndex)
 
     suspend fun latestWorkingLoad(exerciseId: String, targetReps: Int): SetLogEntity? =
-        dao.latestWorkingLoad(exerciseId, targetReps)?.takeIf { it.weight.isFinite() }
+        dao.latestWorkingLoad(ExerciseCatalog.equivalentCoachIds(exerciseId), targetReps)?.takeIf { it.weight.isFinite() }
 
     suspend fun finishWorkout(
         workoutName: String,

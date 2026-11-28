@@ -74,10 +74,11 @@ object Progression {
     ): Boolean {
         if (weight <= 0 || reps <= 0) return false
         if (!SetKind.countsTowardPr(kind)) return false
+        val canonicalId = ExerciseCatalog.canonicalCoachId(exerciseId)
         val newEst = estimated1rm(weight, reps)
         val priorBest = priorSamples
             .asSequence()
-            .filter { it.exerciseId == exerciseId }
+            .filter { ExerciseCatalog.canonicalCoachId(it.exerciseId) == canonicalId }
             .filter { SetKind.countsTowardPr(it.kind) }
             .filter { it.weight > 0 && it.reps > 0 }
             .maxOfOrNull { estimated1rm(it.weight, it.reps) }
@@ -94,10 +95,11 @@ object Progression {
             if (!SetKind.countsTowardPr(s.kind)) continue
             if (s.weight <= 0 || s.reps <= 0) continue
             val e1 = estimated1rm(s.weight, s.reps)
-            val prev = best[s.exerciseId]
+            val canonicalId = ExerciseCatalog.canonicalCoachId(s.exerciseId)
+            val prev = best[canonicalId]
             if (prev == null || e1 > prev.estimated1rm + 1e-6) {
-                best[s.exerciseId] = PersonalRecord(
-                    exerciseId = s.exerciseId,
+                best[canonicalId] = PersonalRecord(
+                    exerciseId = canonicalId,
                     exerciseName = s.exerciseName.ifBlank { s.exerciseId },
                     weight = s.weight,
                     reps = s.reps,

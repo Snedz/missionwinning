@@ -411,6 +411,19 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_addExercise_aliasAddsSetsToExistingPlannerMovement() {
+        val base = listOf(ActiveExercise("jump-squats", "Jump Squats", listOf(
+            set("1", done = true, exerciseId = "jump-squats"),
+        )))
+        val next = ActiveSessionLogic.addExercise(
+            exercises = base, exerciseId = "jump-squat", exerciseName = "Jump squat",
+            newSetIds = listOf("n1"), setCount = 1,
+        )
+        assertEquals(listOf("jump-squats"), next.map { it.exerciseId })
+        assertEquals(listOf("jump-squats", "jump-squats"), next.single().sets.map { it.exerciseId })
+    }
+
+    @Test
     fun sessionLogic_removeSet_reindexesAndDropsEmptyExercise() {
         val base = listOf(
             ActiveExercise(

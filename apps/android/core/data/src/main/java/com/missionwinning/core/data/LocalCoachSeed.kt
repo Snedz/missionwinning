@@ -131,7 +131,7 @@ object LocalCoachSeed {
             .thenByDescending { it.first.workoutId }.thenByDescending { it.first.setIndex }.thenByDescending { it.first.id })
             .map { it.first }
         val latestByExercise = workingSets.filter { set ->
-            val webMove = OfflineCoachCatalog.byId[set.exerciseId]
+            val webMove = OfflineCoachCatalog.byId[ExerciseCatalog.canonicalCoachId(set.exerciseId)]
             if (webMove != null) {
                 webMove.supports(equip) && (equip != "bodyweight" || set.weight == 0.0)
             } else {
@@ -139,7 +139,7 @@ object LocalCoachSeed {
                 move != null && equip in move.equipment &&
                     (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
             }
-        }.groupBy { it.exerciseId }.mapValues { (_, sets) ->
+        }.groupBy { ExerciseCatalog.canonicalCoachId(it.exerciseId) }.mapValues { (_, sets) ->
             val latest = sets.first()
             sets.filter { it.workoutId == latest.workoutId }
         }
