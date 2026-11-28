@@ -49,7 +49,7 @@ export const LIBRARY_CUE_OVERRIDES: Record<string, string> = {
   "bicep-curl": "Control eccentric, full stretch at bottom, no swing.",
   "tricep-pushdown": "Elbows pinned, full extension, squeeze triceps at bottom.",
   "incline-bench": "Bench 30–45°, retract scapulae, bar to upper chest, controlled lower.",
-  "dumbbell-press": "Neutral or pronated grip, full range, dumbbells meet at top without clashing.",
+  "dumbbell-press": "Lie on a bench. Neutral or pronated grip, full range, dumbbells meet at top without clashing.",
   "front-squat": "Elbows high, bar on front delts, upright torso, core braced throughout.",
   "leg-press": "Feet mid-platform, lower until knees ~90°, drive through whole foot, no butt lift.",
   "leg-curl": "Hips pinned, curl to glutes, slow eccentric, squeeze hamstrings at top.",

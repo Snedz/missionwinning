@@ -6,7 +6,7 @@ const EXERCISE_ENTRIES: Exercise[] = [
   { id: "pull-ups", name: "Pull-ups", muscleGroups: ["Back", "Arms"], equipment: "Bodyweight" },
   { id: "bench-press", name: "Bench Press", muscleGroups: ["Chest", "Arms"], equipment: "Barbell" },
   { id: "incline-bench", name: "Incline Bench Press", muscleGroups: ["Chest", "Shoulders"], equipment: "Barbell" },
-  { id: "dumbbell-press", name: "Dumbbell Chest Press", muscleGroups: ["Chest", "Arms"], equipment: "Dumbbells", cues: "Lie on a bench with the dumbbells at chest height. Press up and lower with control." },
+  { id: "dumbbell-press", name: "Dumbbell Chest Press", muscleGroups: ["Chest", "Arms"], equipment: "Dumbbells" },
   { id: "squats", name: "Squats", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
   { id: "front-squat", name: "Front Squat", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
   { id: "deadlift", name: "Deadlift", muscleGroups: ["Back", "Legs"], equipment: "Barbell" },
@@ -37,7 +37,7 @@ const EXERCISE_ENTRIES: Exercise[] = [
   { id: "kettlebell-swing", name: "Kettlebell Swing", muscleGroups: ["Full Body", "Legs"], equipment: "Kettlebell" },
   { id: "hip-thrust", name: "Hip Thrust", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
   // Bodybuilding / Isolation + symmetry (from Ch10 specialist: isolation for weak points, unilateral, origin/insertion stress, myofibrillar vs sarcoplasmic, shaping via rep ranges/volume)
-  { id: "dumbbell-fly", name: "Dumbbell Fly", muscleGroups: ["Chest"], equipment: "Dumbbells", cues: "Lie on a bench. Control eccentric, deep stretch at bottom, squeeze pecs at top without locking elbows. Use for sarcoplasmic hypertrophy (higher reps). Unilateral option for lagging side." },
+  { id: "dumbbell-fly", name: "Dumbbell Fly", muscleGroups: ["Chest"], equipment: "Dumbbells", tags: ["hypertrophy"], cues: "Lie on a bench. Control eccentric, deep stretch at bottom, squeeze pecs at top without locking elbows. Use for sarcoplasmic hypertrophy (higher reps). Unilateral option for lagging side." },
   { id: "cable-crossover", name: "Cable Crossover", muscleGroups: ["Chest"], equipment: "Cable", cues: "Slight forward lean, cross hands at bottom for full contraction. High-to-low for lower pecs, low-to-high for upper. Attack origin/insertion." },
   { id: "lateral-raise-db", name: "Lateral Raise", muscleGroups: ["Shoulders"], equipment: "Dumbbells", cues: "Lead with elbows, slight lean, stop at shoulder height. Unilateral for symmetry on lagging delt. Avoid swinging – pure isolation for side delt cap." },
   { id: "rear-delt-fly", name: "Rear Delt Fly", muscleGroups: ["Shoulders", "Back"], equipment: "Dumbbells", cues: "Hinge at hips, lead elbows back, squeeze rear delts/scaps. Critical for symmetry and posture; often lagging in bodybuilders." },
