@@ -88,6 +88,17 @@ class ShellUpgradeTest {
             assertTrue(repository.drafts().load()?.workoutName == draft)
             assertTrue(repository.repository().recentWorkouts().any { it.workoutName == workout })
         }
+
+        launch(preview = true)
+        await("Resume workout").click()
+        await("Complete set").click()
+        await("Finish workout").click()
+        await("Workout saved")
+        await("Open Coach").click()
+        await("THE TRAINING PLAN / 04")
+        await("Today").click()
+        await("MISSION WINNING / 01")
+        assertFalse(device.hasObject(By.text("Workout saved")))
     }
 
     private fun launch(preview: Boolean? = null) {

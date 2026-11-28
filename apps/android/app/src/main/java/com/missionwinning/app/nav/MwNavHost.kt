@@ -226,7 +226,7 @@ fun MwNavHost(
                             drafts = drafts,
                             onStart = { id, name, sets -> nav.navigate(Routes.active(id, name, sets)) },
                             onQuickLog = { nav.navigate(Routes.active(MwRepository.freeformSessionId(), quickLogName, 0)) },
-                            onHistory = { nav.navigateHub(V2_HISTORY) },
+                            onHistory = { nav.navigatePreviewHub(V2_HISTORY) },
                         )
                     } else {
                     TodayScreen(
@@ -278,7 +278,8 @@ fun MwNavHost(
                     val workoutId = entry.arguments!!.getString("workoutId")!!.decode()
                     val onBack: () -> Unit = {
                             if (!nav.popBackStack()) {
-                                nav.navigateHub(if (v2Shell) V2_HISTORY else Routes.TODAY)
+                                if (v2Shell) nav.navigatePreviewHub(V2_HISTORY)
+                                else nav.navigateHub(Routes.TODAY)
                             }
                     }
                     val onOpenRoutines: () -> Unit = {
@@ -399,8 +400,8 @@ fun MwNavHost(
                             name = entry.arguments!!.getString("name")!!.decode(),
                             workoutId = rawWorkoutId,
                             change = change,
-                            onCoach = { nav.navigateHub(Routes.COACH) },
-                            onHistory = { nav.navigateHub(V2_HISTORY) },
+                            onCoach = { nav.navigatePreviewHub(Routes.COACH) },
+                            onHistory = { nav.navigatePreviewHub(V2_HISTORY) },
                         )
                     } else {
                     VictoryScreen(
@@ -440,7 +441,7 @@ fun MwNavHost(
         }
 
         if (showHubNav && v2Shell) {
-            V2Navigation(route, V2_HUB_ITEMS, nav::navigateHub)
+            V2Navigation(route, V2_HUB_ITEMS, nav::navigatePreviewHub)
         } else if (showHubNav) {
             MwBottomNav(
                 selected = selectedTab,
@@ -465,6 +466,13 @@ private fun NavHostController.navigateHub(route: String) {
         }
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+private fun NavHostController.navigatePreviewHub(route: String) {
+    navigate(route) {
+        popUpTo(Routes.TODAY)
+        launchSingleTop = true
     }
 }
 
