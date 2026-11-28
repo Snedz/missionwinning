@@ -66,7 +66,7 @@ class CoachParityTest {
     fun seedHoldsRecentNormalWorkAndDoesNotUseWarmupsFailuresDropsOrFutureSets() {
         val now = Instant.parse("2026-05-20T12:00:00Z")
         val base = SetLogEntity(
-            id = "work-0", exerciseId = "db-press", exerciseName = "Dumbbell bench press",
+            id = "work-0", exerciseId = "db-floor-press", exerciseName = "Dumbbell floor press",
             setIndex = 0, reps = 8, weight = 15.0, completedAt = "2026-05-19T12:00:00Z",
             sessionId = null, weightUnit = "kg", workoutId = "recent",
         )
@@ -80,15 +80,55 @@ class CoachParityTest {
             base.copy(id = "work-1", setIndex = 1, reps = 7, weight = 12.5),
         )
         val plan = LocalCoachSeed.build(equipment = "dumbbells", history = history, now = now, zone = ZoneId.of("UTC")).plan
-        val press = plan.sessions.first().exercises.single { it.exerciseId == "db-press" }
+        val press = plan.sessions.first().exercises.single { it.exerciseId == "db-floor-press" }
         assertEquals(12.5, press.weight, 0.0)
         assertEquals(7, press.reps)
         assertEquals(2, press.sets)
-        val unlogged = plan.sessions.first().exercises.filterNot { it.exerciseId == "db-press" }
+        val unlogged = plan.sessions.first().exercises.filterNot { it.exerciseId == "db-floor-press" }
         assertEquals(2, unlogged.size)
         assertTrue(unlogged.all { it.weight == 0.0 })
         val withoutGear = LocalCoachSeed.build(history = history, now = now, zone = ZoneId.of("UTC")).plan
-        assertTrue(withoutGear.sessions.flatMap { it.exercises }.none { it.weight > 0 || it.exerciseId == "db-press" })
+        assertTrue(withoutGear.sessions.flatMap { it.exercises }.none { it.weight > 0 || it.exerciseId == "db-floor-press" })
+    }
+
+    @Test
+    fun dumbbellsSeedDoesNotAddGearFromHistoryOrTheAdaptDemo() {
+        val history = listOf(
+            "dumbbell-fly", "db-fly", "banded-dislocate", "kettlebell-swing", "db-press",
+            "bench-dip", "pull-ups", "db-floor-press",
+        )
+            .map { id ->
+                SetLogEntity(
+                    id = id, exerciseId = id, exerciseName = id, setIndex = 0, reps = 6,
+                    weight = 20.0, completedAt = "2026-05-17T12:00:00Z",
+                    sessionId = null, weightUnit = "kg", workoutId = id,
+                )
+            }
+        val blocked = history.dropLast(1).map { it.exerciseId }.toSet()
+        for (demo in listOf(false, true)) {
+            val plan = LocalCoachSeed.build(
+                withAdaptDemo = demo, equipment = "dumbbells", history = history,
+                now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+            ).plan
+            val ids = plan.sessions.flatMap { it.exercises.map { e -> e.exerciseId } }.toSet()
+            assertEquals("demo=$demo", emptySet<String>(), ids.intersect(blocked))
+            if (!demo) assertTrue("a compatible history lift should be retained", "db-floor-press" in ids)
+        }
+    }
+
+    @Test
+    fun dumbbellsSeedDoesNotPrescribeSyncedBenchFly() {
+        val history = listOf(SetLogEntity(
+            id = "fly", exerciseId = "dumbbell-fly", exerciseName = "Dumbbell Fly", setIndex = 0,
+            reps = 10, weight = 15.0, completedAt = "2026-05-17T12:00:00Z", sessionId = null,
+            weightUnit = "kg", workoutId = "recent",
+        ))
+        val plan = LocalCoachSeed.build(
+            equipment = "dumbbells", history = history,
+            now = Instant.parse("2026-05-18T12:00:00Z"), zone = ZoneId.of("UTC"),
+        ).plan
+        assertTrue("synced bench fly returned to the plan",
+            plan.sessions.flatMap { it.exercises }.none { it.exerciseId == "dumbbell-fly" })
     }
 
     @Test

@@ -137,6 +137,7 @@ object LocalCoachSeed {
             } else {
                 val move = ExerciseCatalog.get(set.exerciseId)
                 move != null && equip in move.equipment &&
+                    (equip != "dumbbells" || move.id !in legacyAdditionalGear) &&
                     (equip != "bodyweight" || move.isBodyweight && set.weight == 0.0)
             }
         }.groupBy { ExerciseCatalog.canonicalCoachId(it.exerciseId) }.mapValues { (_, sets) ->
@@ -204,10 +205,17 @@ object LocalCoachSeed {
         )
     }
 
+    private val legacyAdditionalGear = setOf(
+        "main", "incline-pushup", "decline-pushup", "bench-dip", "bulgarian-split-squat-bw",
+        "step-up", "box-step-up", "jump-rope", "db-press", "db-fly", "db-incline-press",
+        "db-decline-press", "db-chest-supported-row", "db-incline-curl", "db-preacher-curl",
+        "db-bulgarian-split", "db-step-up", "db-hip-thrust",
+    )
+
     private fun demoSessions(equip: String): List<PlanSessionDto> {
         val (pushA, pushB, legsA, legsB, pullA, pullB) = when (equip) {
             "dumbbells" -> EquipmentMoves(
-                "db-press", "db-fly", "goblet-squat", "db-rdl", "db-row", "db-curl",
+                "db-floor-press", "plank", "goblet-squat", "db-rdl", "db-row", "db-curl",
             )
             "full-gym" -> EquipmentMoves(
                 "bench-press", "cable-fly", "back-squat", "romanian-deadlift", "lat-pulldown", "barbell-row",
@@ -229,7 +237,7 @@ object LocalCoachSeed {
                 focusGroups = listOf("chest", "shoulders"),
                 exercises = listOf(
                     PlanExerciseDto(pushA, 3, 10, whyKey = "main"),
-                    PlanExerciseDto(pushB, 3, if (equip == "bodyweight") 40 else 12, whyKey = "balance"),
+                    PlanExerciseDto(pushB, 3, if (pushB == "plank") 40 else 12, whyKey = "balance"),
                 ),
                 estMinutes = 35,
                 status = "missed",
