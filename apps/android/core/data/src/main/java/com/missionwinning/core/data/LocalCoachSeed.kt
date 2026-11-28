@@ -302,7 +302,7 @@ object LocalCoachSeed {
             when {
                 session.id == sessionId || completed == null || unit == null ||
                     plan.equipmentProfile == "bodyweight" -> session
-                session.dayOffset < completed.dayOffset || session.status !in setOf("planned", "swapped") -> session
+                session.status !in setOf("planned", "swapped") -> session
                 else -> session.copy(exercises = session.exercises.map { exercise ->
                     if (exercise.weight == 0.0 && ExerciseCatalog.get(exercise.exerciseId)?.isBodyweight == true) {
                         exercise

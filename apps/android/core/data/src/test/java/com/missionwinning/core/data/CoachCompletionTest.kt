@@ -16,12 +16,14 @@ class CoachCompletionTest {
         val pushUp = PlanExerciseDto("push-ups", 1, 5, 0.0, "coachWhyBodyweightReps")
         val missed = session("missed", 0, "missed", squat)
         val previous = session("previous", 1, "done", squat)
-        val current = session("current", 2, "planned", squat)
-        val future = session("future", 4, "planned", squat, row, pushUp)
+        val earlier = session("earlier", 2, "planned", squat)
+        val earlierSwapped = session("earlier-swapped", 3, "swapped", squat)
+        val current = session("current", 4, "planned", squat)
+        val future = session("future", 5, "planned", squat, row, pushUp)
         val tougher = session("tougher", 6, "swapped", squat.copy(reps = 12))
         val plan = CoachPlanDto(
             revision = 3, weekStart = "2026-11-23", daysPerWeek = 5,
-            sessions = listOf(missed, previous, current, future, tougher),
+            sessions = listOf(missed, previous, earlier, earlierSwapped, current, future, tougher),
             generatedAt = "2026-11-24T12:00:00Z", contextHash = "offline-seed-test",
             equipmentProfile = "dumbbells", weightUnit = "kg",
         )
@@ -36,10 +38,18 @@ class CoachCompletionTest {
                 logged.takeIf { it.exerciseId == exerciseId && it.reps >= targetReps }
             }.plan
             val expected = WeightUnits.convertExact(logged.weight, logged.weightUnit, "kg")
-            assertEquals(expected, next.sessions[3].exercises.first().weight, 0.000001)
+            assertEquals(expected, next.sessions.first { it.id == future.id }.exercises.first().weight, 0.000001)
+            assertEquals(expected, next.sessions.first { it.id == earlier.id }.exercises.first().weight, 0.000001)
             assertEquals(
-                listOf(missed, previous, current.copy(status = "done"),
-                    future.copy(exercises = listOf(squat.copy(weight = expected), row, pushUp)), tougher),
+                listOf(
+                    missed,
+                    previous,
+                    earlier.copy(exercises = listOf(squat.copy(weight = expected))),
+                    earlierSwapped.copy(exercises = listOf(squat.copy(weight = expected))),
+                    current.copy(status = "done"),
+                    future.copy(exercises = listOf(squat.copy(weight = expected), row, pushUp)),
+                    tougher,
+                ),
                 next.sessions,
             )
             assertEquals(plan.revision + 1, next.revision)
