@@ -101,6 +101,32 @@ test.describe('Desktop surface @gate', () => {
     await expect(links.getByText('No plan this week')).toHaveCount(0);
   });
 
+  test('desktop Today shows the most recently completed workout after a backfill', async ({ page }) => {
+    test.skip(process.env.DESKTOP_SHELL_PREVIEW !== 'true', 'Desktop shell preview is off');
+    await page.clock.setFixedTime(new Date('2026-11-25T12:00:00'));
+    await page.addInitScript(() => {
+      const log = (id: string, workoutName: string, completedAt: string) => ({
+        id, workoutName, completedAt, startedAt: completedAt, durationSeconds: 60, totalVolume: 0,
+        exercises: [{ exerciseId: 'push-ups', sets: [{ reps: 4, weight: 0 }] }],
+      });
+      localStorage.setItem('workout-tracker-storage', JSON.stringify({
+        state: {
+          workoutHistory: [
+            log('backfill', 'Backfilled workout', '2026-11-21T10:00:00'),
+            { ...log('deleted', 'Deleted workout', '2026-11-25T10:00:00'), deletedAt: '2026-11-25T11:00:00' },
+            log('latest', 'Latest workout', '2026-11-24T10:00:00'),
+          ],
+        },
+        version: 1,
+      }));
+    });
+    await page.goto('/log');
+    const links = page.locator('.desktop-preview-today-links');
+    await expect(links.getByText('Latest workout')).toBeVisible();
+    await expect(links.getByText('Backfilled workout')).toHaveCount(0);
+    await expect(links.getByText('Deleted workout')).toHaveCount(0);
+  });
+
   test('Today fills the column instead of a phone measure', async ({ page }) => {
     await page.goto('/log');
     const shell = todayDesk(page);

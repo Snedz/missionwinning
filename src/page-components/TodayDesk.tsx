@@ -23,7 +23,7 @@ import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { loadPlan } from '@/lib/coach/storage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
-import { computeReentry } from '@/lib/reentry';
+import { computeReentry, latestLiveLog } from '@/lib/reentry';
 import { pickHonoredStart } from '@/lib/workout/honorSavedRoutine';
 import {
   readSavedWorkoutsFromStorage,
@@ -262,7 +262,7 @@ export function TodayDesk() {
       <HouseDesktopTodayLinks
         hasWeekPlan={weekPlan !== null}
         nextSession={nextSession?.name}
-        lastWorkout={history.find((log) => !log.deletedAt)?.workoutName}
+        lastWorkout={latestLiveLog(history)?.workoutName}
       />
     </div>
   );

@@ -84,7 +84,7 @@ function latestSessionMs(history: CompletedWorkoutLog[]): number | null {
   return latest === -Infinity ? null : latest;
 }
 
-function latestLiveLog(history: CompletedWorkoutLog[]): CompletedWorkoutLog | null {
+export function latestLiveLog(history: readonly CompletedWorkoutLog[]): CompletedWorkoutLog | null {
   let best: CompletedWorkoutLog | null = null;
   let latest = -Infinity;
   for (const log of history) {
