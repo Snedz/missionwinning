@@ -45,6 +45,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private data class TodayData(val plan: CoachPlanDto, val draft: SessionDraftRepository.DraftPayload?)
+private data class VictoryData(val setCount: Int, val exerciseIds: List<String>)
 
 @Composable
 internal fun V2Today(
@@ -128,27 +129,31 @@ internal fun V2Coach(
 internal fun V2Victory(
     repository: MwRepository,
     name: String,
-    sets: Int,
     workoutId: String,
     change: V2Change?,
     onCoach: () -> Unit,
     onHistory: () -> Unit,
 ) {
-    val workout by produceState<WorkoutLogEntity?>(null, repository, workoutId) {
-        value = repository.workoutById(workoutId)?.takeIf { it.deletedAt.isNullOrBlank() }
+    val workout by produceState<VictoryData?>(null, repository, workoutId) {
+        val saved = repository.workoutById(workoutId)
+        if (saved != null && saved.deletedAt.isNullOrBlank()) {
+            val sets = repository.setsForWorkout(workoutId)
+            value = VictoryData(sets.size, sets.map { it.exerciseId })
+        }
     }
     val plan by produceState<CoachPlanDto?>(null, repository, workout, change) {
-        value = if (workout != null) repository.ensureCoachPlan(preferNetwork = false).plan else null
+        value = if (!workout?.exerciseIds.isNullOrEmpty()) repository.ensureCoachPlan(preferNetwork = false).plan else null
     }
     V2Theme {
         V2Page(stringResource(R.string.v2_victory), stringResource(R.string.v2_marker_victory), bottomInset = true) {
             Text(name, style = MaterialTheme.typography.headlineSmall)
-            Text(pluralStringResource(R.plurals.v2_saved_sets, sets, sets))
-            val next = plan?.nextSession()
-            if (next != null) {
+            workout?.let { Text(pluralStringResource(R.plurals.v2_saved_sets, it.setCount, it.setCount)) }
+            val targets = plan?.nextTargetsFor(workout?.exerciseIds.orEmpty()).orEmpty()
+            if (targets.isNotEmpty()) {
                 V2Rule()
                 V2Label(stringResource(R.string.v2_next_time))
-                SessionSummary(next, plan?.weightUnit)
+                Text(stringResource(R.string.v2_next_time_source))
+                targets.forEach { ExerciseTarget(it, plan?.weightUnit) }
             }
             V2Action(stringResource(R.string.v2_open_coach), onClick = onCoach)
             V2Secondary(stringResource(R.string.v2_open_history), Modifier.fillMaxWidth(), onHistory)
@@ -254,9 +259,12 @@ internal fun V2HistoryDetail(
 @Composable
 private fun SessionSummary(session: PlanSessionDto, unit: String?) {
     Text(session.name, style = MaterialTheme.typography.headlineSmall)
-    session.exercises.forEach { exercise ->
-        Text(stringResource(R.string.v2_exercise_target, exerciseName(exercise), prescription(exercise, unit)))
-    }
+    session.exercises.forEach { ExerciseTarget(it, unit) }
+}
+
+@Composable
+private fun ExerciseTarget(exercise: PlanExerciseDto, unit: String?) {
+    Text(stringResource(R.string.v2_exercise_target, exerciseName(exercise), prescription(exercise, unit)))
 }
 
 private fun PlanSessionDto.start(onStart: (String, String, Int) -> Unit) =
@@ -266,12 +274,15 @@ private fun exerciseName(exercise: PlanExerciseDto): String =
     ExerciseCatalog.get(exercise.exerciseId)?.name ?: exercise.exerciseId.replace('-', ' ')
 
 @Composable
-private fun prescription(exercise: PlanExerciseDto, unit: String?): String =
-    if (exercise.weight > 0 && (unit == "kg" || unit == "lb")) {
-        stringResource(R.string.v2_weighted_target, exercise.sets, exercise.reps, WeightUnits.formatWithUnit(exercise.weight, unit))
-    } else {
-        stringResource(R.string.v2_reps_target, exercise.sets, exercise.reps)
+private fun prescription(exercise: PlanExerciseDto, unit: String?): String {
+    val load = when {
+        exercise.weight > 0 && (unit == "kg" || unit == "lb") -> WeightUnits.formatWithUnit(exercise.weight, unit)
+        exercise.weight > 0 -> stringResource(R.string.v2_load_unavailable)
+        ExerciseCatalog.get(exercise.exerciseId)?.isBodyweight == true -> stringResource(R.string.v2_bodyweight)
+        else -> stringResource(R.string.v2_unloaded)
     }
+    return stringResource(R.string.v2_weighted_target, exercise.sets, exercise.reps, load)
+}
 
 private fun workoutDate(raw: String): String =
     runCatching {

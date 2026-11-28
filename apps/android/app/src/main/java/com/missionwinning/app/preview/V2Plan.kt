@@ -1,5 +1,6 @@
 package com.missionwinning.app.preview
 
+import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.WorkoutStats
 import com.missionwinning.core.network.CoachPlanDto
 import com.missionwinning.core.network.PlanExerciseDto
@@ -20,6 +21,19 @@ internal data class V2Change(
 
 internal fun CoachPlanDto.nextSession(today: Int = WorkoutStats.mondayBasedOffset()): PlanSessionDto? =
     WorkoutStats.pickNextSession(sessions.filter { it.exercises.isNotEmpty() }, today, { it.dayOffset }, { it.status })
+
+internal fun CoachPlanDto.nextTargetsFor(
+    loggedExerciseIds: List<String>,
+    today: Int = WorkoutStats.mondayBasedOffset(),
+): List<PlanExerciseDto> {
+    val open = sessions.filter { WorkoutStats.isOpenSessionStatus(it.status) }
+    val next = nextSession(today)
+    val byExercise = (listOfNotNull(next) + open.filter { it != next })
+        .flatMap { it.exercises }
+        .groupBy { ExerciseCatalog.canonicalCoachId(it.exerciseId) }
+    return loggedExerciseIds.map(ExerciseCatalog::canonicalCoachId).distinct()
+        .mapNotNull { byExercise[it]?.firstOrNull() }
+}
 
 internal fun compareCompletedPlan(
     before: CoachPlanDto,

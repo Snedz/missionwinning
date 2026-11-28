@@ -27,6 +27,7 @@
     <string name="v2_before">Before: %1$s</string>
     <string name="v2_after">After: %1$s</string>
     <string name="v2_next_time">NEXT TIME</string>
+    <string name="v2_next_time_source">From your upcoming Coach sessions, for exercises you logged.</string>
     <string name="v2_progress">Progress</string>
     <string name="v2_routines">Routines</string>
     <string name="v2_catalog">Exercise library</string>
@@ -41,8 +42,10 @@
     <string name="v2_delete">Delete</string>
     <string name="v2_cancel">Cancel</string>
     <string name="v2_exercise_target">%1$s · %2$s</string>
-    <string name="v2_weighted_target">%1$d × %2$d at %3$s</string>
-    <string name="v2_reps_target">%1$d × %2$d</string>
+    <string name="v2_weighted_target">%1$d × %2$d · %3$s</string>
+    <string name="v2_bodyweight">bodyweight</string>
+    <string name="v2_unloaded">unloaded</string>
+    <string name="v2_load_unavailable">load unavailable</string>
     <string name="v2_back_to_train">Back to Train preview</string>
     <string name="v2_set_progress">%1$d OF %2$d SETS COMPLETE</string>
     <string name="v2_rest_seconds">Rest · %1$ds</string>

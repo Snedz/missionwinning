@@ -35,6 +35,30 @@ class V2PlanTest {
         assertNull(plan.copy(sessions = listOf(first.copy(exercises = emptyList()))).nextSession(today = 0))
     }
 
+    @Test fun victoryUsesActualOpenTargetsForLoggedMovementsOnly() {
+        val pushups = PlanExerciseDto("pushup", sets = 3, reps = 5)
+        val lunges = PlanExerciseDto("db-lunges", sets = 1, reps = 6, weight = 30.0)
+        val plan = before.copy(sessions = listOf(
+            first.copy(status = "done", exercises = listOf(pushups.copy(reps = 4), lunges.copy(weight = 25.0))),
+            second.copy(exercises = listOf(pushups, move)),
+            second.copy(id = "third", dayOffset = 2, exercises = listOf(lunges)),
+        ))
+        assertEquals(
+            listOf(pushups, lunges),
+            plan.nextTargetsFor(listOf("pushup", "db-lunges", "db-lunges", "not-in-plan"), today = 1),
+        )
+        assertTrue(plan.nextTargetsFor(emptyList(), today = 1).isEmpty())
+    }
+
+    @Test fun victoryUsesTheSameSessionPriorityAsTodayAndIgnoresMisses() {
+        val plan = before.copy(sessions = listOf(
+            first.copy(status = "missed", exercises = listOf(PlanExerciseDto("pushup", sets = 3, reps = 5))),
+            second,
+            second.copy(id = "today", dayOffset = 2, status = "swapped", exercises = listOf(move.copy(weight = 30.0))),
+        ))
+        assertEquals(listOf(move.copy(weight = 30.0)), plan.nextTargetsFor(listOf("pushup", move.exerciseId), today = 2))
+    }
+
     @Test fun detectsActualBeforeAfterTargetsOnAnOpenSession() {
         val change = requireNotNull(compareCompletedPlan(before, after, "first", "saved-id"))
         assertEquals("saved-id", change.workoutId)

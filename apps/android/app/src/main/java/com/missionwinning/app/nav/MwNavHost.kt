@@ -396,7 +396,6 @@ fun MwNavHost(
                         V2Victory(
                             repository = repository,
                             name = entry.arguments!!.getString("name")!!.decode(),
-                            sets = entry.arguments!!.getInt("sets"),
                             workoutId = rawWorkoutId,
                             change = change,
                             onCoach = { nav.navigateHub(Routes.COACH) },
