@@ -112,7 +112,7 @@ export function describeCoachWeekChange(
   const pairs = new Map<PlanSession, PlanSession>();
   const consumed = new Set<PlanSession>();
   const completed = new Set<PlanSession>();
-  for (const old of previous) {
+  for (const old of before.sessions.filter((s) => s.status !== 'done').sort((a, b) => a.dayOffset - b.dayOffset)) {
     const done = after.sessions.find((s) => s.id === old.id && s.status === 'done' && focusKey(s) === focusKey(old));
     if (done) {
       completed.add(old);

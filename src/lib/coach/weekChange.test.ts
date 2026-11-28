@@ -95,3 +95,10 @@ test('volume adjustment, tombstones and warmup-only latest logs cannot claim a c
     ...ctx, history: [warmup, light],
   }, 'rebuild')?.loads[0].savedSet, undefined);
 });
+
+test('an adaptation reports an overdue missed session that was completed late', () => {
+  const missed = { ...strength(1), status: 'missed' } as const;
+  const done = { ...missed, status: 'done' } as const;
+  const change = describeCoachWeekChange(plan(1, [missed]), plan(2, [done]), ctx, 'adapt');
+  assert.deepEqual(change?.schedule.map((row) => row.kind), ['completed']);
+});
