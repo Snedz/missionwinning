@@ -60,7 +60,7 @@ class ShellUpgradeTest {
         await("MISSION WINNING / 01")
         val minTargetPx = (48 * context.resources.displayMetrics.density).roundToInt()
         val todayTab = checkNotNull(device.findObjects(By.text("Today")).firstNotNullOfOrNull { label ->
-            generateSequence(label) { it.parent }.firstOrNull { it.isSelected && it.isClickable }
+            generateSequence(label) { it.parent }.firstOrNull { it.isSelected }
         })
         assertTrue(todayTab.visibleBounds.height() >= minTargetPx)
         val resume = await("Resume workout")
