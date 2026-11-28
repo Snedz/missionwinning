@@ -6,6 +6,7 @@ import com.missionwinning.core.network.PlanSessionDto
 import com.missionwinning.core.model.WeightUnits
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.int
@@ -33,17 +34,19 @@ class CoachParityTest {
         val mismatches = buildList {
             for (case in progressions) {
                 val id = case.getValue("id").jsonPrimitive.content
-                val move = case.getValue("exerciseId").jsonPrimitive.content
+                val webMove = case.getValue("exerciseId").jsonPrimitive.content
+                val move = case["androidExerciseId"]?.jsonPrimitive?.content ?: webMove
                 val unit = if (case.getValue("units").jsonPrimitive.content == "imperial") "lb" else "kg"
                 val workoutId = case.getValue("workoutId").jsonPrimitive.content
                 val history = case.getValue("history").jsonArray.map { it.jsonObject }
                 val sets = history.flatMap { log ->
                     roomRows(log, unit).map {
-                        CoachProgressionSet(it, it.completedAt, log.getValue("durationSeconds").jsonPrimitive.int)
+                        val set = if (it.exerciseId == webMove) it.copy(exerciseId = move) else it
+                        CoachProgressionSet(set, set.completedAt, log.getValue("durationSeconds").jsonPrimitive.int)
                     }
                 }
                 val expected = json.decodeFromJsonElement(PlanExerciseDto.serializer(), JsonObject(
-                    case.getValue("expected").jsonObject + ("exerciseId" to case.getValue("exerciseId")),
+                    case.getValue("expected").jsonObject + ("exerciseId" to JsonPrimitive(move)),
                 ))
                 val prescribed = PlanExerciseDto(move, 3, 5)
                 val current = PlanSessionDto("mon", 0, "strength", "Monday", exercises = listOf(prescribed),
@@ -53,7 +56,11 @@ class CoachParityTest {
                     sessions = listOf(current, current.copy(id = "wed", dayOffset = 2),
                         current.copy(id = "fri", dayOffset = 4, status = "swapped")),
                     generatedAt = case.getValue("now").jsonPrimitive.content, contextHash = "offline-seed-test",
-                    equipmentProfile = if (move == "push-ups") "bodyweight" else "dumbbells", weightUnit = unit,
+                    equipmentProfile = when (move) {
+                        "push-ups" -> "bodyweight"
+                        "assisted-pullup" -> "full-gym"
+                        else -> "dumbbells"
+                    }, weightUnit = unit,
                 )
                 val next = LocalCoachSeed.markDone(
                     plan, current.id, workoutId, sets, Instant.parse(plan.generatedAt), zone,

@@ -86,10 +86,19 @@ internal object OfflineCoachProgression {
         unit: String,
         highLoad: Boolean,
     ): PlanExerciseDto {
-        val bodyweight = OfflineCoachCatalog.byId[id]?.bodyweight
-            ?: ExerciseCatalog.get(id)?.isBodyweight ?: true
+        val webMove = OfflineCoachCatalog.byId[id]
+        val nativeMove = ExerciseCatalog.get(id)
+        val bodyweight = webMove?.bodyweight ?: nativeMove?.isBodyweight ?: true
         val reps = latest.map { it.reps }.average().roundToInt()
         val lastWeight = latest.first().weight
+        val deload = stallWhy(exposures) ?: DELOAD.takeIf { latest.all { it.dose == 9 } }
+        val loggedWeight = latest.first().row.set.let { WeightUnits.convertExact(it.weight, it.weightUnit, unit) }
+        val assisted = id.contains("assisted", ignoreCase = true) ||
+            (webMove?.name ?: nativeMove?.name)?.contains("assisted", ignoreCase = true) == true
+        if (deload != null && (bodyweight || assisted)) {
+            val reducedReps = (reps * 0.9).roundToInt().coerceAtLeast(MIN_REPS).coerceAtMost(reps)
+            return PlanExerciseDto(id, latest.size, reducedReps, loggedWeight, deload)
+        }
         val max = if (!bodyweight && lastWeight > 0) {
             exposures.asSequence().flatMap { it.second }.mapNotNull { it.estimatedMax() }.maxOrNull()
         } else null
@@ -99,14 +108,10 @@ internal object OfflineCoachProgression {
         fun materialize(pct: Double?) = if (pct != null && max != null) snap(max * (pct / 100)) else lastWeight
         val hold = PlanExerciseDto(id, latest.size, reps, materialize(basePct), HOLD)
 
-        val deload = stallWhy(exposures) ?: DELOAD.takeIf { latest.all { it.dose == 9 } }
         if (deload != null) return hold.copy(
-            reps = if (bodyweight) (reps * 0.9).roundToInt().coerceAtLeast(MIN_REPS) else reps,
-            weight = when {
-                bodyweight -> lastWeight
-                basePct != null -> materialize(basePct * 0.9)
-                else -> snap(lastWeight * 0.9)
-            },
+            weight = if (basePct != null && max != null) {
+                minOf(loggedWeight, materialize(minOf(basePct, loggedWeight / max * 100) * 0.9))
+            } else minOf(loggedWeight, snap(loggedWeight * 0.9)),
             whyKey = deload,
         )
         if (latest.count { it.dose == 9 } >= 2) return hold.copy(whyKey = "coachWhyHoldHard")
